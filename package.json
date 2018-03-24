@@ -5,7 +5,7 @@
   "main": "ratchet.js",
   "config": {},
   "scripts": {
-    "build": "gulp",
+    "build": "gulp scripts",
     "clean": "rm -Rf dist",
     "test": "mocha -r ts-node/register test/**/*.ts"
   },
