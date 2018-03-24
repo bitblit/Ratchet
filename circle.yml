@@ -36,4 +36,3 @@ deployment:
         - find . -type f -regex ".*/package\.json" -exec sed -i.bak s/0\.0\.0/${CIRCLE_TAG:8}+$CIRCLE_BUILD_NUM/ {} \;
         - echo publishing to NPM as version ${CIRCLE_TAG:8}+$CIRCLE_BUILD_NUM
         - npm publish --access=public
-        - git push --follow-tags
