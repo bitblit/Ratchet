@@ -65,6 +65,16 @@ Following the notes from [here](https://docs.npmjs.com/getting-started/publishin
 
 For circleci using [these notes](https://circleci.com/docs/1.0/npm-continuous-deployment/)
 
+Looks like its my standard - set a release tag and push to Github, CircleCI takes care of the rest:
+
+```
+    git commit -m "New stuff"
+    git tag -a release-0.0.5 -m "Because I like it a lot"
+    git push origin master --tags
+
+```
+
+
 # Contributing
 
 Pull requests are welcome, although I'm not sure why you'd be interested!

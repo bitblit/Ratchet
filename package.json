@@ -1,6 +1,6 @@
 {
   "name": "@bitblit/ratchet",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "description": "Common tools for general use",
   "main": "ratchet.js",
   "config": {},
