@@ -20,7 +20,7 @@ test:
   # Copy these files to output just in case
   - cp src/build-properties.json $CIRCLE_ARTIFACTS
   # Always run gulp even if not doing a deploy
-  - npm run gulp
+  - npm run build
  override:
   - echo Skipping tests for now
   - npm run test
