@@ -22,7 +22,6 @@ test:
   # Always run gulp even if not doing a deploy
   - npm run build
  override:
-  - echo Skipping tests for now
   - npm run test
 
  post:
@@ -34,5 +33,6 @@ deployment:
       commands:
         - echo Publishing release to npm
         - npm publish --public
-        - npm version ${CIRCLE_TAG:8}
+        - echo publishing to NPM as version ${CIRCLE_TAG:8}+$BUILD_NUMBER
+        - npm version ${CIRCLE_TAG:8}+$BUILD_NUMBER
         - git push --follow-tags
