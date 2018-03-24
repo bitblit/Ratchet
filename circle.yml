@@ -32,7 +32,7 @@ deployment:
       tag : /release-.*/
       commands:
         - echo Publishing release to npm
-        - npm publish --public
         - echo publishing to NPM as version ${CIRCLE_TAG:8}+$BUILD_NUMBER
         - npm version ${CIRCLE_TAG:8}+$BUILD_NUMBER
+        - npm publish --access=public
         - git push --follow-tags
