@@ -135,14 +135,14 @@ export class S3CacheRatchet {
     }
 
 
-    public createDownloadLink(key:string, bucket:string = null, secondsUntilExpiration:number=3600):  string // URL
+    public createDownloadLink(key:string, secondsUntilExpiration:number=3600, bucket:string = null):  string // URL
     {
         let params = {Bucket: this.bucketVal(bucket), Key: key, ExpiresIn: secondsUntilExpiration};
         let url = this.s3.getSignedUrl('getObject', params);
         return url;
     }
 
-    public  directChildrenOfPrefix(prefix:string, bucket:string = null, expandFiles:boolean=false) : Promise<string[]> {
+    public  directChildrenOfPrefix(prefix:string, expandFiles:boolean=false, bucket:string = null ) : Promise<string[]> {
         let returnValue = [];
 
         let params = {
