@@ -2,9 +2,15 @@
   "name": "@bitblit/ratchet",
   "version": "0.0.0",
   "description": "Common tools for general use",
-  "main": "index.js",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.js",
   "author": "Christopher Weiss",
   "config": {},
+  "scripts": {
+    "build": "tsc",
+    "clean": "rm -Rf dist",
+    "test": "mocha -r ts-node/register test/**/*.ts"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/bitblit/Ratchet"
@@ -17,11 +23,6 @@
     "url": "https://github.com/bitblit/Ratchet/issues"
   },
   "homepage": "https://github.com/bitblit/Ratchet#readme",
-  "scripts": {
-    "build": "tsc",
-    "clean": "rm -Rf dist",
-    "test": "mocha -r ts-node/register test/**/*.ts"
-  },
   "engines": {
     "node": ">=6.10.2"
   },

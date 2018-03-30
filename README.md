@@ -1,6 +1,6 @@
-# Spark Ratchet
+# @bitblit/Ratchet
 
-Common utilities for Typescript and Node from Spark Ventures.
+Common utilities for Typescript and Node.
 
 ## Introduction
 
@@ -73,6 +73,10 @@ Looks like its my standard - set a release tag and push to Github, CircleCI take
     git push origin master --tags
 
 ```
+
+Also following notes from [here](https://ljn.io/posts/publishing-typescript-projects-with-npm/) on converting the
+typescript into usable javascript+mapping stuff.
+
 
 
 # Contributing

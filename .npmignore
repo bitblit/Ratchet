@@ -1,9 +1,10 @@
+circle.yml
+gulpfile.js
+tslint.json
 .idea
 *.iml
 node_modules
 npm-debug.log
-dist
 cw-test.ts
 typings
 *.bak
-
