@@ -16,7 +16,7 @@
     "preserveConstEnums": true,
     "suppressImplicitAnyIndexErrors": true,
     "forceConsistentCasingInFileNames": true,
-    "lib": ["es2015.promise", "dom"]
+    "lib": ["es2015", "dom"]
   },
   "include": ["src/**/*.ts"],
   "exclude": [ "node_modules", "build", "webpack" ],
