@@ -14,8 +14,8 @@
   "config": {},
   "scripts": {
     "prepublishOnly": "npm run compile",
-    "compile": "npm run clean && tsc -p",
-    "watch" : "tsc -w -p .",
+    "compile": "npm run clean && tsc",
+    "watch" : "tsc -w .",
     "clean": "rm -Rf dist",
     "test": "mocha -r ts-node/register test/**/*.ts"
   },
