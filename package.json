@@ -2,10 +2,23 @@
   "name": "@bitblit/ratchet",
   "version": "0.0.0",
   "description": "Common tools for general use",
-  "main": "ratchet.js",
+  "main": "index.js",
+  "author": "Christopher Weiss",
   "config": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bitblit/Ratchet"
+  },
+  "keywords": [
+    "wrench",
+    "utility"
+  ],
+  "bugs": {
+    "url": "https://github.com/bitblit/Ratchet/issues"
+  },
+  "homepage": "https://github.com/bitblit/Ratchet#readme",
   "scripts": {
-    "build": "gulp scripts",
+    "build": "tsc",
     "clean": "rm -Rf dist",
     "test": "mocha -r ts-node/register test/**/*.ts"
   },
@@ -21,6 +34,8 @@
   "devDependencies": {
     "@types/aws-lambda": "0.0.31",
     "@types/chai": "^4.1.2",
+    "@types/es6-collections": "^0.5.31",
+    "@types/es6-promise": "^3.3.0",
     "@types/mocha": "^5.0.0",
     "@types/node": "^6.0.46",
     "aws-sdk": "^2.195.0",
@@ -33,7 +48,6 @@
     "mocha": "^3.5.3",
     "ts-node": "^3.3.0",
     "tslint": "~5.7.0",
-    "typescript": "^2.7.1",
-    "typings": "^2.1.1"
+    "typescript": "^2.7.1"
   }
 }

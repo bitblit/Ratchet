@@ -1,12 +1,13 @@
 {
   "compilerOptions": {
+    "target": "es5",
     "module": "commonjs",
-    "target": "es6",
-    "lib": [ "es6", "dom" ],
+    "declaration": true,
+    "outDir": "./dist",
+    "strict": true,
+
     "moduleResolution": "node",
-    "outDir": "dist",
     "sourceMap": true,
-    "allowJs": true,
     "noImplicitAny": false,
     "noUnusedLocals": false,
     "noImplicitThis": false,
@@ -14,7 +15,8 @@
     "noImplicitReturns": true,
     "preserveConstEnums": true,
     "suppressImplicitAnyIndexErrors": true,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "lib": ["es2015.promise", "dom"]
   },
   "include": ["src/**/*.ts"],
   "exclude": [ "node_modules", "build", "webpack" ],
