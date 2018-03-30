@@ -165,7 +165,7 @@ export class S3CacheRatchet {
                 response['Contents'].forEach(cp => {
                     if (expandFiles) {
                         let expanded = {
-                            'link': this.createDownloadLink(cp['Key'], bucket),
+                            'link': this.createDownloadLink(cp['Key'], 3600, bucket),
                             'name': cp['Key'].substring(prefixLength),
                             'size': cp['Size']
                         };
