@@ -2,12 +2,20 @@
   "name": "@bitblit/ratchet",
   "version": "0.0.0",
   "description": "Common tools for general use",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.js",
-  "author": "Christopher Weiss",
+  "main": "./dist/index",
+  "typings": "./dist/index",
+  "files" : [
+    "dist/index.js",
+    "dist/index.d.ts",
+    "dist/aws",
+    "dist/common"
+  ],
+  "author": "Christopher Weiss <bitblit@gmail.com>",
   "config": {},
   "scripts": {
-    "build": "tsc",
+    "prepublishOnly": "npm run compile",
+    "compile": "npm run clean && tsc -p",
+    "watch" : "tsc -w -p .",
     "clean": "rm -Rf dist",
     "test": "mocha -r ts-node/register test/**/*.ts"
   },
