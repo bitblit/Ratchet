@@ -47,6 +47,16 @@ One more note on the AWS stuff - for most of my non-super-heavy-load stuff I wor
 because I am lazy and because that is where AWS releases the new stuff first.  Because of this, you will see that 
 while my code allows you to override the region, I always set a biased default.  If you don't like that... sorry?
 
+## Another note on Express library
+There are also a few classes in here for simplifying using Express as a processor for Lambda on Node.  Similarly to
+AWS above, Express is included as a dev dependency for this library - if you want to use those classes you are 
+probable already including Express in your package.  If not:
+
+```
+    "express": "^4.15.2",
+    "@types/express": "^4.0.33",
+```
+
 # Testing
 Ha!  No, seriously - I am actually improving on this in Node, slowly (2018-03-23)
 
