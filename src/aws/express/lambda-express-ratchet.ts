@@ -36,7 +36,7 @@ export class LambdaExpressRatchet {
         return (evt && evt.queryStringParameters)?evt.queryStringParameters:{};
     }
 
-    public static promiseResponseAdapter(req: Request, response: Response, next: NextFunction, fn: promiseRouteFunction) {
+    public static promiseResponseAdapter(fn: promiseRouteFunction, req: Request, response: Response, next: NextFunction=null) {
         Logger.silly("About to run PromiseResponseAdapter");
         fn(req, response, next).then(ok => {
             Logger.debug("PromiseResponseAdapter : success : "+JSON.stringify(ok));
