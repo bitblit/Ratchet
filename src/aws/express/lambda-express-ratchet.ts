@@ -12,6 +12,7 @@ export class LambdaExpressRatchet {
 
     // Using 'any' here since apiGateway is only present in the AWS adapted one
     public static extractEvent(request:any) : any{
+         
         return (request && request.apiGateway)?request.apiGateway.event:null;
     }
 

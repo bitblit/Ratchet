@@ -30,8 +30,9 @@ because I use these libraries in literally every project I have ever done:
 * Moment - because I always need better date handling than what comes with Javascript
 * Moment-Timezone - because I always need timezone specific handling of date
 
-## A special note on AWS Library
+## Notes on libraries that are used but must be purposely included (transitive dependencies)
 
+### AWS
 Originally I was going to package this as 2 different libraries - one for just my AWS stuff, and the other for more
 generic stuff.  But then I realized that even with the AWS stuff I would bring in AWS lib as a dev dependency because
 I do so much stuff on Lambda and Lambda already has the AWS library on it.  So - Important note!  If you use the
@@ -47,7 +48,7 @@ One more note on the AWS stuff - for most of my non-super-heavy-load stuff I wor
 because I am lazy and because that is where AWS releases the new stuff first.  Because of this, you will see that 
 while my code allows you to override the region, I always set a biased default.  If you don't like that... sorry?
 
-## Another note on Express library
+## Express
 There are also a few classes in here for simplifying using Express as a processor for Lambda on Node.  Similarly to
 AWS above, Express is included as a dev dependency for this library - if you want to use those classes you are 
 probable already including Express in your package.  If not:
@@ -56,6 +57,14 @@ probable already including Express in your package.  If not:
     "express": "^4.15.2",
     "@types/express": "^4.0.33",
 ```
+
+### RXJS
+The Observable ratchet is based on Observables through RXJS.  If you use it, you'll need:
+
+```
+    "rxjs": "5.5.6",
+```
+
 
 # Testing
 Ha!  No, seriously - I am actually improving on this in Node, slowly (2018-03-23)
