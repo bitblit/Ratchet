@@ -1,6 +1,7 @@
 import { Observable } from 'rxjs/Observable';
 import { Observer } from 'rxjs/Observer';
 import { race } from 'rxjs/observable/race';
+import {Logger} from "./logger";
 
 /**
  * A class for simplifying working with rxjs observables.
@@ -28,7 +29,7 @@ export class ObservableRatchet {
         return Observable.create((observer: Observer<T>) => {
             let id = setTimeout(() => {
                 clearTimeout(id);
-                console.warn(
+                Logger.warn(
                     `Timed out after ${timeoutMillis}ms waiting for results of ${title}`
                 );
                 if (resolveAsNull) {
