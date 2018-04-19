@@ -5,7 +5,7 @@ import { race } from 'rxjs/observable/race';
 /**
  * A class for simplifying working with rxjs observables.
  *
- * Contributed by William Weiss <william@codification.org>
+ * Contributed by William Weiss <npm@codification.org>
  */
 export class ObservableRatchet {
     public static timeout<T>(
@@ -27,7 +27,7 @@ export class ObservableRatchet {
     ): Observable<T> {
         return Observable.create((observer: Observer<T>) => {
             let id = setTimeout(() => {
-                clearTimeout();
+                clearTimeout(id);
                 console.warn(
                     `Timed out after ${timeoutMillis}ms waiting for results of ${title}`
                 );
