@@ -21,5 +21,9 @@ export class NumberRatchet {
     }
 
 
+    public static between(test: number, p1: number, p2: number) {
+        return ((test >= p1 && test <= p2) || (test >= p2 && test <= p1));
+    }
+
 }
 
