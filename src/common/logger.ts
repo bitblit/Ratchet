@@ -129,31 +129,43 @@ export class Logger {
 
     public static error(...input: any[]) : void
     {
-        Logger.LOGGER.error(util.format.apply(null,input));
+        let msg : string = util.format.apply(null,input);
+        Logger.LOGGER.error(msg);
+        Logger.addToRingBuffer(msg,'error');
     }
 
     public static warn(...input: any[]) : void
     {
-        Logger.LOGGER.warn(util.format.apply(null,input));
+        let msg : string = util.format.apply(null,input);
+        Logger.LOGGER.warn(msg);
+        Logger.addToRingBuffer(msg,'warn');
     }
 
     public static info(...input: any[]) : void
     {
-        Logger.LOGGER.info(util.format.apply(null,input));
+        let msg : string = util.format.apply(null,input);
+        Logger.LOGGER.info(msg);
+        Logger.addToRingBuffer(msg,'info');
     }
 
     public static verbose(...input: any[]) : void
     {
-        Logger.LOGGER.verbose(util.format.apply(null,input));
+        let msg : string = util.format.apply(null,input);
+        Logger.LOGGER.verbose(msg);
+        Logger.addToRingBuffer(msg,'verbose');
     }
 
     public static debug(...input: any[]) : void
     {
-        Logger.LOGGER.debug(util.format.apply(null,input));
+        let msg : string = util.format.apply(null,input);
+        Logger.LOGGER.debug(msg);
+        Logger.addToRingBuffer(msg,'debug');
     }
 
     public static silly(...input: any[]) : void
     {
-        Logger.LOGGER.silly(util.format.apply(null,input));
+        let msg : string = util.format.apply(null,input);
+        Logger.LOGGER.silly(msg);
+        Logger.addToRingBuffer(msg,'silly');
     }
 }
