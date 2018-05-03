@@ -48,6 +48,14 @@ export class PromiseRatchet {
         process.exit(1);
     }
 
+
+    public static logErrorAndReturnNull(err) : void
+    {
+        debugger;
+        Logger.warn("Failure, err was : \n\n%s\n\n  --  \n\n%s\n\n",JSON.stringify(err),String(err));
+        return null;
+    }
+
     public static runPromiseAndDump<T>(promise: Promise<T>) : void
     {
         promise.then(PromiseRatchet.dumpResult).catch(PromiseRatchet.dumpError);
