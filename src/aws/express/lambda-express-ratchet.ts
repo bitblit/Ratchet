@@ -41,13 +41,29 @@ export class LambdaExpressRatchet {
         Logger.silly("About to run PromiseResponseAdapter");
         fn(req, response, next).then(ok => {
             Logger.debug("PromiseResponseAdapter : success : "+JSON.stringify(ok));
-            if (ok && ok.httpStatusCode && ok.data)
+            if (ok)
             {
-                response.status(ok.httpStatusCode).json(ok.data);
+                if (ok.httpStatusCode && ok.data)
+                {
+                    response.status(ok.httpStatusCode).json(ok.data);
+                }
+                else {
+                    response.status(200).json(ok);
+                }
+
+                if (ok.contentType && ok.data)
+                {
+                    response.contentType(ok.contentType);
+                    response.end(ok.data);
+                }
+                else {
+                    response.json(ok);
+                }
             }
             else {
-                response.status(200).json(ok);
+                response.status(500).json({errors:['empty body supplied']});
             }
+
         }).
         catch
         (err =>{
