@@ -43,21 +43,18 @@ export class LambdaExpressRatchet {
             Logger.debug("PromiseResponseAdapter : success : "+JSON.stringify(ok));
             if (ok)
             {
-                if (ok.httpStatusCode && ok.data)
-                {
-                    response.status(ok.httpStatusCode).json(ok.data);
-                }
-                else {
-                    response.status(200).json(ok);
-                }
+                let status = (ok.httpStatusCode)?ok.httpStatusCode:200;
+                let body = (ok.data)?ok.data:ok;
 
-                if (ok.contentType && ok.data)
+                response.status(status);
+
+                if (ok.contentType)
                 {
-                    response.contentType(ok.contentType);
-                    response.end(ok.data);
+                    response.contentType(ok.contentType).end(body);
                 }
-                else {
-                    response.json(ok);
+                else
+                {
+                    response.json(body);
                 }
             }
             else {
