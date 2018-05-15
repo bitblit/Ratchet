@@ -7,8 +7,10 @@ describe('#formatBytes', function() {
     let srcData = {
         key1 : 'value1',
         key2 : 'value2',
-        intKey1 : 1,
+        intKey1 : 0,
+        intKey2 : 1,
         boolKey1 : true,
+        boolKey2 : false,
         subKey : {
             key1 : 'subValue1',
             key2 : 'subValue2'
@@ -21,6 +23,20 @@ describe('#formatBytes', function() {
             new_key_2 : 'value2'
         }
     };
+
+    it('should convert numbers to booleans', function() {
+        let result = TransformRatchet.transform(srcData, [BuiltInTransforms.numberToBool(['intKey1','intKey2'])]);
+        expect(result.key1).to.equal('value1');
+        expect(result.intKey1).to.equal(false);
+        expect(result.intKey2).to.equal(true);
+    });
+
+    it('should convert booleans to number', function() {
+        let result = TransformRatchet.transform(srcData, [BuiltInTransforms.boolToNumber(['boolKey1','boolKey2'])]);
+        expect(result.key1).to.equal('value1');
+        expect(result.boolKey1).to.equal(1);
+        expect(result.boolKey2).to.equal(0);
+    });
 
     it('should concatenate key1 and key2 into key3', function() {
         let result = TransformRatchet.transform(srcData, [BuiltInTransforms.concatenateToNewField('key3',['key1','key2'])]);

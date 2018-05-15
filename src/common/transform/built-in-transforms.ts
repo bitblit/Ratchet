@@ -120,5 +120,47 @@ export class BuiltInTransforms{
         } as TransformRule
     }
 
+    public static numberToBool(fieldNames: string[]) : TransformRule
+    {
+        return {
+            transform(value:any, isKey:boolean, context:any) : any
+            {
+                if (typeof value == 'object')
+                {
+                    fieldNames.forEach(n=>{
+                        let oldVal = value[n];
+                        if (typeof oldVal == 'number')
+                        {
+                            let newVal = (0!=oldVal);
+                            value[n]=newVal;
+                        }
+                    });
+                }
+                return value;
+            }
+        } as TransformRule
+    }
+
+    public static boolToNumber(fieldNames: string[]) : TransformRule
+    {
+        return {
+            transform(value:any, isKey:boolean, context:any) : any
+            {
+                if (typeof value == 'object')
+                {
+                    fieldNames.forEach(n=>{
+                        let oldVal = value[n];
+                        if (typeof oldVal == 'boolean')
+                        {
+                            let newVal = (oldVal)?1:0;
+                            value[n]=newVal;
+                        }
+                    });
+                }
+                return value;
+            }
+        } as TransformRule
+    }
+
 }
 
