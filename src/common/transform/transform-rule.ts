@@ -4,6 +4,6 @@
 */
 
 export interface TransformRule{
-    transform(value:any, isKey:boolean) : any;
+    transform(value:any, isKey:boolean, context:any) : any;
 }
 

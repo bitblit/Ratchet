@@ -15,21 +15,25 @@ import {TransformRule} from "./transform/transform-rule";
 
 export class TransformRatchet {
 
-    public static transformObject(toTransform:any, rules: TransformRule[]=[], isKey:boolean=false) : any{
+    public static transform(toTransform:any, rules: TransformRule[]=[]) : any{
+        return TransformRatchet.transformGeneric(toTransform, rules, false, null);
+    }
+
+    private static transformGeneric(toTransform:any, rules: TransformRule[]=[], isKey:boolean, context:any) : any{
         let rval : any = null;
         let type : string = typeof toTransform;
         switch(type)
         {
             case 'undefined' : case 'symbol' : case 'function' : rval = toTransform; break;
-            case 'number' : case 'string' : case 'boolean' : rval = TransformRatchet.applyTransformToPrimitive(toTransform, rules, isKey); break;
-            case 'object' : rval = TransformRatchet.applyTransformToObject(toTransform, rules, isKey);break;
+            case 'number' : case 'string' : case 'boolean' : rval = TransformRatchet.applyTransformToPrimitive(toTransform, rules, isKey, context); break;
+            case 'object' : rval = TransformRatchet.applyTransformToObject(toTransform, rules, isKey, context);break;
             default : throw new Error("Unrecognized type "+type);
         }
         return rval;
 
     }
 
-    private static applyTransformToObject(toTransform:object, rules: TransformRule[]=[], isKey:boolean)
+    private static applyTransformToObject(toTransform:object, rules: TransformRule[]=[], isKey:boolean, context:any = null)
     {
         let rval : any = null;
         if (toTransform!=null)
@@ -38,7 +42,7 @@ export class TransformRatchet {
             {
                 rval = [];
                 toTransform.forEach(val=>{
-                    let newVal = TransformRatchet.transformObject(val, rules, isKey);
+                    let newVal = TransformRatchet.transformGeneric(val, rules, isKey, toTransform);
                     if (newVal!=null)
                     {
                         rval.push(newVal);
@@ -51,25 +55,31 @@ export class TransformRatchet {
                 Object.keys(toTransform).forEach(k=>{
                     // First, transform the key
                     let oldValue = toTransform[k];
-                    let newKey = TransformRatchet.applyTransformToPrimitive(k, rules, true);
+                    let newKey = TransformRatchet.applyTransformToPrimitive(k, rules, true, toTransform);
                     if (newKey!=null)
                     {
-                        let newValue = TransformRatchet.transformObject(oldValue, rules, false);
+                        // Recursively descend first
+                        let newValue = TransformRatchet.transformGeneric(oldValue, rules, false, toTransform);
+                        // Then apply to the object as a whole
+                        newValue = TransformRatchet.applyTransformToPrimitive(newValue, rules, false, toTransform);
+
                         if (newValue!=null)
                         {
                             rval[newKey]=newValue;
                         }
                     }
-                })
+                });
+                // Finally, apply to the object itself
+                rval = TransformRatchet.applyTransformToPrimitive(rval, rules, false, toTransform);
             }
         }
         return rval;
     }
 
-    private static applyTransformToPrimitive(toTransform:number|string|boolean, rules: TransformRule[]=[], isKey:boolean)
+    private static applyTransformToPrimitive(toTransform:any, rules: TransformRule[]=[], isKey:boolean, context:any)
     {
         let rval : any = toTransform;
-        rules.forEach(r=>{rval = (rval==null)?null:r.transform(rval,isKey);});
+        rules.forEach(r=>{rval = (rval==null)?null:r.transform(rval,isKey,context);});
         return rval;
     }
 
