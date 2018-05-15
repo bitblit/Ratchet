@@ -64,10 +64,20 @@ export class LambdaExpressRatchet {
         }).
         catch
         (err =>{
-            Logger.info("PromiseResponseAdapter : fail : "+String(err));
-            let code = (err && err.httpStatusCode)?err.httpStatusCode:500;
-            let messages = (err && err.message)?[err.message]:[String(err)];
-            messages = (err.messageList && err.messageList.length>0)?err.messageList:messages;
+            let code : number = 500;
+            let messages = ['Failure'];
+            try {
+                Logger.info("PromiseResponseAdapter : fail : " + String(err));
+                code = (err && err.httpStatusCode) ? err.httpStatusCode : 500;
+                messages = (err && err.message) ? [String(err.message)] : [String(err)];
+                messages = (err.messageList && err.messageList.length > 0) ? err.messageList.map(m=>String(m)) : messages;
+            }
+            catch (err2)
+            {
+                Logger.warn("Secondary failure : "+err2);
+                code = 500;
+                messages = ['Secondary failure '+err2];
+            }
             response.status(code).json({errors: messages});
         }) ;
     }
