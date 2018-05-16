@@ -71,7 +71,7 @@ export class BuiltInTransforms{
         } as TransformRule
     }
 
-    public static underscoreToCamelCase() : TransformRule
+    public static snakeToCamelCase() : TransformRule
     {
         return {
             transform(value:any, isKey:boolean, context:any) : any
@@ -83,6 +83,22 @@ export class BuiltInTransforms{
                     rval = value.replace(/_([a-z0-9])/gi, function(s, group1) {
                         return group1.toUpperCase();
                     });
+                }
+                return rval;
+            }
+        } as TransformRule
+    }
+
+    public static camelToSnakeCase() : TransformRule
+    {
+        return {
+            transform(value:any, isKey:boolean, context:any) : any
+            {
+                let rval = value;
+                if (typeof value == 'string')
+                {
+                    // https://stackoverflow.com/questions/30521224/javascript-convert-pascalcase-to-underscore-case
+                    rval = value.replace(/\.?([A-Z]+)/g, function (x,y){return "_" + y.toLowerCase()}).replace(/^_/, "");
                 }
                 return rval;
             }

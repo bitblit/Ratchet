@@ -25,6 +25,23 @@ describe('#formatBytes', function() {
         }
     };
 
+    it('should convert camel to snakecase', function() {
+        let result = TransformRatchet.transform(srcData, [BuiltInTransforms.keysOnly(BuiltInTransforms.camelToSnakeCase())]);
+        expect(result['dateKey1']).to.be.undefined;
+        expect(result['intKey1']).to.be.undefined;
+        expect(result['intKey2']).to.be.undefined;
+        expect(result['boolKey1']).to.be.undefined;
+        expect(result['boolKey2']).to.be.undefined;
+        expect(result['subKey']).to.be.undefined;
+        expect(result['date_key1']).to.not.be.undefined;
+        expect(result['int_key1']).to.not.be.undefined;
+        expect(result['int_key2']).to.not.be.undefined;
+        expect(result['bool_key1']).to.not.be.undefined;
+        expect(result['bool_key1']).to.not.be.undefined;
+        expect(result['sub_key']).to.not.be.undefined;
+    });
+
+
     it('should duplicate key1 into key3', function() {
         let result = TransformRatchet.transform(srcData, [BuiltInTransforms.makeDuplicateField('key1','key3')]);
         expect(result.key1).to.equal('value1');
@@ -98,8 +115,8 @@ describe('#formatBytes', function() {
         expect(result.subKey).to.not.be.undefined;
     });
 
-    it('should convert underscore to camelcase', function() {
-        let result = TransformRatchet.transform(srcUnderData, [BuiltInTransforms.keysOnly(BuiltInTransforms.underscoreToCamelCase())]);
+    it('should convert snake to camelcase', function() {
+        let result = TransformRatchet.transform(srcUnderData, [BuiltInTransforms.keysOnly(BuiltInTransforms.snakeToCamelCase())]);
         expect(result['new_key_1']).to.be.undefined;
         expect(result['sub_key']).to.be.undefined;
         expect(result.newKey1).to.not.be.undefined;
