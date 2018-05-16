@@ -7,6 +7,7 @@ describe('#formatBytes', function() {
     let srcData = {
         key1 : 'value1',
         key2 : 'value2',
+        dateKey1 : '1995-02-01',
         intKey1 : 0,
         intKey2 : 1,
         boolKey1 : true,
@@ -23,6 +24,23 @@ describe('#formatBytes', function() {
             new_key_2 : 'value2'
         }
     };
+
+    it('should duplicate key1 into key3', function() {
+        let result = TransformRatchet.transform(srcData, [BuiltInTransforms.makeDuplicateField('key1','key3')]);
+        expect(result.key1).to.equal('value1');
+        expect(result.key3).to.equal('value1');
+    });
+
+    it('should create a new field named key3', function() {
+        let result = TransformRatchet.transform(srcData, [BuiltInTransforms.addField('key3','value3')]);
+        expect(result.key1).to.equal('value1');
+        expect(result.key3).to.equal('value3');
+    });
+
+    it('should reformat the date in dateField1 to MM-DD-YYYY', function() {
+        let result = TransformRatchet.transform(srcData, [BuiltInTransforms.reformatDateFields(['dateKey1'],'YYYY-MM-DD','MM/DD/YYYY')]);
+        expect(result.dateKey1).to.equal('02/01/1995');
+    });
 
     it('should convert numbers to booleans', function() {
         let result = TransformRatchet.transform(srcData, [BuiltInTransforms.numberToBool(['intKey1','intKey2'])]);

@@ -4,6 +4,8 @@
 */
 
 import {TransformRule} from "./transform-rule";
+import {Logger} from "../logger";
+import * as moment from "moment";
 
 export class BuiltInTransforms{
 
@@ -156,6 +158,67 @@ export class BuiltInTransforms{
                             value[n]=newVal;
                         }
                     });
+                }
+                return value;
+            }
+        } as TransformRule
+    }
+
+    public static makeDuplicateField(oldName:string, newName:string) : TransformRule
+    {
+        return {
+            transform(value:any, isKey:boolean, context:any) : any
+            {
+                if (typeof value == 'object')
+                {
+                    let oldVal = value[oldName];
+                    if (oldVal!=null)
+                    {
+                        value[newName]=oldVal;
+                    }
+                }
+                return value;
+            }
+        } as TransformRule
+    }
+
+    public static addField(name:string, valueToAdd:string) : TransformRule
+    {
+        return {
+            transform(value:any, isKey:boolean, context:any) : any
+            {
+                if (typeof value == 'object')
+                {
+                    value[name]=valueToAdd;
+                }
+                return value;
+            }
+        } as TransformRule
+    }
+
+    // Moment formats, https://momentjs.com/docs/#/parsing/
+    public static reformatDateFields(fieldNames:string[], oldFormat:string, newFormat:string) : TransformRule
+    {
+        return {
+            transform(value:any, isKey:boolean, context:any) : any
+            {
+                if (typeof value == 'object')
+                {
+                    fieldNames.forEach(key=>{
+                        let oldValue = value[key];
+                        if (oldValue!=null)
+                        {
+                            try {
+                                let parsed = moment(oldValue, oldFormat);
+                                let newValue = parsed.format(newFormat);
+                                value[key]=newValue;
+                            }
+                            catch (err)
+                            {
+                                Logger.warn("Failed to reparse date %s in format %s : %s", oldValue, oldFormat, err);
+                            }
+                        }
+                    })
                 }
                 return value;
             }
