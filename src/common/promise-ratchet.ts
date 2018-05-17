@@ -67,40 +67,44 @@ export class PromiseRatchet {
         promise.then(PromiseRatchet.dumpResult).catch(PromiseRatchet.dumpError);
     }
 
-    public static waitFor(test:any, expectedValue:any, intervalMS: number, maxCycles:number, count:number = 0) : Promise<boolean>
+    // Waits for up to maxCycles iterations of intervalMS milliseconds for the test function to return the expected value
+    // If that happens, returns true, otherwise, returns false
+    // Also returns false if the test function throws an exception or returns null (null may NOT be the expectedValue, as
+    // it is used as the "breakout" poison pill value
+    public static waitFor(test:any, expectedValue:any, intervalMS: number, maxCycles:number, label:string='waitFor', count:number = 0) : Promise<boolean>
     {
         if (expectedValue==null || intervalMS<50 || maxCycles<1 || count<0 || typeof test != 'function') {
-            Logger.warn("Invalid configuration for waitFor - exiting immediately");
+            Logger.warn("%s: Invalid configuration for waitFor - exiting immediately",label);
         }
         let curVal :any = null;
         try {
             curVal = test(count);
         }
         catch (err) {
-            Logger.warn("Caught error while waiting, giving up");
+            Logger.warn("%s: Caught error while waiting, giving up",label);
             return Promise.resolve(false);
         }
 
         if (curVal==null) {
-            Logger.debug("CurVal was null - aborting");
+            Logger.debug("%s:CurVal was null - aborting",label);
             return Promise.resolve(false);
         }
         else if (curVal==expectedValue)
         {
-            Logger.debug("Found expected value");
+            Logger.debug("%s:Found expected value",label);
             return Promise.resolve(true);
         }
         else if (count>maxCycles) // Exceeded max cycles
         {
-            Logger.info("Exceeded max cycles, giving up");
+            Logger.debug("%s:Exceeded max cycles, giving up",label);
             return Promise.resolve(false);
         }
         else
         {
-            Logger.debug("Value not reached yet, waiting (count = "+count+" of "+maxCycles+")");
+            Logger.debug("%s : value not reached yet, waiting (count = %d of %d)",label,count,maxCycles);
             return PromiseRatchet.createTimeoutPromise("WaitFor",intervalMS,true).then(ignored=>{
-                return PromiseRatchet.waitFor(test, expectedValue, intervalMS, maxCycles, count+1);
-            })
+                return PromiseRatchet.waitFor(test, expectedValue, intervalMS, maxCycles, label, count+1);
+            });
         }
     }
 
