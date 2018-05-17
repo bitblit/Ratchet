@@ -103,7 +103,7 @@ export class PromiseRatchet {
         {
             Logger.debug("%s : value not reached yet, waiting (count = %d of %d)",label,count,maxCycles);
             return PromiseRatchet.createTimeoutPromise("WaitFor",intervalMS,true).then(ignored=>{
-                return PromiseRatchet.waitFor(test, expectedValue, intervalMS, maxCycles, label, count+1);
+                return PromiseRatchet.waitFor(testFunction, expectedValue, intervalMS, maxCycles, label, count+1);
             });
         }
     }
