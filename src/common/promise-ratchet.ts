@@ -73,9 +73,14 @@ export class PromiseRatchet {
     // it is used as the "breakout" poison pill value
     public static waitFor(testFunction:(n:number)=>any, expectedValue:any, intervalMS: number, maxCycles:number, label:string='waitFor', count:number = 0) : Promise<boolean>
     {
-        if (expectedValue==null || intervalMS<50 || maxCycles<1 || count<0 || typeof test != 'function') {
+        if (expectedValue==null || intervalMS<50 || maxCycles<1 || count<0 || typeof testFunction != 'function') {
             Logger.warn("%s: Invalid configuration for waitFor - exiting immediately",label);
+
+            Logger.warn("ExpectedValue : %s ; interval: %d ; maxCycles: %d ; test : %s", expectedValue, intervalMS, maxCycles, (typeof testFunction))
+
+            return Promise.resolve(false);
         }
+
         let curVal :any = null;
         try {
             curVal = testFunction(count);
