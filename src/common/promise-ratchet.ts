@@ -71,14 +71,14 @@ export class PromiseRatchet {
     // If that happens, returns true, otherwise, returns false
     // Also returns false if the test function throws an exception or returns null (null may NOT be the expectedValue, as
     // it is used as the "breakout" poison pill value
-    public static waitFor(test:any, expectedValue:any, intervalMS: number, maxCycles:number, label:string='waitFor', count:number = 0) : Promise<boolean>
+    public static waitFor(testFunction:(n:number)=>any, expectedValue:any, intervalMS: number, maxCycles:number, label:string='waitFor', count:number = 0) : Promise<boolean>
     {
         if (expectedValue==null || intervalMS<50 || maxCycles<1 || count<0 || typeof test != 'function') {
             Logger.warn("%s: Invalid configuration for waitFor - exiting immediately",label);
         }
         let curVal :any = null;
         try {
-            curVal = test(count);
+            curVal = testFunction(count);
         }
         catch (err) {
             Logger.warn("%s: Caught error while waiting, giving up",label);
