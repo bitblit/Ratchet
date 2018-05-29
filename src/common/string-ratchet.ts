@@ -3,6 +3,8 @@
     Functions for working with strings
 */
 
+import {Logger} from "./logger";
+
 export class StringRatchet {
     // % isn't technically reserved but its still a pain in the butt
     public static RFC_3986_RESERVED = ['!', '*', '\'', '(', ')', ';', ':', '@', '&', '=', '+', '$', ',', '/', '?', '#', '[', ']',
@@ -34,6 +36,24 @@ export class StringRatchet {
             sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'],
             i = Math.floor(Math.log(bytes) / Math.log(k));
         return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+    }
+
+    // Converts anything that isn't a string to a string
+    public static safeString(input: any) : string{
+        let rval : string = null;
+        if (input != null)
+        {
+            let type : string = typeof input;
+            if (type == 'string')
+            {
+                rval = input;
+            }
+            else
+            {
+                rval = String(input);
+            }
+        }
+        return rval;
     }
 
 }

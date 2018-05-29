@@ -24,3 +24,16 @@ describe('#formatBytes', function() {
     });
 
 });
+
+
+describe('#safeToString', function() {
+    it('should return "asdf"', function() {
+        let result = StringRatchet.safeString("asdf");
+        expect(result).to.equal('asdf');
+    });
+
+    it('should return "55"', function() {
+        let result = StringRatchet.safeString(55)
+        expect(result).to.equal('55');
+    });
+});

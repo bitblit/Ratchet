@@ -1,6 +1,4 @@
 import { expect } from 'chai';
-import { DurationRatchet } from "../../src/common/duration-ratchet";
-import {StringRatchet} from "../../src/common/string-ratchet";
 import {Logger} from "../../src/common/logger";
 
 describe('#levelName', function() {
