@@ -1,6 +1,7 @@
 import * as winston from 'winston';
 import * as util from "util";
 import {LogMessage} from "./log-message";
+import {LogBufferState} from "../../dist/common/log-buffer-state";
 
 /**
  * Service to setup winston, and also adds ring buffer capability if so desired.
@@ -12,27 +13,21 @@ import {LogMessage} from "./log-message";
  * multiple transports, etc) you really should just use winston directly and skip this class entirely
  */
 export class Logger {
-    private static LOGGER = Logger.newLogger();
+    public static readonly DEFAULT_LEVEL : string = 'info';
     private static timeAdjustmentInMs : number = 0;
     private static ringBufferSize : number = 0;
     private static ringBuffer : LogMessage[] = [];
     private static ringBufferIdx : number = 0;
-    private static level='debug';
-
-    private static newLogger() : any{
-
-        const logger = winston.createLogger({
-            level: Logger.level,
-            format: winston.format.json(),
-            transports: [
-                new winston.transports.Console({
-                    format: winston.format.simple()
-                })
-            ]
-        });
-
-        return logger;
-    }
+    private static transports = [
+        new winston.transports.Console({
+            level: Logger.DEFAULT_LEVEL
+        })
+    ];
+    private static LOGGER = winston.createLogger({
+        level: Logger.DEFAULT_LEVEL,
+        format: winston.format.json(),
+        transports: Logger.transports
+    });
 
     public static dumpConfigurationIntoLog() : void
     {
@@ -45,7 +40,7 @@ export class Logger {
 
     public static getLevel() : string
     {
-        return Logger.level;
+        return Logger.transports[0].level;
     }
 
     public static setLevelByName(newLevel: string) : void
@@ -53,8 +48,7 @@ export class Logger {
         let num : number = Logger.levelNumber(newLevel);
         if (num!=null)
         {
-            Logger.level = newLevel;
-            Logger.LOGGER = Logger.newLogger();
+            Logger.transports[0].level = newLevel;
         }
         else {
             Logger.error("Could not change level to %s - invalid name",newLevel);
@@ -119,7 +113,6 @@ export class Logger {
 
 
     public static levelName(idx: number) : string {
-        debugger;
         let levels : {} = Logger.LOGGER.levels;
         let rval : string = 'err';
         Object.keys(levels).forEach(k=> {

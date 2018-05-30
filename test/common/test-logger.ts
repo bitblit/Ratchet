@@ -73,14 +73,18 @@ describe('#levelColor', function() {
 
 });
 
-
 describe('#setLevelByName', function() {
     it('should change the level to debug then info then debug', function() {
+        //Logger.dumpConfigurationIntoLog();
+        //console.log("Start Level : "+Logger.getLevel());
+        expect(Logger.getLevel()).to.equal('info');
+        // Should start at default level
         Logger.setLevelByName('debug');
         expect(Logger.getLevel()).to.equal('debug');
         Logger.setLevelByName('info');
         expect(Logger.getLevel()).to.equal('info');
-        Logger.info("This should NOT get written, as I am at info level");
+        //Logger.debug("This should NOT get written, as I am at info level");
+        //Logger.info("This should get written, as I am at info level");
         Logger.setLevelByName('debug');
         expect(Logger.getLevel()).to.equal('debug');
     });
