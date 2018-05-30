@@ -33,6 +33,15 @@ export class Logger {
         Logger.silly('SILLY enabled');
     }
 
+    public static getRingBufferIdx() : number
+    {
+        return this.ringBufferIdx;
+    }
+
+    static getRingBufferLastSnapshotIdx() {
+        return Logger.ringBufferLastSnapshotIdx;
+    }
+
     public static getLevel() : string
     {
         return Logger.levelName(Logger.level);
