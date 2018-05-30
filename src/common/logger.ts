@@ -12,7 +12,6 @@ import {LogSnapshot} from "./log-snapshot";
  * multiple transports, etc) you really should just use winston directly and skip this class entirely
  */
 export class Logger {
-    public static readonly DEFAULT_LEVEL : string = 'info';
     public static readonly LEVEL_NAMES : string[] = ['error','warn','info','verbose','debug','silly'];
     public static readonly LEVEL_COLORS : string[] = ['#F00','#FF0','#0F0','#0EF','#F0F','#000'];
 
@@ -22,13 +21,14 @@ export class Logger {
     private static ringBufferIdx : number = 0;
     private static ringBufferLastSnapshotIdx : number = 0;
 
-    private static level : number = Logger.levelNumber(Logger.DEFAULT_LEVEL);
+    private static level : number = 2; // INFO
 
     public static dumpConfigurationIntoLog() : void
     {
         Logger.error('ERROR enabled');
         Logger.warn('WARN enabled');
         Logger.info('INFO enabled');
+        Logger.verbose('VERBOSE enabled');
         Logger.debug('DEBUG enabled');
         Logger.silly('SILLY enabled');
     }
@@ -149,7 +149,7 @@ export class Logger {
     public static error(...input: any[]) : void
     {
         let msg : string = util.format.apply(null,input);
-        if (Logger.level<=0)
+        if (Logger.level>=0)
         {
             console.error(msg);
             Logger.addToRingBuffer(msg,'error');
@@ -159,7 +159,7 @@ export class Logger {
     public static warn(...input: any[]) : void
     {
         let msg : string = util.format.apply(null,input);
-        if (Logger.level<=1)
+        if (Logger.level>=1)
         {
             console.warn(msg);
             Logger.addToRingBuffer(msg,'warn');
@@ -169,7 +169,7 @@ export class Logger {
     public static info(...input: any[]) : void
     {
         let msg : string = util.format.apply(null,input);
-        if (Logger.level<=2)
+        if (Logger.level>=2)
         {
             console.info(msg);
             Logger.addToRingBuffer(msg,'info');
@@ -179,7 +179,7 @@ export class Logger {
     public static verbose(...input: any[]) : void
     {
         let msg : string = util.format.apply(null,input);
-        if (Logger.level<=3)
+        if (Logger.level>=3)
         {
             console.info(msg);
             Logger.addToRingBuffer(msg,'verbose');
@@ -189,7 +189,7 @@ export class Logger {
     public static debug(...input: any[]) : void
     {
         let msg : string = util.format.apply(null,input);
-        if (Logger.level<=4)
+        if (Logger.level>=4)
         {
             // This is here because old versions of Node do not support console.debug
             if (console.debug)
@@ -208,7 +208,7 @@ export class Logger {
     public static silly(...input: any[]) : void
     {
         let msg : string = util.format.apply(null,input);
-        if (Logger.level<=5)
+        if (Logger.level>=5)
         {
             console.log(msg);
             Logger.addToRingBuffer(msg,'silly');

@@ -67,7 +67,7 @@ describe('#levelColor', function() {
 
 describe('#setLevelByName', function() {
     it('should change the level to debug then info then debug', function() {
-        //Logger.dumpConfigurationIntoLog();
+        Logger.dumpConfigurationIntoLog();
         //console.log("Start Level : "+Logger.getLevel());
         expect(Logger.getLevel()).to.equal('info');
         // Should start at default level
