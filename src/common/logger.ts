@@ -1,4 +1,3 @@
-import * as winston from 'winston';
 import * as util from "util";
 import {LogMessage} from "./log-message";
 import {LogSnapshot} from "./log-snapshot";
@@ -14,21 +13,16 @@ import {LogSnapshot} from "./log-snapshot";
  */
 export class Logger {
     public static readonly DEFAULT_LEVEL : string = 'info';
+    public static readonly LEVEL_NAMES : string[] = ['error','warn','info','verbose','debug','silly'];
+    public static readonly LEVEL_COLORS : string[] = ['#F00','#FF0','#0F0','#0EF','#F0F','#000'];
+
     private static timeAdjustmentInMs : number = 0;
     private static ringBufferSize : number = 0;
     private static ringBuffer : LogMessage[] = [];
     private static ringBufferIdx : number = 0;
     private static ringBufferLastSnapshotIdx : number = 0;
-    private static transports = [
-        new winston.transports.Console({
-            level: Logger.DEFAULT_LEVEL
-        })
-    ];
-    private static LOGGER = winston.createLogger({
-        level: Logger.DEFAULT_LEVEL,
-        format: winston.format.simple(),
-        transports: Logger.transports
-    });
+
+    private static level : number = Logger.levelNumber(Logger.DEFAULT_LEVEL);
 
     public static dumpConfigurationIntoLog() : void
     {
@@ -41,7 +35,7 @@ export class Logger {
 
     public static getLevel() : string
     {
-        return Logger.transports[0].level;
+        return Logger.levelName(Logger.level);
     }
 
     public static setLevelByName(newLevel: string) : void
@@ -49,20 +43,19 @@ export class Logger {
         let num : number = Logger.levelNumber(newLevel);
         if (num!=null)
         {
-            Logger.transports[0].level = newLevel;
+            Logger.level = num;
         }
-        else {
+        else
+        {
             Logger.error("Could not change level to %s - invalid name",newLevel);
         }
-
     }
 
     public static setLevelByNumber(newLevel: number) : void
     {
-        let name : string = Logger.levelName(newLevel);
-        if (name!=null)
+        if (newLevel>=0 && newLevel<Logger.LEVEL_NAMES.length)
         {
-            Logger.setLevelByName(name);
+            Logger.level = newLevel;
         }
         else {
             Logger.error("Could not change level to %s - invalid number",newLevel);
@@ -88,19 +81,16 @@ export class Logger {
         Logger.info("Cleared ring buffer (size is now {})",Logger.ringBufferSize);
     }
 
-    public static getRawLogger() : any
-    {
-        return Logger.LOGGER;
-    }
-
     private static addToRingBuffer(message: string, level:string) : void
     {
         if (Logger.ringBufferSize>0)
         {
-            if ( Logger.LOGGER.levels[Logger.LOGGER.level] >= Logger.LOGGER.levels[level] ) {
+            let levNum = Logger.levelNumber(level);
+            if (levNum!=null && levNum<=Logger.level)
+            {
                 Logger.ringBuffer[Logger.ringBufferIdx % Logger.ringBufferSize] = {
                     msg: message,
-                    lvl: Logger.LOGGER.levels[level],
+                    lvl: levNum,
                     timestamp: new Date().getTime()+Logger.timeAdjustmentInMs
                 } as LogMessage;
                 Logger.ringBufferIdx++; // advance
@@ -109,38 +99,17 @@ export class Logger {
     }
 
     public static levelNumber(name: string) : number {
-        return Logger.LOGGER.levels[name];
+        let num = Logger.LEVEL_NAMES.indexOf(name);
+        return (num==-1)?null:num;
     }
 
 
     public static levelName(idx: number) : string {
-        let levels : {} = Logger.LOGGER.levels;
-        let rval : string = 'err';
-        Object.keys(levels).forEach(k=> {
-            if (levels[k] == idx) {
-                rval = k;
-            }
-        });
-        return rval;
+        return (idx!=null && idx>=0 && idx<Logger.LEVEL_NAMES.length)?Logger.LEVEL_NAMES[idx]:null;
     }
 
     public static levelColor(idx: number) {
-        switch (idx) {
-            case 0 :
-                return "#F00"; //"#F0F"; //error
-            case 1 :
-                return "#FF0";//"#F0F"; //warn
-            case 2 :
-                return "#0F0";//"#0EF"; //info
-            case 3 :
-                return "#0F0"; //http
-            case 4 :
-                return "#0EF";//"#FF0"; //verbose
-            case 5 :
-                return "#F0F"; //debug
-            default :
-                return "#000"; //silly (6) or other
-        }
+        return (idx!=null && idx>=0 && idx<Logger.LEVEL_COLORS.length)?Logger.LEVEL_COLORS[idx]:'#000';
     }
 
     public static getMessages(inStartFrom: number, clear:boolean = false) : LogMessage[]
@@ -171,43 +140,61 @@ export class Logger {
     public static error(...input: any[]) : void
     {
         let msg : string = util.format.apply(null,input);
-        Logger.LOGGER.error(msg);
-        Logger.addToRingBuffer(msg,'error');
+        if (Logger.level<=0)
+        {
+            console.error(msg);
+            Logger.addToRingBuffer(msg,'error');
+        }
     }
 
     public static warn(...input: any[]) : void
     {
         let msg : string = util.format.apply(null,input);
-        Logger.LOGGER.warn(msg);
-        Logger.addToRingBuffer(msg,'warn');
+        if (Logger.level<=1)
+        {
+            console.warn(msg);
+            Logger.addToRingBuffer(msg,'warn');
+        }
     }
 
     public static info(...input: any[]) : void
     {
         let msg : string = util.format.apply(null,input);
-        Logger.LOGGER.info(msg);
-        Logger.addToRingBuffer(msg,'info');
+        if (Logger.level<=2)
+        {
+            console.info(msg);
+            Logger.addToRingBuffer(msg,'info');
+        }
     }
 
     public static verbose(...input: any[]) : void
     {
         let msg : string = util.format.apply(null,input);
-        Logger.LOGGER.verbose(msg);
-        Logger.addToRingBuffer(msg,'verbose');
+        if (Logger.level<=3)
+        {
+            console.info(msg);
+            Logger.addToRingBuffer(msg,'verbose');
+        }
     }
 
     public static debug(...input: any[]) : void
     {
         let msg : string = util.format.apply(null,input);
-        Logger.LOGGER.debug(msg);
-        Logger.addToRingBuffer(msg,'debug');
+        if (Logger.level<=4)
+        {
+            console.debug(msg);
+            Logger.addToRingBuffer(msg,'debug');
+        }
     }
 
     public static silly(...input: any[]) : void
     {
         let msg : string = util.format.apply(null,input);
-        Logger.LOGGER.silly(msg);
-        Logger.addToRingBuffer(msg,'silly');
+        if (Logger.level<=5)
+        {
+            console.log(msg);
+            Logger.addToRingBuffer(msg,'silly');
+        }
     }
 
     public static takeSnapshot(): LogSnapshot {
@@ -227,8 +214,16 @@ export class Logger {
         if (num!=null)
         {
             let msg : string = util.format.apply(null,input);
-            Logger.LOGGER.log(level, msg);
-            Logger.addToRingBuffer(msg,level);
+            switch (num)
+            {
+                case 0 : Logger.error(msg);break;
+                case 1 : Logger.warn(msg);break;
+                case 2 : Logger.info(msg);break;
+                case 3 : Logger.verbose(msg);break;
+                case 4 : Logger.debug(msg);break;
+                case 5 : Logger.silly(msg);break;
+                default : console.log("Cant happen, level was "+num);break;
+            }
         }
         else
         {

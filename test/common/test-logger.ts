@@ -14,20 +14,16 @@ describe('#levelName', function() {
         let result = Logger.levelName(2);
         expect(result).to.equal('info');
     });
-    it('should return "http" for 3', function() {
+    it('should return "verbose" for 3', function() {
         let result = Logger.levelName(3);
-        expect(result).to.equal('http');
-    });
-    it('should return "verbose" for 4', function() {
-        let result = Logger.levelName(4);
         expect(result).to.equal('verbose');
     });
-    it('should return "debug" for 5', function() {
-        let result = Logger.levelName(5);
+    it('should return "debug" for 4', function() {
+        let result = Logger.levelName(4);
         expect(result).to.equal('debug');
     });
-    it('should return "silly" for 6', function() {
-        let result = Logger.levelName(6);
+    it('should return "silly" for 5', function() {
+        let result = Logger.levelName(5);
         expect(result).to.equal('silly');
     });
 
@@ -46,20 +42,16 @@ describe('#levelColor', function() {
         let result = Logger.levelColor(2);
         expect(result).to.equal('#0F0');
     });
-    it('should return "#0F0" for 3', function() {
+    it('should return "#0EF" for 3', function() {
         let result = Logger.levelColor(3);
-        expect(result).to.equal('#0F0');
-    });
-    it('should return "#0EF" for 4', function() {
-        let result = Logger.levelColor(4);
         expect(result).to.equal('#0EF');
     });
-    it('should return "#F0F" for 5', function() {
-        let result = Logger.levelColor(5);
+    it('should return "#F0F" for 4', function() {
+        let result = Logger.levelColor(4);
         expect(result).to.equal('#F0F');
     });
-    it('should return "#000" for 6', function() {
-        let result = Logger.levelColor(6);
+    it('should return "#000" for 5', function() {
+        let result = Logger.levelColor(5);
         expect(result).to.equal('#000');
     });
     it('should return "#000" for -7', function() {
