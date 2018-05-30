@@ -5,18 +5,24 @@ import {LogMessage} from "./log-message";
 /**
  * Service to setup winston, and also adds ring buffer capability if so desired.
  * Also allows setting an adjustment for more precise timestamps (on the ring buffer)
+ *
+ *
+ * Important note : This class is here to make logging SIMPLE - it does 2 things, logging to console
+ * and storage in a ring buffer.  If you need to do something more complicated (like logging to files,
+ * multiple transports, etc) you really should just use winston directly and skip this class entirely
  */
 export class Logger {
-    private static readonly LOGGER = Logger.createLogger();
+    private static LOGGER = Logger.newLogger();
     private static timeAdjustmentInMs : number = 0;
     private static ringBufferSize : number = 0;
     private static ringBuffer : LogMessage[] = [];
     private static ringBufferIdx : number = 0;
+    private static level='debug';
 
-    private static createLogger() : any{
+    private static newLogger() : any{
 
         const logger = winston.createLogger({
-            level: 'debug',
+            level: Logger.level,
             format: winston.format.json(),
             transports: [
                 new winston.transports.Console({
@@ -26,6 +32,47 @@ export class Logger {
         });
 
         return logger;
+    }
+
+    public static dumpConfigurationIntoLog() : void
+    {
+        Logger.error('ERROR enabled');
+        Logger.warn('WARN enabled');
+        Logger.info('INFO enabled');
+        Logger.debug('DEBUG enabled');
+        Logger.silly('SILLY enabled');
+    }
+
+    public static getLevel() : string
+    {
+        return Logger.level;
+    }
+
+    public static setLevelByName(newLevel: string) : void
+    {
+        let num : number = Logger.levelNumber(newLevel);
+        if (num!=null)
+        {
+            Logger.level = newLevel;
+            Logger.LOGGER = Logger.newLogger();
+        }
+        else {
+            Logger.error("Could not change level to %s - invalid name",newLevel);
+        }
+
+    }
+
+    public static setLevelByNumber(newLevel: number) : void
+    {
+        let name : string = Logger.levelName(newLevel);
+        if (name!=null)
+        {
+            Logger.setLevelByName(name);
+        }
+        else {
+            Logger.error("Could not change level to %s - invalid number",newLevel);
+        }
+
     }
 
     public static updateTimeAdjustment(newValueInMs: number) : void
