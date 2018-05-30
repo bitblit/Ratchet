@@ -1,7 +1,7 @@
 import * as winston from 'winston';
 import * as util from "util";
 import {LogMessage} from "./log-message";
-import {LogSnapshot} from "../../dist/common/log-snapshot";
+import {LogSnapshot} from "./log-snapshot";
 
 /**
  * Service to setup winston, and also adds ring buffer capability if so desired.
