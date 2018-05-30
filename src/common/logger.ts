@@ -182,7 +182,16 @@ export class Logger {
         let msg : string = util.format.apply(null,input);
         if (Logger.level<=4)
         {
-            console.debug(msg);
+            // This is here because old versions of Node do not support console.debug
+            if (console.debug)
+            {
+                console.debug(msg);
+            }
+            else
+            {
+                console.log(msg);
+            }
+
             Logger.addToRingBuffer(msg,'debug');
         }
     }
