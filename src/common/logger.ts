@@ -1,6 +1,7 @@
 import * as winston from 'winston';
 import * as util from "util";
 import {LogMessage} from "./log-message";
+import {LogSnapshot} from "../../dist/common/log-snapshot";
 
 /**
  * Service to setup winston, and also adds ring buffer capability if so desired.
@@ -17,6 +18,7 @@ export class Logger {
     private static ringBufferSize : number = 0;
     private static ringBuffer : LogMessage[] = [];
     private static ringBufferIdx : number = 0;
+    private static ringBufferLastSnapshotIdx : number = 0;
     private static transports = [
         new winston.transports.Console({
             level: Logger.DEFAULT_LEVEL
@@ -24,7 +26,7 @@ export class Logger {
     ];
     private static LOGGER = winston.createLogger({
         level: Logger.DEFAULT_LEVEL,
-        format: winston.format.json(),
+        format: winston.format.simple(),
         transports: Logger.transports
     });
 
@@ -207,4 +209,32 @@ export class Logger {
         Logger.LOGGER.silly(msg);
         Logger.addToRingBuffer(msg,'silly');
     }
+
+    public static takeSnapshot(): LogSnapshot {
+        const trailingEdge = Math.max(0, Logger.ringBufferIdx - Logger.ringBufferSize);
+        const rval: LogSnapshot = {
+            messages : Logger.getMessages(Logger.ringBufferLastSnapshotIdx),
+            logMessagesTruncated : Math.max(0, trailingEdge - Logger.ringBufferLastSnapshotIdx)
+        } as LogSnapshot;
+
+        Logger.ringBufferLastSnapshotIdx = Logger.ringBufferIdx;
+        return rval;
+    }
+
+    public static logByLevel(level: string, ...input:any[]) : void
+    {
+        let num : number = Logger.levelNumber(level);
+        if (num!=null)
+        {
+            let msg : string = util.format.apply(null,input);
+            Logger.LOGGER.log(level, msg);
+            Logger.addToRingBuffer(msg,level);
+        }
+        else
+        {
+            Logger.error("Cannot log at level %s - invalid level",level);
+        }
+
+    }
+
 }

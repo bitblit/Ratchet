@@ -85,8 +85,11 @@ describe('#setLevelByName', function() {
         expect(Logger.getLevel()).to.equal('info');
         //Logger.debug("This should NOT get written, as I am at info level");
         //Logger.info("This should get written, as I am at info level");
+        //Logger.logByLevel('info', "Write at info level");
+        //Logger.info("Write also at info level");
         Logger.setLevelByName('debug');
         expect(Logger.getLevel()).to.equal('debug');
     });
 });
+
 
