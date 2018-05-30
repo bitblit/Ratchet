@@ -16,6 +16,11 @@ export class LambdaExpressRatchet {
         return (request && request.apiGateway)?request.apiGateway.event:null;
     }
 
+    public static extractStage(request:Request) : any {
+        let rc = LambdaExpressRatchet.extractRequestContext(request);
+        return (rc)?rc.stage:null;
+    }
+
     public static extractRequestContext(request:Request) : any {
         let evt = LambdaExpressRatchet.extractEvent(request);
         return (evt)?evt.requestContext:null;
