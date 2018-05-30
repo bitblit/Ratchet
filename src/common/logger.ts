@@ -1,7 +1,6 @@
 import * as winston from 'winston';
 import * as util from "util";
 import {LogMessage} from "./log-message";
-import {LogBufferState} from "../../dist/common/log-buffer-state";
 
 /**
  * Service to setup winston, and also adds ring buffer capability if so desired.
