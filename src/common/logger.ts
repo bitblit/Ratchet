@@ -87,7 +87,7 @@ export class Logger {
     {
         Logger.ringBuffer = [];
         Logger.ringBufferIdx = 0;
-        Logger.info("Cleared ring buffer (size is now {})",Logger.ringBufferSize);
+        Logger.info("Cleared ring buffer (size is now %d)",Logger.ringBufferSize);
     }
 
     private static addToRingBuffer(message: string, level:string) : void
@@ -121,7 +121,7 @@ export class Logger {
         return (idx!=null && idx>=0 && idx<Logger.LEVEL_COLORS.length)?Logger.LEVEL_COLORS[idx]:'#000';
     }
 
-    public static getMessages(inStartFrom: number, clear:boolean = false) : LogMessage[]
+    public static getMessages(inStartFrom: number = null, clear:boolean = false) : LogMessage[]
     {
         let rval: LogMessage[] = null;
         if (Logger.ringBufferIdx < Logger.ringBufferSize) {
