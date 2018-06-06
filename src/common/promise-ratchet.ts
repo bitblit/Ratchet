@@ -42,7 +42,7 @@ export class PromiseRatchet {
     public static dumpResult(result) : void
     {
         Logger.info("Success, result was : \n\n%s\n\n",JSON.stringify(result));
-        debugger;
+        debugger; // After log so we already have the output
         process.exit(0);
     }
 
@@ -50,7 +50,7 @@ export class PromiseRatchet {
     {
         Logger.warn("Failure, err was : \n\n%s\n\n  --  \n\n%s\n\n",JSON.stringify(err),String(err));
         console.trace();
-        debugger;
+        debugger; // After log so we already have the output
         process.exit(1);
     }
 
@@ -58,7 +58,7 @@ export class PromiseRatchet {
     public static logErrorAndReturnNull(err) : void
     {
         Logger.warn("Failure, err was : \n\n%s\n\n  --  \n\n%s\n\n",JSON.stringify(err),String(err));
-        debugger;
+        debugger; // After log so we already have the output
         return null;
     }
 
