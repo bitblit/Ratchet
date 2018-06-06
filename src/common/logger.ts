@@ -121,7 +121,7 @@ export class Logger {
         return (idx!=null && idx>=0 && idx<Logger.LEVEL_COLORS.length)?Logger.LEVEL_COLORS[idx]:'#000';
     }
 
-    public static getMessages(inStartFrom: number = null, clear:boolean = false) : LogMessage[]
+    public static getMessages(inStartFrom: number = null, clear:boolean = false, reverseSort: boolean = false) : LogMessage[]
     {
         let rval: LogMessage[] = null;
         if (Logger.ringBufferIdx < Logger.ringBufferSize) {
@@ -141,6 +141,11 @@ export class Logger {
         if (clear)
         {
             Logger.clearRingBuffer();
+        }
+
+        if (reverseSort)
+        {
+            rval = rval.reverse();
         }
 
         return rval;
