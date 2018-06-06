@@ -41,24 +41,24 @@ export class PromiseRatchet {
 
     public static dumpResult(result) : void
     {
-        debugger;
         Logger.info("Success, result was : \n\n%s\n\n",JSON.stringify(result));
+        debugger;
         process.exit(0);
     }
 
     public static dumpError(err) : void
     {
-        debugger;
         Logger.warn("Failure, err was : \n\n%s\n\n  --  \n\n%s\n\n",JSON.stringify(err),String(err));
         console.trace();
+        debugger;
         process.exit(1);
     }
 
 
     public static logErrorAndReturnNull(err) : void
     {
-        debugger;
         Logger.warn("Failure, err was : \n\n%s\n\n  --  \n\n%s\n\n",JSON.stringify(err),String(err));
+        debugger;
         return null;
     }
 
