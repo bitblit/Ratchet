@@ -22,7 +22,6 @@ export class CompositeLastSuccessProvider implements LastSuccessProvider{
             let val : number = s.lastSuccess();
             if (val!=null)
             {
-                debugger;
                 if (rval==null)
                 {
                     rval = val;

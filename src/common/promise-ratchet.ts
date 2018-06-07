@@ -39,26 +39,35 @@ export class PromiseRatchet {
     }
 
 
-    public static dumpResult(result) : void
+    public static dumpResult(result, autoDebug: boolean = false) : void
     {
         Logger.info("Success, result was : \n\n%s\n\n",JSON.stringify(result));
-        debugger; // After log so we already have the output
+        if (autoDebug)
+        {
+            debugger; // After log so we already have the output
+        }
         process.exit(0);
     }
 
-    public static dumpError(err) : void
+    public static dumpError(err, autoDebug: boolean = false) : void
     {
         Logger.warn("Failure, err was : \n\n%s\n\n  --  \n\n%s\n\n",JSON.stringify(err),String(err));
         console.trace();
-        debugger; // After log so we already have the output
+        if (autoDebug)
+        {
+            debugger; // After log so we already have the output
+        }
         process.exit(1);
     }
 
 
-    public static logErrorAndReturnNull(err) : void
+    public static logErrorAndReturnNull(err, autoDebug: boolean = false) : void
     {
         Logger.warn("Failure, err was : \n\n%s\n\n  --  \n\n%s\n\n",JSON.stringify(err),String(err));
-        debugger; // After log so we already have the output
+        if (autoDebug)
+        {
+            debugger; // After log so we already have the output
+        }
         return null;
     }
 
