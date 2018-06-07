@@ -4,6 +4,7 @@
 */
 
 import {Logger} from "./logger";
+import {ParsedUrl} from "./parsed-url";
 
 export class NetworkRatchet {
     private static LOCAL_IP : string = null;
@@ -67,6 +68,21 @@ export class NetworkRatchet {
                 return Promise.resolve(NetworkRatchet.LOCAL_IP);
             }
         }
+    }
+
+    public static parseUrl(href:string) : ParsedUrl {
+        var match = href.match(/^(https?\:)\/\/(([^:\/?#]*)(?:\:([0-9]+))?)([\/]{0,1}[^?#]*)(\?[^#]*|)(#.*|)$/);
+        var rval : ParsedUrl =  match && {
+            href: href,
+            protocol: match[1],
+            host: match[2],
+            hostname: match[3],
+            port: match[4],
+            pathname: match[5],
+            search: match[6],
+            hash: match[7]
+        } as ParsedUrl;
+        return rval;
     }
 
 
