@@ -13,7 +13,9 @@ import {LogSnapshot} from "./log-snapshot";
  */
 export class Logger {
     public static readonly LEVEL_NAMES : string[] = ['error','warn','info','verbose','debug','silly'];
-    public static readonly LEVEL_COLORS : string[] = ['#F00','#FF0','#0F0','#0EF','#F0F','#000'];
+    public static readonly DEFAULT_LEVEL_COLORS : string[] = ['#F00','#FF0','#0F0','#0EF','#F0F','#000'];
+
+    private static LEVEL_COLORS : string[] = Logger.DEFAULT_LEVEL_COLORS.slice(); // Start as a copy of the defaults
 
     private static timeAdjustmentInMs : number = 0;
     private static ringBufferSize : number = 0;
@@ -45,6 +47,18 @@ export class Logger {
     public static getLevel() : string
     {
         return Logger.levelName(Logger.level);
+    }
+
+    public static setLevelColorByName(levelName:string, newColor:string) : void{
+        let idx : number = Logger.levelNumber(levelName);
+        if (!levelName || !newColor)
+        {
+            throw Error('Cannot set color with null name or color');
+        }
+        if (idx!=null)
+        {
+            Logger.LEVEL_COLORS[idx]=newColor;
+        }
     }
 
     public static setLevelByName(newLevel: string) : void

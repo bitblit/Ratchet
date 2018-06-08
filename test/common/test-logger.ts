@@ -85,3 +85,15 @@ describe('#setLevelByName', function() {
 });
 
 
+describe('#setLevelColorByName', function() {
+    it('should change the color of the silly level to white', function() {
+        let idx : number = Logger.levelNumber('silly');
+        expect(idx).to.not.be.null;
+        expect(Logger.levelColor(idx)).to.equal('#000');
+        Logger.setLevelColorByName('silly',"#FFF");
+        expect(Logger.levelColor(idx)).to.equal('#FFF');
+    });
+});
+
+
+
