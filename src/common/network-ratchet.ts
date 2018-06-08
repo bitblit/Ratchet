@@ -11,6 +11,7 @@ export class NetworkRatchet {
 
     // https://ourcodeworld.com/articles/read/257/how-to-get-the-client-ip-address-with-javascript-only
     public static findLocalIp(useCache: boolean = true) : Promise<string>{
+        Logger.info("Attempting to find local IP (V 1)");
         if (NetworkRatchet.LOCAL_IP && useCache) {
             return Promise.resolve(NetworkRatchet.LOCAL_IP);
         }
@@ -19,8 +20,7 @@ export class NetworkRatchet {
                 return new Promise<string>(function(resolve,reject){
                     //compatibility for firefox and chrome
                     // NOTE: window.RTCPeerConnection is "not a constructor" in FF22/23
-                    // Old was : window['RTCPeerConnection'] || window['mozRTCPeerConnection'] || window['webkitRTCPeerConnection'];
-                    var myPeerConnection = window['webkitRTCPeerConnection'] || window['mozRTCPeerConnection'];
+                    var myPeerConnection = window['RTCPeerConnection'] || window['mozRTCPeerConnection'] || window['webkitRTCPeerConnection'];
                     var pc = new myPeerConnection({
                             iceServers: []
                         }),
@@ -33,7 +33,8 @@ export class NetworkRatchet {
                     pc.createDataChannel("");
 
                     // create offer and set local description
-                    pc.createOffer().then(function(sdp) {
+                    // Putting an options block in createOffer just for browsers that do not like it empty
+                    pc.createOffer({iceRestart:false}).then(function(sdp) {
                         sdp.sdp.split('\n').forEach(function(line) {
                             if (line.indexOf('candidate') < 0) return;
                             line.match(ipRegex).forEach((ip)=>{
@@ -48,6 +49,7 @@ export class NetworkRatchet {
                         pc.setLocalDescription(sdp, noop, noop);
                     }).catch(function(reason) {
                         // An error occurred, so handle the failure to connect
+                        Logger.warn("Failed to create peer connection offer : %s",reason);
                     });
 
                     //listen for candidate events
