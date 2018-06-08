@@ -18,7 +18,9 @@ export class NetworkRatchet {
             if (typeof window !== "undefined") {
                 return new Promise<string>(function(resolve,reject){
                     //compatibility for firefox and chrome
-                    var myPeerConnection = window['RTCPeerConnection'] || window['mozRTCPeerConnection'] || window['webkitRTCPeerConnection'];
+                    // NOTE: window.RTCPeerConnection is "not a constructor" in FF22/23
+                    // Old was : window['RTCPeerConnection'] || window['mozRTCPeerConnection'] || window['webkitRTCPeerConnection'];
+                    var myPeerConnection = window['webkitRTCPeerConnection'] || window['mozRTCPeerConnection'];
                     var pc = new myPeerConnection({
                             iceServers: []
                         }),
