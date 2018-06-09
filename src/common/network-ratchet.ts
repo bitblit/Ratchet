@@ -45,29 +45,50 @@ export class NetworkRatchet {
                                 rtc.setLocalDescription(offerDesc);
                             }, function (e) {
                                 Logger.warn("Offer failed : %s",e);
-                                resolve("FIND_UNSUPPORTED");
+                                resolve(NetworkRatchet.updateLocalIP("FIND_UNSUPPORTED"));
                             });
 
                         }
                         else {
                             Logger.warn("IP Address find not supported on this device");
-                            resolve("FIND_UNSUPPORTED");
+                            resolve(NetworkRatchet.updateLocalIP("FIND_UNSUPPORTED"));
                         }
                     }
                 catch (err)
                     {
                         Logger.warn("Error finding local ip address : %s",err);
-                        resolve("ERROR");
+                        resolve(NetworkRatchet.updateLocalIP("ERROR"));
                     }
                 })
             }
             else
             {
                 Logger.warn("Window not found, cannot calculate local ip");
-                NetworkRatchet.LOCAL_IP = "NO_WINDOW";
-                return Promise.resolve(NetworkRatchet.LOCAL_IP);
+                return Promise.resolve(NetworkRatchet.updateLocalIP("NO_WINDOW"));
             }
         }
+    }
+
+    // Break a url into a structure that is similar to what window.location returns
+    public static parseUrl(href:string) : ParsedUrl {
+        var match = href.match(/^(https?\:)\/\/(([^:\/?#]*)(?:\:([0-9]+))?)([\/]{0,1}[^?#]*)(\?[^#]*|)(#.*|)$/);
+        var rval : ParsedUrl =  match && {
+            href: href,
+            protocol: match[1],
+            host: match[2],
+            hostname: match[3],
+            port: match[4],
+            pathname: match[5],
+            search: match[6],
+            hash: match[7]
+        } as ParsedUrl;
+        return rval;
+    }
+
+    // Just a helper function to make the build pattern here easier
+    private static updateLocalIP(newIp:string) : string {
+        NetworkRatchet.LOCAL_IP = newIp;
+        return NetworkRatchet.LOCAL_IP;
     }
 
     private static grepSDP(sdp, addrs, resolve) :void {
@@ -96,17 +117,22 @@ export class NetworkRatchet {
             return addrs[k];
         });
         if (displayAddrs && displayAddrs.length == 1) {
-            resolve(displayAddrs[0]);
+            resolve(NetworkRatchet.updateLocalIP(displayAddrs[0]));
         }
         else {
             let multi = displayAddrs.sort().join(',');
             Logger.warn("Multiple addresses found, returning sorted join : %s",multi);
-            resolve(multi);
+            resolve(NetworkRatchet.updateLocalIP(multi));
         }
     }
 
 
-    /* https://ourcodeworld.com/articles/read/257/how-to-get-the-client-ip-address-with-javascript-only
+    /*
+    So, this code is actually nicer, but some browsers (e.g., the version of Chromium inside a 6.2.149.7 Brightsign)
+    don't support the promise version, so instead we have the ugly hack above.  Leaving this in here for brighter
+    days in the future.
+
+    https://ourcodeworld.com/articles/read/257/how-to-get-the-client-ip-address-with-javascript-only
     public static findLocalIp(useCache: boolean = true) : Promise<string>{
         Logger.info("Attempting to find local IP (V 1)");
         if (NetworkRatchet.LOCAL_IP && useCache) {
@@ -171,20 +197,6 @@ export class NetworkRatchet {
     }
     */
 
-    public static parseUrl(href:string) : ParsedUrl {
-        var match = href.match(/^(https?\:)\/\/(([^:\/?#]*)(?:\:([0-9]+))?)([\/]{0,1}[^?#]*)(\?[^#]*|)(#.*|)$/);
-        var rval : ParsedUrl =  match && {
-            href: href,
-            protocol: match[1],
-            host: match[2],
-            hostname: match[3],
-            port: match[4],
-            pathname: match[5],
-            search: match[6],
-            hash: match[7]
-        } as ParsedUrl;
-        return rval;
-    }
 
 
 }
