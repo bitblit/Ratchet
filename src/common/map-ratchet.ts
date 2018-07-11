@@ -3,6 +3,8 @@
     Functions for working with maps (dictionaries/objects in javascript)
 */
 
+import {KeyValue} from './key-value';
+
 export class MapRatchet {
 
     public static findValue(toSearch: any, path:string[]) : any
@@ -30,6 +32,25 @@ export class MapRatchet {
         if (object1 == null && object2 == null) return true;
         if (object1 == null || object2 == null) return false;
         return JSON.stringify(object1) == JSON.stringify(object2);
+    }
+
+    public static toKeyValueList(value: any): KeyValue[] {
+        let returnArray: KeyValue[] = [];
+
+        for (let k of Object.keys(value)) {
+            returnArray.push({
+                key: k,
+                value: value[k]
+            } as KeyValue);
+        }
+
+        return returnArray;
+    }
+
+    public static fromKeyValueList(list:KeyValue[]):any {
+        let rval : any = {};
+        list.forEach(a=>rval[a.key]=a.value);
+        return rval;
     }
 
 }
