@@ -47,6 +47,66 @@ One more note on the AWS stuff - for most of my non-super-heavy-load stuff I wor
 because I am lazy and because that is where AWS releases the new stuff first.  Because of this, you will see that 
 while my code allows you to override the region, I always set a biased default.  If you don't like that... sorry?
 
+## Site Uploader
+There is a tool in here called site uploader that is designed to help put completely static sites into S3 (basically
+a glorified **aws s3 cp --recursive ...**), while allowing you to set some of the more popular HTTP headers like
+Cache-Expires.  If you use it you'll need to add this to your dev dependencies (since I didn't want it in the
+dependencies of Ratchet which is meant to also be used in the browser)
+
+```
+    "walk": "^2.3.4"
+``` 
+
+It will expect you to provide it a configuration file.  I'll document it better later, but here is an 
+example of such a configuration file (an Angular app I use, with a couple of custom HTML files with no
+extensionss)
+
+```json
+{
+  "customMimeTypeMapping" : {
+    "md" : "text/markdown; charset=UTF-8"
+  },
+
+  "mapping" : [
+    {
+      "prefixMatch" : "assets.*",
+      "fileMatch" : ".*",
+      "putParams" : {
+        "CacheControl" : "max-age=600",
+        "Metadata" : {
+        }
+      }
+    },
+    {
+      "description": "Files with no extension in the root dir",
+      "prefixMatch": "$",
+      "fileMatch" : "^([^.]+)$",
+      "putParams" : {
+        "CacheControl" : "max-age=600",
+        "ContentType" : "text/html; charset=UTF-8"
+      }
+    },
+    {
+      "description": "Javascript bundles in the root dir",
+      "prefixMatch": "$",
+      "fileMatch" : ".*\\.bundle\\.js",
+      "putParams" : {
+        "CacheControl" : "max-age=86400"
+      }
+    },
+    {
+      "description": "Default rule",
+      "putParams" : {
+        "CacheControl" : "max-age=30"
+      }
+    }
+
+  ]
+}
+```
+
+
+
 ## Express
 There are also a few classes in here for simplifying using Express as a processor for Lambda on Node.  Similarly to
 AWS above, Express is included as a dev dependency for this library - if you want to use those classes you are 
