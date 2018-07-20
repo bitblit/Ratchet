@@ -12,11 +12,11 @@ import mimetypes
 
 import * as fs from 'fs';
 import * as walk from 'walk';
-import {Logger} from '@bitblit/ratchet/dist/common/logger';
 import * as AWS from 'aws-sdk';
 import {ClientConfiguration} from 'aws-sdk/clients/s3';
 import * as path from 'path';
 import * as mime from 'mime-types';
+import {Logger} from '../common/logger';
 
 export class SiteUploader {
 
