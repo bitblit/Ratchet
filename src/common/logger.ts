@@ -139,7 +139,8 @@ export class Logger {
     {
         let rval: LogMessage[] = null;
         if (Logger.ringBufferIdx < Logger.ringBufferSize) {
-            rval = Logger.ringBuffer;
+            const start:number = (inStartFrom==null)?0:inStartFrom;
+            rval = Logger.ringBuffer.slice(start, Logger.ringBufferIdx); // Use slice to get a copy (should use below too)
         }
         else {
             rval = [];

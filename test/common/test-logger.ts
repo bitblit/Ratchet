@@ -1,5 +1,6 @@
 import { expect } from 'chai';
 import {Logger} from "../../src/common/logger";
+import {LogSnapshot} from '../../dist/src/common/log-snapshot';
 
 describe('#levelName', function() {
     it('should return "error" for 0', function() {
@@ -95,5 +96,33 @@ describe('#setLevelColorByName', function() {
     });
 });
 
+
+describe('#takeSnapshot', function() {
+    it('should advance the pointer correctly after a snapshot', function() {
+        Logger.setRingBufferSize(5);
+        expect(Logger.getRingBufferIdx()).to.equal(1);
+
+        Logger.info("m1");
+        Logger.info("m2");
+        Logger.info("m3");
+
+        const snap1:LogSnapshot = Logger.takeSnapshot();
+        Logger.info("m4");
+        Logger.info("m5");
+        const snap2:LogSnapshot = Logger.takeSnapshot();
+
+        Logger.info("m6");
+        Logger.info("m7");
+        Logger.info("m8");
+
+        const snap3:LogSnapshot = Logger.takeSnapshot();
+
+        expect(snap1.messages.length).to.equal(4);
+        expect(snap2.messages.length).to.equal(2);
+        expect(snap3.messages.length).to.equal(3);
+
+        expect(Logger.getRingBufferIdx()).to.equal(9);
+    });
+});
 
 
