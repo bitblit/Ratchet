@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import {Logger} from "../../src/common/logger";
-import {LogSnapshot} from '../../dist/src/common/log-snapshot';
+import {LogSnapshot} from '../../src/common/log-snapshot';
 
 describe('#levelName', function() {
     it('should return "error" for 0', function() {
