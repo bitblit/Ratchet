@@ -26,14 +26,14 @@ export class SiteUploader {
   private readonly s3: AWS.S3 = new AWS.S3({region: 'us-east-1'} as ClientConfiguration);
 
   public static createFromArgs(): SiteUploader {
-    if (process && process.argv && process.argv.length  >  2 && process.argv.length < 5) {
+    if (process && process.argv && process.argv.length  >  3 && process.argv[process.argv.length-4]=='site-uploader') {
       let src = process.argv[2];
       let bucket = process.argv[3];
       let configFile = process.argv[4];
 
       return new SiteUploader(src, bucket, configFile);
     } else {
-      console.log('Usage : node site-uploader {srcDir} {bucket} {configFile}');
+      console.log('Usage : node site-uploader {srcDir} {bucket} {configFile} (Found '+process.argv.length+' arguments, need at least 4)');
       return null;
     }
 
