@@ -132,6 +132,11 @@ To run the tests that ARE in here,
 
 `npm test`
 
+# Why not Lodash?
+Honestly, because when I first started writing this I hadn't discovered Lodash yet.  The odds are quite good that in 
+future releases of Ratchet some duplicative functionality may end up being marked deprecated and turned into thin
+pipes into Lodash functions instead.
+
 
 # Deployment
 

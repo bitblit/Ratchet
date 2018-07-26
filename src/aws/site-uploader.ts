@@ -139,3 +139,11 @@ export class SiteUploader {
 
 }
 
+
+
+/**
+ And, in case you are running this command line...
+**/
+Logger.info('Running site uploader from command line arguments');
+const uploader: SiteUploader = SiteUploader.createFromArgs();
+uploader.runPump();
