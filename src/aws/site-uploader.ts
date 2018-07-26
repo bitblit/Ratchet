@@ -146,4 +146,7 @@ export class SiteUploader {
 **/
 Logger.info('Running site uploader from command line arguments');
 const uploader: SiteUploader = SiteUploader.createFromArgs();
-uploader.runPump();
+if (uploader)
+{
+    uploader.runPump();
+}
