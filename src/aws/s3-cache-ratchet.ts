@@ -59,7 +59,7 @@ export class S3CacheRatchet {
 
     public readCacheFileToObject<T>(key:string, bucket:string = null) : Promise<T>
     {
-        return this.readCacheFileToString(bucket, key).then(value => {
+        return this.readCacheFileToString(key, bucket).then(value => {
             return (value)?JSON.parse(value) as T:null;
         });
     }
