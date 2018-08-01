@@ -34,7 +34,7 @@ export class S3CacheRatchet {
     public readCacheFileToString(key:string, bucket:string = null) : Promise<string>
     {
         const params = {
-            Bucket: bucket,
+            Bucket: this.bucketVal(bucket),
             Key: key
         };
 
