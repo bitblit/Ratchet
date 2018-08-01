@@ -31,35 +31,37 @@ export class S3CacheRatchet {
         return rval;
     }
 
-    public readCacheFileToObject(key:string, bucket:string = null) : Promise<any>
+    public readCacheFileToString(key:string, bucket:string = null) : Promise<string>
     {
-        let params = {
-            Bucket: this.bucketVal(bucket),
+        const params = {
+            Bucket: bucket,
             Key: key
         };
 
-        return this.s3.getObject(params).promise().then(res=>{
-            if (res && res.Body)
-            {
-                return JSON.parse(res.Body.toString());
-            }
-            else
-            {
-                Logger.warn("Could not find cache file : %s / %s", bucket, key);
+        return this.s3.getObject(params).promise().then(res => {
+            if (res && res.Body) {
+                return res.Body.toString();
+            } else {
+                Logger.warn('Could not find cache file : %s / %s', bucket, key);
                 return null;
             }
-        }).catch(err=>{
-            if (err && err.statusCode==404)
-            {
-                Logger.warn("Cache file %s %s not found returning null", bucket, key);
+        }).catch(err => {
+            if (err && err.statusCode === 404) {
+                Logger.warn('Cache file %s %s not found returning null', bucket, key);
                 return null;
-            }
-            else
-            {
+            } else {
                 throw err;
             }
 
-        })
+        });
+    }
+
+
+    public readCacheFileToObject<T>(key:string, bucket:string = null) : Promise<T>
+    {
+        return this.readCacheFileToString(bucket, key).then(value => {
+            return (value)?JSON.parse(value) as T:null;
+        });
     }
 
     public removeCacheFile(key:string, bucket:string = null) : Promise<any>
