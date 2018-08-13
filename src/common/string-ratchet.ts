@@ -56,5 +56,10 @@ export class StringRatchet {
         return rval;
     }
 
+    public static stringContainsOnlyNumbers(input: string): boolean {
+        const rval : boolean =  /^[0-9]+$/.test(input);
+        return rval;
+    }
+
 }
 
