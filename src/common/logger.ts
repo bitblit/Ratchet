@@ -24,6 +24,7 @@ export class Logger {
     private static ringBufferLastSnapshotIdx : number = 0;
 
     private static level : number = 2; // INFO
+    private static includeLevelInMessage: boolean = true;
 
     public static dumpConfigurationIntoLog() : void
     {
@@ -166,9 +167,14 @@ export class Logger {
         return rval;
     }
 
+    private static conditionallyApplyLevelToMessage(lvl: number, msg: string) : string {
+        return (Logger.includeLevelInMessage) ? '[' + Logger.levelName(lvl) + '] ' + msg : msg;
+    }
+
     public static error(...input: any[]) : void
     {
         let msg : string = util.format.apply(null,input);
+        msg = Logger.conditionallyApplyLevelToMessage(0,msg);
         if (Logger.level>=0)
         {
             console.error(msg);
@@ -179,6 +185,7 @@ export class Logger {
     public static warn(...input: any[]) : void
     {
         let msg : string = util.format.apply(null,input);
+        msg = Logger.conditionallyApplyLevelToMessage(1,msg);
         if (Logger.level>=1)
         {
             console.warn(msg);
@@ -189,6 +196,7 @@ export class Logger {
     public static info(...input: any[]) : void
     {
         let msg : string = util.format.apply(null,input);
+        msg = Logger.conditionallyApplyLevelToMessage(2,msg);
         if (Logger.level>=2)
         {
             console.info(msg);
@@ -199,6 +207,7 @@ export class Logger {
     public static verbose(...input: any[]) : void
     {
         let msg : string = util.format.apply(null,input);
+        msg = Logger.conditionallyApplyLevelToMessage(3,msg);
         if (Logger.level>=3)
         {
             console.info(msg);
@@ -209,6 +218,7 @@ export class Logger {
     public static debug(...input: any[]) : void
     {
         let msg : string = util.format.apply(null,input);
+        msg = Logger.conditionallyApplyLevelToMessage(4,msg);
         if (Logger.level>=4)
         {
             // This is here because old versions of Node do not support console.debug
@@ -228,6 +238,7 @@ export class Logger {
     public static silly(...input: any[]) : void
     {
         let msg : string = util.format.apply(null,input);
+        msg = Logger.conditionallyApplyLevelToMessage(5,msg);
         if (Logger.level>=5)
         {
             console.log(msg);
