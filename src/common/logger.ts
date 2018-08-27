@@ -36,6 +36,10 @@ export class Logger {
         Logger.silly('SILLY enabled');
     }
 
+    public static setIncludeLevelInMessage(newVal: boolean) : void {
+        this.includeLevelInMessage = newVal;
+    }
+
     public static getRingBufferIdx() : number
     {
         return this.ringBufferIdx;
