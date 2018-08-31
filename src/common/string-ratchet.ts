@@ -17,6 +17,14 @@ export class StringRatchet {
         });
     }
 
+    public static createRandomHexString(len: number = 10): string {
+        let r = '';
+        for (let i=0; i< len; i++) {
+            r += Math.floor((Math.random() * 16)).toString(16);
+        }
+        return r;
+    }
+
     public static canonicalize(value:string): string {
         let rval = (value)?value.toLowerCase():'';
 

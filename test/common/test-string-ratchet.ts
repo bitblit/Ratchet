@@ -71,3 +71,21 @@ describe('#obscure', function() {
     });
 
 });
+
+
+describe('#guid', function() {
+    it('should generate a guid"', function() {
+        let result = StringRatchet.createType4Guid();
+        expect(result).to.not.be.null;
+    });
+
+});
+
+describe('#randomHexString', function() {
+    it('should generate a random hex string"', function() {
+        let result = StringRatchet.createRandomHexString(12);
+        expect(result).to.not.be.null;
+        expect(result.length).to.equal(12);
+    });
+
+});
