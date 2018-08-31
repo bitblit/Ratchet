@@ -37,3 +37,37 @@ describe('#safeToString', function() {
         expect(result).to.equal('55');
     });
 });
+
+
+describe('#obscure', function() {
+    it('should return "pa****rd"', function() {
+        let result = StringRatchet.obscure('password', 2,2);
+        expect(result).to.equal('pa****rd');
+    });
+
+    it('should return null', function() {
+        let result = StringRatchet.obscure(null, 2,2);
+        expect(result).to.be.null;
+    });
+
+    it('should return "p**s"', function() {
+        let result = StringRatchet.obscure('pass', 2,2);
+        expect(result).to.equal('p**s');
+    });
+
+    it('should return "****"', function() {
+        let result = StringRatchet.obscure('pass', 0,0);
+        expect(result).to.equal('****');
+    });
+
+    it('should return "p***"', function() {
+        let result = StringRatchet.obscure('pass', 1,0);
+        expect(result).to.equal('p***');
+    });
+
+    it('should return "***s"', function() {
+        let result = StringRatchet.obscure('pass', 0,1);
+        expect(result).to.equal('***s');
+    });
+
+});

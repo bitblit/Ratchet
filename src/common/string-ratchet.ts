@@ -61,5 +61,29 @@ export class StringRatchet {
         return rval;
     }
 
+    public static obscure(input: string, prefixLength: number = 2, suffixLength: number = 2): string {
+        if (!input) {
+            return input;
+        }
+        const len: number = input.length;
+        let pl: number = prefixLength;
+        let sl: number = suffixLength;
+
+        while (len>0 && len<(pl+sl+1)) {
+            pl = Math.max(0, pl-1);
+            sl = Math.max(0, sl-1);
+        }
+        const rem = len - (pl+sl);
+
+        let rval: string = '';
+        rval += input.substring(0,pl);
+        // Yeah, I know.  I'm in a rush here
+        for (let i=0; i<rem; i++){
+            rval += '*';
+        }
+        rval += input.substring(len-sl);
+        return rval;
+    }
+
 }
 
