@@ -110,7 +110,7 @@ export class S3CacheRatchet {
         return this.s3.headObject({Bucket:this.bucketVal(bucket), Key:key}).promise();
     }
 
-    public cacheFileAgeInSeconds(key:string, bucket:string = null): Promise<any>
+    public cacheFileAgeInSeconds(key:string, bucket:string = null): Promise<number>
     {
         return this.s3.headObject({Bucket:this.bucketVal(bucket), Key:key}).promise().then(res=>{
             if (res && res.LastModified)
