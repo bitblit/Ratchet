@@ -55,10 +55,10 @@ export class MapRatchet {
 
     /*
     Mainly here to simplify sending objects to DynamoDB - recursively descend and clean up javascript objects, removing
-    any empty strings, nulls, etc 
+    any empty strings, nulls, etc
      */
-    public static cleanup(obj: any, stripZero: boolean = false, stripNull: boolean = true, stripUndefined: boolean = true, stripEmptyString: boolean = true
-                          ): any {
+    public static cleanup<T>(obj: T, stripZero: boolean = false, stripNull: boolean = true, stripUndefined: boolean = true, stripEmptyString: boolean = true
+                          ): T {
         // See : https://stackoverflow.com/questions/286141/remove-blank-attributes-from-an-object-in-javascript
         return Object.keys(obj)
             .filter(k => {
@@ -70,7 +70,7 @@ export class MapRatchet {
                     typeof obj[k] === 'object' ?
                         Object.assign(newObj, {[k]: MapRatchet.cleanup(obj[k], stripZero, stripNull, stripUndefined, stripEmptyString)}) :  // Recurse.
                         Object.assign(newObj, {[k]: obj[k]}),  // Copy value.
-                {});
+                {}) as T;
     }
 
 }
