@@ -60,17 +60,31 @@ export class MapRatchet {
     public static cleanup<T>(obj: T, stripZero: boolean = false, stripNull: boolean = true, stripUndefined: boolean = true, stripEmptyString: boolean = true
                           ): T {
         // See : https://stackoverflow.com/questions/286141/remove-blank-attributes-from-an-object-in-javascript
-        return Object.keys(obj)
-            .filter(k => {
-                return (!stripNull || obj[k] !== null) &&
-                    (!stripUndefined || obj[k] !== undefined) &&
-                    (!stripEmptyString || obj[k] !== '') &&
-                    (!stripZero || obj[k] !== 0)})  // Remove undef. and null.
-            .reduce((newObj, k) =>
-                    typeof obj[k] === 'object' ?
-                        Object.assign(newObj, {[k]: MapRatchet.cleanup(obj[k], stripZero, stripNull, stripUndefined, stripEmptyString)}) :  // Recurse.
-                        Object.assign(newObj, {[k]: obj[k]}),  // Copy value.
-                {}) as T;
+        if (obj === null || obj === undefined || typeof obj !== 'object') {
+            return obj;
+        }
+        const o = JSON.parse(JSON.stringify(obj)); // Clone source oect.
+
+        Object.keys(o).forEach(key => {
+            if (o[key] && typeof o[key] === 'object') {
+                if (Array.isArray(o[key])) {
+                    for (let i=0; i<o[key].length; i++) {
+                        o[key][i] = MapRatchet.cleanup(o[key][i]);
+                    }
+                } else {
+                    o[key] = MapRatchet.cleanup(o[key]);  // Recurse.
+                }
+            } else if ((o[key] === undefined && stripUndefined) ||
+                (o[key] === null && stripNull) ||
+                (o[key] === '' && stripEmptyString) ||
+                (o[key] === 0 && stripZero)) {
+                delete o[key]; // Delete undefined and null.
+            } else {
+                o[key] = o[key];  // Copy value.
+            }
+        });
+
+        return o; // Return new object.
     }
 
 }
