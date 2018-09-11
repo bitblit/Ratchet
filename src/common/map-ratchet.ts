@@ -53,5 +53,25 @@ export class MapRatchet {
         return rval;
     }
 
+    /*
+    Mainly here to simplify sending objects to DynamoDB - recursively descend and clean up javascript objects, removing
+    any empty strings, nulls, etc 
+     */
+    public static cleanup(obj: any, stripZero: boolean = false, stripNull: boolean = true, stripUndefined: boolean = true, stripEmptyString: boolean = true
+                          ): any {
+        // See : https://stackoverflow.com/questions/286141/remove-blank-attributes-from-an-object-in-javascript
+        return Object.keys(obj)
+            .filter(k => {
+                return (!stripNull || obj[k] !== null) &&
+                    (!stripUndefined || obj[k] !== undefined) &&
+                    (!stripEmptyString || obj[k] !== '') &&
+                    (!stripZero || obj[k] !== 0)})  // Remove undef. and null.
+            .reduce((newObj, k) =>
+                    typeof obj[k] === 'object' ?
+                        Object.assign(newObj, {[k]: MapRatchet.cleanup(obj[k], stripZero, stripNull, stripUndefined, stripEmptyString)}) :  // Recurse.
+                        Object.assign(newObj, {[k]: obj[k]}),  // Copy value.
+                {});
+    }
+
 }
 
