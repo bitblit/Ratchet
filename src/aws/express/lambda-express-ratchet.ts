@@ -5,40 +5,60 @@
 import {NextFunction, Request, Response} from 'express';
 import {Logger} from "../../common/logger";
 import {HttpErrorWrapper} from "./http-error-wrapper";
+import {APIGatewayEvent, APIGatewayEventRequestContext, AuthResponseContext} from 'aws-lambda';
 
 export type promiseRouteFunction = (req: Request, res: Response, next: NextFunction) => Promise<any>;
 
 export class LambdaExpressRatchet {
 
     // Using 'any' here since apiGateway is only present in the AWS adapted one
-    public static extractEvent(request:any) : any{
+    public static extractEvent(request:any) : APIGatewayEvent{
          
         return (request && request.apiGateway)?request.apiGateway.event:null;
     }
 
-    public static extractStage(request:Request) : any {
-        let rc = LambdaExpressRatchet.extractRequestContext(request);
+    public static extractStage(request:Request) : string {
+        let rc:APIGatewayEventRequestContext = LambdaExpressRatchet.extractRequestContext(request);
         return (rc)?rc.stage:null;
     }
 
-    public static extractRequestContext(request:Request) : any {
-        let evt = LambdaExpressRatchet.extractEvent(request);
+    public static extractRequestContext(request:Request) : APIGatewayEventRequestContext {
+        let evt:APIGatewayEvent = LambdaExpressRatchet.extractEvent(request);
+
         return (evt)?evt.requestContext:null;
     }
 
-    public static extractAuthorizer(request:Request) : any {
-        let rc = LambdaExpressRatchet.extractRequestContext(request);
+    public static ipAddressChain(request: Request) : string[] {
+        const headerVal: string = LambdaExpressRatchet.header(request, 'X-Forwarded-For');
+        let headerList: string[] = (headerVal) ? String(headerVal).split(','):[];
+        headerList = headerList.map( s => s.trim());
+        return headerList;
+    }
+
+    public static ipAddress(request: Request) : string {
+        const list: string[] = LambdaExpressRatchet.ipAddressChain(request);
+        return (list && list.length>0) ? list[0] : null;
+    }
+
+    public static extractAuthorizer(request:Request) : AuthResponseContext {
+        let rc:APIGatewayEventRequestContext = LambdaExpressRatchet.extractRequestContext(request);
         return (rc) ? rc.authorizer : null;
+    }
+
+    public static header(request:any, headerName: string) : any
+    {
+        let evt : APIGatewayEvent = LambdaExpressRatchet.extractEvent(request);
+        return (evt && evt.headers)?evt.headers[headerName]:null;
     }
 
     public static pathParam(request:any, paramName: string) : string
     {
-        let evt : any = LambdaExpressRatchet.extractEvent(request);
+        let evt : APIGatewayEvent = LambdaExpressRatchet.extractEvent(request);
         return (evt && evt.pathParameters)?evt.pathParameters[paramName]:null;
     }
 
     public static queryStringParameters(request:any) : any{
-        let evt : any = LambdaExpressRatchet.extractEvent(request);
+        let evt : APIGatewayEvent = LambdaExpressRatchet.extractEvent(request);
         return (evt && evt.queryStringParameters)?evt.queryStringParameters:{};
     }
 
