@@ -1,6 +1,7 @@
 import * as util from "util";
 import {LogMessage} from "./log-message";
 import {LogSnapshot} from "./log-snapshot";
+import moment = require('moment');
 
 /**
  * Service to setup winston, and also adds ring buffer capability if so desired.
@@ -283,6 +284,29 @@ export class Logger {
             Logger.error("Cannot log at level %s - invalid level",level);
         }
 
+    }
+
+
+    public static importMessages(msgs:LogMessage[], prefixIn:string = '', addTimestamp: boolean = true) : void
+    {
+        const prefix:string = prefixIn || '';
+        if (msgs && msgs.length>0) {
+            Logger.silly("Received monitor data : %d msgs",msgs.length);
+
+            // Pump messages
+            msgs.forEach(m => {
+                if (m.msg)
+                {
+                    let mOut: string = prefix;
+                    if (addTimestamp) {
+                        const ts: string = moment(m.timestamp).format('hh:mm:ss');
+                        mOut += ' (' + ts + ') : ';
+                        mOut += m.msg;
+                    }
+                    Logger.logByLevel(Logger.levelName(m.lvl),mOut);
+                }
+            });
+        }
     }
 
 }
