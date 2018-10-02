@@ -92,11 +92,19 @@ export class S3CacheRatchet {
                                          cacheControl: string='max-age=30', contentType : string='application/json') : Promise<any>
     {
         let json = JSON.stringify(dataObject);
+        return this.writeStringToCacheFile(key, json, bucket, meta, cacheControl, contentType);
+    }
 
+
+
+    // Given new board data, write it to the S3 file and set the refresh flag appropriately
+    public writeStringToCacheFile(key:string, dataString:string, bucket:string = null, meta: any = {},
+                                  cacheControl: string='max-age=30', contentType : string='text/plain') : Promise<any>
+    {
         let params = {
             Bucket: this.bucketVal(bucket),
             Key: key,
-            Body: json,
+            Body: dataString,
             CacheControl:cacheControl,
             ContentType:contentType,
             Metadata:meta,
