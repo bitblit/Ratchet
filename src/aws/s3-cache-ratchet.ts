@@ -31,6 +31,15 @@ export class S3CacheRatchet {
         return rval;
     }
 
+    public fileExists(key:string, bucket:string = null): Promise<boolean> {
+        return this.fetchMetaForCacheFile(key, this.bucketVal(bucket)).then(res => {
+            return true;
+        }).catch(err=> {
+            Logger.silly('Error calling file exists (as expected) %s', err);
+            return false;
+        });
+    }
+
     public readCacheFileToString(key:string, bucket:string = null) : Promise<string>
     {
         const params = {
