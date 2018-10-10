@@ -1,5 +1,5 @@
 import * as AWS from 'aws-sdk';
-import {Logger} from '@bitblit/ratchet/dist/common/logger';
+import {Logger} from '../common/logger';
 
 /**
  * Service for reading environmental variables
