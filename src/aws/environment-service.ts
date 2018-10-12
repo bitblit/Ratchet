@@ -10,16 +10,18 @@ export class EnvironmentService {
 
     public static getConfig(name:string, region:string = 'us-east-1', ssmEncrypted : boolean = true): Promise<any> {
         Logger.info('EnvService:About to read config');
-        if (EnvironmentService.READ_CONFIG_PROMISE[name]) {
-            return Promise.resolve(EnvironmentService.READ_CONFIG_PROMISE[name]);
+        if (EnvironmentService.READ_CONFIG_PROMISE.get(name)) {
+            Logger.debug('Using previous EnvService promise');
+            return Promise.resolve(EnvironmentService.READ_CONFIG_PROMISE.get(name));
         } else {
+            Logger.debug('Creating new EnvService promise');
             const ssm = new AWS.SSM({apiVersion: '2014-11-06', region: region});
             const params = {
                 Name: name, /* required */
                 WithDecryption: ssmEncrypted
             };
 
-            EnvironmentService.READ_CONFIG_PROMISE[name] = ssm.getParameter(params).promise().then(value => {
+            EnvironmentService.READ_CONFIG_PROMISE.set(name, ssm.getParameter(params).promise().then(value => {
                 Logger.info('EnvService:Finished read config');
 
                 if (value != null && value.Parameter != null && value.Parameter.Value) {
@@ -29,12 +31,13 @@ export class EnvironmentService {
                     return null;
                 }
             })
-                .catch(err => {
-                    Logger.error('Error reading environmental configuration - returning null: %s', err);
-                    return null;
-                });
+            .catch(err => {
+                Logger.error('Error reading environmental configuration - returning null: %s', err);
+                return null;
+            }));
 
-            return EnvironmentService.READ_CONFIG_PROMISE[name];
+            Logger.debug('Created new EnvService promise and registered, returning');
+            return EnvironmentService.READ_CONFIG_PROMISE.get(name);
         }
     }
 
