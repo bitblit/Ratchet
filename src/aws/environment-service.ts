@@ -9,7 +9,7 @@ export class EnvironmentService {
     private static READ_CONFIG_PROMISE: Map<String,Promise<any>> = new Map();
 
     public static getConfig(name:string, region:string = 'us-east-1', ssmEncrypted : boolean = true): Promise<any> {
-        Logger.info('EnvService:About to read config');
+        Logger.debug('EnvService:About to read config');
         if (EnvironmentService.READ_CONFIG_PROMISE.get(name)) {
             Logger.debug('Using previous EnvService promise');
             return Promise.resolve(EnvironmentService.READ_CONFIG_PROMISE.get(name));
