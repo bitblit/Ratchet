@@ -19,6 +19,14 @@ export class LambdaEventDetector {
         return (event && event.Records && event.Records.length >0 && event.Records[0].eventSource == 'aws:s3');
     }
 
+    public static isValidApiGatewayEvent(event: any): boolean {
+        return (event && event.httpMethod && event.path && event.requestContext);
+    }
+
+    public static isValidApiGatewayAuthorizerEvent(event: any): boolean {
+        return (event && event.authorizationToken && event.methodArn);
+    }
+
     public static isSingleCronEvent(event: any): boolean {
         return this.isValidCronEvent(event) && event.resources.length==1;
     }
