@@ -18,14 +18,17 @@ export class Logger {
 
     private static LEVEL_COLORS : string[] = Logger.DEFAULT_LEVEL_COLORS.slice(); // Start as a copy of the defaults
 
-    private static timeAdjustmentInMs : number = 0;
-    private static ringBufferSize : number = 0;
-    private static ringBuffer : LogMessage[] = [];
-    private static ringBufferIdx : number = 0;
-    private static ringBufferLastSnapshotIdx : number = 0;
+    private static CONSOLE_LOGGING_ENABLED: boolean = true;
+    private static TRACE_PREFIX: string = null;
 
-    private static level : number = 2; // INFO
-    private static includeLevelInMessage: boolean = true;
+    private static TIME_ADJUSTMENT_IN_MS : number = 0;
+    private static RING_BUFFER_SIZE : number = 0;
+    private static RING_BUFFER : LogMessage[] = [];
+    private static RING_BUFFER_IDX : number = 0;
+    private static RING_BUFFER_LAST_SNAPSHOT_IDX : number = 0;
+
+    private static LEVEL : number = 2; // INFO
+    private static INCLUDE_LEVEL_IN_MESSAGE: boolean = true;
 
     public static dumpConfigurationIntoLog() : void
     {
@@ -38,21 +41,21 @@ export class Logger {
     }
 
     public static setIncludeLevelInMessage(newVal: boolean) : void {
-        this.includeLevelInMessage = newVal;
+        this.INCLUDE_LEVEL_IN_MESSAGE = newVal;
     }
 
     public static getRingBufferIdx() : number
     {
-        return this.ringBufferIdx;
+        return this.RING_BUFFER_IDX;
     }
 
     static getRingBufferLastSnapshotIdx() {
-        return Logger.ringBufferLastSnapshotIdx;
+        return Logger.RING_BUFFER_LAST_SNAPSHOT_IDX;
     }
 
     public static getLevel() : string
     {
-        return Logger.levelName(Logger.level);
+        return Logger.levelName(Logger.LEVEL);
     }
 
     public static setLevelColorByName(levelName:string, newColor:string) : void{
@@ -72,7 +75,7 @@ export class Logger {
         let num : number = Logger.levelNumber(newLevel);
         if (num!=null)
         {
-            Logger.level = num;
+            Logger.LEVEL = num;
         }
         else
         {
@@ -84,7 +87,7 @@ export class Logger {
     {
         if (newLevel>=0 && newLevel<Logger.LEVEL_NAMES.length)
         {
-            Logger.level = newLevel;
+            Logger.LEVEL = newLevel;
         }
         else {
             Logger.error("Could not change level to %s - invalid number",newLevel);
@@ -92,37 +95,55 @@ export class Logger {
 
     }
 
+    public static isConsoleLoggingEnabled(): boolean {
+        return Logger.CONSOLE_LOGGING_ENABLED;
+    }
+
+    public static setConsoleLoggingEnabled(newValue: boolean) : void
+    {
+        Logger.CONSOLE_LOGGING_ENABLED = newValue;
+    }
+
+    public static getTracePrefix(): string {
+        return Logger.TRACE_PREFIX;
+    }
+
+    public static setTracePrefix(newValue: string) : void {
+        Logger.TRACE_PREFIX = newValue;
+    }
+
     public static updateTimeAdjustment(newValueInMs: number) : void
     {
-        Logger.timeAdjustmentInMs = (newValueInMs==null)?0:newValueInMs;
+        Logger.TIME_ADJUSTMENT_IN_MS = (newValueInMs==null)?0:newValueInMs;
     }
 
     public static setRingBufferSize(newSize: number) : void
     {
-        Logger.ringBufferSize = (newSize==null)?0:newSize;
+        Logger.RING_BUFFER_SIZE = (newSize==null)?0:newSize;
         Logger.clearRingBuffer();
     }
 
     private static clearRingBuffer()
     {
-        Logger.ringBuffer = [];
-        Logger.ringBufferIdx = 0;
-        Logger.info("Cleared ring buffer (size is now %d)",Logger.ringBufferSize);
+        Logger.RING_BUFFER = [];
+        Logger.RING_BUFFER_IDX = 0;
+        Logger.RING_BUFFER_LAST_SNAPSHOT_IDX = 0;
+        Logger.info("Cleared ring buffer (size is now %d)",Logger.RING_BUFFER_SIZE);
     }
 
     private static addToRingBuffer(message: string, level:string) : void
     {
-        if (Logger.ringBufferSize>0)
+        if (Logger.RING_BUFFER_SIZE>0)
         {
             let levNum = Logger.levelNumber(level);
-            if (levNum!=null && levNum<=Logger.level)
+            if (levNum!=null && levNum<=Logger.LEVEL)
             {
-                Logger.ringBuffer[Logger.ringBufferIdx % Logger.ringBufferSize] = {
+                Logger.RING_BUFFER[Logger.RING_BUFFER_IDX % Logger.RING_BUFFER_SIZE] = {
                     msg: message,
                     lvl: levNum,
-                    timestamp: new Date().getTime()+Logger.timeAdjustmentInMs
+                    timestamp: new Date().getTime()+Logger.TIME_ADJUSTMENT_IN_MS
                 } as LogMessage;
-                Logger.ringBufferIdx++; // advance
+                Logger.RING_BUFFER_IDX++; // advance
             }
         }
     }
@@ -144,18 +165,18 @@ export class Logger {
     public static getMessages(inStartFrom: number = null, clear:boolean = false, reverseSort: boolean = false) : LogMessage[]
     {
         let rval: LogMessage[] = null;
-        if (Logger.ringBufferIdx < Logger.ringBufferSize) {
+        if (Logger.RING_BUFFER_IDX < Logger.RING_BUFFER_SIZE) {
             const start:number = (inStartFrom==null)?0:inStartFrom;
-            rval = Logger.ringBuffer.slice(start, Logger.ringBufferIdx); // Use slice to get a copy (should use below too)
+            rval = Logger.RING_BUFFER.slice(start, Logger.RING_BUFFER_IDX); // Use slice to get a copy (should use below too)
         }
         else {
             rval = [];
 
-            const firstIdx = (Logger.ringBufferIdx - Logger.ringBufferSize);
+            const firstIdx = (Logger.RING_BUFFER_IDX - Logger.RING_BUFFER_SIZE);
             const startFrom = (inStartFrom) ? Math.max(inStartFrom, firstIdx) : firstIdx;
 
-            for (let i = startFrom; i < Logger.ringBufferIdx; i++) {
-                rval.push(Logger.ringBuffer[i % Logger.ringBufferSize]);
+            for (let i = startFrom; i < Logger.RING_BUFFER_IDX; i++) {
+                rval.push(Logger.RING_BUFFER[i % Logger.RING_BUFFER_SIZE]);
             }
         }
 
@@ -172,17 +193,24 @@ export class Logger {
         return rval;
     }
 
-    private static conditionallyApplyLevelToMessage(lvl: number, msg: string) : string {
-        return (Logger.includeLevelInMessage) ? '[' + Logger.levelName(lvl) + '] ' + msg : msg;
+    private static conditionallyApplyLevelAndPrefixToMessage(lvl: number, msg: string) : string {
+        const tmp: string = (Logger.TRACE_PREFIX) ?  Logger.TRACE_PREFIX + msg : msg;
+        return (Logger.INCLUDE_LEVEL_IN_MESSAGE) ? '[' + Logger.levelName(lvl) + '] ' + tmp : tmp;
+    }
+
+    private static ifConsoleLoggingEnabled(callback: Function, message: any): void {
+        if (Logger.CONSOLE_LOGGING_ENABLED) {
+            callback(message);
+        }
     }
 
     public static error(...input: any[]) : void
     {
         let msg : string = util.format.apply(null,input);
-        msg = Logger.conditionallyApplyLevelToMessage(0,msg);
-        if (Logger.level>=0)
+        msg = Logger.conditionallyApplyLevelAndPrefixToMessage(0,msg);
+        if (Logger.LEVEL>=0)
         {
-            console.error(msg);
+            Logger.ifConsoleLoggingEnabled(console.error, msg);
             Logger.addToRingBuffer(msg,'error');
         }
     }
@@ -190,10 +218,10 @@ export class Logger {
     public static warn(...input: any[]) : void
     {
         let msg : string = util.format.apply(null,input);
-        msg = Logger.conditionallyApplyLevelToMessage(1,msg);
-        if (Logger.level>=1)
+        msg = Logger.conditionallyApplyLevelAndPrefixToMessage(1,msg);
+        if (Logger.LEVEL>=1)
         {
-            console.warn(msg);
+            Logger.ifConsoleLoggingEnabled(console.warn, msg);
             Logger.addToRingBuffer(msg,'warn');
         }
     }
@@ -201,10 +229,10 @@ export class Logger {
     public static info(...input: any[]) : void
     {
         let msg : string = util.format.apply(null,input);
-        msg = Logger.conditionallyApplyLevelToMessage(2,msg);
-        if (Logger.level>=2)
+        msg = Logger.conditionallyApplyLevelAndPrefixToMessage(2,msg);
+        if (Logger.LEVEL>=2)
         {
-            console.info(msg);
+            Logger.ifConsoleLoggingEnabled(console.info, msg);
             Logger.addToRingBuffer(msg,'info');
         }
     }
@@ -212,10 +240,10 @@ export class Logger {
     public static verbose(...input: any[]) : void
     {
         let msg : string = util.format.apply(null,input);
-        msg = Logger.conditionallyApplyLevelToMessage(3,msg);
-        if (Logger.level>=3)
+        msg = Logger.conditionallyApplyLevelAndPrefixToMessage(3,msg);
+        if (Logger.LEVEL>=3)
         {
-            console.info(msg);
+            Logger.ifConsoleLoggingEnabled(console.info, msg);
             Logger.addToRingBuffer(msg,'verbose');
         }
     }
@@ -223,17 +251,17 @@ export class Logger {
     public static debug(...input: any[]) : void
     {
         let msg : string = util.format.apply(null,input);
-        msg = Logger.conditionallyApplyLevelToMessage(4,msg);
-        if (Logger.level>=4)
+        msg = Logger.conditionallyApplyLevelAndPrefixToMessage(4,msg);
+        if (Logger.LEVEL>=4)
         {
             // This is here because old versions of Node do not support console.debug
             if (console.debug)
             {
-                console.debug(msg);
+                Logger.ifConsoleLoggingEnabled(console.debug, msg);
             }
             else
             {
-                console.log(msg);
+                Logger.ifConsoleLoggingEnabled(console.log, msg);
             }
 
             Logger.addToRingBuffer(msg,'debug');
@@ -243,22 +271,22 @@ export class Logger {
     public static silly(...input: any[]) : void
     {
         let msg : string = util.format.apply(null,input);
-        msg = Logger.conditionallyApplyLevelToMessage(5,msg);
-        if (Logger.level>=5)
+        msg = Logger.conditionallyApplyLevelAndPrefixToMessage(5,msg);
+        if (Logger.LEVEL>=5)
         {
-            console.log(msg);
+            Logger.ifConsoleLoggingEnabled(console.log, msg);
             Logger.addToRingBuffer(msg,'silly');
         }
     }
 
     public static takeSnapshot(): LogSnapshot {
-        const trailingEdge = Math.max(0, Logger.ringBufferIdx - Logger.ringBufferSize);
+        const trailingEdge = Math.max(0, Logger.RING_BUFFER_IDX - Logger.RING_BUFFER_SIZE);
         const rval: LogSnapshot = {
-            messages : Logger.getMessages(Logger.ringBufferLastSnapshotIdx),
-            logMessagesTruncated : Math.max(0, trailingEdge - Logger.ringBufferLastSnapshotIdx)
+            messages : Logger.getMessages(Logger.RING_BUFFER_LAST_SNAPSHOT_IDX),
+            logMessagesTruncated : Math.max(0, trailingEdge - Logger.RING_BUFFER_LAST_SNAPSHOT_IDX)
         } as LogSnapshot;
 
-        Logger.ringBufferLastSnapshotIdx = Logger.ringBufferIdx;
+        Logger.RING_BUFFER_LAST_SNAPSHOT_IDX = Logger.RING_BUFFER_IDX;
         return rval;
     }
 

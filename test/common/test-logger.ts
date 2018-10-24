@@ -2,6 +2,7 @@ import { expect } from 'chai';
 import {Logger} from "../../src/common/logger";
 import {LogSnapshot} from '../../src/common/log-snapshot';
 
+
 describe('#levelName', function() {
     it('should return "error" for 0', function() {
         let result = Logger.levelName(0);
@@ -125,4 +126,29 @@ describe('#takeSnapshot', function() {
     });
 });
 
+
+describe('#testTracePrefix', function() {
+    it('should apply a trace prefix correctly', function() {
+        Logger.setTracePrefix('::TRACE::');
+        Logger.setRingBufferSize(3);
+        Logger.info("m1");
+        Logger.info("m2");
+        const snap1:LogSnapshot = Logger.takeSnapshot();
+
+        expect(snap1.messages.length).to.be.greaterThan(0);
+        snap1.messages.forEach(m => {
+            expect(m.msg.indexOf('::TRACE::')).to.be.greaterThan(-1);
+        });
+
+        Logger.setTracePrefix(null);
+        Logger.info("m1");
+        Logger.info("m2");
+        const snap2:LogSnapshot = Logger.takeSnapshot();
+
+        expect(snap2.messages.length).to.be.greaterThan(0);
+        snap2.messages.forEach(m => {
+            expect(m.msg.indexOf('::TRACE::')).to.eq(-1);
+        });
+    });
+});
 
