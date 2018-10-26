@@ -30,7 +30,16 @@ export class Histogram<T> {
     })
   }
 
-  public getEntries(): HistogramEntry<T>[] {
+  // No need for second level sort, since the same key can only be in there once
+  public sortKeys(): void {
+      this.entries.sort((a,b) => String(b.item).localeCompare(String(a.item)));
+  }
+
+    public reverse(): void {
+      this.entries.reverse();
+    }
+
+    public getEntries(): HistogramEntry<T>[] {
     return this.entries;
   }
 
