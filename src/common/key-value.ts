@@ -1,4 +1,3 @@
-
 /*
     Simple strongly typed key-value
 */

@@ -1,47 +1,34 @@
-
 /*
     Wrap S3 with an ability to store and retrieve objects cached as json files
 */
 
 
-import * as AWS from "aws-sdk";
-import moment = require("moment");
-import {Logger} from "../common/logger";
+import * as AWS from 'aws-sdk';
+import {Logger} from '../common/logger';
+import moment = require('moment');
 
 export class S3CacheRatchet {
-    private s3:AWS.S3;
-    private defaultBucket : string;
+    private s3: AWS.S3;
+    private defaultBucket: string;
 
-    constructor(s3: AWS.S3, defaultBucket:string = null)
-    {
-        if (!s3)
-        {
-            throw ("S3 may not be null");
+    constructor(s3: AWS.S3, defaultBucket: string = null) {
+        if (!s3) {
+            throw ('S3 may not be null');
         }
         this.s3 = s3;
         this.defaultBucket = defaultBucket;
     }
 
-    private bucketVal(explicitBucket:string) : string{
-        let rval : string = (explicitBucket)?explicitBucket:this.defaultBucket;
-        if (!rval)
-        {
-            throw "You must set either the default bucket or pass it explicitly";
-        }
-        return rval;
-    }
-
-    public fileExists(key:string, bucket:string = null): Promise<boolean> {
+    public fileExists(key: string, bucket: string = null): Promise<boolean> {
         return this.fetchMetaForCacheFile(key, this.bucketVal(bucket)).then(res => {
             return true;
-        }).catch(err=> {
+        }).catch(err => {
             Logger.silly('Error calling file exists (as expected) %s', err);
             return false;
         });
     }
 
-    public readCacheFileToString(key:string, bucket:string = null) : Promise<string>
-    {
+    public readCacheFileToString(key: string, bucket: string = null): Promise<string> {
         const params = {
             Bucket: this.bucketVal(bucket),
             Key: key
@@ -65,103 +52,86 @@ export class S3CacheRatchet {
         });
     }
 
-
-    public readCacheFileToObject<T>(key:string, bucket:string = null) : Promise<T>
-    {
+    public readCacheFileToObject<T>(key: string, bucket: string = null): Promise<T> {
         return this.readCacheFileToString(key, bucket).then(value => {
-            return (value)?JSON.parse(value) as T:null;
+            return (value) ? JSON.parse(value) as T : null;
         });
     }
 
-    public removeCacheFile(key:string, bucket:string = null) : Promise<any>
-    {
+    public removeCacheFile(key: string, bucket: string = null): Promise<any> {
         let params = {
             Bucket: this.bucketVal(bucket),
             Key: key
         };
 
-        return this.s3.deleteObject(params).promise().then(res=>{
+        return this.s3.deleteObject(params).promise().then(res => {
             return res;
-        }).catch(err=>{
-            if (err && err.statusCode==404)
-            {
-                Logger.info("Swallowing 404 deleting missing object %s %s", bucket, key);
+        }).catch(err => {
+            if (err && err.statusCode == 404) {
+                Logger.info('Swallowing 404 deleting missing object %s %s', bucket, key);
                 return null;
             }
-            else
-            {
+            else {
                 throw err;
             }
         })
     }
 
-
     // Given new board data, write it to the S3 file and set the refresh flag appropriately
-    public writeObjectToCacheFile(key:string, dataObject:any, bucket:string = null, meta: any = {},
-                                         cacheControl: string='max-age=30', contentType : string='application/json') : Promise<any>
-    {
+    public writeObjectToCacheFile(key: string, dataObject: any, bucket: string = null, meta: any = {},
+                                  cacheControl: string = 'max-age=30', contentType: string = 'application/json'): Promise<any> {
         let json = JSON.stringify(dataObject);
         return this.writeStringToCacheFile(key, json, bucket, meta, cacheControl, contentType);
     }
 
-
-
     // Given new board data, write it to the S3 file and set the refresh flag appropriately
-    public writeStringToCacheFile(key:string, dataString:string, bucket:string = null, meta: any = {},
-                                  cacheControl: string='max-age=30', contentType : string='text/plain') : Promise<any>
-    {
+    public writeStringToCacheFile(key: string, dataString: string, bucket: string = null, meta: any = {},
+                                  cacheControl: string = 'max-age=30', contentType: string = 'text/plain'): Promise<any> {
         let params = {
             Bucket: this.bucketVal(bucket),
             Key: key,
             Body: dataString,
-            CacheControl:cacheControl,
-            ContentType:contentType,
-            Metadata:meta,
+            CacheControl: cacheControl,
+            ContentType: contentType,
+            Metadata: meta,
         };
 
         return this.s3.putObject(params).promise();
     }
 
-    public fetchMetaForCacheFile(key:string, bucket:string = null): Promise<any>
-    {
-        return this.s3.headObject({Bucket:this.bucketVal(bucket), Key:key}).promise();
+    public fetchMetaForCacheFile(key: string, bucket: string = null): Promise<any> {
+        return this.s3.headObject({Bucket: this.bucketVal(bucket), Key: key}).promise();
     }
 
-    public cacheFileAgeInSeconds(key:string, bucket:string = null): Promise<number>
-    {
-        return this.s3.headObject({Bucket:this.bucketVal(bucket), Key:key}).promise().then(res=>{
-            if (res && res.LastModified)
-            {
+    public cacheFileAgeInSeconds(key: string, bucket: string = null): Promise<number> {
+        return this.s3.headObject({Bucket: this.bucketVal(bucket), Key: key}).promise().then(res => {
+            if (res && res.LastModified) {
                 let mom = moment(res.LastModified);
-                return moment().unix()-mom.unix();
+                return moment().unix() - mom.unix();
             }
-            else
-            {
-                Logger.warn("Cache file %s %s had no last modified returning null", this.bucketVal(bucket), key);
+            else {
+                Logger.warn('Cache file %s %s had no last modified returning null', this.bucketVal(bucket), key);
                 return null;
             }
-        }).catch(err=>{
-            if (err && err.statusCode==404)
-            {
-                Logger.warn("Cache file %s %s not found returning null", this.bucketVal(bucket), key);
+        }).catch(err => {
+            if (err && err.statusCode == 404) {
+                Logger.warn('Cache file %s %s not found returning null', this.bucketVal(bucket), key);
                 return null;
             }
-            else
-            {
+            else {
                 throw err;
             }
         })
     }
 
-
-    public createDownloadLink(key:string, secondsUntilExpiration:number=3600, bucket:string = null):  string // URL
+    public createDownloadLink(key: string, secondsUntilExpiration: number = 3600, bucket: string = null): string // URL
     {
         let params = {Bucket: this.bucketVal(bucket), Key: key, ExpiresIn: secondsUntilExpiration};
         let url = this.s3.getSignedUrl('getObject', params);
         return url;
     }
 
-    public  directChildrenOfPrefix(prefix:string, expandFiles:boolean=false, bucket:string = null ) : Promise<string[]> {
+    public directChildrenOfPrefix(prefix: string, expandFiles: boolean = false, bucket: string = null): Promise<string[]> {
         let returnValue = [];
 
         let params = {
@@ -198,6 +168,14 @@ export class S3CacheRatchet {
             }
             return returnValue;
         });
+    }
+
+    private bucketVal(explicitBucket: string): string {
+        let rval: string = (explicitBucket) ? explicitBucket : this.defaultBucket;
+        if (!rval) {
+            throw 'You must set either the default bucket or pass it explicitly';
+        }
+        return rval;
     }
 
 

@@ -1,4 +1,4 @@
-import {LogMessage} from "./log-message";
+import {LogMessage} from './log-message';
 
 export interface LogSnapshot {
     logMessagesTruncated: number;

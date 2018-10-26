@@ -1,4 +1,3 @@
-
 /*
     Wraps up the job of caching objects to S3 and doing simple read-thru caching
 
@@ -11,11 +10,12 @@ import {S3CacheRatchet} from './s3-cache-ratchet';
 import {CacheObjectProducer} from './cache-object-producer';
 import {Logger} from '../common/logger';
 
-export class SimpleCache<T,R> {
+export class SimpleCache<T, R> {
 
-    constructor(private s3CacheRatchet: S3CacheRatchet, private cacheObjectProducer: CacheObjectProducer<T,R>){}
+    constructor(private s3CacheRatchet: S3CacheRatchet, private cacheObjectProducer: CacheObjectProducer<T, R>) {
+    }
 
-    public async fetch(key: R, maxStalenessSeconds?: number) : Promise<T> {
+    public async fetch(key: R, maxStalenessSeconds?: number): Promise<T> {
         const path = this.cacheObjectProducer.keyToPath(key);
         let useCache: boolean = true;
         let rval: T = null;
@@ -33,7 +33,7 @@ export class SimpleCache<T,R> {
         return rval;
     }
 
-    public async update(key: R) : Promise<T> {
+    public async update(key: R): Promise<T> {
         const path: string = this.cacheObjectProducer.keyToPath(key);
         Logger.info('Generating new value for %j to %s', key, path);
         const newOb: T = await this.cacheObjectProducer.generate(key);
@@ -42,7 +42,7 @@ export class SimpleCache<T,R> {
         return written;
     }
 
-    public async clear(key: R) : Promise<boolean> {
+    public async clear(key: R): Promise<boolean> {
         try {
             const path: string = this.cacheObjectProducer.keyToPath(key);
             Logger.info('Clearing cache object for %j at %s', key, path);

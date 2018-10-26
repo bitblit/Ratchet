@@ -1,9 +1,6 @@
-
 /*
     Functions for working with strings
 */
-
-import {Logger} from "./logger";
 
 export class StringRatchet {
     // % isn't technically reserved but its still a pain in the butt
@@ -19,17 +16,17 @@ export class StringRatchet {
 
     public static createRandomHexString(len: number = 10): string {
         let r = '';
-        for (let i=0; i< len; i++) {
+        for (let i = 0; i < len; i++) {
             r += Math.floor((Math.random() * 16)).toString(16);
         }
         return r;
     }
 
-    public static canonicalize(value:string): string {
-        let rval = (value)?value.toLowerCase():'';
+    public static canonicalize(value: string): string {
+        let rval = (value) ? value.toLowerCase() : '';
 
-        rval = rval.replace(" ","-");
-        StringRatchet.RFC_3986_RESERVED.forEach(s=>{
+        rval = rval.replace(' ', '-');
+        StringRatchet.RFC_3986_RESERVED.forEach(s => {
             rval = rval.replace(s, '');
         });
 
@@ -37,8 +34,8 @@ export class StringRatchet {
     }
 
     // Taken from https://stackoverflow.com/questions/15900485/correct-way-to-convert-size-in-bytes-to-kb-mb-gb-in-javascript
-    public static formatBytes(bytes : number,decimals:number=2) {
-        if(bytes == 0) return '0 Bytes';
+    public static formatBytes(bytes: number, decimals: number = 2) {
+        if (bytes == 0) return '0 Bytes';
         var k = 1024,
             dm = decimals || 2,
             sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'],
@@ -47,17 +44,14 @@ export class StringRatchet {
     }
 
     // Converts anything that isn't a string to a string
-    public static safeString(input: any) : string{
-        let rval : string = null;
-        if (input != null)
-        {
-            let type : string = typeof input;
-            if (type == 'string')
-            {
+    public static safeString(input: any): string {
+        let rval: string = null;
+        if (input != null) {
+            let type: string = typeof input;
+            if (type == 'string') {
                 rval = input;
             }
-            else
-            {
+            else {
                 rval = String(input);
             }
         }
@@ -65,7 +59,7 @@ export class StringRatchet {
     }
 
     public static stringContainsOnlyNumbers(input: string): boolean {
-        const rval : boolean =  /^[0-9]+$/.test(input);
+        const rval: boolean = /^[0-9]+$/.test(input);
         return rval;
     }
 
@@ -77,19 +71,19 @@ export class StringRatchet {
         let pl: number = prefixLength;
         let sl: number = suffixLength;
 
-        while (len>0 && len<(pl+sl+1)) {
-            pl = Math.max(0, pl-1);
-            sl = Math.max(0, sl-1);
+        while (len > 0 && len < (pl + sl + 1)) {
+            pl = Math.max(0, pl - 1);
+            sl = Math.max(0, sl - 1);
         }
-        const rem = len - (pl+sl);
+        const rem = len - (pl + sl);
 
         let rval: string = '';
-        rval += input.substring(0,pl);
+        rval += input.substring(0, pl);
         // Yeah, I know.  I'm in a rush here
-        for (let i=0; i<rem; i++){
+        for (let i = 0; i < rem; i++) {
             rval += '*';
         }
-        rval += input.substring(len-sl);
+        rval += input.substring(len - sl);
         return rval;
     }
 

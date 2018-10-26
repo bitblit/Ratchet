@@ -1,7 +1,7 @@
-import { Observable } from 'rxjs/Observable';
-import { Observer } from 'rxjs/Observer';
-import { race } from 'rxjs/observable/race';
-import {Logger} from "./logger";
+import {Observable} from 'rxjs/Observable';
+import {Observer} from 'rxjs/Observer';
+import {race} from 'rxjs/observable/race';
+import {Logger} from './logger';
 
 /**
  * A class for simplifying working with rxjs observables.

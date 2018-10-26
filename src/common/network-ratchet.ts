@@ -1,22 +1,21 @@
-
 /*
     Functions for simplifying some networking tasks
 */
 
-import {Logger} from "./logger";
-import {ParsedUrl} from "./parsed-url";
+import {Logger} from './logger';
+import {ParsedUrl} from './parsed-url';
 
 export class NetworkRatchet {
-    private static LOCAL_IP : string = null;
+    private static LOCAL_IP: string = null;
 
-    public static findLocalIp(useCache: boolean = true) : Promise<string>{
-        Logger.info("Attempting to find local IP (V 2)");
+    public static findLocalIp(useCache: boolean = true): Promise<string> {
+        Logger.info('Attempting to find local IP (V 2)');
         if (NetworkRatchet.LOCAL_IP && useCache) {
             return Promise.resolve(NetworkRatchet.LOCAL_IP);
         }
         else {
-            if (typeof window !== "undefined") {
-                return new Promise<string>(function(resolve,reject) {
+            if (typeof window !== 'undefined') {
+                return new Promise<string>(function (resolve, reject) {
                     try {
                         // NOTE: window.RTCPeerConnection is "not a constructor" in FF22/23
                         let RTCPeerConnection = window['RTCPeerConnection'] || window['webkitRTCPeerConnection'] || window['mozRTCPeerConnection'];
@@ -25,7 +24,7 @@ export class NetworkRatchet {
                             let rtc = new RTCPeerConnection({iceServers: []});
 
                             let addrs = Object.create(null);
-                            addrs["0.0.0.0"] = false;
+                            addrs['0.0.0.0'] = false;
 
                             if (1 || window['mozRTCPeerConnection']) {      // FF [and now Chrome!] needs a channel/stream to proceed
                                 rtc.createDataChannel('', {reliable: false});
@@ -34,9 +33,8 @@ export class NetworkRatchet {
                             rtc.onicecandidate = function (evt) {
                                 // convert the candidate to SDP so we can run it through our general parser
                                 // see https://twitter.com/lancestout/status/525796175425720320 for details
-                                if (evt.candidate)
-                                {
-                                    NetworkRatchet.grepSDP("a=" + evt.candidate.candidate, addrs, resolve);
+                                if (evt.candidate) {
+                                    NetworkRatchet.grepSDP('a=' + evt.candidate.candidate, addrs, resolve);
                                 }
                             };
 
@@ -44,35 +42,33 @@ export class NetworkRatchet {
                                 NetworkRatchet.grepSDP(offerDesc.sdp, addrs, resolve);
                                 rtc.setLocalDescription(offerDesc);
                             }, function (e) {
-                                Logger.warn("Offer failed : %s",e);
-                                resolve(NetworkRatchet.updateLocalIP("FIND_UNSUPPORTED"));
+                                Logger.warn('Offer failed : %s', e);
+                                resolve(NetworkRatchet.updateLocalIP('FIND_UNSUPPORTED'));
                             });
 
                         }
                         else {
-                            Logger.warn("IP Address find not supported on this device");
-                            resolve(NetworkRatchet.updateLocalIP("FIND_UNSUPPORTED"));
+                            Logger.warn('IP Address find not supported on this device');
+                            resolve(NetworkRatchet.updateLocalIP('FIND_UNSUPPORTED'));
                         }
                     }
-                catch (err)
-                    {
-                        Logger.warn("Error finding local ip address : %s",err);
-                        resolve(NetworkRatchet.updateLocalIP("ERROR"));
+                    catch (err) {
+                        Logger.warn('Error finding local ip address : %s', err);
+                        resolve(NetworkRatchet.updateLocalIP('ERROR'));
                     }
                 })
             }
-            else
-            {
-                Logger.warn("Window not found, cannot calculate local ip");
-                return Promise.resolve(NetworkRatchet.updateLocalIP("NO_WINDOW"));
+            else {
+                Logger.warn('Window not found, cannot calculate local ip');
+                return Promise.resolve(NetworkRatchet.updateLocalIP('NO_WINDOW'));
             }
         }
     }
 
     // Break a url into a structure that is similar to what window.location returns
-    public static parseUrl(href:string) : ParsedUrl {
+    public static parseUrl(href: string): ParsedUrl {
         var match = href.match(/^(https?\:)\/\/(([^:\/?#]*)(?:\:([0-9]+))?)([\/]{0,1}[^?#]*)(\?[^#]*|)(#.*|)$/);
-        var rval : ParsedUrl =  match && {
+        var rval: ParsedUrl = match && {
             href: href,
             protocol: match[1],
             host: match[2],
@@ -86,23 +82,22 @@ export class NetworkRatchet {
     }
 
     // Just a helper function to make the build pattern here easier
-    private static updateLocalIP(newIp:string) : string {
+    private static updateLocalIP(newIp: string): string {
         NetworkRatchet.LOCAL_IP = newIp;
         return NetworkRatchet.LOCAL_IP;
     }
 
-    private static grepSDP(sdp, addrs, resolve) :void {
+    private static grepSDP(sdp, addrs, resolve): void {
         let hosts = [];
         sdp.split('\r\n').forEach(function (line) { // c.f. http://tools.ietf.org/html/rfc4566#page-39
-            if (~line.indexOf("a=candidate")) {     // http://tools.ietf.org/html/rfc4566#section-5.13
+            if (~line.indexOf('a=candidate')) {     // http://tools.ietf.org/html/rfc4566#section-5.13
                 var parts = line.split(' '),        // http://tools.ietf.org/html/rfc5245#section-15.1
                     addr = parts[4],
                     type = parts[7];
-                if (type === 'host')
-                {
+                if (type === 'host') {
                     NetworkRatchet.updateAddressList(addr, addrs, resolve);
                 }
-            } else if (~line.indexOf("c=")) {       // http://tools.ietf.org/html/rfc4566#section-5.7
+            } else if (~line.indexOf('c=')) {       // http://tools.ietf.org/html/rfc4566#section-5.7
                 var parts = line.split(' '),
                     addr = parts[2];
                 NetworkRatchet.updateAddressList(addr, addrs, resolve);
@@ -110,7 +105,7 @@ export class NetworkRatchet {
         });
     }
 
-    private static updateAddressList(newAddr, addrs ,resolve) : void {
+    private static updateAddressList(newAddr, addrs, resolve): void {
         if (newAddr in addrs) return;
         else addrs[newAddr] = true;
         let displayAddrs = Object.keys(addrs).filter(function (k) {
@@ -121,7 +116,7 @@ export class NetworkRatchet {
         }
         else {
             let multi = displayAddrs.sort().join(',');
-            Logger.warn("Multiple addresses found, returning sorted join : %s",multi);
+            Logger.warn('Multiple addresses found, returning sorted join : %s', multi);
             resolve(NetworkRatchet.updateLocalIP(multi));
         }
     }
@@ -196,7 +191,6 @@ export class NetworkRatchet {
         }
     }
     */
-
 
 
 }

@@ -1,4 +1,3 @@
-
 /*
     Functions for working with maps (dictionaries/objects in javascript)
 */
@@ -7,16 +6,12 @@ import {KeyValue} from './key-value';
 
 export class MapRatchet {
 
-    public static findValue(toSearch: any, path:string[]) : any
-    {
-        if (!path || path.length==0)
-        {
+    public static findValue(toSearch: any, path: string[]): any {
+        if (!path || path.length == 0) {
             return toSearch;
         }
-        else
-        {
-            if (toSearch)
-            {
+        else {
+            if (toSearch) {
                 return MapRatchet.findValue(toSearch[path[0]], path.slice(1));
             }
             else {
@@ -47,9 +42,9 @@ export class MapRatchet {
         return returnArray;
     }
 
-    public static fromKeyValueList(list:KeyValue[]):any {
-        let rval : any = {};
-        list.forEach(a=>rval[a.key]=a.value);
+    public static fromKeyValueList(list: KeyValue[]): any {
+        let rval: any = {};
+        list.forEach(a => rval[a.key] = a.value);
         return rval;
     }
 
@@ -58,7 +53,7 @@ export class MapRatchet {
     any empty strings, nulls, etc
      */
     public static cleanup<T>(obj: T, stripZero: boolean = false, stripNull: boolean = true, stripUndefined: boolean = true, stripEmptyString: boolean = true
-                          ): T {
+    ): T {
         // See : https://stackoverflow.com/questions/286141/remove-blank-attributes-from-an-object-in-javascript
         if (obj === null || obj === undefined || typeof obj !== 'object') {
             return obj;
@@ -68,7 +63,7 @@ export class MapRatchet {
         Object.keys(o).forEach(key => {
             if (o[key] && typeof o[key] === 'object') {
                 if (Array.isArray(o[key])) {
-                    for (let i=0; i<o[key].length; i++) {
+                    for (let i = 0; i < o[key].length; i++) {
                         o[key][i] = MapRatchet.cleanup(o[key][i]);
                     }
                 } else {

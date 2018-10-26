@@ -1,5 +1,4 @@
-export interface HttpCustomResultWrapper
-{
-    httpStatusCode : number;
+export interface HttpCustomResultWrapper {
+    httpStatusCode: number;
     data: any;
 }
