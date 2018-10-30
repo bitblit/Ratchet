@@ -87,5 +87,15 @@ export class StringRatchet {
         return rval;
     }
 
+    public static leadingZeros(val: any, size: number): string {
+        const pad = '00000000000000000000000000000000000000000000000000';
+        if (size > pad.length) {
+            throw new Error('Cannot format number that large');
+        }
+
+        return (pad + String(val)).slice(-1 * size);
+    }
+
+
 }
 

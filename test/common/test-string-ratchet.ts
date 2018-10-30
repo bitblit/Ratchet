@@ -89,3 +89,12 @@ describe('#randomHexString', function() {
     });
 
 });
+
+
+describe('#leadingZeros', function() {
+    it('should generate string with leading zeros"', function() {
+        let result = StringRatchet.leadingZeros(25, 4);
+        expect(result).to.equal('0025');
+    });
+
+});
