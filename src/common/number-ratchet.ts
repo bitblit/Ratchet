@@ -43,5 +43,16 @@ export class NumberRatchet {
         return rval;
     }
 
+    public static numberCSVToList(inputCSV:string): number[] {
+        let rval: number[] = null;
+        if (inputCSV) {
+            rval = inputCSV.split(',').map( s => {
+                return NumberRatchet.safeNumber(s.trim());
+            });
+            rval = rval.filter( r => (typeof r === 'number') && !isNaN(r))
+        }
+        return rval;
+    }
+
 }
 

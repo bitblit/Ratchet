@@ -18,3 +18,22 @@ describe('#safeToNumber', function() {
     });
 
 });
+
+describe('#parseCSV', function() {
+    it('should convert "1,2,3" to [1,2,3]', function() {
+        let result : number[] = NumberRatchet.numberCSVToList('1,2,3');
+        expect(result.length).to.equal(3);
+    });
+
+    it('should convert " 1, 2,3  " to [1,2,3]', function() {
+        let result : number[] = NumberRatchet.numberCSVToList(' 1, 2,3 ');
+        expect(result.length).to.equal(3);
+    });
+
+    it('should convert " a1, 2,b  " to [2]', function() {
+        let result : number[] = NumberRatchet.numberCSVToList(' a1, 2,b  ');
+        expect(result.length).to.equal(1);
+        expect(result[0]).to.equal(2);
+    });
+
+});
