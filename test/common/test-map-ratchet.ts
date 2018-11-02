@@ -34,6 +34,17 @@ describe('#toKeyValueList', function() {
     });
 
 
+    it('should extract values ignoring case', function() {
+        const test: any = {
+            'this-Test': 'a',
+            'test22': 'b'
+        }
+
+        expect(MapRatchet.extractValueFromMapIgnoreCase(test, 'THIS-TEST')).to.equal('a');
+        expect(MapRatchet.extractValueFromMapIgnoreCase(test, 'tEst22')).to.equal('b');
+
+    });
+
 
 
 });

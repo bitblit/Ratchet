@@ -3,6 +3,7 @@
 */
 
 import {KeyValue} from './key-value';
+import {Logger} from './logger';
 
 export class MapRatchet {
 
@@ -80,6 +81,24 @@ export class MapRatchet {
         });
 
         return o; // Return new object.
+    }
+
+
+    public static extractValueFromMapIgnoreCase(src: any, key: string): any {
+        let rval: any = null;
+        if (src && key) {
+            const finder: string = key.toLowerCase();
+            Object.keys(src).forEach(s => {
+                if (s.toLowerCase() === finder) {
+                    const newVal: string = src[s];
+                    if (rval) {
+                        Logger.warn('Multiple entries found for %s (replacing %s with %s', key, rval, newVal);
+                    }
+                    rval = newVal;
+                }
+            });
+        }
+        return rval;
     }
 
 }
