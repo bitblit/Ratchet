@@ -47,6 +47,15 @@ One more note on the AWS stuff - for most of my non-super-heavy-load stuff I wor
 because I am lazy and because that is where AWS releases the new stuff first.  Because of this, you will see that 
 while my code allows you to override the region, I always set a biased default.  If you don't like that... sorry?
 
+#### Daemon
+
+The Daemon subpackage is to handle the case on AWS where you want to run a process asynchronously via Lambda (not waiting
+for the return on a API Gateway request) and check its results until it is finished.  Daemon offers a thin wrapper around
+an S3 object that can be updated until it is finally replaced by the final results themselves.  The end customer can
+be given the key to check on synchronously.  Items are broken down by day (for easy flushing later) and by groups if 
+desired.
+
+
 ## Site Uploader
 There is a tool in here called site uploader that is designed to help put completely static sites into S3 (basically
 a glorified **aws s3 cp --recursive ...**), while allowing you to set some of the more popular HTTP headers like
