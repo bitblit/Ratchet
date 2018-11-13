@@ -9,7 +9,7 @@ import {StringRatchet} from '../../common/string-ratchet';
 export class Daemon {
     public static DEFAULT_GROUP: string = 'DEFAULT';
     public static DEFAULT_CONTENT: Buffer = Buffer.from('DAEMON_PLACEHOLDER');
-    public static DAEMON_METADATA_KEY: string = 'DAEMON_META';
+    public static DAEMON_METADATA_KEY: string = 'daemon_meta'; // Must be lowercase for s3
 
     private cache: S3CacheRatchet;
 
@@ -100,7 +100,8 @@ export class Daemon {
             if (stat.completedEpochMS && !stat.error) {
                 stat.link = this.cache.preSignedDownloadUrlForCacheFile(path);
             }
-
+        } else {
+            Logger.warn('No metadata found!');
         }
         return stat;
     }
