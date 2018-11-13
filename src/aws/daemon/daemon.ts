@@ -76,7 +76,11 @@ export class Daemon {
     }
 
     public async list(group: string = Daemon.DEFAULT_GROUP, date: Date = new Date()): Promise<string[]> {
-        return this.cache.directChildrenOfPrefix(this.generatePrefix(group, date));
+        const prefix: string = this.generatePrefix(group, date);
+        Logger.info('Fetching children of %s', prefix);
+        const rval: string[] = await this.cache.directChildrenOfPrefix(prefix);
+        Logger.debug('Found : %j', rval);
+        return rval;
     }
 
     public async updateMessage(id:string, newMessage: string): Promise<DaemonProcessState> {
@@ -117,6 +121,7 @@ export class Daemon {
     }
 
     public async finalize(id:string, contents: Buffer): Promise<DaemonProcessState> {
+        Logger.info('Finalizing daemon %s with %d bytes', id, contents.length);
         const inStat: DaemonProcessState = await this.stat(id);
         inStat.completedEpochMS = new Date().getTime();
         inStat.lastUpdatedMessage = 'Complete';
