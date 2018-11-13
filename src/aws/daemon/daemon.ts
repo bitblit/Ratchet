@@ -53,7 +53,8 @@ export class Daemon {
             contentType: contentType
         } as DaemonProcessState;
 
-        return this.writeStat(newState, Daemon.DEFAULT_CONTENT);
+        const rval: DaemonProcessState = await this.writeStat(newState, Daemon.DEFAULT_CONTENT);
+        return rval;
     }
 
     private async writeStat(newState: DaemonProcessState, contents: Buffer): Promise<DaemonProcessState> {
@@ -85,9 +86,11 @@ export class Daemon {
     }
 
     public async stat(id:string): Promise<DaemonProcessState> {
+        const path: string = this.keyToPath(id);
+        Logger.debug('Daemon stat for %s (path %s)', id, path);
         let stat: DaemonProcessState = null;
 
-        const path: string = this.keyToPath(id);
+
         const meta: any = await this.cache.fetchMetaForCacheFile(path);
         Logger.debug('Daemon: Meta is %j', meta);
         const metaString: string = (meta && meta['Metadata']) ? meta['Metadata'][Daemon.DAEMON_METADATA_KEY] : null;
