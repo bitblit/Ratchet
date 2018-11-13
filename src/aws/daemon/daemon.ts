@@ -26,11 +26,11 @@ export class Daemon {
     }
 
     private generatePath(group: string = Daemon.DEFAULT_GROUP, date:Date = new Date()): string {
-        return this.generatePrefix(group, date) + '/' + StringRatchet.createType4Guid();
+        return this.generatePrefix(group, date) + StringRatchet.createType4Guid();
     }
 
     private generatePrefix(group: string = Daemon.DEFAULT_GROUP, date:Date = new Date()): string {
-        return this.prefix + moment(date).tz(this.timeZone).format('YYYY/MM/DD') + '/' + group;
+        return this.prefix + moment(date).tz(this.timeZone).format('YYYY/MM/DD') + '/' + group + '/';
     }
 
     public async start(title: string, contentType: string, group: string = Daemon.DEFAULT_GROUP , meta: any={}): Promise<DaemonProcessState> {
