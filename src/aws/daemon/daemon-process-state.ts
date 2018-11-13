@@ -3,6 +3,8 @@ export interface DaemonProcessState {
     id: string;
 
     title: string;
+    targetFileName: string;
+
     lastUpdatedEpochMS: number;
     lastUpdatedMessage: string;
 

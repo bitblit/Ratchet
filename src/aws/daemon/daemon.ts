@@ -8,7 +8,7 @@ import {StringRatchet} from '../../common/string-ratchet';
 
 export class Daemon {
     public static DEFAULT_GROUP: string = 'DEFAULT';
-    public static DEFAULT_CONTENT: string = 'DAEMON_PLACEHOLDER';
+    public static DEFAULT_CONTENT: Buffer = Buffer.from('DAEMON_PLACEHOLDER');
     public static DAEMON_METADATA_KEY: string = 'DAEMON_META';
 
     private cache: S3CacheRatchet;
@@ -17,7 +17,15 @@ export class Daemon {
         this.cache = new S3CacheRatchet(this.s3, this.bucket);
     }
 
-    private generateKey(group: string = Daemon.DEFAULT_GROUP, date:Date = new Date()): string {
+    private keyToPath(key: string): string {
+        return Buffer.from(key, 'base64').toString();
+    }
+
+    private pathToKey(path: string): string {
+        return Buffer.from(path).toString('base64');
+    }
+
+    private generatePath(group: string = Daemon.DEFAULT_GROUP, date:Date = new Date()): string {
         return this.generatePrefix(group, date) + '/' + StringRatchet.createType4Guid();
     }
 
@@ -27,7 +35,7 @@ export class Daemon {
 
     public async start(title: string, contentType: string, group: string = Daemon.DEFAULT_GROUP , meta: any={}): Promise<DaemonProcessState> {
         Logger.info('Starting daemon, group: %s, title: %s, content: %s, meta: %j', group, title, contentType, meta);
-        const key: string = this.generateKey(group);
+        const key: string = this.pathToKey(this.generatePath(group));
         const now: number = new Date().getTime();
 
         const newState: DaemonProcessState = {
@@ -45,17 +53,17 @@ export class Daemon {
             contentType: contentType
         } as DaemonProcessState;
 
-        return this.writeStat(newState);
+        return this.writeStat(newState, Daemon.DEFAULT_CONTENT);
     }
 
-    private async writeStat(newState: DaemonProcessState, contents: Buffer = Buffer.from(Daemon.DEFAULT_CONTENT)): Promise<DaemonProcessState> {
+    private async writeStat(newState: DaemonProcessState, contents: Buffer): Promise<DaemonProcessState> {
         const s3meta: any = {};
         newState.lastUpdatedEpochMS = new Date().getTime();
         s3meta[Daemon.DAEMON_METADATA_KEY] = JSON.stringify(newState);
 
         const params = {
             Bucket: this.bucket,
-            Key: newState.id,
+            Key: this.keyToPath(newState.id),
             ContentType: newState.contentType,
             Metadata: s3meta,
             Body: contents
@@ -73,17 +81,23 @@ export class Daemon {
     public async updateMessage(id:string, newMessage: string): Promise<DaemonProcessState> {
         const inStat: DaemonProcessState = await this.stat(id);
         inStat.lastUpdatedMessage = newMessage;
-        return this.writeStat(inStat);
+        return this.writeStat(inStat, Daemon.DEFAULT_CONTENT);
     }
 
     public async stat(id:string): Promise<DaemonProcessState> {
         let stat: DaemonProcessState = null;
 
-        const meta: any = await this.cache.fetchMetaForCacheFile(id);
+        const path: string = this.keyToPath(id);
+        const meta: any = await this.cache.fetchMetaForCacheFile(path);
         Logger.debug('Daemon: Meta is %j', meta);
         const metaString: string = (meta && meta['Metadata']) ? meta['Metadata'][Daemon.DAEMON_METADATA_KEY] : null;
         if (metaString) {
             stat = JSON.parse(metaString) as DaemonProcessState;
+
+            if (stat.completedEpochMS && !stat.error) {
+                stat.link = this.cache.preSignedDownloadUrlForCacheFile(path);
+            }
+
         }
         return stat;
     }
@@ -95,12 +109,14 @@ export class Daemon {
         const inStat: DaemonProcessState = await this.stat(id);
         inStat.error = error;
         inStat.completedEpochMS = new Date().getTime();
-        return this.writeStat(inStat);
+        return this.writeStat(inStat, Daemon.DEFAULT_CONTENT);
     }
 
     public async finalize(id:string, contents: Buffer): Promise<DaemonProcessState> {
         const inStat: DaemonProcessState = await this.stat(id);
         inStat.completedEpochMS = new Date().getTime();
+        inStat.lastUpdatedMessage = 'Complete';
+
         return this.writeStat(inStat, contents);
     }
 

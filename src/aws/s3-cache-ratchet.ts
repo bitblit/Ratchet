@@ -99,6 +99,15 @@ export class S3CacheRatchet {
         return this.s3.putObject(params).promise();
     }
 
+    public preSignedDownloadUrlForCacheFile(key: string, expirationSeconds:number = 3600, bucket: string = null) : string {
+        const link: string = this.s3.getSignedUrl('getObject', {
+            Bucket: this.bucketVal(bucket),
+            Key: key,
+            Expires: expirationSeconds,
+        });
+        return link;
+    }
+
     public fetchMetaForCacheFile(key: string, bucket: string = null): Promise<any> {
         return this.s3.headObject({Bucket: this.bucketVal(bucket), Key: key}).promise();
     }
