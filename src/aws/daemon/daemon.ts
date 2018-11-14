@@ -24,12 +24,12 @@ export class Daemon {
         return Buffer.from(path).toString('base64');
     }
 
-    private generatePath(group: string = Daemon.DEFAULT_GROUP, date:Date = new Date()): string {
-        return this.generatePrefix(group, date) + StringRatchet.createType4Guid();
+    private generatePath(group: string = Daemon.DEFAULT_GROUP): string {
+        return this.generatePrefix(group) + StringRatchet.createType4Guid();
     }
 
-    private generatePrefix(group: string = Daemon.DEFAULT_GROUP, date:Date = new Date()): string {
-        return this.prefix + '/' + group + '/';
+    private generatePrefix(group: string = Daemon.DEFAULT_GROUP): string {
+        return this.prefix + group + '/';
     }
 
     public async start(title: string, contentType: string, group: string = Daemon.DEFAULT_GROUP , meta: any={}): Promise<DaemonProcessState> {
