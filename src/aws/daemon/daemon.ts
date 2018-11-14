@@ -104,7 +104,7 @@ export class Daemon {
         const prefix: string = this.generatePrefix(group);
         Logger.info('Fetching children of %s', prefix);
         const keys: string[] = await this.listKeys(group);
-        const proms: Promise<DaemonProcessState>[] = keys.map(k => this.stat(this.generatePrefix(group) + k));
+        const proms: Promise<DaemonProcessState>[] = keys.map(k => this.stat(this.pathToKey(this.generatePrefix(group) + k)));
         const rval: DaemonProcessState[] = await Promise.all(proms);
 
         return rval;
