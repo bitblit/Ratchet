@@ -75,11 +75,22 @@ export class Daemon {
         return this.stat(newState.id);
     }
 
-    public async list(group: string = Daemon.DEFAULT_GROUP, date: Date = new Date()): Promise<string[]> {
+    public async listKeys(group: string = Daemon.DEFAULT_GROUP, date: Date = new Date()): Promise<string[]> {
         const prefix: string = this.generatePrefix(group, date);
         Logger.info('Fetching children of %s', prefix);
         const rval: string[] = await this.cache.directChildrenOfPrefix(prefix);
         Logger.debug('Found : %j', rval);
+        return rval;
+    }
+
+
+    public async list(group: string = Daemon.DEFAULT_GROUP, date: Date = new Date()): Promise<DaemonProcessState[]> {
+        const prefix: string = this.generatePrefix(group, date);
+        Logger.info('Fetching children of %s', prefix);
+        const keys: string[] = await this.listKeys(group, date);
+        const proms: Promise<DaemonProcessState>[] = keys.map(k => this.stat(k));
+        const rval: DaemonProcessState[] = await Promise.all(proms);
+
         return rval;
     }
 
