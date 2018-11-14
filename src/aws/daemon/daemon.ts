@@ -4,6 +4,7 @@ import {Logger} from '../../common/logger';
 import {DaemonProcessState} from './daemon-process-state';
 import {S3CacheRatchet} from '../s3-cache-ratchet';
 import {StringRatchet} from '../../common/string-ratchet';
+import {DaemonProcessCreateOptions} from './daemon-process-create-options';
 
 export class Daemon {
     public static DEFAULT_GROUP: string = 'DEFAULT';
@@ -32,24 +33,28 @@ export class Daemon {
         return this.prefix + group + '/';
     }
 
-    public async start(title: string, contentType: string, group: string = Daemon.DEFAULT_GROUP , meta: any={}): Promise<DaemonProcessState> {
-        Logger.info('Starting daemon, group: %s, title: %s, content: %s, meta: %j', group, title, contentType, meta);
-        const key: string = this.pathToKey(this.generatePath(group));
+    public async start(options: DaemonProcessCreateOptions): Promise<DaemonProcessState> {
+        options.group = options.group || Daemon.DEFAULT_GROUP;
+        options.meta = options.meta || {};
+
+        Logger.info('Starting daemon, options: %j', options);
+        const key: string = this.pathToKey(this.generatePath(options.group));
         const now: number = new Date().getTime();
 
         const newState: DaemonProcessState = {
             id: key,
 
-            title: title,
+            title: options.title,
             lastUpdatedEpochMS: now,
             lastUpdatedMessage: 'Created',
+            targetFileName: options.targetFileName,
 
             startedEpochMS: now,
             completedEpochMS: null,
-            meta: meta,
+            meta: options.meta,
             error: null,
             link: null,
-            contentType: contentType
+            contentType: options.contentType
         } as DaemonProcessState;
 
         const rval: DaemonProcessState = await this.writeStat(newState, Daemon.DEFAULT_CONTENT);
