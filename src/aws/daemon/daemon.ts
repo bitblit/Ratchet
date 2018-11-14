@@ -1,7 +1,6 @@
 
 import * as AWS from 'aws-sdk';
 import {Logger} from '../../common/logger';
-import * as moment from 'moment-timezone';
 import {DaemonProcessState} from './daemon-process-state';
 import {S3CacheRatchet} from '../s3-cache-ratchet';
 import {StringRatchet} from '../../common/string-ratchet';
@@ -13,7 +12,7 @@ export class Daemon {
 
     private cache: S3CacheRatchet;
 
-    constructor(private s3: AWS.S3, private bucket: string, private timeZone: string = 'UTC', private prefix: string = '') {
+    constructor(private s3: AWS.S3, private bucket: string, private prefix: string = '') {
         this.cache = new S3CacheRatchet(this.s3, this.bucket);
     }
 
@@ -30,7 +29,7 @@ export class Daemon {
     }
 
     private generatePrefix(group: string = Daemon.DEFAULT_GROUP, date:Date = new Date()): string {
-        return this.prefix + moment(date).tz(this.timeZone).format('YYYY/MM/DD') + '/' + group + '/';
+        return this.prefix + '/' + group + '/';
     }
 
     public async start(title: string, contentType: string, group: string = Daemon.DEFAULT_GROUP , meta: any={}): Promise<DaemonProcessState> {
@@ -75,8 +74,25 @@ export class Daemon {
         return this.stat(newState.id);
     }
 
-    public async listKeys(group: string = Daemon.DEFAULT_GROUP, date: Date = new Date()): Promise<string[]> {
-        const prefix: string = this.generatePrefix(group, date);
+    public async clean(group: string = Daemon.DEFAULT_GROUP, olderThanSeconds: number = 60*60*24*7): Promise<DaemonProcessState[]> {
+        Logger.info('Daemon removing items older than %d seconds from group %s', olderThanSeconds, group);
+        const original: DaemonProcessState[] = await this.list(group);
+        const now: number = new Date().getTime();
+        const removed: DaemonProcessState[] = [];
+        for (let i=0;i<original.length;i++) {
+            const test: DaemonProcessState = original[i];
+            const ageSeconds: number = (now-test.startedEpochMS) /1000;
+            if (ageSeconds > olderThanSeconds) {
+                const remove: any = await this.cache.removeCacheFile(this.keyToPath(test.id));
+                removed.push(test);
+            }
+        }
+        Logger.debug('Removed %d of %d items', removed.length, original.length);
+        return removed;
+    }
+
+    public async listKeys(group: string = Daemon.DEFAULT_GROUP): Promise<string[]> {
+        const prefix: string = this.generatePrefix(group);
         Logger.info('Fetching children of %s', prefix);
         const rval: string[] = await this.cache.directChildrenOfPrefix(prefix);
         Logger.debug('Found : %j', rval);
@@ -84,10 +100,10 @@ export class Daemon {
     }
 
 
-    public async list(group: string = Daemon.DEFAULT_GROUP, date: Date = new Date()): Promise<DaemonProcessState[]> {
-        const prefix: string = this.generatePrefix(group, date);
+    public async list(group: string = Daemon.DEFAULT_GROUP): Promise<DaemonProcessState[]> {
+        const prefix: string = this.generatePrefix(group);
         Logger.info('Fetching children of %s', prefix);
-        const keys: string[] = await this.listKeys(group, date);
+        const keys: string[] = await this.listKeys(group);
         const proms: Promise<DaemonProcessState>[] = keys.map(k => this.stat(k));
         const rval: DaemonProcessState[] = await Promise.all(proms);
 
