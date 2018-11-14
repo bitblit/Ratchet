@@ -68,6 +68,9 @@ export class Daemon {
             Metadata: s3meta,
             Body: contents
         };
+        if (newState.targetFileName) {
+            params['ContentDisposition'] = 'attachment;filename="'+newState+'"';
+        }
 
         const written = await this.s3.putObject(params).promise();
         Logger.silly('Daemon wrote : %s', written);
