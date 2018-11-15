@@ -32,3 +32,37 @@ describe('#parseBool', function() {
         expect(result).to.equal(false);
     });
 });
+
+
+describe('#intToBool', function() {
+    it('should parse null as false', function() {
+        let result = BooleanRatchet.intToBool(null);
+        expect(result).to.equal(false);
+    });
+
+    it('should parse 0 as false', function() {
+        let result = BooleanRatchet.intToBool(0);
+        expect(result).to.equal(false);
+    });
+
+    it('should parse "0" as false', function() {
+        let result = BooleanRatchet.intToBool("0");
+        expect(result).to.equal(false);
+    });
+
+    it('should parse 1 as true', function() {
+        let result = BooleanRatchet.intToBool(1);
+        expect(result).to.equal(true);
+    });
+
+    it('should parse "1" as true', function() {
+        let result = BooleanRatchet.intToBool("1");
+        expect(result).to.equal(true);
+    });
+
+    it('should parse "2" as true', function() {
+        let result = BooleanRatchet.intToBool("2");
+        expect(result).to.equal(true);
+    });
+
+});

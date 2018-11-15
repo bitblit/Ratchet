@@ -1,9 +1,8 @@
 import { expect } from 'chai';
-import {APIGatewayEvent} from 'aws-lambda';
-import {Request} from 'express';
 import {LambdaExpressRatchet} from '../../../src/aws/express/lambda-express-ratchet';
 
 describe('#parseExtractIps', function() {
+    this.timeout(3000000);
     it('should parse the ip address list', function() {
         const req : any = {
             apiGateway: {
