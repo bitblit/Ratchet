@@ -13,7 +13,7 @@ export class CloudWatchRatchet {
         this.cwLogs = (cloudwatchLogs) ? cloudwatchLogs : new AWS.CloudWatchLogs({region: 'us-east-1'});
     }
 
-    public async removeEmptyOrOldLogStreams(logGroupName: string, oldestEventEpochMS:number = null): Promise<LogStream[]> {
+    public async removeEmptyOrOldLogStreams(logGroupName: string, maxToRemove: number = 1000, oldestEventEpochMS:number = null): Promise<LogStream[]> {
         Logger.info('Removing empty streams from %s, oldest event epoch MS : %d', logGroupName, oldestEventEpochMS);
         let streamSearchParams:any = {
             logGroupName: logGroupName,
@@ -31,7 +31,7 @@ export class CloudWatchRatchet {
 
             Logger.debug('Found %d streams (%d so far, %d to delete)', streams.logStreams.length, totalStreams, removedStreams.length);
 
-            for (let i=0;i<streams.logStreams.length;i++) {
+            for (let i=0;i<streams.logStreams.length &&  removedStreams.length < maxToRemove;i++) {
                 const st: LogStream = streams.logStreams[i];
                 if (!st.firstEventTimestamp) {
                     removedStreams.push(st);
@@ -41,7 +41,7 @@ export class CloudWatchRatchet {
             }
 
             streamSearchParams['nextToken'] = streams.nextToken;
-        } while (!!streamSearchParams['nextToken'])
+        } while (!!streamSearchParams['nextToken'] && removedStreams.length < maxToRemove)
 
         Logger.info('Found %d streams to delete', removedStreams.length);
 

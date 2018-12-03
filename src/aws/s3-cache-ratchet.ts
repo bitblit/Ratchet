@@ -6,17 +6,24 @@
 import * as AWS from 'aws-sdk';
 import {Logger} from '../common/logger';
 import moment = require('moment');
+import {DeleteObjectOutput, HeadObjectOutput, ListObjectsOutput, PutObjectOutput} from 'aws-sdk/clients/s3';
 
 export class S3CacheRatchet {
-    private s3: AWS.S3;
-    private defaultBucket: string;
 
-    constructor(s3: AWS.S3, defaultBucket: string = null) {
+    constructor(private s3: AWS.S3, private defaultBucket: string = null) {
         if (!s3) {
             throw ('S3 may not be null');
         }
         this.s3 = s3;
         this.defaultBucket = defaultBucket;
+    }
+
+    public getDefaultBucket(): string {
+        return this.defaultBucket;
+    }
+
+    public getS3(): AWS.S3 {
+        return this.s3;
     }
 
     public fileExists(key: string, bucket: string = null): Promise<boolean> {
@@ -52,29 +59,29 @@ export class S3CacheRatchet {
         });
     }
 
-    public readCacheFileToObject<T>(key: string, bucket: string = null): Promise<T> {
-        return this.readCacheFileToString(key, bucket).then(value => {
-            return (value) ? JSON.parse(value) as T : null;
-        });
+    public async readCacheFileToObject<T>(key: string, bucket: string = null): Promise<T> {
+        const value: string = await this.readCacheFileToString(key, bucket);
+        return (value) ? JSON.parse(value) as T : null;
     }
 
-    public removeCacheFile(key: string, bucket: string = null): Promise<any> {
+    public async removeCacheFile(key: string, bucket: string = null): Promise<DeleteObjectOutput> {
+        let rval: DeleteObjectOutput = null;
         let params = {
             Bucket: this.bucketVal(bucket),
             Key: key
         };
-
-        return this.s3.deleteObject(params).promise().then(res => {
-            return res;
-        }).catch(err => {
+        try {
+            rval = await this.s3.deleteObject(params).promise();
+        } catch (err) {
             if (err && err.statusCode == 404) {
                 Logger.info('Swallowing 404 deleting missing object %s %s', bucket, key);
-                return null;
+                rval = null;
             }
             else {
                 throw err;
             }
-        })
+        }
+        return rval;
     }
 
     // Given new board data, write it to the S3 file and set the refresh flag appropriately
@@ -85,8 +92,8 @@ export class S3CacheRatchet {
     }
 
     // Given new board data, write it to the S3 file and set the refresh flag appropriately
-    public writeStringToCacheFile(key: string, dataString: string, bucket: string = null, meta: any = {},
-                                  cacheControl: string = 'max-age=30', contentType: string = 'text/plain'): Promise<any> {
+    public async writeStringToCacheFile(key: string, dataString: string, bucket: string = null, meta: any = {},
+                                  cacheControl: string = 'max-age=30', contentType: string = 'text/plain'): Promise<PutObjectOutput> {
         let params = {
             Bucket: this.bucketVal(bucket),
             Key: key,
@@ -96,7 +103,8 @@ export class S3CacheRatchet {
             Metadata: meta,
         };
 
-        return this.s3.putObject(params).promise();
+        const result: PutObjectOutput = await this.s3.putObject(params).promise();
+        return result;
     }
 
     public preSignedDownloadUrlForCacheFile(key: string, expirationSeconds:number = 3600, bucket: string = null) : string {
@@ -108,12 +116,14 @@ export class S3CacheRatchet {
         return link;
     }
 
-    public fetchMetaForCacheFile(key: string, bucket: string = null): Promise<any> {
-        return this.s3.headObject({Bucket: this.bucketVal(bucket), Key: key}).promise();
+    public async fetchMetaForCacheFile(key: string, bucket: string = null): Promise<HeadObjectOutput> {
+        const rval: HeadObjectOutput = await this.s3.headObject({Bucket: this.bucketVal(bucket), Key: key}).promise();
+        return rval;
     }
 
-    public cacheFileAgeInSeconds(key: string, bucket: string = null): Promise<number> {
-        return this.s3.headObject({Bucket: this.bucketVal(bucket), Key: key}).promise().then(res => {
+    public async cacheFileAgeInSeconds(key: string, bucket: string = null): Promise<number> {
+        try {
+            const res: HeadObjectOutput = await this.fetchMetaForCacheFile(key, bucket);
             if (res && res.LastModified) {
                 let mom = moment(res.LastModified);
                 return moment().unix() - mom.unix();
@@ -122,7 +132,7 @@ export class S3CacheRatchet {
                 Logger.warn('Cache file %s %s had no last modified returning null', this.bucketVal(bucket), key);
                 return null;
             }
-        }).catch(err => {
+        } catch (err) {
             if (err && err.statusCode == 404) {
                 Logger.warn('Cache file %s %s not found returning null', this.bucketVal(bucket), key);
                 return null;
@@ -130,7 +140,7 @@ export class S3CacheRatchet {
             else {
                 throw err;
             }
-        })
+        }
     }
 
     public createDownloadLink(key: string, secondsUntilExpiration: number = 3600, bucket: string = null): string // URL
@@ -140,43 +150,43 @@ export class S3CacheRatchet {
         return url;
     }
 
-    public directChildrenOfPrefix(prefix: string, expandFiles: boolean = false, bucket: string = null): Promise<string[]> {
+    public async directChildrenOfPrefix(prefix: string, expandFiles: boolean = false, bucket: string = null): Promise<string[]> {
         let returnValue = [];
 
         let params = {
             Bucket: this.bucketVal(bucket), Prefix: prefix, Delimiter: '/'
         };
 
-        return this.s3.listObjects(params).promise().then(response => {
-            let prefixLength = prefix.length;
-            // Process directories
-            if (response['CommonPrefixes']) {
-                response['CommonPrefixes'].forEach(cp => {
-                    let value = cp['Prefix'].substring(prefixLength);
-                    returnValue.push(value);
+        const response: ListObjectsOutput = await this.s3.listObjects(params).promise();
 
-                });
-            }
+        let prefixLength = prefix.length;
+        // Process directories
+        if (response['CommonPrefixes']) {
+            response['CommonPrefixes'].forEach(cp => {
+                let value = cp['Prefix'].substring(prefixLength);
+                returnValue.push(value);
 
-            // Process files
-            if (response['Contents']) {
-                response['Contents'].forEach(cp => {
-                    if (expandFiles) {
-                        let expanded = {
-                            'link': this.createDownloadLink(cp['Key'], 3600, bucket),
-                            'name': cp['Key'].substring(prefixLength),
-                            'size': cp['Size']
-                        };
-                        returnValue.push(expanded);
-                    }
-                    else {
-                        returnValue.push(cp['Key'].substring(prefixLength))
-                    }
-                });
-                // TODO: Need to handle large batches that need pagination
-            }
-            return returnValue;
-        });
+            });
+        }
+
+        // Process files
+        if (response['Contents']) {
+            response['Contents'].forEach(cp => {
+                if (expandFiles) {
+                    let expanded = {
+                        'link': this.createDownloadLink(cp['Key'], 3600, bucket),
+                        'name': cp['Key'].substring(prefixLength),
+                        'size': cp['Size']
+                    };
+                    returnValue.push(expanded);
+                }
+                else {
+                    returnValue.push(cp['Key'].substring(prefixLength))
+                }
+            });
+            // TODO: Need to handle large batches that need pagination
+        }
+        return returnValue;
     }
 
     private bucketVal(explicitBucket: string): string {
