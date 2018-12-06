@@ -117,7 +117,21 @@ export class S3CacheRatchet {
     }
 
     public async fetchMetaForCacheFile(key: string, bucket: string = null): Promise<HeadObjectOutput> {
-        const rval: HeadObjectOutput = await this.s3.headObject({Bucket: this.bucketVal(bucket), Key: key}).promise();
+        let rval: HeadObjectOutput = null;
+        try {
+            rval = await this.s3.headObject({
+                Bucket: this.bucketVal(bucket),
+                Key: key
+            }).promise();
+        } catch (err) {
+            if (err && err.statusCode == 404) {
+                Logger.warn('Cache file %s %s not found returning null', this.bucketVal(bucket), key);
+                rval = null;
+            }
+            else {
+                throw err;
+            }
+        }
         return rval;
     }
 
