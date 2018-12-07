@@ -12,6 +12,7 @@ describe('#formatBytes', function() {
         intKey2 : 1,
         boolKey1 : true,
         boolKey2 : false,
+        camelSnake: 'this is a camel case',
         subKey : {
             key1 : 'subValue1',
             key2 : 'subValue2'
@@ -40,7 +41,6 @@ describe('#formatBytes', function() {
         expect(result['bool_key1']).to.not.be.undefined;
         expect(result['sub_key']).to.not.be.undefined;
     });
-
 
     it('should duplicate key1 into key3', function() {
         let result = TransformRatchet.transform(srcData, [BuiltInTransforms.makeDuplicateField('key1','key3')]);

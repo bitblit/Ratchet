@@ -26,6 +26,7 @@ export class Logger {
     private static RING_BUFFER: LogMessage[] = [];
     private static RING_BUFFER_IDX: number = 0;
     private static RING_BUFFER_LAST_SNAPSHOT_IDX: number = 0;
+    private static LAST_LOG_MESSAGE:LogMessage = {msg:'No message yet', timestamp: new Date().getTime(), lvl:  3} as LogMessage;
 
     private static LEVEL: number = 2; // INFO
     private static INCLUDE_LEVEL_IN_MESSAGE: boolean = true;
@@ -277,6 +278,11 @@ export class Logger {
         }
     }
 
+    public static getLastLogMessage(): LogMessage {
+        return Object.assign({}, Logger.LAST_LOG_MESSAGE) as LogMessage;
+    }
+
+
     private static clearRingBuffer() {
         Logger.RING_BUFFER = [];
         Logger.RING_BUFFER_IDX = 0;
@@ -285,14 +291,18 @@ export class Logger {
     }
 
     private static addToRingBuffer(message: string, level: string): void {
+        let levNum = Logger.levelNumber(level);
+        const newMsg: LogMessage = {
+            msg: message,
+            lvl: levNum,
+            timestamp: new Date().getTime() + Logger.TIME_ADJUSTMENT_IN_MS
+        } as LogMessage;
+
+        Logger.LAST_LOG_MESSAGE = newMsg;
+
         if (Logger.RING_BUFFER_SIZE > 0) {
-            let levNum = Logger.levelNumber(level);
             if (levNum != null && levNum <= Logger.LEVEL) {
-                Logger.RING_BUFFER[Logger.RING_BUFFER_IDX % Logger.RING_BUFFER_SIZE] = {
-                    msg: message,
-                    lvl: levNum,
-                    timestamp: new Date().getTime() + Logger.TIME_ADJUSTMENT_IN_MS
-                } as LogMessage;
+                Logger.RING_BUFFER[Logger.RING_BUFFER_IDX % Logger.RING_BUFFER_SIZE] = newMsg;
                 Logger.RING_BUFFER_IDX++; // advance
             }
         }

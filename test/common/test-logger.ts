@@ -1,6 +1,7 @@
 import { expect } from 'chai';
 import {Logger} from "../../src/common/logger";
 import {LogSnapshot} from '../../src/common/log-snapshot';
+import {LogMessage} from '../../src/common/log-message';
 
 
 describe('#levelName', function() {
@@ -149,6 +150,19 @@ describe('#testTracePrefix', function() {
         snap2.messages.forEach(m => {
             expect(m.msg.indexOf('::TRACE::')).to.eq(-1);
         });
+    });
+});
+
+
+describe('#testLastMessage', function() {
+    it('should return the last message', function() {
+        Logger.info("m1");
+        Logger.info("m2");
+
+        const last: LogMessage = Logger.getLastLogMessage();
+        expect(last).to.not.be.null;
+        expect(last.lvl).to.equal(Logger.levelNumber('info'));
+        expect(last.msg.endsWith('m2')).to.be.true;
     });
 });
 
