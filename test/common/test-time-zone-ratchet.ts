@@ -46,3 +46,16 @@ describe('#currentTimeSlotIdx', function() {
     });
 
 });
+
+
+describe('#matchingTimeSlotIdx', function() {
+
+    it('should return same as current hour', function() {
+        let curHour : number = tz.currentHour();
+        let hourSlot : number = 1000*60*60;
+        let matchSlot: number = tz.matchingTimeSlotIdx(new Date().getTime(), hourSlot);
+
+        expect(matchSlot).to.eq(curHour);
+    });
+
+});
