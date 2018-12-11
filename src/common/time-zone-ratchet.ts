@@ -2,6 +2,7 @@ import * as moment from 'moment-timezone';
 
 /*
     Functions for working with dates specifically a given time zone
+    TODO: Refactor the 'today' slots to work in terms of the 'matching' slot endpoints
 */
 
 export class TimeZoneRatchet {
