@@ -118,7 +118,7 @@ export class TimeZoneRatchet {
      * @returns {number}
      */
     public startOfMatchingSlotEpochMS(timestamp: number, slotWidthMs: number): number {
-        let startOfDay = this.startOfMatchingDayEpochSeconds(timestamp);
+        let startOfDay = this.startOfMatchingDayEpochMS(timestamp);
         let currentIdx = this.matchingTimeSlotIdx(timestamp, slotWidthMs);
         return startOfDay + (currentIdx * slotWidthMs);
     }
