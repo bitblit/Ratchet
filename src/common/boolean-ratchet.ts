@@ -17,7 +17,9 @@ export class BooleanRatchet {
         return NumberRatchet.safeNumber(val) !== 0;
     }
 
-
+    public static boolToInt(val: any): number {
+        return (BooleanRatchet.parseBool(val)) ? 1 : 0;
+    }
 
 }
 
