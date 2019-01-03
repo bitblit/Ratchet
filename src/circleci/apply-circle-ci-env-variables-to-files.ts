@@ -31,6 +31,9 @@ export class ApplyCircleCiEnvVariablesToFiles {
             throw new Error('CIRCLE_BUILD_NUM env var not set - apparently not in a CircleCI environment');
         }
 
+        Logger.info('Processing files %j with build %s, branch %s, tag %s, sha %s, time: %s',
+            fileNames, buildNum, branch, tag, sha1, localTime);
+
         let foundCount: number = 0;
         fileNames.forEach(f => {
            if (!fs.existsSync(f)) {
@@ -38,11 +41,11 @@ export class ApplyCircleCiEnvVariablesToFiles {
            } else {
                try {
                    let contents: string = fs.readFileSync(f).toString();
-                   contents.split(buildFinder).join(buildNum);
-                   contents.split(branchFinder).join(branch);
-                   contents.split(hashFinder).join(tag);
-                   contents.split(tagFinder).join(sha1);
-                   contents.split(timeFinder).join(localTime);
+                   contents = contents.split(buildFinder).join(buildNum);
+                   contents = contents.split(branchFinder).join(branch);
+                   contents = contents.split(hashFinder).join(tag);
+                   contents = contents.split(tagFinder).join(sha1);
+                   contents = contents.split(timeFinder).join(localTime);
                    fs.writeFileSync(f, contents);
                    foundCount++;
                } catch (err) {
