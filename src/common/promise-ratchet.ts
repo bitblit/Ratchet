@@ -28,7 +28,7 @@ export class PromiseRatchet {
                     resolve(null);
                 }
                 else {
-                    reject('Timeout');
+                    reject('Timeout after '+timeoutMS+' ms');
                 }
             }, timeoutMS)
         });
