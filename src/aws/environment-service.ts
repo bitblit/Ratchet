@@ -29,8 +29,15 @@ export class EnvironmentService {
                 Logger.debug('EnvService:Finished read config');
 
                 if (value != null && value.Parameter != null && value.Parameter.Value) {
-                    const toParse: string = value.Parameter.Value;
-                    return JSON.parse(toParse);
+                    try {
+                        const toParse: string = value.Parameter.Value;
+                        const rval: any = JSON.parse(toParse);
+                        return rval;
+                    } catch (err) {
+                        Logger.error('Failed to read env - null or invalid JSON : %s : %s', err, value.Parameter.Value, err);
+                        throw err;
+                    }
+
                 } else {
                     return null;
                 }
