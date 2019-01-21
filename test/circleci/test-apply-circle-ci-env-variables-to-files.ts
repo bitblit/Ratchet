@@ -1,10 +1,6 @@
 import { expect } from 'chai';
-import {BooleanRatchet} from "../../src/common/boolean-ratchet";
-import * as AWS from 'aws-sdk';
-import {S3CacheRatchet} from '../../src/aws/s3-cache-ratchet';
 import {ApplyCircleCiEnvVariablesToFiles} from '../../src/circleci/apply-circle-ci-env-variables-to-files';
 import {Logger} from '../../src/common/logger';
-import {Tester} from '../../src/tester';
 
 describe('#applyCircleCiEnvVariablesToFiles', function() {
     it('should fail if not in a circle ci environment', async() => {
