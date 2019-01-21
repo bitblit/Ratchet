@@ -38,15 +38,13 @@ export class FilesToStaticClass {
             if (fs.existsSync(fileNames[i])) {
                 const trimmed: string = fileNames[i].substring(fileNames[i].lastIndexOf('/')+1);
                 contents = fs.readFileSync(fileNames[i]).toString();
-                rval += '\''+trimmed+'\':\''+JSON.stringify(contents)+'\',\n';
+                rval += (i>0) ? ',':'';
+                rval += '"'+trimmed+'":"'+JSON.stringify(contents)+'"\n';
             } else {
                 Logger.warn('Could not find file %s', fileNames[i]);
             }
         }
 
-        if (rval.endsWith(',')) {
-            rval = rval.substring(0, rval.length-1);
-        }
         rval += '}; \n';
         rval += '}';
 
