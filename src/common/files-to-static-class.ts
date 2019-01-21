@@ -39,7 +39,7 @@ export class FilesToStaticClass {
                 const trimmed: string = fileNames[i].substring(fileNames[i].lastIndexOf('/')+1);
                 contents = fs.readFileSync(fileNames[i]).toString();
                 rval += (i>0) ? ',':'';
-                rval += '"'+trimmed+'":"'+JSON.stringify(contents)+'"\n';
+                rval += '"'+trimmed+'":'+JSON.stringify(contents)+'\n';
             } else {
                 Logger.warn('Could not find file %s', fileNames[i]);
             }
