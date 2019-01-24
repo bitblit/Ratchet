@@ -101,5 +101,18 @@ export class MapRatchet {
         return rval;
     }
 
+
+    public static safeCallFunction(ob:any, fnName: string): boolean {
+        let rval: boolean = false;
+        if (!!ob && !!ob[fnName] && typeof ob[fnName]==='function') {
+            try {
+                ob[fnName]();
+                rval = true;
+            } catch (err) {
+                Logger.warn('Error calling %s on %s : %s', fnName, ob, err, err);
+            }
+        }
+        return rval;
+    }
 }
 
