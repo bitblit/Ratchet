@@ -8,6 +8,7 @@ import * as moment from 'moment-timezone';
 */
 
 export class DateRatchet {
+    public static COMMON_US_DATE_FORMAT: string = 'MM/DD/YYYY';
     public static DEFAULT_DATE_FORMAT: string = 'YYYY-MM-DD';
     public static FULL_DATE_FORMAT: string = 'YYYY-MM-DD_HH_MM_SS';
 
@@ -21,6 +22,19 @@ export class DateRatchet {
 
     public static parseDefaultDate(input: string): Date {
         return moment(input, DateRatchet.DEFAULT_DATE_FORMAT).toDate();
+    }
+
+    public static parseCommonUsDate(input: string): Date {
+        let rval: Date = null;
+        if (!!input) {
+            let templ: string = DateRatchet.COMMON_US_DATE_FORMAT;
+            if (input.indexOf('-') === 2) {
+                templ = templ.split('/').join('-');
+            }
+            rval = moment(input, templ).toDate();
+        }
+        return rval;
+
     }
 
 }
