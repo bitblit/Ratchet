@@ -3,6 +3,7 @@
 */
 
 import {Logger} from './logger';
+import {ArrayRatchet} from './array-ratchet';
 
 export class PromiseRatchet {
 
@@ -34,6 +35,9 @@ export class PromiseRatchet {
         });
     }
 
+    public static async wait(time: number): Promise<void> {
+        await PromiseRatchet.createTimeoutPromise('Wait '+time, time, true, false);
+    }
 
     public static dumpResult(result, autoDebug: boolean = false): void {
         Logger.info('Success, result was : \n\n%s\n\n', JSON.stringify(result));
@@ -106,6 +110,30 @@ export class PromiseRatchet {
                 return PromiseRatchet.waitFor(testFunction, expectedValue, intervalMS, maxCycles, label, count + 1);
             });
         }
+    }
+
+    public static async runBoundedParallel<T>(promiseFn: Function, params: any[][], context: any, maxConcurrent: number = 1): Promise<T[]> {
+        let rval: T[] = [];
+        let remain: any[][] = params;
+        Logger.debug('Processing %d total elements %d at a time', params.length, maxConcurrent);
+
+        const ctx:any = context || this;
+        while (remain.length>0) {
+            let curBatch: any[] = remain.slice(0, Math.min(remain.length, maxConcurrent));
+            remain = remain.slice(curBatch.length);
+
+            const proms: Promise<T>[] = curBatch.map(c => promiseFn.apply(ctx,c) as Promise<T>);
+            const output: T[] = await Promise.all(proms);
+            rval = rval.concat(output);
+            Logger.debug('%d elements remain', remain.length);
+        }
+        return rval;
+    }
+
+
+    public static async runBoundedParallelSingleParam<T>(promiseFn: Function, params: any[], context: any, maxConcurrent: number = 1): Promise<T[]> {
+        const wrappedParams: any[][]=ArrayRatchet.wrapElementsInArray(params);
+        return PromiseRatchet.runBoundedParallel<T>(promiseFn, wrappedParams, context, maxConcurrent);
     }
 
 }
