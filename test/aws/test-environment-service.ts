@@ -6,6 +6,7 @@ import {EnvironmentService} from '../../src/aws/environment-service';
 import {Logger} from '../../src/common/logger';
 
 describe('#environmentService', function() {
+    this.timeout(30000);
     it('should throw exception on missing environment values', async() => {
         try {
             const vals: any = await EnvironmentService.getConfig('i_do_not_exist');
