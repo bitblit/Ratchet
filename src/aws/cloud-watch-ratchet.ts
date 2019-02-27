@@ -25,28 +25,35 @@ export class CloudWatchRatchet {
         let totalStreams: number = 0;
         let removedStreams: LogStream[] = [];
         let failedRemovedStreams: LogStream[] = [];
-        let waitPer: number = 10;
+        let waitPerDescribe: number = 10;
 
         do {
             Logger.debug('Executing search for streams');
-            const streams: DescribeLogStreamsResponse = await this.cwLogs.describeLogStreams(streamSearchParams).promise();
-            totalStreams += streams.logStreams.length;
+            try {
+                const streams: DescribeLogStreamsResponse = await this.cwLogs.describeLogStreams(streamSearchParams).promise();
+                totalStreams += streams.logStreams.length;
 
-            Logger.debug('Found %d streams (%d so far, %d to delete)', streams.logStreams.length, totalStreams, removedStreams.length);
+                Logger.debug('Found %d streams (%d so far, %d to delete)', streams.logStreams.length, totalStreams, removedStreams.length);
 
-            for (let i=0;i<streams.logStreams.length &&  removedStreams.length < maxToRemove;i++) {
-                const st: LogStream = streams.logStreams[i];
-                if (!st.firstEventTimestamp) {
-                    removedStreams.push(st);
-                } else if (st.lastEventTimestamp < oldestEventTester) {
-                    removedStreams.push(st);
+                for (let i = 0; i < streams.logStreams.length && removedStreams.length < maxToRemove; i++) {
+                    const st: LogStream = streams.logStreams[i];
+                    if (!st.firstEventTimestamp) {
+                        removedStreams.push(st);
+                    } else if (st.lastEventTimestamp < oldestEventTester) {
+                        removedStreams.push(st);
+                    }
                 }
-            }
 
-            streamSearchParams['nextToken'] = streams.nextToken;
+                streamSearchParams['nextToken'] = streams.nextToken;
+            } catch (err) {
+                const oldWait: number = waitPerDescribe;
+                waitPerDescribe = Math.min(1000, waitPerDescribe * 1.5);
+                Logger.info('Caught while describing %s, increasing wait between deletes (was %d, now %d)',err, oldWait, waitPerDescribe);
+            }
         } while (!!streamSearchParams['nextToken'] && removedStreams.length < maxToRemove)
 
         Logger.info('Found %d streams to delete', removedStreams.length);
+        let waitPer: number = 10;
 
         for (let i=0;i<removedStreams.length;i++) {
             let delParams = {
