@@ -39,4 +39,17 @@ export class StopWatch {
         }
         return rval;
     }
+
+    public elapsedMS(name: string = StopWatch.DEFAULT_TIMER_NAME): number {
+        const start: number = this.starts.get(name);
+        const end: number = this.ends.get(name);
+        if (!!start && !!end) {
+            return end-start;
+        } else if (!!start) {
+            return new Date().getTime() - start;
+        } else {
+            return 0;
+        }
+
+    }
 }
