@@ -5,6 +5,7 @@
 import * as AWS from 'aws-sdk';
 import {Logger} from '../common/logger';
 import {DescribeLogStreamsResponse, LogStream} from 'aws-sdk/clients/cloudwatchlogs';
+import {PromiseRatchet} from '../common/promise-ratchet';
 
 export class CloudWatchRatchet {
     private cwLogs: AWS.CloudWatchLogs;
@@ -23,6 +24,8 @@ export class CloudWatchRatchet {
         let oldestEventTester: number = oldestEventEpochMS || 1;
         let totalStreams: number = 0;
         let removedStreams: LogStream[] = [];
+        let failedRemovedStreams: LogStream[] = [];
+        let waitPer: number = 10;
 
         do {
             Logger.debug('Executing search for streams');
@@ -51,10 +54,20 @@ export class CloudWatchRatchet {
                 logStreamName: removedStreams[i].logStreamName
             };
 
-            Logger.info('Removing empty stream %s', removedStreams[i].logStreamName);
-            const result: any = await this.cwLogs.deleteLogStream(delParams).promise();
+            const type:string = (removedStreams[i].storedBytes===0)?'empty':'old';
+            Logger.info('Removing %s stream %s', type,removedStreams[i].logStreamName);
+            try {
+                const result: any = await this.cwLogs.deleteLogStream(delParams).promise();
+                await PromiseRatchet.wait(waitPer);
+            } catch (err) {
+                const oldWait: number = waitPer;
+                waitPer = Math.min(1000, waitPer * 1.5);
+                failedRemovedStreams.push(removedStreams[i]);
+                Logger.info('Caught %s, increasing wait between deletes (was %d, now %d)',err, oldWait, waitPer);
+            }
         }
 
+        Logger.warn('Failed to remove streams : %j', failedRemovedStreams);
         return removedStreams;
     }
 
