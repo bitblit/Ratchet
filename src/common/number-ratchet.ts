@@ -57,7 +57,30 @@ export class NumberRatchet {
         return rval;
     }
 
+    public static fitCurve(curveDef: Point2d[],inputX: number): number {
+        curveDef.sort((a,b)=>{return a.x-b.x});
 
+        if (inputX<=curveDef[0].x) {
+            return curveDef[0].y;
+        } else if (inputX>=curveDef[curveDef.length-1].x) {
+            return curveDef[curveDef.length-1].y;
+        } else {
+            let idx: number = 0;
+            while (curveDef[idx+1].x<inputX) {
+                idx++;
+            }
+            const xSpread: number = curveDef[idx+1].x - curveDef[idx].x;
+            const ySpread: number = curveDef[idx+1].y - curveDef[idx].y;
+            const pct: number = (inputX-curveDef[idx].x)/xSpread;
+            const yAdd: number = pct*ySpread;
+            return curveDef[idx].y+yAdd;
+        }
+
+    }
 
 }
 
+export interface Point2d {
+    x: number;
+    y: number;
+}
