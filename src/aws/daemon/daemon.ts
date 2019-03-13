@@ -81,7 +81,7 @@ export class Daemon {
                 Body: contents
             };
             if (newState.targetFileName) {
-                params['ContentDisposition'] = 'attachment;filename="'+newState+'"';
+                params['ContentDisposition'] = 'attachment;filename="'+newState.targetFileName+'"';
             }
 
             const written = await this.s3.putObject(params).promise();
