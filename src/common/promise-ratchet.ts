@@ -7,6 +7,33 @@ import {ArrayRatchet} from './array-ratchet';
 
 export class PromiseRatchet {
 
+    /**
+     * Returns a promise that only resolves when the named event happens on the event source -
+     * the promise will return the passed object, if any, at that point.  If errEventNames are specified,
+     * the promise will reject when any of those events are fired
+     * @param evtSrc Object that will fire the event
+     * @param okEvtNames Names of the event that will be considered successes
+     * @param errEventNames Names of error events
+     * @param rval Return value, if any
+     */
+    public static resolveOnEvent<T>(evtSrc: any, okEvtNames: string[], errEvtNames: string[] = [], rval: T = null): Promise<T> {
+        if (!evtSrc || !okEvtNames || okEvtNames.length === 0 || !evtSrc['on']) {
+            Promise.reject('Cannot continue - missing source object or name, or the object is not an event source');
+        }
+
+        return new Promise<T>((res,rej)=>{
+            okEvtNames.forEach(e=>{
+                evtSrc.on(e, ()=>{res(rval)});
+            });
+
+            if (!!errEvtNames) {
+                errEvtNames.forEach(e=>{
+                    evtSrc.on(e, ()=>{rej(e)});
+                });
+            }
+        });
+    }
+
     public static timeout<T>(srcPromise: Promise<T>, title: string, timeoutMS: number, resolveAsNull: boolean): Promise<T> {
         return Promise.race([
             srcPromise,
@@ -135,5 +162,7 @@ export class PromiseRatchet {
         const wrappedParams: any[][]=ArrayRatchet.wrapElementsInArray(params);
         return PromiseRatchet.runBoundedParallel<T>(promiseFn, wrappedParams, context, maxConcurrent);
     }
+
+    private constructor() {}
 
 }
