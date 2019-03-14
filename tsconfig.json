@@ -12,6 +12,7 @@
     "noUnusedLocals": false,
     "noImplicitThis": false,
     "strictNullChecks": false,
+    "skipLibCheck": true,
     "noImplicitReturns": true,
     "preserveConstEnums": true,
     "suppressImplicitAnyIndexErrors": true,
