@@ -78,6 +78,30 @@ export class NumberRatchet {
 
     }
 
+    public static fitToWindow(val: number, b1: number, b2:number): number {
+        let rval: number = val;
+        if (val===null || b1===null || b2===null || b1<0 || b2<0 || val<0) {
+            throw new Error('All values must be non-null and larger than 0');
+        }
+        const low: number = Math.min(b1,b2);
+        const high: number = Math.max(b1,b2);
+        const windowSize: number = high-low;
+        if (high===low) {
+            // If the bounds are the same the answer is always the same
+            rval = high;
+        } else {
+            // Not super efficient (I should use modulo here) but works for the moment
+            while (rval<low) {
+                rval += windowSize;
+            }
+            while (rval>high) {
+                rval -= windowSize;
+            }
+        }
+
+        return rval;
+    }
+
 }
 
 export interface Point2d {

@@ -59,3 +59,15 @@ describe('#fitCurve', function() {
     });
 
 });
+
+
+describe('#fitToWindow', function() {
+    it('should fit input to the window', function() {
+        expect(NumberRatchet.fitToWindow(5,8,10)).to.eq(9);
+        expect(NumberRatchet.fitToWindow(8,2,10)).to.eq(8);
+        expect(NumberRatchet.fitToWindow(8,9,9)).to.eq(9);
+        expect(NumberRatchet.fitToWindow(12,2,10)).to.eq(4);
+
+    });
+
+});
