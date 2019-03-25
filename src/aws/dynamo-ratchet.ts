@@ -7,6 +7,8 @@ import * as AWS from 'aws-sdk';
 import {Logger} from '../common/logger';
 import {PromiseResult} from 'aws-sdk/lib/request';
 import {DurationRatchet} from '../common/duration-ratchet';
+import {BatchWriteItemOutput} from 'aws-sdk/clients/dynamodb';
+import {AWSError} from 'aws-sdk';
 
 export class DynamoRatchet {
 
@@ -84,6 +86,44 @@ export class DynamoRatchet {
             return [];
         }
 
+    }
+
+    public async writeAllInBatches<T>(elements: T[], tableName: string, batchSize: number): Promise<number> {
+        if (!batchSize || batchSize<2) {
+            throw new Error('Batch size needs to be at least 2, was '+batchSize);
+        }
+
+        let rval: number = 0;
+        if (!!elements && elements.length > 0) {
+            let batchItems: any[] = [];
+            elements.forEach(el => {
+                batchItems.push(
+                    {
+                        PutRequest: {
+                            Item: el,
+                            ReturnConsumedCapacity: 'TOTAL',
+                            TableName: tableName
+                        }
+                    });
+            });
+            Logger.info('Processing %d batch items to %s', batchItems.length, tableName);
+
+            while (batchItems.length > 0) {
+                const curBatch: any[] = batchItems.slice(0, Math.min(batchItems.length, batchSize));
+                batchItems = batchItems.slice(curBatch.length);
+                const params: any = {
+                    RequestItems: {},
+                    ReturnConsumedCapacity: 'TOTAL',
+                    ReturnItemCollectionMetrics: 'SIZE'
+                };
+                params.RequestItems[tableName] = curBatch;
+
+                const batchResults: PromiseResult<BatchWriteItemOutput, AWSError> = await this.awsDDB.batchWrite(params).promise();
+                rval += curBatch.length;
+                Logger.debug('%d Remain, Batch Results : %j', batchItems.length, batchResults);
+            }
+        }
+        return rval;
     }
 
 
