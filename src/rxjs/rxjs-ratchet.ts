@@ -24,6 +24,21 @@ export class RxjsRatchet {
                 });
             })
         }
+    }
+
+    public static async waitForTargetValueOnSubject<T>(subject: BehaviorSubject<T>, targetValue: T): Promise<T> {
+        if (subject.value === targetValue) {
+            return subject.value;
+        } else {
+            return new Promise<T>((resolve, reject)=>{
+                const innerSub: Subscription = subject.subscribe(val=>{
+                    if (val === targetValue) {
+                        RxjsRatchet.safeUnsubscribe(innerSub);
+                        resolve(val);
+                    }
+                });
+            })
+        }
 
     }
 
