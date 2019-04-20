@@ -19,4 +19,9 @@ describe('#colonFormatMsDuration', function() {
         expect(result).to.equal('11:00:00');
     });
 
+    it('should format 15 seconds', function() {
+        let result = DurationRatchet.colonFormatMsDuration((15000),false);
+        expect(result).to.equal('00:00:15');
+    });
+
 });

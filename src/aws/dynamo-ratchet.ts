@@ -7,8 +7,10 @@ import * as AWS from 'aws-sdk';
 import {Logger} from '../common/logger';
 import {PromiseResult} from 'aws-sdk/lib/request';
 import {DurationRatchet} from '../common/duration-ratchet';
-import {BatchWriteItemOutput} from 'aws-sdk/clients/dynamodb';
+import {BatchWriteItemOutput, PutItemInput} from 'aws-sdk/clients/dynamodb';
 import {AWSError} from 'aws-sdk';
+import {DocumentClient} from 'aws-sdk/lib/dynamodb/document_client';
+import PutItemOutput = DocumentClient.PutItemOutput;
 
 export class DynamoRatchet {
 
@@ -124,6 +126,17 @@ export class DynamoRatchet {
             }
         }
         return rval;
+    }
+
+    public async simplePut(value:any, tableName: string): Promise<PutItemOutput> {
+        let params:PutItemInput = {
+            Item: value,
+            ReturnConsumedCapacity: 'TOTAL',
+            TableName: tableName
+        };
+
+        const res: PromiseResult<PutItemOutput, AWSError> = await this.awsDDB.put(params).promise();
+        return res;
     }
 
 

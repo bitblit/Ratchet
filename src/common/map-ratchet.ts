@@ -7,6 +7,25 @@ import {Logger} from './logger';
 
 export class MapRatchet {
 
+    public static mapByUniqueProperty<T,R>(input: T[], propName: string): Map<R,T> {
+        if (!input || !propName) {
+            throw new Error('Neither input nor propName can be null');
+        }
+
+        const rval: Map<R, T> = new Map<R, T>();
+        input.forEach(i => {
+            const val: R = (!!i) ? i[propName] : null;
+            if (!val) {
+                throw new Error('No value for ' + propName + ' found in ' + JSON.stringify(i));
+            }
+            if (rval.has(val)) {
+                throw new Error('Multiple values found for ' + val);
+            }
+            rval.set(val, i);
+        })
+        return rval;
+    }
+
     public static findValue(toSearch: any, path: string[]): any {
         if (!path || path.length == 0) {
             return toSearch;

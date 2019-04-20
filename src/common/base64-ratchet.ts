@@ -36,4 +36,9 @@ export class Base64Ratchet {
         });
     }
 
+    public static generateBase64VersionOfString(input: string): string {
+        return Buffer.from(input).toString('base64');
+    }
+
+
 }
