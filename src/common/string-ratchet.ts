@@ -96,6 +96,16 @@ export class StringRatchet {
         return (pad + String(val)).slice(-1 * size);
     }
 
+    public static trimToEmpty(input:string): string {
+        let t: string = input || '';
+        return t.trim();
+    }
+
+    public static trimToNull(input:string): string {
+        const x: string = StringRatchet.trimToEmpty(input);
+        return (x.length>0)?x:null;
+    }
+
 
 }
 
