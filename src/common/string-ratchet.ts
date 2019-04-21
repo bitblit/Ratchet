@@ -106,6 +106,22 @@ export class StringRatchet {
         return (x.length>0)?x:null;
     }
 
+    public static stripNonNumeric( input:string): string {
+        let rval:string = input;
+        if (input != null && !StringRatchet.stringContainsOnlyNumbers(input)) {
+            // Im sure there is a better way
+            rval = '';
+            for (let i=0;i<input.length;i++) {
+                let c: string = input.charAt(i);
+                if (StringRatchet.stringContainsOnlyNumbers(c) || (i===0 && c==='-')) {
+                    rval += c;
+                }
+            }
+        }
+
+        return rval;
+    }
+
 
 }
 

@@ -98,3 +98,11 @@ describe('#leadingZeros', function() {
     });
 
 });
+
+describe('#stripNonNumeric', function() {
+    it('should return a string containing only numbers"', function() {
+        let result: string = StringRatchet.stripNonNumeric('702-555-1212');
+        expect(result).to.equal('7025551212');
+    });
+
+});
