@@ -147,7 +147,7 @@ export class DynamoRatchet {
         };
 
         const holder: PromiseResult<GetItemOutput, AWSError> = await this.awsDDB.get(params).promise();
-        return (!!holder && !!holder.Item)?holder.Item as T:null
+        return (!!holder && !!holder.Item)?Object.assign({} as T, holder.Item):null
     }
 
 
