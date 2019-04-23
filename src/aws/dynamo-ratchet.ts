@@ -27,7 +27,7 @@ export class DynamoRatchet {
     }
 
 
-    public async fullyExecuteQuery<T>(qry: any, delayMS: number = 250) : Promise<T[]> {
+    public async fullyExecuteQuery<T>(qry: any, delayMS: number = 250, softLimit: number = null) : Promise<T[]> {
         try {
             Logger.debug('Executing query : %j', qry);
             const start: number = new Date().getTime();
@@ -39,7 +39,7 @@ export class DynamoRatchet {
             let qryResults: PromiseResult<any, any> = await this.awsDDB.query(qry).promise();
             rval = rval.concat(qryResults.Items as T[]);
 
-            while (qryResults.LastEvaluatedKey) {
+            while (qryResults.LastEvaluatedKey && (softLimit===null || rval.length<softLimit)) {
                 Logger.debug('Found more rows - requery with key %j', qryResults.LastEvaluatedKey);
                 qry['ExclusiveStartKey'] = qryResults.LastEvaluatedKey;
                 qryResults = await this.awsDDB.query(qry).promise();
@@ -59,7 +59,7 @@ export class DynamoRatchet {
 
     }
 
-    public async fullyExecuteScan<T>(qry: any, delayMS: number = 250) : Promise<T[]> {
+    public async fullyExecuteScan<T>(qry: any, delayMS: number = 250, softLimit: number = null) : Promise<T[]> {
         try {
             Logger.debug('Executing scan : %j', qry);
             const start: number = new Date().getTime();
@@ -71,7 +71,7 @@ export class DynamoRatchet {
             let qryResults: PromiseResult<any, any> = await this.awsDDB.scan(qry).promise();
             rval = rval.concat(qryResults.Items as T[]);
 
-            while (qryResults.LastEvaluatedKey) {
+            while (qryResults.LastEvaluatedKey && (softLimit===null || rval.length<softLimit)) {
                 Logger.debug('Found more rows - requery with key %j', qryResults.LastEvaluatedKey);
                 qry['ExclusiveStartKey'] = qryResults.LastEvaluatedKey;
                 qryResults = await this.awsDDB.query(qry).promise();
