@@ -17,7 +17,7 @@ export class RequireRatchet {
         }
     }
 
-    public static true(ob: boolean, name:string = 'Value must be true'):void {
+    public static true(ob: boolean, message:string = 'Value must be true'):void {
         RequireRatchet.equal(ob, true, message);
     }
 
