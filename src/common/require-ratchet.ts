@@ -11,5 +11,16 @@ export class RequireRatchet {
         }
     }
 
+    public static equal(ob1: any, ob2: any, message:string = 'Values must be equal'):void {
+        if (ob1!==ob2) {
+            throw new Error(message);
+        }
+    }
+
+    public static true(ob: boolean, name:string = 'Value must be true'):void {
+        RequireRatchet.equal(ob, true, message);
+    }
+
+
 }
 
