@@ -28,7 +28,7 @@ export class PromiseRatchet {
 
             if (!!errEvtNames) {
                 errEvtNames.forEach(e=>{
-                    evtSrc.on(e, ()=>{rej(e)});
+                    evtSrc.on(e, (err)=>{rej(err)});
                 });
             }
         });
