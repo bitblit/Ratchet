@@ -5,6 +5,7 @@ import {CloudWatchMetricsUnit} from '../../src/aws/cloud-watch-metrics-unit';
 import {Logger} from '../../src/common/logger';
 
 describe('#cloudWatchMetricsRatchet', function() {
+    /*
     it('should log a cloudwatch metric', async() => {
         const cw: CloudWatchMetricsRatchet = new CloudWatchMetricsRatchet();
         const dims: KeyValue[] =  [{key:'server',value:'prod'} as KeyValue, {key: 'stage', value: 'v0'},
@@ -21,5 +22,6 @@ describe('#cloudWatchMetricsRatchet', function() {
 
         Logger.info('Got : %j',res);
     });
+    */
 
 });
