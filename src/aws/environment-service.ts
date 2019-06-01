@@ -21,7 +21,7 @@ export class EnvironmentService {
         if (EnvironmentService.READ_CONFIG_PROMISE.get(name)) {
             Logger.silly('Using previous EnvService promise');
         } else {
-            Logger.debug('Created new EnvService promise and registered, returning');
+            Logger.debug('Created new EnvService promise (for %s) and registered, returning', name);
             EnvironmentService.READ_CONFIG_PROMISE.set(name, this.retryingGetParams(name, region, ssmEncrypted, 4, 2000));
         }
         return EnvironmentService.READ_CONFIG_PROMISE.get(name);
@@ -29,7 +29,7 @@ export class EnvironmentService {
 
     private static async retryingGetParams(name: string, region: string = 'us-east-1', ssmEncrypted: boolean = true,
                                            maxRetries: number, backoffMultiplierMS: number):Promise<any> {
-        Logger.silly('Creating new EnvService promise');
+        Logger.silly('Creating new EnvService promise for %s', name);
         const ssm = new AWS.SSM({apiVersion: '2014-11-06', region: region});
         const params = {
             Name: name, /* required */

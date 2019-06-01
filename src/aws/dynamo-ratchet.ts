@@ -150,5 +150,16 @@ export class DynamoRatchet {
         return (!!holder && !!holder.Item)?Object.assign({} as T, holder.Item):null
     }
 
+    public async simpleCount<T>(tableName: string, keys: any): Promise<T> {
+        const params: GetItemInput = {
+            TableName: tableName,
+            Key: keys
+        };
+
+        const holder: PromiseResult<GetItemOutput, AWSError> = await this.awsDDB.get(params).promise();
+        return (!!holder && !!holder.Item)?Object.assign({} as T, holder.Item):null
+    }
+
+
 
 }
