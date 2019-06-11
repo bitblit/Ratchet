@@ -46,6 +46,18 @@ export class TimeZoneRatchet {
         return rval;
     }
 
+    // Returns the start of the current minute in epoch seconds
+    public startOfCurrentMinuteEpochSeconds(): number {
+        let rval = moment().tz(this.timezone).second(0).millisecond(0).unix();
+        return rval;
+    }
+
+    // Returns the start of the current second in epoch seconds
+    public startOfCurrentSecondEpochSeconds(): number {
+        let rval = moment().tz(this.timezone).millisecond(0).unix();
+        return rval;
+    }
+
     // Returns midnight in the current timezone in epoch seconds
     public startOfTodayEpochMS(): number {
         let startOfToday = moment().tz(this.timezone).hour(0).minute(0).second(0).millisecond(0).toDate().getTime();
