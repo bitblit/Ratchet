@@ -7,11 +7,12 @@ import * as AWS from 'aws-sdk';
 import {Logger} from '../common/logger';
 import {PromiseResult} from 'aws-sdk/lib/request';
 import {DurationRatchet} from '../common/duration-ratchet';
-import {BatchWriteItemOutput, GetItemOutput, PutItemInput} from 'aws-sdk/clients/dynamodb';
+import {BatchWriteItemOutput, GetItemOutput, PutItemInput, QueryInput, ScanInput} from 'aws-sdk/clients/dynamodb';
 import {AWSError} from 'aws-sdk';
 import {DocumentClient} from 'aws-sdk/lib/dynamodb/document_client';
 import PutItemOutput = DocumentClient.PutItemOutput;
 import GetItemInput = DocumentClient.GetItemInput;
+import {DynamoCountResult} from './dynamo-count-result';
 
 export class DynamoRatchet {
 
@@ -26,8 +27,47 @@ export class DynamoRatchet {
         return this.awsDDB;
     }
 
+    public async fullyExecuteQueryCount<T>(qry: QueryInput, delayMS: number = 250) : Promise<DynamoCountResult> {
+        try {
+            qry.Select = 'COUNT'; // Force it to be a count query
+            Logger.debug('Executing count query : %j', qry);
 
-    public async fullyExecuteQuery<T>(qry: any, delayMS: number = 250, softLimit: number = null) : Promise<T[]> {
+            const rval: DynamoCountResult = {
+                count:0,
+                scannedCount: 0,
+                pages: 0
+            };
+
+            const start: number = new Date().getTime();
+
+            let qryResults: PromiseResult<any, any> = await this.awsDDB.query(qry).promise();
+            rval.count += qryResults['Count'];
+            rval.scannedCount += qryResults['ScannedCount'];
+            rval.pages++;
+
+            while (qryResults.LastEvaluatedKey) {
+                Logger.debug('Found more rows - requery with key %j', qryResults.LastEvaluatedKey);
+                qry['ExclusiveStartKey'] = qryResults.LastEvaluatedKey;
+                qryResults = await this.awsDDB.query(qry).promise();
+                rval.count += qryResults['Count'];
+                rval.scannedCount += qryResults['ScannedCount'];
+                rval.pages++;
+                Logger.info('Rval is now %j', rval);
+            }
+
+            const end: number = new Date().getTime();
+
+            Logger.info('Finished, returned %j in %s for %j', rval, DurationRatchet.formatMsDuration(end - start, true), qry);
+            return rval;
+        }
+        catch (err) {
+            Logger.error('Failed with %s, q: %j',err, qry, err);
+            return null;
+        }
+
+    }
+
+    public async fullyExecuteQuery<T>(qry: QueryInput, delayMS: number = 250, softLimit: number = null) : Promise<T[]> {
         try {
             Logger.debug('Executing query : %j', qry);
             const start: number = new Date().getTime();
@@ -59,7 +99,48 @@ export class DynamoRatchet {
 
     }
 
-    public async fullyExecuteScan<T>(qry: any, delayMS: number = 250, softLimit: number = null) : Promise<T[]> {
+    public async fullyExecuteScanCount<T>(qry: ScanInput, delayMS: number = 250) : Promise<DynamoCountResult> {
+        try {
+            const rval: DynamoCountResult = {
+                count:0,
+                scannedCount: 0,
+                pages: 0
+            };
+
+
+            Logger.debug('Executing scan count : %j', qry);
+            const start: number = new Date().getTime();
+
+            Logger.info("Pulling %j", qry);
+
+            let qryResults: PromiseResult<any, any> = await this.awsDDB.scan(qry).promise();
+            rval.count += qryResults['Count'];
+            rval.scannedCount += qryResults['ScannedCount'];
+            rval.pages++;
+
+            while (qryResults.LastEvaluatedKey) {
+                Logger.debug('Found more rows - requery with key %j', qryResults.LastEvaluatedKey);
+                qry['ExclusiveStartKey'] = qryResults.LastEvaluatedKey;
+                qryResults = await this.awsDDB.query(qry).promise();
+                rval.count += qryResults['Count'];
+                rval.scannedCount += qryResults['ScannedCount'];
+                rval.pages++;
+                Logger.info('Rval is now %j', rval);
+            }
+
+            const end: number = new Date().getTime();
+
+            Logger.info('Finished, returned %j in %s for %j', rval, DurationRatchet.formatMsDuration(end - start, true), qry);
+            return rval;
+        }
+        catch (err) {
+            Logger.error('Failed with %s, q: %j',err, qry, err);
+            return null;
+        }
+
+    }
+
+    public async fullyExecuteScan<T>(qry: ScanInput, delayMS: number = 250, softLimit: number = null) : Promise<T[]> {
         try {
             Logger.debug('Executing scan : %j', qry);
             const start: number = new Date().getTime();
