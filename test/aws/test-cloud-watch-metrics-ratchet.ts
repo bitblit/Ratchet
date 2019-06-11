@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import {CloudWatchMetricsRatchet} from '../../src/aws/cloud-watch-metrics-ratchet';
 import {KeyValue} from '../../src/common/key-value';
-import {CloudWatchMetricsUnit} from '../../src/aws/cloud-watch-metrics-unit';
+import {CloudWatchMetricsUnit} from '../../src/aws/model/cloud-watch-metrics-unit';
 import {Logger} from '../../src/common/logger';
 
 describe('#cloudWatchMetricsRatchet', function() {

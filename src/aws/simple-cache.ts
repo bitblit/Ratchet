@@ -7,7 +7,7 @@
 */
 
 import {S3CacheRatchet} from './s3-cache-ratchet';
-import {CacheObjectProducer} from './cache-object-producer';
+import {CacheObjectProducer} from './model/cache-object-producer';
 import {Logger} from '../common/logger';
 
 export class SimpleCache<T, R> {

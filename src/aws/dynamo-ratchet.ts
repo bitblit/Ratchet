@@ -12,7 +12,7 @@ import {AWSError} from 'aws-sdk';
 import {DocumentClient} from 'aws-sdk/lib/dynamodb/document_client';
 import PutItemOutput = DocumentClient.PutItemOutput;
 import GetItemInput = DocumentClient.GetItemInput;
-import {DynamoCountResult} from './dynamo-count-result';
+import {DynamoCountResult} from './model/dynamo-count-result';
 
 export class DynamoRatchet {
 

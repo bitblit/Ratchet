@@ -5,10 +5,13 @@
 import * as AWS from 'aws-sdk';
 import {Logger} from '../common/logger';
 import {KeyValue} from '../common/key-value';
-import {CloudWatchMetricsUnit} from './cloud-watch-metrics-unit';
+import {CloudWatchMetricsUnit} from './model/cloud-watch-metrics-unit';
 import {PutMetricDataInput} from 'aws-sdk/clients/cloudwatch';
 import {PromiseResult} from 'aws-sdk/lib/request';
 import {AWSError} from 'aws-sdk';
+import {CloudWatchMetricsMinuteLevelDynamoCountRequest} from './model/cloud-watch-metrics-dynamo-count-request';
+import {DynamoCountResult} from './model/dynamo-count-result';
+import moment = require('moment');
 
 export class CloudWatchMetricsRatchet {
     private cw: AWS.CloudWatch;
@@ -49,5 +52,35 @@ export class CloudWatchMetricsRatchet {
         return result;
     }
 
+    public async writeDynamoCountAsMinuteLevelMetric(req: CloudWatchMetricsMinuteLevelDynamoCountRequest): Promise<number> {
+        Logger.info('Publishing %s / %s metric for %s UTC', req.namespace, req.metric, req.minuteUTC);
+
+        if (!!req.scan && !!req.query) {
+            throw new Error('Must send query or scan, but not both');
+        }
+        if (!req.scan && !req.query) {
+            throw new Error('You must specify either a scan or a query');
+        }
+
+        const cnt: DynamoCountResult = (!!req.query)?await req.dynamoRatchet.fullyExecuteQueryCount(req.query):await req.dynamoRatchet.fullyExecuteScanCount(req.scan);
+
+        Logger.debug('%s / %s for %s are %j', req.namespace, req.metric, req.minuteUTC, cnt);
+
+        const parseDateString: string = (req.minuteUTC.split(' ').join('T'))+':00Z';
+        const parseDate: Date = moment(parseDateString).toDate();
+
+        const metricRes: any = await this.writeSingleMetric(
+            req.namespace,
+            req.metric,
+            req.dims,
+            CloudWatchMetricsUnit.Count,
+            cnt.count,
+            parseDate,
+            false
+        );
+        Logger.debug('Metrics response: %j', metricRes);
+
+        return cnt.count;
+    }
 
 }
