@@ -9,9 +9,9 @@ import {CloudWatchMetricsUnit} from './model/cloud-watch-metrics-unit';
 import {PutMetricDataInput} from 'aws-sdk/clients/cloudwatch';
 import {PromiseResult} from 'aws-sdk/lib/request';
 import {AWSError} from 'aws-sdk';
-import {CloudWatchMetricsMinuteLevelDynamoCountRequest} from './model/cloud-watch-metrics-dynamo-count-request';
 import {DynamoCountResult} from './model/dynamo-count-result';
-import moment = require('moment');
+import * as moment from 'moment';
+import {CloudWatchMetricsMinuteLevelDynamoCountRequest} from './model/cloud-watch-metrics-minute-level-dynamo-count-request';
 
 export class CloudWatchMetricsRatchet {
     private cw: AWS.CloudWatch;
