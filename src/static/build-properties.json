@@ -2,5 +2,6 @@
   "buildVersion": "LOCAL-SNAPSHOT",
   "buildHash": "LOCAL-HASH",
   "buildBranch": "LOCAL-BRANCH",
-  "buildTag": "LOCAL-TAG"
+  "buildTag": "LOCAL-TAG",
+  "buildTime": "LOCAL-TIME"
 }
