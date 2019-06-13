@@ -210,6 +210,44 @@ export class DynamoRatchet {
         return rval;
     }
 
+    public async deleteAllInBatches(keys: any[], tableName: string, batchSize: number): Promise<number> {
+        if (!batchSize || batchSize<2) {
+            throw new Error('Batch size needs to be at least 2, was '+batchSize);
+        }
+
+        let rval: number = 0;
+        if (!!keys && keys.length > 0) {
+            let batchItems: any[] = [];
+            keys.forEach(el => {
+                batchItems.push(
+                    {
+                        DeleteRequest: {
+                            Key: el,
+                            ReturnConsumedCapacity: 'TOTAL',
+                            TableName: tableName
+                        }
+                    });
+            });
+            Logger.info('Processing %d DeleteBatch items to %s', batchItems.length, tableName);
+
+            while (batchItems.length > 0) {
+                const curBatch: any[] = batchItems.slice(0, Math.min(batchItems.length, batchSize));
+                batchItems = batchItems.slice(curBatch.length);
+                const params: any = {
+                    RequestItems: {},
+                    ReturnConsumedCapacity: 'TOTAL',
+                    ReturnItemCollectionMetrics: 'SIZE'
+                };
+                params.RequestItems[tableName] = curBatch;
+
+                const batchResults: PromiseResult<BatchWriteItemOutput, AWSError> = await this.awsDDB.batchWrite(params).promise();
+                rval += curBatch.length;
+                Logger.debug('%d Remain, DeleteBatch Results : %j', batchItems.length, batchResults);
+            }
+        }
+        return rval;
+    }
+
     public async simplePut(value:any, tableName: string): Promise<PutItemOutput> {
         let params:PutItemInput = {
             Item: value,
