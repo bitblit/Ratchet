@@ -7,7 +7,14 @@ import * as AWS from 'aws-sdk';
 import {Logger} from '../common/logger';
 import {PromiseResult} from 'aws-sdk/lib/request';
 import {DurationRatchet} from '../common/duration-ratchet';
-import {BatchWriteItemOutput, GetItemOutput, PutItemInput, QueryInput, ScanInput} from 'aws-sdk/clients/dynamodb';
+import {
+    BatchWriteItemOutput, DeleteItemInput,
+    DeleteItemOutput,
+    GetItemOutput,
+    PutItemInput,
+    QueryInput,
+    ScanInput
+} from 'aws-sdk/clients/dynamodb';
 import {AWSError} from 'aws-sdk';
 import {DocumentClient} from 'aws-sdk/lib/dynamodb/document_client';
 import PutItemOutput = DocumentClient.PutItemOutput;
@@ -172,7 +179,7 @@ export class DynamoRatchet {
 
     }
 
-    public async writeAllInBatches<T>(elements: T[], tableName: string, batchSize: number): Promise<number> {
+    public async writeAllInBatches<T>(tableName: string, elements: T[], batchSize: number): Promise<number> {
         if (!batchSize || batchSize<2) {
             throw new Error('Batch size needs to be at least 2, was '+batchSize);
         }
@@ -210,7 +217,7 @@ export class DynamoRatchet {
         return rval;
     }
 
-    public async deleteAllInBatches(keys: any[], tableName: string, batchSize: number): Promise<number> {
+    public async deleteAllInBatches(tableName: string, keys: any[], batchSize: number): Promise<number> {
         if (!batchSize || batchSize<2) {
             throw new Error('Batch size needs to be at least 2, was '+batchSize);
         }
@@ -248,7 +255,7 @@ export class DynamoRatchet {
         return rval;
     }
 
-    public async simplePut(value:any, tableName: string): Promise<PutItemOutput> {
+    public async simplePut(tableName: string,value:any): Promise<PutItemOutput> {
         let params:PutItemInput = {
             Item: value,
             ReturnConsumedCapacity: 'TOTAL',
@@ -267,6 +274,16 @@ export class DynamoRatchet {
 
         const holder: PromiseResult<GetItemOutput, AWSError> = await this.awsDDB.get(params).promise();
         return (!!holder && !!holder.Item)?Object.assign({} as T, holder.Item):null
+    }
+
+    public async simpleDelete(tableName: string, keys: any): Promise<DeleteItemOutput> {
+        const params: DeleteItemInput = {
+            TableName: tableName,
+            Key: keys
+        };
+
+        const holder: PromiseResult<DeleteItemOutput, AWSError> = await this.awsDDB.delete(params).promise();
+        return holder;
     }
 
     public async simpleCount<T>(tableName: string, keys: any): Promise<T> {
