@@ -256,7 +256,7 @@ export class DynamoRatchet {
                     if (!!batchResults && !!batchResults.UnprocessedItems && !!batchResults.UnprocessedItems[tableName] &&
                     batchResults.UnprocessedItems[tableName].length>0) {
                         const backoff: number = 6*tryCount; // Backoff 6, 12, 18 seconds to allow capacity recovery
-                        Logger.warn('Found %d unprocessed items.  Backing off %d seconds and trying again', backoff);
+                        Logger.warn('Found %d unprocessed items.  Backing off %d seconds and trying again', batchResults.UnprocessedItems[tableName].length, backoff);
                         await PromiseRatchet.wait(backoff*1000);
                         tryCount++;
                         params.RequestItems[tableName]= batchResults.UnprocessedItems[tableName];
