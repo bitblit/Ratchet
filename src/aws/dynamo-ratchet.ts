@@ -20,6 +20,7 @@ import {DocumentClient} from 'aws-sdk/lib/dynamodb/document_client';
 import PutItemOutput = DocumentClient.PutItemOutput;
 import GetItemInput = DocumentClient.GetItemInput;
 import {DynamoCountResult} from './model/dynamo-count-result';
+import {PromiseRatchet} from '../common/promise-ratchet';
 
 export class DynamoRatchet {
 
@@ -247,8 +248,29 @@ export class DynamoRatchet {
                 };
                 params.RequestItems[tableName] = curBatch;
 
-                const batchResults: PromiseResult<BatchWriteItemOutput, AWSError> = await this.awsDDB.batchWrite(params).promise();
-                rval += curBatch.length;
+                let tryCount = 1;
+                let done: boolean = false;
+                let batchResults: PromiseResult<BatchWriteItemOutput, AWSError> = null;
+                while (!done && tryCount<4) {
+                    let batchResults: PromiseResult<BatchWriteItemOutput, AWSError> = await this.awsDDB.batchWrite(params).promise();
+                    if (!!batchResults && !!batchResults.UnprocessedItems && !!batchResults.UnprocessedItems[tableName] &&
+                    batchResults.UnprocessedItems[tableName].length>0) {
+                        const backoff: number = 6*tryCount; // Backoff 6, 12, 18 seconds to allow capacity recovery
+                        Logger.warn('Found %d unprocessed items.  Backing off %d seconds and trying again', backoff);
+                        await PromiseRatchet.wait(backoff*1000);
+                        tryCount++;
+                        params.RequestItems[tableName]= batchResults.UnprocessedItems[tableName];
+                    }
+                }
+                if (!!batchResults && !!batchResults.UnprocessedItems && !!batchResults.UnprocessedItems[tableName] &&
+                    batchResults.UnprocessedItems[tableName].length>0) {
+                    Logger.error('After 3 tries there were still %d unprocessed items');
+                    rval += curBatch.length - batchResults.UnprocessedItems[tableName].length;
+                    Logger.warn('FIX Unprocessed : %j',batchResults.UnprocessedItems);
+                } else {
+                    rval += curBatch.length;
+                }
+
                 Logger.debug('%d Remain, DeleteBatch Results : %j', batchItems.length, batchResults);
             }
         }
@@ -285,17 +307,6 @@ export class DynamoRatchet {
         const holder: PromiseResult<DeleteItemOutput, AWSError> = await this.awsDDB.delete(params).promise();
         return holder;
     }
-
-    public async simpleCount<T>(tableName: string, keys: any): Promise<T> {
-        const params: GetItemInput = {
-            TableName: tableName,
-            Key: keys
-        };
-
-        const holder: PromiseResult<GetItemOutput, AWSError> = await this.awsDDB.get(params).promise();
-        return (!!holder && !!holder.Item)?Object.assign({} as T, holder.Item):null
-    }
-
 
 
 }
