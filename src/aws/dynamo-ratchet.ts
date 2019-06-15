@@ -260,6 +260,8 @@ export class DynamoRatchet {
                         await PromiseRatchet.wait(backoff*1000);
                         tryCount++;
                         params.RequestItems[tableName]= batchResults.UnprocessedItems[tableName];
+                    } else {
+                        done = true;
                     }
                 }
                 if (!!batchResults && !!batchResults.UnprocessedItems && !!batchResults.UnprocessedItems[tableName] &&
