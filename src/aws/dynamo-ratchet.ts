@@ -54,18 +54,18 @@ export class DynamoRatchet {
             rval.pages++;
 
             while (qryResults.LastEvaluatedKey) {
-                Logger.debug('Found more rows - requery with key %j', qryResults.LastEvaluatedKey);
+                Logger.silly('Found more rows - requery with key %j', qryResults.LastEvaluatedKey);
                 qry['ExclusiveStartKey'] = qryResults.LastEvaluatedKey;
                 qryResults = await this.awsDDB.query(qry).promise();
                 rval.count += qryResults['Count'];
                 rval.scannedCount += qryResults['ScannedCount'];
                 rval.pages++;
-                Logger.info('Rval is now %j', rval);
+                Logger.silly('Rval is now %j', rval);
             }
 
             const end: number = new Date().getTime();
 
-            Logger.info('Finished, returned %j in %s for %j', rval, DurationRatchet.formatMsDuration(end - start, true), qry);
+            Logger.debug('Finished, returned %j in %s for %j', rval, DurationRatchet.formatMsDuration(end - start, true), qry);
             return rval;
         }
         catch (err) {
@@ -82,22 +82,22 @@ export class DynamoRatchet {
 
             let rval: T[] = [];
 
-            Logger.info("Pulling %j", qry);
+            Logger.debug("Pulling %j", qry);
 
             let qryResults: PromiseResult<any, any> = await this.awsDDB.query(qry).promise();
             rval = rval.concat(qryResults.Items as T[]);
 
             while (qryResults.LastEvaluatedKey && (softLimit===null || rval.length<softLimit)) {
-                Logger.debug('Found more rows - requery with key %j', qryResults.LastEvaluatedKey);
+                Logger.silly('Found more rows - requery with key %j', qryResults.LastEvaluatedKey);
                 qry['ExclusiveStartKey'] = qryResults.LastEvaluatedKey;
                 qryResults = await this.awsDDB.query(qry).promise();
                 rval = rval.concat(qryResults.Items);
-                Logger.info('Rval is now %d items', rval.length);
+                Logger.silly('Rval is now %d items', rval.length);
             }
 
             const end: number = new Date().getTime();
 
-            Logger.info('Finished, returned %d results in %s for %j', rval.length, DurationRatchet.formatMsDuration(end - start, true), qry);
+            Logger.debug('Finished, returned %d results in %s for %j', rval.length, DurationRatchet.formatMsDuration(end - start, true), qry);
             return rval;
         }
         catch (err) {
@@ -119,7 +119,7 @@ export class DynamoRatchet {
             Logger.debug('Executing scan count : %j', qry);
             const start: number = new Date().getTime();
 
-            Logger.info("Pulling %j", qry);
+            Logger.debug("Pulling %j", qry);
 
             let qryResults: PromiseResult<any, any> = await this.awsDDB.scan(qry).promise();
             rval.count += qryResults['Count'];
@@ -127,18 +127,18 @@ export class DynamoRatchet {
             rval.pages++;
 
             while (qryResults.LastEvaluatedKey) {
-                Logger.debug('Found more rows - requery with key %j', qryResults.LastEvaluatedKey);
+                Logger.silly('Found more rows - requery with key %j', qryResults.LastEvaluatedKey);
                 qry['ExclusiveStartKey'] = qryResults.LastEvaluatedKey;
                 qryResults = await this.awsDDB.query(qry).promise();
                 rval.count += qryResults['Count'];
                 rval.scannedCount += qryResults['ScannedCount'];
                 rval.pages++;
-                Logger.info('Rval is now %j', rval);
+                Logger.silly('Rval is now %j', rval);
             }
 
             const end: number = new Date().getTime();
 
-            Logger.info('Finished, returned %j in %s for %j', rval, DurationRatchet.formatMsDuration(end - start, true), qry);
+            Logger.debug('Finished, returned %j in %s for %j', rval, DurationRatchet.formatMsDuration(end - start, true), qry);
             return rval;
         }
         catch (err) {
@@ -155,22 +155,22 @@ export class DynamoRatchet {
 
             let rval: T[] = [];
 
-            Logger.info("Pulling %j", qry);
+            Logger.debug("Pulling %j", qry);
 
             let qryResults: PromiseResult<any, any> = await this.awsDDB.scan(qry).promise();
             rval = rval.concat(qryResults.Items as T[]);
 
             while (qryResults.LastEvaluatedKey && (softLimit===null || rval.length<softLimit)) {
-                Logger.debug('Found more rows - requery with key %j', qryResults.LastEvaluatedKey);
+                Logger.silly('Found more rows - requery with key %j', qryResults.LastEvaluatedKey);
                 qry['ExclusiveStartKey'] = qryResults.LastEvaluatedKey;
                 qryResults = await this.awsDDB.query(qry).promise();
                 rval = rval.concat(qryResults.Items);
-                Logger.info('Rval is now %d items', rval.length);
+                Logger.silly('Rval is now %d items', rval.length);
             }
 
             const end: number = new Date().getTime();
 
-            Logger.info('Finished, returned %d results in %s for %j', rval.length, DurationRatchet.formatMsDuration(end - start, true), qry);
+            Logger.debug('Finished, returned %d results in %s for %j', rval.length, DurationRatchet.formatMsDuration(end - start, true), qry);
             return rval;
         }
         catch (err) {
@@ -198,7 +198,7 @@ export class DynamoRatchet {
                         }
                     });
             });
-            Logger.info('Processing %d batch items to %s', batchItems.length, tableName);
+            Logger.debug('Processing %d batch items to %s', batchItems.length, tableName);
 
             while (batchItems.length > 0) {
                 const curBatch: any[] = batchItems.slice(0, Math.min(batchItems.length, batchSize));
@@ -236,7 +236,7 @@ export class DynamoRatchet {
                         }
                     });
             });
-            Logger.info('Processing %d DeleteBatch items to %s', batchItems.length, tableName);
+            Logger.debug('Processing %d DeleteBatch items to %s', batchItems.length, tableName);
 
             while (batchItems.length > 0) {
                 const curBatch: any[] = batchItems.slice(0, Math.min(batchItems.length, batchSize));
