@@ -1,5 +1,6 @@
 import { expect } from 'chai';
 import { DurationRatchet } from "../../src/common/duration-ratchet";
+import moment = require('moment');
 
 describe('#formatMsDuration', function() {
     it('should format less than one second', function() {
@@ -24,4 +25,16 @@ describe('#colonFormatMsDuration', function() {
         expect(result).to.equal('00:00:15');
     });
 
+});
+
+
+describe('#createSteps', function() {
+    it('should create steps', function() {
+        let startEpochMS: number = moment('2019-01-01','YYYY-MM-DD').toDate().getTime();
+        let endEpochMS: number = moment('2019-01-05','YYYY-MM-DD').toDate().getTime();
+
+        let steps: string[] = DurationRatchet.createSteps(startEpochMS,endEpochMS,'etc/GMT', 'YYYY-MM-DD', 'd');
+
+        expect(steps.length).to.eq(4);
+    });
 });

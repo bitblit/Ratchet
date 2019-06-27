@@ -1,5 +1,6 @@
 import * as moment from 'moment-timezone';
 import {NumberRatchet} from './number-ratchet';
+import {DurationInputArg2, Moment} from 'moment';
 
 /*
     Functions for working with durations (times between times)
@@ -33,6 +34,21 @@ export class DurationRatchet {
 
     public static daysBetween(d1: Date, d2: Date): number {
         return moment(d1).diff(moment(d2), 'days');
+    }
+
+    public static createSteps(startEpochMS: number, endEpochMS: number, timezone:string, outputFormat: string, stepUnit: DurationInputArg2): string[] {
+
+        let curDate: Moment = moment.tz(startEpochMS, timezone);
+        const endDate: Moment = moment(endEpochMS);
+
+        const rval: string[] = [];
+        while (curDate.isBefore(endDate)) {
+            rval.push(curDate.format(outputFormat));
+            curDate = curDate.add('1',stepUnit);
+        }
+
+        return rval;
+
     }
 
 }
