@@ -164,7 +164,7 @@ export class DynamoRatchet {
             while (qryResults.LastEvaluatedKey && (softLimit===null || rval.length<softLimit)) {
                 Logger.silly('Found more rows - requery with key %j', qryResults.LastEvaluatedKey);
                 qry['ExclusiveStartKey'] = qryResults.LastEvaluatedKey;
-                qryResults = await this.awsDDB.query(qry).promise();
+                qryResults = await this.awsDDB.scan(qry).promise();
                 rval = rval.concat(qryResults.Items);
                 Logger.silly('Rval is now %d items', rval.length);
             }
