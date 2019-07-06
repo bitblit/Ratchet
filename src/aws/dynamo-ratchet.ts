@@ -21,6 +21,7 @@ import PutItemOutput = DocumentClient.PutItemOutput;
 import GetItemInput = DocumentClient.GetItemInput;
 import {DynamoCountResult} from './model/dynamo-count-result';
 import {PromiseRatchet} from '../common/promise-ratchet';
+import {Object} from 'aws-sdk/clients/s3';
 
 export class DynamoRatchet {
 
@@ -129,7 +130,7 @@ export class DynamoRatchet {
             while (qryResults.LastEvaluatedKey) {
                 Logger.silly('Found more rows - requery with key %j', qryResults.LastEvaluatedKey);
                 qry['ExclusiveStartKey'] = qryResults.LastEvaluatedKey;
-                qryResults = await this.awsDDB.query(qry).promise();
+                qryResults = await this.awsDDB.scan(qry).promise();
                 rval.count += qryResults['Count'];
                 rval.scannedCount += qryResults['ScannedCount'];
                 rval.pages++;
@@ -308,6 +309,25 @@ export class DynamoRatchet {
 
         const holder: PromiseResult<DeleteItemOutput, AWSError> = await this.awsDDB.delete(params).promise();
         return holder;
+    }
+
+    // Recursively Removes any empty strings in place
+    public static cleanObject(ob: any) {
+        if (!!ob) {
+            let rem: string[] = [];
+            Object.keys(ob).forEach(k=>{
+                let v: any = ob[k];
+                if (v==='') {
+                    rem.push(k);
+                } else if (v instanceof Object) {
+                    DynamoRatchet.cleanObject(v);
+                }
+            });
+            Logger.silly('Removing keys : %j',rem);
+            rem.forEach(k=>{
+                delete ob[k];
+            })
+        }
     }
 
 
