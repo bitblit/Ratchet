@@ -1,32 +1,35 @@
 import { expect } from 'chai';
 import {TransformRatchet} from "../../src/common/transform-ratchet";
 import {BuiltInTransforms} from "../../src/common/transform/built-in-transforms";
-import {PromiseRatchet} from "../../src/common/promise-ratchet";
+import {PromiseRatchet} from '../../src/common/promise-ratchet';
 import {Logger} from '../../src/common/logger';
+import {TimeoutToken} from '../../src/common/timeout-token';
 
 let fnFalse = (ignored)=>{return false;};
-let fnOn3 = (t)=>{return t==3;};
+let fnOn3 = (t)=>{Logger.info('t=%d',t);return t==3;};
 let waitAndPrint = async(t1:number, t2:string)=>{Logger.info('Running: %s',t2);await PromiseRatchet.wait(t1*2);return t1*2};
 
 describe('#promiseRatchet', function() {
     this.timeout(30000);
 
-    it('should timeout eventually', () => {
+    it('should timeout eventually', async () => {
 
-        let promise : Promise<boolean> = PromiseRatchet.waitFor(fnFalse, true, 100, 2);
-
-        return promise.then( (result) => {
+        try {
+            Logger.setLevelByName('silly');
+            let result: boolean | TimeoutToken = await PromiseRatchet.waitFor(fnFalse, true, 100, 2);
+            Logger.info('Got : %s', result);
             expect(result).to.equal(false);
-        });
+        } catch (err) {
+            Logger.warn('Error: %s',err,err);
+        }
     });
 
-    it('should succeed on 3rd try', () => {
+    it('should succeed on 3rd try', async () => {
 
         let promise : Promise<boolean> = PromiseRatchet.waitFor(fnOn3, true, 100, 4);
+        let result: boolean | TimeoutToken = await promise;
+        expect(result).to.equal(true);
 
-        return promise.then( (result) => {
-            expect(result).to.equal(true);
-        });
     });
 
     /*

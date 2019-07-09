@@ -4,6 +4,7 @@
 
 import {Logger} from './logger';
 import {ArrayRatchet} from './array-ratchet';
+import {TimeoutToken} from './timeout-token';
 
 export class PromiseRatchet {
 
@@ -34,36 +35,29 @@ export class PromiseRatchet {
         });
     }
 
-    public static timeout<T>(srcPromise: Promise<T>, title: string, timeoutMS: number, resolveAsNull: boolean): Promise<T> {
+    public static timeout<T>(srcPromise: Promise<T>, title: string, timeoutMS: number): Promise<T | TimeoutToken> {
         return Promise.race([
             srcPromise,
-            PromiseRatchet.createTimeoutPromise(title, timeoutMS, resolveAsNull) as Promise<T>
+            PromiseRatchet.createTimeoutPromise(title, timeoutMS) as Promise<T | TimeoutToken>
         ]);
     }
 
-    public static createTimeoutPromise<T>(title: string, timeoutMS: number, resolveAsNull: boolean, logAsWarning: boolean = false): Promise<T> {
+    public static createTimeoutPromise(title: string, timeoutMS: number): Promise<TimeoutToken> {
+
         // Create a promise that rejects in <timeoutMS> milliseconds
-        return new Promise<T>((resolve, reject) => {
+        return new Promise<TimeoutToken>((resolve, reject) => {
             let id = setTimeout(() => {
                 clearTimeout(id);
-                if (logAsWarning) {
-                    Logger.warn('Timed out after %d ms waiting for results of %s', timeoutMS, title);
-                }
-                else {
-                    Logger.silly('Timed out after %d ms waiting for results of %s', timeoutMS, title);
-                }
-                if (resolveAsNull) {
-                    resolve(null);
-                }
-                else {
-                    reject('Timeout after '+timeoutMS+' ms');
-                }
+                const rval: TimeoutToken = new TimeoutToken(title, timeoutMS);
+                resolve(rval);
             }, timeoutMS)
         });
     }
 
     public static async wait(time: number): Promise<void> {
-        await PromiseRatchet.createTimeoutPromise('Wait '+time, time, true, false);
+        // Ignore the returned timeout token
+        await PromiseRatchet.createTimeoutPromise('Wait '+time, time);
+        Logger.info('Finished wait');
     }
 
     public static dumpResult(result, autoDebug: boolean = false): void {
@@ -100,13 +94,13 @@ export class PromiseRatchet {
     // If that happens, returns true, otherwise, returns false
     // Also returns false if the test function throws an exception or returns null (null may NOT be the expectedValue, as
     // it is used as the "breakout" poison pill value
-    public static waitFor(testFunction: (n: number) => any, expectedValue: any, intervalMS: number, maxCycles: number, label: string = 'waitFor', count: number = 0): Promise<boolean> {
+    public static async waitFor(testFunction: (n: number) => any, expectedValue: any, intervalMS: number, maxCycles: number, label: string = 'waitFor', count: number = 0): Promise<boolean> {
         if (expectedValue == null || intervalMS < 50 || maxCycles < 1 || count < 0 || typeof testFunction != 'function') {
             Logger.warn('%s: Invalid configuration for waitFor - exiting immediately', label);
 
-            Logger.warn('ExpectedValue : %s ; interval: %d ; maxCycles: %d ; test : %s', expectedValue, intervalMS, maxCycles, (typeof testFunction))
+            Logger.warn('ExpectedValue : %s ; interval: %d ; maxCycles: %d ; test : %s', expectedValue, intervalMS, maxCycles, (typeof testFunction));
 
-            return Promise.resolve(false);
+            return false;
         }
 
         let curVal: any = null;
@@ -115,27 +109,25 @@ export class PromiseRatchet {
         }
         catch (err) {
             Logger.warn('%s: Caught error while waiting, giving up', label);
-            return Promise.resolve(false);
+            return false;
         }
 
-        if (curVal == null) {
+        if (curVal === null) {
             Logger.debug('%s:CurVal was null - aborting', label);
-            return Promise.resolve(false);
+            return false;
         }
         else if (curVal == expectedValue) {
             Logger.debug('%s:Found expected value', label);
-            return Promise.resolve(true);
+            return true;
         }
         else if (count > maxCycles) // Exceeded max cycles
         {
             Logger.debug('%s:Exceeded max cycles, giving up', label);
-            return Promise.resolve(false);
-        }
-        else {
+            return false;
+        } else {
             Logger.debug('%s : value not reached yet, waiting (count = %d of %d)', label, count, maxCycles);
-            return PromiseRatchet.createTimeoutPromise('WaitFor', intervalMS, true).then(ignored => {
-                return PromiseRatchet.waitFor(testFunction, expectedValue, intervalMS, maxCycles, label, count + 1);
-            });
+            await PromiseRatchet.wait(intervalMS);
+            return PromiseRatchet.waitFor(testFunction, expectedValue, intervalMS, maxCycles, label, count + 1);
         }
     }
 
