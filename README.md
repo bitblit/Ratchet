@@ -29,23 +29,6 @@ because I use these libraries in literally every project I have ever done:
 * Moment - because I always need better date handling than what comes with Javascript
 * Moment-Timezone - because I always need timezone specific handling of date
 
-## Notes on libraries that are used but must be purposely included (transitive dependencies)
-
-### AWS
-Originally I was going to package this as 2 different libraries - one for just my AWS stuff, and the other for more
-generic stuff.  But then I realized that even with the AWS stuff I would bring in AWS lib as a dev dependency because
-I do so much stuff on Lambda and Lambda already has the AWS library on it.  So - Important note!  If you use the
-AWS stuff in here you will need to do your own AWS dependency, something like :
-
-```
-    "aws-sdk": "^2.195.0",
-```
-
-Or none of the AWS stuff is going to work.
-
-One more note on the AWS stuff - for most of my non-super-heavy-load stuff I work in *us-east-1*.  I do this both
-because I am lazy and because that is where AWS releases the new stuff first.  Because of this, you will see that 
-while my code allows you to override the region, I always set a biased default.  If you don't like that... sorry?
 
 #### Daemon
 
@@ -115,8 +98,26 @@ extensionss)
 ```
 
 
+## Notes on libraries that are used but must be purposely included (transitive dependencies)
 
-## Express
+### AWS
+Originally I was going to package this as 2 different libraries - one for just my AWS stuff, and the other for more
+generic stuff.  But then I realized that even with the AWS stuff I would bring in AWS lib as a dev dependency because
+I do so much stuff on Lambda and Lambda already has the AWS library on it.  So - Important note!  If you use the
+AWS stuff in here you will need to do your own AWS dependency, something like :
+
+```
+    "aws-sdk": "^2.195.0",
+```
+
+Or none of the AWS stuff is going to work.
+
+One more note on the AWS stuff - for most of my non-super-heavy-load stuff I work in *us-east-1*.  I do this both
+because I am lazy and because that is where AWS releases the new stuff first.  Because of this, you will see that 
+while my code allows you to override the region, I always set a biased default.  If you don't like that... sorry?
+
+
+### Express
 There are also a few classes in here for simplifying using Express as a processor for Lambda on Node.  Similarly to
 AWS above, Express is included as a dev dependency for this library - if you want to use those classes you are 
 probable already including Express in your package.  If not:
@@ -132,6 +133,17 @@ The Observable ratchet is based on Observables through RXJS.  If you use it, you
 ```
     "rxjs": "5.5.6",
 ```
+
+### Handlebars and PortableFetch
+The simplified mailer for SES (aws/ses/mailer) can be provided with a remote template renderer, which assumes the template
+is a handlebars template.  If you use it, you'll need Handlebars and PortableFetch installed:
+
+```
+    "handlebars": "4.1.2",
+    "portable-fetch": "3.0.0"
+```
+
+I use PortableFetch to keep Ratchet useable on both the client and server side.
 
 
 # Testing
