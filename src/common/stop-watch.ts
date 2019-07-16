@@ -40,6 +40,28 @@ export class StopWatch {
         return rval;
     }
 
+    public dumpExpected(pctComplete: number, name: string = StopWatch.DEFAULT_TIMER_NAME, includeMS: boolean = true): string {
+        let rval: string = 'No timer set for '+name;
+        if (!pctComplete || pctComplete<=0) {
+            rval = 'Cannot generate output for 0 percent complete'
+        } else if (pctComplete>1) {
+            rval = 'Cannot generate output for percent > 1'
+        } else {
+            const start: number = this.starts.get(name);
+            const end: number = this.ends.get(name);
+            if (!!start && !!end) {
+                rval = name + ' completed in '+DurationRatchet.formatMsDuration(end-start, includeMS);
+            } else if (!!start) {
+                const now: number = new Date().getTime();
+                const elapsedMS: number = now - start;
+                const expectedTotalMS: number = elapsedMS/pctComplete;
+                const remainMS: number = expectedTotalMS - elapsedMS;
+                rval= name+' running for '+DurationRatchet.formatMsDuration(elapsedMS, includeMS) + ' approx '+DurationRatchet.formatMsDuration(remainMS, includeMS)+' remaining';
+            }
+        }
+        return rval;
+    }
+
     public elapsedMS(name: string = StopWatch.DEFAULT_TIMER_NAME): number {
         const start: number = this.starts.get(name);
         const end: number = this.ends.get(name);
