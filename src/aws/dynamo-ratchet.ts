@@ -9,11 +9,11 @@ import {PromiseResult} from 'aws-sdk/lib/request';
 import {DurationRatchet} from '../common/duration-ratchet';
 import {
     BatchWriteItemOutput, DeleteItemInput,
-    DeleteItemOutput,
+    DeleteItemOutput, ExpressionAttributeNameMap, ExpressionAttributeValueMap,
     GetItemOutput,
     PutItemInput,
     QueryInput,
-    ScanInput
+    ScanInput, UpdateItemInput, UpdateItemOutput
 } from 'aws-sdk/clients/dynamodb';
 import {AWSError} from 'aws-sdk';
 import {DocumentClient} from 'aws-sdk/lib/dynamodb/document_client';
@@ -22,6 +22,7 @@ import GetItemInput = DocumentClient.GetItemInput;
 import {DynamoCountResult} from './model/dynamo-count-result';
 import {PromiseRatchet} from '../common/promise-ratchet';
 import {Object} from 'aws-sdk/clients/s3';
+import {NumberRatchet} from '../common/number-ratchet';
 
 export class DynamoRatchet {
 
@@ -309,6 +310,26 @@ export class DynamoRatchet {
 
         const holder: PromiseResult<DeleteItemOutput, AWSError> = await this.awsDDB.delete(params).promise();
         return holder;
+    }
+
+    public async atomicCounter(tableName: string, keys: any, counterFieldName: string, increment: number = 1): Promise<number> {
+        const update: UpdateItemInput = {
+            TableName: tableName,
+            Key: keys,
+            //UpdateExpression: 'SET '+counterFieldName+' = '+counterFieldName+' + :inc',
+            UpdateExpression: 'SET #counterFieldName = #counterFieldName + :inc',
+            ExpressionAttributeNames: {
+                '#counterFieldName': counterFieldName
+            } as ExpressionAttributeNameMap,
+            ExpressionAttributeValues: {
+                ':inc': increment
+            } as ExpressionAttributeValueMap,
+            ReturnValues: 'UPDATED_NEW'
+        };
+
+        const ui: UpdateItemOutput = await this.awsDDB.update(update).promise();
+        const rval: number = NumberRatchet.safeNumber(ui.Attributes[counterFieldName]);
+        return rval;
     }
 
     // Recursively Removes any empty strings in place
