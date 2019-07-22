@@ -57,7 +57,7 @@ export class PromiseRatchet {
     public static async wait(time: number): Promise<void> {
         // Ignore the returned timeout token
         await PromiseRatchet.createTimeoutPromise('Wait '+time, time);
-        Logger.info('Finished wait');
+        Logger.silly('Finished wait of %d ms', time);
     }
 
     public static dumpResult(result, autoDebug: boolean = false): void {
