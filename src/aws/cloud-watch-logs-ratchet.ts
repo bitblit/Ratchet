@@ -4,10 +4,18 @@
 
 import * as AWS from 'aws-sdk';
 import {Logger} from '../common/logger';
-import {DescribeLogStreamsResponse, LogStream} from 'aws-sdk/clients/cloudwatchlogs';
+import {
+    DeleteLogGroupRequest,
+    DescribeLogGroupsRequest, DescribeLogGroupsResponse,
+    DescribeLogStreamsResponse,
+    LogGroup, LogRecord,
+    LogStream
+} from 'aws-sdk/clients/cloudwatchlogs';
 import {PromiseRatchet} from '../common/promise-ratchet';
+import {RequireRatchet} from '../common/require-ratchet';
+import {StringRatchet} from '../common/string-ratchet';
 
-export class CloudWatchRatchet {
+export class CloudWatchLogsRatchet {
     private cwLogs: AWS.CloudWatchLogs;
 
     constructor(cloudwatchLogs: AWS.CloudWatchLogs = null) {
@@ -118,6 +126,53 @@ export class CloudWatchRatchet {
         return rval;
     }
 
+    public async findLogGroups(prefix: string): Promise<LogGroup[]> {
+        RequireRatchet.notNullOrUndefined(prefix);
+
+        const params: DescribeLogGroupsRequest = {
+            logGroupNamePrefix: prefix
+        };
+        let rval: LogGroup[] = [];
+
+        do {
+            Logger.info('%d found, pulling log groups : %j', rval.length, params);
+            const res: DescribeLogGroupsResponse = await this.cwLogs.describeLogGroups(params).promise();
+            rval = rval.concat(res.logGroups);
+            params.nextToken = res.nextToken;
+        } while (!!params.nextToken)
+
+        return rval;
+    }
+
+    public async removeLogGroups(groups: LogGroup[]): Promise<boolean[]> {
+        RequireRatchet.notNullOrUndefined(groups);
+        let rval: boolean[] = [];
+
+        for (let i=0;i<groups.length;i++) {
+            try {
+                Logger.info('Deleting %j', groups[i]);
+                const req: DeleteLogGroupRequest = {
+                    logGroupName: groups[i].logGroupName
+                };
+                const r: any = await this.cwLogs.deleteLogGroup(req).promise();
+                rval.push(true);
+            } catch (err) {
+                Logger.error('Failure to delete %j : %s', groups[i], err);
+                rval.push(false);
+            }
+        }
+
+        return rval;
+    }
+
+    public async removeLogGroupsWithPrefix(prefix: string): Promise<boolean[]> {
+        RequireRatchet.notNullOrUndefined(prefix);
+        RequireRatchet.true(StringRatchet.trimToEmpty(prefix).length>0); // Don't allow nuke all here
+
+        Logger.info('Removing log groups with prefix %s', prefix);
+        const groups: LogGroup[] = await this.findLogGroups(prefix);
+        return await this.removeLogGroups(groups);
+    }
 
 
 }

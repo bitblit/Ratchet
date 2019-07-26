@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import {LambdaExpressRatchet} from '../../../src/aws/express/lambda-express-ratchet';
-import {CloudWatchRatchet} from '../../../src/aws/cloud-watch-ratchet';
+import {CloudWatchLogsRatchet} from '../../../src/aws/cloud-watch-ratchet';
 import {Logger} from '../../../src/common/logger';
 import {LogStream} from 'aws-sdk/clients/cloudwatchlogs';
 
@@ -29,7 +29,7 @@ describe('#parseExtractIps', function() {
 
     it('xxx', async() => {
         Logger.setLevelByName('debug');
-        const cwr: CloudWatchRatchet = new CloudWatchRatchet();
+        const cwr: CloudWatchLogsRatchet = new CloudWatchLogsRatchet();
         //const oldest: LogStream = await cwr.findStreamWithOldestEventInGroup('/aws/lambda/NeonProd-NeonJS-XEJS4I89JKTL');
         //Logger.info('Found : %j, first is %s', oldest, new Date(oldest.firstEventTimestamp));
 
