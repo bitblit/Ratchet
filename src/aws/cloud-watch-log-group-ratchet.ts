@@ -5,11 +5,13 @@
 import * as AWS from 'aws-sdk';
 import {Logger} from '../common/logger';
 import {
+    DescribeLogStreamsRequest,
     DescribeLogStreamsResponse,
-    FilteredLogEvent,
+    FilteredLogEvent, FilterLogEventsRequest,
     FilterLogEventsResponse,
     LogStream
 } from 'aws-sdk/clients/cloudwatchlogs';
+import {StopWatch} from '../common/stop-watch';
 
 export class CloudWatchLogGroupRatchet {
     constructor(private logGroup: string, private awsCWLogs: AWS.CloudWatchLogs = new AWS.CloudWatchLogs({region: 'us-east-1'})) {
@@ -19,7 +21,7 @@ export class CloudWatchLogGroupRatchet {
     public async readLogStreams(startTimestamp: number = null, endTimestamp: number = null) : Promise<LogStream[]>
     {
 
-        let params : any =
+        let params : DescribeLogStreamsRequest =
             {
                 logGroupName : this.logGroup,
                 // logStreamNamePrefix: prefix,
@@ -58,7 +60,9 @@ export class CloudWatchLogGroupRatchet {
 
     public async readEvents(filter: string, startTimestamp: number=null, endTimestamp: number=null, sortEvents: boolean = true,
                             maxEvents: number = null): Promise<FilteredLogEvent[]> {
-        let params : any =
+        const sw: StopWatch = new StopWatch();
+        sw.start();
+        let params : FilterLogEventsRequest =
             {
                 logGroupName : this.logGroup,
                 endTime: endTimestamp,
@@ -74,13 +78,13 @@ export class CloudWatchLogGroupRatchet {
         let rval: FilteredLogEvent[] = [];
 
         do {
-            Logger.info('Pulling more log events (%d found so far)', rval.length);
+            Logger.debug('Pulling more log events (%d found so far) : %s', rval.length, sw.dump());
             const temp: FilterLogEventsResponse = await this.awsCWLogs.filterLogEvents(params).promise();
             rval = rval.concat(temp.events);
             params.nextToken = temp.nextToken;
         } while (!!params.nextToken && (!maxEvents || rval.length < maxEvents));
 
-        Logger.debug('Found %d total', rval.length);
+        Logger.debug('Found %d total in %s', rval.length, sw.dump());
 
         if (sortEvents) {
             Logger.debug('Sorting events by timestamp');
@@ -92,6 +96,7 @@ export class CloudWatchLogGroupRatchet {
                 return rval;
             });
         }
+
 
         return rval;
     }
