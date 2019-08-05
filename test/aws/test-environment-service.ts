@@ -23,9 +23,10 @@ describe('#environmentService', function() {
 
     /*
     it('should find a valid value', async() => {
-        const vals: any = await EnvironmentService.getConfig('xxx');
+        const vals: any = await EnvironmentService.getConfig('xxx', 'us-east-1', true);
         expect(vals).to.not.be.null;
     });
-    */
+    
+     */
 
 });

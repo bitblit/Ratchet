@@ -50,6 +50,9 @@ export class EnvironmentService {
                     const wait: number = backoffMultiplierMS * tryCount;
                     Logger.warn('Throttled while trying to read parameters - waiting %d ms and retrying (attempt %d)', wait, tryCount);
                     await PromiseRatchet.wait(wait);
+                } else if (errCode.toLowerCase().indexOf('parameternotfound')!==-1) {
+                    const errMsg: string = Logger.warn('AWS could not find parameter %s - are you using the right AWS key?', name);
+                    throw new Error(errMsg);
                 } else {
                     Logger.error('Final environment fetch error (cannot retry) : %s',err,err);
                     throw err;

@@ -152,43 +152,47 @@ export class Logger {
         return rval;
     }
 
-    public static error(...input: any[]): void {
+    public static error(...input: any[]): string {
         let msg: string = util.format.apply(null, input);
         msg = Logger.conditionallyApplyLevelAndPrefixToMessage(0, msg);
         if (Logger.LEVEL >= 0) {
             Logger.ifConsoleLoggingEnabled(console.error, msg);
             Logger.addToRingBuffer(msg, 'error');
         }
+        return msg;
     }
 
-    public static warn(...input: any[]): void {
+    public static warn(...input: any[]): string {
         let msg: string = util.format.apply(null, input);
         msg = Logger.conditionallyApplyLevelAndPrefixToMessage(1, msg);
         if (Logger.LEVEL >= 1) {
             Logger.ifConsoleLoggingEnabled(console.warn, msg);
             Logger.addToRingBuffer(msg, 'warn');
         }
+        return msg;
     }
 
-    public static info(...input: any[]): void {
+    public static info(...input: any[]): string {
         let msg: string = util.format.apply(null, input);
         msg = Logger.conditionallyApplyLevelAndPrefixToMessage(2, msg);
         if (Logger.LEVEL >= 2) {
             Logger.ifConsoleLoggingEnabled(console.info, msg);
             Logger.addToRingBuffer(msg, 'info');
         }
+        return msg;
     }
 
-    public static verbose(...input: any[]): void {
+    public static verbose(...input: any[]): string {
         let msg: string = util.format.apply(null, input);
         msg = Logger.conditionallyApplyLevelAndPrefixToMessage(3, msg);
         if (Logger.LEVEL >= 3) {
             Logger.ifConsoleLoggingEnabled(console.info, msg);
             Logger.addToRingBuffer(msg, 'verbose');
         }
+        return msg;
     }
 
-    public static debug(...input: any[]): void {
+    public static debug(...input: any[]): string {
         let msg: string = util.format.apply(null, input);
         msg = Logger.conditionallyApplyLevelAndPrefixToMessage(4, msg);
         if (Logger.LEVEL >= 4) {
@@ -202,15 +206,17 @@ export class Logger {
 
             Logger.addToRingBuffer(msg, 'debug');
         }
+        return msg;
     }
 
-    public static silly(...input: any[]): void {
+    public static silly(...input: any[]): string {
         let msg: string = util.format.apply(null, input);
         msg = Logger.conditionallyApplyLevelAndPrefixToMessage(5, msg);
         if (Logger.LEVEL >= 5) {
             Logger.ifConsoleLoggingEnabled(console.log, msg);
             Logger.addToRingBuffer(msg, 'silly');
         }
+        return msg;
     }
 
     public static takeSnapshot(): LogSnapshot {
