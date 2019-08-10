@@ -26,7 +26,7 @@ describe('#environmentService', function() {
         const vals: any = await EnvironmentService.getConfig('xxx', 'us-east-1', true);
         expect(vals).to.not.be.null;
     });
-    
+
      */
 
 });

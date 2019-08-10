@@ -62,6 +62,24 @@ export class StringRatchet {
         const rval: boolean = /^[0-9]+$/.test(input);
         return rval;
     }
+    public static stringContainsOnlyAlphanumeric(input: string): boolean {
+        const rval: boolean = /^[0-9a-zA-Z]+$/.test(input);
+        return rval;
+    }
+    public static stringContainsOnlyHex(input: string): boolean {
+        const rval: boolean = /^[0-9a-fA-F]+$/.test(input);
+        return rval;
+    }
+    public static stringContainsOnly(inVal: string, validCharsIn: string): boolean {
+        const input: string = (!inVal)?'':inVal;
+        const validChars: string = (!validCharsIn)?'':validCharsIn;
+        let rval: boolean = true;
+
+        for (let i=0;i<input.length && rval;i++) {
+            rval = validChars.indexOf(input.charAt(i))>=0;
+        }
+        return rval;
+    }
 
     public static obscure(input: string, prefixLength: number = 2, suffixLength: number = 2): string {
         if (!input) {

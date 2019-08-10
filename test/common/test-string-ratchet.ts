@@ -106,3 +106,18 @@ describe('#stripNonNumeric', function() {
     });
 
 });
+
+
+describe('#stringContainsOnly', function() {
+    it('should check string contains only valid chars"', function() {
+        expect(StringRatchet.stringContainsOnly('test','tes')).to.be.true;
+        expect(StringRatchet.stringContainsOnly('test','teg')).to.be.false;
+
+        expect(StringRatchet.stringContainsOnlyAlphanumeric('test')).to.be.true;
+        expect(StringRatchet.stringContainsOnlyAlphanumeric('tes-')).to.be.false;
+
+        expect(StringRatchet.stringContainsOnlyHex('1a3')).to.be.true;
+        expect(StringRatchet.stringContainsOnlyHex('test')).to.be.false;
+    });
+
+});
