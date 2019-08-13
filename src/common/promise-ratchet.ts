@@ -161,9 +161,10 @@ export class PromiseRatchet {
     }
 
 
-    public static async runBoundedParallelSingleParam<T>(promiseFn: Function, params: any[], context: any, maxConcurrent: number = 1): Promise<T[]> {
+    public static async runBoundedParallelSingleParam<T>(promiseFn: Function, params: any[], context: any,
+                                                         maxConcurrent: number = 1,logLevel: string = 'debug'): Promise<T[]> {
         const wrappedParams: any[][]=ArrayRatchet.wrapElementsInArray(params);
-        return PromiseRatchet.runBoundedParallel<T>(promiseFn, wrappedParams, context, maxConcurrent);
+        return PromiseRatchet.runBoundedParallel<T>(promiseFn, wrappedParams, context, maxConcurrent, logLevel);
     }
 
     private constructor() {}
