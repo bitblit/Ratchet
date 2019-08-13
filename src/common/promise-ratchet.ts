@@ -5,6 +5,7 @@
 import {Logger} from './logger';
 import {ArrayRatchet} from './array-ratchet';
 import {TimeoutToken} from './timeout-token';
+import {StopWatch} from './stop-watch';
 
 export class PromiseRatchet {
 
@@ -131,20 +132,30 @@ export class PromiseRatchet {
         }
     }
 
-    public static async runBoundedParallel<T>(promiseFn: Function, params: any[][], context: any, maxConcurrent: number = 1): Promise<T[]> {
+    public static async runBoundedParallel<T>(promiseFn: Function, params: any[][], context: any
+                                              , maxConcurrent: number = 1
+                                            ,logLevel: string = 'debug'): Promise<T[]> {
+        const sw: StopWatch = new StopWatch();
+        sw.start();
         let rval: T[] = [];
         let remain: any[][] = params;
-        Logger.debug('Processing %d total elements %d at a time', params.length, maxConcurrent);
+        Logger.logByLevel(logLevel,'Processing %d total elements %d at a time', params.length, maxConcurrent);
 
         const ctx:any = context || this;
+        let processed: number = 0;
+        const totalCount: number = remain.length;
+
         while (remain.length>0) {
             let curBatch: any[] = remain.slice(0, Math.min(remain.length, maxConcurrent));
             remain = remain.slice(curBatch.length);
 
             const proms: Promise<T>[] = curBatch.map(c => promiseFn.apply(ctx,c) as Promise<T>);
             const output: T[] = await Promise.all(proms);
+            processed += proms.length;
             rval = rval.concat(output);
-            Logger.debug('%d elements remain', remain.length);
+
+            const pct: number = processed / totalCount;
+            Logger.logByLevel(logLevel, '%d elements remain : %s', remain.length, sw.dumpExpected(pct));
         }
         return rval;
     }
