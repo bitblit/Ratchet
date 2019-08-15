@@ -7,6 +7,10 @@ describe('#formatMsDuration', function() {
         let result = DurationRatchet.formatMsDuration(409,true);
         expect(result).to.equal('00h00m00.409s');
     });
+    it('should format more than one day', function() {
+        let result = DurationRatchet.formatMsDuration((1000*60*60*123),true);
+        expect(result).to.equal('5d03h00m00.000s');
+    });
 });
 
 describe('#colonFormatMsDuration', function() {
@@ -18,6 +22,11 @@ describe('#colonFormatMsDuration', function() {
     it('should format more than ten hours', function() {
         let result = DurationRatchet.colonFormatMsDuration((1000*60*60*11),false);
         expect(result).to.equal('11:00:00');
+    });
+
+    it('should format more than one hundred hours', function() {
+        let result = DurationRatchet.colonFormatMsDuration((1000*60*60*123),false);
+        expect(result).to.equal('123:00:00');
     });
 
     it('should format 15 seconds', function() {

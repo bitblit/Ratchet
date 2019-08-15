@@ -1,6 +1,20 @@
 import { expect } from 'chai';
 import {NumberRatchet, Point2d} from '../../src/common/number-ratchet';
 
+
+describe('#leadingZeros', function() {
+    it('should convert "5" to 05', function() {
+        let result : string = NumberRatchet.leadingZeros('5',2);
+        expect(result).to.equal('05');
+    });
+
+    it('should leave 166 alone', function() {
+        let result :string = NumberRatchet.leadingZeros('166',2);
+        expect(result).to.equal('166');
+    });
+
+});
+
 describe('#safeToNumber', function() {
     it('should convert "55" to 55', function() {
         let result : number = NumberRatchet.safeNumber("55");
