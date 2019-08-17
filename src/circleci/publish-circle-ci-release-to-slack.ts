@@ -2,6 +2,7 @@ import * as moment from 'moment-timezone';
 import {Logger} from '../common/logger';
 import * as fetch from 'portable-fetch';
 import * as util from 'util';
+import {GitCommitData, GitRatchet} from '../common/git-ratchet';
 
 export class PublishCircleCiReleaseToSlack {
 
@@ -18,6 +19,7 @@ export class PublishCircleCiReleaseToSlack {
         const tag: string = process.env['CIRCLE_TAG'] || '';
         const sha1: string = process.env['CIRCLE_SHA1'] || '';
         const localTime: string = moment().tz(timezone).format('MMMM Do YYYY, h:mm:ss a z');
+        const gitData: GitCommitData = await GitRatchet.getLastCommitSwallowException();
 
         if (!buildNum || !userName || !projectName) {
             throw new Error('CIRCLE_BUILD_NUM, CIRCLE_USERNAME, CIRCLE_PROJECT_REPONAME env vars not set - apparently not in a CircleCI environment');
@@ -26,7 +28,10 @@ export class PublishCircleCiReleaseToSlack {
         Logger.info('Sending slack notification %j with build %s, branch %s, tag %s, sha %s, time: %s',
              buildNum, branch, tag, sha1, localTime);
 
-        const message: string = util.format('%s performed release %s on %s at %s', userName, tag+' '+branch, projectName, localTime);
+        let message: string = util.format('%s performed release %s on %s at %s', userName, tag+' '+branch, projectName, localTime);
+        if (!!gitData && !!gitData.subject) {
+            message += '\n\n' + gitData.subject;
+        };
 
         const response: Response = await fetch(slackHookUrl, {
             method: 'POST', // *GET, POST, PUT, DELETE, etc.
