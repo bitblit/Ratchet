@@ -20,13 +20,13 @@ export class RemoteHandlebarsTemplateRenderer {
     public async renderRemoteTemplate(templateName:string, inContext:any): Promise<string> {
         const template: HandlebarsTemplateDelegate = await this.fetchTemplate(templateName);
         const context: any = inContext || {};
-        const result: string = (!!template)?template.apply(context):null;
+        const result: string = (!!template)?template(context):null;
         return result;
     }
 
     public async renderTemplate(templateText:string, context:any): Promise<string> {
         const template: Template = handlebars.compile(templateText);
-        const result: string = template.apply(context);
+        const result: string = template(context);
         return result;
     }
 

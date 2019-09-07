@@ -2,6 +2,8 @@ import { expect } from 'chai';
 import * as AWS from 'aws-sdk';
 import {DynamoRatchet} from '../../src/aws/dynamo-ratchet';
 import {Logger} from '../../src/common/logger';
+import {ExpressionAttributeValueMap, QueryInput} from 'aws-sdk/clients/dynamodb';
+import * as util from 'util';
 
 describe('#atomicCounter', function() {
     it('should increment the counter and return the new value', async() => {
@@ -14,5 +16,6 @@ describe('#atomicCounter', function() {
         expect(res).to.not.be.null;
         */
     });
+
 
 });

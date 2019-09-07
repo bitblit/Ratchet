@@ -8,7 +8,7 @@ describe('#applyCircleCiEnvVariablesToFiles', function() {
             const result:number = await ApplyCircleCiEnvVariablesToFiles.process(['test1.txt']);
             this.bail();
         } catch (err) {
-            Logger.debug('Caught expected error : %s', err);
+            Logger.debug('Caught expected error : %s', err.message);
             // Expected, return ok
         }
     });

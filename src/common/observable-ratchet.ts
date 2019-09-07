@@ -1,6 +1,6 @@
-import {Observable} from 'rxjs/Observable';
-import {Observer} from 'rxjs/Observer';
-import {race} from 'rxjs/observable/race';
+import {Observable} from 'rxjs';
+import {Observer} from 'rxjs';
+import {race} from 'rxjs';
 import {TimeoutToken} from './timeout-token';
 
 /**

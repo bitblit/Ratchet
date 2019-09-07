@@ -3,7 +3,6 @@ import {Logger} from "../../src/common/logger";
 import {LogSnapshot} from '../../src/common/log-snapshot';
 import {LogMessage} from '../../src/common/log-message';
 
-
 describe('#levelName', function() {
     it('should return "error" for 0', function() {
         let result = Logger.levelName(0);
@@ -152,6 +151,7 @@ describe('#testTracePrefix', function() {
         });
     });
 });
+
 
 
 describe('#testLastMessage', function() {

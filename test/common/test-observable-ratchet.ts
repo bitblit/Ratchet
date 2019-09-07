@@ -1,4 +1,4 @@
-import { timer } from 'rxjs/observable/timer';
+import { timer } from 'rxjs';
 import { expect } from 'chai';
 import {ObservableRatchet} from "../../src/common/observable-ratchet";
 import {TimeoutToken} from '../../src/common/timeout-token';

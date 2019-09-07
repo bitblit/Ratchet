@@ -55,7 +55,7 @@ export class DynamoRatchet {
             rval.scannedCount += qryResults['ScannedCount'];
             rval.pages++;
 
-            while (qryResults.LastEvaluatedKey) {
+            while (qryResults.LastEvaluatedKey && !qry.Limit) {
                 Logger.silly('Found more rows - requery with key %j', qryResults.LastEvaluatedKey);
                 qry['ExclusiveStartKey'] = qryResults.LastEvaluatedKey;
                 qryResults = await this.awsDDB.query(qry).promise();
@@ -89,7 +89,7 @@ export class DynamoRatchet {
             let qryResults: PromiseResult<any, any> = await this.awsDDB.query(qry).promise();
             rval = rval.concat(qryResults.Items as T[]);
 
-            while (qryResults.LastEvaluatedKey && (softLimit===null || rval.length<softLimit)) {
+            while (qryResults.LastEvaluatedKey && (softLimit===null || rval.length<softLimit) && !qry.Limit) { // If Limit was set on the initial query, stop after 1
                 Logger.silly('Found more rows - requery with key %j', qryResults.LastEvaluatedKey);
                 qry['ExclusiveStartKey'] = qryResults.LastEvaluatedKey;
                 qryResults = await this.awsDDB.query(qry).promise();
@@ -128,7 +128,7 @@ export class DynamoRatchet {
             rval.scannedCount += qryResults['ScannedCount'];
             rval.pages++;
 
-            while (qryResults.LastEvaluatedKey) {
+            while (qryResults.LastEvaluatedKey && !qry.Limit) {
                 Logger.silly('Found more rows - requery with key %j', qryResults.LastEvaluatedKey);
                 qry['ExclusiveStartKey'] = qryResults.LastEvaluatedKey;
                 qryResults = await this.awsDDB.scan(qry).promise();
@@ -162,7 +162,7 @@ export class DynamoRatchet {
             let qryResults: PromiseResult<any, any> = await this.awsDDB.scan(qry).promise();
             rval = rval.concat(qryResults.Items as T[]);
 
-            while (qryResults.LastEvaluatedKey && (softLimit===null || rval.length<softLimit)) {
+            while (qryResults.LastEvaluatedKey && (softLimit===null || rval.length<softLimit) && !qry.Limit) {
                 Logger.silly('Found more rows - requery with key %j', qryResults.LastEvaluatedKey);
                 qry['ExclusiveStartKey'] = qryResults.LastEvaluatedKey;
                 qryResults = await this.awsDDB.scan(qry).promise();

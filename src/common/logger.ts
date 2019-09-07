@@ -152,8 +152,8 @@ export class Logger {
         return rval;
     }
 
-    public static error(...input: any[]): string {
-        let msg: string = util.format.apply(null, input);
+    public static error(format:string, ...input: any[]): string {
+        let msg: string = util.format(format, ...input);
         msg = Logger.conditionallyApplyLevelAndPrefixToMessage(0, msg);
         if (Logger.LEVEL >= 0) {
             Logger.ifConsoleLoggingEnabled(console.error, msg);
@@ -162,8 +162,8 @@ export class Logger {
         return msg;
     }
 
-    public static warn(...input: any[]): string {
-        let msg: string = util.format.apply(null, input);
+    public static warn(format:string, ...input: any[]): string {
+        let msg: string = util.format(format, ...input);
         msg = Logger.conditionallyApplyLevelAndPrefixToMessage(1, msg);
         if (Logger.LEVEL >= 1) {
             Logger.ifConsoleLoggingEnabled(console.warn, msg);
@@ -172,8 +172,8 @@ export class Logger {
         return msg;
     }
 
-    public static info(...input: any[]): string {
-        let msg: string = util.format.apply(null, input);
+    public static info(format:string, ...input: any[]): string {
+        let msg: string = util.format(format, ...input);
         msg = Logger.conditionallyApplyLevelAndPrefixToMessage(2, msg);
         if (Logger.LEVEL >= 2) {
             Logger.ifConsoleLoggingEnabled(console.info, msg);
@@ -182,8 +182,8 @@ export class Logger {
         return msg;
     }
 
-    public static verbose(...input: any[]): string {
-        let msg: string = util.format.apply(null, input);
+    public static verbose(format:string, ...input: any[]): string {
+        let msg: string = util.format(format, ...input);
         msg = Logger.conditionallyApplyLevelAndPrefixToMessage(3, msg);
         if (Logger.LEVEL >= 3) {
             Logger.ifConsoleLoggingEnabled(console.info, msg);
@@ -192,8 +192,8 @@ export class Logger {
         return msg;
     }
 
-    public static debug(...input: any[]): string {
-        let msg: string = util.format.apply(null, input);
+    public static debug(format: string, ...input: any[]): string {
+        let msg: string = util.format(format, ...input);
         msg = Logger.conditionallyApplyLevelAndPrefixToMessage(4, msg);
         if (Logger.LEVEL >= 4) {
             // This is here because old versions of Node do not support console.debug
@@ -209,8 +209,8 @@ export class Logger {
         return msg;
     }
 
-    public static silly(...input: any[]): string {
-        let msg: string = util.format.apply(null, input);
+    public static silly(format:string, ...input: any[]): string {
+        let msg: string = util.format(format, ...input);
         msg = Logger.conditionallyApplyLevelAndPrefixToMessage(5, msg);
         if (Logger.LEVEL >= 5) {
             Logger.ifConsoleLoggingEnabled(console.log, msg);
@@ -230,10 +230,10 @@ export class Logger {
         return rval;
     }
 
-    public static logByLevel(level: string, ...input: any[]): void {
+    public static logByLevel(level: string, format: string, ...input: any[]): void {
         let num: number = Logger.levelNumber(level);
         if (num != null) {
-            let msg: string = util.format.apply(null, input);
+            let msg: string = util.format(format, ...input);
             switch (num) {
                 case 0 :
                     Logger.error(msg);
