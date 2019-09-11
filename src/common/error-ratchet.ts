@@ -3,6 +3,7 @@
 */
 
 import {Logger} from './logger';
+import * as util from "util";
 
 export class ErrorRatchet {
 
@@ -20,6 +21,15 @@ export class ErrorRatchet {
             Logger.error('%s',rval,err);
         }
         return rval;
+    }
+
+    public static fErr(format:string, ...input: any[]): Error {
+        let msg: string = util.format(format, ...input);
+        return new Error(msg);
+    }
+
+    public static throwFormattedErr(format:string, ...input: any[]): Error {
+        throw ErrorRatchet.fErr(format, ...input);
     }
 
 }
