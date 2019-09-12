@@ -43,7 +43,7 @@ export class GeolocationRatchet {
     }
 
 
-    public static milesToLatLngOffset(miles:number, latitudeInDecimalDegress:number = 0) {
+    public static degreeOfLatLngInMiles(latitudeInDecimalDegress:number = 0) {
         // It doesn't matter at what longitude you are. What matters is what latitude you are.
         // Length of 1 degree of Longitude = cosine (latitude in decimal degrees) * length of degree (miles) at equator.
         // Convert your latitude into decimal degrees ~ 37.26383
@@ -51,11 +51,18 @@ export class GeolocationRatchet {
         // Angle in radians = Angle in degrees x PI / 180
         // Take the cosine of the value in radians ~ 0.79585
         // 1 degree of Longitude = ~0.79585 * 69.172 = ~ 55.051 miles
-        RequireRatchet.notNullOrUndefined(miles);
-        RequireRatchet.true(miles>=0);
         const latInRads: number = (latitudeInDecimalDegress * Math.PI) / 180;
         const cosLat: number = Math.cos(latInRads);
         const rval: number = NumberRatchet.safeNumber((cosLat * 69.172).toFixed(4));
         return rval;
+    }
+
+
+
+    public static milesInDegLatLng(miles: number, latitudeInDecimalDegress:number = 0) {
+        RequireRatchet.notNullOrUndefined(miles);
+        RequireRatchet.true(miles>=0);
+        const degreeInMiles: number = GeolocationRatchet.degreeOfLatLngInMiles(latitudeInDecimalDegress);
+        return miles/degreeInMiles;
     }
 }
