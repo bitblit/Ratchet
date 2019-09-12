@@ -3,6 +3,9 @@
     Functions for working with geolocations
 */
 
+import {RequireRatchet} from './require-ratchet';
+import {NumberRatchet} from './number-ratchet';
+
 export class GeolocationRatchet {
 
     private constructor(){}
@@ -37,5 +40,22 @@ export class GeolocationRatchet {
             if (uU==='N') { dist *= 0.8684 }
             return dist;
         }
+    }
+
+
+    public static milesToLatLngOffset(miles:number, latitudeInDecimalDegress:number = 0) {
+        // It doesn't matter at what longitude you are. What matters is what latitude you are.
+        // Length of 1 degree of Longitude = cosine (latitude in decimal degrees) * length of degree (miles) at equator.
+        // Convert your latitude into decimal degrees ~ 37.26383
+        // Convert your decimal degrees into radians ~ 0.65038
+        // Angle in radians = Angle in degrees x PI / 180
+        // Take the cosine of the value in radians ~ 0.79585
+        // 1 degree of Longitude = ~0.79585 * 69.172 = ~ 55.051 miles
+        RequireRatchet.notNullOrUndefined(miles);
+        RequireRatchet.true(miles>=0);
+        const latInRads: number = (latitudeInDecimalDegress * Math.PI) / 180;
+        const cosLat: number = Math.cos(latInRads);
+        const rval: number = NumberRatchet.safeNumber((cosLat * 69.172).toFixed(4));
+        return rval;
     }
 }
