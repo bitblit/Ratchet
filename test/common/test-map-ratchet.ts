@@ -46,5 +46,32 @@ describe('#toKeyValueList', function() {
     });
 
 
+    it('should group values', function() {
+        const test: any[] = [
+            {
+                id: 1,
+                type: 'a'
+            },
+            {
+                id: 2,
+                type: 'a'
+            },
+            {
+                id: 3,
+                type: 'b'
+            },
+        ];
+
+        const grouped: Map<string, any> = MapRatchet.groupByProperty<any,string>(test, 'type');
+
+        expect(grouped).to.not.be.null;
+        const aGroup: any[] = grouped.get('a');
+        expect(aGroup).to.not.be.null;
+        expect(aGroup.length).to.eq(2);
+        expect(grouped.has('b')).to.be.true;
+        expect(grouped.has('c')).to.be.false;
+    });
+
+
 
 });

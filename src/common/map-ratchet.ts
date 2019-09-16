@@ -4,6 +4,7 @@
 
 import {KeyValue} from './key-value';
 import {Logger} from './logger';
+import {ErrorRatchet} from './error-ratchet';
 
 export class MapRatchet {
 
@@ -22,6 +23,25 @@ export class MapRatchet {
                 throw new Error('Multiple values found for ' + val);
             }
             rval.set(val, i);
+        })
+        return rval;
+    }
+
+    public static groupByProperty<T,R>(input: T[], propName: string): Map<R,T[]> {
+        if (!input || !propName) {
+            throw new Error('Neither input nor propName can be null');
+        }
+
+        const rval: Map<R, T[]> = new Map<R, T[]>();
+        input.forEach(i => {
+            const val: R = (!!i) ? i[propName] : null;
+            if (!val) {
+                throw ErrorRatchet.fErr('No value for %s found in %j' , propName ,i);
+            }
+            if (!rval.has(val)) {
+                rval.set(val, []);
+            }
+            rval.get(val).push(i);
         })
         return rval;
     }
