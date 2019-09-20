@@ -16,7 +16,7 @@
     "prepublishOnly": "yarn run compile",
     "compile": "yarn run clean && tsc",
     "watch": "tsc -w .",
-    "clean": "rm -Rf dist",
+    "clean": "shx rm -Rf dist",
     "test": "mocha -r ts-node/register test/**/*.ts",
     "apply-circle": "node dist/circleci/apply-circle-ci-env-variables-to-files src/static/build-properties.json"
   },
@@ -57,6 +57,7 @@
     "mocha": "6.2.0",
     "portable-fetch": "3.0.0",
     "rxjs": "6.5.3",
+    "shx": "0.3.2",
     "ts-node": "8.3.0",
     "tslint": "5.19.0",
     "typescript": "3.6.2",
