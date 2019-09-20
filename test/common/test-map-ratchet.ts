@@ -73,5 +73,24 @@ describe('#toKeyValueList', function() {
     });
 
 
+    it('should fetch a value with a case-insensitive key', function() {
+        const testOb: any = {
+            test1: 'a',
+            Test2: 'b',
+            test3: 'c',
+            Test3: 'd'
+        };
+
+        expect(MapRatchet.caseInsensitiveAccess(null,null)).to.be.null;
+        expect(MapRatchet.caseInsensitiveAccess({},null)).to.be.null;
+        expect(MapRatchet.caseInsensitiveAccess(null,'a')).to.be.null;
+
+        expect(MapRatchet.caseInsensitiveAccess(testOb,'test1')).to.be.eq('a');
+        expect(MapRatchet.caseInsensitiveAccess(testOb,'test2')).to.be.eq('b');
+        expect(MapRatchet.caseInsensitiveAccess(testOb,'TEST2')).to.be.eq('b');
+        expect(MapRatchet.caseInsensitiveAccess(testOb,'test3')).to.be.eq('c');
+    });
+
+
 
 });

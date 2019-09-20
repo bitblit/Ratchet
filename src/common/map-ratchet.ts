@@ -155,5 +155,21 @@ export class MapRatchet {
     }
 
 
+    public static caseInsensitiveAccess<T>(ob:any, keyName: string): T {
+        let rval: T = null;
+
+        if (!!ob && !!keyName) {
+            rval = ob[keyName]; // Short circuit
+            if (!rval) {
+                let keyNameCI: string = Object.keys(ob).find(f=>f.toLowerCase()===keyName.toLowerCase());
+                if (!!keyNameCI) {
+                    rval = ob[keyNameCI];
+                }
+            }
+        }
+        return rval;
+    }
+
+
 }
 
