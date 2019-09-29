@@ -9,7 +9,7 @@ import {DurationInputArg2, Moment} from 'moment';
 export class DurationRatchet {
 
     public static formatMsDuration(ms: number, includeMS: boolean = false): string {
-        let rem_ms = (ms % 1000);
+        let rem_ms = Math.floor(ms % 1000);
         let seconds = Math.floor(ms / 1000) % 60;
         let minutes = Math.floor(ms / (1000 * 60)) % 60;
         let hours = Math.floor(ms / (1000 * 60 * 60)) % 24;
