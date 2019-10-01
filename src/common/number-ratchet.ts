@@ -28,7 +28,11 @@ export class NumberRatchet {
     }
 
 
-    public static between(test: number, p1: number, p2: number) {
+    public static between(inTest: number, inP1: number, inP2: number) {
+        const test: number = NumberRatchet.safeNumber(inTest);
+        const p1: number = NumberRatchet.safeNumber(inP1);
+        const p2: number = NumberRatchet.safeNumber(inP2);
+
         return ((test >= p1 && test <= p2) || (test >= p2 && test <= p1));
     }
 
