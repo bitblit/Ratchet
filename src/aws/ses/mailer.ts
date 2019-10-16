@@ -1,9 +1,9 @@
 import * as AWS from 'aws-sdk';
-import {RemoteHandlebarsTemplateRenderer} from './remote-handlebars-template-renderer';
 import {ReadyToSendEmail} from './ready-to-send-email';
 import {RequireRatchet} from '../../common/require-ratchet';
 import {Logger} from '../../common/logger';
-import {SendEmailRequest, SendEmailResponse, SendRawEmailRequest, SendRawEmailResponse} from 'aws-sdk/clients/ses';
+import {SendRawEmailRequest, SendRawEmailResponse} from 'aws-sdk/clients/ses';
+import {RatchetTemplateRenderer} from './ratchet-template-renderer';
 
 export class Mailer {
     public static readonly EMAIL: RegExp = new RegExp(".+@.+\\.[a-z]+");
@@ -11,14 +11,20 @@ export class Mailer {
     constructor(private ses:AWS.SES,
                 private defaultSendingAddress: string=null,
                 private autoBccAddresses: string[] = [],
-                private templateRenderer: RemoteHandlebarsTemplateRenderer = null){
+                private templateRenderer: RatchetTemplateRenderer = null){
         RequireRatchet.notNullOrUndefined(this.ses);
     }
 
     public async fillEmailBody(rts: ReadyToSendEmail, context: any, htmlTemplateName:string, txtTemplateName: string=null): Promise<ReadyToSendEmail> {
-        rts.htmlMessage = await this.templateRenderer.renderRemoteTemplate(htmlTemplateName, context);
-        rts.txtMessage = (!!txtTemplateName)?await this.templateRenderer.renderRemoteTemplate(txtTemplateName, context):null;
+        rts.htmlMessage = await this.templateRenderer.renderTemplate(htmlTemplateName, context);
+        rts.txtMessage = (!!txtTemplateName)?await this.templateRenderer.renderTemplate(txtTemplateName, context):null;
         return rts;
+    }
+
+    public async fillEmailBodyAndSend(rts: ReadyToSendEmail, context: any, htmlTemplateName:string, txtTemplateName: string=null): Promise<SendRawEmailResponse> {
+        const newVal: ReadyToSendEmail = await this.fillEmailBody(rts, context, htmlTemplateName, txtTemplateName);
+        const rval: SendRawEmailResponse = await this.sendEmail(newVal);
+        return rval;
     }
 
     public async sendEmail(rts:ReadyToSendEmail): Promise<SendRawEmailResponse> {

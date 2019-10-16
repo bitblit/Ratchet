@@ -4,11 +4,12 @@ import Template = Handlebars.Template;
 import * as fetch from 'portable-fetch';
 import {StringRatchet} from '../../common/string-ratchet';
 import {Logger} from '../../common/logger';
+import {RatchetTemplateRenderer} from './ratchet-template-renderer';
 
 /**
  */
 
-export class RemoteHandlebarsTemplateRenderer {
+export class RemoteHandlebarsTemplateRenderer implements RatchetTemplateRenderer{
     private cache: Map<string,HandlebarsTemplateDelegate>;
 
     constructor(private prefix: string='', private suffix: string ='', private maxCacheTemplates: number = 10) {
@@ -17,6 +18,11 @@ export class RemoteHandlebarsTemplateRenderer {
         }
     }
 
+    public async renderTemplate(templateName:string, context:any): Promise<string> {
+        return this.renderRemoteTemplate(templateName, context);
+    }
+
+
     public async renderRemoteTemplate(templateName:string, inContext:any): Promise<string> {
         const template: HandlebarsTemplateDelegate = await this.fetchTemplate(templateName);
         const context: any = inContext || {};
@@ -24,7 +30,7 @@ export class RemoteHandlebarsTemplateRenderer {
         return result;
     }
 
-    public async renderTemplate(templateText:string, context:any): Promise<string> {
+    public async renderTemplateDirect(templateText:string, context:any): Promise<string> {
         const template: Template = handlebars.compile(templateText);
         const result: string = template(context);
         return result;
