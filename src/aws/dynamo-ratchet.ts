@@ -13,7 +13,7 @@ import {
     GetItemOutput,
     PutItemInput,
     QueryInput,
-    ScanInput, UpdateItemInput, UpdateItemOutput
+    ScanInput, ScanOutput, UpdateItemInput, UpdateItemOutput
 } from 'aws-sdk/clients/dynamodb';
 import {AWSError} from 'aws-sdk';
 import {DocumentClient} from 'aws-sdk/lib/dynamodb/document_client';
@@ -35,6 +35,15 @@ export class DynamoRatchet {
 
     public getDDB(): AWS.DynamoDB.DocumentClient {
         return this.awsDDB;
+    }
+
+    public async tableIsEmpty(tableName: string): Promise<boolean> {
+        const scanInput: ScanInput = {
+            TableName: tableName,
+            Limit: 1
+        };
+        const scanOutput: ScanOutput = await this.awsDDB.scan(scanInput).promise();
+        return scanOutput.Items.length === 0;
     }
 
     public async fullyExecuteQueryCount<T>(qry: QueryInput, delayMS: number = 250) : Promise<DynamoCountResult> {
