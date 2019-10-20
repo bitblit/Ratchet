@@ -10,7 +10,7 @@ describe('#AthenaRatchet', function() {
         let s3: AWS.S3 = new AWS.S3({region: 'us-east-1'});
 
         const outputDir: string = 's3://your-bucket/your-prefix';
-        const qry: string = 'select * from test limit 2000';
+        const qry: string = 'select * from test limit 20000';
 
         const ratchet: AthenaRatchet = new AthenaRatchet(athena,s3,outputDir);
 

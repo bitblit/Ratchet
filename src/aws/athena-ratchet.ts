@@ -18,6 +18,7 @@ import {GetObjectOutput, GetObjectRequest} from 'aws-sdk/clients/s3';
 import * as parse from 'csv-parse/lib/sync';
 import * as tmp from 'tmp';
 import * as fs from 'fs';
+import {Readable} from 'stream';
 
 export class AthenaRatchet {
 
@@ -129,9 +130,14 @@ export class AthenaRatchet {
             Bucket: bucketName,
             Key: obKey
         };
-        const getFileOut: GetObjectOutput = await this.s3.getObject(req).promise();
 
-        fs.writeFileSync(targetDataFile, getFileOut.Body);
+        const fileStream: any = fs.createWriteStream(targetDataFile);
+        const readStream: Readable = this.s3.getObject(req).createReadStream();
+
+        readStream.pipe(fileStream);
+        const rval: string = await PromiseRatchet.resolveOnEvent<string>(readStream, ['close'],
+            ['error'], targetDataFile);
+
         return targetDataFile;
     }
 
