@@ -135,7 +135,7 @@ export class AthenaRatchet {
         const readStream: Readable = this.s3.getObject(req).createReadStream();
 
         readStream.pipe(fileStream);
-        const rval: string = await PromiseRatchet.resolveOnEvent<string>(readStream, ['close'],
+        const rval: string = await PromiseRatchet.resolveOnEvent<string>(readStream, ['finish', 'close'],
             ['error'], targetDataFile);
 
         return targetDataFile;
