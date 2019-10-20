@@ -108,7 +108,7 @@ I do so much stuff on Lambda and Lambda already has the AWS library on it.  So -
 AWS stuff in here you will need to do your own AWS dependency, something like :
 
 ```
-    "aws-sdk": "^2.195.0",
+    "aws-sdk": "^2.533.0",
 ```
 
 Or none of the AWS stuff is going to work.
@@ -116,6 +116,19 @@ Or none of the AWS stuff is going to work.
 One more note on the AWS stuff - for most of my non-super-heavy-load stuff I work in *us-east-1*.  I do this both
 because I am lazy and because that is where AWS releases the new stuff first.  Because of this, you will see that 
 while my code allows you to override the region, I always set a biased default.  If you don't like that... sorry?
+
+#### Athena
+AthenaRatchet is a special case because the datasets you use with Athena tend to be so large that you'll often
+need to work with only a chunk of them at a time.  The AthenaRatchet depends on a couple more libraries
+that you'll need to use a chunk of the functionality - csv parses output files from Athena locally (much faster
+than having them do it) and tmp creates local tmp files for storage.  It also uses 'fs' so, in case its not
+already abundantly clear, this only works in Node, not in the browser.  Not that you'd do a lot of Athena
+work in the browser anyway, but I may break this up later if I see a need for that.
+
+```
+    "csv": "5.1.2",
+    "tmp": "0.1.0",
+```
 
 
 ### Express
