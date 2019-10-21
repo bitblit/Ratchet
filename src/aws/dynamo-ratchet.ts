@@ -224,11 +224,11 @@ export class DynamoRatchet {
                 let tryCount = 1;
                 let done: boolean = false;
                 let batchResults: BatchWriteItemOutput = null;
-                while (!done && tryCount<4) {
+                while (!done && tryCount<7) {
                     batchResults = await this.awsDDB.batchWrite(params).promise();
                     if (!!batchResults && !!batchResults.UnprocessedItems && !!batchResults.UnprocessedItems[tableName] &&
                         batchResults.UnprocessedItems[tableName].length>0) {
-                        const backoff: number = 6 * tryCount; // Backoff 6, 12, 18 seconds to allow capacity recovery
+                        const backoff: number = Math.pow(2,tryCount); // Backoff 2,4,8,16,32 seconds to allow capacity recovery
                         Logger.warn('Found %d unprocessed items.  Backing off %d seconds and trying again', batchResults.UnprocessedItems[tableName].length, backoff);
                         await PromiseRatchet.wait(backoff*1000);
                         tryCount++;
@@ -239,7 +239,7 @@ export class DynamoRatchet {
                 }
                 if (!!batchResults && !!batchResults.UnprocessedItems && !!batchResults.UnprocessedItems[tableName] &&
                     batchResults.UnprocessedItems[tableName].length>0) {
-                    Logger.error('After 3 tries there were still %d unprocessed items');
+                    Logger.error('After 6 tries there were still %d unprocessed items');
                     rval += curBatch.length - batchResults.UnprocessedItems[tableName].length;
                     Logger.warn('FIX Unprocessed : %j',batchResults.UnprocessedItems);
                 } else {
@@ -283,11 +283,11 @@ export class DynamoRatchet {
                 let tryCount = 1;
                 let done: boolean = false;
                 let batchResults: PromiseResult<BatchWriteItemOutput, AWSError> = null;
-                while (!done && tryCount<4) {
+                while (!done && tryCount<7) {
                     batchResults = await this.awsDDB.batchWrite(params).promise();
                     if (!!batchResults && !!batchResults.UnprocessedItems && !!batchResults.UnprocessedItems[tableName] &&
                     batchResults.UnprocessedItems[tableName].length>0) {
-                        const backoff: number = 6*tryCount; // Backoff 6, 12, 18 seconds to allow capacity recovery
+                        const backoff: number = Math.pow(2,tryCount); // Backoff 2,4,8,16,32 seconds to allow capacity recovery
                         Logger.warn('Found %d unprocessed items.  Backing off %d seconds and trying again', batchResults.UnprocessedItems[tableName].length, backoff);
                         await PromiseRatchet.wait(backoff*1000);
                         tryCount++;
@@ -298,7 +298,7 @@ export class DynamoRatchet {
                 }
                 if (!!batchResults && !!batchResults.UnprocessedItems && !!batchResults.UnprocessedItems[tableName] &&
                     batchResults.UnprocessedItems[tableName].length>0) {
-                    Logger.error('After 3 tries there were still %d unprocessed items');
+                    Logger.error('After 6 tries there were still %d unprocessed items');
                     rval += curBatch.length - batchResults.UnprocessedItems[tableName].length;
                     Logger.warn('FIX Unprocessed : %j',batchResults.UnprocessedItems);
                 } else {
