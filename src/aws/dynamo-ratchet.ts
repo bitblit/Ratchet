@@ -221,9 +221,30 @@ export class DynamoRatchet {
                 };
                 params.RequestItems[tableName] = curBatch;
 
-                const batchResults: PromiseResult<BatchWriteItemOutput, AWSError> = await this.awsDDB.batchWrite(params).promise();
-                rval += curBatch.length;
-                Logger.debug('%d Remain, Batch Results : %j', batchItems.length, batchResults);
+                let tryCount = 1;
+                let done: boolean = false;
+                let batchResults: BatchWriteItemOutput = null;
+                while (!done && tryCount<4) {
+                    batchResults = await this.awsDDB.batchWrite(params).promise();
+                    if (!!batchResults && !!batchResults.UnprocessedItems && !!batchResults.UnprocessedItems[tableName] &&
+                        batchResults.UnprocessedItems[tableName].length>0) {
+                        const backoff: number = 6 * tryCount; // Backoff 6, 12, 18 seconds to allow capacity recovery
+                        Logger.warn('Found %d unprocessed items.  Backing off %d seconds and trying again', batchResults.UnprocessedItems[tableName].length, backoff);
+                        await PromiseRatchet.wait(backoff*1000);
+                        tryCount++;
+                        params.RequestItems[tableName]= batchResults.UnprocessedItems[tableName];
+                    } else {
+                        done = true;
+                    }
+                }
+                if (!!batchResults && !!batchResults.UnprocessedItems && !!batchResults.UnprocessedItems[tableName] &&
+                    batchResults.UnprocessedItems[tableName].length>0) {
+                    Logger.error('After 3 tries there were still %d unprocessed items');
+                    rval += curBatch.length - batchResults.UnprocessedItems[tableName].length;
+                    Logger.warn('FIX Unprocessed : %j',batchResults.UnprocessedItems);
+                } else {
+                    rval += curBatch.length;
+                }
             }
         }
         return rval;
@@ -263,7 +284,7 @@ export class DynamoRatchet {
                 let done: boolean = false;
                 let batchResults: PromiseResult<BatchWriteItemOutput, AWSError> = null;
                 while (!done && tryCount<4) {
-                    let batchResults: PromiseResult<BatchWriteItemOutput, AWSError> = await this.awsDDB.batchWrite(params).promise();
+                    batchResults = await this.awsDDB.batchWrite(params).promise();
                     if (!!batchResults && !!batchResults.UnprocessedItems && !!batchResults.UnprocessedItems[tableName] &&
                     batchResults.UnprocessedItems[tableName].length>0) {
                         const backoff: number = 6*tryCount; // Backoff 6, 12, 18 seconds to allow capacity recovery
