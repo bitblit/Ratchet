@@ -1,6 +1,6 @@
 {
   "name": "@bitblit/ratchet",
-  "version": "0.5.5",
+  "version": "0.5.6",
   "description": "Common tools for general use",
   "main": "./dist/index",
   "typings": "./dist/index",
