@@ -51,7 +51,13 @@ export class NumberRatchet {
                 Logger.warn('Value is of type %s, returning default', type);
                 rval = ifNotNumber;
             }
+
+            if (isNaN(rval)) {
+                Logger.debug('Parsed string to NaN - using NaN value from param');
+                rval = ifNotNumber;
+            }
         }
+
         return rval;
     }
 

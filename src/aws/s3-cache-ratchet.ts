@@ -160,7 +160,7 @@ export class S3CacheRatchet {
 
     public createDownloadLink(key: string, secondsUntilExpiration: number = 3600, bucket: string = null): string // URL
     {
-        let params = {Bucket: this.bucketVal(bucket), Key: key, ExpiresIn: secondsUntilExpiration};
+        let params = {Bucket: this.bucketVal(bucket), Key: key, Expires: secondsUntilExpiration};
         let url = this.s3.getSignedUrl('getObject', params);
         return url;
     }
