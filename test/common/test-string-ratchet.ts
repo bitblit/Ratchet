@@ -121,3 +121,15 @@ describe('#stringContainsOnly', function() {
     });
 
 });
+
+
+describe('#stringCsvSafe', function() {
+    it('should make values safe to place in a CSV"', function() {
+        expect(StringRatchet.csvSafe('test')).to.eq('test');
+        expect(StringRatchet.csvSafe('test,and 1')).to.eq('"test,and 1"');
+        expect(StringRatchet.csvSafe(1)).to.eq('1');
+        expect(StringRatchet.csvSafe('test\'blah')).to.eq('"test\'blah"');
+
+    });
+
+});

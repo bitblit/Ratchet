@@ -140,6 +140,15 @@ export class StringRatchet {
         return rval;
     }
 
+    public static csvSafe(input: any): string {
+        let rval: string = StringRatchet.trimToEmpty(StringRatchet.safeString(input));
+        rval.split('"').join('\\"');
+        if (rval.indexOf(',') !== -1 || rval.indexOf('"') !== -1 || rval.indexOf('\'') !== -1) {
+            rval = '"'+rval+'"'
+        }
+        return rval;
+    }
+
 
 }
 
