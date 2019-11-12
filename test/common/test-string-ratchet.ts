@@ -97,6 +97,11 @@ describe('#leadingZeros', function() {
         expect(result).to.equal('0025');
     });
 
+    it('should generate string with leading zeros and a negative sign"', function() {
+        let result = StringRatchet.leadingZeros(-8, 2);
+        expect(result).to.equal('-08');
+    });
+
 });
 
 describe('#stripNonNumeric', function() {

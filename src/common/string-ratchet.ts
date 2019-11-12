@@ -105,13 +105,24 @@ export class StringRatchet {
         return rval;
     }
 
-    public static leadingZeros(val: any, size: number): string {
+    public static leadingZeros(inVal: any, size: number): string {
         const pad = '00000000000000000000000000000000000000000000000000';
+        let negative: boolean = false;
+        let sVal: string = String(inVal);
+        if (sVal.startsWith('-')) {
+            negative = true;
+            sVal = sVal.substring(1);
+        }
+
         if (size > pad.length) {
             throw new Error('Cannot format number that large');
         }
 
-        return (pad + String(val)).slice(-1 * size);
+        let rval: string = (pad + sVal).slice(-1 * size);
+        if (negative) {
+            rval = '-'  + rval;
+        }
+        return rval;
     }
 
     public static trimToEmpty(input:string): string {
