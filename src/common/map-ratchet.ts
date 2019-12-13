@@ -5,6 +5,7 @@
 import {KeyValue} from './key-value';
 import {Logger} from './logger';
 import {ErrorRatchet} from './error-ratchet';
+import {isNullOrUndefined} from 'util';
 
 export class MapRatchet {
 
@@ -16,7 +17,7 @@ export class MapRatchet {
         const rval: Map<R, T> = new Map<R, T>();
         input.forEach(i => {
             const val: R = (!!i) ? i[propName] : null;
-            if (!val) {
+            if (val===null || val===undefined) {
                 throw new Error('No value for ' + propName + ' found in ' + JSON.stringify(i));
             }
             if (rval.has(val)) {
@@ -35,7 +36,7 @@ export class MapRatchet {
         const rval: Map<R, T[]> = new Map<R, T[]>();
         input.forEach(i => {
             const val: R = (!!i) ? i[propName] : null;
-            if (!val) {
+            if (val===null || val===undefined) {
                 throw ErrorRatchet.fErr('No value for %s found in %j' , propName ,i);
             }
             if (!rval.has(val)) {
