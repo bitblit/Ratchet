@@ -45,7 +45,11 @@ export class NumberRatchet {
                 rval = input;
             }
             else if (type == 'string') {
-                rval = Number.parseFloat(input);
+                if (input.trim().length === 0) {
+                    rval = ifNotNumber;
+                } else {
+                    rval = Number.parseFloat(input);
+                }
             }
             else {
                 Logger.warn('Value is of type %s, returning default', type);

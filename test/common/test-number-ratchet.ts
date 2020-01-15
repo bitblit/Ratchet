@@ -31,6 +31,10 @@ describe('#safeToNumber', function() {
         expect(result).to.equal(42);
     });
 
+    it('should return the default for the empty string', function() {
+        let result : number = NumberRatchet.safeNumber({test:''},42);
+        expect(result).to.equal(42);
+    });
 });
 
 describe('#parseCSV', function() {
