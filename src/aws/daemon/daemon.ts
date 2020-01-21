@@ -5,11 +5,10 @@ import {DaemonProcessState} from './daemon-process-state';
 import {S3CacheRatchet} from '../s3-cache-ratchet';
 import {StringRatchet} from '../../common/string-ratchet';
 import {DaemonProcessCreateOptions} from './daemon-process-create-options';
+import {DaemonUtil} from './daemon-util';
 
 export class Daemon {
     public static DEFAULT_GROUP: string = 'DEFAULT';
-    public static DEFAULT_CONTENT: Buffer = Buffer.from('DAEMON_PLACEHOLDER');
-    public static DAEMON_METADATA_KEY: string = 'daemon_meta'; // Must be lowercase for s3
 
     private cache: S3CacheRatchet;
 
@@ -34,63 +33,15 @@ export class Daemon {
     }
 
     public async start(options: DaemonProcessCreateOptions): Promise<DaemonProcessState> {
-        try {
-            options.group = options.group || Daemon.DEFAULT_GROUP;
-            options.meta = options.meta || {};
-
-            Logger.info('Starting daemon, options: %j', options);
-            const key: string = this.pathToKey(this.generatePath(options.group));
-            const now: number = new Date().getTime();
-
-            const newState: DaemonProcessState = {
-                id: key,
-
-                title: options.title,
-                lastUpdatedEpochMS: now,
-                lastUpdatedMessage: 'Created',
-                targetFileName: options.targetFileName,
-
-                startedEpochMS: now,
-                completedEpochMS: null,
-                meta: options.meta,
-                error: null,
-                link: null,
-                contentType: options.contentType
-            } as DaemonProcessState;
-
-            const rval: DaemonProcessState = await this.writeState(newState, Daemon.DEFAULT_CONTENT);
-            return rval;
-        } catch (err) {
-            Logger.error('Error while trying to start a daemon: %j %s', options, err);
-            throw err;
-        }
-
+        options.group = options.group || Daemon.DEFAULT_GROUP;
+        const path: string = this.generatePath(options.group);
+        const key: string = this.pathToKey(path);
+        return DaemonUtil.start(this.cache, key, path, options);
     }
 
     private async writeState(newState: DaemonProcessState, contents: Buffer): Promise<DaemonProcessState> {
-        try{
-            const s3meta: any = {};
-            newState.lastUpdatedEpochMS = new Date().getTime();
-            s3meta[Daemon.DAEMON_METADATA_KEY] = JSON.stringify(newState);
-
-            const params = {
-                Bucket: this.bucket,
-                Key: this.keyToPath(newState.id),
-                ContentType: newState.contentType,
-                Metadata: s3meta,
-                Body: contents
-            };
-            if (newState.targetFileName) {
-                params['ContentDisposition'] = 'attachment;filename="'+newState.targetFileName+'"';
-            }
-
-            const written = await this.s3.putObject(params).promise();
-            Logger.silly('Daemon wrote : %s', written);
-            return this.stat(newState.id);
-        } catch (err) {
-            Logger.error('Error while trying to write a daemon stat: %j %s', newState, err);
-            throw err;
-        }
+        const key: string =  this.keyToPath(newState.id);
+        return DaemonUtil.writeState(this.cache, key, newState, contents);
     }
 
     public async clean(group: string = Daemon.DEFAULT_GROUP, olderThanSeconds: number = 60*60*24*7): Promise<DaemonProcessState[]> {
@@ -145,71 +96,24 @@ export class Daemon {
     }
 
     public async updateMessage(id:string, newMessage: string): Promise<DaemonProcessState> {
-        try{
-            const inStat: DaemonProcessState = await this.stat(id);
-            inStat.lastUpdatedMessage = newMessage;
-            return this.writeState(inStat, Daemon.DEFAULT_CONTENT);
-        } catch (err) {
-            Logger.error('Error while trying to update a daemon message: %j %s', id, err);
-            throw err;
-        }
+        const itemPath: string = this.keyToPath(id);
+        return DaemonUtil.updateMessage(this.cache, itemPath, newMessage);
     }
 
     public async stat(id:string): Promise<DaemonProcessState> {
-        try {
-            const itemPath: string = this.keyToPath(id);
-            Logger.debug('Daemon stat for %s (path %s)', id, itemPath);
-            let stat: DaemonProcessState = null;
-
-
-            const meta: any = await this.cache.fetchMetaForCacheFile(itemPath);
-            Logger.debug('Daemon: Meta is %j', meta);
-            const metaString: string = (meta && meta['Metadata']) ? meta['Metadata'][Daemon.DAEMON_METADATA_KEY] : null;
-            if (metaString) {
-                stat = JSON.parse(metaString) as DaemonProcessState;
-
-                if (stat.completedEpochMS && !stat.error) {
-                    stat.link = this.cache.preSignedDownloadUrlForCacheFile(itemPath);
-                }
-            } else {
-                Logger.warn('No metadata found!');
-            }
-            return stat;
-        } catch (err) {
-            Logger.error('Error while trying to fetch a daemon state: %j %s', id, err);
-            throw err;
-        }
+        const itemPath: string = this.keyToPath(id);
+        return DaemonUtil.stat(this.cache, itemPath);
     }
 
     public async abort(id:string): Promise<DaemonProcessState> {
-        return this.error(id, 'Aborted');
+        return DaemonUtil.abort(this.cache, this.keyToPath(id));
     }
     public async error(id:string, error: string): Promise<DaemonProcessState> {
-        try {
-            const inStat: DaemonProcessState = await this.stat(id);
-            inStat.error = error;
-            inStat.completedEpochMS = new Date().getTime();
-            return this.writeState(inStat, Daemon.DEFAULT_CONTENT);
-        } catch (err) {
-            Logger.error('Error while trying to write a daemon error: %j %s', id, err);
-            throw err;
-        }
-
+        return DaemonUtil.error(this.cache, this.keyToPath(id), error);
     }
 
     public async finalize(id:string, contents: Buffer): Promise<DaemonProcessState> {
-        try {
-            Logger.info('Finalizing daemon %s with %d bytes', id, contents.length);
-            const inStat: DaemonProcessState = await this.stat(id);
-            inStat.completedEpochMS = new Date().getTime();
-            inStat.lastUpdatedMessage = 'Complete';
-
-            return this.writeState(inStat, contents);
-        } catch (err) {
-            Logger.error('Error while trying to finalize a daemon: %j %s', id, err);
-            throw err;
-        }
-
+        return DaemonUtil.finalize(this.cache, this.keyToPath(id), contents);
     }
 
 }
