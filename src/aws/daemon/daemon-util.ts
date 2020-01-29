@@ -6,6 +6,7 @@ import {S3CacheRatchet} from '../s3-cache-ratchet';
 import {StringRatchet} from '../../common/string-ratchet';
 import {DaemonProcessCreateOptions} from './daemon-process-create-options';
 import {Daemon} from './daemon';
+import {HeadObjectOutput, PutObjectOutput, PutObjectRequest} from 'aws-sdk/clients/s3';
 
 export class DaemonUtil {
     public static DEFAULT_CONTENT: Buffer = Buffer.from('DAEMON_PLACEHOLDER');
@@ -52,7 +53,7 @@ export class DaemonUtil {
             newState.lastUpdatedEpochMS = new Date().getTime();
             s3meta[DaemonUtil.DAEMON_METADATA_KEY] = JSON.stringify(newState);
 
-            const params = {
+            const params: PutObjectRequest = {
                 Bucket: cache.getDefaultBucket(),
                 Key: s3Key,
                 ContentType: newState.contentType,
@@ -60,11 +61,12 @@ export class DaemonUtil {
                 Body: contents
             };
             if (newState.targetFileName) {
-                params['ContentDisposition'] = 'attachment;filename="'+newState.targetFileName+'"';
+                params.ContentDisposition = 'attachment;filename="'+newState.targetFileName+'"';
             }
 
-            const written = await cache.getS3().putObject(params).promise();
+            const written: PutObjectOutput = await cache.getS3().putObject(params).promise();
             Logger.silly('Daemon wrote : %s', written);
+
             return DaemonUtil.stat(cache, s3Key);
         } catch (err) {
             Logger.error('Error while trying to write a daemon stat: %j %s', newState, err);
@@ -89,10 +91,9 @@ export class DaemonUtil {
             Logger.debug('Daemon stat for path %s / %s', s3Cache.getDefaultBucket(),  path);
             let stat: DaemonProcessState = null;
 
-
-            const meta: any = await s3Cache.fetchMetaForCacheFile(path);
+            const meta: HeadObjectOutput = await s3Cache.fetchMetaForCacheFile(path);
             Logger.debug('Daemon: Meta is %j', meta);
-            const metaString: string = (meta && meta['Metadata']) ? meta['Metadata'][DaemonUtil.DAEMON_METADATA_KEY] : null;
+            const metaString: string = (meta && meta.Metadata) ? meta.Metadata[DaemonUtil.DAEMON_METADATA_KEY] : null;
             if (metaString) {
                 stat = JSON.parse(metaString) as DaemonProcessState;
 
@@ -100,7 +101,7 @@ export class DaemonUtil {
                     stat.link = s3Cache.preSignedDownloadUrlForCacheFile(path);
                 }
             } else {
-                Logger.warn('No metadata found!');
+                Logger.warn('No metadata found! (Head was %j)', meta);
             }
             return stat;
         } catch (err) {

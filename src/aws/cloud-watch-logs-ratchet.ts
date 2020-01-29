@@ -16,6 +16,7 @@ import {RequireRatchet} from '../common/require-ratchet';
 import {StringRatchet} from '../common/string-ratchet';
 
 export class CloudWatchLogsRatchet {
+    private static readonly MAX_DELETE_RETRIES = 5;
     private cwLogs: AWS.CloudWatchLogs;
 
     constructor(cloudwatchLogs: AWS.CloudWatchLogs = null) {
@@ -71,14 +72,24 @@ export class CloudWatchLogsRatchet {
 
             const type:string = (removedStreams[i].storedBytes===0)?'empty':'old';
             Logger.info('Removing %s stream %s', type,removedStreams[i].logStreamName);
-            try {
-                const result: any = await this.cwLogs.deleteLogStream(delParams).promise();
-                await PromiseRatchet.wait(waitPer);
-            } catch (err) {
-                const oldWait: number = waitPer;
-                waitPer = Math.min(1000, waitPer * 1.5);
+            let removed: boolean = false;
+            let retry: number = 0;
+            while (!removed && retry < CloudWatchLogsRatchet.MAX_DELETE_RETRIES) {
+                try {
+                    const result: any = await this.cwLogs.deleteLogStream(delParams).promise();
+                    removed = true;
+                    await PromiseRatchet.wait(waitPer);
+                } catch (err) {
+                    retry++;
+                    const oldWait: number = waitPer;
+                    waitPer = Math.min(1000, waitPer * 1.5);
+                    Logger.info('Caught %s, increasing wait between deletes and retrying (wait was %d, now %d) (Retry %d of %d)',
+                        err, oldWait, waitPer, retry, CloudWatchLogsRatchet.MAX_DELETE_RETRIES);
+                }
+            }
+            if (!removed) {
+                // Ran out of retries
                 failedRemovedStreams.push(removedStreams[i]);
-                Logger.info('Caught %s, increasing wait between deletes (was %d, now %d)',err, oldWait, waitPer);
             }
         }
 
