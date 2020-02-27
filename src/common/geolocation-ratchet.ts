@@ -184,6 +184,19 @@ export class GeolocationRatchet {
     public static sameLocation(loc1: RatchetGeoLocation, loc2: RatchetGeoLocation): boolean {
         return !!loc1 && !!loc2 && loc1.lat === loc2.lat && loc1.lng === loc2.lng;
     }
+
+    public static pointInBounds(pt: RatchetGeoLocation, bound: RatchetLocationBounds): boolean {
+        return !!pt && !!bound && NumberRatchet.between(pt.lat, bound.origin.lat, bound.extent.lat) &&
+            NumberRatchet.between(pt.lng, bound.origin.lng, bound.extent.lng);
+    }
+
+    public static pointInAnyBound(pt: RatchetGeoLocation, bounds: RatchetLocationBounds[]): boolean {
+        let rval: boolean = false;
+        for (let i=0;i<bounds.length && !rval; i++) {
+            rval = GeolocationRatchet.pointInBounds(pt, bounds[i]);
+        }
+        return rval;
+    }
 }
 
 export interface RatchetGeoLocation {
