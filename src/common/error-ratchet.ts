@@ -31,5 +31,5 @@ export class ErrorRatchet {
     public static throwFormattedErr(format:string, ...input: any[]): Error {
         throw ErrorRatchet.fErr(format, ...input);
     }
-
+    
 }

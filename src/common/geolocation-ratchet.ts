@@ -5,6 +5,8 @@
 
 import {RequireRatchet} from './require-ratchet';
 import {NumberRatchet} from './number-ratchet';
+import {ErrorRatchet} from './error-ratchet';
+import {Logger} from './logger';
 
 export class GeolocationRatchet {
 
@@ -43,6 +45,10 @@ export class GeolocationRatchet {
     }
 
 
+    public static distanceBetweenRatchetGeoLocations(loc1: RatchetGeoLocation, loc2: RatchetGeoLocation, unit:string='M') {
+        return GeolocationRatchet.distanceBetweenLocations(loc1.lat, loc1.lng, loc2.lat, loc2.lng, unit);
+    }
+
     public static degreeOfLatLngInMiles(latitudeInDecimalDegress:number = 0) {
         // It doesn't matter at what longitude you are. What matters is what latitude you are.
         // Length of 1 degree of Longitude = cosine (latitude in decimal degrees) * length of degree (miles) at equator.
@@ -65,4 +71,121 @@ export class GeolocationRatchet {
         const degreeInMiles: number = GeolocationRatchet.degreeOfLatLngInMiles(latitudeInDecimalDegress);
         return miles/degreeInMiles;
     }
+
+
+    public static centerOfBounds(bounds: RatchetLocationBounds): RatchetGeoLocation {
+        RequireRatchet.notNullOrUndefined(bounds);
+        return {
+            lat: (bounds.extent.lat + bounds.origin.lat) / 2,
+            lng: (bounds.extent.lng + bounds.origin.lng) / 2
+        }
+    }
+
+    public static clusterGeoBoundsSingleDirection(inputVal: RatchetLocationBounds[], slices:number = 5, field: string = 'lng'): RatchetLocationBounds[] {
+        let rval: RatchetLocationBounds[] = null;
+        if (slices < 2) {
+            ErrorRatchet.throwFormattedErr('Cannot set slices to less than 2 : %d', slices);
+        }
+        if (field!=='lat' && field!=='lng') {
+            ErrorRatchet.throwFormattedErr('Field must be lat or lng : %s', field);
+        }
+        if (!!inputVal) {
+            const input: RatchetLocationBounds[] = Object.assign([], inputVal); // Don't want to modify the original
+            input.sort((a,b) => a.origin[field] - b.origin[field]);
+            const centers: RatchetGeoLocation[] = input.map(i => GeolocationRatchet.centerOfBounds(i));
+            const vals: number[] = centers.map(c => c[field]);
+            const splits: SplitPoint[] = [];
+            for (let i=1;i<vals.length;i++) {
+                const size:number = vals[i] - vals[i-1];
+                if (splits.length < slices) {
+                    splits.push({idx: i, size: size});
+                    splits.sort((a,b) => a.size - b.size);
+                } else if (size > splits[0].size) {
+                    splits[0] = {idx: i, size: size};
+                    splits.sort((a,b) => a.size - b.size);
+                } else {
+                    Logger.silly('Skipping, size : %d, %j', size, splits);
+                }
+            }
+            Logger.info('Splits at : %j', splits);
+            splits.sort((a,b) => a.idx - b.idx);
+            rval = [];
+            for (let i=0;i<splits.length;i++) {
+                const startIdx: number = (i == 0 ) ? 0 : splits[i-1].idx;
+                const endIdx: number = splits[i].idx;
+                const curBatch: RatchetLocationBounds[] = input.slice(startIdx, endIdx);
+                rval.push(GeolocationRatchet.combineBounds(curBatch));
+            }
+            Logger.info('New bounds : %j', rval);
+
+        }
+
+        return rval;
+    }
+
+    public static combineBounds(inp: RatchetLocationBounds[]): RatchetLocationBounds {
+        try {
+            return {
+                origin: {
+                    lat: inp.map(i => i.origin.lat).reduce((a, i) => Math.min(a, i)),
+                    lng: inp.map(i => i.origin.lng).reduce((a, i) => Math.min(a, i)),
+                },
+                extent: {
+                    lat: inp.map(i => i.extent.lat).reduce((a, i) => Math.max(a, i)),
+                    lng: inp.map(i => i.extent.lng).reduce((a, i) => Math.max(a, i)),
+                }
+            };
+        } catch (err) {
+            Logger.error('Error combining : %j : %s', inp, err);
+            throw err;
+        }
+    }
+
+    public static roundLocation(r: RatchetGeoLocation, roundDigits: number): RatchetGeoLocation {
+        return {
+            lat: NumberRatchet.safeNumber(r.lat.toFixed(roundDigits)),
+            lng: NumberRatchet.safeNumber(r.lng.toFixed(roundDigits))
+        };
+    }
+
+    public static locationToBounds(loc: RatchetGeoLocation, radiusMiles: number): RatchetLocationBounds {
+        const offset: number = GeolocationRatchet.milesInDegLatLng(radiusMiles, loc.lat);
+        const gfb: RatchetLocationBounds = {
+            origin: {
+                lat: loc.lat - offset,
+                lng: loc.lng - offset
+            },
+            extent: {
+                lat: loc.lat + offset,
+                lng: loc.lng + offset
+            }
+        };
+        return gfb;
+    }
+
+    public static sameLocation(loc1: RatchetGeoLocation, loc2: RatchetGeoLocation): boolean {
+        return !!loc1 && !!loc2 && loc1.lat === loc2.lat && loc1.lng === loc2.lng;
+    }
+}
+
+export interface RatchetGeoLocation {
+    lat: number;
+    lng: number;
+}
+
+export interface RatchetLocationBounds {
+    origin: RatchetGeoLocation;
+    extent: RatchetGeoLocation;
+}
+
+interface ClusterWorkPackage {
+    compositeBound: RatchetLocationBounds;
+    boundList: RatchetLocationBounds[];
+    center: RatchetGeoLocation;
+    roundedCenter: RatchetGeoLocation
+}
+
+interface SplitPoint {
+    idx: number;
+    size: number;
 }
