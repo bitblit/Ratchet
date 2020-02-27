@@ -6,6 +6,7 @@
 */
 
 import {Logger} from './logger';
+import {RequireRatchet} from './require-ratchet';
 
 export class NumberRatchet {
     private static MAX_LEADING_ZEROS_FORMAT_LENGTH = 1000; // Because really, why?
@@ -121,9 +122,57 @@ export class NumberRatchet {
         return rval;
     }
 
+    public static groupNumbersIntoContiguousRanges(inputData: number[], minRangeSize: number = 3): SinglesAndRanges {
+        RequireRatchet.notNullOrUndefined(inputData);
+        const input:number[] = Object.assign([], inputData);
+        input.sort((a,b) => a - b);
+
+        const singles: number[] = [];
+        const ranges: NumberRange[] = [];
+        let start: number = 0;
+        for (let i=1;i<input.length;i++) {
+            if (input[i] === input[i-1] + 1) {
+                // Just advance
+            } else {
+                // End of sequence, either single or range
+                if (start === i-1) {
+                    singles.push(input[i-1]);
+                } else {
+                    const rangeSize: number = (i)-start;
+                    if (rangeSize < minRangeSize) {
+                        for (let j=start;j<i;j++) {
+                            singles.push(input[j]);
+                        }
+                    } else {
+                        ranges.push({
+                            min: input[start],
+                            max: input[i-1]
+                        });
+                    }
+                }
+                // Either way, advance start
+                start = i;
+            }
+        }
+        return {
+            singles: singles,
+            ranges: ranges
+        };
+    }
+
 }
 
 export interface Point2d {
     x: number;
     y: number;
+}
+
+export interface SinglesAndRanges {
+    singles: number[];
+    ranges: NumberRange[];
+}
+
+export interface NumberRange {
+    min: number;
+    max: number;
 }

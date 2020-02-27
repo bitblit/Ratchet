@@ -5,7 +5,7 @@ import {NumberRatchet} from '../../src/common/number-ratchet';
 import {Logger} from '../../src/common/logger';
 
 describe('#geolocationRatchet', function() {
-    xit('should generate the right distance', function() {
+    it('should generate the right distance', function() {
         const whLat: number = 38.8976805;
         const whLng: number = -77.0387238;
 
@@ -18,7 +18,7 @@ describe('#geolocationRatchet', function() {
         expect(result).to.equal(.6506);
     });
 
-    xit('should generate the right offset', function() {
+    it('should generate the right offset', function() {
         const lat: number = 37.26383;
         const miles: number = 1;
 
@@ -34,7 +34,7 @@ describe('#geolocationRatchet', function() {
     });
 
 
-    xit('should generate the right offset', function() {
+    it('should generate the right offset', function() {
         const lat: number = 37.26383;
         const miles: number = 1;
 

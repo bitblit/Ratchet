@@ -1,5 +1,6 @@
 import { expect } from 'chai';
-import {NumberRatchet, Point2d} from '../../src/common/number-ratchet';
+import {NumberRatchet, Point2d, SinglesAndRanges} from '../../src/common/number-ratchet';
+import * as fs from 'fs';
 
 
 describe('#leadingZeros', function() {
@@ -86,6 +87,17 @@ describe('#fitToWindow', function() {
         expect(NumberRatchet.fitToWindow(8,9,9)).to.eq(9);
         expect(NumberRatchet.fitToWindow(12,2,10)).to.eq(4);
 
+    });
+
+});
+
+
+describe('#groupNumbersIntoContiguousRanges', function() {
+    it('should group numbers', function() {
+        let input: number[] = JSON.parse(fs.readFileSync('test/data/number_set.json').toString());
+        input = input.map(i => NumberRatchet.safeNumber(i));
+        const grouped: SinglesAndRanges = NumberRatchet.groupNumbersIntoContiguousRanges(input, 5);
+        expect(grouped).to.not.be.null;
     });
 
 });
