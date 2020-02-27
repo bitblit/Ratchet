@@ -54,13 +54,18 @@ describe('#geolocationRatchet', function() {
         const locations: RatchetGeoLocation[] = fs.readFileSync('test/data/sample_geo_locations.csv').toString()
             .split('\n').map(line => {
                 const vals: string[] = line.split(',');
-                return {
-                    lat: NumberRatchet.safeNumber(vals[0]),
-                    lng: NumberRatchet.safeNumber(vals[1])
+                if (!!vals && vals.length === 2) {
+                    return {
+                        lat: NumberRatchet.safeNumber(vals[0]),
+                        lng: NumberRatchet.safeNumber(vals[1])
+                    }
+                } else {
+                    return null;
                 }
-            });
+            }).filter(s => !!s);
         const bounds: RatchetLocationBounds[] = locations.map(l => GeolocationRatchet.locationToBounds(l, 10));
-        const reduced: RatchetLocationBounds[] = GeolocationRatchet.clusterGeoBounds(bounds, 5, 'lng');
+        // Logger.info('Got: %j', locations);
+        const reduced: RatchetLocationBounds[] = GeolocationRatchet.clusterGeoBounds(bounds, 2, 5);
 
         expect(reduced.length).to.be.lte(10);
 
