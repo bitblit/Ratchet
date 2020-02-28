@@ -202,11 +202,13 @@ export class GeolocationRatchet {
 
     public static pointInAnyBoundSortedByOriginLongitude(pt: RatchetGeoLocation, inBounds: RatchetLocationBounds[]): boolean {
         let rval: boolean = false;
-        const bounds: RatchetLocationBounds[] =
-            ArrayRatchet.extractSubarrayFromSortedByNumberField(inBounds, 'origin.lng', pt.lng, pt.lng);
+        //const bounds: RatchetLocationBounds[] =
+        //    ArrayRatchet.extractSubarrayFromSortedByNumberField(inBounds, 'origin.lng', pt.lng, pt.lng);
 
-        for (let i=0;i<bounds.length && !rval; i++) {
-            rval = GeolocationRatchet.pointInBounds(pt, bounds[i]);
+        for (let i=0;i<inBounds.length && inBounds[i].origin.lng < pt.lng && !rval; i++) {
+            if (inBounds[i].extent.lng > pt.lng) {
+                rval = GeolocationRatchet.pointInBounds(pt, inBounds[i]);
+            }
         }
         return rval;
     }
