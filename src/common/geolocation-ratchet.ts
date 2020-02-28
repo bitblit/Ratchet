@@ -7,6 +7,7 @@ import {RequireRatchet} from './require-ratchet';
 import {NumberRatchet} from './number-ratchet';
 import {ErrorRatchet} from './error-ratchet';
 import {Logger} from './logger';
+import {ArrayRatchet} from './array-ratchet';
 
 export class GeolocationRatchet {
 
@@ -196,6 +197,22 @@ export class GeolocationRatchet {
             rval = GeolocationRatchet.pointInBounds(pt, bounds[i]);
         }
         return rval;
+    }
+
+
+    public static pointInAnyBoundSortedByOriginLongitude(pt: RatchetGeoLocation, inBounds: RatchetLocationBounds[]): boolean {
+        let rval: boolean = false;
+        const bounds: RatchetLocationBounds[] =
+            ArrayRatchet.extractSubarrayFromSortedByNumberField(inBounds, 'origin.lng', pt.lng, pt.lng);
+
+        for (let i=0;i<bounds.length && !rval; i++) {
+            rval = GeolocationRatchet.pointInBounds(pt, bounds[i]);
+        }
+        return rval;
+    }
+
+    public static sortBoundsByOriginLongitude(inBounds: RatchetLocationBounds[]): void {
+        inBounds.sort((a, b) => a.origin.lng - b.origin.lng);
     }
 }
 

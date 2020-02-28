@@ -61,6 +61,21 @@ export class MapRatchet {
         }
     }
 
+
+    public static findValueDotPath(toSearch: any, dotPath: string): any {
+        if (!dotPath || dotPath.length == 0) {
+            return toSearch;
+        }
+        else {
+            if (toSearch) {
+                return MapRatchet.findValue(toSearch, dotPath.split('.'));
+            }
+            else {
+                return null;
+            }
+        }
+    }
+
     // Ok so this does the dumbest possible deep compare, by converting
     // both objects to JSON and comparing strings.  Its slow and stupid
     // but its easy.

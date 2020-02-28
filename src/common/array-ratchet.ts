@@ -3,6 +3,7 @@
 */
 
 import {RequireRatchet} from './require-ratchet';
+import {MapRatchet} from './map-ratchet';
 
 export class ArrayRatchet {
 
@@ -58,18 +59,25 @@ export class ArrayRatchet {
      * @param min min value of field to include
      * @param max max value of field to include
      */
-    public static extractSubarrayFromSortedByNumberField<T>(input: T[], fieldName: string,
+    public static extractSubarrayFromSortedByNumberField<T>(input: T[], fieldDotPath: string,
                                                               minInclusive: number, maxExclusive: number): T[] {
-        if (!input || input.length ===0) {
+        if (!input || input.length === 0) {
             return input;
         }
 
-        let bottomIdx: number = (minInclusive === null) ? 0 : (ArrayRatchet.findSplit(input, fieldName, minInclusive) || 0);
-        let topIdx: number = (maxExclusive === null) ? input.length : ArrayRatchet.findSplit(input, fieldName, maxExclusive);
+        let bottomIdx: number = (minInclusive === null) ? 0 : (ArrayRatchet.findSplit(input, fieldDotPath, minInclusive) || 0);
+        let topIdx: number = (maxExclusive === null) ? input.length : ArrayRatchet.findSplit(input, fieldDotPath, maxExclusive);
+
+        const bottomValue: number = MapRatchet.findValueDotPath(input[bottomIdx],fieldDotPath);
+        if (bottomIdx === input.length-1 && bottomValue < minInclusive) {
+            // Highest value is still larger than min
+            return [];
+        }
 
         // For min inclusive, have to handle this case
         // Since it has to be able to handle the value===min case
-        if (bottomIdx < input.length && input[bottomIdx][fieldName] < minInclusive) {
+        if (bottomIdx < input.length && bottomIdx < topIdx
+            && bottomValue < minInclusive) {
             bottomIdx++;
         }
 
@@ -84,12 +92,12 @@ export class ArrayRatchet {
      * @param fieldName Name of the field
      * @param target the value to search for
      */
-    public static findSplit(input: any[], fieldName: string, target: number): number {
+    public static findSplit(input: any[], fieldDotPath: string, target: number): number {
         RequireRatchet.notNullOrUndefined(input);
-        RequireRatchet.notNullOrUndefined(fieldName);
+        RequireRatchet.notNullOrUndefined(fieldDotPath);
         RequireRatchet.notNullOrUndefined(target);
 
-        if (input.length === 0 || input[0][fieldName] > target) {
+        if (input.length === 0 || MapRatchet.findValueDotPath(input[0], fieldDotPath) > target) {
             return null;
         }
 
@@ -99,7 +107,7 @@ export class ArrayRatchet {
 
         while (rval === null) {
             let curIdx: number = Math.floor((min + max) / 2);
-            let curVal: number = input[curIdx][fieldName];
+            let curVal: number = MapRatchet.findValueDotPath(input[curIdx], fieldDotPath);
             if (min === max || min === max - 1) {
                 rval = min;
             } else if (curVal <= target) {
