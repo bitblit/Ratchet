@@ -2,6 +2,8 @@
     Functions for working with arrays
 */
 
+import {RequireRatchet} from './require-ratchet';
+
 export class ArrayRatchet {
 
     public static wrapElementsInArray(input: any[]): any[][] {
@@ -45,6 +47,67 @@ export class ArrayRatchet {
             rval.setTwoOnly = rval.setTwoOnly.concat(ar2.slice(id2));
         }
 
+        return rval;
+    }
+
+    /**
+     * Given a sorted array of type T with a field named fieldName of type R, perform
+     * binary search to find the top and bottom bounds and extract the result
+     * @param input Array to select from
+     * @param fieldName Name of the field
+     * @param min min value of field to include
+     * @param max max value of field to include
+     */
+    public static extractSubarrayFromSortedByNumberField<T>(input: T[], fieldName: string,
+                                                              minInclusive: number, maxExclusive: number): T[] {
+        if (!input || input.length ===0) {
+            return input;
+        }
+
+        let bottomIdx: number = (minInclusive === null) ? 0 : (ArrayRatchet.findSplit(input, fieldName, minInclusive) || 0);
+        let topIdx: number = (maxExclusive === null) ? input.length : ArrayRatchet.findSplit(input, fieldName, maxExclusive);
+
+        // For min inclusive, have to handle this case
+        // Since it has to be able to handle the value===min case
+        if (bottomIdx < input.length && input[bottomIdx][fieldName] < minInclusive) {
+            bottomIdx++;
+        }
+
+        return input.slice(bottomIdx, topIdx + 1);
+    }
+
+    /**
+     * Given a sorted array, find the location in the array where all the entries
+     * above that index have a value larger that the target (the index and under
+     * are less than or equal to the target)
+     * @param input Array to select from
+     * @param fieldName Name of the field
+     * @param target the value to search for
+     */
+    public static findSplit(input: any[], fieldName: string, target: number): number {
+        RequireRatchet.notNullOrUndefined(input);
+        RequireRatchet.notNullOrUndefined(fieldName);
+        RequireRatchet.notNullOrUndefined(target);
+
+        if (input.length === 0 || input[0][fieldName] > target) {
+            return null;
+        }
+
+        let min: number = 0;
+        let max: number = input.length;
+        let rval: number = null;
+
+        while (rval === null) {
+            let curIdx: number = Math.floor((min + max) / 2);
+            let curVal: number = input[curIdx][fieldName];
+            if (min === max || min === max - 1) {
+                rval = min;
+            } else if (curVal <= target) {
+                min = curIdx;
+            } else {
+                max = curIdx;
+            }
+        }
         return rval;
     }
 
