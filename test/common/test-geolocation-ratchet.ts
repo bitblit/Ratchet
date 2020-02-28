@@ -1,12 +1,17 @@
 import { expect } from 'chai';
-import {GeolocationRatchet, RatchetGeoLocation, RatchetLocationBounds} from '../../src/common/geolocation-ratchet';
+import {
+    GeolocationRatchet,
+    RatchetGeoLocation,
+    RatchetLocationBounds,
+    RatchetLocationBoundsMap
+} from '../../src/common/geolocation-ratchet';
 import * as fs from 'fs';
 import {NumberRatchet} from '../../src/common/number-ratchet';
 import {Logger} from '../../src/common/logger';
 
 describe('#geolocationRatchet', function() {
 
-    /*
+
     it('should generate the right distance', function() {
         const whLat: number = 38.8976805;
         const whLng: number = -77.0387238;
@@ -76,8 +81,29 @@ describe('#geolocationRatchet', function() {
 
     });
 
-     */
 
+
+
+    it('should build a bounds map', function() {
+        const locations: RatchetGeoLocation[] = fs.readFileSync('test/data/sample_geo_locations.csv').toString()
+            .split('\n').map(line => {
+                const vals: string[] = line.split(',');
+                if (!!vals && vals.length === 2) {
+                    return {
+                        lat: NumberRatchet.safeNumber(vals[0]),
+                        lng: NumberRatchet.safeNumber(vals[1])
+                    }
+                } else {
+                    return null;
+                }
+            }).filter(s => !!s);
+        const bounds: RatchetLocationBounds[] = locations.map(l => GeolocationRatchet.locationToBounds(l, 10));
+        const mapping: RatchetLocationBoundsMap = GeolocationRatchet.buildRatchetLocationBoundsMap(bounds);
+
+        expect(mapping).to.not.be.null;
+
+
+    });
 
     it('should calc point in bounds', function() {
         const locations: RatchetGeoLocation[] = fs.readFileSync('test/data/sample_geo_locations.csv').toString()
@@ -93,7 +119,6 @@ describe('#geolocationRatchet', function() {
                 }
             }).filter(s => !!s);
         const bounds: RatchetLocationBounds[] = locations.map(l => GeolocationRatchet.locationToBounds(l, 10));
-        GeolocationRatchet.sortBoundsByOriginLongitude(bounds);
         const testPoint1: RatchetGeoLocation = locations[100];
         const testPoint2: RatchetGeoLocation = {lng: 5, lat: 5};
         const testPoint3: RatchetGeoLocation = {
@@ -106,10 +131,11 @@ describe('#geolocationRatchet', function() {
         };
 
 
-        // const pt1In: boolean = GeolocationRatchet.pointInAnyBoundSortedByOriginLongitude(testPoint1, bounds);
-        // const pt2In: boolean = GeolocationRatchet.pointInAnyBoundSortedByOriginLongitude(testPoint2, bounds);
-        const pt3In: boolean = GeolocationRatchet.pointInAnyBoundSortedByOriginLongitude(testPoint3, bounds);
-        const pt4In: boolean = GeolocationRatchet.pointInAnyBoundSortedByOriginLongitude(testPoint4, bounds);
+
+        const pt1In: boolean = GeolocationRatchet.pointInAnyBound(testPoint1, bounds);
+        const pt2In: boolean = GeolocationRatchet.pointInAnyBound(testPoint2, bounds);
+        const pt3In: boolean = GeolocationRatchet.pointInAnyBound(testPoint3, bounds);
+        const pt4In: boolean = GeolocationRatchet.pointInAnyBound(testPoint4, bounds);
 
         expect(pt3In).to.be.true;
         expect(pt4In).to.be.true;

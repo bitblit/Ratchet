@@ -8,6 +8,7 @@ import {NumberRatchet} from './number-ratchet';
 import {ErrorRatchet} from './error-ratchet';
 import {Logger} from './logger';
 import {ArrayRatchet} from './array-ratchet';
+import {map} from 'rxjs/operators';
 
 export class GeolocationRatchet {
 
@@ -191,30 +192,79 @@ export class GeolocationRatchet {
             NumberRatchet.between(pt.lng, bound.origin.lng, bound.extent.lng);
     }
 
-    public static pointInAnyBound(pt: RatchetGeoLocation, bounds: RatchetLocationBounds[]): boolean {
+    public static pointInAnyBound(pt: RatchetGeoLocation, inBounds: RatchetLocationBounds[],
+                                  minPointsBeforeMapping: number = 10): boolean {
         let rval: boolean = false;
-        for (let i=0;i<bounds.length && !rval; i++) {
-            rval = GeolocationRatchet.pointInBounds(pt, bounds[i]);
-        }
-        return rval;
-    }
-
-
-    public static pointInAnyBoundSortedByOriginLongitude(pt: RatchetGeoLocation, inBounds: RatchetLocationBounds[]): boolean {
-        let rval: boolean = false;
-        //const bounds: RatchetLocationBounds[] =
-        //    ArrayRatchet.extractSubarrayFromSortedByNumberField(inBounds, 'origin.lng', pt.lng, pt.lng);
-
-        for (let i=0;i<inBounds.length && inBounds[i].origin.lng < pt.lng && !rval; i++) {
-            if (inBounds[i].extent.lng > pt.lng) {
+        if (inBounds.length <= minPointsBeforeMapping) {
+            const mp: RatchetLocationBoundsMap = GeolocationRatchet.buildRatchetLocationBoundsMap(inBounds);
+            rval = GeolocationRatchet.pointInRatchetLocationBoundsMap(pt, mp);
+        } else {
+            for (let i=0;i<inBounds.length && !rval; i++) {
                 rval = GeolocationRatchet.pointInBounds(pt, inBounds[i]);
             }
         }
         return rval;
     }
 
-    public static sortBoundsByOriginLongitude(inBounds: RatchetLocationBounds[]): void {
-        inBounds.sort((a, b) => a.origin.lng - b.origin.lng);
+
+    public static pointInRatchetLocationBoundsMap(pt: RatchetGeoLocation, mp: RatchetLocationBoundsMap): boolean {
+        let rval: boolean = false;
+        if (pt.lat >= mp.latOffset && pt.lat <= mp.maxLat && pt.lng >= mp.lngOffset && pt.lng <= mp.maxLng) {
+
+            const ltIdx: number = Math.trunc(pt.lat) - mp.latOffset;
+            const lngIdx: number = Math.trunc(pt.lng) - mp.lngOffset;
+            const bounds: RatchetLocationBounds[] = mp.mapping[ltIdx][lngIdx].bounds;
+
+            for (let i = 0; i < bounds.length && !rval; i++) {
+                rval = GeolocationRatchet.pointInBounds(pt, bounds[i]);
+            }
+        }
+
+        return rval;
+    }
+
+    public static buildRatchetLocationBoundsMap(inBounds: RatchetLocationBounds[]): RatchetLocationBoundsMap {
+        const minLat: number = inBounds.map(i => i.origin.lat).reduce((a,i) => Math.min(a,i));
+        const minLng: number = inBounds.map(i => i.origin.lng).reduce((a,i) => Math.min(a,i));
+        const maxLat: number = inBounds.map(i => i.extent.lat).reduce((a,i) => Math.max(a,i));
+        const maxLng: number = inBounds.map(i => i.extent.lng).reduce((a,i) => Math.max(a,i));
+
+        const latOffset: number = Math.trunc(minLat);
+        const lngOffset: number = Math.trunc(minLng);
+        const latEntries: number = (Math.trunc(maxLat) - latOffset) + 1;
+        const lngEntries: number = (Math.trunc(maxLng) - lngOffset) + 1;
+
+        const mapping: RatchetLocationBoundsMapEntry[][] = [];
+        for (let i=0;i<latEntries;i++) {
+            const newRow: RatchetLocationBoundsMapEntry[] = [];
+            for (let j=0;j<lngEntries;j++) {
+                newRow.push({
+                    lat: latOffset + i,
+                    lng: lngOffset + j,
+                    bounds: []
+                });
+            }
+            mapping.push(newRow);
+        }
+
+        inBounds.forEach(b => {
+           for (let i=Math.trunc(b.origin.lat);i<=Math.trunc(b.extent.lat);i++) {
+               const latIdx: number = i-latOffset;
+               const row: RatchetLocationBoundsMapEntry[] = mapping[latIdx];
+               for (let j=Math.trunc(b.origin.lng);j<=Math.trunc(b.extent.lng);j++) {
+                   const lngIdx: number = j-lngOffset;
+                   row[lngIdx].bounds.push(b);
+               }
+           }
+        });
+
+        return {
+            latOffset: latOffset,
+            lngOffset: lngOffset,
+            maxLat: latOffset + latEntries,
+            maxLng: lngOffset + lngEntries,
+            mapping: mapping
+        }
     }
 }
 
@@ -228,11 +278,18 @@ export interface RatchetLocationBounds {
     extent: RatchetGeoLocation;
 }
 
-interface ClusterWorkPackage {
-    compositeBound: RatchetLocationBounds;
-    boundList: RatchetLocationBounds[];
-    center: RatchetGeoLocation;
-    roundedCenter: RatchetGeoLocation
+export interface RatchetLocationBoundsMap {
+    latOffset: number;
+    lngOffset: number;
+    maxLat: number;
+    maxLng: number;
+    mapping: RatchetLocationBoundsMapEntry[][]
+}
+
+export interface RatchetLocationBoundsMapEntry {
+    lat: number;
+    lng: number;
+    bounds: RatchetLocationBounds[];
 }
 
 interface SplitPoint {
