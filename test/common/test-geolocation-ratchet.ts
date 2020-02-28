@@ -11,7 +11,7 @@ import {Logger} from '../../src/common/logger';
 
 describe('#geolocationRatchet', function() {
 
-
+/*
     it('should generate the right distance', function() {
         const whLat: number = 38.8976805;
         const whLng: number = -77.0387238;
@@ -84,6 +84,7 @@ describe('#geolocationRatchet', function() {
 
 
 
+
     it('should build a bounds map', function() {
         const locations: RatchetGeoLocation[] = fs.readFileSync('test/data/sample_geo_locations.csv').toString()
             .split('\n').map(line => {
@@ -104,6 +105,7 @@ describe('#geolocationRatchet', function() {
 
 
     });
+ */
 
     it('should calc point in bounds', function() {
         const locations: RatchetGeoLocation[] = fs.readFileSync('test/data/sample_geo_locations.csv').toString()
@@ -119,6 +121,7 @@ describe('#geolocationRatchet', function() {
                 }
             }).filter(s => !!s);
         const bounds: RatchetLocationBounds[] = locations.map(l => GeolocationRatchet.locationToBounds(l, 10));
+        const mapping: RatchetLocationBoundsMap = GeolocationRatchet.buildRatchetLocationBoundsMap(bounds);
         const testPoint1: RatchetGeoLocation = locations[100];
         const testPoint2: RatchetGeoLocation = {lng: 5, lat: 5};
         const testPoint3: RatchetGeoLocation = {
@@ -129,6 +132,10 @@ describe('#geolocationRatchet', function() {
             lat: 33.74616000,
             lng: -84.37080000
         };
+        const testPoint5: RatchetGeoLocation = {
+            lat: 37.790336,
+            lng: -122.405399
+        };
 
 
 
@@ -136,9 +143,14 @@ describe('#geolocationRatchet', function() {
         const pt2In: boolean = GeolocationRatchet.pointInAnyBound(testPoint2, bounds);
         const pt3In: boolean = GeolocationRatchet.pointInAnyBound(testPoint3, bounds);
         const pt4In: boolean = GeolocationRatchet.pointInAnyBound(testPoint4, bounds);
+        const pt5In: boolean = GeolocationRatchet.pointInRatchetLocationBoundsMap(testPoint5, mapping);
 
+        expect(pt1In).to.be.true;
+        expect(pt2In).to.be.false;
         expect(pt3In).to.be.true;
         expect(pt4In).to.be.true;
+        expect(pt5In).to.be.true;
+
 
     });
 });

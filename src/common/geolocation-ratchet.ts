@@ -195,7 +195,7 @@ export class GeolocationRatchet {
     public static pointInAnyBound(pt: RatchetGeoLocation, inBounds: RatchetLocationBounds[],
                                   minPointsBeforeMapping: number = 10): boolean {
         let rval: boolean = false;
-        if (inBounds.length <= minPointsBeforeMapping) {
+        if (inBounds.length > minPointsBeforeMapping) {
             const mp: RatchetLocationBoundsMap = GeolocationRatchet.buildRatchetLocationBoundsMap(inBounds);
             rval = GeolocationRatchet.pointInRatchetLocationBoundsMap(pt, mp);
         } else {
@@ -209,15 +209,28 @@ export class GeolocationRatchet {
 
     public static pointInRatchetLocationBoundsMap(pt: RatchetGeoLocation, mp: RatchetLocationBoundsMap): boolean {
         let rval: boolean = false;
-        if (pt.lat >= mp.latOffset && pt.lat <= mp.maxLat && pt.lng >= mp.lngOffset && pt.lng <= mp.maxLng) {
-
-            const ltIdx: number = Math.trunc(pt.lat) - mp.latOffset;
-            const lngIdx: number = Math.trunc(pt.lng) - mp.lngOffset;
-            const bounds: RatchetLocationBounds[] = mp.mapping[ltIdx][lngIdx].bounds;
+        const entry: RatchetLocationBoundsMapEntry = GeolocationRatchet.findRatchetLocationBoundsMapEntry(pt, mp);
+        if (!!entry) {
+            const bounds: RatchetLocationBounds[] = entry.bounds;
 
             for (let i = 0; i < bounds.length && !rval; i++) {
                 rval = GeolocationRatchet.pointInBounds(pt, bounds[i]);
             }
+
+        }
+
+        return rval;
+    }
+
+    public static findRatchetLocationBoundsMapEntry(pt: RatchetGeoLocation, mp: RatchetLocationBoundsMap):
+        RatchetLocationBoundsMapEntry {
+
+        let rval: RatchetLocationBoundsMapEntry = null;
+        if (pt.lat >= mp.latOffset && pt.lat <= mp.maxLat && pt.lng >= mp.lngOffset && pt.lng <= mp.maxLng) {
+
+            const ltIdx: number = Math.trunc(pt.lat) - mp.latOffset;
+            const lngIdx: number = Math.trunc(pt.lng) - mp.lngOffset;
+            rval = mp.mapping[ltIdx][lngIdx];
         }
 
         return rval;
@@ -229,8 +242,8 @@ export class GeolocationRatchet {
         const maxLat: number = inBounds.map(i => i.extent.lat).reduce((a,i) => Math.max(a,i));
         const maxLng: number = inBounds.map(i => i.extent.lng).reduce((a,i) => Math.max(a,i));
 
-        const latOffset: number = Math.trunc(minLat);
-        const lngOffset: number = Math.trunc(minLng);
+        const latOffset: number = Math.trunc(minLat) - 1;
+        const lngOffset: number = Math.trunc(minLng) - 1;
         const latEntries: number = (Math.trunc(maxLat) - latOffset) + 1;
         const lngEntries: number = (Math.trunc(maxLng) - lngOffset) + 1;
 
