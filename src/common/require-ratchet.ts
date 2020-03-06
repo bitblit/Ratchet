@@ -3,6 +3,8 @@
 */
 
 
+import {ErrorRatchet} from './error-ratchet';
+
 export class RequireRatchet {
 
     public static notNullOrUndefined(ob: any, name:string = 'object'):void {
@@ -19,6 +21,18 @@ export class RequireRatchet {
 
     public static true(ob: boolean, message:string = 'Value must be true'):void {
         RequireRatchet.equal(ob, true, message);
+    }
+
+    public static noNullOrUndefinedValuesInArray(arr: any[], expectedLength: number = null) : void {
+        RequireRatchet.notNullOrUndefined(arr, 'Source array may not be null');
+        if (expectedLength !== null && arr.length !== expectedLength) {
+            ErrorRatchet.throwFormattedErr('Expected array of length %d but was %d', expectedLength, arr.length);
+        }
+        for (let i=0;i<arr.length;i++) {
+            if (arr[i] === null || arr[i] === undefined) {
+                ErrorRatchet.throwFormattedErr('Array index %d was null or undefined', i);
+            }
+        }
     }
 
 
