@@ -6,11 +6,15 @@ import {Logger} from './logger';
 
 export class Base64Ratchet {
 
+    public static safeObjectToBase64JSON(input: any): any {
+        return (!!input) ? Base64Ratchet.generateBase64VersionOfString(JSON.stringify(input)) : null;
+    }
+
     public static safeBase64JSONParse(input: string): any {
         let rval: any = {};
         try {
             if (input) {
-                rval = JSON.parse(atob(input));
+                rval = JSON.parse(Base64Ratchet.base64StringToString(input));
             }
         }
         catch (err) {
@@ -38,6 +42,14 @@ export class Base64Ratchet {
 
     public static generateBase64VersionOfString(input: string): string {
         return Buffer.from(input).toString('base64');
+    }
+
+    public static base64StringToBuffer(input: string): Buffer {
+        return Buffer.from(input, 'base64');
+    }
+
+    public static base64StringToString(input: string, encoding: string = 'utf8'): string {
+        return Buffer.from(input, 'base64').toString(encoding);
     }
 
 
