@@ -5,9 +5,7 @@ import {LogGroup} from 'aws-sdk/clients/cloudwatchlogs';
 
 describe('#cloudWatchLogsRatchet', function() {
     this.timeout(3000000);
-    it('should find all matching groups', async() => {
-        this.bail();
-        /*
+    xit('should find all matching groups', async() => {
         const cw: CloudWatchLogsRatchet = new CloudWatchLogsRatchet();
         const prefix: string = '/';
 
@@ -15,7 +13,6 @@ describe('#cloudWatchLogsRatchet', function() {
         expect(res).to.not.be.null;
 
         Logger.info('Got : %j',res);
-        */
     });
 
 });

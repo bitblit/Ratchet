@@ -5,9 +5,7 @@ import {CloudWatchMetricsUnit} from '../../src/aws/model/cloud-watch-metrics-uni
 import {Logger} from '../../src/common/logger';
 
 describe('#cloudWatchMetricsRatchet', function() {
-    it('should log a cloudwatch metric', async() => {
-        this.bail();
-        /*
+    xit('should log a cloudwatch metric', async() => {
         const cw: CloudWatchMetricsRatchet = new CloudWatchMetricsRatchet();
         const dims: KeyValue[] =  [{key:'server',value:'prod'} as KeyValue, {key: 'stage', value: 'v0'},
             {key: 'version', value: '20190529-01'}];
@@ -22,7 +20,6 @@ describe('#cloudWatchMetricsRatchet', function() {
         );
 
         Logger.info('Got : %j',res);
-        */
     });
 
 });

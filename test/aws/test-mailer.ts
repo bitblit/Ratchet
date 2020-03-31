@@ -11,9 +11,7 @@ import {Base64Ratchet} from '../../src/common/base64-ratchet';
 import * as fs from 'fs';
 
 describe('#mailer', function() {
-    it('should send email', async() => {
-        this.bail();
-        /*
+    xit('should send email', async() => {
         let ses: AWS.SES = new AWS.SES({region: 'us-east-1'});
         let svc: Mailer = new Mailer(ses, 'test1@test.com', ['test2@test.com','test2@test.com']);
 
@@ -41,7 +39,7 @@ describe('#mailer', function() {
         const result: SendEmailResponse = await svc.sendEmail(rts);
 
         expect(result).to.not.equal(null);
-        */
+
     });
 
 });

@@ -32,7 +32,6 @@ export class DynamoRatchet {
         }
     }
 
-
     public getDDB(): AWS.DynamoDB.DocumentClient {
         return this.awsDDB;
     }
@@ -42,6 +41,7 @@ export class DynamoRatchet {
             TableName: tableName,
             Limit: 1
         };
+
         const scanOutput: ScanOutput = await this.awsDDB.scan(scanInput).promise();
         return scanOutput.Items.length === 0;
     }

@@ -13,8 +13,7 @@ describe('#publishCircleCiReleaseToSlack', function() {
         }
     });
 
-    /*
-    it('should not fail if in a circle ci environment', async() => {
+    xit('should not fail if in a circle ci environment', async() => {
         process.env['CIRCLE_BUILD_NUM'] = '1';
         process.env['CIRCLE_BRANCH']='B';
         process.env['CIRCLE_TAG']='T';
@@ -27,6 +26,5 @@ describe('#publishCircleCiReleaseToSlack', function() {
         expect(result).to.eq('ok');
 
     });
-     */
 
 });
