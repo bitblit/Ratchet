@@ -4,6 +4,7 @@ import {RequireRatchet} from '../../common/require-ratchet';
 import {Logger} from '../../common/logger';
 import {SendRawEmailRequest, SendRawEmailResponse} from 'aws-sdk/clients/ses';
 import {RatchetTemplateRenderer} from './ratchet-template-renderer';
+import {MailerMode} from './mailer-mode';
 
 export class Mailer {
     public static readonly EMAIL: RegExp = new RegExp(".+@.+\\.[a-z]+");
@@ -11,7 +12,8 @@ export class Mailer {
     constructor(private ses:AWS.SES,
                 private defaultSendingAddress: string=null,
                 private autoBccAddresses: string[] = [],
-                private templateRenderer: RatchetTemplateRenderer = null){
+                private templateRenderer: RatchetTemplateRenderer = null,
+                private mode: MailerMode = MailerMode.Normal){
         RequireRatchet.notNullOrUndefined(this.ses);
     }
 
@@ -28,15 +30,30 @@ export class Mailer {
     }
 
     public async sendEmail(rts:ReadyToSendEmail): Promise<SendRawEmailResponse> {
+        let toLine: string = 'To: ' + rts.destinationAddresses.join(', ') + '\n';
+        let bccLine: string = (!!this.autoBccAddresses && this.autoBccAddresses.length>0) ?
+            'Bcc: ' + this.autoBccAddresses.join(', ') + '\n' : '';
+
+        if (this.mode === MailerMode.Disabled) {
+            Logger.info('Not sending email, mailer disabled.  Mail was : %j', rts);
+            return null;
+        } else if (this.mode === MailerMode.AutoBccOnly) {
+            if (!this.autoBccAddresses || this.autoBccAddresses.length === 0) {
+                Logger.info('Not sending email, mailer on bcc only mode and no bcc set : %j', rts);
+                return null;
+            }
+            Logger.info('AutoBcc only mode, swapped %s for %s', bccLine, toLine);
+            toLine = bccLine;
+            bccLine = '';
+        }
+
         let rval: SendRawEmailResponse = null;
         try {
             const from: string = rts.fromAddress || this.defaultSendingAddress;
             const boundary: string = 'NextPart';
             let rawMail:string = 'From: '+from+'\n';
-            rawMail += 'To: ' + rts.destinationAddresses.join(', ') + '\n';
-            if (!!this.autoBccAddresses && this.autoBccAddresses.length>0) {
-                rawMail +='Bcc: ' + this.autoBccAddresses.join(', ') + '\n';
-            }
+            rawMail += toLine;
+            rawMail += bccLine;
             rawMail += 'Subject: '+rts.subject+'\n';
             rawMail += 'MIME-Version: 1.0\n';
             rawMail += 'Content-Type: multipart/mixed; boundary="'+boundary+'"\n';
