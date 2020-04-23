@@ -5,6 +5,7 @@ import * as fetch from 'portable-fetch';
 import {StringRatchet} from '../../common/string-ratchet';
 import {Logger} from '../../common/logger';
 import {RatchetTemplateRenderer} from './ratchet-template-renderer';
+import * as layouts from 'handlebars-layouts';
 
 /**
  */
@@ -18,19 +19,26 @@ export class RemoteHandlebarsTemplateRenderer implements RatchetTemplateRenderer
         }
     }
 
-    public async renderTemplate(templateName:string, context:any): Promise<string> {
-        return this.renderRemoteTemplate(templateName, context);
+    public async renderTemplate(templateName:string, context:any, layoutName: string = null): Promise<string> {
+        return this.renderRemoteTemplate(templateName, context, layoutName);
     }
 
 
-    public async renderRemoteTemplate(templateName:string, inContext:any): Promise<string> {
+    public async renderRemoteTemplate(templateName:string, inContext:any, layoutName: string = null): Promise<string> {
         const template: HandlebarsTemplateDelegate = await this.fetchTemplate(templateName);
+        const layoutText: string = (!!layoutName) ? await this.fetchTemplateText(layoutName) : null;
+
+        if (!!layoutText) {
+            await layouts.register(handlebars);
+            handlebars.registerPartial(layoutName, layoutText);
+        }
+
         const context: any = inContext || {};
         const result: string = (!!template)?template(context):null;
         return result;
     }
 
-    public async renderTemplateDirect(templateText:string, context:any): Promise<string> {
+    public async renderTemplateDirect(templateText:string, context:any, layoutName: string = null): Promise<string> {
         const template: Template = handlebars.compile(templateText);
         const result: string = template(context);
         return result;

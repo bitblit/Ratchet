@@ -4,7 +4,10 @@ import {RequireRatchet} from '../../common/require-ratchet';
 import {Logger} from '../../common/logger';
 import {SendRawEmailRequest, SendRawEmailResponse} from 'aws-sdk/clients/ses';
 import {RatchetTemplateRenderer} from './ratchet-template-renderer';
-import {MailerMode} from './mailer-mode';
+import {S3CacheRatchet} from '../s3-cache-ratchet';
+import {StringRatchet} from '../../common/string-ratchet';
+import * as moment from 'moment-timezone';
+import { Moment } from 'moment-timezone';
 
 export class Mailer {
     public static readonly EMAIL: RegExp = new RegExp(".+@.+\\.[a-z]+");
@@ -13,18 +16,25 @@ export class Mailer {
                 private defaultSendingAddress: string=null,
                 private autoBccAddresses: string[] = [],
                 private templateRenderer: RatchetTemplateRenderer = null,
-                private mode: MailerMode = MailerMode.Normal){
+                private disabled: boolean = false,
+                private archive: S3CacheRatchet = null,
+                private archivePrefix: string = null){
         RequireRatchet.notNullOrUndefined(this.ses);
+        if (!!archive && !archive.getDefaultBucket()) {
+            throw new Error('If archive specified, must set a default bucket');
+        }
     }
 
-    public async fillEmailBody(rts: ReadyToSendEmail, context: any, htmlTemplateName:string, txtTemplateName: string=null): Promise<ReadyToSendEmail> {
-        rts.htmlMessage = await this.templateRenderer.renderTemplate(htmlTemplateName, context);
+    public async fillEmailBody(rts: ReadyToSendEmail, context: any, htmlTemplateName:string,
+                               txtTemplateName: string=null, layoutName: string = null): Promise<ReadyToSendEmail> {
+        rts.htmlMessage = await this.templateRenderer.renderTemplate(htmlTemplateName, context, layoutName);
         rts.txtMessage = (!!txtTemplateName)?await this.templateRenderer.renderTemplate(txtTemplateName, context):null;
         return rts;
     }
 
-    public async fillEmailBodyAndSend(rts: ReadyToSendEmail, context: any, htmlTemplateName:string, txtTemplateName: string=null): Promise<SendRawEmailResponse> {
-        const newVal: ReadyToSendEmail = await this.fillEmailBody(rts, context, htmlTemplateName, txtTemplateName);
+    public async fillEmailBodyAndSend(rts: ReadyToSendEmail, context: any, htmlTemplateName:string,
+                                      txtTemplateName: string=null, layoutName: string = null): Promise<SendRawEmailResponse> {
+        const newVal: ReadyToSendEmail = await this.fillEmailBody(rts, context, htmlTemplateName, txtTemplateName, layoutName);
         const rval: SendRawEmailResponse = await this.sendEmail(newVal);
         return rval;
     }
@@ -34,17 +44,26 @@ export class Mailer {
         let bccLine: string = (!!this.autoBccAddresses && this.autoBccAddresses.length>0) ?
             'Bcc: ' + this.autoBccAddresses.join(', ') + '\n' : '';
 
-        if (this.mode === MailerMode.Disabled) {
+        // If an archiver is configured, use it
+        if (!!this.archive) {
+            let targetPath: string = StringRatchet.trimToEmpty(this.archivePrefix);
+            if (!targetPath.endsWith('/')) {
+                targetPath += '/';
+            }
+            const now: Moment = moment().tz('etc/GMT');
+            targetPath += 'year=' + now.format('YYYY') + '/month=' + now.format('MM') + '/day=' + now.format('DD')
+             + '/hour=' + now.format('HH') + '/' + now.format('mm_ss__SSS');
+            targetPath += '.json';
+            try {
+                await this.archive.writeObjectToCacheFile(targetPath, rts);
+            } catch (err) {
+                Logger.warn('Failed to archive email %s %j : %s', targetPath, rts, err);
+            }
+        }
+
+        if (this.disabled) {
             Logger.info('Not sending email, mailer disabled.  Mail was : %j', rts);
             return null;
-        } else if (this.mode === MailerMode.AutoBccOnly) {
-            if (!this.autoBccAddresses || this.autoBccAddresses.length === 0) {
-                Logger.info('Not sending email, mailer on bcc only mode and no bcc set : %j', rts);
-                return null;
-            }
-            Logger.info('AutoBcc only mode, swapped %s for %s', bccLine, toLine);
-            toLine = bccLine;
-            bccLine = '';
         }
 
         let rval: SendRawEmailResponse = null;
@@ -57,12 +76,12 @@ export class Mailer {
             rawMail += 'Subject: '+rts.subject+'\n';
             rawMail += 'MIME-Version: 1.0\n';
             rawMail += 'Content-Type: multipart/mixed; boundary="'+boundary+'"\n';
-            if (!!rts.htmlMessage) {
+            if (!!StringRatchet.trimToNull(rts.htmlMessage)) {
                 rawMail += '\n\n--'+boundary+'\n';
                 rawMail += 'Content-Type: text/html\n\n';
                 rawMail += rts.htmlMessage;
             }
-            if (!!rts.txtMessage) {
+            if (!!StringRatchet.trimToNull(rts.txtMessage)) {
                 rawMail += '\n\n--'+boundary+'\n';
                 rawMail += 'Content-Type: text/plain\n\n';
                 rawMail += rts.txtMessage;

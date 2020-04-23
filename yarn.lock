@@ -1301,6 +1301,11 @@ gulplog@^1.0.0:
   dependencies:
     glogg "^1.0.0"
 
+handlebars-layouts@3.1.4:
+  version "3.1.4"
+  resolved "https://registry.npmjs.org/handlebars-layouts/-/handlebars-layouts-3.1.4.tgz#26b3beb931b4b877dfbf7e6feaf4058ee6228b02"
+  integrity sha1-JrO+uTG0uHffv35v6vQFjuYiiwI=
+
 handlebars@4.2.0:
   version "4.2.0"
   resolved "https://registry.npmjs.org/handlebars/-/handlebars-4.2.0.tgz#57ce8d2175b9bbb3d8b3cf3e4217b1aec8ddcb2e"
