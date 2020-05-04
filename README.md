@@ -207,3 +207,4 @@ Pull requests are welcome, although I'm not sure why you'd be interested!
 * 0.1.x - 0.4.x : TBD for when I feel like doing repo diving
 * 0.5.x : Breaking change to AthenaRatchet
 * 0.6.x : Breaking change to Mailer (adding Handlebars layouts) 
+* 0.7.x : Breaking change to Mailer (switch to config object, add allowedDestinationEmails handling)

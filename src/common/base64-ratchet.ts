@@ -41,7 +41,12 @@ export class Base64Ratchet {
     }
 
     public static generateBase64VersionOfString(input: string): string {
-        return Buffer.from(input).toString('base64');
+        return Base64Ratchet.generateBase64VersionOfBuffer(Buffer.from(input));
+    }
+
+    public static generateBase64VersionOfBuffer(input: Buffer): string {
+        // Yeah, I know.  But it keeps you from having to remember how it works
+        return input.toString('base64');
     }
 
     public static base64StringToBuffer(input: string): Buffer {

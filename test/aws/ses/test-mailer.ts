@@ -9,13 +9,18 @@ import {EmailAttachment} from '../../../src/aws/ses/email-attachment';
 import {StringRatchet} from '../../../src/common/string-ratchet';
 import {Base64Ratchet} from '../../../src/common/base64-ratchet';
 import * as fs from 'fs';
+import {MailerConfig} from '../../../src/aws/ses/mailer-config';
 
 describe('#mailer', function() {
     xit('should send email', async() => {
         let ses: AWS.SES = new AWS.SES({region: 'us-east-1'});
-        let archive: S3CacheRatchet = new S3CacheRatchet(new AWS.S3(), 'outbound-email-archive');
-        let svc: Mailer = new Mailer(ses, 'test1@test.com', ['test2@test.com','test2@test.com'],
-            null, false, archive, 'test');
+        let config: MailerConfig = {
+            defaultSendingAddress: 'test1@test.com',
+            autoBccAddresses: ['test2@test.com','test2@test.com'],
+            archive: new S3CacheRatchet(new AWS.S3(), 'outbound-email-archive'),
+            archivePrefix: 'test'
+        };
+        let svc: Mailer = new Mailer(ses, config);
 
         const attach1: EmailAttachment = {
           filename: 'test.txt',
@@ -41,6 +46,24 @@ describe('#mailer', function() {
         const result: SendEmailResponse = await svc.sendEmail(rts);
 
         expect(result).to.not.equal(null);
+
+    });
+
+    it('should filter outbound', async() => {
+        let config: MailerConfig = {
+            allowedDestinationEmails: [/.*test\.com/, /.*.test2\.com/]
+        };
+        let svc: Mailer = new Mailer({} as AWS.SES, config);
+
+        const out1: string[] = ['a@test.com','b@fail.com'];
+        const res1: string[] = svc.filterEmailsToValid(out1);
+        expect(res1).to.not.be.null;
+        expect(res1.length).to.eq(1);
+
+        const out2: string[] = ['a@fail.com','b@fail.com'];
+        const res2: string[] = svc.filterEmailsToValid(out2);
+        expect(res2).to.not.be.null;
+        expect(res2.length).to.eq(0);
 
     });
 
