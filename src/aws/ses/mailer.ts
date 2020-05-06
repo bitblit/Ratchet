@@ -132,22 +132,29 @@ export class Mailer {
       try {
         const from: string = rts.fromAddress || this.config.defaultSendingAddress;
         const boundary: string = 'NextPart';
+        const altBoundary: string = 'AltPart';
         let rawMail: string = 'From: ' + from + '\n';
         rawMail += toLine;
         rawMail += bccLine;
         rawMail += 'Subject: ' + rts.subject + '\n';
         rawMail += 'MIME-Version: 1.0\n';
         rawMail += 'Content-Type: multipart/mixed; boundary="' + boundary + '"\n';
+
+        rawMail += '\n\n--' + boundary + '\n';
+        rawMail += 'Content-Type: multipart/alternative; boundary="' + altBoundary + '"\n';
         if (!!StringRatchet.trimToNull(rts.htmlMessage)) {
-          rawMail += '\n\n--' + boundary + '\n';
+          rawMail += '\n\n--' + altBoundary + '\n';
           rawMail += 'Content-Type: text/html\n\n';
           rawMail += rts.htmlMessage;
         }
         if (!!StringRatchet.trimToNull(rts.txtMessage)) {
-          rawMail += '\n\n--' + boundary + '\n';
+          rawMail += '\n\n--' + altBoundary + '\n';
           rawMail += 'Content-Type: text/plain\n\n';
           rawMail += rts.txtMessage;
         }
+
+        rawMail += '\n\n--' + altBoundary + '--\n';
+
         if (rts.attachments) {
           rts.attachments.forEach((a) => {
             rawMail += '\n\n--' + boundary + '\n';
@@ -157,7 +164,7 @@ export class Mailer {
             rawMail += a.base64Data.replace(/([^\0]{76})/g, '$1\n') + '\n\n';
           });
         }
-        rawMail += '\n\n--' + boundary + '\n';
+        rawMail += '\n\n--' + boundary + '--\n';
 
         const params: SendRawEmailRequest = {
           RawMessage: { Data: rawMail }
