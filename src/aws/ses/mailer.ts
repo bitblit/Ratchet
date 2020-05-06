@@ -70,7 +70,7 @@ export class Mailer {
 
   private async archiveEmailIfConfigured(rts: ResolvedReadyToSendEmail): Promise<boolean> {
     let rval: boolean = false;
-    if (!!rts && !!this.config.archive) {
+    if (!!rts && !!this.config.archive && !rts.doNotArchive) {
       Logger.debug('Archiving outbound email to : %j', rts.destinationAddresses);
       let targetPath: string = StringRatchet.trimToEmpty(this.config.archivePrefix);
       if (!targetPath.endsWith('/')) {
@@ -105,7 +105,8 @@ export class Mailer {
     let rval: SendRawEmailResponse = null;
 
     let toAddresses: string[] = this.filterEmailsToValid(inRts.destinationAddresses);
-    let bccAddresses: string[] = inRts.bccAddresses || [].concat(this.config.autoBccAddresses || []);
+    let autoBcc: string[] = inRts.doNotAutoBcc ? [] : this.config.autoBccAddresses || [];
+    let bccAddresses: string[] = inRts.bccAddresses || [].concat(autoBcc);
     if (toAddresses.length === 0 && bccAddresses.length > 0) {
       Logger.debug('Destination emails filtered to none but BCC defined, copying BCC');
       toAddresses = bccAddresses;
