@@ -1,5 +1,4 @@
 export interface HistogramEntry<T> {
-    item: T;
-    count: number;
+  item: T;
+  count: number;
 }
-

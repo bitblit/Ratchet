@@ -46,7 +46,7 @@ export class PromiseRatchet {
   public static createTimeoutPromise(title: string, timeoutMS: number): Promise<TimeoutToken> {
     // Create a promise that rejects in <timeoutMS> milliseconds
     return new Promise<TimeoutToken>((resolve, reject) => {
-      let id = setTimeout(() => {
+      const id = setTimeout(() => {
         clearTimeout(id);
         const rval: TimeoutToken = new TimeoutToken(title, timeoutMS);
         resolve(rval);
@@ -60,7 +60,7 @@ export class PromiseRatchet {
     Logger.silly('Finished wait of %d ms', time);
   }
 
-  public static dumpResult(result, autoDebug: boolean = false): void {
+  public static dumpResult(result, autoDebug = false): void {
     Logger.info('Success, result was : \n\n%s\n\n', JSON.stringify(result));
     if (autoDebug) {
       debugger; // After log so we already have the output
@@ -68,7 +68,7 @@ export class PromiseRatchet {
     process.exit(0);
   }
 
-  public static dumpError(err, autoDebug: boolean = false): void {
+  public static dumpError(err, autoDebug = false): void {
     Logger.warn('Failure, err was : \n\n%s\n\n  --  \n\n%s\n\n', JSON.stringify(err), String(err));
     console.trace();
     if (autoDebug) {
@@ -77,7 +77,7 @@ export class PromiseRatchet {
     process.exit(1);
   }
 
-  public static logErrorAndReturnNull(err, autoDebug: boolean = false): void {
+  public static logErrorAndReturnNull(err, autoDebug = false): void {
     Logger.warn('Failure, err was : \n\n%s\n\n  --  \n\n%s\n\n', JSON.stringify(err), String(err));
     if (autoDebug) {
       debugger; // After log so we already have the output
@@ -98,8 +98,8 @@ export class PromiseRatchet {
     expectedValue: any,
     intervalMS: number,
     maxCycles: number,
-    label: string = 'waitFor',
-    count: number = 0
+    label = 'waitFor',
+    count = 0
   ): Promise<boolean> {
     if (expectedValue == null || intervalMS < 50 || maxCycles < 1 || count < 0 || typeof testFunction != 'function') {
       Logger.warn('%s: Invalid configuration for waitFor - exiting immediately', label);
@@ -144,8 +144,8 @@ export class PromiseRatchet {
     promiseFn: Function,
     params: any[][],
     context: any,
-    maxConcurrent: number = 1,
-    logLevel: string = 'debug'
+    maxConcurrent = 1,
+    logLevel = 'debug'
   ): Promise<T[]> {
     const sw: StopWatch = new StopWatch();
     sw.start();
@@ -154,11 +154,11 @@ export class PromiseRatchet {
     Logger.logByLevel(logLevel, 'Processing %d total elements %d at a time', params.length, maxConcurrent);
 
     const ctx: any = context || this;
-    let processed: number = 0;
+    let processed = 0;
     const totalCount: number = remain.length;
 
     while (remain.length > 0) {
-      let curBatch: any[] = remain.slice(0, Math.min(remain.length, maxConcurrent));
+      const curBatch: any[] = remain.slice(0, Math.min(remain.length, maxConcurrent));
       remain = remain.slice(curBatch.length);
 
       const proms: Promise<T>[] = curBatch.map((c) => promiseFn.apply(ctx, c) as Promise<T>);
@@ -176,8 +176,8 @@ export class PromiseRatchet {
     promiseFn: Function,
     params: any[],
     context: any,
-    maxConcurrent: number = 1,
-    logLevel: string = 'debug'
+    maxConcurrent = 1,
+    logLevel = 'debug'
   ): Promise<T[]> {
     const wrappedParams: any[][] = ArrayRatchet.wrapElementsInArray(params);
     return PromiseRatchet.runBoundedParallel<T>(promiseFn, wrappedParams, context, maxConcurrent, logLevel);

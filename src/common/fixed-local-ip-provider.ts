@@ -1,11 +1,9 @@
-import {LocalIpProvider} from './local-ip-provider';
+import { LocalIpProvider } from './local-ip-provider';
 
 export class FixedLocalIpProvider implements LocalIpProvider {
+  constructor(private fixed: string) {}
 
-    constructor(private fixed: string) {}
-
-    currentLocalIpAddress(): string {
-        return this.fixed;
-    }
-
+  currentLocalIpAddress(): string {
+    return this.fixed;
+  }
 }

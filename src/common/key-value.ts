@@ -3,7 +3,7 @@
 */
 
 export class KeyValue {
-    key: string;
-    value: any;
-}
+  key: string;
 
+  value: any;
+}

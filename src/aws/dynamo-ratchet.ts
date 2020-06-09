@@ -19,7 +19,7 @@ import {
   ScanInput,
   ScanOutput,
   UpdateItemInput,
-  UpdateItemOutput
+  UpdateItemOutput,
 } from 'aws-sdk/clients/dynamodb';
 import { AWSError } from 'aws-sdk';
 import { DocumentClient } from 'aws-sdk/lib/dynamodb/document_client';
@@ -44,14 +44,14 @@ export class DynamoRatchet {
   public async tableIsEmpty(tableName: string): Promise<boolean> {
     const scanInput: ScanInput = {
       TableName: tableName,
-      Limit: 1
+      Limit: 1,
     };
 
     const scanOutput: ScanOutput = await this.awsDDB.scan(scanInput).promise();
     return scanOutput.Items.length === 0;
   }
 
-  public async fullyExecuteQueryCount<T>(qry: QueryInput, delayMS: number = 250): Promise<DynamoCountResult> {
+  public async fullyExecuteQueryCount<T>(qry: QueryInput, delayMS = 250): Promise<DynamoCountResult> {
     try {
       qry.Select = 'COUNT'; // Force it to be a count query
       Logger.debug('Executing count query : %j', qry);
@@ -59,7 +59,7 @@ export class DynamoRatchet {
       const rval: DynamoCountResult = {
         count: 0,
         scannedCount: 0,
-        pages: 0
+        pages: 0,
       };
 
       const start: number = new Date().getTime();
@@ -89,7 +89,7 @@ export class DynamoRatchet {
     }
   }
 
-  public async fullyExecuteQuery<T>(qry: QueryInput, delayMS: number = 250, softLimit: number = null): Promise<T[]> {
+  public async fullyExecuteQuery<T>(qry: QueryInput, delayMS = 250, softLimit: number = null): Promise<T[]> {
     try {
       Logger.debug('Executing query : %j', qry);
       const start: number = new Date().getTime();
@@ -101,8 +101,8 @@ export class DynamoRatchet {
       let qryResults: QueryOutput = await this.awsDDB.query(qry).promise();
       rval = rval.concat((qryResults.Items as any[]) as T[]);
 
-      let pages: number = 0;
-      let blankPages: number = 0;
+      let pages = 0;
+      let blankPages = 0;
 
       while (qryResults.LastEvaluatedKey && (softLimit === null || rval.length < softLimit) && !qry.Limit) {
         // If Limit was set on the initial query, stop after 1
@@ -131,12 +131,12 @@ export class DynamoRatchet {
     }
   }
 
-  public async fullyExecuteScanCount<T>(qry: ScanInput, delayMS: number = 250): Promise<DynamoCountResult> {
+  public async fullyExecuteScanCount<T>(qry: ScanInput, delayMS = 250): Promise<DynamoCountResult> {
     try {
       const rval: DynamoCountResult = {
         count: 0,
         scannedCount: 0,
-        pages: 0
+        pages: 0,
       };
 
       Logger.debug('Executing scan count : %j', qry);
@@ -169,7 +169,7 @@ export class DynamoRatchet {
     }
   }
 
-  public async fullyExecuteScan<T>(qry: ScanInput, delayMS: number = 250, softLimit: number = null): Promise<T[]> {
+  public async fullyExecuteScan<T>(qry: ScanInput, delayMS = 250, softLimit: number = null): Promise<T[]> {
     try {
       Logger.debug('Executing scan : %j', qry);
       const start: number = new Date().getTime();
@@ -204,7 +204,7 @@ export class DynamoRatchet {
       throw new Error('Batch size needs to be at least 2, was ' + batchSize);
     }
 
-    let rval: number = 0;
+    let rval = 0;
     if (!!elements && elements.length > 0) {
       let batchItems: any[] = [];
       elements.forEach((el) => {
@@ -212,8 +212,8 @@ export class DynamoRatchet {
           PutRequest: {
             Item: el,
             ReturnConsumedCapacity: 'TOTAL',
-            TableName: tableName
-          }
+            TableName: tableName,
+          },
         });
       });
       Logger.debug('Processing %d batch items to %s', batchItems.length, tableName);
@@ -224,12 +224,12 @@ export class DynamoRatchet {
         const params: any = {
           RequestItems: {},
           ReturnConsumedCapacity: 'TOTAL',
-          ReturnItemCollectionMetrics: 'SIZE'
+          ReturnItemCollectionMetrics: 'SIZE',
         };
         params.RequestItems[tableName] = curBatch;
 
         let tryCount = 1;
-        let done: boolean = false;
+        let done = false;
         let batchResults: BatchWriteItemOutput = null;
         while (!done && tryCount < 7) {
           batchResults = await this.awsDDB.batchWrite(params).promise();
@@ -274,7 +274,7 @@ export class DynamoRatchet {
       throw new Error('Batch size needs to be at least 2, was ' + batchSize);
     }
 
-    let rval: number = 0;
+    let rval = 0;
     if (!!keys && keys.length > 0) {
       let batchItems: any[] = [];
       keys.forEach((el) => {
@@ -282,8 +282,8 @@ export class DynamoRatchet {
           DeleteRequest: {
             Key: el,
             ReturnConsumedCapacity: 'TOTAL',
-            TableName: tableName
-          }
+            TableName: tableName,
+          },
         });
       });
       Logger.debug('Processing %d DeleteBatch items to %s', batchItems.length, tableName);
@@ -294,12 +294,12 @@ export class DynamoRatchet {
         const params: any = {
           RequestItems: {},
           ReturnConsumedCapacity: 'TOTAL',
-          ReturnItemCollectionMetrics: 'SIZE'
+          ReturnItemCollectionMetrics: 'SIZE',
         };
         params.RequestItems[tableName] = curBatch;
 
         let tryCount = 1;
-        let done: boolean = false;
+        let done = false;
         let batchResults: PromiseResult<BatchWriteItemOutput, AWSError> = null;
         while (!done && tryCount < 7) {
           batchResults = await this.awsDDB.batchWrite(params).promise();
@@ -342,10 +342,10 @@ export class DynamoRatchet {
   }
 
   public async simplePut(tableName: string, value: any): Promise<PutItemOutput> {
-    let params: PutItemInput = {
+    const params: PutItemInput = {
       Item: value,
       ReturnConsumedCapacity: 'TOTAL',
-      TableName: tableName
+      TableName: tableName,
     };
 
     const res: PromiseResult<PutItemOutput, AWSError> = await this.awsDDB.put(params).promise();
@@ -355,7 +355,7 @@ export class DynamoRatchet {
   public async simpleGet<T>(tableName: string, keys: any): Promise<T> {
     const params: GetItemInput = {
       TableName: tableName,
-      Key: keys
+      Key: keys,
     };
 
     const holder: PromiseResult<GetItemOutput, AWSError> = await this.awsDDB.get(params).promise();
@@ -365,26 +365,26 @@ export class DynamoRatchet {
   public async simpleDelete(tableName: string, keys: any): Promise<DeleteItemOutput> {
     const params: DeleteItemInput = {
       TableName: tableName,
-      Key: keys
+      Key: keys,
     };
 
     const holder: PromiseResult<DeleteItemOutput, AWSError> = await this.awsDDB.delete(params).promise();
     return holder;
   }
 
-  public async atomicCounter(tableName: string, keys: any, counterFieldName: string, increment: number = 1): Promise<number> {
+  public async atomicCounter(tableName: string, keys: any, counterFieldName: string, increment = 1): Promise<number> {
     const update: UpdateItemInput = {
       TableName: tableName,
       Key: keys,
       //UpdateExpression: 'SET '+counterFieldName+' = '+counterFieldName+' + :inc',
       UpdateExpression: 'SET #counterFieldName = #counterFieldName + :inc',
       ExpressionAttributeNames: {
-        '#counterFieldName': counterFieldName
+        '#counterFieldName': counterFieldName,
       } as ExpressionAttributeNameMap,
       ExpressionAttributeValues: {
-        ':inc': increment
+        ':inc': increment,
       } as ExpressionAttributeValueMap,
-      ReturnValues: 'UPDATED_NEW'
+      ReturnValues: 'UPDATED_NEW',
     };
 
     const ui: UpdateItemOutput = await this.awsDDB.update(update).promise();
@@ -395,9 +395,9 @@ export class DynamoRatchet {
   // Recursively Removes any empty strings in place
   public static cleanObject(ob: any) {
     if (!!ob) {
-      let rem: string[] = [];
+      const rem: string[] = [];
       Object.keys(ob).forEach((k) => {
-        let v: any = ob[k];
+        const v: any = ob[k];
         if (v === '') {
           rem.push(k);
         } else if (v instanceof Object) {
