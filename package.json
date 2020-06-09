@@ -43,37 +43,37 @@
   },
   "homepage": "https://github.com/bitblit/Ratchet#readme",
   "engines": {
-    "node": ">=6.10.2"
+    "node": ">=12.8"
   },
   "license": "Apache-2.0",
   "dependencies": {
-    "moment": "2.25.3",
-    "moment-timezone": "0.5.28",
-    "yargs": "14.0.0"
+    "moment": "2.26.0",
+    "moment-timezone": "0.5.31",
+    "yargs": "15.3.1"
   },
   "devDependencies": {
-    "@types/aws-lambda": "8.10.31",
-    "@types/chai": "4.2.1",
-    "@types/mocha": "5.2.7",
-    "@types/node": "10.12.18",
-    "aws-sdk": "2.524.0",
+    "@types/aws-lambda": "8.10.53",
+    "@types/chai": "4.2.11",
+    "@types/mocha": "7.0.2",
+    "@types/node": "12.12.6",
+    "aws-sdk": "2.693.0",
     "chai": "4.2.0",
     "chai-http": "4.3.0",
-    "csv": "5.1.2",
+    "csv": "5.3.2",
     "handlebars": "4.7.6",
     "handlebars-layouts": "3.1.4",
-    "husky": "3.0.5",
-    "mocha": "6.2.0",
+    "husky": "4.2.5",
+    "mocha": "7.2.0",
     "portable-fetch": "3.0.0",
-    "prettier": "1.18.2",
-    "pretty-quick": "1.11.1",
-    "rxjs": "6.5.3",
+    "prettier": "2.0.5",
+    "pretty-quick": "2.0.1",
+    "rxjs": "6.5.5",
     "shx": "0.3.2",
-    "tmp": "0.1.0",
-    "ts-node": "8.3.0",
-    "tsc-watch": "4.2.3",
-    "tslint": "5.19.0",
-    "typescript": "3.6.2",
+    "tmp": "0.2.1",
+    "ts-node": "8.10.2",
+    "tsc-watch": "4.2.8",
+    "tslint": "6.1.2",
+    "typescript": "3.9.5",
     "walk": "2.3.14"
   }
 }

@@ -36,6 +36,7 @@ export class Mailer {
     txtTemplateName: string = null,
     layoutName: string = null
   ): Promise<ReadyToSendEmail> {
+    RequireRatchet.notNullOrUndefined(htmlTemplateName);
     if (!this.config.templateRenderer) {
       ErrorRatchet.throwFormattedErr('Cannot use fill body if template renderer not set');
     }
@@ -167,7 +168,7 @@ export class Mailer {
         rawMail += '\n\n--' + boundary + '--\n';
 
         const params: SendRawEmailRequest = {
-          RawMessage: { Data: rawMail }
+          RawMessage: { Data: rawMail },
         };
 
         rval = await this.ses.sendRawEmail(params).promise();
