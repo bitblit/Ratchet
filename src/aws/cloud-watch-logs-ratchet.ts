@@ -9,9 +9,13 @@ import {
   DescribeLogGroupsRequest,
   DescribeLogGroupsResponse,
   DescribeLogStreamsResponse,
+  GetQueryResultsResponse,
   LogGroup,
   LogRecord,
   LogStream,
+  StartQueryRequest,
+  StartQueryResponse,
+  StopQueryResponse,
 } from 'aws-sdk/clients/cloudwatchlogs';
 import { PromiseRatchet } from '../common/promise-ratchet';
 import { RequireRatchet } from '../common/require-ratchet';
@@ -191,5 +195,30 @@ export class CloudWatchLogsRatchet {
     Logger.info('Removing log groups with prefix %s', prefix);
     const groups: LogGroup[] = await this.findLogGroups(prefix);
     return await this.removeLogGroups(groups);
+  }
+
+  public async fullyExecuteInsightsQuery(sqr: StartQueryRequest): Promise<GetQueryResultsResponse> {
+    RequireRatchet.notNullOrUndefined(sqr);
+    Logger.debug('Starting insights query : %j', sqr);
+    const resp: StartQueryResponse = await this.cwLogs.startQuery(sqr).promise();
+    Logger.debug('Got query id %j', resp);
+
+    let rval: GetQueryResultsResponse = null;
+    let delayMS: number = 100;
+    while (!rval || ['Running', 'Scheduled'].includes(rval.status)) {
+      rval = await this.cwLogs.getQueryResults({ queryId: resp.queryId }).promise();
+      await PromiseRatchet.wait(delayMS);
+      delayMS *= 2;
+      Logger.info('Got : %j', rval);
+    }
+    return rval;
+  }
+
+  public async abortInsightsQuery(queryId: string): Promise<StopQueryResponse> {
+    let rval: StopQueryResponse = null;
+    if (!!queryId) {
+      rval = await this.cwLogs.stopQuery({ queryId: queryId }).promise();
+    }
+    return rval;
   }
 }

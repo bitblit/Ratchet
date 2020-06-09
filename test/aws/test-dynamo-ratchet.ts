@@ -5,7 +5,7 @@ import { Logger } from '../../src/common/logger';
 import { ExpressionAttributeValueMap, QueryInput } from 'aws-sdk/clients/dynamodb';
 import * as util from 'util';
 
-describe('#atomicCounter', function() {
+describe('#atomicCounter', function () {
   this.timeout(300000);
 
   xit('should increment the counter and return the new value', async () => {
@@ -27,8 +27,8 @@ describe('#atomicCounter', function() {
       TableName: 'some-table',
       KeyConditionExpression: 'hashVal = :hashVal',
       ExpressionAttributeValues: {
-        ':hashVal': curHash
-      } as ExpressionAttributeValueMap
+        ':hashVal': curHash,
+      } as ExpressionAttributeValueMap,
     };
 
     const res: any[] = await dr.fullyExecuteQuery<any>(qry, null, 150);

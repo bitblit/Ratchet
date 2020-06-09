@@ -11,36 +11,36 @@ import { Base64Ratchet } from '../../../src/common/base64-ratchet';
 import * as fs from 'fs';
 import { MailerConfig } from '../../../src/aws/ses/mailer-config';
 
-describe('#mailer', function() {
+describe('#mailer', function () {
   xit('should send email', async () => {
-    let ses: AWS.SES = new AWS.SES({ region: 'us-east-1' });
-    let config: MailerConfig = {
+    const ses: AWS.SES = new AWS.SES({ region: 'us-east-1' });
+    const config: MailerConfig = {
       defaultSendingAddress: 'test1@test.com',
       autoBccAddresses: [], //['test2@test.com','test2@test.com'],
       archive: null, //new S3CacheRatchet(new AWS.S3(), 'outbound-email-archive'),
-      archivePrefix: null //'test'
+      archivePrefix: null, //'test'
     };
-    let svc: Mailer = new Mailer(ses, config);
+    const svc: Mailer = new Mailer(ses, config);
 
     const attach1: EmailAttachment = {
       filename: 'test.txt',
       contentType: 'text/plain',
-      base64Data: Base64Ratchet.generateBase64VersionOfString('This is a test2')
+      base64Data: Base64Ratchet.generateBase64VersionOfString('This is a test2'),
     };
 
     const attach2: EmailAttachment = {
       filename: 'a2.png',
       contentType: 'image/png',
-      base64Data: fs.readFileSync('test/data/a2.png').toString('base64')
+      base64Data: fs.readFileSync('test/data/a2.png').toString('base64'),
     };
 
-    let rts: ReadyToSendEmail = {
+    const rts: ReadyToSendEmail = {
       txtMessage: 'test txt',
       htmlMessage: '<h1>Test html</h1><p>Test paragraph</p>',
       subject: 'Test subject',
       fromAddress: 'test@test.com',
       destinationAddresses: ['testout@test.com'],
-      attachments: [attach1, attach2]
+      attachments: [attach1, attach2],
     };
 
     const result: SendEmailResponse = await svc.sendEmail(rts);
@@ -49,10 +49,10 @@ describe('#mailer', function() {
   });
 
   xit('should filter outbound', async () => {
-    let config: MailerConfig = {
-      allowedDestinationEmails: [/.*test\.com/, /.*.test2\.com/]
+    const config: MailerConfig = {
+      allowedDestinationEmails: [/.*test\.com/, /.*.test2\.com/],
     };
-    let svc: Mailer = new Mailer({} as AWS.SES, config);
+    const svc: Mailer = new Mailer({} as AWS.SES, config);
 
     const out1: string[] = ['a@test.com', 'b@fail.com'];
     const res1: string[] = svc.filterEmailsToValid(out1);

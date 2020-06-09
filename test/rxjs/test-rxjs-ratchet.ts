@@ -1,15 +1,14 @@
 import { expect } from 'chai';
-import {BooleanRatchet} from "../../src/common/boolean-ratchet";
-import {PromiseRatchet} from '../../src/common/promise-ratchet';
-import {BehaviorSubject} from 'rxjs';
-import {Logger} from '../../src/common/logger';
-import {RxjsRatchet} from '../../src/rxjs/rxjs-ratchet';
+import { BooleanRatchet } from '../../src/common/boolean-ratchet';
+import { PromiseRatchet } from '../../src/common/promise-ratchet';
+import { BehaviorSubject } from 'rxjs';
+import { Logger } from '../../src/common/logger';
+import { RxjsRatchet } from '../../src/rxjs/rxjs-ratchet';
 
-describe('#waitForNonNullOnSubject', function() {
+describe('#waitForNonNullOnSubject', function () {
+  this.timeout(30000);
 
-    this.timeout(30000);
-
-    /*
+  /*
     it('should resolve after 5 seconds', async()=> {
 
         const sub: BehaviorSubject<number> = new BehaviorSubject<number>(null);
@@ -23,5 +22,4 @@ describe('#waitForNonNullOnSubject', function() {
         expect(result).to.equal(5);
     });
     */
-
 });
