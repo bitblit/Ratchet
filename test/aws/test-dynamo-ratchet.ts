@@ -36,4 +36,35 @@ describe('#atomicCounter', function () {
     Logger.info('Got : %s', res);
     expect(res).to.not.be.null;
   });
+
+  xit('should run an insert / read test for slowdown', async () => {
+    const dr: DynamoRatchet = new DynamoRatchet(new AWS.DynamoDB.DocumentClient({ region: 'us-east-1' }));
+
+    Logger.setLevelByName('debug');
+    const now: number = new Date().getTime();
+    const nowSec: number = Math.floor(now / 1000);
+
+    const nums: any[] = [];
+    for (let i = 0; i < 300; i++) {
+      const toWrite: any = {
+        id: 'CW_DDB_TEST',
+        data: 'SOME DATA',
+        numData: i,
+      };
+      nums.push(toWrite);
+    }
+    Logger.info('About to start');
+    const writeProms: Promise<any>[] = nums.map((n) => dr.simplePut('some-table', n));
+    const writeOut: any[] = await Promise.all(writeProms);
+    Logger.info('Write : %j', writeOut);
+
+    const readProms: Promise<any>[] = [];
+    Logger.info('Start : %d', new Date().getTime());
+    for (let i = 0; i < 10000; i++) {
+      readProms.push(dr.simpleGet('some-table', { id: 'CW_DDB_TEST' }));
+    }
+    Logger.info('Mid : %d', new Date().getTime());
+    const readOut: any[] = await Promise.all(readProms);
+    Logger.info('Read : %d : %j', new Date().getTime(), readOut);
+  });
 });

@@ -341,25 +341,64 @@ export class DynamoRatchet {
     return rval;
   }
 
-  public async simplePut(tableName: string, value: any): Promise<PutItemOutput> {
+  public async simplePut(tableName: string, value: any, autoRetryCount: number = 3): Promise<PutItemOutput> {
+    let rval: PutItemOutput = null;
+    let currentTry: number = 0;
+
     const params: PutItemInput = {
       Item: value,
       ReturnConsumedCapacity: 'TOTAL',
       TableName: tableName,
     };
 
-    const res: PromiseResult<PutItemOutput, AWSError> = await this.awsDDB.put(params).promise();
-    return res;
+    while (!rval && currentTry < autoRetryCount) {
+      try {
+        rval = await this.awsDDB.put(params).promise();
+      } catch (err) {
+        if (!!err && !!err.code && err.code === 'ProvisionedThroughputExceededException') {
+          const wait: number = Math.pow(2, currentTry) * 1000;
+          Logger.debug('Exceeded write throughput for %j : Try %d of %d (Waiting %d ms)', params, currentTry, autoRetryCount, wait);
+          await PromiseRatchet.wait(wait);
+          currentTry++;
+        } else {
+          throw err; // We only catch throughput issues
+        }
+      }
+    }
+    if (!rval) {
+      Logger.warn('Unable to write %j to DDB after %d tries, giving up', params, autoRetryCount);
+    }
+    return rval;
   }
 
-  public async simpleGet<T>(tableName: string, keys: any): Promise<T> {
+  public async simpleGet<T>(tableName: string, keys: any, autoRetryCount: number = 3): Promise<T> {
+    let holder: GetItemOutput = null;
+    let currentTry: number = 0;
+
     const params: GetItemInput = {
       TableName: tableName,
       Key: keys,
     };
 
-    const holder: PromiseResult<GetItemOutput, AWSError> = await this.awsDDB.get(params).promise();
-    return !!holder && !!holder.Item ? Object.assign({} as T, holder.Item) : null;
+    while (!holder && currentTry < autoRetryCount) {
+      try {
+        holder = await this.awsDDB.get(params).promise();
+      } catch (err) {
+        if (!!err && !!err.code && err.code === 'ProvisionedThroughputExceededException') {
+          const wait: number = Math.pow(2, currentTry) * 1000;
+          Logger.debug('Exceeded read throughput for %j : Try %d of %d (Waiting %d ms)', params, currentTry, autoRetryCount, wait);
+          await PromiseRatchet.wait(wait);
+          currentTry++;
+        } else {
+          throw err; // We only catch throughput issues
+        }
+      }
+    }
+    if (!holder) {
+      Logger.warn('Unable to read %j from DDB after %d tries, giving up', params, autoRetryCount);
+    }
+    const rval: T = !!holder && !!holder.Item ? Object.assign({} as T, holder.Item) : null;
+    return rval;
   }
 
   public async simpleDelete(tableName: string, keys: any): Promise<DeleteItemOutput> {
