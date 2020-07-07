@@ -51,7 +51,7 @@ export class GeolocationRatchet {
     }
   }
 
-  public static distanceBetweenRatchetGeoLocations(loc1: RatchetGeoLocation, loc2: RatchetGeoLocation, unit = 'M') {
+  public static distanceBetweenRatchetGeoLocations(loc1: RatchetGeoLocation, loc2: RatchetGeoLocation, unit: string = 'M'): number {
     return GeolocationRatchet.distanceBetweenLocations(loc1.lat, loc1.lng, loc2.lat, loc2.lng, unit);
   }
 

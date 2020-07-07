@@ -11,7 +11,6 @@ import {
   DescribeLogStreamsResponse,
   GetQueryResultsResponse,
   LogGroup,
-  LogRecord,
   LogStream,
   StartQueryRequest,
   StartQueryResponse,
@@ -86,7 +85,7 @@ export class CloudWatchLogsRatchet {
       let retry = 0;
       while (!removed && retry < CloudWatchLogsRatchet.MAX_DELETE_RETRIES) {
         try {
-          const result: any = await this.cwLogs.deleteLogStream(delParams).promise();
+          await this.cwLogs.deleteLogStream(delParams).promise();
           removed = true;
           await PromiseRatchet.wait(waitPer);
         } catch (err) {
@@ -177,7 +176,7 @@ export class CloudWatchLogsRatchet {
         const req: DeleteLogGroupRequest = {
           logGroupName: groups[i].logGroupName,
         };
-        const r: any = await this.cwLogs.deleteLogGroup(req).promise();
+        await this.cwLogs.deleteLogGroup(req).promise();
         rval.push(true);
       } catch (err) {
         Logger.error('Failure to delete %j : %s', groups[i], err);

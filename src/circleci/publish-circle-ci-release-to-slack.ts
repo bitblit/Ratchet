@@ -64,7 +64,7 @@ Logger.info('Running PublishCircleCiReleaseToSlack from command line arguments')
 const hook: string = PublishCircleCiReleaseToSlack.extractHookUrl();
 if (!!hook) {
   PublishCircleCiReleaseToSlack.process(hook).then((res) => {
-    Logger.info('Sent message to slack');
+    Logger.info('Sent message to slack : %s', res);
   });
 } else {
   console.log('Usage : node publish-circle-ci-release-to-slack {hookUrl} ...');

@@ -9,7 +9,11 @@ export class StopWatch {
   private starts: Map<string, number> = new Map<string, number>();
   private ends: Map<string, number> = new Map<string, number>();
 
-  constructor() {}
+  constructor(autoStartDefault: boolean = false) {
+    if (autoStartDefault) {
+      this.start();
+    }
+  }
 
   public start(name: string = StopWatch.DEFAULT_TIMER_NAME): number {
     const now: number = new Date().getTime();

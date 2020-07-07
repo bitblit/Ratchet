@@ -70,6 +70,7 @@ export class RuntimeParameterRatchet {
     return all;
   }
 
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   public async storeParameter(groupId: string, paramKey: string, paramValue: any, ttlSeconds: number): Promise<StoredRuntimeParameter> {
     const toStore: StoredRuntimeParameter = {
       groupId: groupId,

@@ -14,6 +14,7 @@ export class NetworkRatchet {
       return Promise.resolve(NetworkRatchet.LOCAL_IP);
     } else {
       if (typeof window !== 'undefined') {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         return new Promise<string>(function (resolve, reject) {
           try {
             // NOTE: window.RTCPeerConnection is "not a constructor" in FF22/23
@@ -22,7 +23,7 @@ export class NetworkRatchet {
             if (RTCPeerConnection) {
               const rtc = new RTCPeerConnection({ iceServers: [] });
 
-              const addrs = Object.create(null);
+              const addrs: any = Object.create(null);
               addrs['0.0.0.0'] = false;
 
               if (1 || window['mozRTCPeerConnection']) {
@@ -89,7 +90,8 @@ export class NetworkRatchet {
   }
 
   private static grepSDP(sdp, addrs, resolve): void {
-    const hosts = [];
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const hosts: any = [];
     sdp.split('\r\n').forEach(function (line) {
       // c.f. http://tools.ietf.org/html/rfc4566#page-39
       if (~line.indexOf('a=candidate')) {

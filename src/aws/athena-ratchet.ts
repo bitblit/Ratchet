@@ -42,7 +42,7 @@ export class AthenaRatchet {
     return rval;
   }
 
-  public static applyParamsToQuery(query: string, queryParams: any): string {
+  public static applyParamsToQuery<T>(query: string, queryParams: T): string {
     let rval: string = query;
     if (!!rval && !!queryParams) {
       Object.keys(queryParams).forEach((k) => {
@@ -138,7 +138,7 @@ export class AthenaRatchet {
 
     readStream.pipe(fileStream);
     const rval: string = await PromiseRatchet.resolveOnEvent<string>(readStream, ['finish', 'close'], ['error'], targetDataFile);
-
+    Logger.silly('Response: %s', rval);
     return targetDataFile;
   }
 

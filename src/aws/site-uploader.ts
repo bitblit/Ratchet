@@ -1,15 +1,3 @@
-/*
-import logging
-import time
-import boto3
-import simplejson
-import sys
-import os
-import re
-import copy
-import mimetypes
-*/
-
 import * as fs from 'fs';
 import * as walk from 'walk';
 import * as AWS from 'aws-sdk';
@@ -45,6 +33,7 @@ export class SiteUploader {
     }
   }
 
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   findMatch(prefix: string, fileName: string, config: any): any {
     let found = null;
 
@@ -63,6 +52,7 @@ export class SiteUploader {
     return found;
   }
 
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   findMime(fileName: string, config: any): string {
     let found = null;
 
@@ -86,6 +76,7 @@ export class SiteUploader {
   }
 
   runPump(): Promise<any> {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     return new Promise<any>((resolve, reject) => {
       Logger.info('Uploading contents of %s to %s using %j as config', this.srcDir, this.bucketName, this.config);
       // bucket = boto3.resource("s3").Bucket(bucket)
@@ -117,7 +108,7 @@ export class SiteUploader {
             .putObject(params)
             .promise()
             .then((result) => {
-              Logger.info('Finished upload of %s', key);
+              Logger.info('Finished upload of %s: %j', key, result);
               next();
             })
             .catch((err) => {

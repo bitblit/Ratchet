@@ -34,7 +34,7 @@ export class StringRatchet {
   }
 
   // Taken from https://stackoverflow.com/questions/15900485/correct-way-to-convert-size-in-bytes-to-kb-mb-gb-in-javascript
-  public static formatBytes(bytes: number, decimals = 2) {
+  public static formatBytes(bytes: number, decimals = 2): string {
     if (bytes == 0) return '0 Bytes';
     const k = 1024,
       dm = decimals || 2,
@@ -44,6 +44,7 @@ export class StringRatchet {
   }
 
   // Converts anything that isn't a string to a string
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   public static safeString(input: any): string {
     let rval: string = null;
     if (input != null) {
@@ -104,6 +105,7 @@ export class StringRatchet {
     return rval;
   }
 
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   public static leadingZeros(inVal: any, size: number): string {
     const pad = '00000000000000000000000000000000000000000000000000';
     let negative = false;
@@ -150,6 +152,7 @@ export class StringRatchet {
     return rval;
   }
 
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   public static csvSafe(input: any): string {
     let rval: string = StringRatchet.trimToEmpty(StringRatchet.safeString(input));
     rval.split('"').join('\\"');

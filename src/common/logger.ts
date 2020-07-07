@@ -48,7 +48,7 @@ export class Logger {
     return this.RING_BUFFER_IDX;
   }
 
-  static getRingBufferLastSnapshotIdx() {
+  static getRingBufferLastSnapshotIdx(): number {
     return Logger.RING_BUFFER_LAST_SNAPSHOT_IDX;
   }
 
@@ -117,7 +117,7 @@ export class Logger {
     return idx != null && idx >= 0 && idx < Logger.LEVEL_NAMES.length ? Logger.LEVEL_NAMES[idx] : null;
   }
 
-  public static levelColor(idx: number) {
+  public static levelColor(idx: number): string {
     return idx != null && idx >= 0 && idx < Logger.LEVEL_COLORS.length ? Logger.LEVEL_COLORS[idx] : '#000';
   }
 
@@ -311,6 +311,7 @@ export class Logger {
     return Logger.INCLUDE_LEVEL_IN_MESSAGE ? '[' + Logger.levelName(lvl) + '] ' + tmp : tmp;
   }
 
+  // eslint-disable-next-line @typescript-eslint/ban-types
   private static ifConsoleLoggingEnabled(callback: Function, message: any): void {
     if (Logger.CONSOLE_LOGGING_ENABLED) {
       callback(message);

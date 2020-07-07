@@ -88,12 +88,12 @@ export class S3CacheRatchet {
   // Given new board data, write it to the S3 file and set the refresh flag appropriately
   public writeObjectToCacheFile(
     key: string,
-    dataObject: any,
+    dataObject: any, // eslint-disable-line @typescript-eslint/explicit-module-boundary-types
     bucket: string = null,
     meta: any = {},
     cacheControl = 'max-age=30',
     contentType = 'application/json'
-  ): Promise<any> {
+  ): Promise<PutObjectOutput> {
     const json = JSON.stringify(dataObject);
     return this.writeStringToCacheFile(key, json, bucket, meta, cacheControl, contentType);
   }

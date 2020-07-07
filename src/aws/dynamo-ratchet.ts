@@ -51,7 +51,7 @@ export class DynamoRatchet {
     return scanOutput.Items.length === 0;
   }
 
-  public async fullyExecuteQueryCount<T>(qry: QueryInput, delayMS = 250): Promise<DynamoCountResult> {
+  public async fullyExecuteQueryCount<T>(qry: QueryInput, delayMS = 0): Promise<DynamoCountResult> {
     try {
       qry.Select = 'COUNT'; // Force it to be a count query
       Logger.debug('Executing count query : %j', qry);
@@ -76,6 +76,7 @@ export class DynamoRatchet {
         rval.count += qryResults['Count'];
         rval.scannedCount += qryResults['ScannedCount'];
         rval.pages++;
+        await PromiseRatchet.wait(delayMS);
         Logger.silly('Rval is now %j', rval);
       }
 
@@ -89,7 +90,7 @@ export class DynamoRatchet {
     }
   }
 
-  public async fullyExecuteQuery<T>(qry: QueryInput, delayMS = 250, softLimit: number = null): Promise<T[]> {
+  public async fullyExecuteQuery<T>(qry: QueryInput, delayMS = 0, softLimit: number = null): Promise<T[]> {
     try {
       Logger.debug('Executing query : %j', qry);
       const start: number = new Date().getTime();
@@ -113,16 +114,18 @@ export class DynamoRatchet {
         Logger.silly('Rval is now %d items', rval.length);
         pages++;
         blankPages += qryResults.Count === 0 ? 1 : 0;
+        await PromiseRatchet.wait(delayMS);
       }
 
       const end: number = new Date().getTime();
 
       Logger.debug(
-        'Finished, returned %d results in %s for %j (%d blank pages)',
+        'Finished, returned %d results in %s for %j (%d blank pages, %d total pages)',
         rval.length,
         DurationRatchet.formatMsDuration(end - start, true),
         qry,
-        blankPages
+        blankPages,
+        pages
       );
       return rval;
     } catch (err) {
@@ -131,7 +134,7 @@ export class DynamoRatchet {
     }
   }
 
-  public async fullyExecuteScanCount<T>(qry: ScanInput, delayMS = 250): Promise<DynamoCountResult> {
+  public async fullyExecuteScanCount<T>(qry: ScanInput, delayMS = 0): Promise<DynamoCountResult> {
     try {
       const rval: DynamoCountResult = {
         count: 0,
@@ -156,6 +159,7 @@ export class DynamoRatchet {
         rval.count += qryResults['Count'];
         rval.scannedCount += qryResults['ScannedCount'];
         rval.pages++;
+        await PromiseRatchet.wait(delayMS);
         Logger.silly('Rval is now %j', rval);
       }
 
@@ -169,7 +173,7 @@ export class DynamoRatchet {
     }
   }
 
-  public async fullyExecuteScan<T>(qry: ScanInput, delayMS = 250, softLimit: number = null): Promise<T[]> {
+  public async fullyExecuteScan<T>(qry: ScanInput, delayMS = 0, softLimit: number = null): Promise<T[]> {
     try {
       Logger.debug('Executing scan : %j', qry);
       const start: number = new Date().getTime();
@@ -187,6 +191,7 @@ export class DynamoRatchet {
         qryResults = await this.awsDDB.scan(qry).promise();
         rval = rval.concat(qryResults.Items);
         Logger.silly('Rval is now %d items', rval.length);
+        await PromiseRatchet.wait(delayMS);
       }
 
       const end: number = new Date().getTime();
@@ -341,6 +346,7 @@ export class DynamoRatchet {
     return rval;
   }
 
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   public async simplePut(tableName: string, value: any, autoRetryCount: number = 3): Promise<PutItemOutput> {
     let rval: PutItemOutput = null;
     let currentTry: number = 0;
@@ -371,6 +377,7 @@ export class DynamoRatchet {
     return rval;
   }
 
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   public async simpleGet<T>(tableName: string, keys: any, autoRetryCount: number = 3): Promise<T> {
     let holder: GetItemOutput = null;
     let currentTry: number = 0;
@@ -401,6 +408,7 @@ export class DynamoRatchet {
     return rval;
   }
 
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   public async simpleDelete(tableName: string, keys: any): Promise<DeleteItemOutput> {
     const params: DeleteItemInput = {
       TableName: tableName,
@@ -411,6 +419,7 @@ export class DynamoRatchet {
     return holder;
   }
 
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   public async atomicCounter(tableName: string, keys: any, counterFieldName: string, increment = 1): Promise<number> {
     const update: UpdateItemInput = {
       TableName: tableName,
@@ -432,7 +441,8 @@ export class DynamoRatchet {
   }
 
   // Recursively Removes any empty strings in place
-  public static cleanObject(ob: any) {
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+  public static cleanObject(ob: any): void {
     if (!!ob) {
       const rem: string[] = [];
       Object.keys(ob).forEach((k) => {

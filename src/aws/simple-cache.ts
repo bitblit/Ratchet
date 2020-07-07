@@ -9,6 +9,7 @@
 import { S3CacheRatchet } from './s3-cache-ratchet';
 import { CacheObjectProducer } from './model/cache-object-producer';
 import { Logger } from '../common/logger';
+import { DeleteObjectOutput } from 'aws-sdk/clients/s3';
 
 export class SimpleCache<T, R> {
   constructor(private s3CacheRatchet: S3CacheRatchet, private cacheObjectProducer: CacheObjectProducer<T, R>) {}
@@ -44,7 +45,8 @@ export class SimpleCache<T, R> {
     try {
       const path: string = this.cacheObjectProducer.keyToPath(key);
       Logger.info('Clearing cache object for %j at %s', key, path);
-      const del: any = this.s3CacheRatchet.removeCacheFile(path);
+      const del: DeleteObjectOutput = await this.s3CacheRatchet.removeCacheFile(path);
+      Logger.debug('Delete returned %j', del);
       return true;
     } catch (err) {
       Logger.warn('Failed to delete cache file : %s', err, err);

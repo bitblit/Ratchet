@@ -5,12 +5,14 @@
 import { ErrorRatchet } from './error-ratchet';
 
 export class RequireRatchet {
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   public static notNullOrUndefined(ob: any, name = 'object'): void {
     if (ob === null || ob === undefined) {
       throw new Error(name + ' may not be null or undefined');
     }
   }
 
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   public static equal(ob1: any, ob2: any, message = 'Values must be equal'): void {
     if (ob1 !== ob2) {
       throw new Error(message);

@@ -17,6 +17,7 @@ export class PromiseRatchet {
    * @param errEventNames Names of error events
    * @param rval Return value, if any
    */
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   public static resolveOnEvent<T>(evtSrc: any, okEvtNames: string[], errEvtNames: string[] = [], rval: T = null): Promise<T> {
     if (!evtSrc || !okEvtNames || okEvtNames.length === 0 || !evtSrc['on']) {
       Promise.reject('Cannot continue - missing source object or name, or the object is not an event source');
@@ -45,6 +46,7 @@ export class PromiseRatchet {
 
   public static createTimeoutPromise(title: string, timeoutMS: number): Promise<TimeoutToken> {
     // Create a promise that rejects in <timeoutMS> milliseconds
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     return new Promise<TimeoutToken>((resolve, reject) => {
       const id = setTimeout(() => {
         clearTimeout(id);
@@ -60,7 +62,8 @@ export class PromiseRatchet {
     Logger.silly('Finished wait of %d ms', time);
   }
 
-  public static dumpResult(result, autoDebug = false): void {
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+  public static dumpResult(result: any, autoDebug = false): void {
     Logger.info('Success, result was : \n\n%s\n\n', JSON.stringify(result));
     if (autoDebug) {
       debugger; // After log so we already have the output
@@ -68,7 +71,8 @@ export class PromiseRatchet {
     process.exit(0);
   }
 
-  public static dumpError(err, autoDebug = false): void {
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+  public static dumpError(err: any, autoDebug = false): void {
     Logger.warn('Failure, err was : \n\n%s\n\n  --  \n\n%s\n\n', JSON.stringify(err), String(err));
     console.trace();
     if (autoDebug) {
@@ -77,7 +81,8 @@ export class PromiseRatchet {
     process.exit(1);
   }
 
-  public static logErrorAndReturnNull(err, autoDebug = false): void {
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+  public static logErrorAndReturnNull(err: any, autoDebug = false): void {
     Logger.warn('Failure, err was : \n\n%s\n\n  --  \n\n%s\n\n', JSON.stringify(err), String(err));
     if (autoDebug) {
       debugger; // After log so we already have the output
@@ -95,7 +100,7 @@ export class PromiseRatchet {
   // it is used as the "breakout" poison pill value
   public static async waitFor(
     testFunction: (n: number) => any,
-    expectedValue: any,
+    expectedValue: any, // eslint-disable-line @typescript-eslint/explicit-module-boundary-types
     intervalMS: number,
     maxCycles: number,
     label = 'waitFor',
@@ -141,9 +146,9 @@ export class PromiseRatchet {
   }
 
   public static async runBoundedParallel<T>(
-    promiseFn: Function,
+    promiseFn: Function, // eslint-disable-line @typescript-eslint/ban-types
     params: any[][],
-    context: any,
+    context: any, // eslint-disable-line @typescript-eslint/explicit-module-boundary-types
     maxConcurrent = 1,
     logLevel = 'debug'
   ): Promise<T[]> {
@@ -173,9 +178,9 @@ export class PromiseRatchet {
   }
 
   public static async runBoundedParallelSingleParam<T>(
-    promiseFn: Function,
+    promiseFn: Function, // eslint-disable-line @typescript-eslint/ban-types
     params: any[],
-    context: any,
+    context: any, // eslint-disable-line @typescript-eslint/explicit-module-boundary-types
     maxConcurrent = 1,
     logLevel = 'debug'
   ): Promise<T[]> {
@@ -183,12 +188,14 @@ export class PromiseRatchet {
     return PromiseRatchet.runBoundedParallel<T>(promiseFn, wrappedParams, context, maxConcurrent, logLevel);
   }
 
+  // eslint-disable-next-line @typescript-eslint/ban-types
   public static async asyncForEachSerial(array: any[], callback: Function): Promise<void> {
     for (let index = 0; index < array.length; index++) {
       await callback(array[index], index, array);
     }
   }
 
+  // eslint-disable-next-line @typescript-eslint/ban-types
   public static async asyncForEachParallel(array: any[], callback: Function): Promise<void> {
     const proms: Promise<any>[] = [];
 
@@ -198,5 +205,7 @@ export class PromiseRatchet {
     await Promise.all(proms);
   }
 
-  private constructor() {}
+  private constructor() {
+    // Blocked for instantiation
+  }
 }

@@ -11,6 +11,7 @@ import { RequireRatchet } from './require-ratchet';
 export class NumberRatchet {
   private static MAX_LEADING_ZEROS_FORMAT_LENGTH = 1000; // Because really, why?
 
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   public static leadingZeros(val: any, size: number): string {
     const sVal = String(val);
     if (sVal.length < size) {
@@ -28,7 +29,7 @@ export class NumberRatchet {
     }
   }
 
-  public static between(inTest: number, inP1: number, inP2: number) {
+  public static between(inTest: number, inP1: number, inP2: number): boolean {
     const test: number = NumberRatchet.safeNumber(inTest);
     const p1: number = NumberRatchet.safeNumber(inP1);
     const p2: number = NumberRatchet.safeNumber(inP2);
@@ -37,6 +38,7 @@ export class NumberRatchet {
   }
 
   // If its a number, leave it alone, if its a string, parse it, anything else, use the default
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   public static safeNumber(input: any, ifNotNumber: number = null): number {
     let rval: number = null;
     if (input != null) {

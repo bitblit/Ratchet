@@ -69,6 +69,7 @@ export class EnvironmentService {
         parsedValue = await ratchet.readCacheFileToObject<any>(path);
       } catch (err) {
         const errCode: string = err.code || '';
+        await PromiseRatchet.wait(backoffMultiplierMS * tryCount);
         // TODO: Recoverable errors would go here
         Logger.error('Final environment fetch error (code: %s) (cannot retry) : %s', errCode, err, err);
         throw err;

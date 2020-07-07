@@ -5,6 +5,7 @@
 import { Logger } from './logger';
 
 export class Base64Ratchet {
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   public static safeObjectToBase64JSON(input: any): any {
     return !!input ? Base64Ratchet.generateBase64VersionOfString(JSON.stringify(input)) : null;
   }
