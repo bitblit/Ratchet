@@ -146,6 +146,36 @@ export class GeolocationRatchet {
     return rval;
   }
 
+  // Puts a bounds into canonical form (upper left, lower right)
+  // If a crossover occurs  (on both sides of date line) will throw an exception unless allow specified
+  public static canonicalizeBounds(inp: RatchetLocationBounds, allowCrossover: boolean = false): RatchetLocationBounds {
+    RequireRatchet.notNullOrUndefined(inp, 'RatchetLocationBounds');
+    const minLat: number = Math.min(inp.extent.lat, inp.origin.lat);
+    const maxLat: number = Math.max(inp.extent.lat, inp.origin.lat);
+    const minLng: number = Math.min(inp.extent.lng, inp.origin.lng);
+    const maxLng: number = Math.max(inp.extent.lng, inp.origin.lng);
+    const latXover: boolean = (minLat < 0 && maxLat > 0) || (minLat > 0 && maxLat < 0);
+    const lngXover: boolean = (minLat < 0 && maxLat > 0) || (minLat > 0 && maxLat < 0);
+    if (latXover || lngXover) {
+      if (allowCrossover) {
+        return inp;
+      } else {
+        throw new Error('Cannot canonicalize, bounds crosses over boundary');
+      }
+    }
+    const rval: RatchetLocationBounds = {
+      origin: {
+        lat: minLat,
+        lng: minLng,
+      },
+      extent: {
+        lat: maxLat,
+        lng: maxLng,
+      },
+    };
+    return rval;
+  }
+
   public static combineBounds(inp: RatchetLocationBounds[]): RatchetLocationBounds {
     const rval: RatchetLocationBounds = {
       origin: {
