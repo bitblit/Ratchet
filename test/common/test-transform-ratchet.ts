@@ -15,7 +15,10 @@ describe('#formatBytes', function () {
     subKey: {
       key1: 'subValue1',
       key2: 'subValue2',
+      convertToNumberInner: '42',
     },
+    convertToNumber: '1',
+    convertToNumberAlso: '20',
   };
 
   const srcUnderData = {
@@ -120,5 +123,12 @@ describe('#formatBytes', function () {
     expect(result.newKey1).to.not.be.undefined;
     expect(result.subKey).to.not.be.undefined;
     expect(result.subKey.newKey2).to.not.be.undefined;
+  });
+
+  it('should convert strings to numbers', function () {
+    const result = TransformRatchet.transform(srcData, [BuiltInTransforms.valuesOnly(BuiltInTransforms.stringToNumber())]);
+    expect(result['convertToNumber']).to.eq(1);
+    expect(result['convertToNumberAlso']).to.eq(20);
+    expect(result['subKey']['convertToNumberInner']).to.eq(42);
   });
 });
