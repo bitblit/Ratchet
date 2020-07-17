@@ -7,6 +7,8 @@ import { Logger } from '../common/logger';
 import { PromiseResult } from 'aws-sdk/lib/request';
 import { DurationRatchet } from '../common/duration-ratchet';
 import {
+  BatchGetItemInput,
+  BatchGetItemOutput,
   BatchWriteItemOutput,
   DeleteItemInput,
   DeleteItemOutput,
@@ -29,6 +31,9 @@ import { DynamoCountResult } from './model/dynamo-count-result';
 import { PromiseRatchet } from '../common/promise-ratchet';
 import { Object } from 'aws-sdk/clients/s3';
 import { NumberRatchet } from '../common/number-ratchet';
+import { ErrorRatchet } from '../common/error-ratchet';
+import { expect } from 'chai';
+import { RequireRatchet } from '../common/require-ratchet';
 
 export class DynamoRatchet {
   constructor(private awsDDB: AWS.DynamoDB.DocumentClient) {
@@ -274,6 +279,64 @@ export class DynamoRatchet {
     return rval;
   }
 
+  public async fetchFullObjectsMatchingKeysOnlyIndexQuery<T>(qry: QueryInput, keyNames: string[], batchSize: number = 25): Promise<T[]> {
+    RequireRatchet.notNullOrUndefined(qry);
+    RequireRatchet.notNullOrUndefined(qry.TableName);
+    RequireRatchet.notNullOrUndefined(keyNames);
+    RequireRatchet.true(keyNames.length > 0);
+
+    const keyDataSrc: any[] = await this.fullyExecuteQuery<any>(qry);
+    const keysOnly: any[] = DynamoRatchet.stripAllToKeysOnly(keyDataSrc, keyNames);
+    const rval: T[] = await this.fetchAllInBatches<T>(qry.TableName, keysOnly, batchSize);
+    return rval;
+  }
+
+  public async fetchAllInBatches<T>(tableName: string, inKeys: any[][], batchSize: number): Promise<T[]> {
+    if (!batchSize || batchSize < 2 || batchSize > 100) {
+      throw new Error('Batch size needs to be at least 2 and no more than 100, was ' + batchSize);
+    }
+
+    let rval: T[] = [];
+    const batches: BatchGetItemInput[] = [];
+    let remain: any[][] = Object.assign([], inKeys);
+    while (remain.length > 0) {
+      const curBatch: any[] = remain.slice(0, Math.min(remain.length, batchSize));
+      remain = remain.slice(curBatch.length);
+      const tableEntry: any = {};
+      tableEntry[tableName] = {
+        Keys: curBatch,
+      };
+      const nextBatch: BatchGetItemInput = {
+        RequestItems: tableEntry,
+        ReturnConsumedCapacity: 'TOTAL',
+      };
+      batches.push(nextBatch);
+    }
+    Logger.debug('Created %d batches', batches.length);
+
+    for (let i = 0; i < batches.length; i++) {
+      Logger.info('Processing batch %d of %d', i, batches.length);
+      const input: BatchGetItemInput = batches[i];
+      let tryCount: number = 1;
+      do {
+        Logger.silly('Pulling %j', input);
+        const res: BatchGetItemOutput = await this.awsDDB.batchGet(input).promise();
+
+        // Copy in all the data
+        rval = rval.concat((res.Responses[tableName] as unknown) as T[]);
+
+        // Retry anything we missed
+        if (!!res.UnprocessedKeys && !!res.UnprocessedKeys[tableName] && res.UnprocessedKeys[tableName].Keys.length > 0 && tryCount < 15) {
+          Logger.silly('Found %d unprocessed, waiting', res.UnprocessedKeys[tableName].Keys);
+          await PromiseRatchet.wait(Math.pow(2, tryCount) * 1000);
+          tryCount++;
+        }
+        input.RequestItems = res.UnprocessedKeys;
+      } while (!input.RequestItems && input.RequestItems[tableName].Keys.length > 0);
+    }
+    return rval;
+  }
+
   public async deleteAllInBatches(tableName: string, keys: any[], batchSize: number): Promise<number> {
     if (!batchSize || batchSize < 2) {
       throw new Error('Batch size needs to be at least 2, was ' + batchSize);
@@ -458,5 +521,25 @@ export class DynamoRatchet {
         delete ob[k];
       });
     }
+  }
+
+  // Given an object, deletes anything that isnt part of the key
+  public static stripToKeysOnly(input: any, keys: string[]): any {
+    let rval: any = null;
+    if (!!input && !!keys && keys.length > 0) {
+      rval = {};
+      keys.forEach((k) => {
+        if (!input[k]) {
+          ErrorRatchet.throwFormattedErr('Failed key extraction on %j - missing %s', input, k);
+        }
+        rval[k] = input[k];
+      });
+    }
+    return rval;
+  }
+
+  public static stripAllToKeysOnly(input: any[], keys: string[]): any[] {
+    const rval: any[] = input.map((i) => DynamoRatchet.stripToKeysOnly(i, keys));
+    return rval;
   }
 }

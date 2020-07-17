@@ -3,10 +3,30 @@ import * as AWS from 'aws-sdk';
 import { DynamoRatchet } from '../../src/aws/dynamo-ratchet';
 import { Logger } from '../../src/common/logger';
 import { ExpressionAttributeValueMap, QueryInput } from 'aws-sdk/clients/dynamodb';
-import * as util from 'util';
 
 describe('#atomicCounter', function () {
   this.timeout(300000);
+
+  xit('should fetch items from a key-only index query', async () => {
+    const dr: DynamoRatchet = new DynamoRatchet(new AWS.DynamoDB.DocumentClient({ region: 'us-east-1' }));
+    const tableName: string = 'some-table';
+    const limit: number = 200;
+
+    const qry: QueryInput = {
+      TableName: tableName,
+      IndexName: 'purchaseId-notBeforeEpochMS-index',
+      KeyConditionExpression: 'purchaseId = :purchaseId',
+      Limit: limit,
+      ExpressionAttributeValues: {
+        ':purchaseId': 'some-purchase',
+      } as ExpressionAttributeValueMap,
+    };
+
+    const res: any[] = await dr.fetchFullObjectsMatchingKeysOnlyIndexQuery(qry, ['key1', 'key2']);
+
+    Logger.info('Got : %s', res);
+    expect(res).to.not.be.null;
+  });
 
   xit('should increment the counter and return the new value', async () => {
     const dr: DynamoRatchet = new DynamoRatchet(new AWS.DynamoDB.DocumentClient({ region: 'us-east-1' }));
