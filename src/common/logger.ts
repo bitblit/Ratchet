@@ -1,7 +1,6 @@
 import * as util from 'util';
 import { LogMessage } from './log-message';
 import { LogSnapshot } from './log-snapshot';
-import moment = require('moment');
 
 /**
  * Service to setup winston, and also adds ring buffer capability if so desired.
@@ -267,7 +266,7 @@ export class Logger {
         if (m.msg) {
           let mOut: string = prefix;
           if (addTimestamp) {
-            const ts: string = moment(m.timestamp).format('hh:mm:ss');
+            const ts: string = String(new Date()).substring(15, 24);
             mOut += ' (' + ts + ') : ';
             mOut += m.msg;
           }
