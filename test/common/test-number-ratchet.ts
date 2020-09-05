@@ -2,6 +2,18 @@ import { expect } from 'chai';
 import { NumberRatchet, Point2d, SinglesAndRanges } from '../../src/common/number-ratchet';
 import * as fs from 'fs';
 
+describe('#toFixedDecimalNumber', function () {
+  it('should convert "5.1234 to 5.12', function () {
+    expect(NumberRatchet.toFixedDecimalNumber(5.1234, 2)).to.eq(5.12);
+    expect(NumberRatchet.toFixedDecimalNumber('5.1234', 2)).to.eq(5.12);
+  });
+
+  it('should convert "5.5678 to 5.57', function () {
+    expect(NumberRatchet.toFixedDecimalNumber(5.5678, 2)).to.eq(5.57);
+    expect(NumberRatchet.toFixedDecimalNumber('5.5678', 2)).to.eq(5.57);
+  });
+});
+
 describe('#leadingZeros', function () {
   it('should convert "5" to 05', function () {
     const result: string = NumberRatchet.leadingZeros('5', 2);

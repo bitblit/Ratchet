@@ -11,6 +11,11 @@ import { RequireRatchet } from './require-ratchet';
 export class NumberRatchet {
   private static MAX_LEADING_ZEROS_FORMAT_LENGTH = 1000; // Because really, why?
 
+  public static toFixedDecimalNumber(input: number | string, placesAfterPoint: number): number {
+    const v: number = NumberRatchet.safeNumber(input);
+    return NumberRatchet.safeNumber(v.toFixed(placesAfterPoint));
+  }
+
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   public static leadingZeros(val: any, size: number): string {
     const sVal = String(val);
