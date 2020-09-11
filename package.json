@@ -55,7 +55,8 @@
     "yargs": "16.0.3"
   },
   "resolutions": {
-    "lodash": "4.17.20"
+    "lodash": "4.17.20",
+    "node-fetch": "2.6.1"
   },
   "devDependencies": {
     "@types/aws-lambda": "8.10.62",
