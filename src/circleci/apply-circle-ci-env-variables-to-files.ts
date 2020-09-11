@@ -1,6 +1,7 @@
 import * as fs from 'fs';
 import * as moment from 'moment-timezone';
 import { Logger } from '../common/logger';
+import { CliRatchet } from '../common/cli-ratchet';
 
 export class ApplyCircleCiEnvVariablesToFiles {
   public static async process(
@@ -70,16 +71,18 @@ export class ApplyCircleCiEnvVariablesToFiles {
   }
 }
 
-/**
- And, in case you are running this command line...
- TODO: should use switches to allow setting the various non-filename params
- **/
-Logger.info('Running ApplyCircleCiEnvVariablesToFiles from command line arguments');
-const filenames: string[] = ApplyCircleCiEnvVariablesToFiles.extractFileNames();
-if (filenames.length > 0) {
-  ApplyCircleCiEnvVariablesToFiles.process(filenames).then((res) => {
-    Logger.info('Processed %d files of %d', res, filenames.length);
-  });
-} else {
-  console.log('Usage : node apply-circle-ci-env-variables-to-files {file1} {file2} ...');
+if (CliRatchet.isCalledFromCLI('apply-circle-ci-env-variables-to-files')) {
+  /**
+   And, in case you are running this command line...
+  TODO: should use switches to allow setting the various non-filename params
+  **/
+  Logger.info('Running ApplyCircleCiEnvVariablesToFiles from command line arguments');
+  const filenames: string[] = ApplyCircleCiEnvVariablesToFiles.extractFileNames();
+  if (filenames.length > 0) {
+    ApplyCircleCiEnvVariablesToFiles.process(filenames).then((res) => {
+      Logger.info('Processed %d files of %d', res, filenames.length);
+    });
+  } else {
+    console.log('Usage : node apply-circle-ci-env-variables-to-files {file1} {file2} ...');
+  }
 }

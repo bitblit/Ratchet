@@ -3,6 +3,7 @@ import { Logger } from '../common/logger';
 import * as fetch from 'portable-fetch';
 import * as util from 'util';
 import { GitCommitData, GitRatchet } from '../common/git-ratchet';
+import { CliRatchet } from '../common/cli-ratchet';
 
 export class PublishCircleCiReleaseToSlack {
   public static async process(slackHookUrl: string, timezone = 'America/Los_Angeles'): Promise<string> {
@@ -56,16 +57,18 @@ export class PublishCircleCiReleaseToSlack {
   }
 }
 
-/**
- And, in case you are running this command line...
- TODO: should use switches to allow setting the various non-filename params
- **/
-Logger.info('Running PublishCircleCiReleaseToSlack from command line arguments');
-const hook: string = PublishCircleCiReleaseToSlack.extractHookUrl();
-if (!!hook) {
-  PublishCircleCiReleaseToSlack.process(hook).then((res) => {
-    Logger.info('Sent message to slack : %s', res);
-  });
-} else {
-  console.log('Usage : node publish-circle-ci-release-to-slack {hookUrl} ...');
+if (CliRatchet.isCalledFromCLI('publish-circle-ci-release-to-slack')) {
+  /**
+   And, in case you are running this command line...
+  TODO: should use switches to allow setting the various non-filename params
+  **/
+  Logger.info('Running PublishCircleCiReleaseToSlack from command line arguments');
+  const hook: string = PublishCircleCiReleaseToSlack.extractHookUrl();
+  if (!!hook) {
+    PublishCircleCiReleaseToSlack.process(hook).then((res) => {
+      Logger.info('Sent message to slack : %s', res);
+    });
+  } else {
+    console.log('Usage : node publish-circle-ci-release-to-slack {hookUrl} ...');
+  }
 }
