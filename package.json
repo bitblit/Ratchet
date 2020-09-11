@@ -52,7 +52,7 @@
     "moment": "2.27.0",
     "moment-timezone": "0.5.31",
     "ts-enum-util": "4.0.2",
-    "yargs": "16.0.3"
+    "yargs": "15.4.1"
   },
   "resolutions": {
     "lodash": "^4.17.20",
