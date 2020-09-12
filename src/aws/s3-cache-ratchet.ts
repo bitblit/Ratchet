@@ -5,7 +5,15 @@
 import * as AWS from 'aws-sdk';
 import { Logger } from '../common/logger';
 import moment = require('moment');
-import { DeleteObjectOutput, HeadObjectOutput, ListObjectsOutput, PutObjectOutput } from 'aws-sdk/clients/s3';
+import {
+  CopyObjectOutput,
+  CopyObjectRequest,
+  CopyObjectResult,
+  DeleteObjectOutput,
+  HeadObjectOutput,
+  ListObjectsOutput,
+  PutObjectOutput,
+} from 'aws-sdk/clients/s3';
 
 export class S3CacheRatchet {
   constructor(private s3: AWS.S3, private defaultBucket: string = null) {
@@ -167,6 +175,28 @@ export class S3CacheRatchet {
         throw err;
       }
     }
+  }
+
+  public async copyFile(srcKey: string, dstKey: string, srcBucket: string = null, dstBucket: string = null): Promise<CopyObjectOutput> {
+    const params: CopyObjectRequest = {
+      CopySource: '/' + this.bucketVal(srcBucket) + '/' + srcKey,
+      Bucket: this.bucketVal(dstBucket),
+      Key: dstKey,
+      MetadataDirective: 'COPY',
+    };
+    const rval: CopyObjectOutput = await this.s3.copyObject(params).promise();
+    return rval;
+  }
+
+  public async quietCopyFile(srcKey: string, dstKey: string, srcBucket: string = null, dstBucket: string = null): Promise<boolean> {
+    let rval: boolean = false;
+    try {
+      const tmp: CopyObjectOutput = await this.copyFile(srcKey, dstKey, srcBucket, dstBucket);
+      rval = true;
+    } catch (err) {
+      Logger.silly('Failed to copy file in S3 : %s', err);
+    }
+    return rval;
   }
 
   public createDownloadLink(key: string, secondsUntilExpiration = 3600, bucket: string = null): string {
