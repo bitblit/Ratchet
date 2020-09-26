@@ -112,7 +112,7 @@ export class AlbAthenaLogRatchet {
         qrySt += " AND date_utc_partition <='" + new Date(qry.endTimeEpochMS).toISOString().substring(0, 10) + "'";
       }
       if (qry.requestUrlFilter) {
-        qrySt += ' AND request_url LIKE "' + qry.requestUrlFilter + '"';
+        qrySt += " AND request_url LIKE '" + qry.requestUrlFilter + "'";
       }
       if (qry.limit) {
         qrySt += ' LIMIT ' + qry.limit;
