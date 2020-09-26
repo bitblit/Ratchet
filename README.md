@@ -208,3 +208,5 @@ Pull requests are welcome, although I'm not sure why you'd be interested!
 - 0.7.x : Breaking change to Mailer (switch to config object, add allowedDestinationEmails handling). Removed Gulp for security reasons.
 - 0.8.x : Updated to require Node 12.x. Switched to eslint. Adding cloudwatch insights helpers
 - 0.9.x : Adding CLI Ratchet, updating dependant libraries for security holes
+
+* Added CSVRatchet and AlbAthenaLogRatchet

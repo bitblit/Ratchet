@@ -1,4 +1,6 @@
 import { Logger } from '../common/logger';
+import { StringRatchet } from '../common/string-ratchet';
+import { RequireRatchet } from '../common/require-ratchet';
 
 export class S3Ratchet {
   // Here because the native AWS SDK doesn't support promises for this operation as of 2019-04-21
@@ -15,5 +17,28 @@ export class S3Ratchet {
         res(result);
       });
     });
+  }
+
+  // Returns whether the URL passed is s3 valid (not whether it exists or not)
+  public static checkS3UrlForValidity(value: string): boolean {
+    let rval: boolean = false;
+    if (value) {
+      rval = value.startsWith('s3://') && value.trim().length > 5;
+    }
+    return rval;
+  }
+
+  public static extractBucketFromURL(value: string): string {
+    RequireRatchet.true(S3Ratchet.checkS3UrlForValidity(value), 'invalid s3 url');
+    const idx1: number = value.indexOf('/', 5);
+    const rval: string = idx1 > 0 ? value.substring(5, idx1) : value.substring(5);
+    return rval;
+  }
+
+  public static extractKeyFromURL(value: string): string {
+    RequireRatchet.true(S3Ratchet.checkS3UrlForValidity(value), 'invalid s3 url');
+    const idx1: number = value.indexOf('/', 5);
+    const rval: string = idx1 > 0 ? value.substring(idx1 + 1) : null;
+    return rval;
   }
 }

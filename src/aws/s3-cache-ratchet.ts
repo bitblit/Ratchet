@@ -8,20 +8,21 @@ import moment = require('moment');
 import {
   CopyObjectOutput,
   CopyObjectRequest,
-  CopyObjectResult,
   DeleteObjectOutput,
+  GetObjectOutput,
   HeadObjectOutput,
   ListObjectsOutput,
+  ListObjectsV2Output,
+  ListObjectsV2Request,
   PutObjectOutput,
+  PutObjectRequest,
 } from 'aws-sdk/clients/s3';
+import { RequireRatchet } from '../common/require-ratchet';
+import { ReadStream } from 'fs';
 
 export class S3CacheRatchet {
   constructor(private s3: AWS.S3, private defaultBucket: string = null) {
-    if (!s3) {
-      throw 'S3 may not be null';
-    }
-    this.s3 = s3;
-    this.defaultBucket = defaultBucket;
+    RequireRatchet.notNullOrUndefined(this.s3, 's3');
   }
 
   public getDefaultBucket(): string {
@@ -42,31 +43,28 @@ export class S3CacheRatchet {
     }
   }
 
-  public readCacheFileToString(key: string, bucket: string = null): Promise<string> {
+  public async readCacheFileToString(key: string, bucket: string = null): Promise<string> {
     const params = {
       Bucket: this.bucketVal(bucket),
       Key: key,
     };
 
-    return this.s3
-      .getObject(params)
-      .promise()
-      .then((res) => {
-        if (res && res.Body) {
-          return res.Body.toString();
-        } else {
-          Logger.warn('Could not find cache file : %s / %s', bucket, key);
-          return null;
-        }
-      })
-      .catch((err) => {
-        if (err && err.statusCode === 404) {
-          Logger.warn('Cache file %s %s not found returning null', bucket, key);
-          return null;
-        } else {
-          throw err;
-        }
-      });
+    try {
+      const res: GetObjectOutput = await this.s3.getObject(params).promise();
+      if (res && res.Body) {
+        return res.Body.toString();
+      } else {
+        Logger.warn('Could not find cache file : %s / %s', bucket, key);
+        return null;
+      }
+    } catch (err) {
+      if (err && err.statusCode === 404) {
+        Logger.warn('Cache file %s %s not found returning null', bucket, key);
+        return null;
+      } else {
+        throw err;
+      }
+    }
   }
 
   public async readCacheFileToObject<T>(key: string, bucket: string = null): Promise<T> {
@@ -94,7 +92,7 @@ export class S3CacheRatchet {
   }
 
   // Given new board data, write it to the S3 file and set the refresh flag appropriately
-  public writeObjectToCacheFile(
+  public async writeObjectToCacheFile(
     key: string,
     dataObject: any, // eslint-disable-line @typescript-eslint/explicit-module-boundary-types
     bucket: string = null,
@@ -119,6 +117,27 @@ export class S3CacheRatchet {
       Bucket: this.bucketVal(bucket),
       Key: key,
       Body: dataString,
+      CacheControl: cacheControl,
+      ContentType: contentType,
+      Metadata: meta,
+    };
+
+    const result: PutObjectOutput = await this.s3.putObject(params).promise();
+    return result;
+  }
+
+  public async writeStreamToCacheFile(
+    key: string,
+    data: ReadStream,
+    bucket: string = null,
+    meta: any = {},
+    cacheControl = 'max-age=30',
+    contentType = 'text/plain'
+  ): Promise<PutObjectOutput> {
+    const params: PutObjectRequest = {
+      Bucket: this.bucketVal(bucket),
+      Key: key,
+      Body: data,
       CacheControl: cacheControl,
       ContentType: contentType,
       Metadata: meta,
@@ -207,9 +226,9 @@ export class S3CacheRatchet {
   }
 
   public async directChildrenOfPrefix(prefix: string, expandFiles = false, bucket: string = null): Promise<string[]> {
-    const returnValue = [];
+    const returnValue: any[] = [];
 
-    const params = {
+    const params: any = {
       Bucket: this.bucketVal(bucket),
       Prefix: prefix,
       Delimiter: '/',
@@ -230,7 +249,7 @@ export class S3CacheRatchet {
     if (response['Contents']) {
       response['Contents'].forEach((cp) => {
         if (expandFiles) {
-          const expanded = {
+          const expanded: ExpandedFileChildren = {
             link: this.createDownloadLink(cp['Key'], 3600, bucket),
             name: cp['Key'].substring(prefixLength),
             size: cp['Size'],
@@ -245,6 +264,33 @@ export class S3CacheRatchet {
     return returnValue;
   }
 
+  public async allSubFoldersOfPrefix(prefix: string, bucket: string = null): Promise<string[]> {
+    const returnValue: string[] = [prefix];
+    let idx: number = 0;
+
+    while (idx < returnValue.length) {
+      const next: string = returnValue[idx++];
+      Logger.debug('Pulling %s (%d remaining)', next, returnValue.length - idx);
+      const req: ListObjectsV2Request = {
+        Bucket: this.bucketVal(bucket),
+        Prefix: next,
+        Delimiter: '/',
+      };
+      let resp: ListObjectsV2Output = null;
+
+      do {
+        req.ContinuationToken = resp ? resp.NextContinuationToken : null;
+        resp = await this.s3.listObjectsV2(req).promise();
+        resp.CommonPrefixes.forEach((p) => {
+          returnValue.push(p.Prefix);
+        });
+        Logger.debug('g:%j', resp);
+      } while (resp.NextContinuationToken);
+    }
+
+    return returnValue;
+  }
+
   private bucketVal(explicitBucket: string): string {
     const rval: string = explicitBucket ? explicitBucket : this.defaultBucket;
     if (!rval) {
@@ -252,4 +298,10 @@ export class S3CacheRatchet {
     }
     return rval;
   }
+}
+
+export interface ExpandedFileChildren {
+  link: string;
+  name: string;
+  size: number;
 }

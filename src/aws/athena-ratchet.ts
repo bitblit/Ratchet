@@ -115,12 +115,7 @@ export class AthenaRatchet {
     return rval;
   }
 
-  public async runQueryToFile(
-    queryIn: string,
-    queryParams: any = {},
-    targetDataFile: string = tmp.fileSync({ postfix: '.csv', keep: false }).name,
-    pingTimeMS = 2000
-  ): Promise<string> {
+  public async runQueryToFile(queryIn: string, queryParams: any = {}, targetDataFileIn: string = null, pingTimeMS = 2000): Promise<string> {
     Logger.info('Running query to file');
     const outputLoc = await this.runQueryToOutputLocation(queryIn, queryParams, pingTimeMS);
     Logger.info('Query succeeded, pulling file from %s', outputLoc);
@@ -133,6 +128,7 @@ export class AthenaRatchet {
       Key: obKey,
     };
 
+    const targetDataFile: string = targetDataFileIn || tmp.fileSync({ postfix: '.csv', keep: false }).name;
     const fileStream: any = fs.createWriteStream(targetDataFile);
     const readStream: Readable = this.s3.getObject(req).createReadStream();
 
