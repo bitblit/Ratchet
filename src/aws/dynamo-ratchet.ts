@@ -477,6 +477,7 @@ export class DynamoRatchet {
       ExpressionAttributeNames: attrNames,
       ExpressionAttributeValues: attrValues,
       TableName: tableName,
+      ReturnValues: 'ALL_NEW',
     };
 
     let adjustCount: number = 0;

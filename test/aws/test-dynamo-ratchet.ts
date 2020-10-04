@@ -119,7 +119,7 @@ describe('#atomicCounter', function () {
 
     Logger.setLevelByName('debug');
 
-    const v: any = await dr.simpleGetWithCounterDecrement<any>('cwtest', { k1: 'abc', k2: 10 }, 'counter', true);
+    const v: any = await dr.simpleGetWithCounterDecrement<any>('cwtest', { k1: 'abc', k2: 11 }, 'counter', true);
     Logger.info('Got : %j', v);
   });
 });
