@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import * as AWS from 'aws-sdk';
 import { DynamoRatchet } from '../../src/aws/dynamo-ratchet';
 import { Logger } from '../../src/common/logger';
-import { ExpressionAttributeValueMap, QueryInput } from 'aws-sdk/clients/dynamodb';
+import { ExpressionAttributeValueMap, PutItemOutput, QueryInput } from 'aws-sdk/clients/dynamodb';
 
 describe('#atomicCounter', function () {
   this.timeout(300000);
@@ -86,5 +86,40 @@ describe('#atomicCounter', function () {
     Logger.info('Mid : %d', new Date().getTime());
     const readOut: any[] = await Promise.all(readProms);
     Logger.info('Read : %d : %j', new Date().getTime(), readOut);
+  });
+
+  xit('should run a collision test', async () => {
+    const dr: DynamoRatchet = new DynamoRatchet(new AWS.DynamoDB.DocumentClient({ region: 'us-east-1' }));
+
+    Logger.setLevelByName('debug');
+
+    const val: any = {
+      k1: 'abc',
+      k2: 1,
+    };
+
+    for (let i = 0; i < 5; i++) {
+      const rval: PutItemOutput = await dr.simplePutWithCollisionAvoidance(
+        'cwtest',
+        val,
+        ['k1', 'k2'],
+        (v) => {
+          v.k2++;
+          return v;
+        },
+        null,
+        3
+      );
+      Logger.info('output was : %j', rval);
+    }
+  });
+
+  xit('should do a simple get with counter decrement', async () => {
+    const dr: DynamoRatchet = new DynamoRatchet(new AWS.DynamoDB.DocumentClient({ region: 'us-east-1' }));
+
+    Logger.setLevelByName('debug');
+
+    const v: any = await dr.simpleGetWithCounterDecrement<any>('cwtest', { k1: 'abc', k2: 10 }, 'counter', true);
+    Logger.info('Got : %j', v);
   });
 });

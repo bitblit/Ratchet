@@ -210,3 +210,5 @@ Pull requests are welcome, although I'm not sure why you'd be interested!
 - 0.9.x : Adding CLI Ratchet, updating dependant libraries for security holes
 
 * Added CSVRatchet and AlbAthenaLogRatchet
+* Added simplePutWithCollisionAvoidance to DynamoRatchet
+* Added simpleGetWithCounterDecrement to DynamoRatchet

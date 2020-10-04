@@ -16,6 +16,7 @@ import {
   ExpressionAttributeValueMap,
   GetItemOutput,
   PutItemInput,
+  PutItemInputAttributeMap,
   QueryInput,
   QueryOutput,
   ScanInput,
@@ -441,6 +442,79 @@ export class DynamoRatchet {
   }
 
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+  // This works like simplePut, but if a collision is detected it adjusts the object and tries writing again
+  // The adjustment function MUST change one of the keys - otherwise this just runs forever (or until it hits "maxAdjusts")
+  public async simplePutWithCollisionAvoidance<T>(
+    tableName: string,
+    value: T,
+    keyNames: string[],
+    adjustFunction: (val: T) => T,
+    maxAdjusts: number = null,
+    autoRetryCount: number = 3
+  ): Promise<PutItemOutput> {
+    RequireRatchet.true(keyNames && keyNames.length > 0 && keyNames.length < 3, 'You must pass 1 or 2 key names');
+    let rval: PutItemOutput = null;
+    let currentTry: number = 0;
+
+    const attrNames: ExpressionAttributeNameMap = {
+      '#key0': keyNames[0],
+    };
+    const attrValues: ExpressionAttributeValueMap = {
+      ':key0': value[keyNames[0]],
+    };
+
+    let condExp: string = '#key0 <> :key0';
+    if (keyNames.length > 1) {
+      condExp += ' AND #key1 <> :key1';
+      attrNames['#key1'] = keyNames[1];
+      attrValues[':key1'] = value[keyNames[1]];
+    }
+
+    const params: PutItemInput = {
+      Item: value as any,
+      ReturnConsumedCapacity: 'TOTAL',
+      ConditionExpression: condExp,
+      ExpressionAttributeNames: attrNames,
+      ExpressionAttributeValues: attrValues,
+      TableName: tableName,
+    };
+
+    let adjustCount: number = 0;
+    while (!rval && currentTry < autoRetryCount && (!maxAdjusts || adjustCount < maxAdjusts)) {
+      try {
+        rval = await this.awsDDB.put(params).promise();
+      } catch (err) {
+        if (err && err.code && err.code === 'ProvisionedThroughputExceededException') {
+          currentTry++;
+          const wait: number = Math.pow(2, currentTry) * 1000;
+          Logger.debug('Exceeded write throughput for %j : Try %d of %d (Waiting %d ms)', params, currentTry, autoRetryCount, wait);
+          await PromiseRatchet.wait(wait);
+        } else if (err && err.code && err.code === 'ConditionalCheckFailedException') {
+          let newValue: T = Object.assign({}, params.Item as unknown) as T;
+          Logger.info('Failed to write %j due to collision - adjusting and retrying', newValue);
+          newValue = adjustFunction(newValue);
+          params.Item = newValue as any;
+          params.ExpressionAttributeValues[':key0'] = newValue[keyNames[0]];
+          if (keyNames.length > 1) {
+            params.ExpressionAttributeValues[':key1'] = newValue[keyNames[1]];
+          }
+          adjustCount++;
+        } else {
+          throw err; // We only catch throughput issues
+        }
+      }
+    }
+    if (rval && adjustCount > 0) {
+      Logger.info('After adjustment, wrote %j as %j', value, params.Item);
+    }
+
+    if (!rval) {
+      Logger.warn('Unable to write %j to DDB after %d provision tries and %d adjusts, giving up', params, currentTry, adjustCount);
+    }
+    return rval;
+  }
+
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   public async simpleGet<T>(tableName: string, keys: any, autoRetryCount: number = 3): Promise<T> {
     let holder: GetItemOutput = null;
     let currentTry: number = 0;
@@ -468,6 +542,64 @@ export class DynamoRatchet {
       Logger.warn('Unable to read %j from DDB after %d tries, giving up', params, autoRetryCount);
     }
     const rval: T = !!holder && !!holder.Item ? Object.assign({} as T, holder.Item) : null;
+    return rval;
+  }
+
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+  public async simpleGetWithCounterDecrement<T>(
+    tableName: string,
+    keys: any,
+    counterAttributeName: string,
+    deleteOnZero: boolean,
+    autoRetryCount: number = 3
+  ): Promise<T> {
+    let holder: UpdateItemOutput = null;
+    let currentTry: number = 0;
+
+    const params: UpdateItemInput = {
+      TableName: tableName,
+      Key: keys,
+      UpdateExpression: 'set #counter = #counter-:decVal',
+      ExpressionAttributeNames: {
+        '#counter': counterAttributeName,
+      } as ExpressionAttributeNameMap,
+      ExpressionAttributeValues: {
+        ':decVal': 1,
+        ':minVal': 0,
+      } as ExpressionAttributeValueMap,
+      ConditionExpression: '#counter > :minVal',
+      ReturnValues: 'ALL_NEW',
+    };
+
+    let updateFailed: boolean = false;
+    while (!holder && currentTry < autoRetryCount && !updateFailed) {
+      try {
+        holder = await this.awsDDB.update(params).promise();
+      } catch (err) {
+        if (!!err && !!err.code && err.code === 'ProvisionedThroughputExceededException') {
+          const wait: number = Math.pow(2, currentTry) * 1000;
+          Logger.debug('Exceeded update throughput for %j : Try %d of %d (Waiting %d ms)', params, currentTry, autoRetryCount, wait);
+          await PromiseRatchet.wait(wait);
+          currentTry++;
+        } else if (!!err && !!err.code && err.code === 'ConditionalCheckFailedException') {
+          Logger.info('Cannot fetch requested row (%j) - the update check failed', keys);
+          updateFailed = true;
+        } else {
+          throw err; // We only catch throughput issues
+        }
+      }
+    }
+    if (!holder && !updateFailed) {
+      Logger.warn('Unable to update %j from DDB after %d tries, giving up', params, autoRetryCount);
+    }
+
+    const rval: T = !!holder && !!holder.Attributes ? Object.assign({} as T, holder.Attributes) : null;
+
+    if (deleteOnZero && rval[counterAttributeName] === 0) {
+      Logger.info('Delete on 0 specified, removing');
+      await this.simpleDelete(tableName, keys);
+    }
+
     return rval;
   }
 
