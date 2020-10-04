@@ -477,7 +477,6 @@ export class DynamoRatchet {
       ExpressionAttributeNames: attrNames,
       ExpressionAttributeValues: attrValues,
       TableName: tableName,
-      ReturnValues: 'ALL_NEW',
     };
 
     let adjustCount: number = 0;
@@ -570,6 +569,7 @@ export class DynamoRatchet {
         ':minVal': 0,
       } as ExpressionAttributeValueMap,
       ConditionExpression: '#counter > :minVal',
+      ReturnValues: 'ALL_NEW',
     };
 
     let updateFailed: boolean = false;
