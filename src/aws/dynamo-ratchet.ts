@@ -570,7 +570,6 @@ export class DynamoRatchet {
         ':minVal': 0,
       } as ExpressionAttributeValueMap,
       ConditionExpression: '#counter > :minVal',
-      ReturnValues: 'ALL_NEW',
     };
 
     let updateFailed: boolean = false;
