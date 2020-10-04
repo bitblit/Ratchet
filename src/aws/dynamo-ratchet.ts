@@ -451,9 +451,9 @@ export class DynamoRatchet {
     adjustFunction: (val: T) => T,
     maxAdjusts: number = null,
     autoRetryCount: number = 3
-  ): Promise<PutItemOutput> {
+  ): Promise<T> {
     RequireRatchet.true(keyNames && keyNames.length > 0 && keyNames.length < 3, 'You must pass 1 or 2 key names');
-    let rval: PutItemOutput = null;
+    let pio: PutItemOutput = null;
     let currentTry: number = 0;
 
     const attrNames: ExpressionAttributeNameMap = {
@@ -481,9 +481,9 @@ export class DynamoRatchet {
     };
 
     let adjustCount: number = 0;
-    while (!rval && currentTry < autoRetryCount && (!maxAdjusts || adjustCount < maxAdjusts)) {
+    while (!pio && currentTry < autoRetryCount && (!maxAdjusts || adjustCount < maxAdjusts)) {
       try {
-        rval = await this.awsDDB.put(params).promise();
+        pio = await this.awsDDB.put(params).promise();
       } catch (err) {
         if (err && err.code && err.code === 'ProvisionedThroughputExceededException') {
           currentTry++;
@@ -505,14 +505,15 @@ export class DynamoRatchet {
         }
       }
     }
-    if (rval && adjustCount > 0) {
+    if (pio && adjustCount > 0) {
       Logger.info('After adjustment, wrote %j as %j', value, params.Item);
     }
 
-    if (!rval) {
+    if (!pio) {
       Logger.warn('Unable to write %j to DDB after %d provision tries and %d adjusts, giving up', params, currentTry, adjustCount);
     }
-    return rval;
+
+    return pio ? ((params.Item as unknown) as T) : null;
   }
 
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
