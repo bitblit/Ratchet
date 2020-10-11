@@ -596,7 +596,7 @@ export class DynamoRatchet {
 
     const rval: T = !!holder && !!holder.Attributes ? Object.assign({} as T, holder.Attributes) : null;
 
-    if (deleteOnZero && rval[counterAttributeName] === 0) {
+    if (deleteOnZero && rval && rval[counterAttributeName] === 0) {
       Logger.info('Delete on 0 specified, removing');
       await this.simpleDelete(tableName, keys);
     }
