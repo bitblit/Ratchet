@@ -43,4 +43,15 @@ describe('#fileExists', function () {
     Logger.info('Got: %s', out);
     expect(out).to.not.be.null;
   });
+
+  xit('should list direct children past 1000', async () => {
+    const s3: AWS.S3 = new AWS.S3({ region: 'us-east-1' });
+    const cache: S3CacheRatchet = new S3CacheRatchet(s3, 'test-bucket');
+    const out: string[] = await cache.directChildrenOfPrefix('test/aws/test-path-with-lots-of-childen/');
+    expect(out).to.not.be.null;
+    expect(out.length).to.be.gt(1000);
+
+    Logger.info('Got: %s', out);
+    expect(out).to.not.be.null;
+  });
 });

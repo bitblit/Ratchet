@@ -12,6 +12,7 @@ import {
   GetObjectOutput,
   HeadObjectOutput,
   ListObjectsOutput,
+  ListObjectsRequest,
   ListObjectsV2Output,
   ListObjectsV2Request,
   PutObjectOutput,
@@ -225,42 +226,55 @@ export class S3CacheRatchet {
     return url;
   }
 
-  public async directChildrenOfPrefix(prefix: string, expandFiles = false, bucket: string = null): Promise<string[]> {
+  public async directChildrenOfPrefix(
+    prefix: string,
+    expandFiles = false,
+    bucket: string = null,
+    maxToReturn: number = null
+  ): Promise<string[]> {
     const returnValue: any[] = [];
 
-    const params: any = {
+    const params: ListObjectsRequest = {
       Bucket: this.bucketVal(bucket),
       Prefix: prefix,
       Delimiter: '/',
     };
 
-    const response: ListObjectsOutput = await this.s3.listObjects(params).promise();
+    let response: ListObjectsOutput = null;
+    do {
+      response = await this.s3.listObjects(params).promise();
 
-    const prefixLength = prefix.length;
-    // Process directories
-    if (response['CommonPrefixes']) {
-      response['CommonPrefixes'].forEach((cp) => {
-        const value = cp['Prefix'].substring(prefixLength);
-        returnValue.push(value);
-      });
-    }
+      const prefixLength = prefix.length;
+      // Process directories
+      if (response['CommonPrefixes']) {
+        response['CommonPrefixes'].forEach((cp) => {
+          if (!maxToReturn || returnValue.length < maxToReturn) {
+            const value = cp['Prefix'].substring(prefixLength);
+            returnValue.push(value);
+          }
+        });
+      }
 
-    // Process files
-    if (response['Contents']) {
-      response['Contents'].forEach((cp) => {
-        if (expandFiles) {
-          const expanded: ExpandedFileChildren = {
-            link: this.createDownloadLink(cp['Key'], 3600, bucket),
-            name: cp['Key'].substring(prefixLength),
-            size: cp['Size'],
-          };
-          returnValue.push(expanded);
-        } else {
-          returnValue.push(cp['Key'].substring(prefixLength));
-        }
-      });
-      // TODO: Need to handle large batches that need pagination
-    }
+      // Process files
+      if (response['Contents']) {
+        response['Contents'].forEach((cp) => {
+          if (!maxToReturn || returnValue.length < maxToReturn) {
+            if (expandFiles) {
+              const expanded: ExpandedFileChildren = {
+                link: this.createDownloadLink(cp['Key'], 3600, bucket),
+                name: cp['Key'].substring(prefixLength),
+                size: cp['Size'],
+              };
+              returnValue.push(expanded);
+            } else {
+              returnValue.push(cp['Key'].substring(prefixLength));
+            }
+          }
+        });
+      }
+      params.Marker = response.NextMarker;
+    } while (params.Marker && (!maxToReturn || returnValue.length < maxToReturn));
+
     return returnValue;
   }
 
