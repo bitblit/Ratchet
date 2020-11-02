@@ -48,8 +48,8 @@ export class ApplyCircleCiEnvVariablesToFiles {
           let contents: string = fs.readFileSync(f).toString();
           contents = contents.split(buildFinder).join(buildNum);
           contents = contents.split(branchFinder).join(branch);
-          contents = contents.split(hashFinder).join(tag);
-          contents = contents.split(tagFinder).join(sha1);
+          contents = contents.split(hashFinder).join(sha1);
+          contents = contents.split(tagFinder).join(tag);
           contents = contents.split(timeFinder).join(localTime);
           fs.writeFileSync(f, contents);
           foundCount++;
