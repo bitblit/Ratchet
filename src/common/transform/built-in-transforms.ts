@@ -114,7 +114,7 @@ export class BuiltInTransforms {
           let rval = '';
           oldFieldNamesInOrder.forEach((n) => {
             if (rval != null) {
-              let temp = value[n];
+              const temp = value[n];
               if (temp == null && abortIfFieldMissing) {
                 rval = null;
               } else {
@@ -137,9 +137,9 @@ export class BuiltInTransforms {
       transform(value: any, isKey: boolean, context: any): any {
         if (typeof value == 'object') {
           fieldNames.forEach((n) => {
-            let oldVal = value[n];
+            const oldVal = value[n];
             if (typeof oldVal == 'number') {
-              let newVal = 0 != oldVal;
+              const newVal = 0 != oldVal;
               value[n] = newVal;
             }
           });
@@ -154,9 +154,9 @@ export class BuiltInTransforms {
       transform(value: any, isKey: boolean, context: any): any {
         if (typeof value == 'object') {
           fieldNames.forEach((n) => {
-            let oldVal = value[n];
+            const oldVal = value[n];
             if (typeof oldVal == 'boolean') {
-              let newVal = oldVal ? 1 : 0;
+              const newVal = oldVal ? 1 : 0;
               value[n] = newVal;
             }
           });
@@ -170,7 +170,7 @@ export class BuiltInTransforms {
     return {
       transform(value: any, isKey: boolean, context: any): any {
         if (typeof value == 'object') {
-          let oldVal = value[oldName];
+          const oldVal = value[oldName];
           if (oldVal != null) {
             value[newName] = oldVal;
           }
@@ -197,11 +197,11 @@ export class BuiltInTransforms {
       transform(value: any, isKey: boolean, context: any): any {
         if (typeof value == 'object') {
           fieldNames.forEach((key) => {
-            let oldValue = value[key];
+            const oldValue = value[key];
             if (oldValue != null) {
               try {
-                let parsed = moment(oldValue, oldFormat);
-                let newValue = parsed.format(newFormat);
+                const parsed = moment(oldValue, oldFormat);
+                const newValue = parsed.format(newFormat);
                 value[key] = newValue;
               } catch (err) {
                 Logger.warn('Failed to reparse date %s in format %s : %s', oldValue, oldFormat, err);

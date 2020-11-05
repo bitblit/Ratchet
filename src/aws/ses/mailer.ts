@@ -106,8 +106,8 @@ export class Mailer {
     let rval: SendRawEmailResponse = null;
 
     let toAddresses: string[] = this.filterEmailsToValid(inRts.destinationAddresses);
-    let autoBcc: string[] = inRts.doNotAutoBcc ? [] : this.config.autoBccAddresses || [];
-    let bccAddresses: string[] = inRts.bccAddresses || [].concat(autoBcc);
+    const autoBcc: string[] = inRts.doNotAutoBcc ? [] : this.config.autoBccAddresses || [];
+    const bccAddresses: string[] = inRts.bccAddresses || [].concat(autoBcc);
     if (toAddresses.length === 0 && bccAddresses.length > 0) {
       Logger.debug('Destination emails filtered to none but BCC defined, copying BCC');
       toAddresses = bccAddresses;
@@ -124,8 +124,8 @@ export class Mailer {
     if (rts.destinationAddresses.length === 0) {
       Logger.info('After cleaning email lists, no destination addresses left - not sending email');
     } else {
-      let toLine: string = 'To: ' + rts.destinationAddresses.join(', ') + '\n';
-      let bccLine: string =
+      const toLine: string = 'To: ' + rts.destinationAddresses.join(', ') + '\n';
+      const bccLine: string =
         !!this.config.autoBccAddresses && this.config.autoBccAddresses.length > 0
           ? 'Bcc: ' + this.config.autoBccAddresses.join(', ') + '\n'
           : '';

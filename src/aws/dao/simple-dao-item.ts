@@ -7,7 +7,7 @@
 */
 
 export interface SimpleDaoItem {
-    id: string;
-    path: string;
-    lastModifiedEpochMS: number;
+  id: string;
+  path: string;
+  lastModifiedEpochMS: number;
 }

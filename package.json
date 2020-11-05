@@ -49,7 +49,7 @@
   },
   "license": "Apache-2.0",
   "dependencies": {
-    "moment": "2.27.0",
+    "moment": "2.29.1",
     "moment-timezone": "0.5.31",
     "ts-enum-util": "4.0.2",
     "yargs": "15.4.1"
@@ -65,7 +65,7 @@
     "@types/node": "12.12.6",
     "@typescript-eslint/eslint-plugin": "4.1.0",
     "@typescript-eslint/parser": "4.1.0",
-    "aws-sdk": "2.751.0",
+    "aws-sdk": "2.785.0",
     "chai": "4.2.0",
     "chai-http": "4.3.0",
     "csv": "5.3.2",

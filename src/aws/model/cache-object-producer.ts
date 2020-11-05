@@ -7,9 +7,7 @@
 */
 
 export interface CacheObjectProducer<T, R> {
+  keyToPath(key: R): string;
 
-    keyToPath(key: R): string;
-
-    generate(key: R): Promise<T>;
-
+  generate(key: R): Promise<T>;
 }
