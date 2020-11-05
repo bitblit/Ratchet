@@ -59,7 +59,7 @@
     "node-fetch": "^2.6.1"
   },
   "devDependencies": {
-    "@types/aws-lambda": "8.10.62",
+    "@types/aws-lambda": "8.10.64",
     "@types/chai": "4.2.12",
     "@types/mocha": "8.0.3",
     "@types/node": "12.12.6",
