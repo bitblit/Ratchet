@@ -117,3 +117,18 @@ describe('#groupNumbersIntoContiguousRanges', function () {
     expect(grouped).to.not.be.null;
   });
 });
+
+describe('#distributeItemsEvenly', function () {
+  it('should distribute evenly', function () {
+    const test1: number[] = NumberRatchet.distributeItemsEvenly(4, 6);
+    expect(test1).to.not.be.null;
+    const test2: number[] = NumberRatchet.distributeItemsEvenly(12, 6);
+    expect(test2).to.not.be.null;
+    const test3: number[] = NumberRatchet.distributeItemsEvenly(5, 6);
+    expect(test3).to.not.be.null;
+    const test4: number[] = NumberRatchet.distributeItemsEvenly(192, 11);
+    expect(test4).to.not.be.null;
+    const test5: number[] = NumberRatchet.distributeItemsEvenly(11, 192);
+    expect(test5).to.not.be.null;
+  });
+});

@@ -164,6 +164,32 @@ export class NumberRatchet {
       ranges: ranges,
     };
   }
+
+  // Given N items and M buckets, return how many items in each bucket, as even as
+  // possible
+  public static distributeItemsEvenly(items: number, buckets: number): number[] {
+    RequireRatchet.notNullOrUndefined(items, 'items');
+    RequireRatchet.notNullOrUndefined(buckets, 'buckets');
+    RequireRatchet.true(items > 0 && items === Math.floor(items), 'Items integer larger than 0');
+    RequireRatchet.true(buckets > 0 && buckets === Math.floor(buckets), 'Buckets integer larger than 0');
+
+    const offset: number = buckets / items;
+    const rval: number[] = [];
+    for (let i = 0; i < buckets; i++) {
+      rval.push(0);
+    }
+
+    let loc: number = 0;
+    let rem: number = items;
+
+    while (rem > 0) {
+      rval[Math.floor(loc) % buckets]++;
+      rem--;
+      loc += offset;
+    }
+
+    return rval;
+  }
 }
 
 export interface Point2d {
