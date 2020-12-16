@@ -127,7 +127,12 @@ export class StringRatchet {
   }
 
   public static trimToEmpty(input: string): string {
-    const t: string = input || '';
+    // AG:12.16.2020 - Swapping out the OR for a null coalesce operator
+    // Neon was throwing an error: t.trim is not a function so it is possible
+    // that if the input was null it was trying to trim it. This will no
+    // longer happen.
+    // WAS: const t: string = input || '';
+    const t: string = input ?? '';
     return t.trim();
   }
 
