@@ -9,7 +9,8 @@
   ],
   "contributors": [
     "Christopher Weiss <bitblit@gmail.com>",
-    "William Weiss <npm@codification.org>"
+    "William Weiss <npm@codification.org>",
+    "Austin Grantham <agrantham@algidious.com>"
   ],
   "husky": {
     "hooks": {
