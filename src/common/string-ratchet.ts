@@ -127,7 +127,7 @@ export class StringRatchet {
   }
 
   public static trimToEmpty(input: string): string {
-    const t: string = input || '';
+    const t: string = input ? StringRatchet.safeString(input) : '';
     return t.trim();
   }
 

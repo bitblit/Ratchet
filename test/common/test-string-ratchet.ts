@@ -1,5 +1,4 @@
 import { expect } from 'chai';
-import { DurationRatchet } from '../../src/common/duration-ratchet';
 import { StringRatchet } from '../../src/common/string-ratchet';
 
 describe('#formatBytes', function () {
@@ -121,5 +120,22 @@ describe('#stringCsvSafe', function () {
     expect(StringRatchet.csvSafe('test,and 1')).to.eq('"test,and 1"');
     expect(StringRatchet.csvSafe(1)).to.eq('1');
     expect(StringRatchet.csvSafe("test'blah")).to.eq('"test\'blah"');
+  });
+});
+
+describe('#trimToEmpty', function () {
+  it('should return an empty string"', function () {
+    const result: string = StringRatchet.trimToEmpty('     ');
+    expect(result).to.equal('');
+  });
+
+  it('should return an abc"', function () {
+    const result: string = StringRatchet.trimToEmpty('abc   ');
+    expect(result).to.equal('abc');
+  });
+
+  it('should return string "5"', function () {
+    const result: string = StringRatchet.trimToEmpty(5 as any); // as any to fool TSC for testing
+    expect(result).to.equal('5');
   });
 });
