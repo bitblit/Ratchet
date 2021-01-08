@@ -1,6 +1,6 @@
 {
   "name": "@bitblit/ratchet",
-  "version": "0.10.1",
+  "version": "0.10.2",
   "description": "Common tools for general use",
   "main": "./dist/index",
   "typings": "./dist/index",
@@ -64,9 +64,9 @@
     "@types/chai": "4.2.14",
     "@types/mocha": "8.2.0",
     "@types/node": "12.12.6",
+    "@types/yargs": "15.0.12",
     "@typescript-eslint/eslint-plugin": "4.12.0",
     "@typescript-eslint/parser": "4.12.0",
-    "@types/yargs": "15.0.12",
     "aws-sdk": "2.824.0",
     "chai": "4.2.0",
     "chai-http": "4.3.0",
