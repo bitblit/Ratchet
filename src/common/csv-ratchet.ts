@@ -4,9 +4,12 @@
 
 import { readFileSync, existsSync, ReadStream } from 'fs';
 import * as csvparse from 'csv-parse';
+import * as parsesync from 'csv-parse/lib/sync';
 import * as fs from 'fs';
 import { Logger } from './logger';
 import * as stringify from 'csv-stringify';
+import { RequireRatchet } from './require-ratchet';
+import { MapRatchet } from './map-ratchet';
 
 export class CsvRatchet {
   public static async streamParse<T>(readStream: ReadStream, pf: ParseFunction<T>): Promise<T[]> {
@@ -60,8 +63,79 @@ export class CsvRatchet {
     });
     return genProm;
   }
+
+  public static async generateComparison(file1: string, file2: string, keyField: string): Promise<ComparisonResults> {
+    RequireRatchet.notNullOrUndefined(file1, 'file1');
+    RequireRatchet.notNullOrUndefined(file2, 'file2');
+    RequireRatchet.notNullOrUndefined(keyField, 'keyField');
+
+    Logger.info('Created csv compare with files %s and %s keyed on %s', file1, file2, keyField);
+    const file1Raw: string = fs.readFileSync(file1).toString();
+    let file1Parsed: any[] = parsesync(file1Raw, {
+      columns: true,
+      skip_empty_lines: true,
+    });
+    file1Parsed = file1Parsed.map((m) => {
+      const next: any = {};
+      Object.keys(m).forEach((k) => {
+        next[k.trim()] = m[k];
+      });
+      return next;
+    });
+    const file1Mapped: Map<string, any> = MapRatchet.mapByUniqueProperty<any, string>(file1Parsed, keyField);
+    const file2Raw: string = fs.readFileSync(file2).toString();
+    let file2Parsed: any[] = parsesync(file2Raw, {
+      columns: true,
+      skip_empty_lines: true,
+    });
+    file2Parsed = file2Parsed.map((m) => {
+      const next: any = {};
+      Object.keys(m).forEach((k) => {
+        next[k.trim()] = m[k];
+      });
+      return next;
+    });
+    const file2Mapped: Map<string, any> = MapRatchet.mapByUniqueProperty<any, string>(file2Parsed, keyField);
+
+    const f1Only: string[] = [];
+    const f2Only: string[] = [];
+    const both: string[] = [];
+
+    Array.from(file1Mapped.keys()).forEach((f1k) => {
+      if (file2Mapped.has(f1k)) {
+        both.push(f1k);
+      } else {
+        f1Only.push(f1k);
+      }
+    });
+
+    Array.from(file2Mapped.keys()).forEach((f1k) => {
+      if (!file1Mapped.has(f1k)) {
+        f2Only.push(f1k);
+      }
+    });
+
+    const rval: ComparisonResults = {
+      file1Data: file1Mapped,
+      file2Data: file2Mapped,
+      file1OnlyKeys: f1Only,
+      file2OnlyKeys: f2Only,
+      bothFilesKeys: both,
+    };
+
+    return rval;
+  }
 }
 
 interface ParseFunction<T> {
   (row: any): T;
+}
+
+export interface ComparisonResults {
+  file1OnlyKeys: string[];
+  file2OnlyKeys: string[];
+  bothFilesKeys: string[];
+
+  file1Data: Map<string, any>;
+  file2Data: Map<string, any>;
 }
