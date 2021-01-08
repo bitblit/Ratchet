@@ -147,6 +147,15 @@ export class Logger {
     return rval;
   }
 
+  public static consoleLogPassThru(level: number, callback: Function, ...input: any[]): void {
+    if (Logger.INCLUDE_LEVEL_IN_MESSAGE) {
+      input.unshift(Logger.fullTracePrefix(level));
+    }
+    if (Logger.LEVEL >= level) {
+      callback(...input);
+    }
+  }
+
   public static error(format: string, ...input: any[]): string {
     let msg: string = util.format(format, ...input);
     msg = Logger.conditionallyApplyLevelAndPrefixToMessage(0, msg);
@@ -155,6 +164,10 @@ export class Logger {
       Logger.addToRingBuffer(msg, 'error');
     }
     return msg;
+  }
+
+  public static errorP(...input: any[]): void {
+    Logger.consoleLogPassThru(0, console.error, ...input);
   }
 
   public static warn(format: string, ...input: any[]): string {
@@ -167,6 +180,10 @@ export class Logger {
     return msg;
   }
 
+  public static warnP(...input: any[]): void {
+    Logger.consoleLogPassThru(1, console.warn, ...input);
+  }
+
   public static info(format: string, ...input: any[]): string {
     let msg: string = util.format(format, ...input);
     msg = Logger.conditionallyApplyLevelAndPrefixToMessage(2, msg);
@@ -177,6 +194,10 @@ export class Logger {
     return msg;
   }
 
+  public static infoP(...input: any[]): void {
+    Logger.consoleLogPassThru(2, console.info, ...input);
+  }
+
   public static verbose(format: string, ...input: any[]): string {
     let msg: string = util.format(format, ...input);
     msg = Logger.conditionallyApplyLevelAndPrefixToMessage(3, msg);
@@ -185,6 +206,10 @@ export class Logger {
       Logger.addToRingBuffer(msg, 'verbose');
     }
     return msg;
+  }
+
+  public static verboseP(...input: any[]): void {
+    Logger.consoleLogPassThru(3, console.info, ...input);
   }
 
   public static debug(format: string, ...input: any[]): string {
@@ -203,6 +228,12 @@ export class Logger {
     return msg;
   }
 
+  public static debugP(...input: any[]): void {
+    // This is here because old versions of Node do not support console.debug
+    const fn: Function = console.debug || console.log;
+    Logger.consoleLogPassThru(4, fn, ...input);
+  }
+
   public static silly(format: string, ...input: any[]): string {
     let msg: string = util.format(format, ...input);
     msg = Logger.conditionallyApplyLevelAndPrefixToMessage(5, msg);
@@ -211,6 +242,10 @@ export class Logger {
       Logger.addToRingBuffer(msg, 'silly');
     }
     return msg;
+  }
+
+  public static sillyP(...input: any[]): void {
+    Logger.consoleLogPassThru(5, console.log, ...input);
   }
 
   public static takeSnapshot(): LogSnapshot {
@@ -306,14 +341,18 @@ export class Logger {
   }
 
   private static conditionallyApplyLevelAndPrefixToMessage(lvl: number, msg: string): string {
-    const tmp: string = Logger.TRACE_PREFIX ? Logger.TRACE_PREFIX + msg : msg;
+    return Logger.fullTracePrefix(lvl) + msg;
+  }
+
+  private static fullTracePrefix(lvl: number): string {
+    const tmp: string = Logger.TRACE_PREFIX ? Logger.TRACE_PREFIX : '';
     return Logger.INCLUDE_LEVEL_IN_MESSAGE ? '[' + Logger.levelName(lvl) + '] ' + tmp : tmp;
   }
 
   // eslint-disable-next-line @typescript-eslint/ban-types
-  private static ifConsoleLoggingEnabled(callback: Function, message: any): void {
+  private static ifConsoleLoggingEnabled(callback: Function, ...message: any[]): void {
     if (Logger.CONSOLE_LOGGING_ENABLED) {
-      callback(message);
+      callback(...message);
     }
   }
 }

@@ -158,3 +158,31 @@ describe('#testLastMessage', function () {
     expect(last.msg.endsWith('m2')).to.be.true;
   });
 });
+
+describe('#testPassThruFunctions', function () {
+  it('should pass through values', function () {
+    Logger.setLevelByName('debug');
+
+    Logger.error('Test %s', 'tVal');
+    Logger.errorP('TestP %s', 'tVal');
+    Logger.errorP('TestP 2', 27, { some: 'Object' });
+
+    Logger.warn('Test %s', 'tVal');
+    Logger.warnP('TestP %s', 'tVal');
+
+    Logger.info('Test %s', 'tVal');
+    Logger.infoP('TestP %s', 'tVal');
+
+    Logger.debug('Test %s', 'tVal');
+    Logger.debugP('TestP %s', 'tVal');
+
+    // These shouldnt run
+    Logger.verbose('Test %s', 'tVal');
+    Logger.verboseP('TestP %s', 'tVal');
+
+    Logger.silly('Test %s', 'tVal');
+    Logger.sillyP('TestP %s', 'tVal');
+
+    Logger.setLevelByName('debug');
+  });
+});
