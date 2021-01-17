@@ -10,6 +10,11 @@ import { NumberRatchet } from '../../src/common/number-ratchet';
 
 describe('#geolocationRatchet', function () {
   it('should canonicalize', function () {
+    expect(GeolocationRatchet.combineBounds([])).to.be.null;
+    expect(GeolocationRatchet.combineBounds(null)).to.be.null;
+  });
+
+  it('should canonicalize', function () {
     const bounds: RatchetLocationBounds = {
       origin: {
         lat: 4,

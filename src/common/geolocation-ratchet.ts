@@ -177,16 +177,19 @@ export class GeolocationRatchet {
   }
 
   public static combineBounds(inp: RatchetLocationBounds[]): RatchetLocationBounds {
-    const rval: RatchetLocationBounds = {
-      origin: {
-        lat: inp.map((i) => i.origin.lat).reduce((a, i) => Math.min(a, i)),
-        lng: inp.map((i) => i.origin.lng).reduce((a, i) => Math.min(a, i)),
-      },
-      extent: {
-        lat: inp.map((i) => i.extent.lat).reduce((a, i) => Math.max(a, i)),
-        lng: inp.map((i) => i.extent.lng).reduce((a, i) => Math.max(a, i)),
-      },
-    };
+    let rval: RatchetLocationBounds = null;
+    if (inp && inp.length > 0) {
+      rval = {
+        origin: {
+          lat: inp.map((i) => i.origin.lat).reduce((a, i) => Math.min(a, i)),
+          lng: inp.map((i) => i.origin.lng).reduce((a, i) => Math.min(a, i)),
+        },
+        extent: {
+          lat: inp.map((i) => i.extent.lat).reduce((a, i) => Math.max(a, i)),
+          lng: inp.map((i) => i.extent.lng).reduce((a, i) => Math.max(a, i)),
+        },
+      };
+    }
     return rval;
   }
 
