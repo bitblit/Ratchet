@@ -5,6 +5,7 @@ import { ClientConfiguration } from 'aws-sdk/clients/s3';
 import * as path from 'path';
 import * as mime from 'mime-types';
 import { Logger } from '../common/logger';
+import { CliRatchet } from '../common';
 
 export class SiteUploader {
   private srcDir: string;
@@ -130,11 +131,13 @@ export class SiteUploader {
   }
 }
 
-/**
- And, in case you are running this command line...
- **/
-Logger.info('Running site uploader from command line arguments');
-const uploader: SiteUploader = SiteUploader.createFromArgs();
-if (uploader) {
-  uploader.runPump();
+if (CliRatchet.isCalledFromCLI('site-uploader')) {
+  /**
+   And, in case you are running this command line...
+   **/
+  Logger.info('Running site uploader from command line arguments');
+  const uploader: SiteUploader = SiteUploader.createFromArgs();
+  if (uploader) {
+    uploader.runPump();
+  }
 }

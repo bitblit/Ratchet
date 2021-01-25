@@ -1,4 +1,3 @@
-import 'reflect-metadata';
 import * as handlebars from 'handlebars';
 import Template = Handlebars.Template;
 import * as fetch from 'portable-fetch';
