@@ -3,8 +3,6 @@ import { ReadyToSendEmail } from './ready-to-send-email';
 import { RequireRatchet } from '../../common/require-ratchet';
 import { Logger } from '../../common/logger';
 import { SendRawEmailRequest, SendRawEmailResponse } from 'aws-sdk/clients/ses';
-import { RatchetTemplateRenderer } from './ratchet-template-renderer';
-import { S3CacheRatchet } from '../s3-cache-ratchet';
 import { StringRatchet } from '../../common/string-ratchet';
 import * as moment from 'moment-timezone';
 import { Moment } from 'moment-timezone';

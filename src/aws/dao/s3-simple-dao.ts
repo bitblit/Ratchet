@@ -2,9 +2,7 @@
     Wrap S3 with an ability to store and retrieve objects cached as json files
 */
 
-import * as AWS from 'aws-sdk';
 import { Logger } from '../../common/logger';
-import moment = require('moment');
 import { S3CacheRatchet } from '../s3-cache-ratchet';
 import { SimpleDaoItem } from './simple-dao-item';
 import { DeleteObjectOutput, PutObjectOutput } from 'aws-sdk/clients/s3';

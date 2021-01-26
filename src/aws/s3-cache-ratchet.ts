@@ -4,7 +4,7 @@
 
 import * as AWS from 'aws-sdk';
 import { Logger } from '../common/logger';
-import moment = require('moment');
+import * as moment from 'moment';
 import {
   CopyObjectOutput,
   CopyObjectRequest,

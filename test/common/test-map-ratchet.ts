@@ -3,6 +3,21 @@ import { KeyValue } from '../../src/common/key-value';
 import { MapRatchet } from '../../src/common/map-ratchet';
 
 describe('#toKeyValueList', function () {
+  it('should expand a maps nested keys', function () {
+    const test: any = { 'a.b': 'c', 'c.d[0].e': 2 };
+    const out: any = MapRatchet.expandNestedKeys<any>(test);
+
+    expect(out).is.not.null;
+    expect(out.a).is.not.null;
+    expect(out.a.b).is.not.null;
+    expect(out.a.b).to.eq('c');
+    expect(out.c).is.not.null;
+    expect(out.c.d).is.not.null;
+    expect(out.c.d.length).is.eq(1);
+    expect(out.c.d[0].e).is.not.null;
+    expect(out.c.d[0].e).to.eq(2);
+  });
+
   it('should convert a map to a key-value list and back', function () {
     const test: any = { key1: 'value1', key2: 'value2' };
 

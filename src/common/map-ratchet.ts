@@ -5,8 +5,20 @@
 import { KeyValue } from './key-value';
 import { Logger } from './logger';
 import { ErrorRatchet } from './error-ratchet';
+import { set } from 'lodash';
 
 export class MapRatchet {
+  // Takes any map with keys that are nested and expands them
+  // eg, x['a.b']=2 becomes x['a']={b:2}
+  // See lodash's set command for details on what this can do
+  public static expandNestedKeys<T>(src: any): T {
+    const rval: T = {} as T;
+    Object.keys(src).forEach((k) => {
+      set(rval, k, src[k]);
+    });
+    return rval;
+  }
+
   public static mapByUniqueProperty<T, R>(input: T[], propName: string): Map<R, T> {
     if (!input || !propName) {
       throw new Error('Neither input nor propName can be null');

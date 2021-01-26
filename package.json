@@ -28,7 +28,7 @@
     "compile": "yarn run clean && tsc",
     "watch": "tsc-watch",
     "clean": "shx rm -Rf dist",
-    "test": "mocha -r ts-node/register test/**/*.ts",
+    "test": "cross-env TS_NODE_PROJECT=\"tsconfig.testing.json\" mocha -r ts-node/register test/**/*.ts",
     "apply-circle": "node dist/circleci/apply-circle-ci-env-variables-to-files src/static/build-properties.json",
     "lint": "eslint src/**/*.ts",
     "lint-fix": "eslint --fix src/**/*.ts"
@@ -53,6 +53,7 @@
     "moment": "2.29.1",
     "moment-timezone": "0.5.32",
     "ts-enum-util": "4.0.2",
+    "lodash": "4.17.20",
     "yargs": "16.2.0"
   },
   "resolutions": {
@@ -70,6 +71,7 @@
     "aws-sdk": "2.824.0",
     "chai": "4.2.0",
     "chai-http": "4.3.0",
+    "cross-env": "7.0.3",
     "csv": "5.3.2",
     "eslint": "7.17.0",
     "eslint-config-prettier": "7.1.0",
