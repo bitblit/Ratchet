@@ -6,8 +6,6 @@
 
 import { Logger } from './logger';
 import * as fs from 'fs';
-import * as yargs from 'yargs';
-import { CliRatchet } from './cli-ratchet';
 
 export class FilesToStaticClass {
   public static async process(fileNames: string[], outClassName: string, outFileName: string = null): Promise<string> {
@@ -52,20 +50,4 @@ export class FilesToStaticClass {
 
     return rval;
   }
-}
-
-if (CliRatchet.isCalledFromCLI('files-to-static-class')) {
-  /**
-   And, in case you are running this command line...
-   TODO: should use switches to allow setting the various non-filename params
-   **/
-  Logger.info('Running FilesToStaticClass from command line arguments');
-  const argv: any = yargs
-    .usage('Usage: FilesToStaticClass -c [ClassName] -o [OutputFileName] [Files...]')
-    .demandOption(['c'])
-    .demandCommand(1).argv;
-
-  FilesToStaticClass.process(argv['_'], argv.c, argv.o).then((rval) => {
-    Logger.info('%s', rval);
-  });
 }
