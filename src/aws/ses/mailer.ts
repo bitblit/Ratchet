@@ -9,6 +9,8 @@ import { Moment } from 'moment-timezone';
 import { MailerConfig } from './mailer-config';
 import { ErrorRatchet } from '../../common/error-ratchet';
 import { ResolvedReadyToSendEmail } from './resolved-ready-to-send-email';
+import { EmailAttachment } from './email-attachment';
+import { Base64Ratchet } from '../../common';
 
 /**
  * Generic Mail Sender for AWS.
@@ -98,6 +100,66 @@ export class Mailer {
     return rval;
   }
 
+  public applyLimitsToBodySizesIfAnyInPlace(rts: ResolvedReadyToSendEmail): void {
+    if (this.config.maxMessageBodySizeInBytes) {
+      const txtSize: number = StringRatchet.trimToEmpty(rts.txtMessage).length;
+      const htmlSize: number = StringRatchet.trimToEmpty(rts.htmlMessage).length;
+      const totalSize: number = txtSize + htmlSize;
+      if (totalSize > this.config.maxMessageBodySizeInBytes) {
+        Logger.warn('Max message size is %d but size is %d - converting', this.config.maxMessageBodySizeInBytes, totalSize);
+        rts.attachments = rts.attachments || [];
+        if (StringRatchet.trimToNull(rts.txtMessage)) {
+          const txtAttach: EmailAttachment = {
+            filename: 'original-txt-body.txt',
+            contentType: 'text/plain',
+            base64Data: Base64Ratchet.generateBase64VersionOfString(rts.txtMessage),
+          };
+          rts.attachments.push(txtAttach);
+        }
+        if (StringRatchet.trimToNull(rts.htmlMessage)) {
+          const htmlAttach: EmailAttachment = {
+            filename: 'original-html-body.html',
+            contentType: 'text/html',
+            base64Data: Base64Ratchet.generateBase64VersionOfString(rts.htmlMessage),
+          };
+          rts.attachments.push(htmlAttach);
+        }
+        rts.htmlMessage = null;
+        rts.txtMessage = 'The message was too large and was converted to attachment(s).  Please see attached files for content';
+      }
+    }
+  }
+
+  public applyLimitsToAttachmentSizesIfAnyInPlace(rts: ResolvedReadyToSendEmail): void {
+    if (this.config.maxAttachmentSizeInBase64Bytes) {
+      const filtered: EmailAttachment[] = [];
+      if (rts.attachments) {
+        rts.attachments.forEach((a) => {
+          if (a.base64Data && a.base64Data.length < this.config.maxAttachmentSizeInBase64Bytes) {
+            filtered.push(a);
+          } else {
+            Logger.warn('Removing too-large attachment : %s : %s : %d', a.filename, a.contentType, a.base64Data.length);
+            filtered.push({
+              filename: 'attachment-removed-notice-' + StringRatchet.createRandomHexString(4) + '.txt',
+              contentType: 'text/plain',
+              base64Data: Base64Ratchet.generateBase64VersionOfString(
+                'Attachment ' +
+                  a.filename +
+                  ' of type ' +
+                  a.contentType +
+                  ' was removed since it was ' +
+                  a.base64Data.length +
+                  ' bytes but max allowed is ' +
+                  this.config.maxAttachmentSizeInBase64Bytes
+              ),
+            });
+          }
+        });
+      }
+      rts.attachments = filtered;
+    }
+  }
+
   public async sendEmail(inRts: ReadyToSendEmail): Promise<SendRawEmailResponse> {
     RequireRatchet.notNullOrUndefined(inRts, 'RTS must be defined');
     RequireRatchet.notNullOrUndefined(inRts.destinationAddresses, 'Destination addresses must be defined');
@@ -116,6 +178,9 @@ export class Mailer {
     rts.srcBccAddresses = inRts.bccAddresses;
     rts.destinationAddresses = toAddresses;
     rts.bccAddresses = bccAddresses;
+
+    this.applyLimitsToBodySizesIfAnyInPlace(rts);
+    this.applyLimitsToAttachmentSizesIfAnyInPlace(rts);
 
     await this.archiveEmailIfConfigured(rts);
 

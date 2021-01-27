@@ -21,4 +21,9 @@ export interface MailerConfig {
   archive?: S3CacheRatchet;
   // If set, any outbound email is archived under this prefix using the above ratchet
   archivePrefix?: string;
+  // If set, if the txt or html bodies are larger than this they will be auto-converted to attachments
+  // For SES, this should be 10485760 or less as of 2021-01-27
+  maxMessageBodySizeInBytes?: number;
+  // If set, any attachments larger than this are auto-dropped
+  maxAttachmentSizeInBase64Bytes?: number;
 }

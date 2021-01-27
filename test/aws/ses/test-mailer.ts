@@ -64,4 +64,38 @@ describe('#mailer', function () {
     expect(res2).to.not.be.null;
     expect(res2.length).to.eq(0);
   });
+
+  it('should fix a huge text/html body', async () => {
+    const ses: AWS.SES = new AWS.SES({ region: 'us-east-1' });
+    const config: MailerConfig = {
+      defaultSendingAddress: 'test@adomni.com',
+      autoBccAddresses: [], //['test2@test.com','test2@test.com'],
+      archive: null, //new S3CacheRatchet(new AWS.S3(), 'outbound-email-archive'),
+      archivePrefix: null, //'test'
+      maxMessageBodySizeInBytes: 500,
+      maxAttachmentSizeInBase64Bytes: 1000,
+    };
+    const svc: Mailer = new Mailer(ses, config);
+
+    const bigBody: string = StringRatchet.createRandomHexString(300);
+
+    const bigAttach: EmailAttachment = {
+      filename: 'test.txt',
+      contentType: 'text/plain',
+      base64Data: Base64Ratchet.generateBase64VersionOfString(StringRatchet.createRandomHexString(2000)),
+    };
+
+    const rts: ReadyToSendEmail = {
+      txtMessage: bigBody,
+      htmlMessage: bigBody,
+      subject: 'Test big message',
+      fromAddress: 'cweiss@adomni.com',
+      destinationAddresses: ['cweiss@adomni.com'],
+      attachments: [bigAttach],
+    };
+
+    const result: SendEmailResponse = await svc.sendEmail(rts);
+
+    expect(result).to.not.equal(null);
+  });
 });
