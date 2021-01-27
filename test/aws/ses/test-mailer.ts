@@ -68,7 +68,7 @@ describe('#mailer', function () {
   it('should fix a huge text/html body', async () => {
     const ses: AWS.SES = new AWS.SES({ region: 'us-east-1' });
     const config: MailerConfig = {
-      defaultSendingAddress: 'test@adomni.com',
+      defaultSendingAddress: 'test@test.com',
       autoBccAddresses: [], //['test2@test.com','test2@test.com'],
       archive: null, //new S3CacheRatchet(new AWS.S3(), 'outbound-email-archive'),
       archivePrefix: null, //'test'
@@ -89,8 +89,8 @@ describe('#mailer', function () {
       txtMessage: bigBody,
       htmlMessage: bigBody,
       subject: 'Test big message',
-      fromAddress: 'cweiss@adomni.com',
-      destinationAddresses: ['cweiss@adomni.com'],
+      fromAddress: 'test@test.com',
+      destinationAddresses: ['test@test.com'],
       attachments: [bigAttach],
     };
 
