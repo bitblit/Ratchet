@@ -9,6 +9,9 @@ defaults: &defaults
 
   docker:
     - image: bitblit/circleci-node-12.14-java-10.0.1-chrome-81-yarn-1.22
+      auth:
+        username: $BITBLIT_DOCKERHUB_USERNAME
+        password: $BITBLIT_DOCKERHUB_PASSWORD
 
 version: 2
 jobs:
