@@ -128,9 +128,13 @@ export class CsvRatchet {
     return rval;
   }
 
-  public static async streamObjectsToCsv<T>(srcSubject: Subject<T>, output: Writable, opts?: stringify.Options): Promise<number> {
+  public static async streamObjectsToCsv<T>(srcSubject: Subject<T>, output: Writable, inOpts?: stringify.Options): Promise<number> {
     RequireRatchet.notNullOrUndefined(srcSubject, 'srcSubject');
     RequireRatchet.notNullOrUndefined(output, 'output');
+    const opts: stringify.Options = inOpts || {
+      header: true,
+    };
+
     Logger.silly('Running pipe to csv output : %j', opts);
     let count: number = 0;
     const genProm: Promise<number> = new Promise<number>((res, rej) => {

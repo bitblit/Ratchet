@@ -10,13 +10,10 @@ describe('#streamObjectsToCsv', function () {
 
   it('should stream objects to a csv', async () => {
     // Logger.setLevelByName('debug');
-    const opts: stringify.Options = {
-      header: true,
-    };
     const sub: Subject<TestItem> = new Subject<TestItem>();
     const out: StringWritable = new StringWritable();
 
-    const prom: Promise<number> = CsvRatchet.streamObjectsToCsv<TestItem>(sub, out, opts);
+    const prom: Promise<number> = CsvRatchet.streamObjectsToCsv<TestItem>(sub, out); //, opts);
 
     for (let i = 1; i < 6; i++) {
       Logger.debug('Proc : %d', i);
