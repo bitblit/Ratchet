@@ -210,6 +210,7 @@ Pull requests are welcome, although I'm not sure why you'd be interested!
 - 0.9.x : Adding CLI Ratchet, updating dependant libraries for security holes
 - 0.10.x : Adding CSV comparison, updating dependant libraries, Logger passthru functions for console on browser
 - 0.11.x : Adding ec2 ratchet, barrel files, wrap classes with CLI extensions, MapRatchet expander, trying a new module output, added max sizes to mailer config
+- Added StringWritable and Streaming CSV writer, ability to stream to a Daemon target
 
 * Added CSVRatchet and AlbAthenaLogRatchet
 * Added simplePutWithCollisionAvoidance to DynamoRatchet

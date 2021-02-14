@@ -1,5 +1,4 @@
 import { Logger } from '../common/logger';
-import { StringRatchet } from '../common/string-ratchet';
 import { RequireRatchet } from '../common/require-ratchet';
 
 export class S3Ratchet {

@@ -6,6 +6,8 @@ import { StringRatchet } from '../../common/string-ratchet';
 import { DaemonProcessCreateOptions } from './daemon-process-create-options';
 import { Daemon } from './daemon';
 import { HeadObjectOutput, PutObjectOutput, PutObjectRequest } from 'aws-sdk/clients/s3';
+import { ReadStream } from 'fs';
+import { Readable, Writable } from 'stream';
 
 export class DaemonUtil {
   public static DEFAULT_CONTENT: Buffer = Buffer.from('DAEMON_PLACEHOLDER');
@@ -76,6 +78,29 @@ export class DaemonUtil {
       Logger.error('Error while trying to write a daemon stat: %j %s', newState, err);
       throw err;
     }
+  }
+
+  public static async streamDataAndFinish(cache: S3CacheRatchet, s3Key: string, data: Readable): Promise<DaemonProcessState> {
+    Logger.debug('Streaming data to %s', s3Key);
+    const inStat: DaemonProcessState = await DaemonUtil.updateMessage(cache, s3Key, 'Streaming data');
+    inStat.completedEpochMS = new Date().getTime();
+    inStat.lastUpdatedMessage = 'Complete';
+
+    const s3meta: any = {};
+    s3meta[DaemonUtil.DAEMON_METADATA_KEY] = JSON.stringify(inStat);
+
+    const params: PutObjectRequest = {
+      Bucket: cache.getDefaultBucket(),
+      Key: s3Key,
+      ContentType: inStat.contentType,
+      Metadata: s3meta,
+      Body: data,
+    };
+
+    const written: PutObjectOutput = await cache.getS3().upload(params).promise();
+    Logger.silly('Daemon wrote : %s', written);
+
+    return DaemonUtil.stat(cache, s3Key);
   }
 
   public static async updateMessage(cache: S3CacheRatchet, s3Key: string, newMessage: string): Promise<DaemonProcessState> {
