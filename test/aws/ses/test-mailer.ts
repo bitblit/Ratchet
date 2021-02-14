@@ -1,7 +1,5 @@
 import { expect } from 'chai';
-import { BooleanRatchet } from '../../../src/common/boolean-ratchet';
 import * as AWS from 'aws-sdk';
-import { S3CacheRatchet } from '../../../src/aws/s3-cache-ratchet';
 import { ReadyToSendEmail } from '../../../src/aws/ses/ready-to-send-email';
 import { SendEmailResponse } from 'aws-sdk/clients/ses';
 import { Mailer } from '../../../src/aws/ses/mailer';
@@ -65,7 +63,7 @@ describe('#mailer', function () {
     expect(res2.length).to.eq(0);
   });
 
-  it('should fix a huge text/html body', async () => {
+  xit('should fix a huge text/html body', async () => {
     const ses: AWS.SES = new AWS.SES({ region: 'us-east-1' });
     const config: MailerConfig = {
       defaultSendingAddress: 'test@test.com',

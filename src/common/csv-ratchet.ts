@@ -10,6 +10,8 @@ import { Logger } from './logger';
 import * as stringify from 'csv-stringify';
 import { RequireRatchet } from './require-ratchet';
 import { MapRatchet } from './map-ratchet';
+import { BehaviorSubject, Subject, Subscription } from 'rxjs';
+import { Writable } from 'stream';
 
 export class CsvRatchet {
   public static async streamParse<T>(readStream: ReadStream, pf: ParseFunction<T>): Promise<T[]> {
@@ -124,6 +126,46 @@ export class CsvRatchet {
     };
 
     return rval;
+  }
+
+  public static async streamObjectsToCsv<T>(srcSubject: Subject<T>, output: Writable, opts?: stringify.Options): Promise<number> {
+    RequireRatchet.notNullOrUndefined(srcSubject, 'srcSubject');
+    RequireRatchet.notNullOrUndefined(output, 'output');
+    Logger.silly('Running pipe to csv output : %j', opts);
+    let count: number = 0;
+    const genProm: Promise<number> = new Promise<number>((res, rej) => {
+      const stringifier = stringify(opts);
+      stringifier.on('error', (err) => {
+        if (sub) {
+          sub.unsubscribe();
+        }
+        rej(err);
+      });
+      stringifier.on('finish', () => {
+        if (sub) {
+          sub.unsubscribe(); // Cleanup
+        }
+        res(count);
+      });
+      stringifier.pipe(output);
+
+      const sub: Subscription = srcSubject.subscribe(
+        (next) => {
+          Logger.debug('Adding %j to csv', next);
+          count++;
+          stringifier.write(next);
+        },
+        (err) => {
+          Logger.error('Error generating : %s', err);
+          rej(err);
+        },
+        () => {
+          Logger.debug('Finished');
+          stringifier.end();
+        }
+      );
+    });
+    return genProm;
   }
 }
 
