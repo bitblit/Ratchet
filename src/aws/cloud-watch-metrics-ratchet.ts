@@ -2,7 +2,7 @@
     Service for interacting with cloudwatch
 */
 
-import * as AWS from 'aws-sdk';
+import AWS from 'aws-sdk';
 import { Logger } from '../common/logger';
 import { KeyValue } from '../common/key-value';
 import { CloudWatchMetricsUnit } from './model/cloud-watch-metrics-unit';
@@ -10,7 +10,7 @@ import { PutMetricDataInput } from 'aws-sdk/clients/cloudwatch';
 import { PromiseResult } from 'aws-sdk/lib/request';
 import { AWSError } from 'aws-sdk';
 import { DynamoCountResult } from './model/dynamo-count-result';
-import * as moment from 'moment';
+import moment from 'moment';
 import { CloudWatchMetricsMinuteLevelDynamoCountRequest } from './model/cloud-watch-metrics-minute-level-dynamo-count-request';
 
 export class CloudWatchMetricsRatchet {

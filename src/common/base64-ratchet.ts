@@ -50,7 +50,7 @@ export class Base64Ratchet {
     return Buffer.from(input, 'base64');
   }
 
-  public static base64StringToString(input: string, encoding = 'utf8'): string {
+  public static base64StringToString(input: string, encoding: BufferEncoding = 'utf8'): string {
     return Buffer.from(input, 'base64').toString(encoding);
   }
 }

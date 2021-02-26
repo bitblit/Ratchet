@@ -2,7 +2,7 @@
     Helper functions for DynamoDB
 */
 
-import * as AWS from 'aws-sdk';
+import AWS from 'aws-sdk';
 import { Logger } from '../common/logger';
 import { PromiseResult } from 'aws-sdk/lib/request';
 import { DurationRatchet } from '../common/duration-ratchet';
@@ -33,7 +33,7 @@ import { PromiseRatchet } from '../common/promise-ratchet';
 import { Object } from 'aws-sdk/clients/s3';
 import { NumberRatchet } from '../common/number-ratchet';
 import { ErrorRatchet } from '../common/error-ratchet';
-import { expect } from 'chai';
+import { Substitute } from '@fluffy-spoon/substitute';
 import { RequireRatchet } from '../common/require-ratchet';
 
 export class DynamoRatchet {

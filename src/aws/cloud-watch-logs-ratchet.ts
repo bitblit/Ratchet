@@ -2,7 +2,7 @@
     Service for interacting with cloudwatch
 */
 
-import * as AWS from 'aws-sdk';
+import AWS from 'aws-sdk';
 import { Logger } from '../common/logger';
 import {
   DeleteLogGroupRequest,

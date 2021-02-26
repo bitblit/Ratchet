@@ -1,5 +1,5 @@
 import { Logger } from '../common/logger';
-import * as AWS from 'aws-sdk';
+import AWS from 'aws-sdk';
 import { PublishInput, PublishResponse } from 'aws-sdk/clients/sns';
 
 export class SnsRatchet {

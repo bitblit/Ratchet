@@ -4,7 +4,7 @@
 
 import { TransformRule } from './transform-rule';
 import { Logger } from '../logger';
-import * as moment from 'moment';
+import moment from 'moment';
 import { NumberRatchet } from '../number-ratchet';
 
 export class BuiltInTransforms {

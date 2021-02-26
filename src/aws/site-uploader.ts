@@ -1,9 +1,9 @@
-import * as fs from 'fs';
-import * as walk from 'walk';
-import * as AWS from 'aws-sdk';
+import fs from 'fs';
+import walk from 'walk';
+import AWS from 'aws-sdk';
 import { ClientConfiguration } from 'aws-sdk/clients/s3';
-import * as path from 'path';
-import * as mime from 'mime-types';
+import path from 'path';
+import mime from 'mime-types';
 import { Logger } from '../common/logger';
 import { CliRatchet } from '../common';
 

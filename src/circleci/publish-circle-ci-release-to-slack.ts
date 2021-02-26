@@ -1,7 +1,7 @@
-import * as moment from 'moment-timezone';
+import moment from 'moment-timezone';
 import { Logger } from '../common/logger';
-import * as fetch from 'portable-fetch';
-import * as util from 'util';
+import fetch from 'portable-fetch';
+import util from 'util';
 import { GitCommitData, GitRatchet } from '../common/git-ratchet';
 import { CliRatchet } from '../common/cli-ratchet';
 

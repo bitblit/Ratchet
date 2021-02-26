@@ -1,5 +1,5 @@
 import { readFileSync, ReadStream } from 'fs';
-import * as path from 'path';
+import path from 'path';
 import { AthenaRatchet } from './athena-ratchet';
 import { Logger } from '../common/logger';
 import { RequireRatchet } from '../common/require-ratchet';

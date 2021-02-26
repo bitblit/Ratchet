@@ -1,4 +1,4 @@
-import * as process from 'child_process';
+import process from 'child_process';
 import { Logger } from './logger';
 
 // Mainly ripped from https://raw.githubusercontent.com/seymen/git-last-commit/master/source/index.js

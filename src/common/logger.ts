@@ -1,4 +1,4 @@
-import * as util from 'util';
+import util from 'util';
 import { LogMessage } from './log-message';
 import { LogSnapshot } from './log-snapshot';
 

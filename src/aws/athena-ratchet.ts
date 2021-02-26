@@ -1,4 +1,4 @@
-import * as AWS from 'aws-sdk';
+import AWS from 'aws-sdk';
 import { AWSError } from 'aws-sdk';
 import { PromiseResult } from 'aws-sdk/lib/request';
 import {
@@ -16,9 +16,9 @@ import { StopWatch } from '../common/stop-watch';
 import { PromiseRatchet } from '../common/promise-ratchet';
 import { RequireRatchet } from '../common/require-ratchet';
 import { GetObjectOutput, GetObjectRequest } from 'aws-sdk/clients/s3';
-import * as parse from 'csv-parse/lib/sync';
-import * as tmp from 'tmp';
-import * as fs from 'fs';
+import parse from 'csv-parse/lib/sync';
+import tmp from 'tmp';
+import fs from 'fs';
 import { Readable } from 'stream';
 
 export class AthenaRatchet {

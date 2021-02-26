@@ -1,4 +1,4 @@
-import * as AWS from 'aws-sdk';
+import AWS from 'aws-sdk';
 import { Logger } from '../common/logger';
 import { GetParameterResult } from 'aws-sdk/clients/ssm';
 import { AWSError } from 'aws-sdk';

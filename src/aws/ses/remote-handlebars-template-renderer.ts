@@ -1,10 +1,10 @@
-import * as handlebars from 'handlebars';
+import handlebars from 'handlebars';
 import Template = Handlebars.Template;
-import * as fetch from 'portable-fetch';
+import fetch from 'portable-fetch';
 import { StringRatchet } from '../../common/string-ratchet';
 import { Logger } from '../../common/logger';
 import { RatchetTemplateRenderer } from './ratchet-template-renderer';
-import * as layouts from 'handlebars-layouts';
+import layouts from 'handlebars-layouts';
 
 /**
  */

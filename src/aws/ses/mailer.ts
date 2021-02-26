@@ -1,10 +1,10 @@
-import * as AWS from 'aws-sdk';
+import AWS from 'aws-sdk';
 import { ReadyToSendEmail } from './ready-to-send-email';
 import { RequireRatchet } from '../../common/require-ratchet';
 import { Logger } from '../../common/logger';
 import { SendRawEmailRequest, SendRawEmailResponse } from 'aws-sdk/clients/ses';
 import { StringRatchet } from '../../common/string-ratchet';
-import * as moment from 'moment-timezone';
+import moment from 'moment-timezone';
 import { Moment } from 'moment-timezone';
 import { MailerConfig } from './mailer-config';
 import { ErrorRatchet } from '../../common/error-ratchet';

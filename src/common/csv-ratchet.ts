@@ -3,11 +3,11 @@
 */
 
 import { readFileSync, existsSync, ReadStream } from 'fs';
-import * as csvparse from 'csv-parse';
-import * as parsesync from 'csv-parse/lib/sync';
-import * as fs from 'fs';
+import csvparse from 'csv-parse';
+import parsesync from 'csv-parse/lib/sync';
+import fs from 'fs';
 import { Logger } from './logger';
-import * as stringify from 'csv-stringify';
+import stringify from 'csv-stringify';
 import { RequireRatchet } from './require-ratchet';
 import { MapRatchet } from './map-ratchet';
 import { BehaviorSubject, Subject, Subscription } from 'rxjs';

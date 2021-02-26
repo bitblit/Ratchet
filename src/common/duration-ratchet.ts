@@ -1,4 +1,4 @@
-import * as moment from 'moment-timezone';
+import moment from 'moment-timezone';
 import { DurationInputArg2, Moment } from 'moment-timezone';
 import { NumberRatchet } from './number-ratchet';
 

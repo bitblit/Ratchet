@@ -5,7 +5,7 @@
  */
 
 import { Logger } from './logger';
-import * as fs from 'fs';
+import fs from 'fs';
 
 export class FilesToStaticClass {
   public static async process(fileNames: string[], outClassName: string, outFileName: string = null): Promise<string> {

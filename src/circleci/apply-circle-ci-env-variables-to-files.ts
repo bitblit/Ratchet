@@ -1,5 +1,5 @@
-import * as fs from 'fs';
-import * as moment from 'moment-timezone';
+import fs from 'fs';
+import moment from 'moment-timezone';
 import { Logger } from '../common/logger';
 import { CliRatchet } from '../common/cli-ratchet';
 

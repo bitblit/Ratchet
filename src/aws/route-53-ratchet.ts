@@ -1,5 +1,5 @@
 import { Logger } from '../common/logger';
-import * as AWS from 'aws-sdk';
+import AWS from 'aws-sdk';
 import {
   ChangeResourceRecordSetsRequest,
   ChangeResourceRecordSetsResponse,

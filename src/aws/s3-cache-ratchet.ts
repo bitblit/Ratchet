@@ -2,9 +2,9 @@
     Wrap S3 with an ability to store and retrieve objects cached as json files
 */
 
-import * as AWS from 'aws-sdk';
+import AWS from 'aws-sdk';
 import { Logger } from '../common/logger';
-import * as moment from 'moment';
+import moment from 'moment';
 import {
   CopyObjectOutput,
   CopyObjectRequest,

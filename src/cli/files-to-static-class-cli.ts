@@ -4,7 +4,7 @@
     content to be passed through webpack safely
  */
 
-import * as yargs from 'yargs';
+import yargs from 'yargs';
 import { FilesToStaticClass, Logger } from '../common';
 
 /**

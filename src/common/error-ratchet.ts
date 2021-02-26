@@ -3,7 +3,7 @@
 */
 
 import { Logger } from './logger';
-import * as util from 'util';
+import util from 'util';
 
 export class ErrorRatchet {
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
