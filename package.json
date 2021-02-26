@@ -4,7 +4,7 @@
   "description": "Common tools for general use",
   "main": "./dist/index.js",
   "typings": "./dist/index.d.ts",
-  "files": [
+  "directories": [
     "dist"
   ],
   "contributors": [
