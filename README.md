@@ -27,8 +27,7 @@ Since this is meant to be a very generic library and therefore I don't want to p
 dependencies, I am keeping myself to very, very few upstream libraries. However, I am making the following exceptions,
 because I use these libraries in literally every project I have ever done:
 
-- Moment - because I always need better date handling than what comes with Javascript
-- Moment-Timezone - because I always need timezone specific handling of date
+- Luxon - because I always need better date handling than what comes with Javascript (was moment before 0.12.x)
 
 #### Daemon
 
