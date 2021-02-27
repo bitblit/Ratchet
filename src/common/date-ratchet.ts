@@ -1,27 +1,29 @@
-import moment from 'moment-timezone';
+import { DateTime } from 'luxon';
+import { Logger } from './logger';
 
 /*
     Functions for working with dates/moments using my preferred date format, which
-    is YYYY-MM-DD and YYYY-MM-DD_HH-MM-SS_Z
+    is yyyy-MM-dd and yyyy-MM-dd_HH-mm-ss_z
 
     If I need milliseconds I tend to just work with epochs instead
 */
 
 export class DateRatchet {
-  public static COMMON_US_DATE_FORMAT = 'MM/DD/YYYY';
-  public static DEFAULT_DATE_FORMAT = 'YYYY-MM-DD';
-  public static FULL_DATE_FORMAT = 'YYYY-MM-DD_HH_MM_SS';
+  public static COMMON_US_DATE_FORMAT = 'MM/dd/yyyy';
+  public static DEFAULT_DATE_FORMAT = 'yyyy-MM-dd';
+  public static FULL_DATE_FORMAT = 'yyyy-MM-dd_HH_mm_ss';
 
   public static formatFullDate(input: Date): string {
-    return moment(input).format(DateRatchet.FULL_DATE_FORMAT);
+    return DateTime.fromJSDate(input).toFormat(DateRatchet.FULL_DATE_FORMAT);
   }
 
   public static formatDefaultDateOnly(input: Date): string {
-    return moment(input).format(DateRatchet.DEFAULT_DATE_FORMAT);
+    return DateTime.fromJSDate(input).toFormat(DateRatchet.DEFAULT_DATE_FORMAT);
   }
 
   public static parseDefaultDate(input: string): Date {
-    return moment(input, DateRatchet.DEFAULT_DATE_FORMAT).toDate();
+    const rval: Date = DateTime.fromFormat(input, DateRatchet.DEFAULT_DATE_FORMAT).toJSDate();
+    return rval;
   }
 
   public static parseCommonUsDate(input: string): Date {
@@ -31,7 +33,7 @@ export class DateRatchet {
       if (input.indexOf('-') === 2) {
         templ = templ.split('/').join('-');
       }
-      rval = moment(input, templ).toDate();
+      rval = DateTime.fromFormat(input, templ).toJSDate();
     }
     return rval;
   }

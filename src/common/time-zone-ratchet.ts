@@ -1,4 +1,4 @@
-import moment from 'moment-timezone';
+import { DateTime, Duration } from 'luxon';
 
 /*
     Functions for working with dates specifically a given time zone
@@ -19,19 +19,25 @@ export class TimeZoneRatchet {
 
   // Returns 0-23
   public currentHour(): number {
-    const rval = moment().tz(this.timezone).hour();
+    const rval = DateTime.local().setZone(this.timezone).hour;
     return rval;
+  }
+
+  private toEpochSeconds(dt: DateTime) {
+    return Math.round(dt.toMillis() / 1000);
   }
 
   // Returns midnight in the current timezone in epoch seconds
   public startOfTodayEpochSeconds(): number {
-    const startOfToday = moment().tz(this.timezone).hour(0).minute(0).second(0).millisecond(0).unix();
+    const startOfToday = this.toEpochSeconds(
+      DateTime.local().setZone(this.timezone).set({ hour: 0, minute: 0, second: 0, millisecond: 0 })
+    );
     return startOfToday;
   }
 
   // Returns midnight of the passed timestamp in the current timezone in epoch seconds
   public startOfMatchingDayEpochSeconds(inputTS: number): number {
-    const startOfToday = moment(inputTS).tz(this.timezone).hour(0).minute(0).second(0).millisecond(0).unix();
+    const startOfToday = this.toEpochSeconds(DateTime.fromMillis(inputTS).set({ hour: 0, minute: 0, second: 0, millisecond: 0 }));
     return startOfToday;
   }
 
@@ -42,25 +48,25 @@ export class TimeZoneRatchet {
 
   // Returns the start of the current hour in epoch seconds
   public startOfCurrentHourEpochSeconds(): number {
-    const rval = moment().tz(this.timezone).minute(0).second(0).millisecond(0).unix();
+    const rval = this.toEpochSeconds(DateTime.local().setZone(this.timezone).set({ minute: 0, second: 0, millisecond: 0 }));
     return rval;
   }
 
   // Returns the start of the current minute in epoch seconds
   public startOfCurrentMinuteEpochSeconds(): number {
-    const rval = moment().tz(this.timezone).second(0).millisecond(0).unix();
+    const rval = this.toEpochSeconds(DateTime.local().setZone(this.timezone).set({ second: 0, millisecond: 0 }));
     return rval;
   }
 
   // Returns the start of the current second in epoch seconds
   public startOfCurrentSecondEpochSeconds(): number {
-    const rval = moment().tz(this.timezone).millisecond(0).unix();
+    const rval = this.toEpochSeconds(DateTime.local().setZone(this.timezone).set({ millisecond: 0 }));
     return rval;
   }
 
-  // Returns midnight in the current timezone in epoch seconds
+  // Returns midnight in the current timezone in epoch ms
   public startOfTodayEpochMS(): number {
-    const startOfToday = moment().tz(this.timezone).hour(0).minute(0).second(0).millisecond(0).toDate().getTime();
+    const startOfToday = DateTime.local().setZone(this.timezone).set({ hour: 0, minute: 0, second: 0, millisecond: 0 }).toMillis();
     return startOfToday;
   }
 

@@ -10,8 +10,8 @@ import { PutMetricDataInput } from 'aws-sdk/clients/cloudwatch';
 import { PromiseResult } from 'aws-sdk/lib/request';
 import { AWSError } from 'aws-sdk';
 import { DynamoCountResult } from './model/dynamo-count-result';
-import moment from 'moment';
 import { CloudWatchMetricsMinuteLevelDynamoCountRequest } from './model/cloud-watch-metrics-minute-level-dynamo-count-request';
+import { DateTime } from 'luxon';
 
 export class CloudWatchMetricsRatchet {
   private cw: AWS.CloudWatch;
@@ -74,7 +74,7 @@ export class CloudWatchMetricsRatchet {
     Logger.debug('%s / %s for %s are %j', req.namespace, req.metric, req.minuteUTC, cnt);
 
     const parseDateString: string = req.minuteUTC.split(' ').join('T') + ':00Z';
-    const parseDate: Date = moment(parseDateString).toDate();
+    const parseDate: Date = DateTime.fromISO(parseDateString).toJSDate();
 
     const metricRes: any = await this.writeSingleMetric(
       req.namespace,

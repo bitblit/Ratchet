@@ -55,8 +55,8 @@ describe('#formatBytes', function () {
     expect(result.key3).toEqual('value3');
   });
 
-  it('should reformat the date in dateField1 to MM-DD-YYYY', function () {
-    const result = TransformRatchet.transform(srcData, [BuiltInTransforms.reformatDateFields(['dateKey1'], 'YYYY-MM-DD', 'MM/DD/YYYY')]);
+  it('should reformat the date in dateField1 to MM-dd-yyyy', function () {
+    const result = TransformRatchet.transform(srcData, [BuiltInTransforms.reformatDateFields(['dateKey1'], 'yyyy-MM-dd', 'MM/dd/yyyy')]);
     expect(result.dateKey1).toEqual('02/01/1995');
   });
 

@@ -1,5 +1,5 @@
 import fs from 'fs';
-import moment from 'moment-timezone';
+import { DateTime } from 'luxon';
 import { Logger } from '../common/logger';
 import { CliRatchet } from '../common/cli-ratchet';
 
@@ -23,7 +23,7 @@ export class ApplyCircleCiEnvVariablesToFiles {
     const branch: string = process.env['CIRCLE_BRANCH'] || '';
     const tag: string = process.env['CIRCLE_TAG'] || '';
     const sha1: string = process.env['CIRCLE_SHA1'] || '';
-    const localTime: string = moment().tz(timezone).format('MMMM Do YYYY, h:mm:ss a z');
+    const localTime: string = DateTime.local().setZone(timezone).toFormat('MMMM Do yyyy, h:mm:ss a z');
 
     if (!buildNum) {
       throw new Error('CIRCLE_BUILD_NUM env var not set - apparently not in a CircleCI environment');

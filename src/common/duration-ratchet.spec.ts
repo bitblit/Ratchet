@@ -1,5 +1,5 @@
 import { DurationRatchet } from './duration-ratchet';
-import moment = require('moment');
+import { DateTime } from 'luxon';
 
 describe('#formatMsDuration', function () {
   it('should format less than one second', function () {
@@ -36,10 +36,11 @@ describe('#colonFormatMsDuration', function () {
 
 describe('#createSteps', function () {
   it('should create steps', function () {
-    const startEpochMS: number = moment('2019-01-01', 'YYYY-MM-DD').toDate().getTime();
-    const endEpochMS: number = moment('2019-01-05', 'YYYY-MM-DD').toDate().getTime();
+    const tt: DateTime = DateTime.fromFormat('2019-01-01', 'yyyy-MM-dd');
+    const startEpochMS: number = DateTime.fromFormat('2019-01-01', 'yyyy-MM-dd').toJSDate().getTime();
+    const endEpochMS: number = DateTime.fromFormat('2019-01-05', 'yyyy-MM-dd').toJSDate().getTime();
 
-    const steps: string[] = DurationRatchet.createSteps(startEpochMS, endEpochMS, 'etc/GMT', 'YYYY-MM-DD', 'd');
+    const steps: string[] = DurationRatchet.createSteps(startEpochMS, endEpochMS, 'etc/GMT', 'yyyy-MM-dd', { days: 1 });
 
     expect(steps.length).toEqual(4);
   });

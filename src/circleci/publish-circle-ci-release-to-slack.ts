@@ -1,4 +1,4 @@
-import moment from 'moment-timezone';
+import { DateTime } from 'luxon';
 import { Logger } from '../common/logger';
 import fetch from 'portable-fetch';
 import util from 'util';
@@ -16,7 +16,7 @@ export class PublishCircleCiReleaseToSlack {
     const branch: string = process.env['CIRCLE_BRANCH'] || '';
     const tag: string = process.env['CIRCLE_TAG'] || '';
     const sha1: string = process.env['CIRCLE_SHA1'] || '';
-    const localTime: string = moment().tz(timezone).format('MMMM Do YYYY, h:mm:ss a z');
+    const localTime: string = DateTime.local().setZone(timezone).toFormat('MMMM Do yyyy, h:mm:ss a z');
     const gitData: GitCommitData = await GitRatchet.getLastCommitSwallowException();
 
     if (!buildNum || !userName || !projectName) {

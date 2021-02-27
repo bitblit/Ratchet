@@ -1,5 +1,4 @@
-import moment from 'moment-timezone';
-import { DurationInputArg2, Moment } from 'moment-timezone';
+import { DateTime, Duration, DurationObject } from 'luxon';
 import { NumberRatchet } from './number-ratchet';
 
 /*
@@ -36,7 +35,8 @@ export class DurationRatchet {
   }
 
   public static daysBetween(d1: Date, d2: Date): number {
-    return moment(d1).diff(moment(d2), 'days');
+    const dur: Duration = DateTime.fromJSDate(d1).diff(DateTime.fromJSDate(d2));
+    return dur.days;
   }
 
   public static createSteps(
@@ -44,15 +44,15 @@ export class DurationRatchet {
     endEpochMS: number,
     timezone: string,
     outputFormat: string,
-    stepUnit: DurationInputArg2
+    stepUnit: DurationObject
   ): string[] {
-    let curDate: Moment = moment.tz(startEpochMS, timezone);
-    const endDate: Moment = moment(endEpochMS);
+    let curDate: DateTime = DateTime.fromMillis(startEpochMS).setZone(timezone);
+    const endDate: DateTime = DateTime.fromMillis(endEpochMS);
 
     const rval: string[] = [];
-    while (curDate.isBefore(endDate)) {
-      rval.push(curDate.format(outputFormat));
-      curDate = curDate.add('1', stepUnit);
+    while (curDate < endDate) {
+      rval.push(curDate.toFormat(outputFormat));
+      curDate = curDate.plus(stepUnit);
     }
 
     return rval;

@@ -4,13 +4,12 @@ import { RequireRatchet } from '../../common/require-ratchet';
 import { Logger } from '../../common/logger';
 import { SendRawEmailRequest, SendRawEmailResponse } from 'aws-sdk/clients/ses';
 import { StringRatchet } from '../../common/string-ratchet';
-import moment from 'moment-timezone';
-import { Moment } from 'moment-timezone';
 import { MailerConfig } from './mailer-config';
 import { ErrorRatchet } from '../../common/error-ratchet';
 import { ResolvedReadyToSendEmail } from './resolved-ready-to-send-email';
 import { EmailAttachment } from './email-attachment';
 import { Base64Ratchet } from '../../common';
+import { DateTime } from 'luxon';
 
 /**
  * Generic Mail Sender for AWS.
@@ -77,18 +76,18 @@ export class Mailer {
       if (!targetPath.endsWith('/')) {
         targetPath += '/';
       }
-      const now: Moment = moment().tz('etc/GMT');
+      const now: DateTime = DateTime.utc();
       targetPath +=
         'year=' +
-        now.format('YYYY') +
+        now.toFormat('yyyy') +
         '/month=' +
-        now.format('MM') +
+        now.toFormat('MM') +
         '/day=' +
-        now.format('DD') +
+        now.toFormat('dd') +
         '/hour=' +
-        now.format('HH') +
+        now.toFormat('HH') +
         '/' +
-        now.format('mm_ss__SSS');
+        now.toFormat('mm_ss__SSS');
       targetPath += '.json';
       try {
         await this.config.archive.writeObjectToCacheFile(targetPath, rts);

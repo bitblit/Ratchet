@@ -4,7 +4,7 @@
 
 import AWS from 'aws-sdk';
 import { Logger } from '../common/logger';
-import moment from 'moment';
+import { DateTime } from 'luxon';
 import {
   CopyObjectOutput,
   CopyObjectRequest,
@@ -181,8 +181,7 @@ export class S3CacheRatchet {
     try {
       const res: HeadObjectOutput = await this.fetchMetaForCacheFile(key, bucket);
       if (res && res.LastModified) {
-        const mom = moment(res.LastModified);
-        return moment().unix() - mom.unix();
+        return Math.floor((new Date().getTime() - res.LastModified.getTime()) / 1000);
       } else {
         Logger.warn('Cache file %s %s had no last modified returning null', this.bucketVal(bucket), key);
         return null;

@@ -11,7 +11,7 @@ export interface CloudWatchMetricsMinuteLevelDynamoCountRequest {
   query: QueryInput;
   scan: ScanInput;
 
-  minuteUTC: string; // Format YYYY-MM-DD HH:mm
+  minuteUTC: string; // Format yyyy-MM-dd HH:mm
   namespace: string;
   metric: string;
   dims: KeyValue[];

@@ -4,8 +4,8 @@
 
 import { TransformRule } from './transform-rule';
 import { Logger } from '../logger';
-import moment from 'moment';
 import { NumberRatchet } from '../number-ratchet';
+import { DateTime } from 'luxon';
 
 export class BuiltInTransforms {
   public static keysOnly(rule: TransformRule): TransformRule {
@@ -200,8 +200,8 @@ export class BuiltInTransforms {
             const oldValue = value[key];
             if (oldValue != null) {
               try {
-                const parsed = moment(oldValue, oldFormat);
-                const newValue = parsed.format(newFormat);
+                const parsed: DateTime = DateTime.fromFormat(oldValue, oldFormat);
+                const newValue: string = parsed.toFormat(newFormat);
                 value[key] = newValue;
               } catch (err) {
                 Logger.warn('Failed to reparse date %s in format %s : %s', oldValue, oldFormat, err);
