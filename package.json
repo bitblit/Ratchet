@@ -27,8 +27,10 @@
     "prepublishOnly": "yarn run clean-compile",
     "clean-compile": "yarn run clean && yarn run compile",
     "compile": "tsc",
+    "compile-2": "tsc -m es6 --outDir lib-esm",
+    "webpack": "webpack --mode production",
     "watch": "tsc-watch",
-    "clean": "shx rm -Rf dist",
+    "clean": "shx rm -Rf lib bundles temp",
     "compile-test": "yarn compile && yarn test",
     "test": "jest",
     "apply-circle": "node dist/circleci/apply-circle-ci-env-variables-to-files src/static/build-properties.json",
@@ -54,8 +56,7 @@
   "dependencies": {
     "lodash": "4.17.21",
     "luxon": "1.26.0",
-    "ts-enum-util": "4.0.2",
-    "yargs": "16.2.0"
+    "ts-enum-util": "4.0.2"
   },
   "resolutions": {
     "lodash": "^4.17.20",
@@ -90,6 +91,13 @@
     "ts-node": "9.1.1",
     "tsc-watch": "4.2.9",
     "typescript": "4.2.2",
-    "walk": "2.3.14"
+    "walk": "2.3.14",
+    "circular-dependency-plugin": "5.0.2",
+    "awesome-typescript-loader": "5.2.1",
+    "webpack-node-externals": "2.5.2",
+    "uglifyjs-webpack-plugin": "2.1.2",
+    "webpack": "4.29.6",
+    "webpack-bundle-analyzer": "3.9.0",
+    "webpack-cli": "3.2.3"
   }
 }

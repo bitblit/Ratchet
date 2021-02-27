@@ -10,11 +10,11 @@ import {
   StartQueryExecutionInput,
   StartQueryExecutionOutput,
 } from 'aws-sdk/clients/athena';
-import { StringRatchet } from '../common/string-ratchet';
-import { Logger } from '../common/logger';
-import { StopWatch } from '../common/stop-watch';
-import { PromiseRatchet } from '../common/promise-ratchet';
-import { RequireRatchet } from '../common/require-ratchet';
+import { StringRatchet } from '../../common/string-ratchet';
+import { Logger } from '../../common/logger';
+import { StopWatch } from '../../common/stop-watch';
+import { PromiseRatchet } from '../../common/promise-ratchet';
+import { RequireRatchet } from '../../common/require-ratchet';
 import { GetObjectOutput, GetObjectRequest } from 'aws-sdk/clients/s3';
 import parse from 'csv-parse/lib/sync';
 import tmp from 'tmp';

@@ -1,8 +1,8 @@
 import AWS from 'aws-sdk';
 import { AthenaRatchet } from './athena-ratchet';
-import { Logger } from '../common/logger';
+import { Logger } from '../../common/logger';
 import { AlbAthenaLogRatchet, AlbLogRecord, AlbLogRecordQuery } from './alb-athena-log-ratchet';
-import { TimeZoneRatchet } from '../common/time-zone-ratchet';
+import { TimeZoneRatchet } from '../../common/time-zone-ratchet';
 
 describe('#AlbAthenaLogRatchet', function () {
   xit('should test a query', async () => {

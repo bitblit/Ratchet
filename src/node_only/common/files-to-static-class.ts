@@ -4,7 +4,7 @@
     content to be passed through webpack safely
  */
 
-import { Logger } from './logger';
+import { Logger } from '../../common/logger';
 import fs from 'fs';
 
 export class FilesToStaticClass {

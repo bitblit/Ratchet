@@ -1,4 +1,4 @@
-import { Logger } from '../common/logger';
+import { Logger } from '../../common/logger';
 import { PublishCircleCiReleaseToSlack } from './publish-circle-ci-release-to-slack';
 
 describe('#publishCircleCiReleaseToSlack', function () {

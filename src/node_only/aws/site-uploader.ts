@@ -4,8 +4,8 @@ import AWS from 'aws-sdk';
 import { ClientConfiguration } from 'aws-sdk/clients/s3';
 import path from 'path';
 import mime from 'mime-types';
-import { Logger } from '../common/logger';
-import { CliRatchet } from '../common';
+import { Logger } from '../../common/logger';
+import { CliRatchet } from '../../common';
 
 export class SiteUploader {
   private srcDir: string;

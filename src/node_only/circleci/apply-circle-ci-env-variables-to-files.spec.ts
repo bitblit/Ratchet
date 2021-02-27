@@ -1,5 +1,5 @@
 import { ApplyCircleCiEnvVariablesToFiles } from './apply-circle-ci-env-variables-to-files';
-import { Logger } from '../common/logger';
+import { Logger } from '../../common/logger';
 
 describe('#applyCircleCiEnvVariablesToFiles', function () {
   it('should fail if not in a circle ci environment', async () => {

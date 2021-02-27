@@ -1,9 +1,10 @@
-import { CsvRatchet, Logger, PromiseRatchet } from './index';
+import { Logger, PromiseRatchet } from '../../common';
 import { Subject } from 'rxjs';
-import { StringWritable } from '../stream/string-writable';
+import { StringWritable } from '../../stream/string-writable';
 import { Duplex, PassThrough } from 'stream';
 import AWS from 'aws-sdk';
-import { DaemonProcessCreateOptions, DaemonProcessState, DaemonUtil, S3CacheRatchet } from '../aws';
+import { DaemonProcessCreateOptions, DaemonProcessState, DaemonUtil, S3CacheRatchet } from '../../aws';
+import { CsvRatchet } from './csv-ratchet';
 
 describe('#streamObjectsToCsv', function () {
   xit('should stream objects to a csv', async () => {

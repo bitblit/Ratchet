@@ -1,7 +1,7 @@
 import fs from 'fs';
 import { DateTime } from 'luxon';
-import { Logger } from '../common/logger';
-import { CliRatchet } from '../common/cli-ratchet';
+import { Logger } from '../../common/logger';
+import { CliRatchet } from '../../common/cli-ratchet';
 
 export class ApplyCircleCiEnvVariablesToFiles {
   public static async process(
