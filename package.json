@@ -2,11 +2,11 @@
   "name": "@bitblit/ratchet",
   "version": "0.12.7",
   "description": "Common tools for general use",
-  "main": "./dist/index.js",
-  "typings": "./dist/index.d.ts",
-  "directories": [
-    "dist"
+  "files": [
+    "bundles"
   ],
+  "main": "./lib/index.js",
+  "typings": "./lib/index.d.ts",
   "contributors": [
     "Christopher Weiss <bitblit@gmail.com>",
     "William Weiss <npm@codification.org>",
@@ -24,7 +24,7 @@
   },
   "config": {},
   "scripts": {
-    "prepublishOnly": "yarn run clean-compile",
+    "prepublishOnly": "yarn run clean && yarn run webpack",
     "clean-compile": "yarn run clean && yarn run compile",
     "compile": "tsc",
     "compile-2": "tsc -m es6 --outDir lib-esm",

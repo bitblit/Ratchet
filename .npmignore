@@ -1,11 +1,5 @@
-circle.yml
-gulpfile.js
-tslint.json
-.idea
-*.iml
+.*
+**/tsconfig.json
+**/webpack.config.js
 node_modules
-npm-debug.log
-cw-test.ts
-typings
-*.bak
-*.spec.*
+src
