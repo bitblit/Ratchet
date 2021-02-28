@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs';
 import { Observer } from 'rxjs';
 import { race } from 'rxjs';
-import { TimeoutToken } from './timeout-token';
+import { TimeoutToken } from '../common/timeout-token';
 
 /**
  * A class for simplifying working with rxjs observables.
