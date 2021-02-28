@@ -73,6 +73,7 @@ let browserConfig = {
   ],
   module: {
     rules: [
+      // { test: /\.json$/, loader: 'json-loader' },
       { test: /\.ts$/, loader: 'awesome-typescript-loader' },
       { test: /\.mjs$/, type: 'javascript/auto' },
     ],
@@ -161,6 +162,7 @@ let nodeConfig = {
   ],
   module: {
     rules: [
+      // { test: /\.json$/, loader: 'json-loader' },
       { test: /\.ts$/, loader: 'awesome-typescript-loader' },
       { test: /\.mjs$/, type: 'javascript/auto' },
     ],
