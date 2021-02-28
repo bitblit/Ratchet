@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "es6",
     "module": "commonjs",
     "declaration": true,
     "sourceMap": true,
@@ -19,7 +19,7 @@
     "preserveConstEnums": true,
     "suppressImplicitAnyIndexErrors": true,
     "forceConsistentCasingInFileNames": true,
-    "lib": ["es2015", "dom"]
+    "lib": ["es2015", "es6", "dom"]
   },
   "include": ["src/**/*.ts"],
   "exclude": ["node_modules", "build", "webpack"],

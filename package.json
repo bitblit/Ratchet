@@ -1,9 +1,9 @@
 {
   "name": "@bitblit/ratchet",
-  "version": "0.12.7",
+  "version": "0.0.0",
   "description": "Common tools for general use",
   "files": [
-    "bundles"
+    "lib"
   ],
   "main": "./lib/index.js",
   "typings": "./lib/index.d.ts",
@@ -24,16 +24,15 @@
   },
   "config": {},
   "scripts": {
-    "prepublishOnly": "yarn run clean && yarn run webpack",
-    "clean-compile": "yarn run clean && yarn run compile",
+    "copy-static-files": "shx cp -R src/static lib",
+    "clean-compile": "yarn run clean && yarn run compile && yarn copy-static-files",
     "compile": "tsc",
-    "compile-2": "tsc -m es6 --outDir lib-esm",
     "webpack": "webpack --mode production",
     "watch": "tsc-watch",
     "clean": "shx rm -Rf lib bundles temp",
     "compile-test": "yarn compile && yarn test",
     "test": "jest",
-    "apply-circle": "node lib/node-only/circleci/apply-circle-ci-env-variables-to-files src/static/build-properties.json",
+    "apply-circle": "node lib/node-only/circleci/apply-circle-ci-env-variables-to-files lib/static/build-properties.json",
     "lint": "eslint src/**/*.ts",
     "lint-fix": "eslint --fix src/**/*.ts"
   },

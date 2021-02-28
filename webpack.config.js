@@ -190,4 +190,4 @@ let nodeConfig = {
   },
 };
 
-module.exports = [browserConfig, nodeConfig];
+module.exports = [nodeConfig]; //browserConfig
