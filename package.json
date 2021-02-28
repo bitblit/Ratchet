@@ -25,7 +25,7 @@
   "config": {},
   "scripts": {
     "copy-static-files": "shx cp -R src/static lib",
-    "clean-compile": "yarn run clean && yarn run compile && yarn copy-static-files",
+    "clean-compile": "yarn run clean && yarn run generate-barrels && yarn run compile && yarn copy-static-files",
     "compile": "tsc",
     "webpack": "webpack --mode production",
     "watch": "tsc-watch",
@@ -35,7 +35,7 @@
     "apply-circle": "node lib/node-only/circleci/apply-circle-ci-env-variables-to-files lib/static/build-properties.json",
     "lint": "eslint src/**/*.ts",
     "lint-fix": "eslint --fix src/**/*.ts",
-    "generate-barrels": "barrelsby --delete"
+    "generate-barrels": "barrelsby --delete -d src"
   },
   "repository": {
     "type": "git",

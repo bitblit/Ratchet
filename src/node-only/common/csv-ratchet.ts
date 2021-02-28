@@ -2,7 +2,7 @@
     Functions for working with csv data
 */
 
-import { readFileSync, existsSync, ReadStream } from 'fs';
+import { ReadStream } from 'fs';
 import csvparse from 'csv-parse';
 import parsesync from 'csv-parse/lib/sync';
 import fs from 'fs';
@@ -10,7 +10,7 @@ import { Logger } from '../../common/logger';
 import stringify from 'csv-stringify';
 import { RequireRatchet } from '../../common/require-ratchet';
 import { MapRatchet } from '../../common/map-ratchet';
-import { BehaviorSubject, Subject, Subscription } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { Writable } from 'stream';
 
 export class CsvRatchet {

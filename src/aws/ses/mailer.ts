@@ -8,8 +8,8 @@ import { MailerConfig } from './mailer-config';
 import { ErrorRatchet } from '../../common/error-ratchet';
 import { ResolvedReadyToSendEmail } from './resolved-ready-to-send-email';
 import { EmailAttachment } from './email-attachment';
-import { Base64Ratchet } from '../../common';
 import { DateTime } from 'luxon';
+import { Base64Ratchet } from '../../common/base64-ratchet';
 
 /**
  * Generic Mail Sender for AWS.
