@@ -82,7 +82,7 @@ jobs:
       # These shouldn't be necessary but circle mysteriously failing on 12/18/18 after working before
       - run: yarn install
       - run: echo Updating props
-      - run: yarn clean
+      - run: yarn clean-compile
       - run: yarn run apply-circle
       - run: yarn webpack
       - run: yarn publish --no-git-tag-version --non-interactive --new-version 0.13.$CIRCLE_BUILD_NUM
@@ -104,7 +104,7 @@ jobs:
       # These shouldn't be necessary but circle mysteriously failing on 12/18/18 after working before
       - run: yarn install
       - run: echo Updating props
-      - run: yarn clean
+      - run: yarn clean-compile
       - run: yarn run apply-circle
       - run: yarn webpack
       - run: yarn publish --no-git-tag-version --non-interactive --new-version 0.13.$CIRCLE_BUILD_NUM-alpha
