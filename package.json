@@ -35,7 +35,7 @@
     "apply-circle": "node lib/node-only/circleci/apply-circle-ci-env-variables-to-files lib/static/build-properties.json",
     "lint": "eslint src/**/*.ts",
     "lint-fix": "eslint --fix src/**/*.ts",
-    "generate-barrels": "barrelsby --delete -d src"
+    "generate-barrels": "barrelsby --delete -d src -l below"
   },
   "repository": {
     "type": "git",
