@@ -24,13 +24,11 @@
   },
   "config": {},
   "scripts": {
+    "prepare-to-publish": "yarn generate-barrels && yarn clean-compile && yarn run apply-circle && yarn remove-compiled-tests",
     "copy-static-files": "shx cp -R src/static lib",
     "clean-compile": "yarn run clean && yarn run generate-barrels && yarn run compile && yarn copy-static-files",
     "compile": "tsc",
-    "webpack": "webpack --mode production",
     "watch": "tsc-watch",
-    "remove-compiled-tests_": " cd lib && (shx find . -name '*.spec.d.ts' -delete) && (shx find . -name '*.spec.js' -delete) &&  (shx find . -name '*.spec.js.map' -delete)",
-    "remove-compiled-tests__": "cd lib && rimraf -r *.spec.d.ts && rimraf -r *.spec.js && rimraf -r *.spec.js.map",
     "remove-compiled-tests": "rimraf ./lib/**/*.spec.d.ts && rimraf ./lib/**/*.spec.js && rimraf ./lib/**/*.spec.js.map",
     "clean": "shx rm -Rf lib bundles temp",
     "compile-test": "yarn compile && yarn test",
@@ -99,11 +97,6 @@
     "ts-node": "9.1.1",
     "tsc-watch": "4.2.9",
     "typescript": "4.2.2",
-    "uglifyjs-webpack-plugin": "2.1.2",
-    "walk": "2.3.14",
-    "webpack": "4.29.6",
-    "webpack-bundle-analyzer": "3.9.0",
-    "webpack-cli": "3.2.3",
-    "webpack-node-externals": "2.5.2"
+    "walk": "2.3.14"
   }
 }
