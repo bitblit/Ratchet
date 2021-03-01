@@ -3,5 +3,4 @@
  */
 
 export * from './histogram-entry';
-export * from './histogram.spec';
 export * from './histogram';
