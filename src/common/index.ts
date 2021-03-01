@@ -37,8 +37,6 @@ export * from './no.spec';
 export * from './no';
 export * from './number-ratchet.spec';
 export * from './number-ratchet';
-export * from '../rxjs/observable-ratchet.spec';
-export * from '../rxjs/observable-ratchet';
 export * from './parsed-url';
 export * from './promise-ratchet.spec';
 export * from './promise-ratchet';
