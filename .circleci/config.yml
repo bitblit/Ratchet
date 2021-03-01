@@ -104,6 +104,7 @@ jobs:
       # These shouldn't be necessary but circle mysteriously failing on 12/18/18 after working before
       - run: yarn install
       - run: echo Updating props
+      - run: yarn generate-barrels
       - run: yarn clean-compile
       - run: yarn run apply-circle
       - run: yarn remove-compiled-tests
