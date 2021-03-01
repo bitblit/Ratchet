@@ -29,6 +29,9 @@ because I use these libraries in literally every project I have ever done:
 
 - Luxon - because I always need better date handling than what comes with Javascript (was moment before 0.12.x)
 
+* Note on barrel files - All of Ratchet's barrel files are one level down. This is because otherwise everything
+  I said above about transitive dependencies gets thrown out the window if you put them all in one big barrel file
+
 #### Daemon
 
 The Daemon subpackage is to handle the case on AWS where you want to run a process asynchronously via Lambda (not waiting
