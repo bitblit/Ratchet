@@ -3,10 +3,10 @@
   "version": "0.0.0",
   "description": "Common tools for general use",
   "files": [
-    "lib"
+    "dist"
   ],
-  "main": "./lib/index.js",
-  "typings": "./lib/index.d.ts",
+  "main": "./dist/index.js",
+  "typings": "./dist/index.d.ts",
   "contributors": [
     "Christopher Weiss <bitblit@gmail.com>",
     "William Weiss <npm@codification.org>",
@@ -24,8 +24,8 @@
   },
   "config": {},
   "scripts": {
-    "prepare-to-publish": "yarn generate-barrels && yarn clean-compile && yarn run apply-circle && yarn remove-compiled-tests",
-    "copy-static-files": "shx cp -R src/static lib",
+    "prepare-to-publish": "yarn clean-compile && yarn run apply-circle && yarn remove-compiled-tests",
+    "copy-static-files": "shx cp -R src/static dist",
     "clean-compile": "yarn run clean && yarn run generate-barrels && yarn run compile && yarn copy-static-files",
     "compile": "tsc",
     "watch": "tsc-watch",
@@ -33,7 +33,7 @@
     "clean": "shx rm -Rf lib bundles temp",
     "compile-test": "yarn compile && yarn test",
     "test": "jest",
-    "apply-circle": "node lib/node-only/circleci/apply-circle-ci-env-variables-to-files lib/static/build-properties.json",
+    "apply-circle": "node dist/node-only/circleci/apply-circle-ci-env-variables-to-files dist/static/build-properties.json",
     "lint": "eslint src/**/*.ts",
     "lint-fix": "eslint --fix src/**/*.ts",
     "generate-barrels": "barrelsby --delete -d src -l below -e .*\\.spec\\.ts"
