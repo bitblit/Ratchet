@@ -63,7 +63,8 @@
     "lodash": "^4.17.21",
     "node-fetch": "^2.6.1",
     "minimist": "^1.2.5",
-    "y18n": "^4.0.1"
+    "y18n": "^4.0.1",
+    "hosted-git-info": "^2.8.9"
   },
   "devDependencies": {
     "@types/aws-lambda": "8.10.76",
