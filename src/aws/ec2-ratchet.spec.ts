@@ -1,4 +1,3 @@
-import { Substitute } from '@fluffy-spoon/substitute';
 import { SendSSHPublicKeyResponse } from 'aws-sdk/clients/ec2instanceconnect';
 import fs from 'fs';
 import path from 'path';

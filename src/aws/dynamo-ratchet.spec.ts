@@ -1,4 +1,3 @@
-import { Substitute } from '@fluffy-spoon/substitute';
 import AWS from 'aws-sdk';
 import { DynamoRatchet } from './dynamo-ratchet';
 import { Logger } from '../common/logger';

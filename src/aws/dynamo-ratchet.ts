@@ -33,7 +33,6 @@ import { PromiseRatchet } from '../common/promise-ratchet';
 import { Object } from 'aws-sdk/clients/s3';
 import { NumberRatchet } from '../common/number-ratchet';
 import { ErrorRatchet } from '../common/error-ratchet';
-import { Substitute } from '@fluffy-spoon/substitute';
 import { RequireRatchet } from '../common/require-ratchet';
 
 export class DynamoRatchet {
@@ -57,7 +56,7 @@ export class DynamoRatchet {
     return scanOutput.Items.length === 0;
   }
 
-  public async fullyExecuteQueryCount<T>(qry: QueryInput, delayMS = 0): Promise<DynamoCountResult> {
+  public async fullyExecuteQueryCount(qry: QueryInput, delayMS = 0): Promise<DynamoCountResult> {
     try {
       qry.Select = 'COUNT'; // Force it to be a count query
       Logger.debug('Executing count query : %j', qry);
@@ -106,7 +105,7 @@ export class DynamoRatchet {
       Logger.debug('Pulling %j', qry);
 
       let qryResults: QueryOutput = await this.awsDDB.query(qry).promise();
-      rval = rval.concat((qryResults.Items as any[]) as T[]);
+      rval = rval.concat(qryResults.Items as any[] as T[]);
 
       let pages = 0;
       let blankPages = 0;
@@ -116,7 +115,7 @@ export class DynamoRatchet {
         Logger.silly('Found more rows - requery with key %j', qryResults.LastEvaluatedKey);
         qry['ExclusiveStartKey'] = qryResults.LastEvaluatedKey;
         qryResults = await this.awsDDB.query(qry).promise();
-        rval = rval.concat((qryResults.Items as any[]) as T[]);
+        rval = rval.concat(qryResults.Items as any[] as T[]);
         Logger.silly('Rval is now %d items', rval.length);
         pages++;
         blankPages += qryResults.Count === 0 ? 1 : 0;
@@ -140,7 +139,7 @@ export class DynamoRatchet {
     }
   }
 
-  public async fullyExecuteScanCount<T>(qry: ScanInput, delayMS = 0): Promise<DynamoCountResult> {
+  public async fullyExecuteScanCount(qry: ScanInput, delayMS = 0): Promise<DynamoCountResult> {
     try {
       const rval: DynamoCountResult = {
         count: 0,
@@ -324,7 +323,7 @@ export class DynamoRatchet {
         const res: BatchGetItemOutput = await this.awsDDB.batchGet(input).promise();
 
         // Copy in all the data
-        rval = rval.concat((res.Responses[tableName] as unknown) as T[]);
+        rval = rval.concat(res.Responses[tableName] as unknown as T[]);
 
         // Retry anything we missed
         if (!!res.UnprocessedKeys && !!res.UnprocessedKeys[tableName] && res.UnprocessedKeys[tableName].Keys.length > 0 && tryCount < 15) {
@@ -512,7 +511,7 @@ export class DynamoRatchet {
       Logger.warn('Unable to write %j to DDB after %d provision tries and %d adjusts, giving up', params, currentTry, adjustCount);
     }
 
-    return pio ? ((params.Item as unknown) as T) : null;
+    return pio ? (params.Item as unknown as T) : null;
   }
 
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types

@@ -1,4 +1,3 @@
-import { Substitute } from '@fluffy-spoon/substitute';
 import AWS from 'aws-sdk';
 import { S3CacheRatchet } from './s3-cache-ratchet';
 import { Logger } from '../common/logger';
