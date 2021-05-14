@@ -15,7 +15,7 @@ I improve this paragraph should go away.
 
 ## Installation
 
-`npm install @bitblit/ratchet`
+`yarn install @bitblit/ratchet`
 
 ## Usage
 
@@ -48,12 +48,12 @@ Cache-Expires. If you use it you'll need to add this to your dev dependencies (s
 dependencies of Ratchet which is meant to also be used in the browser)
 
 ```
-    "walk": "^2.3.4"
+    "walk": "^2.3.14"
 ```
 
 It will expect you to provide it a configuration file. I'll document it better later, but here is an
 example of such a configuration file (an Angular app I use, with a couple of custom HTML files with no
-extensionss)
+extensions)
 
 ```json
 {
@@ -102,12 +102,12 @@ extensionss)
 ### AWS
 
 Originally I was going to package this as 2 different libraries - one for just my AWS stuff, and the other for more
-generic stuff. But then I realized that even with the AWS stuff I would bring in AWS lib as a dev dependency because
+generic stuff. Then I realized that even with the AWS stuff I would bring in AWS lib as a dev dependency because
 I do so much stuff on Lambda and Lambda already has the AWS library on it. So - Important note! If you use the
 AWS stuff in here you will need to do your own AWS dependency, something like :
 
 ```
-    "aws-sdk": "^2.533.0",
+    "aws-sdk": "^2.906.0",
 ```
 
 Or none of the AWS stuff is going to work.
@@ -118,27 +118,16 @@ while my code allows you to override the region, I always set a biased default. 
 
 #### Athena
 
-AthenaRatchet is a special case because the datasets you use with Athena tend to be so large that you'll often
+AthenaRatchet is a special case because the datasets you use with Athena tend to be so large you'll often
 need to work with only a chunk of them at a time. The AthenaRatchet depends on a couple more libraries
 that you'll need to use a chunk of the functionality - csv parses output files from Athena locally (much faster
-than having them do it) and tmp creates local tmp files for storage. It also uses 'fs' so, in case its not
-already abundantly clear, this only works in Node, not in the browser. Not that you'd do a lot of Athena
+than having them do it) and tmp creates local tmp files for storage. It also uses 'fs' so, in case it's not
+already abundantly clear, this only works in Node, not in the browser. Not that you'd do much Athena
 work in the browser anyway, but I may break this up later if I see a need for that.
 
 ```
-    "csv": "5.1.2",
-    "tmp": "0.1.0",
-```
-
-### Express
-
-There are also a few classes in here for simplifying using Express as a processor for Lambda on Node. Similarly to
-AWS above, Express is included as a dev dependency for this library - if you want to use those classes you are
-probable already including Express in your package. If not:
-
-```
-    "express": "^4.15.2",
-    "@types/express": "^4.0.33",
+    "csv": "5.5.0",
+    "tmp": "0.2.1",
 ```
 
 ### RXJS
@@ -146,34 +135,35 @@ probable already including Express in your package. If not:
 The Observable ratchet is based on Observables through RXJS. If you use it, you'll need:
 
 ```
-    "rxjs": "5.5.6",
+    "rxjs": "7.0.1",
 ```
 
 ### Handlebars and PortableFetch
 
 The simplified mailer for SES (aws/ses/mailer) can be provided with a remote template renderer, which assumes the template
-is a handlebars template. If you use it, you'll need Handlebars and PortableFetch installed:
+is a Handlebars template. If you use it, you'll need Handlebars (and Handlebars-Layouts, which isn't required but
+is highly recommended if you are doing much Handlebars work needing templates) and PortableFetch installed:
 
 ```
-    "handlebars": "4.1.2",
+    "handlebars": "4.7.7",
+    "handlebars-layouts": "3.1.4",
     "portable-fetch": "3.0.0"
 ```
 
-I use PortableFetch to keep Ratchet useable on both the client and server side.
+I use PortableFetch to keep Ratchet usable on both the client and server side.
 
 # Testing
 
-Ha! No, seriously - I am actually improving on this in Node, slowly (2018-03-23)
+Ha! No, seriously - all testing is done using Jest.  To run them:
 
-To run the tests that ARE in here,
+`yarn test`
 
-`npm test`
+# Why not X? (Where X=Lodash, Underscore, Ramda, etc...)
 
-# Why not Lodash?
-
-Honestly, because when I first started writing this I hadn't discovered Lodash yet. The odds are quite good that in
-future releases of Ratchet some duplicative functionality may end up being marked deprecated and turned into thin
-pipes into Lodash functions instead.
+Originally, my answer would be because I just didn't know about them.  I know about them now (2019) and I use them
+quite a lot myself.  Any code has impedence mismatches (either with the problem domain, or just with how I 
+_think_ about the problem) and so Ratchet is how _I_ tackle some of these.  If you think like me, Ratchet is for you!
+If not, it's ok - go use X.  We're still friends.
 
 # Deployment
 
