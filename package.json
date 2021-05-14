@@ -60,9 +60,10 @@
     "ts-enum-util": "4.0.2"
   },
   "resolutions": {
-    "lodash": "^4.17.20",
+    "lodash": "^4.17.21",
     "node-fetch": "^2.6.1",
-    "minimist": "^1.2.5"
+    "minimist": "^1.2.5",
+    "y18n": "^4.0.1"
   },
   "devDependencies": {
     "@types/aws-lambda": "8.10.76",
