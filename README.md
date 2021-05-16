@@ -152,6 +152,16 @@ is highly recommended if you are doing much Handlebars work needing templates) a
 
 I use PortableFetch to keep Ratchet usable on both the client and server side.
 
+### ModelValidator
+
+Ratchet includes a helper for validating objects that match swagger schemas in the model-validator package.  If you 
+use it, you'll need to include:
+
+```
+    "js-yaml": "4.0.0",
+    "swagger-model-validator": "3.0.20",
+```
+
 # Testing
 
 Ha! No, seriously - all testing is done using Jest.  To run them:
@@ -175,7 +185,7 @@ Following the notes from [here](https://docs.npmjs.com/getting-started/publishin
 
 For circleci using [these notes](https://circleci.com/docs/1.0/npm-continuous-deployment/)
 
-Looks like its my standard - set a release tag and push to Github, CircleCI takes care of the rest:
+Looks like it's my standard - set a release tag and push to Github, CircleCI takes care of the rest:
 
 ```
     git commit -m "New stuff"
@@ -204,6 +214,7 @@ Pull requests are welcome, although I'm not sure why you'd be interested!
 - 0.11.x : Adding ec2 ratchet, barrel files, wrap classes with CLI extensions, MapRatchet expander, trying a new module output, added max sizes to mailer config
 - Added StringWritable and Streaming CSV writer, ability to stream to a Daemon target
 - 0.12.x : Switched to Jest internally, updated libraries, switched from Moment to Luxon
+- 0.13.x : Updated libraries, moving to Barrelsby, adding model-validator
 
 * Added CSVRatchet and AlbAthenaLogRatchet
 * Added simplePutWithCollisionAvoidance to DynamoRatchet
