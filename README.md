@@ -215,6 +215,7 @@ Pull requests are welcome, although I'm not sure why you'd be interested!
 - Added StringWritable and Streaming CSV writer, ability to stream to a Daemon target
 - 0.12.x : Switched to Jest internally, updated libraries, switched from Moment to Luxon
 - 0.13.x : Updated libraries, moving to Barrelsby, adding model-validator
+- 0.14.x : Updated libraries, added streaming processors to DynamoRatchet
 
 * Added CSVRatchet and AlbAthenaLogRatchet
 * Added simplePutWithCollisionAvoidance to DynamoRatchet

@@ -96,27 +96,49 @@ export class DynamoRatchet {
   }
 
   public async fullyExecuteQuery<T>(qry: QueryInput, delayMS = 0, softLimit: number = null): Promise<T[]> {
+    const rval: T[] = [];
+    await this.fullyExecuteProcessOverQuery<T>(
+      qry,
+      async (v) => {
+        rval.push(v);
+      },
+      delayMS,
+      softLimit
+    );
+    return rval;
+  }
+
+  public async fullyExecuteProcessOverQuery<T>(
+    qry: QueryInput,
+    proc: (val: T) => Promise<void>,
+    delayMS = 0,
+    softLimit: number = null
+  ): Promise<number> {
+    let cnt: number = 0;
     try {
       Logger.debug('Executing query : %j', qry);
       const start: number = new Date().getTime();
-
-      let rval: T[] = [];
-
       Logger.debug('Pulling %j', qry);
 
       let qryResults: QueryOutput = await this.awsDDB.query(qry).promise();
-      rval = rval.concat(qryResults.Items as any[] as T[]);
+      for (let i = 0; i < qryResults.Items.length; i++) {
+        await proc(qryResults.Items[i] as unknown as T);
+        cnt++;
+      }
 
       let pages = 0;
       let blankPages = 0;
 
-      while (qryResults.LastEvaluatedKey && (softLimit === null || rval.length < softLimit) && !qry.Limit) {
+      while (qryResults.LastEvaluatedKey && (softLimit === null || cnt < softLimit) && !qry.Limit) {
         // If Limit was set on the initial query, stop after 1
         Logger.silly('Found more rows - requery with key %j', qryResults.LastEvaluatedKey);
         qry['ExclusiveStartKey'] = qryResults.LastEvaluatedKey;
         qryResults = await this.awsDDB.query(qry).promise();
-        rval = rval.concat(qryResults.Items as any[] as T[]);
-        Logger.silly('Rval is now %d items', rval.length);
+        for (let i = 0; i < qryResults.Items.length; i++) {
+          await proc(qryResults.Items[i] as unknown as T);
+          cnt++;
+        }
+        Logger.silly('Have processed %d items', cnt);
         pages++;
         blankPages += qryResults.Count === 0 ? 1 : 0;
         await PromiseRatchet.wait(delayMS);
@@ -125,21 +147,20 @@ export class DynamoRatchet {
       const end: number = new Date().getTime();
 
       Logger.debug(
-        'Finished, returned %d results in %s for %j (%d blank pages, %d total pages)',
-        rval.length,
+        'Finished, processed %d rows in %s for %j (%d blank pages, %d total pages)',
+        cnt,
         DurationRatchet.formatMsDuration(end - start, true),
         qry,
         blankPages,
         pages
       );
-      return rval;
     } catch (err) {
       Logger.error('Failed with %s, q: %j', err, qry, err);
-      return [];
     }
+    return cnt;
   }
 
-  public async fullyExecuteScanCount(qry: ScanInput, delayMS = 0): Promise<DynamoCountResult> {
+  public async fullyExecuteScanCount(scan: ScanInput, delayMS = 0): Promise<DynamoCountResult> {
     try {
       const rval: DynamoCountResult = {
         count: 0,
@@ -147,20 +168,20 @@ export class DynamoRatchet {
         pages: 0,
       };
 
-      Logger.debug('Executing scan count : %j', qry);
+      Logger.debug('Executing scan count : %j', scan);
       const start: number = new Date().getTime();
 
-      Logger.debug('Pulling %j', qry);
+      Logger.debug('Pulling %j', scan);
 
-      let qryResults: PromiseResult<any, any> = await this.awsDDB.scan(qry).promise();
+      let qryResults: PromiseResult<any, any> = await this.awsDDB.scan(scan).promise();
       rval.count += qryResults['Count'];
       rval.scannedCount += qryResults['ScannedCount'];
       rval.pages++;
 
-      while (qryResults.LastEvaluatedKey && !qry.Limit) {
+      while (qryResults.LastEvaluatedKey && !scan.Limit) {
         Logger.silly('Found more rows - requery with key %j', qryResults.LastEvaluatedKey);
-        qry['ExclusiveStartKey'] = qryResults.LastEvaluatedKey;
-        qryResults = await this.awsDDB.scan(qry).promise();
+        scan['ExclusiveStartKey'] = qryResults.LastEvaluatedKey;
+        qryResults = await this.awsDDB.scan(scan).promise();
         rval.count += qryResults['Count'];
         rval.scannedCount += qryResults['ScannedCount'];
         rval.pages++;
@@ -170,43 +191,65 @@ export class DynamoRatchet {
 
       const end: number = new Date().getTime();
 
-      Logger.debug('Finished, returned %j in %s for %j', rval, DurationRatchet.formatMsDuration(end - start, true), qry);
+      Logger.debug('Finished, returned %j in %s for %j', rval, DurationRatchet.formatMsDuration(end - start, true), scan);
       return rval;
     } catch (err) {
-      Logger.error('Failed with %s, q: %j', err, qry, err);
+      Logger.error('Failed with %s, q: %j', err, scan, err);
       return null;
     }
   }
 
-  public async fullyExecuteScan<T>(qry: ScanInput, delayMS = 0, softLimit: number = null): Promise<T[]> {
+  public async fullyExecuteScan<T>(scan: ScanInput, delayMS = 0, softLimit: number = null): Promise<T[]> {
+    const rval: T[] = [];
+    await this.fullyExecuteProcessOverScan<T>(
+      scan,
+      async (v) => {
+        rval.push(v);
+      },
+      delayMS,
+      softLimit
+    );
+    return rval;
+  }
+
+  public async fullyExecuteProcessOverScan<T>(
+    scan: ScanInput,
+    proc: (val: T) => Promise<void>,
+    delayMS = 0,
+    softLimit: number = null
+  ): Promise<number> {
+    let cnt: number = 0;
     try {
-      Logger.debug('Executing scan : %j', qry);
+      Logger.debug('Executing scan : %j', scan);
       const start: number = new Date().getTime();
 
-      let rval: T[] = [];
+      Logger.debug('Pulling %j', scan);
 
-      Logger.debug('Pulling %j', qry);
+      let qryResults: PromiseResult<any, any> = await this.awsDDB.scan(scan).promise();
+      for (let i = 0; i < qryResults.Items.length; i++) {
+        await proc(qryResults.Items[i] as unknown as T);
+        cnt++;
+      }
 
-      let qryResults: PromiseResult<any, any> = await this.awsDDB.scan(qry).promise();
-      rval = rval.concat(qryResults.Items as T[]);
-
-      while (qryResults.LastEvaluatedKey && (softLimit === null || rval.length < softLimit) && !qry.Limit) {
+      while (qryResults.LastEvaluatedKey && (softLimit === null || cnt < softLimit) && !scan.Limit) {
         Logger.silly('Found more rows - requery with key %j', qryResults.LastEvaluatedKey);
-        qry['ExclusiveStartKey'] = qryResults.LastEvaluatedKey;
-        qryResults = await this.awsDDB.scan(qry).promise();
-        rval = rval.concat(qryResults.Items);
-        Logger.silly('Rval is now %d items', rval.length);
+        scan['ExclusiveStartKey'] = qryResults.LastEvaluatedKey;
+        qryResults = await this.awsDDB.scan(scan).promise();
+        for (let i = 0; i < qryResults.Items.length; i++) {
+          await proc(qryResults.Items[i] as unknown as T);
+          cnt++;
+        }
+        Logger.silly('Rval is now %d items', cnt);
         await PromiseRatchet.wait(delayMS);
       }
 
       const end: number = new Date().getTime();
 
-      Logger.debug('Finished, returned %d results in %s for %j', rval.length, DurationRatchet.formatMsDuration(end - start, true), qry);
-      return rval;
+      Logger.debug('Finished, processed %d results in %s for %j', cnt, DurationRatchet.formatMsDuration(end - start, true), scan);
     } catch (err) {
-      Logger.error('Failed with %s, q: %j', err, qry, err);
-      return [];
+      Logger.error('Failed with %s, q: %j', err, scan, err);
     }
+    return cnt;
   }
 
   public async writeAllInBatches<T>(tableName: string, elements: T[], batchSize: number): Promise<number> {
@@ -436,6 +479,39 @@ export class DynamoRatchet {
     }
     if (!rval) {
       Logger.warn('Unable to write %j to DDB after %d tries, giving up', params, autoRetryCount);
+    }
+    return rval;
+  }
+
+  public async simplePutOnlyIfFieldIsNullOrUndefined(tableName: string, value: any, fieldName: string): Promise<boolean> {
+    let rval: boolean = false;
+    const params: PutItemInput = {
+      Item: value as any,
+      ReturnConsumedCapacity: 'TOTAL',
+      ConditionExpression: 'attribute_not_exists(#fieldName) OR #fieldName = :null ',
+      ExpressionAttributeNames: {
+        '#fieldName': fieldName,
+      } as ExpressionAttributeNameMap,
+      ExpressionAttributeValues: {
+        ':null': null,
+      } as ExpressionAttributeValueMap,
+      TableName: tableName,
+    };
+    try {
+      const wrote: PutItemOutput = await this.awsDDB.put(params).promise();
+      Logger.silly('Wrote : %j', wrote);
+      rval = true;
+    } catch (err) {
+      if (err && err.code && err.code === 'ProvisionedThroughputExceededException') {
+        // Infinite retry - probably not smart
+        Logger.debug('Exceeded write throughput for %j : (Waiting 2000 ms)', params);
+        await PromiseRatchet.wait(2000);
+      } else if (err && err.code && err.code === 'ConditionalCheckFailedException') {
+        Logger.info('Failed to write %j due to null field failure');
+        rval = false;
+      } else {
+        throw err; // We only catch throughput issues
+      }
     }
     return rval;
   }

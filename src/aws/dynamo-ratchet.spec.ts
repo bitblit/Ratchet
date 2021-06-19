@@ -1,9 +1,27 @@
 import AWS from 'aws-sdk';
 import { DynamoRatchet } from './dynamo-ratchet';
 import { Logger } from '../common/logger';
-import { ExpressionAttributeValueMap, PutItemOutput, QueryInput } from 'aws-sdk/clients/dynamodb';
+import { ExpressionAttributeValueMap, PutItemOutput, QueryInput, ScanInput } from 'aws-sdk/clients/dynamodb';
 
 describe('#atomicCounter', function () {
+  xit('should only write if a field is null', async () => {
+    const dr: DynamoRatchet = new DynamoRatchet(new AWS.DynamoDB.DocumentClient({ region: 'us-east-1' }));
+    const tableName: string = 'some-table';
+
+    const test1: any = { lockingKey: 'aaa', xx: null };
+    await dr.simplePut(tableName, test1);
+
+    const test2: any = { lockingKey: 'aaa', xx: 5 };
+    const val1: boolean = await dr.simplePutOnlyIfFieldIsNullOrUndefined(tableName, test2, 'xx');
+
+    expect(val1).toBeTruthy();
+
+    const test3: any = { lockingKey: 'aaa', xx: 7 };
+    const val2: boolean = await dr.simplePutOnlyIfFieldIsNullOrUndefined(tableName, test3, 'xx');
+
+    expect(val2).toBeFalsy();
+  });
+
   xit('should fetch items from a key-only index query', async () => {
     const dr: DynamoRatchet = new DynamoRatchet(new AWS.DynamoDB.DocumentClient({ region: 'us-east-1' }));
     const tableName: string = 'some-table';
@@ -118,5 +136,41 @@ describe('#atomicCounter', function () {
 
     const v: any = await dr.simpleGetWithCounterDecrement<any>('cwtest', { k1: 'abc', k2: 11 }, 'counter', true);
     Logger.info('Got : %j', v);
+  });
+
+  xit('should do a full query', async () => {
+    const dr: DynamoRatchet = new DynamoRatchet(new AWS.DynamoDB.DocumentClient({ region: 'us-east-1' }));
+
+    Logger.setLevelByName('debug');
+
+    const input: QueryInput = {
+      TableName: 'some-table',
+      KeyConditionExpression: 'groupId = :g',
+      ExpressionAttributeValues: {
+        ':g': 'NeonBatch',
+      } as ExpressionAttributeValueMap,
+    };
+
+    const res: any[] = await dr.fullyExecuteQuery<any>(input);
+    Logger.info('Got : %j', res);
+  });
+
+  xit('should do a process over full query', async () => {
+    const dr: DynamoRatchet = new DynamoRatchet(new AWS.DynamoDB.DocumentClient({ region: 'us-east-1' }));
+
+    Logger.setLevelByName('debug');
+
+    const input: QueryInput = {
+      TableName: 'some-table',
+      KeyConditionExpression: 'groupId = :g',
+      ExpressionAttributeValues: {
+        ':g': 'NeonBatch',
+      } as ExpressionAttributeValueMap,
+    };
+
+    const res: number = await dr.fullyExecuteProcessOverQuery(input, async (v) => {
+      Logger.info('Proc %j', v);
+    });
+    Logger.info('Got : %j', res);
   });
 });

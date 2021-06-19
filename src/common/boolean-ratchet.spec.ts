@@ -1,6 +1,16 @@
 import { BooleanRatchet } from './boolean-ratchet';
+import { NumberRatchet } from './number-ratchet';
 
 describe('#parseBool', function () {
+  it('should xxx', function () {
+    const val: string = 'false';
+    const r1: boolean = BooleanRatchet.parseBool(val);
+    const r2: boolean = BooleanRatchet.intToBool(val);
+
+    const result: boolean = BooleanRatchet.parseBool(val) || BooleanRatchet.intToBool(NumberRatchet.safeNumber(val));
+    expect(result).toEqual(false);
+  });
+
   it('should parse the string true as true', function () {
     const result = BooleanRatchet.parseBool('true');
     expect(result).toEqual(true);
