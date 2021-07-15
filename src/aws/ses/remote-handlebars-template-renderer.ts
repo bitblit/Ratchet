@@ -1,6 +1,6 @@
 import handlebars from 'handlebars';
 import Template = Handlebars.Template;
-import fetch from 'portable-fetch';
+import fetch from 'isomorphic-fetch';
 import { StringRatchet } from '../../common/string-ratchet';
 import { Logger } from '../../common/logger';
 import { RatchetTemplateRenderer } from './ratchet-template-renderer';
