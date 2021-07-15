@@ -216,6 +216,7 @@ Pull requests are welcome, although I'm not sure why you'd be interested!
 - 0.12.x : Switched to Jest internally, updated libraries, switched from Moment to Luxon
 - 0.13.x : Updated libraries, moving to Barrelsby, adding model-validator
 - 0.14.x : Updated libraries, added streaming processors to DynamoRatchet
+- 0.15.x : Replaced portable-fetch with isomorphic-fetch once I saw that portable is just a less-supported branch
 
 * Added CSVRatchet and AlbAthenaLogRatchet
 * Added simplePutWithCollisionAvoidance to DynamoRatchet
