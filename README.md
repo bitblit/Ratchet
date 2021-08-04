@@ -138,16 +138,16 @@ The Observable ratchet is based on Observables through RXJS. If you use it, you'
     "rxjs": "7.0.1",
 ```
 
-### Handlebars and PortableFetch
+### Handlebars and CrossFetch
 
 The simplified mailer for SES (aws/ses/mailer) can be provided with a remote template renderer, which assumes the template
 is a Handlebars template. If you use it, you'll need Handlebars (and Handlebars-Layouts, which isn't required but
-is highly recommended if you are doing much Handlebars work needing templates) and PortableFetch installed:
+is highly recommended if you are doing much Handlebars work needing templates) and CrossFetch installed:
 
 ```
     "handlebars": "4.7.7",
     "handlebars-layouts": "3.1.4",
-    "portable-fetch": "3.0.0"
+    "cross-fetch": "3.1.4"
 ```
 
 I use PortableFetch to keep Ratchet usable on both the client and server side.
@@ -217,6 +217,7 @@ Pull requests are welcome, although I'm not sure why you'd be interested!
 - 0.13.x : Updated libraries, moving to Barrelsby, adding model-validator
 - 0.14.x : Updated libraries, added streaming processors to DynamoRatchet
 - 0.15.x : Replaced portable-fetch with isomorphic-fetch once I saw that portable is just a less-supported branch
+- 0.16.x : Replaced isomorphic-fetch with cross-fetch since it has a "realFetch.call is not a fn" bug and is less supported
 
 * Added CSVRatchet and AlbAthenaLogRatchet
 * Added simplePutWithCollisionAvoidance to DynamoRatchet
