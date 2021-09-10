@@ -96,7 +96,7 @@ export class DynamoTableRatchet {
       const out: DescribeTableOutput = await this.awsDDB.describeTable({ TableName: tableName }).promise();
       return out;
     } catch (err) {
-      if (!!err.code && err.code === 'ResourceNotFoundException') {
+      if (!!err['code'] && err['code'] === 'ResourceNotFoundException') {
         return null;
       } else {
         throw err;

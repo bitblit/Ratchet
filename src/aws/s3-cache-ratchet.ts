@@ -59,7 +59,7 @@ export class S3CacheRatchet {
         return null;
       }
     } catch (err) {
-      if (err && err.statusCode === 404) {
+      if (err && err['statusCode'] === 404) {
         Logger.warn('Cache file %s %s not found returning null', bucket, key);
         return null;
       } else {
@@ -82,7 +82,7 @@ export class S3CacheRatchet {
     try {
       rval = await this.s3.deleteObject(params).promise();
     } catch (err) {
-      if (err && err.statusCode == 404) {
+      if (err && err['statusCode'] == 404) {
         Logger.info('Swallowing 404 deleting missing object %s %s', bucket, key);
         rval = null;
       } else {
@@ -167,7 +167,7 @@ export class S3CacheRatchet {
         })
         .promise();
     } catch (err) {
-      if (err && err.statusCode == 404) {
+      if (err && err['statusCode'] == 404) {
         Logger.warn('Cache file %s %s not found returning null', this.bucketVal(bucket), key);
         rval = null;
       } else {
@@ -187,7 +187,7 @@ export class S3CacheRatchet {
         return null;
       }
     } catch (err) {
-      if (err && err.statusCode == 404) {
+      if (err && err['statusCode'] == 404) {
         Logger.warn('Cache file %s %s not found returning null', this.bucketVal(bucket), key);
         return null;
       } else {

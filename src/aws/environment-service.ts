@@ -68,7 +68,7 @@ export class EnvironmentService {
       try {
         parsedValue = await ratchet.readCacheFileToObject<any>(path);
       } catch (err) {
-        const errCode: string = err.code || '';
+        const errCode: string = err['code'] || '';
         await PromiseRatchet.wait(backoffMultiplierMS * tryCount);
         // TODO: Recoverable errors would go here
         Logger.error('Final environment fetch error (code: %s) (cannot retry) : %s', errCode, err, err);
@@ -109,7 +109,7 @@ export class EnvironmentService {
         const value: PromiseResult<GetParameterResult, AWSError> = await ssm.getParameter(params).promise();
         toParse = value && value.Parameter && value.Parameter.Value;
       } catch (err) {
-        const errCode: string = err.code || '';
+        const errCode: string = err['code'] || '';
         if (errCode.toLowerCase().indexOf('throttlingexception') !== -1) {
           const wait: number = backoffMultiplierMS * tryCount;
           Logger.warn('Throttled while trying to read parameters - waiting %d ms and retrying (attempt %d)', wait, tryCount);

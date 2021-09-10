@@ -467,7 +467,7 @@ export class DynamoRatchet {
       try {
         rval = await this.awsDDB.put(params).promise();
       } catch (err) {
-        if (!!err && !!err.code && err.code === 'ProvisionedThroughputExceededException') {
+        if (!!err && !!err['code'] && err['code'] === 'ProvisionedThroughputExceededException') {
           const wait: number = Math.pow(2, currentTry) * 1000;
           Logger.debug('Exceeded write throughput for %j : Try %d of %d (Waiting %d ms)', params, currentTry, autoRetryCount, wait);
           await PromiseRatchet.wait(wait);
@@ -502,11 +502,11 @@ export class DynamoRatchet {
       Logger.silly('Wrote : %j', wrote);
       rval = true;
     } catch (err) {
-      if (err && err.code && err.code === 'ProvisionedThroughputExceededException') {
+      if (err && err['code'] && err['code'] === 'ProvisionedThroughputExceededException') {
         // Infinite retry - probably not smart
         Logger.debug('Exceeded write throughput for %j : (Waiting 2000 ms)', params);
         await PromiseRatchet.wait(2000);
-      } else if (err && err.code && err.code === 'ConditionalCheckFailedException') {
+      } else if (err && err['code'] && err['code'] === 'ConditionalCheckFailedException') {
         Logger.info('Failed to write %j due to null field failure');
         rval = false;
       } else {
@@ -559,12 +559,12 @@ export class DynamoRatchet {
       try {
         pio = await this.awsDDB.put(params).promise();
       } catch (err) {
-        if (err && err.code && err.code === 'ProvisionedThroughputExceededException') {
+        if (err && err['code'] && err['code'] === 'ProvisionedThroughputExceededException') {
           currentTry++;
           const wait: number = Math.pow(2, currentTry) * 1000;
           Logger.debug('Exceeded write throughput for %j : Try %d of %d (Waiting %d ms)', params, currentTry, autoRetryCount, wait);
           await PromiseRatchet.wait(wait);
-        } else if (err && err.code && err.code === 'ConditionalCheckFailedException') {
+        } else if (err && err['code'] && err['code'] === 'ConditionalCheckFailedException') {
           let newValue: T = Object.assign({}, params.Item as unknown) as T;
           Logger.info('Failed to write %j due to collision - adjusting and retrying', newValue);
           newValue = adjustFunction(newValue);
@@ -604,7 +604,7 @@ export class DynamoRatchet {
       try {
         holder = await this.awsDDB.get(params).promise();
       } catch (err) {
-        if (!!err && !!err.code && err.code === 'ProvisionedThroughputExceededException') {
+        if (!!err && !!err['code'] && err['code'] === 'ProvisionedThroughputExceededException') {
           const wait: number = Math.pow(2, currentTry) * 1000;
           Logger.debug('Exceeded read throughput for %j : Try %d of %d (Waiting %d ms)', params, currentTry, autoRetryCount, wait);
           await PromiseRatchet.wait(wait);
@@ -652,12 +652,12 @@ export class DynamoRatchet {
       try {
         holder = await this.awsDDB.update(params).promise();
       } catch (err) {
-        if (!!err && !!err.code && err.code === 'ProvisionedThroughputExceededException') {
+        if (!!err && !!err['code'] && err['code'] === 'ProvisionedThroughputExceededException') {
           const wait: number = Math.pow(2, currentTry) * 1000;
           Logger.debug('Exceeded update throughput for %j : Try %d of %d (Waiting %d ms)', params, currentTry, autoRetryCount, wait);
           await PromiseRatchet.wait(wait);
           currentTry++;
-        } else if (!!err && !!err.code && err.code === 'ConditionalCheckFailedException') {
+        } else if (!!err && !!err['code'] && err['code'] === 'ConditionalCheckFailedException') {
           Logger.info('Cannot fetch requested row (%j) - the update check failed', keys);
           updateFailed = true;
         } else {

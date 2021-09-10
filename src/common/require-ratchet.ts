@@ -34,4 +34,23 @@ export class RequireRatchet {
       }
     }
   }
+
+  public static noNullOrUndefinedValuesInRestArgs(expectedLength: number, ...restArgs: any[]): void {
+    RequireRatchet.notNullOrUndefined(restArgs, 'Source array may not be null');
+    if (expectedLength !== null && restArgs.length !== expectedLength) {
+      ErrorRatchet.throwFormattedErr('Expected array of length %d but was %d', expectedLength, restArgs.length);
+    }
+    for (let i = 0; i < restArgs.length; i++) {
+      if (restArgs[i] === null || restArgs[i] === undefined) {
+        ErrorRatchet.throwFormattedErr('Array index %d was null or undefined', i);
+      }
+    }
+  }
+
+  public static constructorArgumentsMatchLengthAndAreNonNull(): void {
+    // eslint-disable-next-line prefer-rest-params
+    const args: any[] = Array.from(arguments);
+    const len: number = this.constructor.length;
+    return RequireRatchet.noNullOrUndefinedValuesInArray(args, len);
+  }
 }

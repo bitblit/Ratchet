@@ -1,4 +1,4 @@
-import { DateTime, Duration, DurationObject } from 'luxon';
+import { DateTime, Duration, DurationLike } from 'luxon';
 import { NumberRatchet } from './number-ratchet';
 
 /*
@@ -44,7 +44,7 @@ export class DurationRatchet {
     endEpochMS: number,
     timezone: string,
     outputFormat: string,
-    stepUnit: DurationObject
+    stepUnit: DurationLike
   ): string[] {
     let curDate: DateTime = DateTime.fromMillis(startEpochMS).setZone(timezone);
     const endDate: DateTime = DateTime.fromMillis(endEpochMS);
