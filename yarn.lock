@@ -2041,7 +2041,7 @@ event-stream@=3.3.4:
 
 events@1.1.1:
   version "1.1.1"
-  resolved "http://registry.npmjs.org/events/-/events-1.1.1.tgz#9ebdb7635ad099c70dcc4c2a1f5004288e8bd924"
+  resolved "https://registry.npmjs.org/events/-/events-1.1.1.tgz#9ebdb7635ad099c70dcc4c2a1f5004288e8bd924"
 
 execa@^4.0.0:
   version "4.0.3"
@@ -3432,9 +3432,9 @@ minimist@^1.2.0, minimist@^1.2.3, minimist@^1.2.5:
   integrity sha512-FM9nNUYrRBAELZQT3xeZQ7fmMOBg6nWNmJKTcgsJeaLstP/UODVpGsr5OhXhhXg6f+qtJ8uiZ+PUxkDWcgIXLw==
 
 mixme@^0.5.1:
-  version "0.5.1"
-  resolved "https://registry.yarnpkg.com/mixme/-/mixme-0.5.1.tgz#b3da79a563b2da46efba9519830059e4c2a9e40f"
-  integrity sha512-NaeZIckeBFT7i0XBEpGyFcAE0/bLcQ9MHErTpnU3bLWVE5WZbxG5Y3fDsMxYGifTo5khDA42OquXCC2ngKJB+g==
+  version "0.5.2"
+  resolved "https://registry.yarnpkg.com/mixme/-/mixme-0.5.2.tgz#33c7e21d8e9b73abc2711c5197ae6c93f65fe0e4"
+  integrity sha512-fzzuzXSqp14Mk2eZK15yqcJHwNlLtg+EliQBO/ihYfZed9WUuDHR9ZuEUqQDD8FcW/742y0JGq8xBfL9fNsWZw==
 
 mri@^1.1.5:
   version "1.1.6"
@@ -3973,7 +3973,7 @@ safe-buffer@~5.1.1:
 
 sax@1.2.1:
   version "1.2.1"
-  resolved "http://registry.npmjs.org/sax/-/sax-1.2.1.tgz#7b8e656190b228e81a66aea748480d828cd2d37a"
+  resolved "https://registry.npmjs.org/sax/-/sax-1.2.1.tgz#7b8e656190b228e81a66aea748480d828cd2d37a"
 
 sax@>=0.6.0:
   version "1.2.4"
@@ -4718,7 +4718,7 @@ xml2js@0.4.19:
 
 xmlbuilder@~9.0.1:
   version "9.0.7"
-  resolved "http://registry.npmjs.org/xmlbuilder/-/xmlbuilder-9.0.7.tgz#132ee63d2ec5565c557e20f4c22df9aca686b10d"
+  resolved "https://registry.npmjs.org/xmlbuilder/-/xmlbuilder-9.0.7.tgz#132ee63d2ec5565c557e20f4c22df9aca686b10d"
 
 xmlchars@^2.2.0:
   version "2.2.0"
