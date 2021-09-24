@@ -9,6 +9,7 @@ export * from "./dynamo-ratchet";
 export * from "./dynamo-table-ratchet";
 export * from "./ec2-ratchet";
 export * from "./environment-service";
+export * from "./hash-spreader";
 export * from "./lambda-event-detector";
 export * from "./route-53-ratchet";
 export * from "./runtime-parameter-ratchet";
