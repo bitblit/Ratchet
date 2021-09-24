@@ -80,7 +80,7 @@
     "@types/yargs": "16.0.1",
     "@typescript-eslint/eslint-plugin": "4.31.0",
     "@typescript-eslint/parser": "4.31.0",
-    "aws-sdk": "2.987.0",
+    "aws-sdk": "2.994.0",
     "barrelsby": "2.2.0",
     "csv": "5.5.3",
     "eslint": "7.32.0",
