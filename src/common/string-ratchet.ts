@@ -2,9 +2,36 @@
     Functions for working with strings
 */
 
+import { RequireRatchet } from './require-ratchet';
+
 export class StringRatchet {
   // % isn't technically reserved but its still a pain in the butt
   public static RFC_3986_RESERVED = ['!', '*', "'", '(', ')', ';', ':', '@', '&', '=', '+', '$', ',', '/', '?', '#', '[', ']', '%'];
+
+  public static allUnique(input: string): boolean {
+    let rval: boolean = true;
+    if (input) {
+      const check: Set<string> = new Set<string>();
+      for (let i = 0; i < input.length && rval; i++) {
+        const test: string = input.charAt(i);
+        rval = !check.has(test);
+        check.add(test);
+      }
+    }
+    return rval;
+  }
+
+  public static allPermutationsOfLength(len: number, alphabet: string): string[] {
+    const rval: string[] = [];
+    if (len > 0 && alphabet && alphabet.length > 0) {
+      RequireRatchet.true(StringRatchet.allUnique(alphabet), 'Alphabet must be unique');
+      const step: string[] = len === 1 ? [''] : StringRatchet.allPermutationsOfLength(len - 1, alphabet);
+      for (let i = 0; i < alphabet.length; i++) {
+        step.forEach((s) => rval.push(alphabet.charAt(i) + s));
+      }
+    }
+    return rval;
+  }
 
   public static createType4Guid(): string {
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
