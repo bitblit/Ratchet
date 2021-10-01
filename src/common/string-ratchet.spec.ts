@@ -138,3 +138,41 @@ describe('#trimToEmpty', function () {
     expect(result).toEqual('5');
   });
 });
+
+describe('#trimStringPropertiesInPlace', function () {
+  it('should trim properties to null"', function () {
+    const test: any = {
+      a: 'test   ',
+      b: 1,
+      c: '    test',
+      d: null,
+      e: '     ',
+    };
+    const nullResult: any = StringRatchet.trimAllStringPropertiesToNullInPlace<any>(test);
+
+    expect(nullResult).not.toBeNull();
+    expect(nullResult['a']).toEqual('test');
+    expect(nullResult['b']).toEqual(1);
+    expect(nullResult['c']).toEqual('test');
+    expect(nullResult['d']).toEqual(null);
+    expect(nullResult['e']).toEqual(null);
+  });
+
+  it('should trim properties to empty"', function () {
+    const test: any = {
+      a: 'test   ',
+      b: 1,
+      c: '    test',
+      d: null,
+      e: '     ',
+    };
+    const emptyResult: any = StringRatchet.trimAllStringPropertiesToEmptyInPlace<any>(test);
+
+    expect(emptyResult).not.toBeNull();
+    expect(emptyResult['a']).toEqual('test');
+    expect(emptyResult['b']).toEqual(1);
+    expect(emptyResult['c']).toEqual('test');
+    expect(emptyResult['d']).toEqual(null);
+    expect(emptyResult['e']).toEqual('');
+  });
+});

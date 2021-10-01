@@ -163,6 +163,25 @@ export class StringRatchet {
     return x.length > 0 ? x : null;
   }
 
+  public static trimAllStringPropertiesToNullInPlace<T>(input: T): T {
+    return StringRatchet.trimAllStringPropertiesInPlace(input, false);
+  }
+
+  public static trimAllStringPropertiesToEmptyInPlace<T>(input: T): T {
+    return StringRatchet.trimAllStringPropertiesInPlace(input, true);
+  }
+
+  private static trimAllStringPropertiesInPlace<T>(input: T, toEmpty: boolean): T {
+    const dealKeys = Object.keys(input);
+    dealKeys.forEach((key) => {
+      const val = input[key];
+      if (val != null && typeof val === 'string') {
+        input[key] = toEmpty ? StringRatchet.trimToEmpty(input[key]) : StringRatchet.trimToNull(input[key]);
+      }
+    });
+    return input;
+  }
+
   public static stripNonNumeric(input: string): string {
     let rval: string = input;
     if (input != null && !StringRatchet.stringContainsOnlyNumbers(input)) {
