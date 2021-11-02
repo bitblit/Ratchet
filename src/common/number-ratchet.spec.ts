@@ -133,3 +133,19 @@ describe('#distributeItemsEvenly', function () {
     expect(test5).toBeTruthy();
   });
 });
+
+describe('#createRange', function () {
+  it('should create ranges', function () {
+    const test1: number[] = NumberRatchet.createRange(0, 5, 1);
+    expect(test1).toBeTruthy();
+    expect(test1.length).toEqual(5);
+
+    const test2: number[] = NumberRatchet.createRange(1, 5, 1);
+    expect(test2).toBeTruthy();
+    expect(test2.length).toEqual(4);
+
+    const test3: number[] = NumberRatchet.createRange(0, 10, 2);
+    expect(test3).toBeTruthy();
+    expect(test3.length).toEqual(5);
+  });
+});

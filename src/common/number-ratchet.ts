@@ -190,6 +190,17 @@ export class NumberRatchet {
 
     return rval;
   }
+
+  // Just creates an array of numbers between 2 bounds
+  public static createRange(minInclusive: number, maxExclusive: number, step: number = 1): number[] {
+    const rval: number[] = [];
+    let val: number = minInclusive;
+    while (val < maxExclusive) {
+      rval.push(val);
+      val += step;
+    }
+    return rval;
+  }
 }
 
 export interface Point2d {
