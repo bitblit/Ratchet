@@ -4,6 +4,7 @@
 
 export * from "./aws/alb-athena-log-ratchet";
 export * from "./aws/athena-ratchet";
+export * from "./aws/dynamo-exporter";
 export * from "./aws/site-uploader";
 export * from "./circleci/apply-circle-ci-env-variables-to-files";
 export * from "./circleci/publish-circle-ci-release-to-slack";

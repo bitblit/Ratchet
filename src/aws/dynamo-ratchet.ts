@@ -334,7 +334,7 @@ export class DynamoRatchet {
     return rval;
   }
 
-  public async fetchAllInBatches<T>(tableName: string, inKeys: any[][], batchSize: number): Promise<T[]> {
+  public async fetchAllInBatches<T>(tableName: string, inKeys: any[], batchSize: number): Promise<T[]> {
     if (!batchSize || batchSize < 2 || batchSize > 100) {
       throw new Error('Batch size needs to be at least 2 and no more than 100, was ' + batchSize);
     }
