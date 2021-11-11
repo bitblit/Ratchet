@@ -13,7 +13,8 @@ export class NumberRatchet {
 
   public static toFixedDecimalNumber(input: number | string, placesAfterPoint: number): number {
     const v: number = NumberRatchet.safeNumber(input);
-    return NumberRatchet.safeNumber(v.toFixed(placesAfterPoint));
+    // If v is not defined, let that bubble up...
+    return v === null || v === undefined ? v : NumberRatchet.safeNumber(v.toFixed(placesAfterPoint));
   }
 
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
