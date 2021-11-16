@@ -21,6 +21,7 @@ export * from "./daemon/daemon-process-create-options";
 export * from "./daemon/daemon-process-state";
 export * from "./daemon/daemon-util";
 export * from "./daemon/daemon";
+export * from "./dao/generic-cache-dao";
 export * from "./dao/s3-simple-dao";
 export * from "./dao/simple-dao-item";
 export * from "./model/cache-object-producer";
