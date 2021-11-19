@@ -4,7 +4,6 @@
 
 import AWS from 'aws-sdk';
 import { Logger } from '../common/logger';
-import { DateTime } from 'luxon';
 import {
   CopyObjectOutput,
   CopyObjectRequest,

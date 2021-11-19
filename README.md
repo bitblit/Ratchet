@@ -218,6 +218,7 @@ Pull requests are welcome, although I'm not sure why you'd be interested!
 - 0.14.x : Updated libraries, added streaming processors to DynamoRatchet
 - 0.15.x : Replaced portable-fetch with isomorphic-fetch once I saw that portable is just a less-supported branch
 - 0.16.x : Replaced isomorphic-fetch with cross-fetch since it has a "realFetch.call is not a fn" bug and is less supported
+- 0.17.x : Moved/Refactored SimpleCache to use different storage tech, in a non-backwards compatible way
 
 * Added CSVRatchet and AlbAthenaLogRatchet
 * Added simplePutWithCollisionAvoidance to DynamoRatchet

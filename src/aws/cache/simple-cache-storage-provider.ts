@@ -3,13 +3,13 @@
   approach.
 */
 
-import { CacheObjectWrapper } from './cache-object-wrapper';
+import { SimpleCacheObjectWrapper } from './simple-cache-object-wrapper';
 
 export interface SimpleCacheStorageProvider {
   // Reads the object from the cache and returns the wrapper.  If the
-  readFromCache<T>(cacheKey: string): Promise<CacheObjectWrapper<T>>;
-  storeInCache<T>(value: CacheObjectWrapper<T>): Promise<CacheObjectWrapper<T>>;
+  readFromCache<T>(cacheKey: string): Promise<SimpleCacheObjectWrapper<T>>;
+  storeInCache<T>(value: SimpleCacheObjectWrapper<T>): Promise<boolean>;
   removeFromCache(cacheKey: string): Promise<void>;
   clearCache(): Promise<number>;
-  readAll(): Promise<CacheObjectWrapper<any>[]>;
+  readAll(): Promise<SimpleCacheObjectWrapper<any>[]>;
 }
