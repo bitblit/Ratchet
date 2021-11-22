@@ -57,7 +57,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "lodash": "4.17.21",
-    "luxon": "2.0.2",
+    "luxon": "2.1.1",
     "ts-enum-util": "4.0.2"
   },
   "resolutions": {
@@ -74,14 +74,14 @@
     "path-parse": "^1.0.7"
   },
   "devDependencies": {
-    "@types/aws-lambda": "8.10.84",
-    "@types/luxon": "2.0.5",
+    "@types/aws-lambda": "8.10.85",
+    "@types/luxon": "2.0.7",
     "@types/node": "14.14.31",
     "@types/jest": "27.0.2",
     "@types/yargs": "16.0.1",
     "@typescript-eslint/eslint-plugin": "4.31.0",
     "@typescript-eslint/parser": "4.31.0",
-    "aws-sdk": "2.1018.0",
+    "aws-sdk": "2.1034.0",
     "barrelsby": "2.3.0",
     "csv": "5.5.3",
     "eslint": "7.32.0",
