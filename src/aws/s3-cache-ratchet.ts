@@ -18,7 +18,9 @@ import {
   PutObjectRequest,
 } from 'aws-sdk/clients/s3';
 import { RequireRatchet } from '../common/require-ratchet';
-import { ReadStream } from 'fs';
+import { PassThrough, Readable } from 'stream';
+import { StopWatch } from '../common';
+import * as stream from 'stream';
 
 export class S3CacheRatchet {
   constructor(private s3: AWS.S3, private defaultBucket: string = null) {
@@ -128,7 +130,7 @@ export class S3CacheRatchet {
 
   public async writeStreamToCacheFile(
     key: string,
-    data: ReadStream,
+    data: Readable,
     bucket: string = null,
     meta: any = {},
     cacheControl = 'max-age=30',
@@ -143,8 +145,56 @@ export class S3CacheRatchet {
       Metadata: meta,
     };
 
-    const result: PutObjectOutput = await this.s3.putObject(params).promise();
+    const result: PutObjectOutput = await this.s3.upload(params).promise();
     return result;
+  }
+
+  public async synchronize(srcPrefix: string, targetPrefix: string, targetRatchet: S3CacheRatchet = this): Promise<string[]> {
+    RequireRatchet.notNullOrUndefined(srcPrefix, 'srcPrefix');
+    RequireRatchet.notNullOrUndefined(targetPrefix, 'targetPrefix');
+    RequireRatchet.true(srcPrefix.endsWith('/'), 'srcPrefix must end in /');
+    RequireRatchet.true(targetPrefix.endsWith('/'), 'targetPrefix must end in /');
+    const rval: string[] = [];
+    const sourceFiles: string[] = await this.directChildrenOfPrefix(srcPrefix);
+    const targetFiles: string[] = await targetRatchet.directChildrenOfPrefix(targetPrefix);
+    const sw: StopWatch = new StopWatch(true);
+
+    for (let i = 0; i < sourceFiles.length; i++) {
+      const sourceFile: string = sourceFiles[i];
+      Logger.info('Processing %s : %s', sourceFile, sw.dumpExpected(i / sourceFiles.length));
+      let shouldCopy: boolean = true;
+      if (targetFiles.includes(sourceFile)) {
+        const srcMeta: HeadObjectOutput = await this.fetchMetaForCacheFile(srcPrefix + sourceFile);
+        const targetMeta: HeadObjectOutput = await targetRatchet.fetchMetaForCacheFile(targetPrefix + sourceFile);
+        if (srcMeta.ETag === targetMeta.ETag) {
+          Logger.debug('Skipping - identical');
+          shouldCopy = false;
+        }
+      }
+      if (shouldCopy) {
+        Logger.debug('Copying...');
+        const srcStream: Readable = this.fetchCacheFileAsReadable(srcPrefix + sourceFile);
+        try {
+          const written: PutObjectOutput = await targetRatchet.writeStreamToCacheFile(targetPrefix + sourceFile, srcStream);
+          Logger.silly('Write result : %j', written);
+          rval.push(sourceFile);
+        } catch (err) {
+          Logger.error('Failed to sync : %s : %s', sourceFile, err);
+        }
+      }
+    }
+
+    Logger.info('Found %d files, copied %d', sourceFiles.length, rval.length);
+    return rval;
+  }
+
+  public fetchCacheFileAsReadable(key: string, bucket: string = null): Readable {
+    const params = {
+      Bucket: this.bucketVal(bucket),
+      Key: key,
+    };
+    const res: Readable = this.s3.getObject(params).createReadStream();
+    return res;
   }
 
   public preSignedDownloadUrlForCacheFile(key: string, expirationSeconds = 3600, bucket: string = null): string {

@@ -6,6 +6,15 @@ import fs from 'fs';
 import { ReadStream } from 'fs';
 
 describe('#fileExists', function () {
+  xit('should sync 2 folders', async () => {
+    const s3: AWS.S3 = new AWS.S3({ region: 'us-east-1' });
+    const cache1: S3CacheRatchet = new S3CacheRatchet(s3, 'test1');
+    const cache2: S3CacheRatchet = new S3CacheRatchet(s3, 'test2');
+    const out: string[] = await cache1.synchronize('src/', 'dst/', cache2);
+
+    expect(out).not.toBeNull();
+  }, 60_000);
+
   xit('should return false for files that do not exist', async () => {
     const s3: AWS.S3 = new AWS.S3({ region: 'us-east-1' });
     const cache: S3CacheRatchet = new S3CacheRatchet(s3, 'test-bucket');
