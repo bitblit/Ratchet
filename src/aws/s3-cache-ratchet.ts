@@ -149,6 +149,7 @@ export class S3CacheRatchet {
     return result;
   }
 
+  // Note - for the moment this only syncs one level down.  S3 has better functions if you want more than that
   public async synchronize(srcPrefix: string, targetPrefix: string, targetRatchet: S3CacheRatchet = this): Promise<string[]> {
     RequireRatchet.notNullOrUndefined(srcPrefix, 'srcPrefix');
     RequireRatchet.notNullOrUndefined(targetPrefix, 'targetPrefix');
@@ -163,8 +164,8 @@ export class S3CacheRatchet {
       const sourceFile: string = sourceFiles[i];
       Logger.info('Processing %s : %s', sourceFile, sw.dumpExpected(i / sourceFiles.length));
       let shouldCopy: boolean = true;
+      const srcMeta: HeadObjectOutput = await this.fetchMetaForCacheFile(srcPrefix + sourceFile);
       if (targetFiles.includes(sourceFile)) {
-        const srcMeta: HeadObjectOutput = await this.fetchMetaForCacheFile(srcPrefix + sourceFile);
         const targetMeta: HeadObjectOutput = await targetRatchet.fetchMetaForCacheFile(targetPrefix + sourceFile);
         if (srcMeta.ETag === targetMeta.ETag) {
           Logger.debug('Skipping - identical');
@@ -175,7 +176,14 @@ export class S3CacheRatchet {
         Logger.debug('Copying...');
         const srcStream: Readable = this.fetchCacheFileAsReadable(srcPrefix + sourceFile);
         try {
-          const written: PutObjectOutput = await targetRatchet.writeStreamToCacheFile(targetPrefix + sourceFile, srcStream);
+          const written: PutObjectOutput = await targetRatchet.writeStreamToCacheFile(
+            targetPrefix + sourceFile,
+            srcStream,
+            undefined,
+            srcMeta.Metadata,
+            srcMeta.CacheControl,
+            srcMeta.ContentType
+          );
           Logger.silly('Write result : %j', written);
           rval.push(sourceFile);
         } catch (err) {
