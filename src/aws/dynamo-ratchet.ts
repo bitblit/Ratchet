@@ -68,22 +68,24 @@ export class DynamoRatchet {
       };
 
       const start: number = new Date().getTime();
+      let qryResults: PromiseResult<any, any> = null;
 
-      let qryResults: PromiseResult<any, any> = await this.awsDDB.query(qry).promise();
-      rval.count += qryResults['Count'];
-      rval.scannedCount += qryResults['ScannedCount'];
-      rval.pages++;
+      const myLimit: number = qry.Limit;
+      qry.Limit = null;
 
-      while (qryResults.LastEvaluatedKey && !qry.Limit) {
-        Logger.silly('Found more rows - requery with key %j', qryResults.LastEvaluatedKey);
-        qry['ExclusiveStartKey'] = qryResults.LastEvaluatedKey;
+      do {
         qryResults = await this.awsDDB.query(qry).promise();
         rval.count += qryResults['Count'];
         rval.scannedCount += qryResults['ScannedCount'];
         rval.pages++;
+        qry['ExclusiveStartKey'] = qryResults.LastEvaluatedKey;
         await PromiseRatchet.wait(delayMS);
         Logger.silly('Rval is now %j', rval);
-      }
+        if (myLimit && rval.count >= myLimit && qry['ExclusiveStartKey']) {
+          Logger.info('Aborting query since hit limit of %d', myLimit);
+          qry['ExclusiveStartKey'] = null;
+        }
+      } while (qry['ExclusiveStartKey']);
 
       const end: number = new Date().getTime();
 
@@ -162,6 +164,7 @@ export class DynamoRatchet {
 
   public async fullyExecuteScanCount(scan: ScanInput, delayMS = 0): Promise<DynamoCountResult> {
     try {
+      scan.Select = 'COUNT'; // Force it to be a count query
       const rval: DynamoCountResult = {
         count: 0,
         scannedCount: 0,
@@ -171,23 +174,24 @@ export class DynamoRatchet {
       Logger.debug('Executing scan count : %j', scan);
       const start: number = new Date().getTime();
 
-      Logger.debug('Pulling %j', scan);
+      let qryResults: PromiseResult<any, any> = null;
 
-      let qryResults: PromiseResult<any, any> = await this.awsDDB.scan(scan).promise();
-      rval.count += qryResults['Count'];
-      rval.scannedCount += qryResults['ScannedCount'];
-      rval.pages++;
+      const myLimit: number = scan.Limit;
+      scan.Limit = null;
 
-      while (qryResults.LastEvaluatedKey && !scan.Limit) {
-        Logger.silly('Found more rows - requery with key %j', qryResults.LastEvaluatedKey);
-        scan['ExclusiveStartKey'] = qryResults.LastEvaluatedKey;
+      do {
         qryResults = await this.awsDDB.scan(scan).promise();
         rval.count += qryResults['Count'];
         rval.scannedCount += qryResults['ScannedCount'];
         rval.pages++;
+        scan['ExclusiveStartKey'] = qryResults?.LastEvaluatedKey;
         await PromiseRatchet.wait(delayMS);
         Logger.silly('Rval is now %j', rval);
-      }
+        if (myLimit && rval.count >= myLimit && scan['ExclusiveStartKey']) {
+          Logger.info('Aborting scan since hit limit of %d', myLimit);
+          scan['ExclusiveStartKey'] = null;
+        }
+      } while (scan['ExclusiveStartKey']);
 
       const end: number = new Date().getTime();
 
