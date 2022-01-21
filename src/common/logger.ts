@@ -1,6 +1,7 @@
 import util from 'util';
 import { LogMessage } from './log-message';
 import { LogSnapshot } from './log-snapshot';
+import { EnumRatchet } from './enum-ratchet';
 
 /**
  * Service to setup winston, and also adds ring buffer capability if so desired.
@@ -11,8 +12,16 @@ import { LogSnapshot } from './log-snapshot';
  * and storage in a ring buffer.  If you need to do something more complicated (like logging to files,
  * multiple transports, etc) you really should just use winston directly and skip this class entirely
  */
+export enum LoggerLevelName {
+  error = 'error',
+  warn = 'warn',
+  info = 'info',
+  verbose = 'verbose',
+  debug = 'debug',
+  silly = 'silly',
+}
 export class Logger {
-  public static readonly LEVEL_NAMES: string[] = ['error', 'warn', 'info', 'verbose', 'debug', 'silly'];
+  public static readonly LEVEL_NAMES: string[] = EnumRatchet.listEnumKeys(LoggerLevelName);
   public static readonly DEFAULT_LEVEL_COLORS: string[] = ['#F00', '#FF0', '#0F0', '#0EF', '#F0F', '#000'];
 
   private static LEVEL_COLORS: string[] = Logger.DEFAULT_LEVEL_COLORS.slice(); // Start as a copy of the defaults

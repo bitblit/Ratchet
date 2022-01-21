@@ -35,3 +35,8 @@ export * from "./transform-ratchet";
 export * from "./twilio-ratchet";
 export * from "./transform/built-in-transforms";
 export * from "./transform/transform-rule";
+export * from "./tx/transaction-configuration";
+export * from "./tx/transaction-final-state";
+export * from "./tx/transaction-ratchet";
+export * from "./tx/transaction-result";
+export * from "./tx/transaction-step";
