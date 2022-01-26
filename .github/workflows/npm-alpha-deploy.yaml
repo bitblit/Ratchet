@@ -20,7 +20,7 @@ jobs:
         uses: ./.github/workflows/actions/build-env-setup
 
       - name: Apply CI vars
-        run: yarn apply-circle
+        run: yarn apply-ci-vars
         shell: bash
 
       - name: Build, Test, Package
