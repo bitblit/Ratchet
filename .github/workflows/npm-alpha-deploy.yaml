@@ -1,0 +1,35 @@
+name: Build and Deploy Website
+
+on:
+  push:
+    tags:
+      - "alpha-*"
+
+jobs:
+  build-and-deploy-website:
+    runs-on: ubuntu-latest
+
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Configure environment
+        uses: ./.github/workflows/actions/build-env-setup
+
+      - name: Apply CI vars
+        run: yarn apply-circle
+        shell: bash
+
+      - name: Build, Test, Package
+        run: yarn prepare-to-publish
+        shell: bash
+
+      - name: Deploy to NPMJS
+        run: yarn publish --no-git-tag-version --non-interactive --new-version 0.18.$CIRCLE_BUILD_NUM-alpha
+        shell: bash
+
+      - name: Save coverage reports
+        uses: ./.github/workflows/actions/test-report

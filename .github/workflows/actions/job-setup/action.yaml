@@ -1,0 +1,40 @@
+name: "Job Setup"
+description: "Initial setup for workflow jobs"
+
+runs:
+  using: "composite"
+
+  steps:
+    - name: Set CircleCI base variables
+      run: |
+        echo "CIRCLE_BUILD_NUM=${{ github.run_number }}" >> $GITHUB_ENV
+        echo "CIRCLE_SHA1=${{ github.sha }}" >> $GITHUB_ENV
+        echo "CIRCLE_USERNAME=${{ github.actor }}" >> $GITHUB_ENV
+      shell: bash
+
+    - name: Parse repo name
+      uses: actions-ecosystem/action-regex-match@v2
+      id: repo-match
+      with:
+        text: ${{ github.repository }}
+        regex: "^(?:.*)/(.*)$"
+
+    - name: Set CircleCI repo name
+      run: echo "CIRCLE_PROJECT_REPONAME=${{ steps.repo-match.outputs.group1  }}" >> $GITHUB_ENV
+      shell: bash
+
+    - name: Set CircleCI branch
+      if: ${{ contains(github.ref_type, 'branch') }}
+      run: |
+        echo "CIRCLE_BRANCH=${{ github.ref_name}}" >> $GITHUB_ENV
+      shell: bash
+
+    - name: Set CircleCI tag
+      if: ${{ contains(github.ref_type, 'tag') }}
+      run: |
+        echo "CIRCLE_TAG=${{ github.ref_name}}" >> $GITHUB_ENV
+      shell: bash
+
+    - uses: zcong1993/setup-timezone@master
+      with:
+        timezone: America/Los_Angeles
