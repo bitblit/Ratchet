@@ -92,7 +92,7 @@ export class ApplyCiEnvVariablesToFiles {
 
 }
 
-if (CliRatchet.isCalledFromCLI('apply-circle-ci-env-variables-to-files')) {
+if (CliRatchet.isCalledFromCLI('apply-ci-env-variables-to-files')) {
   /**
    And, in case you are running this command line...
   TODO: should use switches to allow setting the various non-filename params
@@ -104,6 +104,6 @@ if (CliRatchet.isCalledFromCLI('apply-circle-ci-env-variables-to-files')) {
       Logger.info('Processed %d files of %d', res, filenames.length);
     });
   } else {
-    console.log('Usage : node apply-circle-ci-env-variables-to-files {file1} {file2} ...');
+    console.log('Usage : node apply-ci-env-variables-to-files {file1} {file2} ...');
   }
 }
