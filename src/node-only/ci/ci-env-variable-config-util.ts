@@ -25,13 +25,13 @@ export class CiEnvVariableConfigUtil {
 
   public static createDefaultGithubActionsVariableConfig(timezone = CiEnvVariableConfigUtil.DEFAULT_TIME_ZONE): CiEnvVariableConfig {
     const rval: CiEnvVariableConfig = {
-      buildNumberVar: 'github.run_number',
-      branchVar: 'github.ref_name',
-      tagVar: 'github.ref_name',
-      hashVar: 'github.sha',
+      buildNumberVar: 'GITHUB_RUN_NUMBER',
+      branchVar: 'GITHUB_REF_NAME',
+      tagVar: 'GITHUB_REF_NAME',
+      hashVar: 'GITHUB_SHA',
       localTimeVar: null,
-      userNameVar: 'github.actor',
-      projectNameVar: 'steps.repo-match.outputs.group1',
+      userNameVar: 'GITHUB_ACTOR',
+      projectNameVar: 'GITHUB_REPOSITORY',
 
       branchDefault: '',
       tagDefault: '',
