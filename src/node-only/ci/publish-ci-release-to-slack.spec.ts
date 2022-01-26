@@ -1,10 +1,10 @@
 import { Logger } from '../../common/logger';
-import { PublishCircleCiReleaseToSlack } from './publish-circle-ci-release-to-slack';
+import { PublishCiReleaseToSlack } from './publish-ci-release-to-slack';
 
 describe('#publishCircleCiReleaseToSlack', function () {
   it('should fail if not in a circle ci environment', async () => {
     try {
-      const result: string = await PublishCircleCiReleaseToSlack.process('https://testslack.erigir.com');
+      const result: string = await PublishCiReleaseToSlack.process('https://testslack.erigir.com');
       this.bail();
     } catch (err) {
       Logger.debug('Caught expected error : %s', err);
@@ -20,7 +20,7 @@ describe('#publishCircleCiReleaseToSlack', function () {
     process.env['CIRCLE_USERNAME'] = 'cweiss';
     process.env['CIRCLE_PROJECT_REPONAME'] = 'tester';
 
-    const result: string = await PublishCircleCiReleaseToSlack.process('slackUrlHere');
+    const result: string = await PublishCiReleaseToSlack.process('slackUrlHere');
     expect(result).toEqual('ok');
   });
 });

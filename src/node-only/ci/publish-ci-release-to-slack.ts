@@ -5,7 +5,7 @@ import util from 'util';
 import { GitCommitData, GitRatchet } from '../common/git-ratchet';
 import { CliRatchet } from '../common/cli-ratchet';
 
-export class PublishCircleCiReleaseToSlack {
+export class PublishCiReleaseToSlack {
   public static async process(slackHookUrl: string, timezone = 'America/Los_Angeles'): Promise<string> {
     if (!slackHookUrl) {
       throw new Error('slackHookUrl must be defined');
@@ -62,10 +62,10 @@ if (CliRatchet.isCalledFromCLI('publish-circle-ci-release-to-slack')) {
    And, in case you are running this command line...
   TODO: should use switches to allow setting the various non-filename params
   **/
-  Logger.info('Running PublishCircleCiReleaseToSlack from command line arguments');
-  const hook: string = PublishCircleCiReleaseToSlack.extractHookUrl();
+  Logger.info('Running PublishCiReleaseToSlack from command line arguments');
+  const hook: string = PublishCiReleaseToSlack.extractHookUrl();
   if (!!hook) {
-    PublishCircleCiReleaseToSlack.process(hook).then((res) => {
+    PublishCiReleaseToSlack.process(hook).then((res) => {
       Logger.info('Sent message to slack : %s', res);
     });
   } else {

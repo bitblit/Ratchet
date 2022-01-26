@@ -2,31 +2,36 @@ import fs from 'fs';
 import { DateTime } from 'luxon';
 import { Logger } from '../../common/logger';
 import { CliRatchet } from '../common/cli-ratchet';
+import { CiEnvVariableConfig } from './ci-env-variable-config';
+import { ErrorRatchet, RequireRatchet } from '../../common';
+import { CiEnvVariableConfigUtil } from './ci-env-variable-config-util';
 
-export class ApplyCircleCiEnvVariablesToFiles {
+export class ApplyCiEnvVariablesToFiles {
   public static async process(
     fileNames: string[],
-    timezone = 'America/Los_Angeles',
+    cfg: CiEnvVariableConfig,
     buildFinder = 'LOCAL-SNAPSHOT',
     branchFinder = 'LOCAL-BRANCH',
     hashFinder = 'LOCAL-HASH',
     tagFinder = 'LOCAL-TAG',
     timeFinder = 'LOCAL-TIME'
   ): Promise<number> {
+    RequireRatchet.notNullOrUndefined(cfg, 'cfg');
+    RequireRatchet.notNullOrUndefined(cfg.buildNumberVar, 'cfg.buildNumberVar');
     if (!fileNames) {
       throw new Error('fileNames must be defined');
     }
     if (fileNames.length === 0) {
       Logger.warn('Warning - no files supplied to process');
     }
-    const buildNum: string = process.env['CIRCLE_BUILD_NUM'];
-    const branch: string = process.env['CIRCLE_BRANCH'] || '';
-    const tag: string = process.env['CIRCLE_TAG'] || '';
-    const sha1: string = process.env['CIRCLE_SHA1'] || '';
-    const localTime: string = DateTime.local().setZone(timezone).toFormat('FFFF');
+    const buildNum: string = process.env[cfg.buildNumberVar];
+    const branch: string = cfg.branchVar ? process.env[cfg.branchVar] : null || cfg.branchDefault;
+    const tag: string = cfg.tagVar ? process.env[cfg.tagVar] : null || cfg.tagDefault;
+    const sha1: string = cfg.hashVar ? process.env[cfg.hashVar] : null || cfg.hashDefault;
+    const localTime: string = cfg.localTimeVar ? process.env[cfg.localTimeVar] : null || cfg.localTimeDefault;
 
     if (!buildNum) {
-      throw new Error('CIRCLE_BUILD_NUM env var not set - apparently not in a CircleCI environment');
+      ErrorRatchet.throwFormattedErr('%s env var not set - apparently not in a CI environment', cfg.buildNumberVar);
     }
 
     Logger.info(
@@ -71,15 +76,33 @@ export class ApplyCircleCiEnvVariablesToFiles {
   }
 }
 
+// The circle-ci version
 if (CliRatchet.isCalledFromCLI('apply-circle-ci-env-variables-to-files')) {
   /**
    And, in case you are running this command line...
   TODO: should use switches to allow setting the various non-filename params
   **/
-  Logger.info('Running ApplyCircleCiEnvVariablesToFiles from command line arguments');
-  const filenames: string[] = ApplyCircleCiEnvVariablesToFiles.extractFileNames();
+  Logger.info('Running ApplyCiEnvVariablesToFiles from command line arguments');
+  const filenames: string[] = ApplyCiEnvVariablesToFiles.extractFileNames();
   if (filenames.length > 0) {
-    ApplyCircleCiEnvVariablesToFiles.process(filenames).then((res) => {
+    ApplyCiEnvVariablesToFiles.process(filenames, CiEnvVariableConfigUtil.createDefaultCircleCiVariableConfig()).then((res) => {
+      Logger.info('Processed %d files of %d', res, filenames.length);
+    });
+  } else {
+    console.log('Usage : node apply-circle-ci-env-variables-to-files {file1} {file2} ...');
+  }
+}
+
+// The Github actions version
+if (CliRatchet.isCalledFromCLI('apply-github-actions-env-variables-to-files')) {
+  /**
+   And, in case you are running this command line...
+   TODO: should use switches to allow setting the various non-filename params
+   **/
+  Logger.info('Running ApplyCiEnvVariablesToFiles from command line arguments');
+  const filenames: string[] = ApplyCiEnvVariablesToFiles.extractFileNames();
+  if (filenames.length > 0) {
+    ApplyCiEnvVariablesToFiles.process(filenames, CiEnvVariableConfigUtil.createDefaultCircleCiVariableConfig()).then((res) => {
       Logger.info('Processed %d files of %d', res, filenames.length);
     });
   } else {
