@@ -1,4 +1,4 @@
-name: Build and Deploy Website
+name: Build and Deploy Alpha Library
 
 on:
   push:
@@ -19,12 +19,12 @@ jobs:
       - name: Configure environment
         uses: ./.github/workflows/actions/build-env-setup
 
-      - name: Apply CI vars
-        run: yarn apply-ci-vars
-        shell: bash
-
       - name: Build, Test, Package
         run: yarn prepare-to-publish
+        shell: bash
+
+      - name: Apply CI vars
+        run: yarn apply-ci-vars
         shell: bash
 
       - name: Deploy to NPMJS
