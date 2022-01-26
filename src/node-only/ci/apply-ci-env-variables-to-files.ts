@@ -78,7 +78,7 @@ export class ApplyCiEnvVariablesToFiles {
   public static extractVariableConfig(): CiEnvVariableConfig {
     let rval: CiEnvVariableConfig = null;
     if (process && process.argv && process.argv.length > 2) {
-      const name: string = StringRatchet.trimToEmpty(process.argv[1]).toLowerCase();
+      const name: string = StringRatchet.trimToEmpty(process.argv[2]).toLowerCase();
       switch(name) {
         case 'circleci' : rval = CiEnvVariableConfigUtil.createDefaultCircleCiVariableConfig();break;
         case 'github' : rval = CiEnvVariableConfigUtil.createDefaultGithubActionsVariableConfig();break;
