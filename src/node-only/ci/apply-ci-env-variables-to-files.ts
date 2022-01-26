@@ -3,7 +3,7 @@ import { DateTime } from 'luxon';
 import { Logger } from '../../common/logger';
 import { CliRatchet } from '../common/cli-ratchet';
 import { CiEnvVariableConfig } from './ci-env-variable-config';
-import { ErrorRatchet, RequireRatchet } from '../../common';
+import {ErrorRatchet, RequireRatchet, StringRatchet} from '../../common';
 import { CiEnvVariableConfigUtil } from './ci-env-variable-config-util';
 
 export class ApplyCiEnvVariablesToFiles {
@@ -69,14 +69,29 @@ export class ApplyCiEnvVariablesToFiles {
 
   public static extractFileNames(): string[] {
     let rval: string[] = [];
-    if (process && process.argv && process.argv.length > 2) {
-      rval = process.argv.slice(2);
+    if (process && process.argv && process.argv.length > 3) {
+      rval = process.argv.slice(3);
     }
     return rval;
   }
+
+  public static extractVariableConfig(): CiEnvVariableConfig {
+    let rval: CiEnvVariableConfig = null;
+    if (process && process.argv && process.argv.length > 2) {
+      const name: string = StringRatchet.trimToEmpty(process.argv[1]).toLowerCase();
+      switch(name) {
+        case 'circleci' : rval = CiEnvVariableConfigUtil.createDefaultCircleCiVariableConfig();break;
+        case 'github' : rval = CiEnvVariableConfigUtil.createDefaultGithubActionsVariableConfig();break;
+        default: ErrorRatchet.throwFormattedErr('Unrecognized env var config type : %s', name);
+      }
+    }
+    Logger.info('Using variable config : %j', rval);
+
+    return rval;
+  }
+
 }
 
-// The circle-ci version
 if (CliRatchet.isCalledFromCLI('apply-circle-ci-env-variables-to-files')) {
   /**
    And, in case you are running this command line...
@@ -85,24 +100,7 @@ if (CliRatchet.isCalledFromCLI('apply-circle-ci-env-variables-to-files')) {
   Logger.info('Running ApplyCiEnvVariablesToFiles from command line arguments');
   const filenames: string[] = ApplyCiEnvVariablesToFiles.extractFileNames();
   if (filenames.length > 0) {
-    ApplyCiEnvVariablesToFiles.process(filenames, CiEnvVariableConfigUtil.createDefaultCircleCiVariableConfig()).then((res) => {
-      Logger.info('Processed %d files of %d', res, filenames.length);
-    });
-  } else {
-    console.log('Usage : node apply-circle-ci-env-variables-to-files {file1} {file2} ...');
-  }
-}
-
-// The Github actions version
-if (CliRatchet.isCalledFromCLI('apply-github-actions-env-variables-to-files')) {
-  /**
-   And, in case you are running this command line...
-   TODO: should use switches to allow setting the various non-filename params
-   **/
-  Logger.info('Running ApplyCiEnvVariablesToFiles from command line arguments');
-  const filenames: string[] = ApplyCiEnvVariablesToFiles.extractFileNames();
-  if (filenames.length > 0) {
-    ApplyCiEnvVariablesToFiles.process(filenames, CiEnvVariableConfigUtil.createDefaultCircleCiVariableConfig()).then((res) => {
+    ApplyCiEnvVariablesToFiles.process(filenames, ApplyCiEnvVariablesToFiles.extractVariableConfig()).then((res) => {
       Logger.info('Processed %d files of %d', res, filenames.length);
     });
   } else {

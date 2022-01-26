@@ -34,7 +34,7 @@
     "clean": "shx rm -Rf lib bundles temp",
     "compile-test": "yarn compile && yarn test",
     "test": "jest",
-    "apply-circle": "node dist/node-only/circleci/apply-circle-ci-env-variables-to-files dist/static/build-properties.json",
+    "apply-circle": "node dist/node-only/ci/apply-ci-env-variables-to-files github dist/static/build-properties.json",
     "lint": "eslint src/**/*.ts",
     "lint-fix": "eslint --fix src/**/*.ts",
     "generate-barrels": "barrelsby --delete -d src -l below -e .*\\.spec\\.ts"
