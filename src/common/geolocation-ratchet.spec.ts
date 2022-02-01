@@ -2,6 +2,9 @@ import { GeolocationRatchet, RatchetGeoLocation, RatchetLocationBounds, RatchetL
 import fs from 'fs';
 import { NumberRatchet } from './number-ratchet';
 import path from 'path';
+import {EsmModuleRatchet} from "../node-only/common/esm-module-ratchet";
+
+import TestLocations from '../static/test-data/sample_geo_locations.json';
 
 describe('#geolocationRatchet', function () {
   it('should canonicalize', function () {
@@ -125,25 +128,11 @@ describe('#geolocationRatchet', function () {
        */
 
   it('should calc point in bounds', function () {
-    const input: string = fs.readFileSync(path.join(__dirname, '../../test-data/sample_geo_locations.csv')).toString();
+    //const input: string = fs.readFileSync(path.join(EsmModuleRatchet.fetchModuleRootDirName(), '../../test-data/sample_geo_locations.csv')).toString();
 
-    const locations: RatchetGeoLocation[] = input
-      .split('\n')
-      .map((line) => {
-        const vals: string[] = line.split(',');
-        if (!!vals && vals.length === 2) {
-          return {
-            lat: NumberRatchet.safeNumber(vals[0]),
-            lng: NumberRatchet.safeNumber(vals[1]),
-          };
-        } else {
-          return null;
-        }
-      })
-      .filter((s) => !!s);
-    const bounds: RatchetLocationBounds[] = locations.map((l) => GeolocationRatchet.locationToBounds(l, 10));
+    const bounds: RatchetLocationBounds[] = TestLocations.map((l) => GeolocationRatchet.locationToBounds(l, 10));
     const mapping: RatchetLocationBoundsMap = GeolocationRatchet.buildRatchetLocationBoundsMap(bounds);
-    const testPoint1: RatchetGeoLocation = locations[100];
+    const testPoint1: RatchetGeoLocation = TestLocations[100];
     const testPoint2: RatchetGeoLocation = { lng: 5, lat: 5 };
     const testPoint3: RatchetGeoLocation = {
       lat: 40.7566,

@@ -1,5 +1,7 @@
 import process from 'child_process';
 import { Logger } from '../../common/logger';
+import {EsmModuleRatchet} from "./esm-module-ratchet";
+import {RequireRatchet} from "../../common/require-ratchet";
 
 // Mainly ripped from https://raw.githubusercontent.com/seymen/git-last-commit/master/source/index.js
 // All credit due to https://github.com/seymen
@@ -9,14 +11,11 @@ export class GitRatchet {
 
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   public static async executeCommand(command: string, options: any): Promise<string> {
-    let dst: string = __dirname;
-
-    if (!!options && !!options.dst) {
-      dst = options.dst;
-    }
+    RequireRatchet.notNullOrUndefined(options, 'options');
+    RequireRatchet.notNullOrUndefined(options['dst'], 'options.dst');
 
     return new Promise<string>((res, rej) => {
-      process.exec(command, { cwd: dst }, (err, stdout, stderr) => {
+      process.exec(command, { cwd: options['dst'] }, (err, stdout, stderr) => {
         if (stdout === '') {
           rej('this does not look like a git repo');
         }

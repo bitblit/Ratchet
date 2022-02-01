@@ -3,13 +3,11 @@
   approach.
 */
 
-import { SimpleCacheObjectWrapper } from './simple-cache-object-wrapper';
-import { SimpleCacheStorageProvider } from './simple-cache-storage-provider';
-import { RequireRatchet, StringRatchet } from '../../common';
-import { S3CacheRatchet } from '../s3-cache-ratchet';
-import { PutObjectOutput } from 'aws-sdk/clients/s3';
-import { DynamoRatchet } from '../dynamo-ratchet';
-import { ExpressionAttributeValueMap, PutItemOutput, QueryInput, ScanInput } from 'aws-sdk/clients/dynamodb';
+import {SimpleCacheObjectWrapper} from './simple-cache-object-wrapper';
+import {SimpleCacheStorageProvider} from './simple-cache-storage-provider';
+import {DynamoRatchet} from '../dynamo-ratchet';
+import {ExpressionAttributeValueMap, PutItemOutput, QueryInput, ScanInput} from 'aws-sdk/clients/dynamodb';
+import {RequireRatchet} from "../../common/require-ratchet";
 
 export class DynamoDbStorageProvider implements SimpleCacheStorageProvider {
   // If hash key is provided, then the cache key is the range, otherwise the cache key is the hash

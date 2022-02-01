@@ -1,12 +1,12 @@
-import { ModelValidator } from './model-validator';
-import fs from 'fs';
-import path from 'path';
-import { Logger } from '../common';
+import {ModelValidator} from './model-validator';
+import {Logger} from "../common/logger";
+import TestData from '../static/test-data/sample_objects_spec_yaml.json';
+
 
 describe('#modelValidator', function () {
   it('should list an error', function () {
-    const yamlString: string = fs.readFileSync(path.join(__dirname, '../../test-data/sample-objects.spec.yaml')).toString();
-    const validator: ModelValidator = ModelValidator.createFromYamlString(yamlString, ['ModelObjects']);
+    //const yamlString: string = fs.readFileSync(path.join(EsmModuleRatchet.fetchModuleRootDirName(), '../../test-data/sample-objects.spec.yaml')).toString();
+    const validator: ModelValidator = ModelValidator.createFromYamlString(TestData, ['ModelObjects']);
 
     const shouldPass: any = {
       numberField: 7,

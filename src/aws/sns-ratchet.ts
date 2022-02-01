@@ -1,7 +1,7 @@
-import { Logger } from '../common/logger';
+import {Logger} from '../common/logger';
 import AWS from 'aws-sdk';
-import { PublishInput, PublishResponse } from 'aws-sdk/clients/sns';
-import { RequireRatchet } from '../common';
+import {PublishInput, PublishResponse} from 'aws-sdk/clients/sns';
+import {RequireRatchet} from "../common/require-ratchet";
 
 export class SnsRatchet {
   constructor(private sns: AWS.SNS = new AWS.SNS({ apiVersion: '2010-03-31', region: 'us-east-1' }), private topicArn: string) {

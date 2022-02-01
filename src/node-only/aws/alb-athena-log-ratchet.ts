@@ -1,11 +1,11 @@
-import { readFileSync, ReadStream } from 'fs';
-import path from 'path';
-import { AthenaRatchet } from './athena-ratchet';
-import { Logger } from '../../common/logger';
-import { RequireRatchet } from '../../common/require-ratchet';
-import { StringRatchet } from '../../common/string-ratchet';
-import { S3Ratchet } from '../../aws/s3-ratchet';
-import { CsvRatchet } from '../common/csv-ratchet';
+import {ReadStream} from 'fs';
+import {AthenaRatchet} from './athena-ratchet';
+import {Logger} from '../../common/logger';
+import {RequireRatchet} from '../../common/require-ratchet';
+import {StringRatchet} from '../../common/string-ratchet';
+import {S3Ratchet} from '../../aws/s3-ratchet';
+import {CsvRatchet} from '../common/csv-ratchet';
+import AthenaAlbQueries from '../../static/athena_alb_queries.json';
 
 // A class to simplify reading an Athena table based on ALB Logs
 // NOTE: This class only runs on Node since it depends on fs and path
@@ -70,7 +70,7 @@ export class AlbAthenaLogRatchet {
       }
     }
 
-    let tableCreateQry: string = readFileSync(path.join(__dirname, '../static/albAthenaTableCreate.txt')).toString();
+    let tableCreateQry: string = AthenaAlbQueries['tableCreate'];
     tableCreateQry = tableCreateQry.split('{{TABLE NAME}}').join(this.athenaTableName);
     tableCreateQry = tableCreateQry.split('{{ALB_LOG_ROOT}}').join(rootPath);
     Logger.info('Creating table with %s', tableCreateQry);

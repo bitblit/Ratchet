@@ -4,7 +4,7 @@
     "module": "es2020",
     "declaration": true,
     "sourceMap": true,
-    "outDir": "./dist/esm",
+    "outDir": "./dist",
     "strict": true,
 
     "allowSyntheticDefaultImports": true,

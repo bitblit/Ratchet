@@ -6,9 +6,8 @@
     "dist"
   ],
   "type": "module",
-  "main": "./dist/cjs/index.js",
-  "module": "./dist/esm/index.js",
-  "typings": "./dist/cjs/index.d.ts",
+  "module": "./dist/index.js",
+  "typings": "./dist/index.d.ts",
   "contributors": [
     "Christopher Weiss <bitblit@gmail.com>",
     "William Weiss <npm@codification.org>",
@@ -30,16 +29,16 @@
     "prepare-to-publish": "yarn clean-compile && yarn run apply-ci-vars && yarn remove-compiled-tests",
     "copy-static-files": "shx cp -R src/static dist",
     "clean-compile": "yarn run clean && yarn run generate-barrels && yarn run compile && yarn copy-static-files",
-    "compile": "tsc -p tsconfig.json && tsc -p tsconfig-cjs.json",
+    "compile": "tsc -p tsconfig.json",
     "watch": "tsc-watch",
     "remove-compiled-tests": "rimraf ./lib/**/*.spec.d.ts && rimraf ./lib/**/*.spec.js && rimraf ./lib/**/*.spec.js.map",
     "clean": "shx rm -Rf lib bundles temp",
     "compile-test": "yarn compile && yarn test",
-    "test": "jest",
+    "test": "yarn node --experimental-vm-modules node_modules/jest/bin/jest --preset=ts-jest --testEnvironment=node --transform={}",
     "apply-ci-vars": "node dist/node-only/ci/apply-ci-env-variables-to-files github dist/static/build-properties.json",
     "lint": "eslint src/**/*.ts",
     "lint-fix": "eslint --fix src/**/*.ts",
-    "generate-barrels": "barrelsby --delete -d src -l below -e .*\\.spec\\.ts"
+    "generate-barrels": "barrelsby --delete -d src -l top -e .*\\.spec\\.ts"
   },
   "repository": {
     "type": "git",
@@ -88,6 +87,7 @@
     "aws-sdk": "2.1063.0",
     "barrelsby": "2.3.2",
     "cross-fetch": "3.1.4",
+    "cross-env": "7.0.3",
     "csv": "5.5.3",
     "eslint": "8.7.0",
     "eslint-config-prettier": "8.3.0",
