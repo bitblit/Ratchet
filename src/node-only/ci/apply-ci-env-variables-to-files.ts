@@ -1,11 +1,11 @@
 import fs from 'fs';
-import {Logger} from '../../common/logger';
 import {CliRatchet} from '../common/cli-ratchet';
 import {CiEnvVariableConfig} from './ci-env-variable-config';
 import {CiEnvVariableConfigUtil} from './ci-env-variable-config-util';
 import {RequireRatchet} from "../../common/require-ratchet";
 import {ErrorRatchet} from "../../common/error-ratchet";
 import {StringRatchet} from "../../common/string-ratchet";
+import {Logger} from "../../common/logger";
 
 export class ApplyCiEnvVariablesToFiles {
   public static async process(

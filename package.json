@@ -31,7 +31,7 @@
     "clean-compile": "yarn run clean && yarn run generate-barrels && yarn run compile && yarn copy-static-files",
     "compile": "tsc -p tsconfig.json",
     "watch": "tsc-watch",
-    "remove-compiled-tests": "rimraf ./lib/**/*.spec.d.ts && rimraf ./lib/**/*.spec.js && rimraf ./lib/**/*.spec.js.map",
+    "remove-compiled-tests": "rimraf ./dist/**/*.spec.d.ts && rimraf ./dist/**/*.spec.js && rimraf ./dist/**/*.spec.js.map && rimraf ./dist/static/test-data",
     "clean": "shx rm -Rf lib bundles temp",
     "compile-test": "yarn compile && yarn test",
     "test": "yarn node --experimental-vm-modules node_modules/jest/bin/jest --preset=ts-jest --testEnvironment=node --transform={}",
