@@ -5,8 +5,10 @@
   "files": [
     "dist"
   ],
-  "main": "./dist/index.js",
-  "typings": "./dist/index.d.ts",
+  "type": "module",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "typings": "./dist/cjs/index.d.ts",
   "contributors": [
     "Christopher Weiss <bitblit@gmail.com>",
     "William Weiss <npm@codification.org>",
@@ -28,7 +30,7 @@
     "prepare-to-publish": "yarn clean-compile && yarn run apply-ci-vars && yarn remove-compiled-tests",
     "copy-static-files": "shx cp -R src/static dist",
     "clean-compile": "yarn run clean && yarn run generate-barrels && yarn run compile && yarn copy-static-files",
-    "compile": "tsc",
+    "compile": "tsc -p tsconfig.json && tsc -p tsconfig-cjs.json",
     "watch": "tsc-watch",
     "remove-compiled-tests": "rimraf ./lib/**/*.spec.d.ts && rimraf ./lib/**/*.spec.js && rimraf ./lib/**/*.spec.js.map",
     "clean": "shx rm -Rf lib bundles temp",
