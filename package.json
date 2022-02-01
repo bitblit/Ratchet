@@ -60,13 +60,12 @@
     "browserslist": "^4.16.5",
     "lodash": "4.17.21",
     "luxon": "2.3.0",
-    "node-fetch": "2.6.1",
     "ts-enum-util": "4.0.2"
   },
   "resolutions": {
     "ansi-regex": "^5.0.1",
     "lodash": "^4.17.21",
-    "node-fetch": "^2.6.1",
+    "node-fetch": "^2.6.7",
     "minimist": "^1.2.5",
     "y18n": "^4.0.1",
     "hosted-git-info": "^2.8.9",
@@ -86,7 +85,7 @@
     "@typescript-eslint/parser": "4.31.0",
     "aws-sdk": "2.1063.0",
     "barrelsby": "2.3.2",
-    "cross-fetch": "3.1.4",
+    "cross-fetch": "3.1.5",
     "cross-env": "7.0.3",
     "csv": "5.5.3",
     "eslint": "8.7.0",
