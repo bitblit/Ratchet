@@ -1,7 +1,7 @@
-import { Logger } from '../common/logger';
-import { DynamoRatchet } from './dynamo-ratchet';
-import { RequireRatchet } from '../common/require-ratchet';
-import { ExpressionAttributeValueMap, QueryInput } from 'aws-sdk/clients/dynamodb';
+import {Logger} from '../common/logger';
+import {DynamoRatchet} from './dynamo-ratchet';
+import {RequireRatchet} from '../common/require-ratchet';
+import {ExpressionAttributeValueMap, QueryInput} from 'aws-sdk/clients/dynamodb';
 
 export class RuntimeParameterRatchet {
   private cache: Map<string, CachedStoredRuntimeParameter> = new Map<string, CachedStoredRuntimeParameter>();

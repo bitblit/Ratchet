@@ -1,5 +1,5 @@
-import { PromiseRatchet } from './promise-ratchet';
-import { No } from './no';
+import {PromiseRatchet} from './promise-ratchet';
+import {No} from './no';
 
 describe('#no', function () {
   it('should do nothing', () => {

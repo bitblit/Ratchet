@@ -1,11 +1,10 @@
 import AWS from 'aws-sdk';
-import { S3CacheRatchet } from '../s3-cache-ratchet';
-import { DaemonProcessState } from './daemon-process-state';
-import { DaemonUtil } from './daemon-util';
-import { Logger } from '../../common/logger';
-import { ReadStream } from 'fs';
-import fs from 'fs';
-import { DaemonProcessCreateOptions } from './daemon-process-create-options';
+import {S3CacheRatchet} from '../s3-cache-ratchet';
+import {DaemonProcessState} from './daemon-process-state';
+import {DaemonUtil} from './daemon-util';
+import {Logger} from '../../common/logger';
+import fs, {ReadStream} from 'fs';
+import {DaemonProcessCreateOptions} from './daemon-process-create-options';
 
 describe('#DaemonUtil', function () {
   xit('should test the daemon util', async () => {

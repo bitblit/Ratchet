@@ -2,16 +2,15 @@
     Service for interacting with cloudwatch
 */
 
-import AWS from 'aws-sdk';
-import { Logger } from '../common/logger';
-import { KeyValue } from '../common/key-value';
-import { CloudWatchMetricsUnit } from './model/cloud-watch-metrics-unit';
-import { PutMetricDataInput } from 'aws-sdk/clients/cloudwatch';
-import { PromiseResult } from 'aws-sdk/lib/request';
-import { AWSError } from 'aws-sdk';
-import { DynamoCountResult } from './model/dynamo-count-result';
-import { CloudWatchMetricsMinuteLevelDynamoCountRequest } from './model/cloud-watch-metrics-minute-level-dynamo-count-request';
-import { DateTime } from 'luxon';
+import AWS, {AWSError} from 'aws-sdk';
+import {Logger} from '../common/logger';
+import {KeyValue} from '../common/key-value';
+import {CloudWatchMetricsUnit} from './model/cloud-watch-metrics-unit';
+import {PutMetricDataInput} from 'aws-sdk/clients/cloudwatch';
+import {PromiseResult} from 'aws-sdk/lib/request';
+import {DynamoCountResult} from './model/dynamo-count-result';
+import {CloudWatchMetricsMinuteLevelDynamoCountRequest} from './model/cloud-watch-metrics-minute-level-dynamo-count-request';
+import {DateTime} from 'luxon';
 
 export class CloudWatchMetricsRatchet {
   private cw: AWS.CloudWatch;

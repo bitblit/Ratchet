@@ -1,15 +1,15 @@
 import AWS from 'aws-sdk';
 import {
-  DescribeInstancesRequest,
-  DescribeInstancesResult,
-  Instance,
-  StartInstancesRequest,
-  StopInstancesRequest,
+    DescribeInstancesRequest,
+    DescribeInstancesResult,
+    Instance,
+    StartInstancesRequest,
+    StopInstancesRequest,
 } from 'aws-sdk/clients/ec2';
-import { SendSSHPublicKeyRequest, SendSSHPublicKeyResponse } from 'aws-sdk/clients/ec2instanceconnect';
-import { Logger } from '../common/logger';
-import { DurationRatchet } from '../common/duration-ratchet';
-import { PromiseRatchet } from '../common/promise-ratchet';
+import {SendSSHPublicKeyRequest, SendSSHPublicKeyResponse} from 'aws-sdk/clients/ec2instanceconnect';
+import {Logger} from '../common/logger';
+import {DurationRatchet} from '../common/duration-ratchet';
+import {PromiseRatchet} from '../common/promise-ratchet';
 
 /**
  * Service to simplify interacting with EC2 instances

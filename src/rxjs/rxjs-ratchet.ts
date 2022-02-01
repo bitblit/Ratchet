@@ -2,8 +2,8 @@
     Functions for working with rxjs objects
 */
 
-import { MapRatchet } from '../common/map-ratchet';
-import { BehaviorSubject, Subscription } from 'rxjs';
+import {MapRatchet} from '../common/map-ratchet';
+import {BehaviorSubject, Subscription} from 'rxjs';
 
 export class RxjsRatchet {
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types

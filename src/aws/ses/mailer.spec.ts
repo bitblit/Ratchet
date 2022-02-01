@@ -1,12 +1,12 @@
 import AWS from 'aws-sdk';
-import { ReadyToSendEmail } from './ready-to-send-email';
-import { SendEmailResponse } from 'aws-sdk/clients/ses';
-import { Mailer } from './mailer';
-import { EmailAttachment } from './email-attachment';
-import { StringRatchet } from '../../common/string-ratchet';
-import { Base64Ratchet } from '../../common/base64-ratchet';
+import {ReadyToSendEmail} from './ready-to-send-email';
+import {SendEmailResponse} from 'aws-sdk/clients/ses';
+import {Mailer} from './mailer';
+import {EmailAttachment} from './email-attachment';
+import {StringRatchet} from '../../common/string-ratchet';
+import {Base64Ratchet} from '../../common/base64-ratchet';
 import fs from 'fs';
-import { MailerConfig } from './mailer-config';
+import {MailerConfig} from './mailer-config';
 
 describe('#mailer', function () {
   xit('should send email', async () => {

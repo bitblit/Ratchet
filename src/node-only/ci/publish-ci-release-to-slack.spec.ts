@@ -1,5 +1,5 @@
-import { Logger } from '../../common/logger';
-import { PublishCiReleaseToSlack } from './publish-ci-release-to-slack';
+import {Logger} from '../../common/logger';
+import {PublishCiReleaseToSlack} from './publish-ci-release-to-slack';
 
 describe('#publishCircleCiReleaseToSlack', function () {
   it('should fail if not in a circle ci environment', async () => {

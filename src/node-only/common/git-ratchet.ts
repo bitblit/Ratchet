@@ -1,6 +1,5 @@
 import process from 'child_process';
-import { Logger } from '../../common/logger';
-import {EsmModuleRatchet} from "./esm-module-ratchet";
+import {Logger} from '../../common/logger';
 import {RequireRatchet} from "../../common/require-ratchet";
 
 // Mainly ripped from https://raw.githubusercontent.com/seymen/git-last-commit/master/source/index.js

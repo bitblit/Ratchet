@@ -1,5 +1,5 @@
-import { EnvironmentService } from './environment-service';
-import { Logger } from '../common/logger';
+import {EnvironmentService} from './environment-service';
+import {Logger} from '../common/logger';
 
 describe('#environmentService', function () {
   xit('should throw exception on missing environment values', async () => {

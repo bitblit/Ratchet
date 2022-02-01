@@ -1,6 +1,6 @@
-import { PromiseRatchet } from './promise-ratchet';
-import { Logger } from './logger';
-import { TimeoutToken } from './timeout-token';
+import {PromiseRatchet} from './promise-ratchet';
+import {Logger} from './logger';
+import {TimeoutToken} from './timeout-token';
 
 const fnFalse = (ignored) => {
   return false;

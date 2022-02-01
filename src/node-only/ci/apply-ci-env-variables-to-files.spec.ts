@@ -1,6 +1,6 @@
-import { ApplyCiEnvVariablesToFiles } from './apply-ci-env-variables-to-files';
-import { Logger } from '../../common/logger';
-import { CiEnvVariableConfigUtil } from './ci-env-variable-config-util';
+import {ApplyCiEnvVariablesToFiles} from './apply-ci-env-variables-to-files';
+import {Logger} from '../../common/logger';
+import {CiEnvVariableConfigUtil} from './ci-env-variable-config-util';
 
 describe('#applyCiEnvVariablesToFiles', function () {
   it('should fail if not in a ci environment', async () => {

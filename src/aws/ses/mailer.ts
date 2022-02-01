@@ -1,15 +1,15 @@
 import AWS from 'aws-sdk';
-import { ReadyToSendEmail } from './ready-to-send-email';
-import { RequireRatchet } from '../../common/require-ratchet';
-import { Logger } from '../../common/logger';
-import { SendRawEmailRequest, SendRawEmailResponse } from 'aws-sdk/clients/ses';
-import { StringRatchet } from '../../common/string-ratchet';
-import { MailerConfig } from './mailer-config';
-import { ErrorRatchet } from '../../common/error-ratchet';
-import { ResolvedReadyToSendEmail } from './resolved-ready-to-send-email';
-import { EmailAttachment } from './email-attachment';
-import { DateTime } from 'luxon';
-import { Base64Ratchet } from '../../common/base64-ratchet';
+import {ReadyToSendEmail} from './ready-to-send-email';
+import {RequireRatchet} from '../../common/require-ratchet';
+import {Logger} from '../../common/logger';
+import {SendRawEmailRequest, SendRawEmailResponse} from 'aws-sdk/clients/ses';
+import {StringRatchet} from '../../common/string-ratchet';
+import {MailerConfig} from './mailer-config';
+import {ErrorRatchet} from '../../common/error-ratchet';
+import {ResolvedReadyToSendEmail} from './resolved-ready-to-send-email';
+import {EmailAttachment} from './email-attachment';
+import {DateTime} from 'luxon';
+import {Base64Ratchet} from '../../common/base64-ratchet';
 
 /**
  * Generic Mail Sender for AWS.

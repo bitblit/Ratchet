@@ -1,13 +1,9 @@
-import AWS from 'aws-sdk';
-import { Logger } from '../../common/logger';
-import { DaemonProcessState } from './daemon-process-state';
-import { S3CacheRatchet } from '../s3-cache-ratchet';
-import { StringRatchet } from '../../common/string-ratchet';
-import { DaemonProcessCreateOptions } from './daemon-process-create-options';
-import { Daemon } from './daemon';
-import { HeadObjectOutput, PutObjectOutput, PutObjectRequest } from 'aws-sdk/clients/s3';
-import { ReadStream } from 'fs';
-import { Readable, Writable } from 'stream';
+import {Logger} from '../../common/logger';
+import {DaemonProcessState} from './daemon-process-state';
+import {S3CacheRatchet} from '../s3-cache-ratchet';
+import {DaemonProcessCreateOptions} from './daemon-process-create-options';
+import {HeadObjectOutput, PutObjectOutput, PutObjectRequest} from 'aws-sdk/clients/s3';
+import {Readable} from 'stream';
 
 export class DaemonUtil {
   public static DEFAULT_CONTENT: Buffer = Buffer.from('DAEMON_PLACEHOLDER');

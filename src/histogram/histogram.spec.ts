@@ -1,4 +1,4 @@
-import { Histogram } from './histogram';
+import {Histogram} from './histogram';
 
 describe('#histogram', function () {
   it('should count the values correctly', function () {

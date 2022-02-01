@@ -3,16 +3,16 @@
 */
 
 import AWS from 'aws-sdk';
-import { Logger } from '../common/logger';
+import {Logger} from '../common/logger';
 import {
-  DescribeLogStreamsRequest,
-  DescribeLogStreamsResponse,
-  FilteredLogEvent,
-  FilterLogEventsRequest,
-  FilterLogEventsResponse,
-  LogStream,
+    DescribeLogStreamsRequest,
+    DescribeLogStreamsResponse,
+    FilteredLogEvent,
+    FilterLogEventsRequest,
+    FilterLogEventsResponse,
+    LogStream,
 } from 'aws-sdk/clients/cloudwatchlogs';
-import { StopWatch } from '../common/stop-watch';
+import {StopWatch} from '../common/stop-watch';
 
 export class CloudWatchLogGroupRatchet {
   constructor(private logGroup: string, private awsCWLogs: AWS.CloudWatchLogs = new AWS.CloudWatchLogs({ region: 'us-east-1' })) {}

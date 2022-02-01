@@ -1,6 +1,6 @@
-import { Logger } from '../common/logger';
-import { CloudWatchLogsRatchet } from './cloud-watch-logs-ratchet';
-import { GetQueryResultsResponse, LogGroup, StartQueryRequest } from 'aws-sdk/clients/cloudwatchlogs';
+import {Logger} from '../common/logger';
+import {CloudWatchLogsRatchet} from './cloud-watch-logs-ratchet';
+import {GetQueryResultsResponse, LogGroup, StartQueryRequest} from 'aws-sdk/clients/cloudwatchlogs';
 
 describe('#cloudWatchLogsRatchet', function () {
   xit('should find all matching groups', async () => {

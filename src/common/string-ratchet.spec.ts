@@ -1,4 +1,4 @@
-import { StringRatchet } from './string-ratchet';
+import {StringRatchet} from './string-ratchet';
 
 describe('#formatBytes', function () {
   it('should format 0 bytes correctly', function () {

@@ -1,4 +1,4 @@
-import { DurationRatchet } from './duration-ratchet';
+import {DurationRatchet} from './duration-ratchet';
 
 /*
     Class to simplify timing

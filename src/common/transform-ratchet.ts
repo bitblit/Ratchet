@@ -10,8 +10,8 @@
 
 */
 
-import { TransformRule } from './transform/transform-rule';
-import { Logger } from './logger';
+import {TransformRule} from './transform/transform-rule';
+import {Logger} from './logger';
 
 export class TransformRatchet {
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types

@@ -1,5 +1,5 @@
 /** Classes implementing this interface return a timestamp of their last success **/
-import { LastSuccessProvider } from './last-success-provider';
+import {LastSuccessProvider} from './last-success-provider';
 
 export class CompositeLastSuccessProvider implements LastSuccessProvider {
   private sources: LastSuccessProvider[];

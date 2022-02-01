@@ -3,7 +3,7 @@
   approach.
 */
 
-import { SimpleCacheObjectWrapper } from './simple-cache-object-wrapper';
+import {SimpleCacheObjectWrapper} from './simple-cache-object-wrapper';
 
 export interface SimpleCacheStorageProvider {
   // Reads the object from the cache and returns the wrapper.  If the

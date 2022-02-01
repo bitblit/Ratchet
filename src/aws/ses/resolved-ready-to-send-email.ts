@@ -1,7 +1,7 @@
 /**
  * @interface ResolvedReadyToSendEmail
  */
-import { ReadyToSendEmail } from './ready-to-send-email';
+import {ReadyToSendEmail} from './ready-to-send-email';
 
 export interface ResolvedReadyToSendEmail extends ReadyToSendEmail {
   /**

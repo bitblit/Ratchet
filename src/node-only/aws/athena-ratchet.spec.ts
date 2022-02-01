@@ -1,6 +1,6 @@
 import AWS from 'aws-sdk';
-import { AthenaRatchet } from './athena-ratchet';
-import { Logger } from '../../common/logger';
+import {AthenaRatchet} from './athena-ratchet';
+import {Logger} from '../../common/logger';
 
 describe('#AthenaRatchet', function () {
   xit('should test a query', async () => {

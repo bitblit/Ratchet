@@ -1,25 +1,24 @@
-import AWS from 'aws-sdk';
-import { AWSError } from 'aws-sdk';
-import { PromiseResult } from 'aws-sdk/lib/request';
+import AWS, {AWSError} from 'aws-sdk';
+import {PromiseResult} from 'aws-sdk/lib/request';
 import {
-  GetNamedQueryOutput,
-  GetQueryExecutionOutput,
-  ListNamedQueriesOutput,
-  NamedQuery,
-  Row,
-  StartQueryExecutionInput,
-  StartQueryExecutionOutput,
+    GetNamedQueryOutput,
+    GetQueryExecutionOutput,
+    ListNamedQueriesOutput,
+    NamedQuery,
+    Row,
+    StartQueryExecutionInput,
+    StartQueryExecutionOutput,
 } from 'aws-sdk/clients/athena';
-import { StringRatchet } from '../../common/string-ratchet';
-import { Logger } from '../../common/logger';
-import { StopWatch } from '../../common/stop-watch';
-import { PromiseRatchet } from '../../common/promise-ratchet';
-import { RequireRatchet } from '../../common/require-ratchet';
-import { GetObjectOutput, GetObjectRequest } from 'aws-sdk/clients/s3';
+import {StringRatchet} from '../../common/string-ratchet';
+import {Logger} from '../../common/logger';
+import {StopWatch} from '../../common/stop-watch';
+import {PromiseRatchet} from '../../common/promise-ratchet';
+import {RequireRatchet} from '../../common/require-ratchet';
+import {GetObjectOutput, GetObjectRequest} from 'aws-sdk/clients/s3';
 import parse from 'csv-parse/lib/sync';
 import tmp from 'tmp';
 import fs from 'fs';
-import { Readable } from 'stream';
+import {Readable} from 'stream';
 
 export class AthenaRatchet {
   constructor(private athena: AWS.Athena, private s3: AWS.S3, private outputLocation: string) {

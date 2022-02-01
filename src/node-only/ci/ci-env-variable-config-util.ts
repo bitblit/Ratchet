@@ -1,5 +1,5 @@
-import { DateTime } from 'luxon';
-import { CiEnvVariableConfig } from './ci-env-variable-config';
+import {DateTime} from 'luxon';
+import {CiEnvVariableConfig} from './ci-env-variable-config';
 
 export class CiEnvVariableConfigUtil {
   public static readonly DEFAULT_TIME_FORMAT: string = 'yyyy-MM-dd HH:mm:ss a z';

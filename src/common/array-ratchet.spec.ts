@@ -1,4 +1,4 @@
-import { ArrayRatchet, MatchReport } from './array-ratchet';
+import {ArrayRatchet, MatchReport} from './array-ratchet';
 
 const sortedArr: any[] = [
   {

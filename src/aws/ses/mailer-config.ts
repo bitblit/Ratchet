@@ -1,5 +1,5 @@
-import { RatchetTemplateRenderer } from './ratchet-template-renderer';
-import { S3CacheRatchet } from '../s3-cache-ratchet';
+import {RatchetTemplateRenderer} from './ratchet-template-renderer';
+import {S3CacheRatchet} from '../s3-cache-ratchet';
 
 /**
  * Configuration options for generic mailer

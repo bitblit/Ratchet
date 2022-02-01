@@ -1,9 +1,9 @@
-import { DateTime } from 'luxon';
-import { Logger } from '../../common/logger';
+import {DateTime} from 'luxon';
+import {Logger} from '../../common/logger';
 import fetch from 'cross-fetch';
 import util from 'util';
-import { GitCommitData, GitRatchet } from '../common/git-ratchet';
-import { CliRatchet } from '../common/cli-ratchet';
+import {GitCommitData, GitRatchet} from '../common/git-ratchet';
+import {CliRatchet} from '../common/cli-ratchet';
 
 export class PublishCiReleaseToSlack {
   public static async process(slackHookUrl: string, timezone = 'America/Los_Angeles'): Promise<string> {

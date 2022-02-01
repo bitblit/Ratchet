@@ -1,8 +1,9 @@
-import { GeolocationRatchet, RatchetGeoLocation, RatchetLocationBounds, RatchetLocationBoundsMap } from './geolocation-ratchet';
-import fs from 'fs';
-import { NumberRatchet } from './number-ratchet';
-import path from 'path';
-import {EsmModuleRatchet} from "../node-only/common/esm-module-ratchet";
+import {
+  GeolocationRatchet,
+  RatchetGeoLocation,
+  RatchetLocationBounds,
+  RatchetLocationBoundsMap
+} from './geolocation-ratchet';
 
 import TestLocations from '../static/test-data/sample_geo_locations.json';
 

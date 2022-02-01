@@ -1,4 +1,4 @@
-import { Writable } from 'stream';
+import {Writable} from 'stream';
 
 export class StringWritable extends Writable {
   private _val: string = '';

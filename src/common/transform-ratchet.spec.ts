@@ -1,5 +1,5 @@
-import { TransformRatchet } from './transform-ratchet';
-import { BuiltInTransforms } from './transform/built-in-transforms';
+import {TransformRatchet} from './transform-ratchet';
+import {BuiltInTransforms} from './transform/built-in-transforms';
 
 describe('#formatBytes', function () {
   const srcData = {

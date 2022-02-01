@@ -1,9 +1,8 @@
 import AWS from 'aws-sdk';
-import { S3CacheRatchet } from './s3-cache-ratchet';
-import { Logger } from '../common/logger';
-import { CopyObjectOutput, CopyObjectResult, PutObjectOutput } from 'aws-sdk/clients/s3';
-import fs from 'fs';
-import { ReadStream } from 'fs';
+import {S3CacheRatchet} from './s3-cache-ratchet';
+import {Logger} from '../common/logger';
+import {PutObjectOutput} from 'aws-sdk/clients/s3';
+import fs, {ReadStream} from 'fs';
 
 describe('#fileExists', function () {
   xit('should sync 2 folders', async () => {

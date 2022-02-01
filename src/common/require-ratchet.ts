@@ -2,7 +2,7 @@
     Functions for making simple assertions
 */
 
-import { ErrorRatchet } from './error-ratchet';
+import {ErrorRatchet} from './error-ratchet';
 
 export class RequireRatchet {
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types

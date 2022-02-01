@@ -1,6 +1,6 @@
-import { Logger } from './logger';
-import { LogSnapshot } from './log-snapshot';
-import { LogMessage } from './log-message';
+import {Logger} from './logger';
+import {LogSnapshot} from './log-snapshot';
+import {LogMessage} from './log-message';
 
 describe('#levelName', function () {
   it('should return "error" for 0', function () {

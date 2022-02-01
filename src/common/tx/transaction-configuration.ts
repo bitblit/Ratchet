@@ -1,4 +1,4 @@
-import { TransactionResult } from './transaction-result';
+import {TransactionResult} from './transaction-result';
 import {LoggerLevelName} from "../logger";
 
 export interface TransactionConfiguration<T> {

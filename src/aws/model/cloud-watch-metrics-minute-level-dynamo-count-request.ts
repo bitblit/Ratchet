@@ -2,9 +2,9 @@
     Service for interacting with cloudwatch
 */
 
-import { KeyValue } from '../../common/key-value';
-import { DynamoRatchet } from '../dynamo-ratchet';
-import { QueryInput, ScanInput } from 'aws-sdk/clients/dynamodb';
+import {KeyValue} from '../../common/key-value';
+import {DynamoRatchet} from '../dynamo-ratchet';
+import {QueryInput, ScanInput} from 'aws-sdk/clients/dynamodb';
 
 export interface CloudWatchMetricsMinuteLevelDynamoCountRequest {
   dynamoRatchet: DynamoRatchet;

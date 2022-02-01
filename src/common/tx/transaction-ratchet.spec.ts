@@ -1,7 +1,7 @@
-import { TransactionStep } from './transaction-step';
-import { TransactionRatchet } from './transaction-ratchet';
-import { TransactionResult } from './transaction-result';
-import { TransactionFinalState } from './transaction-final-state';
+import {TransactionStep} from './transaction-step';
+import {TransactionRatchet} from './transaction-ratchet';
+import {TransactionResult} from './transaction-result';
+import {TransactionFinalState} from './transaction-final-state';
 
 interface TestTransactionContext {
   runningTotal: number;

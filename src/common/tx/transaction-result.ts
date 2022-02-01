@@ -1,4 +1,4 @@
-import { TransactionFinalState } from './transaction-final-state';
+import {TransactionFinalState} from './transaction-final-state';
 
 export interface TransactionResult<T> {
   finalContext: T;

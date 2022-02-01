@@ -1,4 +1,4 @@
-import { DateRatchet } from './date-ratchet';
+import {DateRatchet} from './date-ratchet';
 
 // CAW 2021-02-26 : I used to test 1776 here, but there was an odd off-by-8 seconds problem testing dates that
 // far in the past.  No doubt some kind of weird leap second thing.  Not fighting that today

@@ -1,6 +1,6 @@
-import { RequireRatchet } from './require-ratchet';
-import { fail } from 'assert';
-import { Logger } from './logger';
+import {RequireRatchet} from './require-ratchet';
+import {fail} from 'assert';
+import {Logger} from './logger';
 
 describe('#noNullOrUndefinedValuesInArray', function () {
   xit('should throw exception on null value', function () {

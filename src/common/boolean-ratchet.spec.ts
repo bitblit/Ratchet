@@ -1,5 +1,5 @@
-import { BooleanRatchet } from './boolean-ratchet';
-import { NumberRatchet } from './number-ratchet';
+import {BooleanRatchet} from './boolean-ratchet';
+import {NumberRatchet} from './number-ratchet';
 
 describe('#parseBool', function () {
   it('should xxx', function () {

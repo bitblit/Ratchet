@@ -1,5 +1,5 @@
-import { Logger } from '../common/logger';
-import { RequireRatchet } from '../common/require-ratchet';
+import {Logger} from '../common/logger';
+import {RequireRatchet} from '../common/require-ratchet';
 
 export class S3Ratchet {
   // Here because the native AWS SDK doesn't support promises for this operation as of 2019-04-21

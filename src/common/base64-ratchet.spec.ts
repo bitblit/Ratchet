@@ -1,4 +1,4 @@
-import { Base64Ratchet } from './base64-ratchet';
+import {Base64Ratchet} from './base64-ratchet';
 
 describe('#base64', function () {
   it('should parse a buffer from base64', function () {

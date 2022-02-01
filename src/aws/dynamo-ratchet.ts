@@ -2,38 +2,36 @@
     Helper functions for DynamoDB
 */
 
-import AWS from 'aws-sdk';
-import { Logger } from '../common/logger';
-import { PromiseResult } from 'aws-sdk/lib/request';
-import { DurationRatchet } from '../common/duration-ratchet';
+import AWS, {AWSError} from 'aws-sdk';
+import {Logger} from '../common/logger';
+import {PromiseResult} from 'aws-sdk/lib/request';
+import {DurationRatchet} from '../common/duration-ratchet';
 import {
-  BatchGetItemInput,
-  BatchGetItemOutput,
-  BatchWriteItemOutput,
-  DeleteItemInput,
-  DeleteItemOutput,
-  ExpressionAttributeNameMap,
-  ExpressionAttributeValueMap,
-  GetItemOutput,
-  PutItemInput,
-  PutItemInputAttributeMap,
-  QueryInput,
-  QueryOutput,
-  ScanInput,
-  ScanOutput,
-  UpdateItemInput,
-  UpdateItemOutput,
+    BatchGetItemInput,
+    BatchGetItemOutput,
+    BatchWriteItemOutput,
+    DeleteItemInput,
+    DeleteItemOutput,
+    ExpressionAttributeNameMap,
+    ExpressionAttributeValueMap,
+    GetItemOutput,
+    PutItemInput,
+    QueryInput,
+    QueryOutput,
+    ScanInput,
+    ScanOutput,
+    UpdateItemInput,
+    UpdateItemOutput,
 } from 'aws-sdk/clients/dynamodb';
-import { AWSError } from 'aws-sdk';
-import { DocumentClient } from 'aws-sdk/lib/dynamodb/document_client';
+import {DocumentClient} from 'aws-sdk/lib/dynamodb/document_client';
+import {DynamoCountResult} from './model/dynamo-count-result';
+import {PromiseRatchet} from '../common/promise-ratchet';
+import {Object} from 'aws-sdk/clients/s3';
+import {NumberRatchet} from '../common/number-ratchet';
+import {ErrorRatchet} from '../common/error-ratchet';
+import {RequireRatchet} from '../common/require-ratchet';
 import PutItemOutput = DocumentClient.PutItemOutput;
 import GetItemInput = DocumentClient.GetItemInput;
-import { DynamoCountResult } from './model/dynamo-count-result';
-import { PromiseRatchet } from '../common/promise-ratchet';
-import { Object } from 'aws-sdk/clients/s3';
-import { NumberRatchet } from '../common/number-ratchet';
-import { ErrorRatchet } from '../common/error-ratchet';
-import { RequireRatchet } from '../common/require-ratchet';
 
 export class DynamoRatchet {
   constructor(private awsDDB: AWS.DynamoDB.DocumentClient) {

@@ -1,10 +1,10 @@
-import { SendSSHPublicKeyResponse } from 'aws-sdk/clients/ec2instanceconnect';
+import {SendSSHPublicKeyResponse} from 'aws-sdk/clients/ec2instanceconnect';
 import fs from 'fs';
 import path from 'path';
 import os from 'os';
-import { Logger } from '../common/logger';
-import { Instance } from 'aws-sdk/clients/ec2';
-import { Ec2Ratchet } from './ec2-ratchet';
+import {Logger} from '../common/logger';
+import {Instance} from 'aws-sdk/clients/ec2';
+import {Ec2Ratchet} from './ec2-ratchet';
 
 describe('#EC2Ratchet', function () {
   xit('should send a public key', async () => {

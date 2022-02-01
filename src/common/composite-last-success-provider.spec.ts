@@ -1,5 +1,5 @@
-import { LastSuccessProvider } from './last-success-provider';
-import { CompositeLastSuccessProvider } from './composite-last-success-provider';
+import {LastSuccessProvider} from './last-success-provider';
+import {CompositeLastSuccessProvider} from './composite-last-success-provider';
 
 describe('#lastSuccess', function () {
   const last5: LastSuccessProvider = {

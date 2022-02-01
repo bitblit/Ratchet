@@ -1,14 +1,13 @@
-import AWS from 'aws-sdk';
-import { Logger } from '../common/logger';
-import { GetParameterResult } from 'aws-sdk/clients/ssm';
-import { AWSError } from 'aws-sdk';
-import { PromiseResult } from 'aws-sdk/lib/request';
-import { PromiseRatchet } from '../common/promise-ratchet';
-import { RequireRatchet } from '../common/require-ratchet';
-import { ClientConfiguration } from 'aws-sdk/clients/s3';
-import { S3CacheRatchet } from './s3-cache-ratchet';
-import { ErrorRatchet } from '../common/error-ratchet';
-import { StopWatch } from '../common/stop-watch';
+import AWS, {AWSError} from 'aws-sdk';
+import {Logger} from '../common/logger';
+import {GetParameterResult} from 'aws-sdk/clients/ssm';
+import {PromiseResult} from 'aws-sdk/lib/request';
+import {PromiseRatchet} from '../common/promise-ratchet';
+import {RequireRatchet} from '../common/require-ratchet';
+import {ClientConfiguration} from 'aws-sdk/clients/s3';
+import {S3CacheRatchet} from './s3-cache-ratchet';
+import {ErrorRatchet} from '../common/error-ratchet';
+import {StopWatch} from '../common/stop-watch';
 
 /**
  * Service for reading environmental variables

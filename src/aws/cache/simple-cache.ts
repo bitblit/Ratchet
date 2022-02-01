@@ -2,10 +2,10 @@
   Wraps up a simple cache storage provider and gives helper methods
 */
 
-import { Logger } from '../../common/logger';
-import { SimpleCacheStorageProvider } from './simple-cache-storage-provider';
-import { SimpleCacheObjectWrapper } from './simple-cache-object-wrapper';
-import { SimpleCacheReadOptions } from './simple-cache-read-options';
+import {Logger} from '../../common/logger';
+import {SimpleCacheStorageProvider} from './simple-cache-storage-provider';
+import {SimpleCacheObjectWrapper} from './simple-cache-object-wrapper';
+import {SimpleCacheReadOptions} from './simple-cache-read-options';
 
 export class SimpleCache {
   // Default 1 minute expiration

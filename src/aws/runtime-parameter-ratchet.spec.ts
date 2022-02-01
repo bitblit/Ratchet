@@ -1,8 +1,8 @@
 import AWS from 'aws-sdk';
-import { DynamoRatchet } from './dynamo-ratchet';
-import { Logger } from '../common/logger';
-import { RuntimeParameterRatchet, StoredRuntimeParameter } from './runtime-parameter-ratchet';
-import { PromiseRatchet } from '../common/promise-ratchet';
+import {DynamoRatchet} from './dynamo-ratchet';
+import {Logger} from '../common/logger';
+import {RuntimeParameterRatchet, StoredRuntimeParameter} from './runtime-parameter-ratchet';
+import {PromiseRatchet} from '../common/promise-ratchet';
 
 describe('#runtimeParameterRatchet', function () {
   xit('fetch and cache a runtime parameter', async () => {

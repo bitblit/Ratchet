@@ -1,7 +1,4 @@
-import { NumberRatchet, Point2d, SinglesAndRanges } from './number-ratchet';
-import fs from 'fs';
-import path from 'path';
-import {EsmModuleRatchet} from "../node-only/common/esm-module-ratchet";
+import {NumberRatchet, Point2d, SinglesAndRanges} from './number-ratchet';
 import TestData from '../static/test-data/number_set.json';
 
 describe('#toFixedDecimalNumber', function () {

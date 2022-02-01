@@ -1,4 +1,4 @@
-import { EnumRatchet } from './enum-ratchet';
+import {EnumRatchet} from './enum-ratchet';
 
 describe('#enumRatchet', function () {
   it('should list keys', async () => {

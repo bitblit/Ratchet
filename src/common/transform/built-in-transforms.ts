@@ -2,10 +2,10 @@
     Some useful transforms for the transform ratchet
 */
 
-import { TransformRule } from './transform-rule';
-import { Logger } from '../logger';
-import { NumberRatchet } from '../number-ratchet';
-import { DateTime } from 'luxon';
+import {TransformRule} from './transform-rule';
+import {Logger} from '../logger';
+import {NumberRatchet} from '../number-ratchet';
+import {DateTime} from 'luxon';
 
 export class BuiltInTransforms {
   public static keysOnly(rule: TransformRule): TransformRule {

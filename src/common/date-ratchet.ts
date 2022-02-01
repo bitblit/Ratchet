@@ -1,5 +1,4 @@
-import { DateTime } from 'luxon';
-import { Logger } from './logger';
+import {DateTime} from 'luxon';
 
 /*
     Functions for working with dates/moments using my preferred date format, which

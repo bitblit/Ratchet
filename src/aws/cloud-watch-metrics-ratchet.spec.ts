@@ -1,7 +1,7 @@
-import { CloudWatchMetricsRatchet } from './cloud-watch-metrics-ratchet';
-import { KeyValue } from '../common/key-value';
-import { CloudWatchMetricsUnit } from './model/cloud-watch-metrics-unit';
-import { Logger } from '../common/logger';
+import {CloudWatchMetricsRatchet} from './cloud-watch-metrics-ratchet';
+import {KeyValue} from '../common/key-value';
+import {CloudWatchMetricsUnit} from './model/cloud-watch-metrics-unit';
+import {Logger} from '../common/logger';
 
 describe('#cloudWatchMetricsRatchet', function () {
   xit('should log a cloudwatch metric', async () => {

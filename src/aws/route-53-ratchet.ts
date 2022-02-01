@@ -1,10 +1,10 @@
-import { Logger } from '../common/logger';
+import {Logger} from '../common/logger';
 import AWS from 'aws-sdk';
 import {
-  ChangeResourceRecordSetsRequest,
-  ChangeResourceRecordSetsResponse,
-  GetChangeRequest,
-  GetChangeResponse,
+    ChangeResourceRecordSetsRequest,
+    ChangeResourceRecordSetsResponse,
+    GetChangeRequest,
+    GetChangeResponse,
 } from 'aws-sdk/clients/route53';
 
 export class Route53Ratchet {

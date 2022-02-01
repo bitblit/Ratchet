@@ -1,10 +1,10 @@
 import AWS from 'aws-sdk';
-import { Logger } from '../../common/logger';
-import { DaemonProcessState } from './daemon-process-state';
-import { S3CacheRatchet } from '../s3-cache-ratchet';
-import { StringRatchet } from '../../common/string-ratchet';
-import { DaemonProcessCreateOptions } from './daemon-process-create-options';
-import { DaemonUtil } from './daemon-util';
+import {Logger} from '../../common/logger';
+import {DaemonProcessState} from './daemon-process-state';
+import {S3CacheRatchet} from '../s3-cache-ratchet';
+import {StringRatchet} from '../../common/string-ratchet';
+import {DaemonProcessCreateOptions} from './daemon-process-create-options';
+import {DaemonUtil} from './daemon-util';
 
 export class Daemon {
   public static DEFAULT_GROUP: string = 'DEFAULT';

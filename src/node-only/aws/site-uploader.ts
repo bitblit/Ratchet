@@ -1,11 +1,11 @@
 import fs from 'fs';
 import walk from 'walk';
 import AWS from 'aws-sdk';
-import { ClientConfiguration } from 'aws-sdk/clients/s3';
+import {ClientConfiguration} from 'aws-sdk/clients/s3';
 import path from 'path';
 import mime from 'mime-types';
-import { Logger } from '../../common/logger';
-import { CliRatchet } from '../common/cli-ratchet';
+import {Logger} from '../../common/logger';
+import {CliRatchet} from '../common/cli-ratchet';
 
 export class SiteUploader {
   private srcDir: string;
