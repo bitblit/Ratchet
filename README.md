@@ -220,6 +220,7 @@ Pull requests are welcome, although I'm not sure why you'd be interested!
 - 0.16.x : Replaced isomorphic-fetch with cross-fetch since it has a "realFetch.call is not a fn" bug and is less supported
 - 0.17.x : Moved/Refactored SimpleCache to use different storage tech, in a non-backwards compatible way, added TransactionRatchet
 - 0.18.x : Moved to github actions, refactored CI settings to support both Github actions and CircleCI
+- 0.19.x : Generic update of dependant libraries
 
 * Added CSVRatchet and AlbAthenaLogRatchet
 * Added simplePutWithCollisionAvoidance to DynamoRatchet
