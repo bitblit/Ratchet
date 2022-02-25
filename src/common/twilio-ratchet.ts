@@ -20,6 +20,19 @@ export class TwilioRatchet {
     RequireRatchet.true(TwilioRatchet.isValidE164Number(outBoundNumber), 'outBoundNumber invalid format');
   }
 
+  // Pass thru for simplification
+  public static async sendMessageDirect(
+    accountSid: string,
+    authToken: string,
+    outBoundNumber: string,
+    recipientPhoneNumbers: string[],
+    message: string
+  ): Promise<any[]> {
+    const ratchet: TwilioRatchet = new TwilioRatchet(accountSid, authToken, outBoundNumber);
+    const rval: any[] = await ratchet.sendMessage(recipientPhoneNumbers, message);
+    return rval;
+  }
+
   public static generateTwilioBasicAuth(sid: string, authToken: string): string {
     const authHeader: string = 'Basic ' + Base64Ratchet.generateBase64VersionOfString(sid + ':' + authToken);
     return authHeader;

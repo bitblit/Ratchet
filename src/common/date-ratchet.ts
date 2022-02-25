@@ -1,5 +1,4 @@
 import { DateTime } from 'luxon';
-import { Logger } from './logger';
 
 /*
     Functions for working with dates/moments using my preferred date format, which
@@ -12,6 +11,9 @@ export class DateRatchet {
   public static COMMON_US_DATE_FORMAT = 'MM/dd/yyyy';
   public static DEFAULT_DATE_FORMAT = 'yyyy-MM-dd';
   public static FULL_DATE_FORMAT = 'yyyy-MM-dd_HH_mm_ss';
+
+  public static PACIFIC_TIME_ZONE: string = 'America/Los_Angeles';
+  public static UTC_TIME_ZONE: string = 'etc/UTC';
 
   public static formatFullDate(input: Date): string {
     return DateTime.fromJSDate(input).toFormat(DateRatchet.FULL_DATE_FORMAT);

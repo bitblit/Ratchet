@@ -221,6 +221,8 @@ Pull requests are welcome, although I'm not sure why you'd be interested!
 - 0.17.x : Moved/Refactored SimpleCache to use different storage tech, in a non-backwards compatible way, added TransactionRatchet
 - 0.18.x : Moved to github actions, refactored CI settings to support both Github actions and CircleCI
 - 0.19.x : Generic update of dependant libraries
+- 0.20.x : Updated dependant libs, added the aws-batch-ratchet, inbound-email, s3-cache-to-local, s3-location-sync, sync-lock, jwt, and google-recaptcha ratchets
+
 
 * Added CSVRatchet and AlbAthenaLogRatchet
 * Added simplePutWithCollisionAvoidance to DynamoRatchet

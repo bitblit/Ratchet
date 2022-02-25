@@ -14,6 +14,7 @@ export * from "./enum-ratchet";
 export * from "./error-ratchet";
 export * from "./fixed-local-ip-provider";
 export * from "./geolocation-ratchet";
+export * from "./jwt-ratchet";
 export * from "./key-value";
 export * from "./last-success-provider";
 export * from "./local-ip-provider";

@@ -13,11 +13,24 @@ export class ErrorRatchet {
       try {
         rval = JSON.stringify(err);
       } catch (err2) {
-        rval = err.message || String(err);
+        rval = err?.message || String(err);
       }
     }
     if (log) {
       Logger.error('%s', rval, err);
+    }
+    return rval;
+  }
+
+  // Mainly for Typescript 4.5+ where this is now any/unknown by default
+  public static asErr(input: any): Error {
+    let rval: Error = null;
+    if (input) {
+      if (input instanceof Error) {
+        rval = input;
+      } else {
+        rval = new Error('Force-Cast to error : ' + String(input));
+      }
     }
     return rval;
   }
