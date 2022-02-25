@@ -36,7 +36,6 @@ export * from "./model/cloud-watch-metrics-minute-level-dynamo-count-request";
 export * from "./model/cloud-watch-metrics-unit";
 export * from "./model/dynamo-count-result";
 export * from "./ses/email-attachment";
-export * from "./ses/inbound-email-ratchet";
 export * from "./ses/mailer-config";
 export * from "./ses/mailer";
 export * from "./ses/ratchet-template-renderer";

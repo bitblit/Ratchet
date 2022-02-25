@@ -1,6 +1,6 @@
 import { InboundEmailRatchet } from './inbound-email-ratchet';
 import AWS from 'aws-sdk';
-import { S3CacheRatchet } from '../s3-cache-ratchet';
+import { S3CacheRatchet } from '../../aws/s3-cache-ratchet';
 
 describe('#inboundEmailService', () => {
   xit('should process an email', async () => {
