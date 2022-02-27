@@ -7,7 +7,7 @@ import { Logger, RequireRatchet } from '../common';
  * Endpoints for doing api level integrations
  */
 export class AwsBatchRatchet {
-  constructor(private batch: AWS.Batch) {}
+  constructor(private batch: AWS.Batch, private defaultQueueName?: string, private defaultJobDefinition?: string) {}
 
   public async scheduleJob(options: SubmitJobRequest): Promise<SubmitJobResponse> {
     Logger.info('Submitting batch job %s', options.jobName);
@@ -21,12 +21,12 @@ export class AwsBatchRatchet {
     return null;
   }
 
-  public async jobCountInState(jobStatus: JobStatus, queueName: string): Promise<number> {
+  public async jobCountInState(jobStatus: JobStatus, queueName: string = this.defaultQueueName): Promise<number> {
     const all: JobSummary[] = await this.listJobs(queueName, jobStatus);
     return all.length;
   }
 
-  public async listJobs(queueName: string, jobStatus: JobStatus = null): Promise<JobSummary[]> {
+  public async listJobs(queueName: string = this.defaultQueueName, jobStatus: JobStatus = null): Promise<JobSummary[]> {
     RequireRatchet.notNullOrUndefined(queueName, 'queueName');
     let rval: JobSummary[] = [];
     const request: ListJobsRequest = {
@@ -47,8 +47,8 @@ export class AwsBatchRatchet {
 
   public async scheduleBackgroundTask(
     taskName: string,
-    jobDefinition: string,
-    queueName: string,
+    jobDefinition: string = this.defaultJobDefinition,
+    queueName: string = this.defaultQueueName,
     data: any = {}
   ): Promise<SubmitJobResponse> {
     Logger.info('Submitting background task to AWS batch: %s %j %s', taskName, data, queueName);
