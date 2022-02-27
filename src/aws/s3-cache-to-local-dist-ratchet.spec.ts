@@ -10,10 +10,7 @@ describe('#reportService', () => {
 
     const svc: S3CacheToLocalDiskRatchet = new S3CacheToLocalDiskRatchet(cache, 'tmp', 1000);
 
-    const res: string = await svc.getFileBuffer(
-      'audience_offsets/20200221/Retail->GroceryStores->Wakefern->ShopRite.bin',
-      'adomni-placeiq-sync'
-    );
+    const res: string = await svc.getFileString('some-key');
     Logger.info('Wrote %j', res);
   });
 });

@@ -20,14 +20,14 @@ export class S3CacheToLocalDiskRatchet {
     RequireRatchet.true(fs.existsSync(tmpFolder), 'folder must exist : ' + tmpFolder);
   }
 
-  public async getFileBuffer(key: string, bucket: string): Promise<string> {
-    const cachedHash: string = this.generateCacheHash(`${bucket}/${key}`);
+  public async getFileString(key: string): Promise<string> {
+    const cachedHash: string = this.generateCacheHash(this.s3.getDefaultBucket() + '/' + key);
 
     let rval: string = null;
-    rval = this.getCacheFile(path.join(this.tmpFolder, cachedHash));
+    rval = this.getCacheFileAsString(path.join(this.tmpFolder, cachedHash));
 
     if (!rval) {
-      Logger.info('No cache. Downloading File s3://%s/%s to %s', bucket, key, this.tmpFolder);
+      Logger.info('No cache. Downloading File s3://%s/%s to %s', this.s3.getDefaultBucket(), key, this.tmpFolder);
       try {
         const res: string = await this.s3.readCacheFileToString(key);
 
@@ -35,15 +35,15 @@ export class S3CacheToLocalDiskRatchet {
           fs.writeFileSync(path.join(this.tmpFolder, cachedHash), res);
         }
       } catch (err) {
-        Logger.warn('File %s/%s does not exist. Err code: %s', bucket, key, err);
+        Logger.warn('File %s/%s does not exist. Err code: %s', this.s3.getDefaultBucket(), key, err);
       }
     } else {
-      Logger.info('Found cache file for s3://%s/%s. Cache hash %s', bucket, key, cachedHash);
+      Logger.info('Found cache file for s3://%s/%s. Cache hash %s', this.s3.getDefaultBucket(), key, cachedHash);
     }
     return rval;
   }
 
-  public getCacheFile(filePath: string): string {
+  public getCacheFileAsString(filePath: string): string {
     if (!fs.existsSync(filePath)) {
       return null;
     }

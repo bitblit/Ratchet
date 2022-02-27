@@ -3,7 +3,7 @@ import _ from 'lodash';
 import { ListObjectsV2Output, ListObjectsV2Request, CopyObjectRequest, PutObjectRequest } from 'aws-sdk/clients/s3';
 import { Logger, PromiseRatchet, RequireRatchet } from '../common';
 
-export interface S3SyncConfig {
+export interface S3LocationSyncRatchetConfig {
   srcS3: AWS.S3;
   srcBucket: string;
   srcPrefix: string;
@@ -27,10 +27,10 @@ interface S3Object {
   LastModified: Date;
 }
 
-export class S3SyncService {
-  private config: S3SyncConfig;
+export class S3LocationSyncRatchet {
+  private config: S3LocationSyncRatchetConfig;
 
-  constructor(config: S3SyncConfig) {
+  constructor(config: S3LocationSyncRatchetConfig) {
     RequireRatchet.notNullOrUndefined(config, 'config');
 
     this.config = config;
