@@ -16,7 +16,7 @@ export class AwsBatchRatchet {
       Logger.info('Job %s(%s) submitted', rval.jobName, rval.jobId);
       return rval;
     } catch (err) {
-      Logger.warn('Cannot submit batch job %s: %s', options.jobName, err);
+      Logger.error('Cannot submit batch job %s: %s', options.jobName, err);
     }
     return null;
   }
@@ -75,7 +75,15 @@ export class AwsBatchRatchet {
       rval = await this.batch.submitJob(options).promise();
       Logger.info('Job %s(%s) submitted', rval.jobName, rval.jobId);
     } catch (err) {
-      Logger.warn('Cannot submitting batch job %s', jobName, err);
+      Logger.error(
+        'Cannot submit batch job taskName: %s jobDef: %s queue: %s jobName: %s data: %j',
+        taskName,
+        jobDefinition,
+        queueName,
+        jobName,
+        data,
+        err
+      );
     }
 
     return rval;
