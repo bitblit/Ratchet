@@ -47,9 +47,9 @@ export class AwsBatchRatchet {
 
   public async scheduleBackgroundTask(
     taskName: string,
+    data: any = {},
     jobDefinition: string = this.defaultJobDefinition,
-    queueName: string = this.defaultQueueName,
-    data: any = {}
+    queueName: string = this.defaultQueueName
   ): Promise<SubmitJobResponse> {
     Logger.info('Submitting background task to AWS batch: %s %j %s', taskName, data, queueName);
 
