@@ -10,14 +10,8 @@ import { DurationRatchet } from './duration-ratchet';
 export class JwtRatchet {
   private static readonly EXPIRED_FLAG_NAME: string = '__jwtServiceExpiredFlag';
 
-  private decryptKeys: string[];
-
-  constructor(private encryptionKey: string, private inDecryptKeys?: string[]) {
-    RequireRatchet.notNullOrUndefined(StringRatchet.trimToNull(encryptionKey), 'encryptionKey');
-    this.decryptKeys = [encryptionKey];
-    if (inDecryptKeys) {
-      this.decryptKeys = this.decryptKeys.concat(inDecryptKeys);
-    }
+  constructor(private encryptionKeyPromise: Promise<string>, private inDecryptKeysPromise?: Promise<string[]>) {
+    RequireRatchet.notNullOrUndefined(encryptionKeyPromise, 'encryptionKeyPromise');
   }
 
   public static hasExpiredFlag(ob: any): boolean {
@@ -35,13 +29,19 @@ export class JwtRatchet {
   }
 
   public async decodeToken<T>(payloadString: string, expiredHandling: ExpiredJwtHandling = ExpiredJwtHandling.RETURN_NULL): Promise<T> {
-    const keysTried: string[] = [StringRatchet.obscure(this.encryptionKey, 1, 1)];
-    let payload: T = await JwtRatchet.invalidSafeDecode(payloadString, this.encryptionKey);
+    const encKey: string = await this.encryptionKeyPromise;
+    let decKeys: string[] = [encKey];
+    if (this.inDecryptKeysPromise) {
+      decKeys = decKeys.concat(await this.inDecryptKeysPromise);
+    }
+
+    const keysTried: string[] = [StringRatchet.obscure(encKey, 1, 1)];
+    let payload: T = await JwtRatchet.invalidSafeDecode(payloadString, encKey);
 
     if (!payload) {
-      for (let i = 0; i < this.decryptKeys.length && !payload; i++) {
-        keysTried.push(StringRatchet.obscure(this.decryptKeys[i], 1, 1));
-        payload = await JwtRatchet.invalidSafeDecode(payloadString, this.decryptKeys[i]);
+      for (let i = 0; i < decKeys.length && !payload; i++) {
+        keysTried.push(StringRatchet.obscure(decKeys[i], 1, 1));
+        payload = await JwtRatchet.invalidSafeDecode(payloadString, decKeys[i]);
         if (payload) {
           Logger.debug('Decrypted with historical key %d', i);
         }
@@ -73,6 +73,8 @@ export class JwtRatchet {
   }
 
   public async createTokenString(payload: any, expirationSeconds?: number, overrideEncryptionKey?: string): Promise<string> {
+    const encKey: string = await this.encryptionKeyPromise;
+
     RequireRatchet.notNullOrUndefined(payload, 'payload');
     if (expirationSeconds) {
       const now = new Date().getTime();
@@ -80,7 +82,7 @@ export class JwtRatchet {
       Logger.debug('Forcing expiration to %d', expires);
       payload['exp'] = expires;
     }
-    const token: string = jwt.sign(payload, this.encryptionKey); // , algorithm = 'HS256')
+    const token: string = jwt.sign(payload, encKey); // , algorithm = 'HS256')
     return token;
   }
 
