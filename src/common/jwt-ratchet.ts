@@ -51,7 +51,8 @@ export class JwtRatchet {
     Logger.debug('Got Payload : %j', payload);
     if (payload) {
       const now = new Date().getTime();
-      if (!payload['exp'] || now >= payload['exp']) {
+      if (payload['exp'] && now >= payload['exp']) {
+        // Only do this if expiration is defined
         const age: number = now - payload['exp'];
         Logger.debug('JWT token expired : on %d, %s ago', payload['exp'], DurationRatchet.formatMsDuration(age));
         switch (expiredHandling) {
