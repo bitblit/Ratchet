@@ -62,4 +62,22 @@ describe('#fileExists', function () {
     Logger.info('Got: %s', out);
     expect(out).toBeTruthy();
   });
+
+  xit('should pull a file as a string', async () => {
+    const s3: AWS.S3 = new AWS.S3({ region: 'us-east-1' });
+    const cache: S3CacheRatchet = new S3CacheRatchet(s3, 'test-bucket');
+
+    const fileName: string = 'test-file.json';
+
+    const outBuf: Buffer = await cache.readCacheFileToBuffer(fileName);
+    expect(outBuf).toBeTruthy();
+    expect(outBuf.length).toBeGreaterThan(100);
+
+    const outString: string = await cache.readCacheFileToString(fileName);
+    expect(outString).toBeTruthy();
+    expect(outString.length).toBeGreaterThan(100);
+
+    const outObject: any = await cache.readCacheFileToObject(fileName);
+    expect(outObject).toBeTruthy();
+  });
 });

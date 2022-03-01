@@ -9,6 +9,7 @@ import {
   CopyObjectRequest,
   DeleteObjectOutput,
   GetObjectOutput,
+  GetObjectRequest,
   HeadObjectOutput,
   ListObjectsOutput,
   ListObjectsRequest,
@@ -19,7 +20,7 @@ import {
 } from 'aws-sdk/clients/s3';
 import { RequireRatchet } from '../common/require-ratchet';
 import { PassThrough, Readable } from 'stream';
-import { StopWatch } from '../common';
+import { ErrorRatchet, StopWatch } from '../common';
 import * as stream from 'stream';
 
 export class S3CacheRatchet {
@@ -45,7 +46,8 @@ export class S3CacheRatchet {
     }
   }
 
-  public async readCacheFileToString(key: string, bucket: string = null): Promise<string> {
+  public async readCacheFileToBuffer(key: string, bucket: string = null): Promise<Buffer> {
+    let rval: Buffer = null;
     const params = {
       Bucket: this.bucketVal(bucket),
       Key: key,
@@ -54,7 +56,20 @@ export class S3CacheRatchet {
     try {
       const res: GetObjectOutput = await this.s3.getObject(params).promise();
       if (res && res.Body) {
-        return res.Body.toString();
+        if (res.Body instanceof Buffer) {
+          rval = res.Body;
+        } else if (res.Body instanceof Uint8Array) {
+          rval = new Buffer(res.Body);
+        } else if (res.Body instanceof Blob) {
+          const arr: ArrayBuffer = await res.Body.arrayBuffer();
+          rval = Buffer.from(arr);
+        } else if (res.Body instanceof String) {
+          rval = Buffer.from(res.Body);
+        } else {
+          Logger.error('Could not handle res body type : %s', typeof res.Body);
+          ErrorRatchet.throwFormattedErr('Cound not handle res body type : %s', typeof res.Body);
+        }
+        return rval;
       } else {
         Logger.warn('Could not find cache file : %s / %s', bucket, key);
         return null;
@@ -67,6 +82,11 @@ export class S3CacheRatchet {
         throw err;
       }
     }
+  }
+
+  public async readCacheFileToString(key: string, bucket: string = null): Promise<string> {
+    const buf: Buffer = await this.readCacheFileToBuffer(key, bucket);
+    return buf ? buf.toString() : null;
   }
 
   public async readCacheFileToObject<T>(key: string, bucket: string = null): Promise<T> {

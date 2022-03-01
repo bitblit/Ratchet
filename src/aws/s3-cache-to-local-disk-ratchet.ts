@@ -21,17 +21,21 @@ export class S3CacheToLocalDiskRatchet {
   }
 
   public async getFileString(key: string): Promise<string> {
+    const buf: Buffer = await this.getFileBuffer(key);
+    return buf ? buf.toString() : null;
+  }
+
+  public async getFileBuffer(key: string): Promise<Buffer> {
     const cachedHash: string = this.generateCacheHash(this.s3.getDefaultBucket() + '/' + key);
 
-    let rval: string = null;
-    rval = this.getCacheFileAsString(path.join(this.tmpFolder, cachedHash));
+    let rval: Buffer = null;
+    rval = this.getCacheFileAsBuffer(path.join(this.tmpFolder, cachedHash));
 
     if (!rval) {
       Logger.info('No cache. Downloading File s3://%s/%s to %s', this.s3.getDefaultBucket(), key, this.tmpFolder);
       try {
-        const res: string = await this.s3.readCacheFileToString(key);
-
-        if (StringRatchet.trimToNull(res)) {
+        const res: Buffer = await this.s3.readCacheFileToBuffer(key);
+        if (res && res.length > 0) {
           fs.writeFileSync(path.join(this.tmpFolder, cachedHash), res);
         }
       } catch (err) {
@@ -44,6 +48,11 @@ export class S3CacheToLocalDiskRatchet {
   }
 
   public getCacheFileAsString(filePath: string): string {
+    const buf: Buffer = this.getCacheFileAsBuffer(filePath);
+    return buf ? buf.toString() : null;
+  }
+
+  public getCacheFileAsBuffer(filePath: string): Buffer {
     if (!fs.existsSync(filePath)) {
       return null;
     }
@@ -56,7 +65,7 @@ export class S3CacheToLocalDiskRatchet {
       if (duration >= this.cacheTimeoutSeconds) {
         return null;
       } else {
-        const rval: string = fs.readFileSync(filePath).toString();
+        const rval: Buffer = fs.readFileSync(filePath);
         return rval;
       }
     } catch (err) {
