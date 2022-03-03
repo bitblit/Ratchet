@@ -10,6 +10,8 @@ import { S3CacheRatchet } from './s3-cache-ratchet';
 export class S3CacheToLocalDiskRatchet {
   private static readonly DEFAULT_CACHE_TIMEOUT_SEC = 7 * 24 * 3600;
 
+  private currentlyLoading: Map<string, Promise<Buffer>> = new Map<string, Promise<Buffer>>();
+
   constructor(
     private s3: S3CacheRatchet,
     private tmpFolder: string,
@@ -25,24 +27,51 @@ export class S3CacheToLocalDiskRatchet {
     return buf ? buf.toString() : null;
   }
 
-  public async getFileBuffer(key: string): Promise<Buffer> {
+  private keyToLocalCachePath(key: string): string {
     const cachedHash: string = this.generateCacheHash(this.s3.getDefaultBucket() + '/' + key);
+    const rval: string = path.join(this.tmpFolder, cachedHash);
+    return rval;
+  }
+
+  public removeCacheFileForKey(key: string): void {
+    const localCachePath = this.keyToLocalCachePath(key);
+    Logger.info('Removing cache file for %s : %s', key, localCachePath);
+    fs.unlinkSync(localCachePath);
+  }
+
+  public async getFileBuffer(key: string): Promise<Buffer> {
+    const localCachePath: string = this.keyToLocalCachePath(key);
 
     let rval: Buffer = null;
-    rval = this.getCacheFileAsBuffer(path.join(this.tmpFolder, cachedHash));
+    rval = this.getCacheFileAsBuffer(localCachePath);
 
     if (!rval) {
-      Logger.info('No cache. Downloading File s3://%s/%s to %s', this.s3.getDefaultBucket(), key, this.tmpFolder);
+      Logger.info('No cache. Downloading File s3://%s/%s to %s', this.s3.getDefaultBucket(), key, localCachePath);
       try {
-        const res: Buffer = await this.s3.readCacheFileToBuffer(key);
-        if (res && res.length > 0) {
-          fs.writeFileSync(path.join(this.tmpFolder, cachedHash), res);
+        let prom: Promise<Buffer> = this.currentlyLoading.get(key);
+        if (prom) {
+          Logger.info('Already running - wait for that');
+        } else {
+          Logger.info('Not running - start');
+          prom = this.updateLocalCacheFile(key, localCachePath);
+          this.currentlyLoading.set(key, prom);
         }
+        rval = await prom;
+        this.currentlyLoading.delete(key); // Clear the cache
       } catch (err) {
         Logger.warn('File %s/%s does not exist. Err code: %s', this.s3.getDefaultBucket(), key, err);
       }
     } else {
-      Logger.info('Found cache file for s3://%s/%s. Cache hash %s', this.s3.getDefaultBucket(), key, cachedHash);
+      Logger.info('Found cache file for s3://%s/%s. Local path %s', this.s3.getDefaultBucket(), key, localCachePath);
+    }
+    return rval;
+  }
+
+  private async updateLocalCacheFile(key: string, localCachePath: string): Promise<Buffer> {
+    const rval: Buffer = await this.s3.readCacheFileToBuffer(key);
+    if (rval && rval.length > 0) {
+      Logger.info('Saving %d bytes to disk for cache', rval.length);
+      fs.writeFileSync(localCachePath, rval);
     }
     return rval;
   }
