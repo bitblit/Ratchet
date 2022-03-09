@@ -166,7 +166,7 @@ export class Mailer {
 
     let toAddresses: string[] = this.filterEmailsToValid(inRts.destinationAddresses);
     const autoBcc: string[] = inRts.doNotAutoBcc ? [] : this.config.autoBccAddresses || [];
-    const bccAddresses: string[] = inRts.bccAddresses || [].concat(autoBcc);
+    const bccAddresses: string[] = (inRts.bccAddresses || []).concat(autoBcc);
     if (toAddresses.length === 0 && bccAddresses.length > 0) {
       Logger.debug('Destination emails filtered to none but BCC defined, copying BCC');
       toAddresses = bccAddresses;
