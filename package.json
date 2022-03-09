@@ -75,14 +75,14 @@
     "path-parse": "^1.0.7"
   },
   "devDependencies": {
-    "@types/aws-lambda": "8.10.92",
+    "@types/aws-lambda": "8.10.93",
     "@types/jest": "27.4.1",
     "@types/luxon": "2.0.9",
     "@types/node": "14.18.1",
     "@types/yargs": "17.0.8",
     "@typescript-eslint/eslint-plugin": "5.12.1",
     "@typescript-eslint/parser": "5.12.1",
-    "aws-sdk": "2.1081.0",
+    "aws-sdk": "2.1089.0",
     "barrelsby": "2.3.2",
     "cross-fetch": "3.1.5",
     "csv": "5.5.3",
