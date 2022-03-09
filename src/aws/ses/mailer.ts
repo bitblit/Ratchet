@@ -187,10 +187,7 @@ export class Mailer {
       Logger.info('After cleaning email lists, no destination addresses left - not sending email');
     } else {
       const toLine: string = 'To: ' + rts.destinationAddresses.join(', ') + '\n';
-      const bccLine: string =
-        !!this.config.autoBccAddresses && this.config.autoBccAddresses.length > 0
-          ? 'Bcc: ' + this.config.autoBccAddresses.join(', ') + '\n'
-          : '';
+      const bccLine: string = !!rts.bccAddresses && rts.bccAddresses.length > 0 ? 'Bcc: ' + rts.bccAddresses.join(', ') + '\n' : '';
 
       try {
         const from: string = rts.fromAddress || this.config.defaultSendingAddress;
