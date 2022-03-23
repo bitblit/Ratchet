@@ -2,6 +2,13 @@
 
 Common utilities for Typescript and Node.
 
+## Notes on ECMAScript Modules
+
+CAW 2022-03-22 : It is my full intention to convert Ratchet (and my other NodeJS libraries) to ECMAScript
+modules.  However, I have lots of other things to do besides getting that mess working when Typescript
+doesn't support it cleanly yet.  [Support was pulled from Typescript 4.5](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-5.html#esm-nodejs)
+but as soon as it is supported it'll be on the top of my list of changes.
+
 ## Introduction
 
 This library is very similar to my [Wrench](https://github.com/bitblit/Wrench) library - a set of things that I
