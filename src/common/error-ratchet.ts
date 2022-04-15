@@ -10,10 +10,15 @@ export class ErrorRatchet {
   public static safeStringifyErr(err: any, log = true): string {
     let rval = 'ERR WAS NULL';
     if (err) {
-      try {
-        rval = JSON.stringify(err);
-      } catch (err2) {
-        rval = err?.message || String(err);
+      if (err['message']) {
+        rval = err['message'];
+      } else {
+        try {
+          rval = JSON.stringify(err);
+        } catch (err2) {
+          Logger.error('Failed to json stringify');
+          rval = String(err);
+        }
       }
     }
     if (log) {

@@ -14,4 +14,11 @@ describe('#errorRatchet', function () {
     expect(e2p).not.toEqual(e2);
     expect(e2p instanceof Error).toBeTruthy();
   });
+
+  it('should correctly stringify', async () => {
+    const flag: string = 'test1';
+    const e1: Error = new Error(flag);
+    const out: string = ErrorRatchet.safeStringifyErr(e1);
+    expect(out).toEqual(flag);
+  });
 });
