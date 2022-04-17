@@ -17,6 +17,10 @@ export class LambdaEventDetector {
     return event && event.Records && event.Records.length > 0 && event.Records[0].eventSource == 'aws:s3';
   }
 
+  public static isValidApiGatewayV2WithRequestContextEvent(event: any): boolean {
+    return event && event.rawPath && event.requestContext && event.routeKey;
+  }
+
   public static isValidApiGatewayEvent(event: any): boolean {
     return event && event.httpMethod && event.path && event.requestContext;
   }
@@ -26,18 +30,22 @@ export class LambdaEventDetector {
   }
 
   public static isSingleCronEvent(event: any): boolean {
-    return this.isValidCronEvent(event) && event.resources.length == 1;
+    return this.isValidCronEvent(event) && LambdaEventDetector.isSingleEntryEvent(event, 'resources');
   }
 
   public static isSingleSnsEvent(event: any): boolean {
-    return this.isValidSnsEvent(event) && event.Records.length == 1;
+    return this.isValidSnsEvent(event) && LambdaEventDetector.isSingleEntryEvent(event);
   }
 
   public static isSingleDynamoDBEvent(event: any): boolean {
-    return this.isValidDynamoDBEvent(event) && event.Records.length == 1;
+    return this.isValidDynamoDBEvent(event) && LambdaEventDetector.isSingleEntryEvent(event);
   }
 
   public static isSingleS3Event(event: any): boolean {
-    return this.isValidS3Event(event) && event.Records.length == 1;
+    return this.isValidS3Event(event) && LambdaEventDetector.isSingleEntryEvent(event);
+  }
+
+  public static isSingleEntryEvent(event: any, entryName: string = 'Records'): boolean {
+    return event && event[entryName] && event[entryName] instanceof Array && event[entryName].length === 1;
   }
 }

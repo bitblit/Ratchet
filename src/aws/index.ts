@@ -12,6 +12,7 @@ export * from "./ec2-ratchet";
 export * from "./environment-service";
 export * from "./hash-spreader";
 export * from "./lambda-event-detector";
+export * from "./lambda-event-type-guards";
 export * from "./route-53-ratchet";
 export * from "./runtime-parameter-ratchet";
 export * from "./s3-cache-ratchet";
