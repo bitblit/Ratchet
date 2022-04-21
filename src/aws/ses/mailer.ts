@@ -33,13 +33,14 @@ export class Mailer {
     context: any,
     htmlTemplateName: string,
     txtTemplateName: string = null,
-    layoutName: string = null
+    layoutName: string = null,
+    partialNames: string[] = null
   ): Promise<ReadyToSendEmail> {
     RequireRatchet.notNullOrUndefined(htmlTemplateName);
     if (!this.config.templateRenderer) {
       ErrorRatchet.throwFormattedErr('Cannot use fill body if template renderer not set');
     }
-    rts.htmlMessage = await this.config.templateRenderer.renderTemplate(htmlTemplateName, context, layoutName);
+    rts.htmlMessage = await this.config.templateRenderer.renderTemplate(htmlTemplateName, context, layoutName, partialNames);
     rts.txtMessage = !!txtTemplateName ? await this.config.templateRenderer.renderTemplate(txtTemplateName, context) : null;
     return rts;
   }
@@ -49,9 +50,10 @@ export class Mailer {
     context: any,
     htmlTemplateName: string,
     txtTemplateName: string = null,
-    layoutName: string = null
+    layoutName: string = null,
+    partialNames: string[] = null
   ): Promise<SendRawEmailResponse> {
-    const newVal: ReadyToSendEmail = await this.fillEmailBody(rts, context, htmlTemplateName, txtTemplateName, layoutName);
+    const newVal: ReadyToSendEmail = await this.fillEmailBody(rts, context, htmlTemplateName, txtTemplateName, layoutName, partialNames);
     const rval: SendRawEmailResponse = await this.sendEmail(newVal);
     return rval;
   }
