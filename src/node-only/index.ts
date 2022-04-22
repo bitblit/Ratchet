@@ -6,6 +6,7 @@ export * from "./aws/alb-athena-log-ratchet";
 export * from "./aws/athena-ratchet";
 export * from "./aws/dynamo-exporter";
 export * from "./aws/site-uploader";
+export * from "./aws/start-instance-and-ssh";
 export * from "./ci/apply-ci-env-variables-to-files";
 export * from "./ci/ci-env-variable-config-util";
 export * from "./ci/ci-env-variable-config";
