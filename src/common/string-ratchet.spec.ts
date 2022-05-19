@@ -123,6 +123,16 @@ describe('#stringCsvSafe', function () {
 });
 
 describe('#trimToEmpty', function () {
+  it('should return an empty string for null"', function () {
+    const result: string = StringRatchet.trimToEmpty(null);
+    expect(result).toEqual('');
+  });
+
+  it('should return an empty string for undefined"', function () {
+    const result: string = StringRatchet.trimToEmpty(undefined);
+    expect(result).toEqual('');
+  });
+
   it('should return an empty string"', function () {
     const result: string = StringRatchet.trimToEmpty('     ');
     expect(result).toEqual('');
