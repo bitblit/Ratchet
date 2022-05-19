@@ -44,7 +44,11 @@ export class Logger {
   private static LAST_LOG_MESSAGE: LogMessage = { msg: 'No message yet', timestamp: new Date().getTime(), lvl: 3 } as LogMessage;
 
   private static LEVEL = 2; // INFO
-  private static INCLUDE_LEVEL_IN_MESSAGE = true;
+  private static INCLUDE_LEVEL_IN_MESSAGE: boolean = true;
+
+  // Set this to true if you are worried about other developers not realizing they need to set the chrome filters
+  // in the dev channel correctly.  You'll lose coloring, although all filtering will still work as expected
+  private static USE_CONSOLE_LOG_FOR_EVERYTHING_BELOW_INFO: boolean = false;
 
   public static dumpConfigurationIntoLog(): void {
     Logger.error('ERROR enabled');
@@ -53,6 +57,10 @@ export class Logger {
     Logger.verbose('VERBOSE enabled');
     Logger.debug('DEBUG enabled');
     Logger.silly('SILLY enabled');
+  }
+
+  public static setUseConsoleLogForEverythingBelowInfo(newVal: boolean): void {
+    this.USE_CONSOLE_LOG_FOR_EVERYTHING_BELOW_INFO = newVal;
   }
 
   public static setIncludeLevelInMessage(newVal: boolean): void {
@@ -233,7 +241,7 @@ export class Logger {
     msg = Logger.conditionallyApplyLevelAndPrefixToMessage(4, msg);
     if (Logger.LEVEL >= 4) {
       // This is here because old versions of Node do not support console.debug
-      if (console.debug) {
+      if (console.debug && !Logger.USE_CONSOLE_LOG_FOR_EVERYTHING_BELOW_INFO) {
         Logger.ifConsoleLoggingEnabled(console.debug, msg);
       } else {
         Logger.ifConsoleLoggingEnabled(console.log, msg);
@@ -246,7 +254,7 @@ export class Logger {
 
   public static debugP(...input: any[]): void {
     // This is here because old versions of Node do not support console.debug
-    const fn: Function = console.debug || console.log;
+    const fn: Function = !console.debug || Logger.USE_CONSOLE_LOG_FOR_EVERYTHING_BELOW_INFO ? console.log : console.debug;
     Logger.consoleLogPassThru(4, fn, ...input);
   }
 
