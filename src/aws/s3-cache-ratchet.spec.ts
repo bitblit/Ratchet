@@ -80,4 +80,20 @@ describe('#fileExists', function () {
     const outObject: any = await cache.readCacheFileToObject(fileName);
     expect(outObject).toBeTruthy();
   });
+
+  xit('should sync cross-account', async () => {
+    const s3: AWS.S3 = new AWS.S3({ region: 'us-east-1' });
+    const cache1: S3CacheRatchet = new S3CacheRatchet(s3, 'bucket1');
+    const cache2: S3CacheRatchet = new S3CacheRatchet(
+      new AWS.S3({
+        apiVersion: '2006-03-01',
+        accessKeyId: 'someKey',
+        secretAccessKey: 'someSecret',
+      }),
+      'bucket2'
+    );
+
+    const res: any = await cache1.synchronize('test1/', 'test2/', cache2, true);
+    expect(res).not.toBeNull();
+  }, 50_000);
 });

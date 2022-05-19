@@ -169,13 +169,17 @@ export class S3CacheRatchet {
     return result;
   }
 
-  // Note - for the moment this only syncs one level down.  S3 has better functions if you want more than that
-  public async synchronize(srcPrefix: string, targetPrefix: string, targetRatchet: S3CacheRatchet = this): Promise<string[]> {
+  public async synchronize(
+    srcPrefix: string,
+    targetPrefix: string,
+    targetRatchet: S3CacheRatchet = this,
+    recurseSubFolders: boolean = false
+  ): Promise<string[]> {
     RequireRatchet.notNullOrUndefined(srcPrefix, 'srcPrefix');
     RequireRatchet.notNullOrUndefined(targetPrefix, 'targetPrefix');
     RequireRatchet.true(srcPrefix.endsWith('/'), 'srcPrefix must end in /');
     RequireRatchet.true(targetPrefix.endsWith('/'), 'targetPrefix must end in /');
-    const rval: string[] = [];
+    let rval: string[] = [];
     const sourceFiles: string[] = await this.directChildrenOfPrefix(srcPrefix);
     const targetFiles: string[] = await targetRatchet.directChildrenOfPrefix(targetPrefix);
     const sw: StopWatch = new StopWatch(true);
@@ -183,31 +187,47 @@ export class S3CacheRatchet {
     for (let i = 0; i < sourceFiles.length; i++) {
       const sourceFile: string = sourceFiles[i];
       Logger.info('Processing %s : %s', sourceFile, sw.dumpExpected(i / sourceFiles.length));
-      let shouldCopy: boolean = true;
-      const srcMeta: HeadObjectOutput = await this.fetchMetaForCacheFile(srcPrefix + sourceFile);
-      if (targetFiles.includes(sourceFile)) {
-        const targetMeta: HeadObjectOutput = await targetRatchet.fetchMetaForCacheFile(targetPrefix + sourceFile);
-        if (srcMeta.ETag === targetMeta.ETag) {
-          Logger.debug('Skipping - identical');
-          shouldCopy = false;
-        }
-      }
-      if (shouldCopy) {
-        Logger.debug('Copying...');
-        const srcStream: Readable = this.fetchCacheFileAsReadable(srcPrefix + sourceFile);
-        try {
-          const written: PutObjectOutput = await targetRatchet.writeStreamToCacheFile(
+      if (sourceFile.endsWith('/')) {
+        if (recurseSubFolders) {
+          Logger.info('%s is a subfolder - recursing');
+          const subs: string[] = await this.synchronize(
+            srcPrefix + sourceFile,
             targetPrefix + sourceFile,
-            srcStream,
-            undefined,
-            srcMeta.Metadata,
-            srcMeta.CacheControl,
-            srcMeta.ContentType
+            targetRatchet,
+            recurseSubFolders
           );
-          Logger.silly('Write result : %j', written);
-          rval.push(sourceFile);
-        } catch (err) {
-          Logger.error('Failed to sync : %s : %s', sourceFile, err);
+          Logger.info('Got %d back from %s', subs.length, sourceFile);
+          rval = rval.concat(subs);
+        } else {
+          Logger.info('%s is a subfolder and recurse not specified - skipping', sourceFile);
+        }
+      } else {
+        let shouldCopy: boolean = true;
+        const srcMeta: HeadObjectOutput = await this.fetchMetaForCacheFile(srcPrefix + sourceFile);
+        if (targetFiles.includes(sourceFile)) {
+          const targetMeta: HeadObjectOutput = await targetRatchet.fetchMetaForCacheFile(targetPrefix + sourceFile);
+          if (srcMeta.ETag === targetMeta.ETag) {
+            Logger.debug('Skipping - identical');
+            shouldCopy = false;
+          }
+        }
+        if (shouldCopy) {
+          Logger.debug('Copying...');
+          const srcStream: Readable = this.fetchCacheFileAsReadable(srcPrefix + sourceFile);
+          try {
+            const written: PutObjectOutput = await targetRatchet.writeStreamToCacheFile(
+              targetPrefix + sourceFile,
+              srcStream,
+              undefined,
+              srcMeta.Metadata,
+              srcMeta.CacheControl,
+              srcMeta.ContentType
+            );
+            Logger.silly('Write result : %j', written);
+            rval.push(sourceFile);
+          } catch (err) {
+            Logger.error('Failed to sync : %s : %s', sourceFile, err);
+          }
         }
       }
     }
