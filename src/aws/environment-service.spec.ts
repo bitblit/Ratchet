@@ -1,10 +1,13 @@
 import { EnvironmentService } from './environment-service';
 import { Logger } from '../common/logger';
+import { SsmEnvironmentServiceProvider } from './environment/ssm-environment-service-provider';
+import { S3EnvironmentServiceProvider } from './environment/s3-environment-service-provider';
 
 describe('#environmentService', function () {
   xit('should throw exception on missing environment values', async () => {
     try {
-      const vals: any = await EnvironmentService.getConfig('i_do_not_exist');
+      const es: EnvironmentService<any> = new EnvironmentService(new SsmEnvironmentServiceProvider('us-east-1', true));
+      const vals: any = await es.getConfig('i_do_not_exist');
       this.bail();
     } catch (err) {
       expect(err).toBeTruthy();
@@ -13,7 +16,8 @@ describe('#environmentService', function () {
   });
 
   xit('should find a valid value', async () => {
-    const vals: any = await EnvironmentService.getConfig('xxx', 'us-east-1', true);
+    const es: EnvironmentService<any> = new EnvironmentService(new SsmEnvironmentServiceProvider('us-east-1', true));
+    const vals: any = await es.getConfig('xxx');
     expect(vals).toBeTruthy();
   });
 
@@ -22,9 +26,12 @@ describe('#environmentService', function () {
     const bucket: string = 'xxx';
     const path: string = 'yyy';
 
-    const vals: any = await EnvironmentService.getConfigS3(bucket, path, 'us-east-1');
-    const vals1: any = await EnvironmentService.getConfigS3(bucket, path, 'us-east-1');
-    const vals2: any = await EnvironmentService.getConfigS3(bucket, path, 'us-east-1');
+    const es: EnvironmentService<any> = new EnvironmentService<any>(
+      new S3EnvironmentServiceProvider({ bucketName: bucket, region: 'us-east-1' })
+    );
+    const vals: any = await es.getConfig(path);
+    const vals1: any = await es.getConfig(path);
+    const vals2: any = await es.getConfig(path);
     expect(vals).toBeTruthy();
   });
 });
