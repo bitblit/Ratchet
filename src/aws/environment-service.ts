@@ -1,140 +1,71 @@
-import AWS from 'aws-sdk';
 import { Logger } from '../common/logger';
-import { GetParameterResult } from 'aws-sdk/clients/ssm';
-import { AWSError } from 'aws-sdk';
-import { PromiseResult } from 'aws-sdk/lib/request';
 import { PromiseRatchet } from '../common/promise-ratchet';
 import { RequireRatchet } from '../common/require-ratchet';
-import { ClientConfiguration } from 'aws-sdk/clients/s3';
-import { S3CacheRatchet } from './s3-cache-ratchet';
 import { ErrorRatchet } from '../common/error-ratchet';
-import { StopWatch } from '../common/stop-watch';
+import { EnvironmentServiceProvider } from './environment/environment-service-provider';
+import { EnvironmentServiceConfig } from './environment/environment-service-config';
+import { SsmEnvironmentServiceProvider } from './environment/ssm-environment-service-provider';
+import { S3EnvironmentServiceProvider } from './environment/s3-environment-service-provider';
 
 /**
- * Service for reading environmental variables
- * Also hides the decryption detail from higher up services
+ * Wraps up a EnvironmentServiceProvider and provides caching and retry-on-failure logic
  */
-export class EnvironmentService {
-  private static READ_CONFIG_PROMISE: Map<string, Promise<any>> = new Map();
+export class EnvironmentService<T> {
+  private readPromiseCache: Map<string, Promise<any>> = new Map();
 
-  private constructor() {
-    // Private so we don't instantiate this guy
-  }
-
-  public static async getConfig(name: string, region = 'us-east-1', ssmEncrypted = true): Promise<any> {
-    Logger.silly('EnvService:Request to read config');
-    if (EnvironmentService.READ_CONFIG_PROMISE.get(name)) {
-      Logger.silly('Using previous EnvService promise');
-    } else {
-      Logger.debug('Created new EnvService promise (for %s) and registered, returning', name);
-      EnvironmentService.READ_CONFIG_PROMISE.set(name, this.retryingGetParamsSSM(name, region, ssmEncrypted, 4, 2000));
-    }
-    return EnvironmentService.READ_CONFIG_PROMISE.get(name);
-  }
-
-  // Alternative method that fetches config from S3 instead
-  public static async getConfigS3(bucketName: string, path: string, region = 'us-east-1'): Promise<any> {
-    RequireRatchet.notNullOrUndefined(bucketName);
-    RequireRatchet.notNullOrUndefined(path);
-    const storeKey: string = 's3://' + bucketName + '/' + path;
-    Logger.silly('EnvService:Request to read config from : %s', storeKey);
-    if (EnvironmentService.READ_CONFIG_PROMISE.has(storeKey)) {
-      Logger.silly('Using previous EnvService promise');
-    } else {
-      Logger.debug('Created new EnvService promise (for %s) and registered, returning', storeKey);
-      EnvironmentService.READ_CONFIG_PROMISE.set(storeKey, this.retryingGetParamsS3(bucketName, path, region, 4, 2000));
-    }
-    return EnvironmentService.READ_CONFIG_PROMISE.get(storeKey);
-  }
-
-  private static async retryingGetParamsS3(
-    bucketName: string,
-    path: string,
-    region = 'us-east-1',
-    maxRetries: number,
-    backoffMultiplierMS: number
-  ): Promise<any> {
-    Logger.silly('Creating new EnvService promise for s3 : %s / %s', bucketName, path);
-    const sw: StopWatch = new StopWatch();
-    sw.start();
-    const s3: AWS.S3 = new AWS.S3({ region: region } as ClientConfiguration);
-    const ratchet: S3CacheRatchet = new S3CacheRatchet(s3, bucketName);
-
-    let tryCount = 0;
-    let parsedValue: any = null;
-
-    while (!parsedValue && tryCount < maxRetries) {
-      tryCount++;
-      try {
-        parsedValue = await ratchet.readCacheFileToObject<any>(path);
-      } catch (err) {
-        const errCode: string = err['code'] || '';
-        await PromiseRatchet.wait(backoffMultiplierMS * tryCount);
-        // TODO: Recoverable errors would go here
-        Logger.error('Final environment fetch error (code: %s) (cannot retry) : %s', errCode, err, err);
-        throw err;
-      }
-    }
-
-    // If we reach here with a string result, try to parse it
-    if (!!parsedValue) {
-      sw.stop();
-      Logger.debug('Loaded params : %s', sw.dump());
-      return parsedValue;
-    } else {
-      ErrorRatchet.throwFormattedErr('Could not find system parameter in s3 at %s / %s in this account', bucketName, path);
-    }
-  }
-
-  private static async retryingGetParamsSSM(
-    name: string,
-    region = 'us-east-1',
-    ssmEncrypted = true,
-    maxRetries: number,
-    backoffMultiplierMS: number
-  ): Promise<any> {
-    Logger.silly('Creating new EnvService promise for %s', name);
-    const ssm = new AWS.SSM({ apiVersion: '2014-11-06', region: region });
-    const params = {
-      Name: name /* required */,
-      WithDecryption: ssmEncrypted,
+  public static defaultEnvironmentServiceConfig(): EnvironmentServiceConfig {
+    const rval: EnvironmentServiceConfig = {
+      maxRetries: 3,
+      backoffMultiplierMS: 500,
     };
+    return rval;
+  }
 
-    let tryCount = 0;
-    let toParse: string = null;
+  constructor(
+    private provider: EnvironmentServiceProvider<T>,
+    private cfg: EnvironmentServiceConfig = EnvironmentService.defaultEnvironmentServiceConfig()
+  ) {
+    RequireRatchet.notNullOrUndefined(provider);
+    RequireRatchet.notNullOrUndefined(cfg);
+  }
 
-    while (!toParse && tryCount < maxRetries) {
-      tryCount++;
+  public async getConfig(name: string): Promise<T> {
+    Logger.silly('EnvService:Request to read config %s', name);
+    if (!this.readPromiseCache.has(name)) {
+      Logger.silly('EnvService: Nothing in cache - adding');
+      this.readPromiseCache.set(name, this.getConfigUncached(name));
+    }
+
+    return this.readPromiseCache.get(name);
+  }
+
+  private async getConfigUncached(name: string): Promise<T> {
+    let tryCount: number = 1;
+    let rval: T = null;
+
+    while (!rval && tryCount < this.cfg.maxRetries) {
+      Logger.silly('Attempting fetch of %s', name);
       try {
-        const value: PromiseResult<GetParameterResult, AWSError> = await ssm.getParameter(params).promise();
-        toParse = value && value.Parameter && value.Parameter.Value;
+        rval = await this.provider.fetchConfig(name);
       } catch (err) {
-        const errCode: string = err['code'] || '';
-        if (errCode.toLowerCase().indexOf('throttlingexception') !== -1) {
-          const wait: number = backoffMultiplierMS * tryCount;
-          Logger.warn('Throttled while trying to read parameters - waiting %d ms and retrying (attempt %d)', wait, tryCount);
-          await PromiseRatchet.wait(wait);
-        } else if (errCode.toLowerCase().indexOf('parameternotfound') !== -1) {
-          const errMsg: string = Logger.warn('AWS could not find parameter %s - are you using the right AWS key?', name);
-          throw new Error(errMsg);
-        } else {
-          Logger.error('Final environment fetch error (cannot retry) : %s', err, err);
-          throw err;
-        }
+        const waitMS: number = tryCount * this.cfg.backoffMultiplierMS;
+        Logger.info(
+          'Error attempting to fetch config %s (try %d of %d, waiting %s MS): %s',
+          name,
+          tryCount,
+          this.cfg.maxRetries,
+          waitMS,
+          err,
+          err
+        );
+        await PromiseRatchet.wait(waitMS);
+        tryCount++;
       }
     }
 
-    // If we reach here with a string result, try to parse it
-    if (!!toParse) {
-      try {
-        const rval: any = JSON.parse(toParse);
-        return rval;
-      } catch (err) {
-        Logger.error('Failed to read env - null or invalid JSON : %s : %s', err, toParse, err);
-        throw err;
-      }
-    } else {
-      throw new Error('Could not find system parameter with name : ' + name + ' in this account');
+    if (!rval) {
+      ErrorRatchet.throwFormattedErr('Was unable to fetch config %s even after %d retries', name, this.cfg.maxRetries);
     }
+    return rval;
   }
 }
