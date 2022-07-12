@@ -3,7 +3,7 @@ import { DateTime } from 'luxon';
 import { Logger } from '../../common/logger';
 import { CliRatchet } from '../common/cli-ratchet';
 import { CiEnvVariableConfig } from './ci-env-variable-config';
-import {ErrorRatchet, RequireRatchet, StringRatchet} from '../../common';
+import { ErrorRatchet, RequireRatchet, StringRatchet } from '../../common';
 import { CiEnvVariableConfigUtil } from './ci-env-variable-config-util';
 
 export class ApplyCiEnvVariablesToFiles {
@@ -79,17 +79,21 @@ export class ApplyCiEnvVariablesToFiles {
     let rval: CiEnvVariableConfig = null;
     if (process && process.argv && process.argv.length > 2) {
       const name: string = StringRatchet.trimToEmpty(process.argv[2]).toLowerCase();
-      switch(name) {
-        case 'circleci' : rval = CiEnvVariableConfigUtil.createDefaultCircleCiVariableConfig();break;
-        case 'github' : rval = CiEnvVariableConfigUtil.createDefaultGithubActionsVariableConfig();break;
-        default: ErrorRatchet.throwFormattedErr('Unrecognized env var config type : %s', name);
+      switch (name) {
+        case 'circleci':
+          rval = CiEnvVariableConfigUtil.createDefaultCircleCiVariableConfig();
+          break;
+        case 'github':
+          rval = CiEnvVariableConfigUtil.createDefaultGithubActionsVariableConfig();
+          break;
+        default:
+          ErrorRatchet.throwFormattedErr('Unrecognized env var config type : %s', name);
       }
     }
     Logger.info('Using variable config : %j', rval);
 
     return rval;
   }
-
 }
 
 if (CliRatchet.isCalledFromCLI('apply-ci-env-variables-to-files')) {
