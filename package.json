@@ -35,8 +35,8 @@
     "remove-compiled-tests": "rimraf ./lib/**/*.spec.d.ts && rimraf ./lib/**/*.spec.js && rimraf ./lib/**/*.spec.js.map",
     "clean": "shx rm -Rf lib bundles temp",
     "compile-test": "yarn compile && yarn test",
-    "test": "jest",
     "apply-ci-vars": "node dist/node-only/ci/apply-ci-env-variables-to-files github dist/static/build-properties.json",
+    "test": "jest",
     "lint": "eslint src/**/*.ts",
     "lint-fix": "eslint --fix src/**/*.ts",
     "generate-barrels": "barrelsby -q --delete -d src -l below -e .*\\.spec\\.ts"

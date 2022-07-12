@@ -6,6 +6,8 @@
 
 import { Logger } from '../../common/logger';
 import fs from 'fs';
+import { CliRatchet } from './cli-ratchet';
+import { ApplyCiEnvVariablesToFiles } from '../ci/apply-ci-env-variables-to-files';
 
 export class FilesToStaticClass {
   public static async process(fileNames: string[], outClassName: string, outFileName: string = null): Promise<string> {
@@ -49,5 +51,31 @@ export class FilesToStaticClass {
     }
 
     return rval;
+  }
+}
+
+if (CliRatchet.isCalledFromCLI('files-to-static-class')) {
+  if (process.argv.length < 4) {
+    console.log('Usage: files-to-static-class {outFileName} {outClassName} {file0} ... {fileN}');
+  } else {
+    const idx: number = CliRatchet.indexOfCommandArgument('files-to-static-class');
+    const outFileName: string = process.argv[idx + 1];
+    const outClassName: string = process.argv[idx + 2];
+    const files: string[] = process.argv.slice(idx + 3);
+
+    Logger.info(
+      'Running FilesToStaticClass from command line arguments Target: %s TargetClass: %s InFiles: %j',
+      outFileName,
+      outClassName,
+      files
+    );
+
+    FilesToStaticClass.process(files, outClassName, outFileName)
+      .then((res) => {
+        // For the moment, do nothing
+      })
+      .catch((err) => {
+        Logger.error('Error processing : %s', err, err);
+      });
   }
 }
