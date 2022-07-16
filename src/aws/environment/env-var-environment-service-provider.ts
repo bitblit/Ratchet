@@ -7,6 +7,7 @@ import { RequireRatchet } from '../../common/require-ratchet';
 import { ErrorRatchet } from '../../common/error-ratchet';
 import { EnvironmentServiceProvider } from './environment-service-provider';
 import { StringRatchet } from '../../common/string-ratchet';
+import { NodeRatchet } from '../../node-only/common/node-ratchet';
 
 /**
  * Service for reading environmental variables
@@ -21,7 +22,7 @@ export class EnvVarEnvironmentServiceProvider<T> implements EnvironmentServicePr
     Logger.silly('EnvVarEnvironmentServiceProvider fetch for %s', name);
 
     let rval: T = null;
-    const toParse: string = StringRatchet.trimToNull(process.env[this.envVarName]);
+    const toParse: string = StringRatchet.trimToNull(NodeRatchet.fetchProcessEnvVar(this.envVarName));
 
     // If we reach here with a string result, try to parse it
     if (toParse) {

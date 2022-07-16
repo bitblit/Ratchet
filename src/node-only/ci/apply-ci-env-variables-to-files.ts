@@ -5,6 +5,7 @@ import { CliRatchet } from '../common/cli-ratchet';
 import { CiEnvVariableConfig } from './ci-env-variable-config';
 import { ErrorRatchet, RequireRatchet, StringRatchet } from '../../common';
 import { CiEnvVariableConfigUtil } from './ci-env-variable-config-util';
+import { NodeRatchet } from '../common/node-ratchet';
 
 export class ApplyCiEnvVariablesToFiles {
   public static async process(
@@ -24,11 +25,11 @@ export class ApplyCiEnvVariablesToFiles {
     if (fileNames.length === 0) {
       Logger.warn('Warning - no files supplied to process');
     }
-    const buildNum: string = process.env[cfg.buildNumberVar];
-    const branch: string = cfg.branchVar ? process.env[cfg.branchVar] : null || cfg.branchDefault;
-    const tag: string = cfg.tagVar ? process.env[cfg.tagVar] : null || cfg.tagDefault;
-    const sha1: string = cfg.hashVar ? process.env[cfg.hashVar] : null || cfg.hashDefault;
-    const localTime: string = cfg.localTimeVar ? process.env[cfg.localTimeVar] : null || cfg.localTimeDefault;
+    const buildNum: string = NodeRatchet.fetchProcessEnvVar(cfg.buildNumberVar);
+    const branch: string = cfg.branchVar ? NodeRatchet.fetchProcessEnvVar(cfg.branchVar) : null || cfg.branchDefault;
+    const tag: string = cfg.tagVar ? NodeRatchet.fetchProcessEnvVar(cfg.tagVar) : null || cfg.tagDefault;
+    const sha1: string = cfg.hashVar ? NodeRatchet.fetchProcessEnvVar(cfg.hashVar) : null || cfg.hashDefault;
+    const localTime: string = cfg.localTimeVar ? NodeRatchet.fetchProcessEnvVar(cfg.localTimeVar) : null || cfg.localTimeDefault;
 
     if (!buildNum) {
       ErrorRatchet.throwFormattedErr('%s env var not set - apparently not in a CI environment', cfg.buildNumberVar);

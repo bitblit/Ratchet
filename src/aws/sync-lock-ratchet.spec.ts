@@ -2,6 +2,7 @@ import { SyncLockRatchet } from './sync-lock-ratchet';
 import { DynamoRatchet } from './dynamo-ratchet';
 import AWS from 'aws-sdk';
 import { Logger } from '../common';
+import { NodeRatchet } from '../node-only/common/node-ratchet';
 
 describe('#syncLockService', () => {
   xit('should test sync locks', async () => {
@@ -23,7 +24,7 @@ describe('#syncLockService', () => {
   });
 
   xit('should clear expired sync locks', async () => {
-    process.env['NEON_ENCRYPTION_KEY_NAME'] = 'prod';
+    NodeRatchet.setProcessEnvVar('NEON_ENCRYPTION_KEY_NAME', 'prod');
 
     const svc: SyncLockRatchet = new SyncLockRatchet(
       new DynamoRatchet(new AWS.DynamoDB.DocumentClient({ region: 'us-east-1' })),

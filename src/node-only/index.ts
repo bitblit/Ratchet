@@ -15,3 +15,4 @@ export * from './common/cli-ratchet';
 export * from './common/csv-ratchet';
 export * from './common/files-to-static-class';
 export * from './common/git-ratchet';
+export * from './common/node-ratchet';

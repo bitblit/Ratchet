@@ -1,5 +1,6 @@
 import { Logger } from '../../common/logger';
 import { PublishCiReleaseToSlack } from './publish-ci-release-to-slack';
+import { NodeRatchet } from '../common/node-ratchet';
 
 describe('#publishCircleCiReleaseToSlack', function () {
   it('should fail if not in a circle ci environment', async () => {
@@ -13,12 +14,12 @@ describe('#publishCircleCiReleaseToSlack', function () {
   });
 
   xit('should not fail if in a circle ci environment', async () => {
-    process.env['CIRCLE_BUILD_NUM'] = '1';
-    process.env['CIRCLE_BRANCH'] = 'B';
-    process.env['CIRCLE_TAG'] = 'T';
-    process.env['CIRCLE_SHA1'] = 'S';
-    process.env['CIRCLE_USERNAME'] = 'cweiss';
-    process.env['CIRCLE_PROJECT_REPONAME'] = 'tester';
+    NodeRatchet.setProcessEnvVar('CIRCLE_BUILD_NUM', '1');
+    NodeRatchet.setProcessEnvVar('CIRCLE_BRANCH', 'B');
+    NodeRatchet.setProcessEnvVar('CIRCLE_TAG', 'T');
+    NodeRatchet.setProcessEnvVar('CIRCLE_SHA1', 'S');
+    NodeRatchet.setProcessEnvVar('CIRCLE_USERNAME', 'cweiss');
+    NodeRatchet.setProcessEnvVar('CIRCLE_PROJECT_REPONAME', 'tester');
 
     const result: string = await PublishCiReleaseToSlack.process('slackUrlHere');
     expect(result).toEqual('ok');

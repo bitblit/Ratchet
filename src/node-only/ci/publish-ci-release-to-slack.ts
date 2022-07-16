@@ -4,18 +4,19 @@ import fetch from 'cross-fetch';
 import util from 'util';
 import { GitCommitData, GitRatchet } from '../common/git-ratchet';
 import { CliRatchet } from '../common/cli-ratchet';
+import { NodeRatchet } from '../common/node-ratchet';
 
 export class PublishCiReleaseToSlack {
   public static async process(slackHookUrl: string, timezone = 'America/Los_Angeles'): Promise<string> {
     if (!slackHookUrl) {
       throw new Error('slackHookUrl must be defined');
     }
-    const buildNum: string = process.env['CIRCLE_BUILD_NUM'];
-    const userName: string = process.env['CIRCLE_USERNAME'];
-    const projectName: string = process.env['CIRCLE_PROJECT_REPONAME'];
-    const branch: string = process.env['CIRCLE_BRANCH'] || '';
-    const tag: string = process.env['CIRCLE_TAG'] || '';
-    const sha1: string = process.env['CIRCLE_SHA1'] || '';
+    const buildNum: string = NodeRatchet.fetchProcessEnvVar('CIRCLE_BUILD_NUM');
+    const userName: string = NodeRatchet.fetchProcessEnvVar('CIRCLE_USERNAME');
+    const projectName: string = NodeRatchet.fetchProcessEnvVar('CIRCLE_PROJECT_REPONAME');
+    const branch: string = NodeRatchet.fetchProcessEnvVar('CIRCLE_BRANCH') || '';
+    const tag: string = NodeRatchet.fetchProcessEnvVar('CIRCLE_TAG') || '';
+    const sha1: string = NodeRatchet.fetchProcessEnvVar('CIRCLE_SHA1') || '';
     const localTime: string = DateTime.local().setZone(timezone).toFormat('MMMM Do yyyy, h:mm:ss a z');
     const gitData: GitCommitData = await GitRatchet.getLastCommitSwallowException();
 
