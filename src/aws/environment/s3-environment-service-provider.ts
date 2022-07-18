@@ -17,7 +17,9 @@ export class S3EnvironmentServiceProvider<T> implements EnvironmentServiceProvid
     RequireRatchet.notNullOrUndefined(cfg);
     RequireRatchet.notNullOrUndefined(cfg.bucketName);
     RequireRatchet.notNullOrUndefined(cfg.region);
-    this.ratchet = new S3CacheRatchet(new AWS.S3({ region: cfg.region } as ClientConfiguration), cfg.bucketName);
+    RequireRatchet.true(!!cfg.s3Override || !!cfg.region, 'You must set either region or S3Override');
+    const s3: AWS.S3 = cfg.s3Override || new AWS.S3({ region: cfg.region } as ClientConfiguration);
+    this.ratchet = new S3CacheRatchet(s3, cfg.bucketName);
   }
 
   public async fetchConfig(name: string): Promise<T> {
@@ -31,8 +33,9 @@ export class S3EnvironmentServiceProvider<T> implements EnvironmentServiceProvid
 }
 
 export interface S3EnvironmentServiceProviderConfig {
+  s3Override?: AWS.S3;
   bucketName: string;
-  region: string;
+  region?: string;
   pathPrefix?: string;
   pathSuffix?: string;
 }
