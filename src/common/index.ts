@@ -22,6 +22,8 @@ export * from './last-success-provider';
 export * from './local-ip-provider';
 export * from './log-message';
 export * from './log-snapshot';
+export * from './logger-instance';
+export * from './logger-options';
 export * from './logger';
 export * from './map-ratchet';
 export * from './network-ratchet';

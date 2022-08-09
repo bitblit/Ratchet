@@ -27,9 +27,9 @@
   },
   "config": {},
   "scripts": {
-    "prepare-to-publish": "yarn clean-compile && yarn run apply-ci-vars && yarn remove-compiled-tests",
+    "prepare-to-publish": "yarn build && yarn run apply-ci-vars && yarn remove-compiled-tests",
     "copy-static-files": "shx cp -R src/static dist",
-    "clean-compile": "yarn run clean && yarn run generate-barrels && yarn run compile && yarn copy-static-files",
+    "build": "yarn run clean && yarn run generate-barrels && yarn run compile && yarn copy-static-files",
     "compile": "tsc",
     "watch": "tsc-watch",
     "remove-compiled-tests": "rimraf ./lib/**/*.spec.d.ts && rimraf ./lib/**/*.spec.js && rimraf ./lib/**/*.spec.js.map",
@@ -79,8 +79,8 @@
   "devDependencies": {
     "@types/aws-lambda": "8.10.101",
     "@types/jest": "28.1.4",
-    "@types/luxon": "2.3.2",
     "@types/node": "14.18.1",
+    "@types/luxon": "2.3.2",
     "@types/yargs": "17.0.10",
     "@typescript-eslint/eslint-plugin": "5.30.5",
     "@typescript-eslint/parser": "5.30.5",

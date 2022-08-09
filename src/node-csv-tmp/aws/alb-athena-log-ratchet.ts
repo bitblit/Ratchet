@@ -5,7 +5,7 @@ import { Logger } from '../../common/logger';
 import { RequireRatchet } from '../../common/require-ratchet';
 import { StringRatchet } from '../../common/string-ratchet';
 import { S3Ratchet } from '../../aws/s3-ratchet';
-import { CsvRatchet } from '../common/csv-ratchet';
+import { CsvRatchet } from '../../node-csv/csv-ratchet';
 
 // A class to simplify reading an Athena table based on ALB Logs
 // NOTE: This class only runs on Node since it depends on fs and path

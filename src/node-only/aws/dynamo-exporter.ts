@@ -1,27 +1,9 @@
-import AWS from 'aws-sdk';
-import { AWSError } from 'aws-sdk';
-import { PromiseResult } from 'aws-sdk/lib/request';
-import {
-  GetNamedQueryOutput,
-  GetQueryExecutionOutput,
-  ListNamedQueriesOutput,
-  NamedQuery,
-  Row,
-  StartQueryExecutionInput,
-  StartQueryExecutionOutput,
-} from 'aws-sdk/clients/athena';
 import { StringRatchet } from '../../common/string-ratchet';
 import { Logger } from '../../common/logger';
-import { StopWatch } from '../../common/stop-watch';
 import { PromiseRatchet } from '../../common/promise-ratchet';
 import { RequireRatchet } from '../../common/require-ratchet';
-import { GetObjectOutput, GetObjectRequest } from 'aws-sdk/clients/s3';
-import parse from 'csv-parse/lib/sync';
-import tmp from 'tmp';
-import fs from 'fs';
-import { Readable } from 'stream';
+import fs, { WriteStream } from 'fs';
 import { DynamoRatchet } from '../../aws';
-import { WriteStream } from 'fs';
 import readline from 'readline';
 import { QueryInput, ScanInput } from 'aws-sdk/clients/dynamodb';
 
