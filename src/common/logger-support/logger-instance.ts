@@ -125,7 +125,7 @@ export class LoggerInstance {
   }
 
   public error(format: string, ...input: any[]): string {
-    const msg: LogMessage = this.createLogMessage(LoggerLevelName.error, {}, format, input);
+    const msg: LogMessage = this.createLogMessage(LoggerLevelName.error, {}, format, ...input);
     return this.recordMessage(msg);
   }
 
@@ -134,7 +134,7 @@ export class LoggerInstance {
   }
 
   public warn(format: string, ...input: any[]): string {
-    const msg: LogMessage = this.createLogMessage(LoggerLevelName.warn, {}, format, input);
+    const msg: LogMessage = this.createLogMessage(LoggerLevelName.warn, {}, format, ...input);
     return this.recordMessage(msg);
   }
 
@@ -143,7 +143,7 @@ export class LoggerInstance {
   }
 
   public info(format: string, ...input: any[]): string {
-    const msg: LogMessage = this.createLogMessage(LoggerLevelName.info, {}, format, input);
+    const msg: LogMessage = this.createLogMessage(LoggerLevelName.info, {}, format, ...input);
     return this.recordMessage(msg);
   }
 
@@ -152,7 +152,7 @@ export class LoggerInstance {
   }
 
   public verbose(format: string, ...input: any[]): string {
-    const msg: LogMessage = this.createLogMessage(LoggerLevelName.verbose, {}, format, input);
+    const msg: LogMessage = this.createLogMessage(LoggerLevelName.verbose, {}, format, ...input);
     return this.recordMessage(msg);
   }
 
@@ -161,7 +161,7 @@ export class LoggerInstance {
   }
 
   public debug(format: string, ...input: any[]): string {
-    const msg: LogMessage = this.createLogMessage(LoggerLevelName.debug, {}, format, input);
+    const msg: LogMessage = this.createLogMessage(LoggerLevelName.debug, {}, format, ...input);
     return this.recordMessage(msg);
   }
 
@@ -171,7 +171,7 @@ export class LoggerInstance {
   }
 
   public silly(format: string, ...input: any[]): string {
-    const msg: LogMessage = this.createLogMessage(LoggerLevelName.silly, {}, format, input);
+    const msg: LogMessage = this.createLogMessage(LoggerLevelName.silly, {}, format, ...input);
     return this.recordMessage(msg);
   }
 
@@ -180,7 +180,7 @@ export class LoggerInstance {
   }
 
   public logByLevel(level: LoggerLevelName, format: string, ...input: any[]): void {
-    const msg: LogMessage = this.createLogMessage(level, {}, format, input);
+    const msg: LogMessage = this.createLogMessage(level, {}, format, ...input);
     this.recordMessage(msg);
   }
 

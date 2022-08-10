@@ -115,3 +115,18 @@ describe('#testPassThruFunctions', function () {
     Logger.setLevel(LoggerLevelName.debug);
   });
 });
+
+describe('#testFormatter', function () {
+  it('should format values', function () {
+    const msg: LogMessage = {
+      lvl: LoggerLevelName.info,
+      timestamp: Date.now(),
+      messageSource: 'Test %d %d',
+      subsVars: [1, 2],
+      params: {},
+    };
+    Logger.info('Test %d %d', 3, 4);
+    const msgS: string = Logger.formatMessages([msg])[0];
+    expect(msgS).toEqual('[info] Test 1 2');
+  });
+});
