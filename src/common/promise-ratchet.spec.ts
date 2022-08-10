@@ -1,6 +1,7 @@
 import { PromiseRatchet } from './promise-ratchet';
 import { Logger } from './logger';
 import { TimeoutToken } from './timeout-token';
+import { LoggerLevelName } from './logger-support/logger-level-name';
 
 const fnFalse = (ignored) => {
   return false;
@@ -18,7 +19,7 @@ const waitAndPrint = async (t1: number, t2: string) => {
 describe('#promiseRatchet', function () {
   it('should timeout eventually', async () => {
     try {
-      Logger.setLevelByName('silly');
+      Logger.setLevel(LoggerLevelName.silly);
       const result: boolean | TimeoutToken = await PromiseRatchet.waitFor(fnFalse, true, 100, 2);
       Logger.info('Got : %s', result);
       expect(result).toEqual(false);
@@ -34,7 +35,7 @@ describe('#promiseRatchet', function () {
   });
 
   it('should run 10 elements, 2 at a time', async () => {
-    Logger.setLevelByName('debug');
+    Logger.setLevel(LoggerLevelName.debug);
     const elements: any[][] = [
       [100, 'Test1'],
       [200, 'Test2'],
@@ -56,7 +57,7 @@ describe('#promiseRatchet', function () {
   }, 30000);
 
   it('should run 10 waits, 2 at a time', async () => {
-    Logger.setLevelByName('debug');
+    Logger.setLevel(LoggerLevelName.debug);
     const elements: number[] = [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000];
 
     const results: any[] = await PromiseRatchet.runBoundedParallelSingleParam(PromiseRatchet.wait, elements, this, 2);
@@ -67,7 +68,7 @@ describe('#promiseRatchet', function () {
   });
 
   xit('should run an async function as a for/each', async () => {
-    Logger.setLevelByName('debug');
+    Logger.setLevel(LoggerLevelName.debug);
     const elements: number[] = [1001, 1002, 2000];
     const pfn: Function = async (v) => {
       Logger.info('Waiting %s', v);

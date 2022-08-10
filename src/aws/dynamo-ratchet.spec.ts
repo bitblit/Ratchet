@@ -1,7 +1,8 @@
 import AWS from 'aws-sdk';
 import { DynamoRatchet } from './dynamo-ratchet';
 import { Logger } from '../common/logger';
-import { ExpressionAttributeValueMap, PutItemOutput, QueryInput, ScanInput } from 'aws-sdk/clients/dynamodb';
+import { ExpressionAttributeValueMap, PutItemOutput, QueryInput } from 'aws-sdk/clients/dynamodb';
+import { LoggerLevelName } from '../common';
 
 describe('#atomicCounter', function () {
   xit('should only write if a field is null', async () => {
@@ -75,7 +76,7 @@ describe('#atomicCounter', function () {
   xit('should run an insert / read test for slowdown', async () => {
     const dr: DynamoRatchet = new DynamoRatchet(new AWS.DynamoDB.DocumentClient({ region: 'us-east-1' }));
 
-    Logger.setLevelByName('debug');
+    Logger.setLevel(LoggerLevelName.debug);
     const now: number = new Date().getTime();
     const nowSec: number = Math.floor(now / 1000);
 
@@ -106,7 +107,7 @@ describe('#atomicCounter', function () {
   xit('should run a collision test', async () => {
     const dr: DynamoRatchet = new DynamoRatchet(new AWS.DynamoDB.DocumentClient({ region: 'us-east-1' }));
 
-    Logger.setLevelByName('debug');
+    Logger.setLevel(LoggerLevelName.debug);
 
     const val: any = {
       k1: 'abc',
@@ -132,7 +133,7 @@ describe('#atomicCounter', function () {
   xit('should do a simple get with counter decrement', async () => {
     const dr: DynamoRatchet = new DynamoRatchet(new AWS.DynamoDB.DocumentClient({ region: 'us-east-1' }));
 
-    Logger.setLevelByName('debug');
+    Logger.setLevel(LoggerLevelName.debug);
 
     const v: any = await dr.simpleGetWithCounterDecrement<any>('cwtest', { k1: 'abc', k2: 11 }, 'counter', true);
     Logger.info('Got : %j', v);
@@ -141,7 +142,7 @@ describe('#atomicCounter', function () {
   xit('should do a full query', async () => {
     const dr: DynamoRatchet = new DynamoRatchet(new AWS.DynamoDB.DocumentClient({ region: 'us-east-1' }));
 
-    Logger.setLevelByName('debug');
+    Logger.setLevel(LoggerLevelName.debug);
 
     const input: QueryInput = {
       TableName: 'some-table',
@@ -158,7 +159,7 @@ describe('#atomicCounter', function () {
   xit('should do a process over full query', async () => {
     const dr: DynamoRatchet = new DynamoRatchet(new AWS.DynamoDB.DocumentClient({ region: 'us-east-1' }));
 
-    Logger.setLevelByName('debug');
+    Logger.setLevel(LoggerLevelName.debug);
 
     const input: QueryInput = {
       TableName: 'some-table',

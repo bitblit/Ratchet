@@ -1,6 +1,6 @@
 import { Subject } from 'rxjs';
 import { StringWritable } from '../stream/string-writable';
-import { Duplex, PassThrough } from 'stream';
+import { PassThrough } from 'stream';
 import AWS from 'aws-sdk';
 import { CsvRatchet } from './csv-ratchet';
 import { PromiseRatchet } from '../common/promise-ratchet';
@@ -9,10 +9,11 @@ import { S3CacheRatchet } from '../aws/s3-cache-ratchet';
 import { DaemonProcessCreateOptions } from '../aws/daemon/daemon-process-create-options';
 import { DaemonProcessState } from '../aws/daemon/daemon-process-state';
 import { DaemonUtil } from '../aws/daemon/daemon-util';
+import { LoggerLevelName } from '../common';
 
 describe('#streamObjectsToCsv', function () {
   xit('should stream objects to a csv', async () => {
-    // Logger.setLevelByName('debug');
+    // Logger.setLevel(LoggerLevelName.debug);
     const sub: Subject<TestItem> = new Subject<TestItem>();
     const out: StringWritable = new StringWritable();
 
@@ -36,7 +37,7 @@ describe('#streamObjectsToCsv', function () {
   });
 
   xit('should stream objects to a csv', async () => {
-    Logger.setLevelByName('debug');
+    Logger.setLevel(LoggerLevelName.debug);
     const sub: Subject<TestItem> = new Subject<TestItem>();
     const out: PassThrough = new PassThrough();
     const s3: AWS.S3 = new AWS.S3({ region: 'us-east-1' });

@@ -1,5 +1,4 @@
-import AWS from 'aws-sdk';
-import { AWSError } from 'aws-sdk';
+import AWS, { AWSError } from 'aws-sdk';
 import { PromiseResult } from 'aws-sdk/lib/request';
 import {
   GetNamedQueryOutput,
@@ -16,10 +15,10 @@ import { StopWatch } from '../../common/stop-watch';
 import { PromiseRatchet } from '../../common/promise-ratchet';
 import { RequireRatchet } from '../../common/require-ratchet';
 import { GetObjectOutput, GetObjectRequest } from 'aws-sdk/clients/s3';
-import parse from 'csv-parse/lib/sync';
 import tmp from 'tmp';
 import fs from 'fs';
 import { Readable } from 'stream';
+import { CsvRatchet } from '../../node-csv';
 
 export class AthenaRatchet {
   constructor(private athena: AWS.Athena, private s3: AWS.S3, private outputLocation: string) {
@@ -107,10 +106,13 @@ export class AthenaRatchet {
     };
     const getFileOut: GetObjectOutput = await this.s3.getObject(req).promise();
 
-    const rval: T[] = parse(getFileOut.Body.toString(), {
-      columns: true,
-      skip_empty_lines: true,
-    });
+    const rval: T[] = await CsvRatchet.stringParse<T>(
+      getFileOut.Body.toString(),
+      (p) => {
+        return p;
+      },
+      { columns: true, skip_empty_lines: true }
+    );
 
     return rval;
   }

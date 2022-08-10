@@ -1,0 +1,206 @@
+import { LogMessage } from './log-message';
+import { LoggerOptions } from './logger-options';
+import { LoggerRingBuffer } from './logger-ring-buffer';
+import { LoggerLevelName } from './logger-level-name';
+import { LoggerUtil } from './logger-util';
+import { LogMessageFormatter } from './log-message-formatter';
+import { LogMessageFormatType } from './log-message-format-type';
+import { ClassicSingleLineLogMessageFormatter } from './classic-single-line-log-message-formatter';
+import { NoneLogMessageFormatter } from './none-log-message-formatter';
+import { StructuredJsonLogMessageFormatter } from './structured-json-log-message-formatter';
+
+export class LoggerInstance {
+  private _ringBuffer: LoggerRingBuffer;
+  private _formatter: LogMessageFormatter;
+  private _level: LoggerLevelName;
+  private _handlerFunctionMap: Map<LoggerLevelName, (...any) => void>;
+
+  constructor(private loggerName: string = 'default', private _options: LoggerOptions) {
+    if (_options.ringBufferSize) {
+      this._ringBuffer = new LoggerRingBuffer(_options.ringBufferSize);
+    }
+    // Setup the formatter
+    switch (_options.formatType) {
+      case LogMessageFormatType.None:
+        this._formatter = new NoneLogMessageFormatter();
+        break;
+      case LogMessageFormatType.StructuredJson:
+        this._formatter = new StructuredJsonLogMessageFormatter();
+        break;
+      default:
+        this._formatter = new ClassicSingleLineLogMessageFormatter();
+        break;
+    }
+    this._level = _options.initialLevel;
+    this._handlerFunctionMap = LoggerUtil.handlerFunctionMap(_options.doNotUseConsoleDebug);
+  }
+
+  public get ringBuffer(): LoggerRingBuffer {
+    return this._ringBuffer;
+  }
+
+  public dumpConfigurationIntoLog(): void {
+    this.error('ERROR enabled');
+    this.warn('WARN enabled');
+    this.info('INFO enabled');
+    this.verbose('VERBOSE enabled');
+    this.debug('DEBUG enabled');
+    this.silly('SILLY enabled');
+  }
+
+  // This will always clear the buffer
+  public changeRingBufferSize(newSize: number): void {
+    this._ringBuffer = null;
+    if (newSize) {
+      this._ringBuffer = new LoggerRingBuffer(newSize);
+      this._options.ringBufferSize = newSize;
+    }
+  }
+
+  public updateTracePrefix(newValue: string): void {
+    this._options.trace = newValue;
+  }
+
+  public get options(): LoggerOptions {
+    return Object.assign({}, this._options);
+  }
+
+  public get level(): LoggerLevelName {
+    return this._level;
+  }
+
+  public set level(newLevel: LoggerLevelName) {
+    if (!newLevel) {
+      throw new Error('Cannot set level to null/undefined');
+    }
+    this._level = newLevel;
+  }
+
+  public consoleLogPassThru(level: LoggerLevelName, ...input: any[]): void {
+    if (LoggerUtil.levelIsEnabled(level, this._level)) {
+      let passThruPrefix: string = this._options.trace || '';
+      passThruPrefix += '[' + level + '] ';
+      input.unshift(passThruPrefix);
+      const fn: (...any) => void = this._handlerFunctionMap.get(level) || LoggerUtil.defaultHandlerFunction;
+      fn(...input);
+    }
+  }
+
+  public createLogMessage(level: LoggerLevelName, params: Record<string, string>, format: string, ...input: any[]): LogMessage {
+    const rval: LogMessage = {
+      lvl: level,
+      timestamp: Date.now(),
+      messageSource: format,
+      subsVars: input,
+      params: params,
+    };
+    return rval;
+  }
+
+  public formatMessage(msg: LogMessage): string {
+    const rval: string = msg ? this._formatter.formatMessage(msg, this._options.globalVars, this._options.trace) : null;
+    return rval;
+  }
+
+  public formatMessages(msgs: LogMessage[]): string[] {
+    const rval: string[] = (msgs || []).map((m) => this.formatMessage(m)).filter((m) => !!m);
+    return rval;
+  }
+
+  public recordMessage(msg: LogMessage): string {
+    let rval: string = null;
+    if (LoggerUtil.levelIsEnabled(msg.lvl, this._level)) {
+      rval = this.formatMessage(msg);
+      if (rval) {
+        const fn: (...any) => void = this._handlerFunctionMap.get(msg.lvl) || LoggerUtil.defaultHandlerFunction;
+        fn(rval);
+        if (this._ringBuffer) {
+          this._ringBuffer.addToRingBuffer(msg);
+        }
+      }
+    } else {
+      // Do nothing, not enabled
+    }
+    return rval;
+  }
+
+  public error(format: string, ...input: any[]): string {
+    const msg: LogMessage = this.createLogMessage(LoggerLevelName.error, {}, format, input);
+    return this.recordMessage(msg);
+  }
+
+  public errorP(...input: any[]): void {
+    this.consoleLogPassThru(LoggerLevelName.error, ...input);
+  }
+
+  public warn(format: string, ...input: any[]): string {
+    const msg: LogMessage = this.createLogMessage(LoggerLevelName.warn, {}, format, input);
+    return this.recordMessage(msg);
+  }
+
+  public warnP(...input: any[]): void {
+    this.consoleLogPassThru(LoggerLevelName.warn, ...input);
+  }
+
+  public info(format: string, ...input: any[]): string {
+    const msg: LogMessage = this.createLogMessage(LoggerLevelName.info, {}, format, input);
+    return this.recordMessage(msg);
+  }
+
+  public infoP(...input: any[]): void {
+    this.consoleLogPassThru(LoggerLevelName.info, ...input);
+  }
+
+  public verbose(format: string, ...input: any[]): string {
+    const msg: LogMessage = this.createLogMessage(LoggerLevelName.verbose, {}, format, input);
+    return this.recordMessage(msg);
+  }
+
+  public verboseP(...input: any[]): void {
+    this.consoleLogPassThru(LoggerLevelName.verbose, ...input);
+  }
+
+  public debug(format: string, ...input: any[]): string {
+    const msg: LogMessage = this.createLogMessage(LoggerLevelName.debug, {}, format, input);
+    return this.recordMessage(msg);
+  }
+
+  public debugP(...input: any[]): void {
+    // This is here because old versions of Node do not support console.debug
+    this.consoleLogPassThru(LoggerLevelName.debug, ...input);
+  }
+
+  public silly(format: string, ...input: any[]): string {
+    const msg: LogMessage = this.createLogMessage(LoggerLevelName.silly, {}, format, input);
+    return this.recordMessage(msg);
+  }
+
+  public sillyP(...input: any[]): void {
+    this.consoleLogPassThru(LoggerLevelName.silly, ...input);
+  }
+
+  public logByLevel(level: LoggerLevelName, format: string, ...input: any[]): void {
+    const msg: LogMessage = this.createLogMessage(level, {}, format, input);
+    this.recordMessage(msg);
+  }
+
+  public importMessages(msgs: LogMessage[], prefixIn = '', addTimestamp = true): void {
+    const prefix: string = prefixIn || '';
+    if (msgs && msgs.length > 0) {
+      this.silly('Received import data : %d msgs', msgs.length);
+
+      // Pump messages
+      msgs.forEach((m) => {
+        if (m.messageSource) {
+          let mOut: string = prefix;
+          if (addTimestamp) {
+            const ts: string = String(new Date()).substring(15, 24);
+            mOut += ' (' + ts + ') : ';
+            mOut += m.messageSource;
+          }
+          this.logByLevel(m.lvl, mOut);
+        }
+      });
+    }
+  }
+}

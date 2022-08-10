@@ -3,10 +3,11 @@ import { DynamoRatchet } from './dynamo-ratchet';
 import { Logger } from '../common/logger';
 import { RuntimeParameterRatchet, StoredRuntimeParameter } from './runtime-parameter-ratchet';
 import { PromiseRatchet } from '../common/promise-ratchet';
+import { LoggerLevelName } from '../common';
 
 describe('#runtimeParameterRatchet', function () {
   xit('fetch and cache a runtime parameter', async () => {
-    Logger.setLevelByName('silly');
+    Logger.setLevel(LoggerLevelName.silly);
     const dynamo: DynamoRatchet = new DynamoRatchet(new AWS.DynamoDB.DocumentClient({ region: 'us-east-1' }));
     const tableName: string = 'default-table';
 

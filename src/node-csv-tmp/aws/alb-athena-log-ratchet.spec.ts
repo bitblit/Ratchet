@@ -3,10 +3,11 @@ import { AthenaRatchet } from './athena-ratchet';
 import { Logger } from '../../common/logger';
 import { AlbAthenaLogRatchet, AlbLogRecord, AlbLogRecordQuery } from './alb-athena-log-ratchet';
 import { TimeZoneRatchet } from '../../common/time-zone-ratchet';
+import { LoggerLevelName } from '../../common';
 
 describe('#AlbAthenaLogRatchet', function () {
   xit('should test a query', async () => {
-    Logger.setLevelByName('debug');
+    Logger.setLevel(LoggerLevelName.debug);
     const athena: AWS.Athena = new AWS.Athena({ region: 'us-east-1' });
     const s3: AWS.S3 = new AWS.S3({ region: 'us-east-1' });
 

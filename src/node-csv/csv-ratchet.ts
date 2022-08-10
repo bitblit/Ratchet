@@ -3,24 +3,40 @@
 */
 
 import { ReadStream } from 'fs';
-import csvparse from 'csv-parse';
-import parsesync from 'csv-parse/lib/sync';
+import { parse, Options as ParseOptions } from 'csv-parse';
 import fs from 'fs';
 import { Logger } from '../common/logger';
-import stringify from 'csv-stringify';
+import { stringify, Options } from 'csv-stringify';
 import { RequireRatchet } from '../common/require-ratchet';
 import { MapRatchet } from '../common/map-ratchet';
 import { Subject, Subscription } from 'rxjs';
-import { Writable } from 'stream';
+import { Readable, Writable } from 'stream';
 
 export class CsvRatchet {
-  public static async streamParse<T>(readStream: ReadStream, pf: ParseFunction<T>): Promise<T[]> {
+  public static defaultParseOptions(): ParseOptions {
+    const rval: ParseOptions = {
+      delimiter: ',',
+      columns: true,
+    };
+    return rval;
+  }
+
+  public static async stringParse<T>(
+    input: string,
+    pf: ParseFunction<T>,
+    opts: ParseOptions = CsvRatchet.defaultParseOptions()
+  ): Promise<T[]> {
+    return CsvRatchet.streamParse<T>(Readable.from(input), pf, opts);
+  }
+
+  public static async streamParse<T>(
+    readStream: Readable,
+    pf: ParseFunction<T>,
+    opts: ParseOptions = CsvRatchet.defaultParseOptions()
+  ): Promise<T[]> {
     return new Promise((res, rej) => {
       const rval: T[] = [];
-      const p = csvparse({
-        delimiter: ',',
-        columns: true,
-      });
+      const p = parse(opts);
 
       p.on('readable', () => {
         let record: any = p.read();
@@ -52,7 +68,7 @@ export class CsvRatchet {
     return CsvRatchet.streamParse<T>(readStream, pf);
   }
 
-  public static async generateCsvData(objectsToConvert: any[], opts: stringify.Options): Promise<string> {
+  public static async generateCsvData(objectsToConvert: any[], opts: Options): Promise<string> {
     Logger.silly('Converting %d items into csv file', objectsToConvert.length);
     const genProm: Promise<string> = new Promise<string>((res, rej) => {
       stringify(objectsToConvert, opts, function (err, data) {
@@ -72,10 +88,9 @@ export class CsvRatchet {
     RequireRatchet.notNullOrUndefined(keyField, 'keyField');
 
     Logger.info('Created csv compare with files %s and %s keyed on %s', file1, file2, keyField);
-    const file1Raw: string = fs.readFileSync(file1).toString();
-    let file1Parsed: any[] = parsesync(file1Raw, {
-      columns: true,
-      skip_empty_lines: true,
+    //const file1Raw: string = fs.readFileSync(file1).toString();
+    let file1Parsed: any[] = await this.streamParse(fs.createReadStream(file1), (f) => {
+      f;
     });
     file1Parsed = file1Parsed.map((m) => {
       const next: any = {};
@@ -85,11 +100,18 @@ export class CsvRatchet {
       return next;
     });
     const file1Mapped: Map<string, any> = MapRatchet.mapByUniqueProperty<any, string>(file1Parsed, keyField);
-    const file2Raw: string = fs.readFileSync(file2).toString();
+    //const file2Raw: string = fs.readFileSync(file2).toString();
+
+    let file2Parsed: any[] = await this.streamParse(fs.createReadStream(file2), (f) => {
+      f;
+    });
+    /*
     let file2Parsed: any[] = parsesync(file2Raw, {
       columns: true,
       skip_empty_lines: true,
     });
+
+     */
     file2Parsed = file2Parsed.map((m) => {
       const next: any = {};
       Object.keys(m).forEach((k) => {
@@ -128,10 +150,10 @@ export class CsvRatchet {
     return rval;
   }
 
-  public static async streamObjectsToCsv<T>(srcSubject: Subject<T>, output: Writable, inOpts?: stringify.Options): Promise<number> {
+  public static async streamObjectsToCsv<T>(srcSubject: Subject<T>, output: Writable, inOpts?: Options): Promise<number> {
     RequireRatchet.notNullOrUndefined(srcSubject, 'srcSubject');
     RequireRatchet.notNullOrUndefined(output, 'output');
-    const opts: stringify.Options = inOpts || {
+    const opts: Options = inOpts || {
       header: true,
     };
 

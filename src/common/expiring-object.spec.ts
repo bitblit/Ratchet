@@ -1,6 +1,6 @@
 import { ExpiringObject } from './expiring-object';
 import { PromiseRatchet } from './promise-ratchet';
-import { LoggerLevelName } from './logger';
+import { LoggerLevelName } from './logger-support/logger-level-name';
 
 describe('#expiringObject', function () {
   it('should default the object', async () => {

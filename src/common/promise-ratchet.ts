@@ -6,6 +6,7 @@ import { Logger } from './logger';
 import { ArrayRatchet } from './array-ratchet';
 import { TimeoutToken } from './timeout-token';
 import { StopWatch } from './stop-watch';
+import { LoggerLevelName } from './logger-support/logger-level-name';
 
 export class PromiseRatchet {
   /**
@@ -150,7 +151,7 @@ export class PromiseRatchet {
     params: any[][],
     context: any, // eslint-disable-line @typescript-eslint/explicit-module-boundary-types
     maxConcurrent = 1,
-    logLevel = 'debug'
+    logLevel = LoggerLevelName.debug
   ): Promise<T[]> {
     const sw: StopWatch = new StopWatch();
     sw.start();
@@ -182,7 +183,7 @@ export class PromiseRatchet {
     params: any[],
     context: any, // eslint-disable-line @typescript-eslint/explicit-module-boundary-types
     maxConcurrent = 1,
-    logLevel = 'debug'
+    logLevel = LoggerLevelName.debug
   ): Promise<T[]> {
     const wrappedParams: any[][] = ArrayRatchet.wrapElementsInArray(params);
     return PromiseRatchet.runBoundedParallel<T>(promiseFn, wrappedParams, context, maxConcurrent, logLevel);

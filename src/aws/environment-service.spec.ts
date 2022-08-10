@@ -2,6 +2,7 @@ import { EnvironmentService } from './environment-service';
 import { Logger } from '../common/logger';
 import { SsmEnvironmentServiceProvider } from './environment/ssm-environment-service-provider';
 import { S3EnvironmentServiceProvider } from './environment/s3-environment-service-provider';
+import { LoggerLevelName } from '../common';
 
 describe('#environmentService', function () {
   xit('should throw exception on missing environment values', async () => {
@@ -22,7 +23,7 @@ describe('#environmentService', function () {
   });
 
   xit('should load config from s3', async () => {
-    Logger.setLevelByName('silly');
+    Logger.setLevel(LoggerLevelName.silly);
     const bucket: string = 'xxx';
     const path: string = 'yyy';
 
