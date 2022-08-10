@@ -11,6 +11,12 @@ export class LogMessageBuilder {
     this.wrapped = { lvl: lvl, timestamp: Date.now(), messageSource: messageSource };
   }
 
+  public clone(): LogMessageBuilder {
+    const rval: LogMessageBuilder = new LogMessageBuilder(this.wrapped.lvl, this.wrapped.messageSource);
+    rval.wrapped = Object.assign({}, this.wrapped);
+    return rval;
+  }
+
   public level(lvl: LoggerLevelName): LogMessageBuilder {
     if (!lvl) {
       throw Error('Cannot set level to null/undefined');
