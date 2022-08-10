@@ -5,6 +5,7 @@ import { LoggerInstance } from './logger-support/logger-instance';
 import { LogMessageFormatType } from './logger-support/log-message-format-type';
 import { LoggerLevelName } from './logger-support/logger-level-name';
 import { LoggerRingBuffer } from './logger-support/logger-ring-buffer';
+import { LogMessageBuilder } from './logger-support/log-message-builder';
 
 /**
  * Class to simplify logging across both browsers and node (especially lambda)
@@ -42,6 +43,15 @@ export class Logger {
   }
 
   // Classic passthru's direct to the default logger
+
+  public static recordMessageBuilder(msgBuild: LogMessageBuilder): string {
+    return Logger.getLogger().recordMessageBuilder(msgBuild);
+  }
+
+  public static recordMessage(msg: LogMessage): string {
+    return Logger.getLogger().recordMessage(msg);
+  }
+
   public static formatMessages(msgs: LogMessage[]): string[] {
     return Logger.getLogger().formatMessages(msgs);
   }

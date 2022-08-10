@@ -35,6 +35,7 @@ export * from './timeout-token';
 export * from './transform-ratchet';
 export * from './twilio-ratchet';
 export * from './logger-support/classic-single-line-log-message-formatter';
+export * from './logger-support/log-message-builder';
 export * from './logger-support/log-message-format-type';
 export * from './logger-support/log-message-formatter';
 export * from './logger-support/log-message';

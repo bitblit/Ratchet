@@ -8,6 +8,7 @@ import { LogMessageFormatType } from './log-message-format-type';
 import { ClassicSingleLineLogMessageFormatter } from './classic-single-line-log-message-formatter';
 import { NoneLogMessageFormatter } from './none-log-message-formatter';
 import { StructuredJsonLogMessageFormatter } from './structured-json-log-message-formatter';
+import { LogMessageBuilder } from './log-message-builder';
 
 export class LoggerInstance {
   private _ringBuffer: LoggerRingBuffer;
@@ -105,6 +106,10 @@ export class LoggerInstance {
   public formatMessages(msgs: LogMessage[]): string[] {
     const rval: string[] = (msgs || []).map((m) => this.formatMessage(m)).filter((m) => !!m);
     return rval;
+  }
+
+  public recordMessageBuilder(msgBuild: LogMessageBuilder): string {
+    return this.recordMessage(msgBuild.toMessage());
   }
 
   public recordMessage(msg: LogMessage): string {
