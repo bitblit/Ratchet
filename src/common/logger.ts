@@ -41,11 +41,15 @@ export class Logger {
     return rval;
   }
 
-  public static changeDefaultOptions(input: LoggerOptions): void {
+  public static changeDefaultOptions(input: LoggerOptions, retroactive?: boolean): void {
     if (!input || !input.initialLevel || !input.formatType) {
       throw new Error('Default options must be non-null, and provide initial level and format type');
     }
     Logger.DEFAULT_OPTIONS = Object.assign({}, input);
+
+    if (retroactive) {
+      Array.from(Logger.LOGGER_INSTANCES.values()).forEach((li) => (li.options = input));
+    }
   }
 
   public static getLogger(loggerName: string = 'default', inOptions?: LoggerOptions): LoggerInstance {

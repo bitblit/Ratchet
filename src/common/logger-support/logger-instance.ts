@@ -20,31 +20,10 @@ export class LoggerInstance {
   private _formatter: LogMessageFormatter;
   private _level: LoggerLevelName;
   private _handlerFunctionMap: Map<LoggerLevelName, (...any) => void>;
+  private _options: LoggerOptions;
 
-  constructor(private loggerInstanceName: string = 'default', private _options: LoggerOptions) {
-    if (_options.ringBufferSize) {
-      this._ringBuffer = new LoggerRingBuffer(_options.ringBufferSize);
-    }
-    // Setup the formatter
-    switch (_options.formatType) {
-      case LogMessageFormatType.None:
-        this._formatter = new NoneLogMessageFormatter();
-        break;
-      case LogMessageFormatType.StructuredJson:
-        this._formatter = new StructuredJsonLogMessageFormatter();
-        break;
-      default:
-        this._formatter = new ClassicSingleLineLogMessageFormatter();
-        break;
-    }
-    this._level = _options.initialLevel;
-    this._handlerFunctionMap = LoggerUtil.handlerFunctionMap(_options.doNotUseConsoleDebug);
-
-    this._loggerMeta = {
-      options: _options,
-      loggerInstanceName: loggerInstanceName,
-      loggerInstanceId: StringRatchet.createRandomHexString(8),
-    };
+  constructor(private loggerInstanceName: string = 'default', inOptions: LoggerOptions) {
+    this.options = inOptions; // MUST use the setter here
   }
 
   public addPreProcessor(proc: LogMessageProcessor): LogMessageProcessor[] {
@@ -83,6 +62,34 @@ export class LoggerInstance {
 
   public get options(): LoggerOptions {
     return Object.assign({}, this._options);
+  }
+
+  public set options(newOpts: LoggerOptions) {
+    this._options = Object.assign({}, newOpts);
+    if (this._options.ringBufferSize) {
+      this._ringBuffer = new LoggerRingBuffer(this._options.ringBufferSize);
+    }
+    // Setup the formatter
+    switch (this._options.formatType) {
+      case LogMessageFormatType.None:
+        this._formatter = new NoneLogMessageFormatter();
+        break;
+      case LogMessageFormatType.StructuredJson:
+        this._formatter = new StructuredJsonLogMessageFormatter();
+        break;
+      default:
+        this._formatter = new ClassicSingleLineLogMessageFormatter();
+        break;
+    }
+    this._level = this._options.initialLevel;
+    this._handlerFunctionMap = LoggerUtil.handlerFunctionMap(this._options.doNotUseConsoleDebug);
+
+    const oldId: string = this._loggerMeta ? this._loggerMeta.loggerInstanceId : null;
+    this._loggerMeta = {
+      options: this._options,
+      loggerInstanceName: this.loggerInstanceName,
+      loggerInstanceId: oldId || StringRatchet.createRandomHexString(8),
+    };
   }
 
   public get level(): LoggerLevelName {
