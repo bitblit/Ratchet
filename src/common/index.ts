@@ -38,6 +38,7 @@ export * from './logger-support/classic-single-line-log-message-formatter';
 export * from './logger-support/log-message-builder';
 export * from './logger-support/log-message-format-type';
 export * from './logger-support/log-message-formatter';
+export * from './logger-support/log-message-processor';
 export * from './logger-support/log-message';
 export * from './logger-support/log-snapshot';
 export * from './logger-support/logger-instance';

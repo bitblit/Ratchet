@@ -9,6 +9,7 @@ import { ClassicSingleLineLogMessageFormatter } from './classic-single-line-log-
 import { NoneLogMessageFormatter } from './none-log-message-formatter';
 import { StructuredJsonLogMessageFormatter } from './structured-json-log-message-formatter';
 import { LogMessageBuilder } from './log-message-builder';
+import { LogMessageProcessor } from './log-message-processor';
 
 export class LoggerInstance {
   private _ringBuffer: LoggerRingBuffer;
@@ -34,6 +35,14 @@ export class LoggerInstance {
     }
     this._level = _options.initialLevel;
     this._handlerFunctionMap = LoggerUtil.handlerFunctionMap(_options.doNotUseConsoleDebug);
+  }
+
+  public addPreProcessor(proc: LogMessageProcessor): LogMessageProcessor[] {
+    if (proc) {
+      this._options.preProcessors = this._options.preProcessors || [];
+      this._options.preProcessors.push(proc);
+    }
+    return Object.assign([], this._options.preProcessors);
   }
 
   public get ringBuffer(): LoggerRingBuffer {
@@ -112,9 +121,17 @@ export class LoggerInstance {
     return this.recordMessage(msgBuild.toMessage());
   }
 
-  public recordMessage(msg: LogMessage): string {
+  public recordMessage(inMsg: LogMessage): string {
     let rval: string = null;
-    if (LoggerUtil.levelIsEnabled(msg.lvl, this._level)) {
+    if (LoggerUtil.levelIsEnabled(inMsg.lvl, this._level)) {
+      let msg: LogMessage = Object.assign({}, inMsg);
+      // If there are any preprocessors, run them
+      if (this._options.preProcessors?.length) {
+        for (let i = 0; i < this._options.preProcessors.length; i++) {
+          msg = this._options.preProcessors[i].process(msg);
+        }
+      }
+      // Now, generate the actual string to log
       rval = this.formatMessage(msg);
       if (rval) {
         const fn: (...any) => void = this._handlerFunctionMap.get(msg.lvl) || LoggerUtil.defaultHandlerFunction;

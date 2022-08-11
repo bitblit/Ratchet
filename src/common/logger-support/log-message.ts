@@ -5,5 +5,5 @@ export interface LogMessage {
   timestamp: number;
   messageSource: string;
   subsVars?: any[];
-  params?: Record<string, string>;
+  params?: Record<string, string | number | boolean>;
 }

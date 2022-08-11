@@ -1,6 +1,15 @@
 import { LoggerLevelName } from './logger-level-name';
 
 export class LoggerUtil {
+  private static LOG_LEVELS_IN_ORDER: LoggerLevelName[] = [
+    LoggerLevelName.error,
+    LoggerLevelName.warn,
+    LoggerLevelName.info,
+    LoggerLevelName.verbose,
+    LoggerLevelName.debug,
+    LoggerLevelName.silly,
+  ];
+
   public static handlerFunctionMap(doNotUseConsoleDebug: boolean): Map<LoggerLevelName, (...any) => void> {
     const output: Map<LoggerLevelName, (...any) => void> = new Map<LoggerLevelName, (...any) => void>();
     output.set(LoggerLevelName.error, console.error);
@@ -17,6 +26,8 @@ export class LoggerUtil {
   }
 
   public static levelIsEnabled(targetLevel: LoggerLevelName, currentEnabled: LoggerLevelName): boolean {
-    return true; // TODO: impl
+    const idxTarget: number = LoggerUtil.LOG_LEVELS_IN_ORDER.indexOf(targetLevel);
+    const lvl: number = LoggerUtil.LOG_LEVELS_IN_ORDER.indexOf(currentEnabled);
+    return idxTarget > -1 && lvl > -1 && lvl >= idxTarget;
   }
 }

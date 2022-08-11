@@ -43,12 +43,12 @@ export class LogMessageBuilder {
     return this;
   }
 
-  public params(val: Record<string, string>): LogMessageBuilder {
+  public params(val: Record<string, string | number | boolean>): LogMessageBuilder {
     this.wrapped.params = val || {};
     return this;
   }
 
-  public p(name: string, value: string): LogMessageBuilder {
+  public p(name: string, value: string | number | boolean): LogMessageBuilder {
     this.wrapped.params = this.wrapped.params || {};
     this.wrapped.params[name] = value;
     return this;

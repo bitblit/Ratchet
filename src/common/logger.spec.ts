@@ -2,6 +2,10 @@ import { Logger } from './logger';
 import { LogSnapshot } from './logger-support/log-snapshot';
 import { LogMessage } from './logger-support/log-message';
 import { LoggerLevelName } from './logger-support/logger-level-name';
+import { LogMessageProcessor } from './logger-support/log-message-processor';
+import { StringRatchet } from './string-ratchet';
+import { LogMessageBuilder } from './logger-support/log-message-builder';
+import { LogMessageFormatType } from './logger-support/log-message-format-type';
 
 describe('#setLevel', function () {
   it('should change the level to debug then info then debug', function () {
@@ -128,5 +132,43 @@ describe('#testFormatter', function () {
     Logger.info('Test %d %d', 3, 4);
     const msgS: string = Logger.formatMessages([msg])[0];
     expect(msgS).toEqual('[info] Test 1 2');
+  });
+});
+
+describe('#testPreProcessor', function () {
+  it('should perform a preprocess', function () {
+    const preProc: LogMessageProcessor = {
+      process(msg: LogMessage): LogMessage {
+        msg.messageSource = 'Preprocess';
+        return msg;
+      },
+    };
+
+    const output: string = Logger.getLogger(StringRatchet.createRandomHexString(4), { preProcessors: [preProc] }).info(
+      'This is a test %s',
+      'bob'
+    );
+    expect(output).toEqual('[info] Preprocess bob');
+  });
+});
+
+describe('#testBuilder', function () {
+  it('should use a builder', function () {
+    const output: string = Logger.getLogger(StringRatchet.createRandomHexString(4)).recordMessageBuilder(
+      new LogMessageBuilder(LoggerLevelName.warn, 'This is a test %s').subVars(['bob'])
+    );
+    expect(output).toEqual('[warn] This is a test bob');
+  });
+});
+
+describe('#testStructured', function () {
+  it('should use a structured logger', function () {
+    const output: string = Logger.getLogger(StringRatchet.createRandomHexString(4), {
+      formatType: LogMessageFormatType.StructuredJson,
+    }).recordMessageBuilder(new LogMessageBuilder(LoggerLevelName.warn, 'This is a test %s').subVars(['bob']).p('a', 27));
+    const parsed: any = JSON.parse(output);
+    expect(parsed.message).toEqual('This is a test bob');
+    expect(parsed.level).toEqual('warn');
+    expect(parsed.a).toEqual(27);
   });
 });

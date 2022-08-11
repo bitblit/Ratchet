@@ -3,7 +3,7 @@ import { LogMessage } from './log-message';
 import { LogMessageFormatter } from './log-message-formatter';
 
 export class StructuredJsonLogMessageFormatter implements LogMessageFormatter {
-  public formatMessage(msg: LogMessage, globalVars: Record<string, string>, tracePrefix: string): string {
+  public formatMessage(msg: LogMessage, globalVars: Record<string, string | number | boolean>, tracePrefix: string): string {
     let rval: string = null;
     if (msg) {
       const tmp: Record<any, any> = Object.assign({}, globalVars || {}, msg.params || {});
