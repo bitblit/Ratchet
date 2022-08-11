@@ -10,14 +10,18 @@ import { NoneLogMessageFormatter } from './none-log-message-formatter';
 import { StructuredJsonLogMessageFormatter } from './structured-json-log-message-formatter';
 import { LogMessageBuilder } from './log-message-builder';
 import { LogMessageProcessor } from './log-message-processor';
+import { StringRatchet } from '../string-ratchet';
+import { LoggerMeta } from './logger-meta';
 
 export class LoggerInstance {
+  private _loggerMeta: LoggerMeta;
+
   private _ringBuffer: LoggerRingBuffer;
   private _formatter: LogMessageFormatter;
   private _level: LoggerLevelName;
   private _handlerFunctionMap: Map<LoggerLevelName, (...any) => void>;
 
-  constructor(private loggerName: string = 'default', private _options: LoggerOptions) {
+  constructor(private loggerInstanceName: string = 'default', private _options: LoggerOptions) {
     if (_options.ringBufferSize) {
       this._ringBuffer = new LoggerRingBuffer(_options.ringBufferSize);
     }
@@ -35,6 +39,12 @@ export class LoggerInstance {
     }
     this._level = _options.initialLevel;
     this._handlerFunctionMap = LoggerUtil.handlerFunctionMap(_options.doNotUseConsoleDebug);
+
+    this._loggerMeta = {
+      options: _options,
+      loggerInstanceName: loggerInstanceName,
+      loggerInstanceId: StringRatchet.createRandomHexString(8),
+    };
   }
 
   public addPreProcessor(proc: LogMessageProcessor): LogMessageProcessor[] {
@@ -108,7 +118,7 @@ export class LoggerInstance {
   }
 
   public formatMessage(msg: LogMessage): string {
-    const rval: string = msg ? this._formatter.formatMessage(msg, this._options.globalVars, this._options.trace) : null;
+    const rval: string = msg ? this._formatter.formatMessage(msg, this._loggerMeta) : null;
     return rval;
   }
 

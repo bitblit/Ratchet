@@ -1,5 +1,6 @@
 import { LogMessage } from './log-message';
+import { LoggerMeta } from './logger-meta';
 
 export interface LogMessageFormatter {
-  formatMessage(msg: LogMessage, globalVars: Record<string, string | number | boolean>, tracePrefix: string): string;
+  formatMessage(msg: LogMessage, meta: LoggerMeta): string;
 }

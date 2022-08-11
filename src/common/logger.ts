@@ -19,23 +19,39 @@ import { LogMessageBuilder } from './logger-support/log-message-builder';
 
 export class Logger {
   private static LOGGER_INSTANCES: Map<string, LoggerInstance> = new Map<string, LoggerInstance>();
+  private static DEFAULT_OPTIONS: LoggerOptions = {
+    initialLevel: LoggerLevelName.info,
+    formatType: LogMessageFormatType.ClassicSingleLine,
+    trace: null,
+    globalVars: {},
+    doNotUseConsoleDebug: false,
+    ringBufferSize: 0,
+    preProcessors: [],
+  };
 
-  public static applyDefaults(input?: LoggerOptions): LoggerOptions {
+  public static applyDefaultsToOptions(input?: LoggerOptions): LoggerOptions {
     const rval: LoggerOptions = input || {};
-    rval.initialLevel = rval.initialLevel || LoggerLevelName.info;
-    rval.formatType = rval.formatType || LogMessageFormatType.ClassicSingleLine;
-    rval.trace = rval.trace || null;
-    rval.globalVars = rval.globalVars || {};
-    rval.doNotUseConsoleDebug = rval.doNotUseConsoleDebug || false;
-    rval.ringBufferSize = rval.ringBufferSize || 0;
+    rval.initialLevel = rval.initialLevel ?? Logger.DEFAULT_OPTIONS.initialLevel;
+    rval.formatType = rval.formatType ?? Logger.DEFAULT_OPTIONS.formatType;
+    rval.trace = rval.trace ?? Logger.DEFAULT_OPTIONS.trace;
+    rval.globalVars = rval.globalVars ?? Logger.DEFAULT_OPTIONS.globalVars;
+    rval.doNotUseConsoleDebug = rval.doNotUseConsoleDebug ?? Logger.DEFAULT_OPTIONS.doNotUseConsoleDebug;
+    rval.ringBufferSize = rval.ringBufferSize ?? Logger.DEFAULT_OPTIONS.ringBufferSize;
 
     return rval;
+  }
+
+  public static changeDefaultOptions(input: LoggerOptions): void {
+    if (!input || !input.initialLevel || !input.formatType) {
+      throw new Error('Default options must be non-null, and provide initial level and format type');
+    }
+    Logger.DEFAULT_OPTIONS = Object.assign({}, input);
   }
 
   public static getLogger(loggerName: string = 'default', inOptions?: LoggerOptions): LoggerInstance {
     let inst: LoggerInstance = Logger.LOGGER_INSTANCES.get(loggerName);
     if (!inst) {
-      const options: LoggerOptions = Logger.applyDefaults(inOptions);
+      const options: LoggerOptions = Logger.applyDefaultsToOptions(inOptions);
       inst = new LoggerInstance(loggerName, options);
       Logger.LOGGER_INSTANCES.set(loggerName, inst);
     }
