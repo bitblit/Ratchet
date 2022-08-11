@@ -43,6 +43,7 @@ export * from './logger-support/log-message';
 export * from './logger-support/log-snapshot';
 export * from './logger-support/logger-instance';
 export * from './logger-support/logger-level-name';
+export * from './logger-support/logger-meta';
 export * from './logger-support/logger-options';
 export * from './logger-support/logger-ring-buffer';
 export * from './logger-support/logger-util';
