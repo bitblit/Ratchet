@@ -8,10 +8,9 @@ export class StructuredJsonLogMessageFormatter implements LogMessageFormatter {
     let rval: string = null;
     if (msg) {
       const tmp: Record<any, any> = Object.assign({}, meta.options.globalVars || {}, msg.params || {});
-      tmp['message'] = util.format(msg.messageSource, ...msg.subsVars);
-      tmp['epochMS'] = msg.timestamp;
+      tmp['msg'] = util.format(msg.messageSource, ...msg.subsVars);
       tmp['timestamp'] = new Date(msg.timestamp).toISOString();
-      tmp['level'] = msg.lvl;
+      tmp['logLevel'] = msg.lvl;
       if (meta.options.trace) {
         tmp['trace'] = meta.options.trace;
       }
