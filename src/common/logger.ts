@@ -6,6 +6,7 @@ import { LogMessageFormatType } from './logger-support/log-message-format-type';
 import { LoggerLevelName } from './logger-support/logger-level-name';
 import { LoggerRingBuffer } from './logger-support/logger-ring-buffer';
 import { LogMessageBuilder } from './logger-support/log-message-builder';
+import { LoggerOutputFunction } from './logger-support/logger-output-function';
 
 /**
  * Class to simplify logging across both browsers and node (especially lambda)
@@ -24,7 +25,7 @@ export class Logger {
     formatType: LogMessageFormatType.ClassicSingleLine,
     trace: null,
     globalVars: {},
-    doNotUseConsoleDebug: false,
+    outputFunction: LoggerOutputFunction.Console,
     ringBufferSize: 0,
     preProcessors: [],
   };
@@ -35,7 +36,7 @@ export class Logger {
     rval.formatType = rval.formatType ?? Logger.DEFAULT_OPTIONS.formatType;
     rval.trace = rval.trace ?? Logger.DEFAULT_OPTIONS.trace;
     rval.globalVars = rval.globalVars ?? Logger.DEFAULT_OPTIONS.globalVars;
-    rval.doNotUseConsoleDebug = rval.doNotUseConsoleDebug ?? Logger.DEFAULT_OPTIONS.doNotUseConsoleDebug;
+    rval.outputFunction = rval.outputFunction ?? Logger.DEFAULT_OPTIONS.outputFunction;
     rval.ringBufferSize = rval.ringBufferSize ?? Logger.DEFAULT_OPTIONS.ringBufferSize;
 
     return rval;

@@ -17,7 +17,8 @@ export class StructuredJsonLogMessageFormatter implements LogMessageFormatter {
       tmp['logName'] = meta.loggerInstanceName;
       tmp['logId'] = meta.loggerInstanceId;
 
-      rval = JSON.stringify(tmp);
+      rval = JSON.stringify(tmp) + '\n'; // You must have this newline at the end if using stdout instead of console.log
+      // see https://stackoverflow.com/questions/4976466/difference-between-process-stdout-write-and-console-log-in-node-js
     }
     return rval;
   }

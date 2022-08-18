@@ -12,6 +12,7 @@ import { LogMessageBuilder } from './log-message-builder';
 import { LogMessageProcessor } from './log-message-processor';
 import { StringRatchet } from '../string-ratchet';
 import { LoggerMeta } from './logger-meta';
+import { LoggerOutputFunction } from './logger-output-function';
 
 export class LoggerInstance {
   private _loggerMeta: LoggerMeta;
@@ -82,7 +83,7 @@ export class LoggerInstance {
         break;
     }
     this._level = this._options.initialLevel;
-    this._handlerFunctionMap = LoggerUtil.handlerFunctionMap(this._options.doNotUseConsoleDebug);
+    this._handlerFunctionMap = LoggerUtil.handlerFunctionMap(this._options.outputFunction);
 
     const oldId: string = this._loggerMeta ? this._loggerMeta.loggerInstanceId : null;
     this._loggerMeta = {

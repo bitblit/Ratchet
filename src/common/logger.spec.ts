@@ -167,8 +167,8 @@ describe('#testStructured', function () {
       formatType: LogMessageFormatType.StructuredJson,
     }).recordMessageBuilder(new LogMessageBuilder(LoggerLevelName.warn, 'This is a test %s').subVars(['bob']).p('a', 27));
     const parsed: any = JSON.parse(output);
-    expect(parsed.message).toEqual('This is a test bob');
-    expect(parsed.level).toEqual('warn');
+    expect(parsed.msg).toEqual('This is a test bob');
+    expect(parsed.logLevel).toEqual('warn');
     expect(parsed.a).toEqual(27);
   });
 });
