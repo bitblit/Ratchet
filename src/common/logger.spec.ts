@@ -6,6 +6,7 @@ import { LogMessageProcessor } from './logger-support/log-message-processor';
 import { StringRatchet } from './string-ratchet';
 import { LogMessageBuilder } from './logger-support/log-message-builder';
 import { LogMessageFormatType } from './logger-support/log-message-format-type';
+import { LoggerOutputFunction } from './logger-support/logger-output-function';
 
 describe('#setLevel', function () {
   it('should change the level to debug then info then debug', function () {
@@ -165,6 +166,7 @@ describe('#testStructured', function () {
   it('should use a structured logger', function () {
     const output: string = Logger.getLogger(StringRatchet.createRandomHexString(4), {
       formatType: LogMessageFormatType.StructuredJson,
+      outputFunction: LoggerOutputFunction.StdOut,
     }).recordMessageBuilder(new LogMessageBuilder(LoggerLevelName.warn, 'This is a test %s').subVars(['bob']).p('a', 27));
     const parsed: any = JSON.parse(output);
     expect(parsed.msg).toEqual('This is a test bob');

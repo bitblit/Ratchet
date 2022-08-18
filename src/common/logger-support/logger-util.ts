@@ -17,12 +17,15 @@ export class LoggerUtil {
       if (!process?.stdout?.write) {
         throw new Error('Cannot use standard out - process.stdout.write not found');
       }
-      output.set(LoggerLevelName.error, process.stdout.write);
-      output.set(LoggerLevelName.warn, process.stdout.write);
-      output.set(LoggerLevelName.info, process.stdout.write);
-      output.set(LoggerLevelName.verbose, process.stdout.write);
-      output.set(LoggerLevelName.debug, process.stdout.write);
-      output.set(LoggerLevelName.silly, process.stdout.write);
+      // Have to do this because process.stdout.write refers to 'this'
+      // See: https://github.com/nodejs/node-v0.x-archive/issues/7980
+      const myStdOut: (...any) => void = (chunk, cb) => process.stdout.write(chunk, 'utf-8', cb);
+      output.set(LoggerLevelName.error, myStdOut);
+      output.set(LoggerLevelName.warn, myStdOut);
+      output.set(LoggerLevelName.info, myStdOut);
+      output.set(LoggerLevelName.verbose, myStdOut);
+      output.set(LoggerLevelName.debug, myStdOut);
+      output.set(LoggerLevelName.silly, myStdOut);
     } else {
       output.set(LoggerLevelName.error, console.error);
       output.set(LoggerLevelName.warn, console.warn);
