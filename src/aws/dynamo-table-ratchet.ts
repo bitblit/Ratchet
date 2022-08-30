@@ -3,11 +3,11 @@
 */
 
 import AWS from 'aws-sdk';
-import { Logger } from '../common/logger';
+import { Logger } from '../common/logger.js';
 import { CreateTableInput, CreateTableOutput, DeleteTableInput, DeleteTableOutput, DescribeTableOutput } from 'aws-sdk/clients/dynamodb';
-import { RequireRatchet } from '../common/require-ratchet';
-import { PromiseRatchet } from '../common/promise-ratchet';
-import { ErrorRatchet } from '../common/error-ratchet';
+import { RequireRatchet } from '../common/require-ratchet.js';
+import { PromiseRatchet } from '../common/promise-ratchet.js';
+import { ErrorRatchet } from '../common/error-ratchet.js';
 
 export class DynamoTableRatchet {
   constructor(private awsDDB: AWS.DynamoDB) {

@@ -2,9 +2,9 @@
   Wraps an object with an expiring wrapper
  */
 
-import { Logger } from './logger';
-import { ErrorRatchet } from './error-ratchet';
-import { LoggerLevelName } from './logger-support/logger-level-name';
+import { Logger } from './logger.js';
+import { ErrorRatchet } from './error-ratchet.js';
+import { LoggerLevelName } from './logger-support/logger-level-name.js';
 
 export class ExpiringObject<T> {
   private _config: ExpiringObjectConfig<T>;

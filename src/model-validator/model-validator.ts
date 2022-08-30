@@ -1,6 +1,8 @@
 import Validator from 'swagger-model-validator';
 import yaml from 'js-yaml';
-import { ErrorRatchet, Logger, MapRatchet } from '../common';
+import { ErrorRatchet } from '../common/error-ratchet.js';
+import { Logger } from '../common/logger.js';
+import { MapRatchet } from '../common/map-ratchet.js';
 
 /**
  * Helper for validating endpoints

@@ -5,7 +5,9 @@
  * If you need to, you can easily increase the buckets number later, but may NOT decrease it.  Increasing
  * spots is also hard (although I have an idea for implementing that later...)
  */
-import { ErrorRatchet, RequireRatchet, StringRatchet } from '../common';
+import { ErrorRatchet } from '../common/error-ratchet.js';
+import { RequireRatchet } from '../common/require-ratchet.js';
+import { StringRatchet } from '../common/string-ratchet.js';
 
 export class HashSpreader {
   private _allSlots: string[];

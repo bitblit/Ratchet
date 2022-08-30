@@ -1,11 +1,9 @@
-import { Logger } from '../common/logger';
-import { PromiseRatchet } from '../common/promise-ratchet';
-import { RequireRatchet } from '../common/require-ratchet';
-import { ErrorRatchet } from '../common/error-ratchet';
-import { EnvironmentServiceProvider } from './environment/environment-service-provider';
-import { EnvironmentServiceConfig } from './environment/environment-service-config';
-import { SsmEnvironmentServiceProvider } from './environment/ssm-environment-service-provider';
-import { S3EnvironmentServiceProvider } from './environment/s3-environment-service-provider';
+import { Logger } from '../common/logger.js';
+import { PromiseRatchet } from '../common/promise-ratchet.js';
+import { RequireRatchet } from '../common/require-ratchet.js';
+import { ErrorRatchet } from '../common/error-ratchet.js';
+import { EnvironmentServiceProvider } from './environment/environment-service-provider.js';
+import { EnvironmentServiceConfig } from './environment/environment-service-config.js';
 
 /**
  * Wraps up a EnvironmentServiceProvider and provides caching and retry-on-failure logic

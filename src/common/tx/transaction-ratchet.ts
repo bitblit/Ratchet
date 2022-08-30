@@ -1,8 +1,10 @@
-import { TransactionStep } from './transaction-step';
-import { TransactionResult } from './transaction-result';
-import { TransactionConfiguration } from './transaction-configuration';
-import { Logger, LoggerLevelName, RequireRatchet } from '../index';
-import { TransactionFinalState } from './transaction-final-state';
+import { TransactionStep } from './transaction-step.js';
+import { TransactionResult } from './transaction-result.js';
+import { TransactionConfiguration } from './transaction-configuration.js';
+import { Logger } from '../logger.js';
+import { LoggerLevelName } from '../logger-support/logger-level-name.js';
+import { RequireRatchet } from '../require-ratchet.js';
+import { TransactionFinalState } from './transaction-final-state.js';
 
 /*
   TransactionRatchet is a framework for executing a series of steps in

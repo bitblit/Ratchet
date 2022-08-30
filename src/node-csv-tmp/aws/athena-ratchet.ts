@@ -9,16 +9,16 @@ import {
   StartQueryExecutionInput,
   StartQueryExecutionOutput,
 } from 'aws-sdk/clients/athena';
-import { StringRatchet } from '../../common/string-ratchet';
-import { Logger } from '../../common/logger';
-import { StopWatch } from '../../common/stop-watch';
-import { PromiseRatchet } from '../../common/promise-ratchet';
-import { RequireRatchet } from '../../common/require-ratchet';
+import { StringRatchet } from '../../common/string-ratchet.js';
+import { Logger } from '../../common/logger.js';
+import { StopWatch } from '../../common/stop-watch.js';
+import { PromiseRatchet } from '../../common/promise-ratchet.js';
+import { RequireRatchet } from '../../common/require-ratchet.js';
 import { GetObjectOutput, GetObjectRequest } from 'aws-sdk/clients/s3';
 import tmp from 'tmp';
 import fs from 'fs';
 import { Readable } from 'stream';
-import { CsvRatchet } from '../../node-csv';
+import { CsvRatchet } from '../../node-csv/csv-ratchet.js';
 
 export class AthenaRatchet {
   constructor(private athena: AWS.Athena, private s3: AWS.S3, private outputLocation: string) {

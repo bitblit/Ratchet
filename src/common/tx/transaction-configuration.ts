@@ -1,5 +1,5 @@
-import { TransactionResult } from './transaction-result';
-import { LoggerLevelName } from '../index';
+import { TransactionResult } from './transaction-result.js';
+import { LoggerLevelName } from '../logger-support/logger-level-name.js';
 
 export interface TransactionConfiguration<T> {
   stepLogLevel?: LoggerLevelName;

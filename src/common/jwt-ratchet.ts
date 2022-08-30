@@ -1,8 +1,8 @@
 import jwt from 'jsonwebtoken';
-import { RequireRatchet } from './require-ratchet';
-import { Logger } from './logger';
-import { StringRatchet } from './string-ratchet';
-import { DurationRatchet } from './duration-ratchet';
+import { RequireRatchet } from './require-ratchet.js';
+import { Logger } from './logger.js';
+import { StringRatchet } from './string-ratchet.js';
+import { DurationRatchet } from './duration-ratchet.js';
 
 /**
  * Functions to help with creating and decoding JWTs

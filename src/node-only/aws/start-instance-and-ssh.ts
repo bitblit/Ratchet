@@ -1,6 +1,6 @@
-import { Logger } from '../../common/logger';
-import { CliRatchet } from '../common/cli-ratchet';
-import { Ec2Ratchet } from '../../aws';
+import { Logger } from '../../common/logger.js';
+import { CliRatchet } from '../common/cli-ratchet.js';
+import { Ec2Ratchet } from '../../aws/ec2-ratchet.js';
 import { Instance } from 'aws-sdk/clients/ec2';
 import { spawnSync, SpawnSyncReturns } from 'child_process';
 import fs from 'fs';

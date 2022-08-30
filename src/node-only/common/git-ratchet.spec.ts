@@ -1,5 +1,5 @@
-import { GitRatchet } from './git-ratchet';
-import { Logger } from '../../common/logger';
+import { GitRatchet } from './git-ratchet.js';
+import { Logger } from '../../common/logger.js';
 
 describe('#gitRatchet', function () {
   it('should fetch last commit data', async () => {

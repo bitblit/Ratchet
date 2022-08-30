@@ -1,9 +1,9 @@
-import { StringRatchet } from '../../common/string-ratchet';
-import { Logger } from '../../common/logger';
-import { PromiseRatchet } from '../../common/promise-ratchet';
-import { RequireRatchet } from '../../common/require-ratchet';
+import { StringRatchet } from '../../common/string-ratchet.js';
+import { Logger } from '../../common/logger.js';
+import { PromiseRatchet } from '../../common/promise-ratchet.js';
+import { RequireRatchet } from '../../common/require-ratchet.js';
 import fs, { WriteStream } from 'fs';
-import { DynamoRatchet } from '../../aws';
+import { DynamoRatchet } from '../../aws/dynamo-ratchet.js';
 import readline from 'readline';
 import { QueryInput, ScanInput } from 'aws-sdk/clients/dynamodb';
 

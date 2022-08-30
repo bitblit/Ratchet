@@ -1,7 +1,8 @@
 /**
  * Service for functions that communicate to Google Recaptcha service
  */
-import { Logger, StringRatchet } from '../common';
+import { Logger } from '../common/logger.js';
+import { StringRatchet } from '../common/string-ratchet.js';
 import fetch from 'cross-fetch';
 
 export class GoogleRecaptchaRatchet {

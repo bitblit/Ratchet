@@ -2,11 +2,11 @@
     Wrap S3 with an ability to store and retrieve objects cached as json files
 */
 
-import { Logger } from '../../common/logger';
-import { S3CacheRatchet } from '../s3-cache-ratchet';
-import { SimpleDaoItem } from './simple-dao-item';
+import { Logger } from '../../common/logger.js';
+import { S3CacheRatchet } from '../s3-cache-ratchet.js';
+import { SimpleDaoItem } from './simple-dao-item.js';
 import { DeleteObjectOutput, PutObjectOutput } from 'aws-sdk/clients/s3';
-import { StringRatchet } from '../../common/string-ratchet';
+import { StringRatchet } from '../../common/string-ratchet.js';
 
 export class S3SimpleDao<T extends SimpleDaoItem> {
   constructor(private cache: S3CacheRatchet, private prefix?: string) {

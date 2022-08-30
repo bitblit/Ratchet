@@ -3,12 +3,10 @@
   approach.
 */
 
-import { SimpleCacheObjectWrapper } from './simple-cache-object-wrapper';
-import { SimpleCacheStorageProvider } from './simple-cache-storage-provider';
-import { RequireRatchet, StringRatchet } from '../../common';
-import { S3CacheRatchet } from '../s3-cache-ratchet';
-import { PutObjectOutput } from 'aws-sdk/clients/s3';
-import { DynamoRatchet } from '../dynamo-ratchet';
+import { SimpleCacheObjectWrapper } from './simple-cache-object-wrapper.js';
+import { SimpleCacheStorageProvider } from './simple-cache-storage-provider.js';
+import { RequireRatchet } from '../../common/require-ratchet.js';
+import { DynamoRatchet } from '../dynamo-ratchet.js';
 import { ExpressionAttributeValueMap, PutItemOutput, QueryInput, ScanInput } from 'aws-sdk/clients/dynamodb';
 
 export class DynamoDbStorageProvider implements SimpleCacheStorageProvider {

@@ -1,7 +1,8 @@
 import AWS from 'aws-sdk';
 import { DateTime } from 'luxon';
 import { ListJobsRequest, ListJobsResponse, SubmitJobRequest, SubmitJobResponse, JobSummary, JobStatus } from 'aws-sdk/clients/batch';
-import { Logger, RequireRatchet } from '../common';
+import { Logger } from '../common/logger.js';
+import { RequireRatchet } from '../common/require-ratchet.js';
 
 /**
  * Endpoints for doing api level integrations

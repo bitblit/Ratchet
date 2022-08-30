@@ -7,9 +7,9 @@ import {
   StopInstancesRequest,
 } from 'aws-sdk/clients/ec2';
 import { SendSSHPublicKeyRequest, SendSSHPublicKeyResponse } from 'aws-sdk/clients/ec2instanceconnect';
-import { Logger } from '../common/logger';
-import { DurationRatchet } from '../common/duration-ratchet';
-import { PromiseRatchet } from '../common/promise-ratchet';
+import { Logger } from '../common/logger.js';
+import { DurationRatchet } from '../common/duration-ratchet.js';
+import { PromiseRatchet } from '../common/promise-ratchet.js';
 
 /**
  * Service to simplify interacting with EC2 instances

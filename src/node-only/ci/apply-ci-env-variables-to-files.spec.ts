@@ -1,7 +1,7 @@
-import { ApplyCiEnvVariablesToFiles } from './apply-ci-env-variables-to-files';
-import { Logger } from '../../common/logger';
-import { CiEnvVariableConfigUtil } from './ci-env-variable-config-util';
-import { NodeRatchet } from '../common/node-ratchet';
+import { ApplyCiEnvVariablesToFiles } from './apply-ci-env-variables-to-files.js';
+import { Logger } from '../../common/logger.js';
+import { CiEnvVariableConfigUtil } from './ci-env-variable-config-util.js';
+import { NodeRatchet } from '../common/node-ratchet.js';
 
 describe('#applyCiEnvVariablesToFiles', function () {
   it('should fail if not in a ci environment', async () => {

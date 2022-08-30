@@ -1,6 +1,6 @@
-import { Logger } from '../common/logger';
-import { DynamoRatchet } from './dynamo-ratchet';
-import { RequireRatchet } from '../common/require-ratchet';
+import { Logger } from '../common/logger.js';
+import { DynamoRatchet } from './dynamo-ratchet.js';
+import { RequireRatchet } from '../common/require-ratchet.js';
 import { ExpressionAttributeValueMap, QueryInput } from 'aws-sdk/clients/dynamodb';
 
 export class RuntimeParameterRatchet {

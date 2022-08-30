@@ -2,9 +2,9 @@
     Functions for working with maps (dictionaries/objects in javascript)
 */
 
-import { KeyValue } from './key-value';
-import { Logger } from './logger';
-import { ErrorRatchet } from './error-ratchet';
+import { KeyValue } from './key-value.js';
+import { Logger } from './logger.js';
+import { ErrorRatchet } from './error-ratchet.js';
 import _ from 'lodash';
 
 export class MapRatchet {

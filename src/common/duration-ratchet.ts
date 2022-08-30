@@ -1,5 +1,5 @@
 import { DateTime, Duration, DurationLike } from 'luxon';
-import { NumberRatchet } from './number-ratchet';
+import { NumberRatchet } from './number-ratchet.js';
 
 /*
     Functions for working with durations (times between times)

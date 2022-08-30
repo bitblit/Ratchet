@@ -2,13 +2,13 @@
     Functions for working with csv data
 */
 
-import { ReadStream } from 'fs';
+import fs, { ReadStream } from 'fs';
 import { parse, Options as ParseOptions } from 'csv-parse';
-import fs from 'fs';
-import { Logger } from '../common/logger';
+
+import { Logger } from '../common/logger.js';
 import { stringify, Options } from 'csv-stringify';
-import { RequireRatchet } from '../common/require-ratchet';
-import { MapRatchet } from '../common/map-ratchet';
+import { RequireRatchet } from '../common/require-ratchet.js';
+import { MapRatchet } from '../common/map-ratchet.js';
 import { Subject, Subscription } from 'rxjs';
 import { Readable, Writable } from 'stream';
 

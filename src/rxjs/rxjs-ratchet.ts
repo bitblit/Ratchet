@@ -2,7 +2,7 @@
     Functions for working with rxjs objects
 */
 
-import { MapRatchet } from '../common/map-ratchet';
+import { MapRatchet } from '../common/map-ratchet.js';
 import { BehaviorSubject, Subscription } from 'rxjs';
 
 export class RxjsRatchet {

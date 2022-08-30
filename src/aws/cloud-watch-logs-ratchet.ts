@@ -3,7 +3,7 @@
 */
 
 import AWS from 'aws-sdk';
-import { Logger } from '../common/logger';
+import { Logger } from '../common/logger.js';
 import {
   DeleteLogGroupRequest,
   DescribeLogGroupsRequest,
@@ -16,9 +16,9 @@ import {
   StartQueryResponse,
   StopQueryResponse,
 } from 'aws-sdk/clients/cloudwatchlogs';
-import { PromiseRatchet } from '../common/promise-ratchet';
-import { RequireRatchet } from '../common/require-ratchet';
-import { StringRatchet } from '../common/string-ratchet';
+import { PromiseRatchet } from '../common/promise-ratchet.js';
+import { RequireRatchet } from '../common/require-ratchet.js';
+import { StringRatchet } from '../common/string-ratchet.js';
 
 export class CloudWatchLogsRatchet {
   private static readonly MAX_DELETE_RETRIES = 5;

@@ -1,4 +1,4 @@
-import { HistogramEntry } from './histogram-entry';
+import { HistogramEntry } from './histogram-entry.js';
 
 /**
  * Implements a simple histogram (for each object, how many times does it appear)

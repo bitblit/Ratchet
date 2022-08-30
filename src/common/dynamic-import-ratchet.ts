@@ -1,8 +1,8 @@
 /**
  * Helper around dynamic imports
  */
-import { ErrorRatchet } from './error-ratchet';
-import { Logger } from './logger';
+import { ErrorRatchet } from './error-ratchet.js';
+import { Logger } from './logger.js';
 
 export class DynamicImportRatchet {
   private static IMPORT_CACHE: Map<string, Promise<any>> = new Map<string, Promise<any>>();

@@ -4,10 +4,9 @@
     content to be passed through webpack safely
  */
 
-import { Logger } from '../../common/logger';
+import { Logger } from '../../common/logger.js';
 import fs from 'fs';
-import { CliRatchet } from './cli-ratchet';
-import { ApplyCiEnvVariablesToFiles } from '../ci/apply-ci-env-variables-to-files';
+import { CliRatchet } from './cli-ratchet.js';
 
 export class FilesToStaticClass {
   public static async process(fileNames: string[], outClassName: string, outFileName: string = null): Promise<string> {

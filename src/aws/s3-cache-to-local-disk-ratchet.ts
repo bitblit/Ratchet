@@ -1,7 +1,9 @@
 import crypto from 'crypto';
 import fs from 'fs';
 import path from 'path';
-import { Logger, RequireRatchet, StringRatchet } from '../common';
+import { Logger } from '../common/logger.js';
+import { RequireRatchet } from '../common/require-ratchet.js';
+import { StringRatchet } from '../common/string-ratchet.js';
 import { S3CacheRatchet } from './s3-cache-ratchet';
 
 /**

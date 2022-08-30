@@ -1,15 +1,15 @@
 import AWS from 'aws-sdk';
-import { ReadyToSendEmail } from './ready-to-send-email';
-import { RequireRatchet } from '../../common/require-ratchet';
-import { Logger } from '../../common/logger';
+import { ReadyToSendEmail } from './ready-to-send-email.js';
+import { RequireRatchet } from '../../common/require-ratchet.js';
+import { Logger } from '../../common/logger.js';
 import { SendRawEmailRequest, SendRawEmailResponse } from 'aws-sdk/clients/ses';
-import { StringRatchet } from '../../common/string-ratchet';
-import { MailerConfig } from './mailer-config';
-import { ErrorRatchet } from '../../common/error-ratchet';
-import { ResolvedReadyToSendEmail } from './resolved-ready-to-send-email';
-import { EmailAttachment } from './email-attachment';
+import { StringRatchet } from '../../common/string-ratchet.js';
+import { MailerConfig } from './mailer-config.js';
+import { ErrorRatchet } from '../../common/error-ratchet.js';
+import { ResolvedReadyToSendEmail } from './resolved-ready-to-send-email.js';
+import { EmailAttachment } from './email-attachment.js';
 import { DateTime } from 'luxon';
-import { Base64Ratchet } from '../../common/base64-ratchet';
+import { Base64Ratchet } from '../../common/base64-ratchet.js';
 
 /**
  * Generic Mail Sender for AWS.

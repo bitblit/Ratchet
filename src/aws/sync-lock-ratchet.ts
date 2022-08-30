@@ -1,7 +1,10 @@
 import { DeleteItemOutput, ExpressionAttributeValueMap, PutItemOutput, ScanInput } from 'aws-sdk/clients/dynamodb';
 import { DateTime } from 'luxon';
-import { DateRatchet, Logger, RequireRatchet, StringRatchet } from '../common';
-import { DynamoRatchet } from './dynamo-ratchet';
+import { DateRatchet } from '../common/date-ratchet.js';
+import { Logger } from '../common/logger.js';
+import { RequireRatchet } from '../common/require-ratchet.js';
+import { StringRatchet } from '../common/string-ratchet.js';
+import { DynamoRatchet } from './dynamo-ratchet.js';
 
 export class SyncLockRatchet {
   constructor(private ratchet: DynamoRatchet, private tableName: string) {

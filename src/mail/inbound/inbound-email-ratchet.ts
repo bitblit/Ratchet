@@ -1,7 +1,8 @@
 import { ParsedMail, simpleParser } from 'mailparser';
 import { Readable, ReadableOptions } from 'stream';
-import { S3CacheRatchet } from '../../aws/s3-cache-ratchet';
-import { Logger, RequireRatchet } from '../../common';
+import { S3CacheRatchet } from '../../aws/s3-cache-ratchet.js';
+import { Logger } from '../../common/logger.js';
+import { RequireRatchet } from '../../common/require-ratchet.js';
 
 /**
  * Service for handling inbound emails

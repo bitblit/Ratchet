@@ -1,6 +1,6 @@
 import process from 'child_process';
-import { Logger } from '../../common/logger';
-import {fileURLToPath, URL} from "url";
+import { Logger } from '../../common/logger.js';
+import { fileURLToPath, URL } from 'url';
 
 // Mainly ripped from https://raw.githubusercontent.com/seymen/git-last-commit/master/source/index.js
 // All credit due to https://github.com/seymen

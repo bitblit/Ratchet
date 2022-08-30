@@ -1,10 +1,10 @@
 import { DateTime } from 'luxon';
-import { Logger } from '../../common/logger';
+import { Logger } from '../../common/logger.js';
 import fetch from 'cross-fetch';
 import util from 'util';
-import { GitCommitData, GitRatchet } from '../common/git-ratchet';
-import { CliRatchet } from '../common/cli-ratchet';
-import { NodeRatchet } from '../common/node-ratchet';
+import { GitCommitData, GitRatchet } from '../common/git-ratchet.js';
+import { CliRatchet } from '../common/cli-ratchet.js';
+import { NodeRatchet } from '../common/node-ratchet.js';
 
 export class PublishCiReleaseToSlack {
   public static async process(slackHookUrl: string, timezone = 'America/Los_Angeles'): Promise<string> {

@@ -1,13 +1,9 @@
-import AWS, { AWSError } from 'aws-sdk';
-import { Logger } from '../../common/logger';
-import { GetParameterResult } from 'aws-sdk/clients/ssm';
-import { PromiseResult } from 'aws-sdk/lib/request';
-import { PromiseRatchet } from '../../common/promise-ratchet';
-import { RequireRatchet } from '../../common/require-ratchet';
-import { ErrorRatchet } from '../../common/error-ratchet';
-import { EnvironmentServiceProvider } from './environment-service-provider';
-import { StringRatchet } from '../../common/string-ratchet';
-import { NodeRatchet } from '../../node-only/common/node-ratchet';
+import { Logger } from '../../common/logger.js';
+import { RequireRatchet } from '../../common/require-ratchet.js';
+import { ErrorRatchet } from '../../common/error-ratchet.js';
+import { EnvironmentServiceProvider } from './environment-service-provider.js';
+import { StringRatchet } from '../../common/string-ratchet.js';
+import { NodeRatchet } from '../../node-only/common/node-ratchet.js';
 
 /**
  * Service for reading environmental variables

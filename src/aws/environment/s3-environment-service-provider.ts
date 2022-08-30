@@ -1,11 +1,11 @@
 import AWS from 'aws-sdk';
 import { ClientConfiguration } from 'aws-sdk/clients/s3';
-import { EnvironmentServiceProvider } from './environment-service-provider';
-import { S3CacheRatchet } from '../s3-cache-ratchet';
-import { RequireRatchet } from '../../common/require-ratchet';
-import { StopWatch } from '../../common/stop-watch';
-import { Logger } from '../../common/logger';
-import { StringRatchet } from '../../common';
+import { EnvironmentServiceProvider } from './environment-service-provider.js';
+import { S3CacheRatchet } from '../s3-cache-ratchet.js';
+import { RequireRatchet } from '../../common/require-ratchet.js';
+import { StopWatch } from '../../common/stop-watch.js';
+import { Logger } from '../../common/logger.js';
+import { StringRatchet } from '../../common/string-ratchet.js';
 
 /**
  * Service for reading environmental variables from S3

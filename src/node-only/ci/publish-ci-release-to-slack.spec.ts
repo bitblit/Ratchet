@@ -1,6 +1,6 @@
-import { Logger } from '../../common/logger';
-import { PublishCiReleaseToSlack } from './publish-ci-release-to-slack';
-import { NodeRatchet } from '../common/node-ratchet';
+import { Logger } from '../../common/logger.js';
+import { PublishCiReleaseToSlack } from './publish-ci-release-to-slack.js';
+import { NodeRatchet } from '../common/node-ratchet.js';
 
 describe('#publishCircleCiReleaseToSlack', function () {
   it('should fail if not in a circle ci environment', async () => {

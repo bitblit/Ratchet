@@ -2,10 +2,10 @@
     Functions for working with geolocations
 */
 
-import { RequireRatchet } from './require-ratchet';
-import { NumberRatchet } from './number-ratchet';
-import { ErrorRatchet } from './error-ratchet';
-import { Logger } from './logger';
+import { RequireRatchet } from './require-ratchet.js';
+import { NumberRatchet } from './number-ratchet.js';
+import { ErrorRatchet } from './error-ratchet.js';
+import { Logger } from './logger.js';
 
 export class GeolocationRatchet {
   // Empty constructor prevents instantiation

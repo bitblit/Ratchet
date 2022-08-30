@@ -2,7 +2,7 @@
     Functions for working with booleans
 */
 
-import { NumberRatchet } from './number-ratchet';
+import { NumberRatchet } from './number-ratchet.js';
 
 export class BooleanRatchet {
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types

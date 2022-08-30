@@ -1,5 +1,5 @@
-import { DateTime } from 'luxon';
-import { CiEnvVariableConfig } from './ci-env-variable-config';
+// import { DateTime } from 'luxon';
+import { CiEnvVariableConfig } from './ci-env-variable-config.js';
 
 export class CiEnvVariableConfigUtil {
   public static readonly DEFAULT_TIME_FORMAT: string = 'yyyy-MM-dd HH:mm:ss a z';
@@ -18,7 +18,7 @@ export class CiEnvVariableConfigUtil {
       branchDefault: '',
       tagDefault: '',
       hashDefault: '',
-      localTimeDefault: DateTime.local().setZone(timezone).toFormat(CiEnvVariableConfigUtil.DEFAULT_TIME_FORMAT),
+      localTimeDefault: new Date().toISOString(), //DateTime.local().setZone(timezone).toFormat(CiEnvVariableConfigUtil.DEFAULT_TIME_FORMAT),
     };
     return rval;
   }
@@ -36,7 +36,7 @@ export class CiEnvVariableConfigUtil {
       branchDefault: '',
       tagDefault: '',
       hashDefault: '',
-      localTimeDefault: DateTime.local().setZone(timezone).toFormat(CiEnvVariableConfigUtil.DEFAULT_TIME_FORMAT),
+      localTimeDefault: new Date().toISOString(), //DateTime.local().setZone(timezone).toFormat(CiEnvVariableConfigUtil.DEFAULT_TIME_FORMAT),
     };
     return rval;
   }

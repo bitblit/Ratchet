@@ -1,9 +1,9 @@
 import handlebars from 'handlebars';
 import Template = Handlebars.Template;
 import fetch from 'cross-fetch';
-import { StringRatchet } from '../../common/string-ratchet';
-import { Logger } from '../../common/logger';
-import { RatchetTemplateRenderer } from './ratchet-template-renderer';
+import { StringRatchet } from '../../common/string-ratchet.js';
+import { Logger } from '../../common/logger.js';
+import { RatchetTemplateRenderer } from './ratchet-template-renderer.js';
 import layouts from 'handlebars-layouts';
 
 /**

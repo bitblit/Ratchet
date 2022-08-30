@@ -2,8 +2,8 @@
     Functions for simplifying some networking tasks
 */
 
-import { Logger } from './logger';
-import { ParsedUrl } from './parsed-url';
+import { Logger } from './logger.js';
+import { ParsedUrl } from './parsed-url.js';
 
 export class NetworkRatchet {
   private static LOCAL_IP: string = null;

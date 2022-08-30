@@ -3,13 +3,12 @@
 */
 
 import AWS from 'aws-sdk';
-import { Logger } from '../common/logger';
+import { Logger } from '../common/logger.js';
 import {
   CopyObjectOutput,
   CopyObjectRequest,
   DeleteObjectOutput,
   GetObjectOutput,
-  GetObjectRequest,
   HeadObjectOutput,
   ListObjectsOutput,
   ListObjectsRequest,
@@ -18,10 +17,10 @@ import {
   PutObjectOutput,
   PutObjectRequest,
 } from 'aws-sdk/clients/s3';
-import { RequireRatchet } from '../common/require-ratchet';
-import { PassThrough, Readable } from 'stream';
-import { ErrorRatchet, StopWatch } from '../common';
-import * as stream from 'stream';
+import { RequireRatchet } from '../common/require-ratchet.js';
+import { Readable } from 'stream';
+import { ErrorRatchet } from '../common/error-ratchet.js';
+import { StopWatch } from '../common/stop-watch.js';
 
 export class S3CacheRatchet {
   constructor(private s3: AWS.S3, private defaultBucket: string = null) {
