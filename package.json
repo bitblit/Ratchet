@@ -70,7 +70,15 @@
   },
   "jest": {
     "preset": "ts-jest/presets/default-esm",
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "globals": {
+      "ts-jest": {
+        "useESM": true
+      }
+    },
+    "moduleNameMapper": {
+      "^(\\.{1,2}/.*)\\.js$": "$1"
+    }
   },
   "license": "Apache-2.0",
   "dependencies": {
