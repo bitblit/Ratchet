@@ -5,7 +5,7 @@
 import { KeyValue } from './key-value';
 import { Logger } from './logger';
 import { ErrorRatchet } from './error-ratchet';
-import { set } from 'lodash';
+import _ from 'lodash';
 
 export class MapRatchet {
   // Takes any map with keys that are nested and expands them
@@ -14,7 +14,7 @@ export class MapRatchet {
   public static expandNestedKeys<T>(src: any): T {
     const rval: T = {} as T;
     Object.keys(src).forEach((k) => {
-      set(rval, k, src[k]);
+      _.set(rval, k, src[k]);
     });
     return rval;
   }

@@ -6,13 +6,19 @@ import { RequireRatchet } from '../../common/require-ratchet';
 import { StringRatchet } from '../../common/string-ratchet';
 import { S3Ratchet } from '../../aws/s3-ratchet';
 import { CsvRatchet } from '../../node-csv/csv-ratchet';
+import {URL, fileURLToPath} from "url";
 
 // A class to simplify reading an Athena table based on ALB Logs
 // NOTE: This class only runs on Node since it depends on fs and path
 export class AlbAthenaLogRatchet {
+
   constructor(private athena: AthenaRatchet, private athenaTableName: string) {
     RequireRatchet.notNullOrUndefined(athena, 'athena');
     RequireRatchet.notNullOrUndefined(StringRatchet.trimToNull(athenaTableName), 'athenaTableName');
+  }
+
+  private static getLocalDirName(): string {
+    return fileURLToPath(new URL('.', import.meta.url));
   }
 
   public async updatePartitions(
@@ -70,7 +76,7 @@ export class AlbAthenaLogRatchet {
       }
     }
 
-    let tableCreateQry: string = readFileSync(path.join(__dirname, '../static/albAthenaTableCreate.txt')).toString();
+    let tableCreateQry: string = readFileSync(path.join(AlbAthenaLogRatchet.getLocalDirName(), '../static/albAthenaTableCreate.txt')).toString();
     tableCreateQry = tableCreateQry.split('{{TABLE NAME}}').join(this.athenaTableName);
     tableCreateQry = tableCreateQry.split('{{ALB_LOG_ROOT}}').join(rootPath);
     Logger.info('Creating table with %s', tableCreateQry);

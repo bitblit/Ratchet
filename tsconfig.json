@@ -1,13 +1,13 @@
 {
   "compilerOptions": {
-    "target": "es6",
-    "module": "commonjs",
+    "target": "es2020",
+    "module": "es2020",
     "declaration": true,
     "sourceMap": true,
     "outDir": "./dist",
     "strict": true,
 
-    "esModuleInterop": true,
+    "esModuleInterop": false,
     "resolveJsonModule": true,
     "moduleResolution": "node",
     "noImplicitAny": false,
@@ -19,7 +19,8 @@
     "preserveConstEnums": true,
     "suppressImplicitAnyIndexErrors": true,
     "forceConsistentCasingInFileNames": true,
-    "lib": ["es2015", "es6", "dom"]
+    "allowSyntheticDefaultImports": true,
+    "lib": ["es2020", "dom"]
   },
   "include": ["src/**/*.ts"],
   "exclude": ["node_modules", "build", "webpack"],

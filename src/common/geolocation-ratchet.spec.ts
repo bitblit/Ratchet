@@ -2,6 +2,11 @@ import { GeolocationRatchet, RatchetGeoLocation, RatchetLocationBounds, RatchetL
 import fs from 'fs';
 import { NumberRatchet } from './number-ratchet';
 import path from 'path';
+import { fileURLToPath, URL } from 'url';
+import { Logger } from './logger';
+
+const testDirname: string = fileURLToPath(new URL('.', import.meta.url));
+Logger.info('Using dirName: %s', testDirname);
 
 describe('#geolocationRatchet', function () {
   it('should canonicalize', function () {
@@ -125,7 +130,7 @@ describe('#geolocationRatchet', function () {
        */
 
   it('should calc point in bounds', function () {
-    const input: string = fs.readFileSync(path.join(__dirname, '../../test-data/sample_geo_locations.csv')).toString();
+    const input: string = fs.readFileSync(path.join(testDirname, '../../test-data/sample_geo_locations.csv')).toString();
 
     const locations: RatchetGeoLocation[] = input
       .split('\n')

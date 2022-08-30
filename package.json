@@ -2,11 +2,21 @@
   "name": "@bitblit/ratchet",
   "version": "0.0.0",
   "description": "Common tools for general use",
+  "type": "module",
+  "bin": {
+    "ratchet-start-instance-and-ssh": "./dist/node-only/aws/start-instance-and-ssh.js",
+    ""
+
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
   "files": [
     "dist"
   ],
-  "main": "./dist/index.js",
-  "typings": "./dist/index.d.ts",
   "contributors": [
     "Christopher Weiss <bitblit@gmail.com>",
     "William Weiss <npm@codification.org>",
@@ -36,7 +46,7 @@
     "clean": "shx rm -Rf lib bundles temp",
     "compile-test": "yarn compile && yarn test",
     "apply-ci-vars": "node dist/node-only/ci/apply-ci-env-variables-to-files github dist/static/build-properties.json",
-    "test": "jest",
+    "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest",
     "lint": "eslint src/**/*.ts",
     "lint-fix": "eslint --fix src/**/*.ts",
     "generate-barrels": "barrelsby -q --delete -d src -l below -e .*\\.spec\\.ts"
@@ -56,11 +66,15 @@
   "engines": {
     "node": ">=14.15"
   },
+  "jest": {
+    "preset": "ts-jest/presets/default-esm",
+    "testEnvironment": "node"
+  },
   "license": "Apache-2.0",
   "dependencies": {
     "browserslist": "4.21.3",
     "lodash": "4.17.21",
-    "luxon": "3.0.1",
+    "luxon": "3.0.2",
     "ts-enum-util": "4.0.2"
   },
   "resolutions": {
@@ -78,14 +92,15 @@
   },
   "devDependencies": {
     "@types/aws-lambda": "8.10.102",
-    "@types/jest": "28.1.7",
+    "@types/jest": "28.1.8",
     "@types/luxon": "3.0.0",
     "@types/node": "14.18.1",
     "@types/yargs": "17.0.11",
-    "@typescript-eslint/eslint-plugin": "5.34.0",
-    "@typescript-eslint/parser": "5.34.0",
+    "@typescript-eslint/eslint-plugin": "5.35.1",
+    "@typescript-eslint/parser": "5.35.1",
     "aws-sdk": "2.1201.0",
     "barrelsby": "2.4.0",
+    "cross-env": "7.0.3",
     "cross-fetch": "3.1.5",
     "csv": "6.2.0",
     "eslint": "8.22.0",
@@ -111,7 +126,7 @@
     "ts-jest": "28.0.8",
     "ts-node": "10.9.1",
     "tsc-watch": "5.0.3",
-    "typescript": "4.7.4",
+    "typescript": "4.8.2",
     "walk": "2.3.15"
   }
 }
