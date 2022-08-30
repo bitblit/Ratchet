@@ -1,7 +1,7 @@
 import util from 'util';
-import { LogMessage } from './log-message';
-import { LogMessageFormatter } from './log-message-formatter';
-import { LoggerMeta } from './logger-meta';
+import { LogMessage } from './log-message.js';
+import { LogMessageFormatter } from './log-message-formatter.js';
+import { LoggerMeta } from './logger-meta.js';
 
 export class ClassicSingleLineLogMessageFormatter implements LogMessageFormatter {
   public formatMessage(msg: LogMessage, meta: LoggerMeta): string {

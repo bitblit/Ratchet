@@ -1,4 +1,4 @@
-import { LoggerLevelName } from './logger-level-name';
+import { LoggerLevelName } from './logger-level-name.js';
 
 export interface LogMessage {
   lvl: LoggerLevelName;

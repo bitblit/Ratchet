@@ -1,5 +1,5 @@
-import { LoggerUtil } from './logger-util';
-import { LoggerLevelName } from './logger-level-name';
+import { LoggerUtil } from './logger-util.js';
+import { LoggerLevelName } from './logger-level-name.js';
 
 describe('#checkLevel', function () {
   it('should check that level logging works', function () {

@@ -1,18 +1,17 @@
-import { LogMessage } from './log-message';
-import { LoggerOptions } from './logger-options';
-import { LoggerRingBuffer } from './logger-ring-buffer';
-import { LoggerLevelName } from './logger-level-name';
-import { LoggerUtil } from './logger-util';
-import { LogMessageFormatter } from './log-message-formatter';
-import { LogMessageFormatType } from './log-message-format-type';
-import { ClassicSingleLineLogMessageFormatter } from './classic-single-line-log-message-formatter';
-import { NoneLogMessageFormatter } from './none-log-message-formatter';
-import { StructuredJsonLogMessageFormatter } from './structured-json-log-message-formatter';
-import { LogMessageBuilder } from './log-message-builder';
-import { LogMessageProcessor } from './log-message-processor';
-import { StringRatchet } from '../string-ratchet';
-import { LoggerMeta } from './logger-meta';
-import { LoggerOutputFunction } from './logger-output-function';
+import { LogMessage } from './log-message.js';
+import { LoggerOptions } from './logger-options.js';
+import { LoggerRingBuffer } from './logger-ring-buffer.js';
+import { LoggerLevelName } from './logger-level-name.js';
+import { LoggerUtil } from './logger-util.js';
+import { LogMessageFormatter } from './log-message-formatter.js';
+import { LogMessageFormatType } from './log-message-format-type.js';
+import { ClassicSingleLineLogMessageFormatter } from './classic-single-line-log-message-formatter.js';
+import { NoneLogMessageFormatter } from './none-log-message-formatter.js';
+import { StructuredJsonLogMessageFormatter } from './structured-json-log-message-formatter.js';
+import { LogMessageBuilder } from './log-message-builder.js';
+import { LogMessageProcessor } from './log-message-processor.js';
+import { StringRatchet } from '../string-ratchet.js';
+import { LoggerMeta } from './logger-meta.js';
 
 export class LoggerInstance {
   private _loggerMeta: LoggerMeta;
