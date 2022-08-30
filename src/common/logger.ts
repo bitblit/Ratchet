@@ -1,12 +1,12 @@
-import { LogMessage } from './logger-support/log-message';
-import { LogSnapshot } from './logger-support/log-snapshot';
-import { LoggerOptions } from './logger-support/logger-options';
-import { LoggerInstance } from './logger-support/logger-instance';
-import { LogMessageFormatType } from './logger-support/log-message-format-type';
-import { LoggerLevelName } from './logger-support/logger-level-name';
-import { LoggerRingBuffer } from './logger-support/logger-ring-buffer';
-import { LogMessageBuilder } from './logger-support/log-message-builder';
-import { LoggerOutputFunction } from './logger-support/logger-output-function';
+import { LogMessage } from './logger-support/log-message.js';
+import { LogSnapshot } from './logger-support/log-snapshot.js';
+import { LoggerOptions } from './logger-support/logger-options.js';
+import { LoggerInstance } from './logger-support/logger-instance.js';
+import { LogMessageFormatType } from './logger-support/log-message-format-type.js';
+import { LoggerLevelName } from './logger-support/logger-level-name.js';
+import { LoggerRingBuffer } from './logger-support/logger-ring-buffer.js';
+import { LogMessageBuilder } from './logger-support/log-message-builder.js';
+import { LoggerOutputFunction } from './logger-support/logger-output-function.js';
 
 /**
  * Class to simplify logging across both browsers and node (especially lambda)
