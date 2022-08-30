@@ -1,7 +1,7 @@
 import AWS from 'aws-sdk';
 import { S3CacheToLocalDiskRatchet } from './s3-cache-to-local-disk-ratchet';
 import { S3CacheRatchet } from './s3-cache-ratchet';
-import { Logger } from '../common';
+import { Logger } from '../common/logger.js';
 import { tmpdir } from 'os';
 
 describe('#S3CacheToLocalDiskRatchet', () => {

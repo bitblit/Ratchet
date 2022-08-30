@@ -3,7 +3,7 @@ import { AthenaRatchet } from './athena-ratchet';
 import { Logger } from '../../common/logger';
 import { AlbAthenaLogRatchet, AlbLogRecord, AlbLogRecordQuery } from './alb-athena-log-ratchet';
 import { TimeZoneRatchet } from '../../common/time-zone-ratchet';
-import { LoggerLevelName } from '../../common';
+import { LoggerLevelName } from '../../common/logger-support/logger-level-name.js';
 
 describe('#AlbAthenaLogRatchet', function () {
   xit('should test a query', async () => {

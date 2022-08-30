@@ -3,7 +3,7 @@ import { DynamoRatchet } from './dynamo-ratchet';
 import { Logger } from '../common/logger';
 import { RuntimeParameterRatchet, StoredRuntimeParameter } from './runtime-parameter-ratchet';
 import { PromiseRatchet } from '../common/promise-ratchet';
-import { LoggerLevelName } from '../common';
+import { LoggerLevelName } from '../common/logger-support/logger-level-name.js';
 
 describe('#runtimeParameterRatchet', function () {
   xit('fetch and cache a runtime parameter', async () => {

@@ -1,13 +1,12 @@
 import { ModelValidator } from './model-validator';
 import fs from 'fs';
 import path from 'path';
-import { Logger } from '../common';
-import {fileURLToPath, URL} from "url";
+import { Logger } from '../common/logger.js';
+import { fileURLToPath, URL } from 'url';
 
-const testDirname: string =fileURLToPath(new URL('.', import.meta.url));
+const testDirname: string = fileURLToPath(new URL('.', import.meta.url));
 describe('#modelValidator', function () {
   it('should list an error', function () {
-
     const yamlString: string = fs.readFileSync(path.join(testDirname, '../../test-data/sample-objects.spec.yaml')).toString();
     const validator: ModelValidator = ModelValidator.createFromYamlString(yamlString, ['ModelObjects']);
 

@@ -1,7 +1,8 @@
 import { AwsBatchRatchet } from './aws-batch-ratchet';
 import { SubmitJobResponse } from 'aws-sdk/clients/batch';
 import AWS from 'aws-sdk';
-import { Logger, StopWatch } from '../common';
+import { Logger } from '../common/logger.js';
+import { StopWatch } from '../common/stop-watch.js';
 
 describe('#AwsBatchServie', () => {
   xit('Should schedule dbsync job', async () => {

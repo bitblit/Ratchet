@@ -2,7 +2,7 @@ import { EnvironmentService } from './environment-service';
 import { Logger } from '../common/logger';
 import { SsmEnvironmentServiceProvider } from './environment/ssm-environment-service-provider';
 import { S3EnvironmentServiceProvider } from './environment/s3-environment-service-provider';
-import { LoggerLevelName } from '../common';
+import { LoggerLevelName } from '../common/logger-support/logger-level-name.js';
 
 describe('#environmentService', function () {
   xit('should throw exception on missing environment values', async () => {

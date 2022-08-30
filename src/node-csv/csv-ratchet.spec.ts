@@ -9,7 +9,7 @@ import { S3CacheRatchet } from '../aws/s3-cache-ratchet';
 import { DaemonProcessCreateOptions } from '../aws/daemon/daemon-process-create-options';
 import { DaemonProcessState } from '../aws/daemon/daemon-process-state';
 import { DaemonUtil } from '../aws/daemon/daemon-util';
-import { LoggerLevelName } from '../common';
+import { LoggerLevelName } from '../common/logger-support/logger-level-name.js';
 
 describe('#streamObjectsToCsv', function () {
   xit('should stream objects to a csv', async () => {

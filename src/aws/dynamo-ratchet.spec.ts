@@ -2,7 +2,7 @@ import AWS from 'aws-sdk';
 import { DynamoRatchet } from './dynamo-ratchet';
 import { Logger } from '../common/logger';
 import { ExpressionAttributeValueMap, PutItemOutput, QueryInput } from 'aws-sdk/clients/dynamodb';
-import { LoggerLevelName } from '../common';
+import { LoggerLevelName } from '../common/logger-support/logger-level-name.js';
 
 describe('#atomicCounter', function () {
   xit('should only write if a field is null', async () => {
