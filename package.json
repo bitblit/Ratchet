@@ -5,8 +5,10 @@
   "type": "module",
   "bin": {
     "ratchet-start-instance-and-ssh": "./dist/node-only/aws/start-instance-and-ssh.js",
-    ""
-
+    "ratchet-apply-ci-env-variables-to-files": "./dist/node-only/ci/apply-ci-env-variables-to-files.js",
+    "ratchet-publish-ci-release-to-slack": "./dist/node-only/ci/publish-ci-release-to-slack.js",
+    "ratchet-files-to-static-class": "./dist/node-only/common/files-to-static-class.js",
+    "ratchet-site-uploader": "./dist/site-uploader/site-uploader.js"
   },
   "exports": {
     ".": {
@@ -77,6 +79,22 @@
     "luxon": "3.0.2",
     "ts-enum-util": "4.0.2"
   },
+  "optionalDependencies": {
+    "cross-fetch": "3.1.5",
+    "csv": "6.2.0",
+    "jsonwebtoken": "8.5.1",
+    "aws-sdk": "2.1201.0",
+    "handlebars": "4.7.7",
+    "handlebars-layouts": "3.1.4",
+    "rxjs": "7.5.6",
+    "swagger-model-validator": "3.0.21",
+    "tmp": "0.2.1",
+    "walk": "2.3.15",
+    "js-yaml": "4.1.0",
+    "json-loader": "0.5.7",
+    "mailparser": "3.5.0",
+    "mime-types": "2.1.35"
+  },
   "resolutions": {
     "ansi-regex": "^5.0.1",
     "lodash": "^4.17.21",
@@ -98,35 +116,21 @@
     "@types/yargs": "17.0.11",
     "@typescript-eslint/eslint-plugin": "5.35.1",
     "@typescript-eslint/parser": "5.35.1",
-    "aws-sdk": "2.1201.0",
     "barrelsby": "2.4.0",
     "cross-env": "7.0.3",
-    "cross-fetch": "3.1.5",
-    "csv": "6.2.0",
     "eslint": "8.22.0",
     "eslint-config-prettier": "8.5.0",
     "eslint-plugin-import": "2.26.0",
     "eslint-plugin-prettier": "4.2.1",
-    "handlebars": "4.7.7",
-    "handlebars-layouts": "3.1.4",
     "husky": "8.0.1",
     "jest": "28.1.3",
-    "js-yaml": "4.1.0",
-    "json-loader": "0.5.7",
-    "jsonwebtoken": "8.5.1",
-    "mailparser": "3.5.0",
-    "mime-types": "2.1.35",
     "prettier": "2.7.1",
     "pretty-quick": "3.1.3",
     "rimraf": "3.0.2",
-    "rxjs": "7.5.6",
     "shx": "0.3.4",
-    "swagger-model-validator": "3.0.21",
-    "tmp": "0.2.1",
     "ts-jest": "28.0.8",
     "ts-node": "10.9.1",
     "tsc-watch": "5.0.3",
-    "typescript": "4.8.2",
-    "walk": "2.3.15"
+    "typescript": "4.8.2"
   }
 }
