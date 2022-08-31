@@ -2,7 +2,7 @@
     Service for interacting with a specific CloudWatch log group
 */
 
-import AWS from 'aws-sdk';
+import * as AWS from 'aws-sdk';
 import { Logger } from '../common/logger.js';
 import {
   DescribeLogStreamsRequest,

@@ -1,4 +1,4 @@
-import AWS from 'aws-sdk';
+import * as AWS from 'aws-sdk';
 import { DynamoRatchet } from './dynamo-ratchet';
 import { Logger } from '../common/logger';
 import { RuntimeParameterRatchet, StoredRuntimeParameter } from './runtime-parameter-ratchet';

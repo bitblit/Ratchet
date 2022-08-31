@@ -2,7 +2,7 @@
     Helper functions for DynamoDB tables - existence, status, etc.
 */
 
-import AWS from 'aws-sdk';
+import * as AWS from 'aws-sdk';
 import { Logger } from '../common/logger.js';
 import { CreateTableInput, CreateTableOutput, DeleteTableInput, DeleteTableOutput, DescribeTableOutput } from 'aws-sdk/clients/dynamodb';
 import { RequireRatchet } from '../common/require-ratchet.js';

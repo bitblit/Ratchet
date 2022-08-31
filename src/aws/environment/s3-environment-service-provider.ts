@@ -1,4 +1,4 @@
-import AWS from 'aws-sdk';
+import * as AWS from 'aws-sdk';
 import { ClientConfiguration } from 'aws-sdk/clients/s3';
 import { EnvironmentServiceProvider } from './environment-service-provider.js';
 import { S3CacheRatchet } from '../s3-cache-ratchet.js';

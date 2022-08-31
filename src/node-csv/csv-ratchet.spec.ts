@@ -1,7 +1,7 @@
 import { Subject } from 'rxjs';
 import { StringWritable } from '../stream/string-writable';
 import { PassThrough } from 'stream';
-import AWS from 'aws-sdk';
+import * as AWS from 'aws-sdk';
 import { CsvRatchet } from './csv-ratchet';
 import { PromiseRatchet } from '../common/promise-ratchet';
 import { Logger } from '../common/logger';

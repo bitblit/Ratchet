@@ -1,4 +1,5 @@
-import AWS, { AWSError } from 'aws-sdk';
+import * as AWS from 'aws-sdk';
+import { AWSError } from 'aws-sdk';
 import { Logger } from '../../common/logger.js';
 import { GetParameterResult } from 'aws-sdk/clients/ssm';
 import { PromiseResult } from 'aws-sdk/lib/request';

@@ -1,4 +1,4 @@
-import AWS from 'aws-sdk';
+import * as AWS from 'aws-sdk';
 import { Logger } from '../../common/logger.js';
 import { DaemonProcessState } from './daemon-process-state.js';
 import { S3CacheRatchet } from '../s3-cache-ratchet.js';

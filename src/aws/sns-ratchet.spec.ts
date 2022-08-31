@@ -1,4 +1,4 @@
-import AWS from 'aws-sdk';
+import * as AWS from 'aws-sdk';
 import { SnsRatchet } from './sns-ratchet';
 import { PublishResponse } from 'aws-sdk/clients/sns';
 

@@ -1,4 +1,4 @@
-import AWS from 'aws-sdk';
+import * as AWS from 'aws-sdk';
 import { S3StorageProvider } from './s3-storage-provider';
 import { SimpleCache } from './simple-cache';
 import { S3CacheRatchet } from '../s3-cache-ratchet';

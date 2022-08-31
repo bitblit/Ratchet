@@ -1,4 +1,4 @@
-import AWS from 'aws-sdk';
+import * as AWS from 'aws-sdk';
 import { DateTime } from 'luxon';
 import { ListJobsRequest, ListJobsResponse, SubmitJobRequest, SubmitJobResponse, JobSummary, JobStatus } from 'aws-sdk/clients/batch';
 import { Logger } from '../common/logger.js';

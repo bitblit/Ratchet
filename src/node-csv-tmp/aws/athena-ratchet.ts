@@ -1,4 +1,5 @@
-import AWS, { AWSError } from 'aws-sdk';
+import * as AWS from 'aws-sdk';
+import { AWSError } from 'aws-sdk';
 import { PromiseResult } from 'aws-sdk/lib/request';
 import {
   GetNamedQueryOutput,

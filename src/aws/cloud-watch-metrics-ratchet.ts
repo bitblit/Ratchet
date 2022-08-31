@@ -2,7 +2,8 @@
     Service for interacting with cloudwatch
 */
 
-import AWS, { AWSError } from 'aws-sdk';
+import * as AWS from 'aws-sdk';
+import { AWSError } from 'aws-sdk';
 import { Logger } from '../common/logger.js';
 import { KeyValue } from '../common/key-value.js';
 import { CloudWatchMetricsUnit } from './model/cloud-watch-metrics-unit.js';

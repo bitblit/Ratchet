@@ -1,4 +1,4 @@
-import AWS from 'aws-sdk';
+import * as AWS from 'aws-sdk';
 import { ReadyToSendEmail } from './ready-to-send-email';
 import { SendEmailResponse } from 'aws-sdk/clients/ses';
 import { Mailer } from './mailer';

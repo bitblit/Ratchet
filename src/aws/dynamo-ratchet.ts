@@ -2,7 +2,8 @@
     Helper functions for DynamoDB
 */
 
-import AWS, { AWSError } from 'aws-sdk';
+import * as AWS from 'aws-sdk';
+import { AWSError } from 'aws-sdk';
 import { Logger } from '../common/logger.js';
 import { PromiseResult } from 'aws-sdk/lib/request';
 import { DurationRatchet } from '../common/duration-ratchet.js';

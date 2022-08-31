@@ -1,4 +1,4 @@
-import AWS from 'aws-sdk';
+import * as AWS from 'aws-sdk';
 import _ from 'lodash';
 import { ListObjectsV2Output, ListObjectsV2Request, CopyObjectRequest, PutObjectRequest } from 'aws-sdk/clients/s3';
 import { Logger } from '../common/logger.js';

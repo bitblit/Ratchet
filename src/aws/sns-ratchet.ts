@@ -1,5 +1,5 @@
 import { Logger } from '../common/logger.js';
-import AWS from 'aws-sdk';
+import * as AWS from 'aws-sdk';
 import { PublishInput, PublishResponse } from 'aws-sdk/clients/sns';
 import { RequireRatchet } from '../common/require-ratchet.js';
 

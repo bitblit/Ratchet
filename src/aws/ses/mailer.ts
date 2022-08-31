@@ -1,4 +1,4 @@
-import AWS from 'aws-sdk';
+import * as AWS from 'aws-sdk';
 import { ReadyToSendEmail } from './ready-to-send-email.js';
 import { RequireRatchet } from '../../common/require-ratchet.js';
 import { Logger } from '../../common/logger.js';

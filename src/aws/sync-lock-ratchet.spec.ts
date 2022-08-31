@@ -1,6 +1,6 @@
 import { SyncLockRatchet } from './sync-lock-ratchet';
 import { DynamoRatchet } from './dynamo-ratchet';
-import AWS from 'aws-sdk';
+import * as AWS from 'aws-sdk';
 import { Logger } from '../common/logger.js';
 import { NodeRatchet } from '../node-only/common/node-ratchet';
 
