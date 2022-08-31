@@ -13,11 +13,10 @@
     "ratchet-site-uploader": "./dist/site-uploader/site-uploader.js"
   },
   "exports": {
-    ".": {
-      "module": "./dist/index.js",
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "default": "./dist/index.js"
+    "./": {
+      "module": "./dist/",
+      "import": "./dist/",
+      "default": "./dist/"
     },
     "./package.json": "./package.json"
   },
