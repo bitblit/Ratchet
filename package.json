@@ -53,7 +53,7 @@
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest",
     "lint": "eslint src/**/*.ts",
     "lint-fix": "eslint --fix src/**/*.ts",
-    "generate-barrels": "barrelsby -q --delete -d src -e .*\\.spec\\.ts"
+    "generate-barrels": "barrelsby -q --delete -d src -l below -e .*\\.spec\\.ts"
   },
   "repository": {
     "type": "git",
