@@ -56,20 +56,22 @@ export class PublishCiReleaseToSlack {
     }
     return rval;
   }
+
+  /**
+   And, in case you are running this command line...
+   TODO: should use switches to allow setting the various non-filename params
+   **/
+  public static async runFromCliArgs(args: string[]): Promise<string> {
+    Logger.info('Running PublishCiReleaseToSlack from command line arguments');
+    const hook: string = PublishCiReleaseToSlack.extractHookUrl();
+    if (!!hook) {
+      return PublishCiReleaseToSlack.process(hook);
+    } else {
+      Logger.infoP('Usage : node publish-circle-ci-release-to-slack {hookUrl} ...');
+      return null;
+    }
+  }
 }
 
 if (CliRatchet.isCalledFromCLI('publish-circle-ci-release-to-slack')) {
-  /**
-   And, in case you are running this command line...
-  TODO: should use switches to allow setting the various non-filename params
-  **/
-  Logger.info('Running PublishCiReleaseToSlack from command line arguments');
-  const hook: string = PublishCiReleaseToSlack.extractHookUrl();
-  if (!!hook) {
-    PublishCiReleaseToSlack.process(hook).then((res) => {
-      Logger.info('Sent message to slack : %s', res);
-    });
-  } else {
-    console.log('Usage : node publish-circle-ci-release-to-slack {hookUrl} ...');
-  }
 }
