@@ -6,11 +6,11 @@
   "note-on-side-effects": "Technically the entries in 'bin' below might be side effects, but they are called explicitly",
   "sideEffects": false,
   "bin": {
-    "ratchet-start-instance-and-ssh": "./cli-runner.js",
-    "ratchet-apply-ci-env-variables-to-files": "./cli-runner.js",
-    "ratchet-publish-ci-release-to-slack": "./cli-runner.js",
-    "ratchet-files-to-static-class": "./cli-runner.js",
-    "ratchet-site-uploader": "./cli-runner.js"
+    "ratchet-start-instance-and-ssh": "./cli-runner.js ratchet-start-instance-and-ssh",
+    "ratchet-apply-ci-env-variables-to-files": "./cli-runner.js ratchet-apply-ci-env-variables-to-files",
+    "ratchet-publish-ci-release-to-slack": "./cli-runner.js ratchet-publish-ci-release-to-slack",
+    "ratchet-files-to-static-class": "./cli-runner.js ratchet-files-to-static-class",
+    "ratchet-site-uploader": "./cli-runner.js ratchet-site-uploader"
   },
   "exports": {
     ".": {
