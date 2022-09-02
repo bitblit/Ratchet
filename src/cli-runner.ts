@@ -1,5 +1,4 @@
-#!/usr/bin/env node -m
-// Need the -m because this is a module
+#!/usr/bin/env node
 
 import { Logger } from './common/logger.js';
 import { ApplyCiEnvVariablesToFiles } from './node-only/ci/apply-ci-env-variables-to-files.js';
