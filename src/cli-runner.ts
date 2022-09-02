@@ -40,6 +40,8 @@ if (process?.argv?.length) {
         Logger.info('Result : %s', out);
       })
       .catch((err) => Logger.error('Failed : %s', err));
+  } else if (process.argv.map((s) => s.includes('cli-runner')).find((s) => s === true)) {
+    Logger.info('Unrecognized request : %j', process.argv);
   } else {
     // Ignore it - they weren't trying to run you
   }
