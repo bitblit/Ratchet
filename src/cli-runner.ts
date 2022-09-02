@@ -1,3 +1,6 @@
+#!/usr/bin/env node -m
+// Need the -m because this is a module
+
 import { Logger } from './common/logger.js';
 import { ApplyCiEnvVariablesToFiles } from './node-only/ci/apply-ci-env-variables-to-files.js';
 import { FilesToStaticClass } from './node-only/common/files-to-static-class.js';
