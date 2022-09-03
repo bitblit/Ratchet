@@ -2,8 +2,9 @@
 
 import { Logger } from '../common/logger.js';
 import { PublishCiReleaseToSlack } from '../node-only/ci/publish-ci-release-to-slack.js';
+import { CliRatchet } from '../node-only/common/cli-ratchet.js';
 
-if (process?.argv?.length && process.argv.includes('ratchet-publish-ci-release-to-slack.js')) {
+if (process?.argv?.length && CliRatchet.isCalledFromCLI('ratchet-publish-ci-release-to-slack.js')) {
   PublishCiReleaseToSlack.runFromCliArgs(process.argv)
     .then((out) => {
       Logger.info('Result : %s', out);

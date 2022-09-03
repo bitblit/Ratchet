@@ -2,8 +2,9 @@
 
 import { Logger } from '../common/logger.js';
 import { SiteUploader } from '../site-uploader/site-uploader.js';
+import { CliRatchet } from '../node-only/common/cli-ratchet.js';
 
-if (process?.argv?.length && process.argv.includes('ratchet-site-uploader.js')) {
+if (process?.argv?.length && CliRatchet.isCalledFromCLI('ratchet-site-uploader.js')) {
   SiteUploader.createFromArgs()
     .runPump()
     .then((out) => {

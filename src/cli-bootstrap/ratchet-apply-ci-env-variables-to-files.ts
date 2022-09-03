@@ -2,8 +2,9 @@
 
 import { Logger } from '../common/logger.js';
 import { ApplyCiEnvVariablesToFiles } from '../node-only/ci/apply-ci-env-variables-to-files.js';
+import { CliRatchet } from '../node-only/common/cli-ratchet.js';
 
-if (process?.argv?.length && process.argv.includes('ratchet-apply-ci-env-variables-to-files.js')) {
+if (process?.argv?.length && CliRatchet.isCalledFromCLI('ratchet-apply-ci-env-variables-to-files.js')) {
   ApplyCiEnvVariablesToFiles.runFromCliArgs(process.argv)
     .then((out) => {
       Logger.info('Result : %s', out);

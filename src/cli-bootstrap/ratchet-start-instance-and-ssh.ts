@@ -2,8 +2,9 @@
 
 import { Logger } from '../common/logger.js';
 import { StartInstanceAndSsh } from '../node-only/aws/start-instance-and-ssh.js';
+import { CliRatchet } from '../node-only/common/cli-ratchet.js';
 
-if (process?.argv?.length && process.argv.includes('ratchet-start-instance-and-ssh.js')) {
+if (process?.argv?.length && CliRatchet.isCalledFromCLI('ratchet-start-instance-and-ssh.js')) {
   StartInstanceAndSsh.createFromArgs()
     .run()
     .then((out) => {

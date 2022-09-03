@@ -2,8 +2,9 @@
 
 import { Logger } from '../common/logger.js';
 import { FilesToStaticClass } from '../node-only/common/files-to-static-class.js';
+import { CliRatchet } from '../node-only/common/cli-ratchet.js';
 
-if (process?.argv?.length && process.argv.includes('ratchet-files-to-static-class.js')) {
+if (process?.argv?.length && CliRatchet.isCalledFromCLI('ratchet-files-to-static-class.js')) {
   FilesToStaticClass.runFromCliArgs(process.argv)
     .then((out) => {
       Logger.info('Result : %s', out);
