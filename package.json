@@ -14,10 +14,9 @@
   },
   "exports": {
     ".": {
-      "module": ".",
-      "types": ".",
-      "import": ".",
-      "default": "."
+      "module": "./*/*.js",
+      "types": "./*/*.d.ts",
+      "import": "./*/*.js"
     },
     "./package.json": "./package.json"
   },
