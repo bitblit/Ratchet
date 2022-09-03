@@ -10,5 +10,6 @@ if (process?.argv?.length && process.argv.includes('ratchet-files-to-static-clas
     })
     .catch((err) => Logger.error('Failed : %s', err));
 } else {
+  Logger.info('u: %j', process.argv);
   // Ignore it - they weren't trying to run you
 }
