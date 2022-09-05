@@ -85,7 +85,8 @@
   "scripts": {
     "prepare-to-publish": "yarn build && cp package.json README.md License.txt dist && yarn run apply-ci-vars && yarn remove-compiled-tests",
     "copy-static-files": "shx cp -R src/static dist",
-    "build": "yarn run clean && yarn run generate-barrels && yarn run compile && yarn copy-static-files",
+    "build": "yarn run clean && yarn run compile && yarn copy-static-files",
+    "_build": "yarn run clean && yarn run generate-barrels && yarn run compile && yarn copy-static-files",
     "compile": "tsc",
     "watch": "tsc-watch",
     "remove-compiled-tests": "rimraf ./lib/**/*.spec.d.ts && rimraf ./lib/**/*.spec.js && rimraf ./lib/**/*.spec.js.map",
