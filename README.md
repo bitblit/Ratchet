@@ -2,13 +2,6 @@
 
 Common utilities for Typescript and Node.
 
-## Notes on ECMAScript Modules
-
-CAW 2022-03-22 : It is my full intention to convert Ratchet (and my other NodeJS libraries) to ECMAScript
-modules.  However, I have lots of other things to do besides getting that mess working when Typescript
-doesn't support it cleanly yet.  [Support was pulled from Typescript 4.5](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-5.html#esm-nodejs)
-but as soon as it is supported it'll be on the top of my list of changes.
-
 ## Introduction
 
 This library is very similar to my [Wrench](https://github.com/bitblit/Wrench) library - a set of things that I
@@ -208,26 +201,27 @@ typescript into usable javascript+mapping stuff.
 
 Pull requests are welcome, although I'm not sure why you'd be interested!
 
-# Version history
+## Notes on ECMAScript Modules
 
-- 0.0.x : Initial releases
-- 0.1.x - 0.4.x : TBD for when I feel like doing repo diving
-- 0.5.x : Breaking change to AthenaRatchet
-- 0.6.x : Breaking change to Mailer (adding Handlebars layouts)
-- 0.7.x : Breaking change to Mailer (switch to config object, add allowedDestinationEmails handling). Removed Gulp for security reasons.
-- 0.8.x : Updated to require Node 12.x. Switched to eslint. Adding cloudwatch insights helpers
-- 0.9.x : Adding CLI Ratchet, updating dependant libraries for security holes
-- 0.10.x : Adding CSV comparison, updating dependant libraries, Logger passthru functions for console on browser
-- 0.11.x : Adding ec2 ratchet, barrel files, wrap classes with CLI extensions, MapRatchet expander, trying a new module output, added max sizes to mailer config
-- Added StringWritable and Streaming CSV writer, ability to stream to a Daemon target
-- 0.12.x : Switched to Jest internally, updated libraries, switched from Moment to Luxon
-- 0.13.x : Updated libraries, moving to Barrelsby, adding model-validator
-- 0.14.x : Updated libraries, added streaming processors to DynamoRatchet
-- 0.15.x : Replaced portable-fetch with isomorphic-fetch once I saw that portable is just a less-supported branch
-- 0.16.x : Replaced isomorphic-fetch with cross-fetch since it has a "realFetch.call is not a fn" bug and is less supported
-- 0.17.x : Moved/Refactored SimpleCache to use different storage tech, in a non-backwards compatible way, added TransactionRatchet
-- 0.18.x : Moved to github actions, refactored CI settings to support both Github actions and CircleCI
-- 0.19.x : Generic update of dependant libraries
-- 0.20.x : Updated dependant libs, added the aws-batch-ratchet, inbound-email, s3-cache-to-local, s3-location-sync, sync-lock, jwt, and google-recaptcha ratchets
-- 0.21.x : Updated libraries, made backwards-incompatible change to make EnvironmentService non-static and extensible (Thanks to Bilal Shahid)
-- 1.0.x : Updated CSV library and moved things that we're causing libraries to be sucked in via barrel.  Major changes to the Logger class to allow multiple loggers
+CAW 2022-03-22 : It is my full intention to convert Ratchet (and my other NodeJS libraries) to ECMAScript
+modules.  However, I have lots of other things to do besides getting that mess working when Typescript
+doesn't support it cleanly yet.  [Support was pulled from Typescript 4.5](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-5.html#esm-nodejs)
+but as soon as it is supported it'll be on the top of my list of changes.
+
+CAW 2022-09-05 : Took another multi-week run at making this an ECMAScript module.  It is actually kinda amazing that
+a full 7 years after this spec came out support is STILL so weak across the ecosystem for it.  Typescript has 
+issues unless you use some hacks (e.g., default Typescript imports are extensionless, but ECMAScript REQUIRES an extension
+on the imports.  Default ESLint hates this).   Jest works, but only with some hacks ("cross-env NODE_OPTIONS=--experimental-vm-modules jest").  
+Barrel files still a huge mess to try to make tree shaking working cleanly downstream.  Barrelsby won't put extensions
+on the index files so that's a SED hack, and then unless you wanna completely destroy tree shaking you better list every
+folder separately in the "exports" section of the package.json file.  
+
+Worst of all, the Typescript infrastructure is such that if I make Ratchet ESM-only (as opposed to a dual-built ESM and 
+CJS module) then everything downstream of it (notably Epsilon and ALL my various projects which use Ratchet, which is 
+to say all of them) must also by ESM only.  Given that Neon uses Ratchet, and that everything up until this point has 
+been incredibly fragile, I'm going to commit everything I have into a branch (cw/feat/esm) and push it, and then put 
+it back on the shelf for 6 months to age.  We'll see how it looks then - until then, I'm not willing to take on that 
+much risk just to get rid of a warning in my Angular builds.
+
+If I was primarily a front-end, non-webpack guy the value would be higher since getting rid of sync imports is huge,
+but given that I'm a 92% Node / 8% web guy, this is still way too far out on the value chain for me.

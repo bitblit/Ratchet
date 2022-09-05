@@ -1,5 +1,5 @@
 /*
-    Functions for working with geolocations
+    Functions for working with Jest
 */
 
 export class JestRatchet {
