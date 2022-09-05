@@ -34,6 +34,8 @@ export * from './time-zone-ratchet';
 export * from './timeout-token';
 export * from './transform-ratchet';
 export * from './twilio-ratchet';
+export * from './histogram/histogram-entry';
+export * from './histogram/histogram';
 export * from './logger-support/classic-single-line-log-message-formatter';
 export * from './logger-support/log-message-builder';
 export * from './logger-support/log-message-format-type';

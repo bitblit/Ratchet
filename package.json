@@ -13,10 +13,53 @@
     "ratchet-site-uploader": "./cli-bootstrap/ratchet-site-uploader.js"
   },
   "exports": {
-    ".": {
-      "module": "./*/*.js",
-      "types": "./*/*.d.ts",
-      "import": "./*/*.js"
+    "aws": {
+      "types": "./aws/index.d.ts",
+      "import": "./aws/index.js"
+    },
+    "common": {
+      "types": "./common/index.d.ts",
+      "import": "./common/index.js"
+    },
+    "google": {
+      "types": "./google/index.d.ts",
+      "import": "./google/index.js"
+    },
+    "jest": {
+      "types": "./jest/index.d.ts",
+      "import": "./jest/index.js"
+    },
+    "model-validator": {
+      "types": "./model-validator/index.d.ts",
+      "import": "./model-validator/index.js"
+    },
+    "node-csv": {
+      "types": "./node-csv/index.d.ts",
+      "import": "./node-csv/index.js"
+    },
+    "node-csv-tmp": {
+      "types": "./node-csv-tmp/index.d.ts",
+      "import": "./node-csv-tmp/index.js"
+    },
+    "node-only": {
+      "types": "./node-only/index.d.ts",
+      "import": "./node-only/index.js"
+    },
+    "rxjs": {
+      "types": "./rxjs/index.d.ts",
+      "import": "./rxjs/index.js"
+    },
+    "site-uploader": {
+      "types": "./site-uploader/index.d.ts",
+      "import": "./site-uploader/index.js"
+    },
+    "static": {
+      "types": "./static/index.d.ts",
+      "import": "./static/index.js"
+    },
+    "stream": {
+      "types": "./stream/index.d.ts",
+      "import": "./stream/index.js"
     },
     "./package.json": "./package.json"
   },

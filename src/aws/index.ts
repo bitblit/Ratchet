@@ -40,6 +40,7 @@ export * from './environment/environment-service-provider';
 export * from './environment/fixed-environment-service-provider';
 export * from './environment/s3-environment-service-provider';
 export * from './environment/ssm-environment-service-provider';
+export * from './inbound-email/inbound-email-ratchet';
 export * from './model/cloud-watch-metrics-minute-level-dynamo-count-request';
 export * from './model/cloud-watch-metrics-unit';
 export * from './model/dynamo-count-result';
