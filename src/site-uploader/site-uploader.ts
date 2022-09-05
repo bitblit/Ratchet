@@ -5,7 +5,6 @@ import { ClientConfiguration } from 'aws-sdk/clients/s3';
 import path from 'path';
 import mime from 'mime-types';
 import { Logger } from '../common/logger';
-import { CliRatchet } from '../node-only/common/cli-ratchet';
 
 export class SiteUploader {
   private srcDir: string;

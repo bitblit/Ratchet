@@ -3,7 +3,6 @@ import { Logger } from '../../common/logger';
 import fetch from 'cross-fetch';
 import util from 'util';
 import { GitCommitData, GitRatchet } from '../common/git-ratchet';
-import { CliRatchet } from '../common/cli-ratchet';
 import { NodeRatchet } from '../common/node-ratchet';
 
 export class PublishCiReleaseToSlack {
@@ -67,7 +66,7 @@ export class PublishCiReleaseToSlack {
     if (!!hook) {
       return PublishCiReleaseToSlack.process(hook);
     } else {
-      Logger.infoP('Usage : node publish-circle-ci-release-to-slack {hookUrl} ...');
+      Logger.infoP('Usage : ratchet-publish-circle-ci-release-to-slack {hookUrl} ...');
       return null;
     }
   }
