@@ -9,6 +9,8 @@ find myself doing over and over again. As Node/Typescript is a relatively new la
 Javascript on the client side is not), it is quite likely that there are better ways of doing things than the way I
 am doing them here.
 
+You may wish to read [the changelog](CHANGELOG.md)
+
 This library is my first attempt to publish to NPM. I make no guarantees other than the standard one I make for all
 my libraries - that I will always rev the major version number if I do something that is not backwards compatible. As
 I improve this paragraph should go away.
@@ -21,16 +23,17 @@ I improve this paragraph should go away.
 
 TBD
 
-## Dependencies
+## Optional Dependencies (And exceptions)
 
-Since this is meant to be a very generic library and therefore I don't want to pull in a bunch of transitive
+Since this is meant to be a very generic library, I don't want to pull in a bunch of transitive
 dependencies, I am keeping myself to very, very few upstream libraries. However, I am making the following exceptions,
 because I use these libraries in literally every project I have ever done:
 
 - Luxon - because I always need better date handling than what comes with Javascript (was moment before 0.12.x)
 
-* Note on barrel files - All of Ratchet's barrel files are one level down. This is because otherwise everything
-  I said above about transitive dependencies gets thrown out the window if you put them all in one big barrel file
+### Barrel Files
+A Note on barrel files - All of Ratchet's barrel files are one level down. This is because otherwise everything
+I said above about transitive dependencies gets thrown out the window if you put them all in one big barrel file
 
 #### Daemon
 
