@@ -23,19 +23,13 @@ I improve this paragraph should go away.
 
 TBD
 
-## Optional Dependencies (And exceptions)
-
-Since this is meant to be a very generic library, I don't want to pull in a bunch of transitive
-dependencies, I am keeping myself to very, very few upstream libraries. However, I am making the following exceptions,
-because I use these libraries in literally every project I have ever done:
-
-- Luxon - because I always need better date handling than what comes with Javascript (was moment before 0.12.x)
-
 ### Barrel Files
 A Note on barrel files - All of Ratchet's barrel files are one level down. This is because otherwise everything
 I said above about transitive dependencies gets thrown out the window if you put them all in one big barrel file
 
-#### Daemon
+
+## Utilities and Stuff
+### Daemon
 
 The Daemon subpackage is to handle the case on AWS where you want to run a process asynchronously via Lambda (not waiting
 for the return on a API Gateway request) and check its results until it is finished. Daemon offers a thin wrapper around
@@ -43,7 +37,7 @@ an S3 object that can be updated until it is finally replaced by the final resul
 be given the key to check on synchronously. Items are broken down by day (for easy flushing later) and by groups if
 desired.
 
-## Site Uploader
+### Site Uploader
 
 There is a tool in here called site uploader that is designed to help put completely static sites into S3 (basically
 a glorified **aws s3 cp --recursive ...**), while allowing you to set some of the more popular HTTP headers like
@@ -100,22 +94,22 @@ extensions)
 }
 ```
 
-## Notes on libraries that are used but must be purposely included (transitive dependencies)
+## Dependencies
 
-### AWS
+### Direct Dependencies
+Since this is meant to be a very generic library, I don't want to pull in a bunch of transitive
+dependencies, I am keeping myself to very, very few upstream libraries. However, I am making the following exceptions,
+because I use these libraries in literally every project I have ever done:
 
-Originally I was going to package this as 2 different libraries - one for just my AWS stuff, and the other for more
-generic stuff. Then I realized that even with the AWS stuff I would bring in AWS lib as a dev dependency because
-I do so much stuff on Lambda and Lambda already has the AWS library on it. So - Important note! If you use the
-AWS stuff in here you will need to do your own AWS dependency, something like :
+- Luxon - because I always need better date handling than what comes with Javascript (was moment before 0.12.x)
 
-```
-    "aws-sdk": "^2.906.0",
-```
+### Optional Dependencies
 
-Or none of the AWS stuff is going to work.
+Check out the package.json file for libraries that are optional - basically, if you wish to use the code that
+uses those libraries, you need to also include those libraries.  Otherwise, they can be safely ignored.
 
-One more note on the AWS stuff - for most of my non-super-heavy-load stuff I work in _us-east-1_. I do this both
+#### AWS Library Notes
+For most of my non-super-heavy-load stuff I work in _us-east-1_. I do this both
 because I am lazy and because that is where AWS releases the new stuff first. Because of this, you will see that
 while my code allows you to override the region, I always set a biased default. If you don't like that... sorry?
 
@@ -128,42 +122,24 @@ than having them do it) and tmp creates local tmp files for storage. It also use
 already abundantly clear, this only works in Node, not in the browser. Not that you'd do much Athena
 work in the browser anyway, but I may break this up later if I see a need for that.
 
-```
-    "csv": "5.5.0",
-    "tmp": "0.2.1",
-```
+To use the AthenaRatchet, in addition to *aws-lib* you will need *csv* and *tmp*
 
-### RXJS
+#### RXJS
 
-The Observable ratchet is based on Observables through RXJS. If you use it, you'll need:
+The Observable ratchet is based on Observables through RXJS, you'll need to install it.
 
-```
-    "rxjs": "7.0.1",
-```
-
-### Handlebars and CrossFetch
+#### Handlebars and CrossFetch
 
 The simplified mailer for SES (aws/ses/mailer) can be provided with a remote template renderer, which assumes the template
 is a Handlebars template. If you use it, you'll need Handlebars (and Handlebars-Layouts, which isn't required but
-is highly recommended if you are doing much Handlebars work needing templates) and CrossFetch installed:
+is highly recommended if you are doing much Handlebars work needing templates) and CrossFetch installed.
 
-```
-    "handlebars": "4.7.7",
-    "handlebars-layouts": "3.1.4",
-    "cross-fetch": "3.1.4"
-```
+I use CrossFetch to keep Ratchet usable on both the client and server side.
 
-I use PortableFetch to keep Ratchet usable on both the client and server side.
-
-### ModelValidator
+### ModelValidator Dependencies
 
 Ratchet includes a helper for validating objects that match swagger schemas in the model-validator package.  If you 
-use it, you'll need to include:
-
-```
-    "js-yaml": "4.0.0",
-    "swagger-model-validator": "3.0.20",
-```
+use it, you'll need to include *js-yaml* and *swagger-model-validator*.
 
 # Testing
 
@@ -180,19 +156,17 @@ If not, it's ok - go use X.  We're still friends.
 
 # Deployment
 
-I'll write notes-to-self here on how my deployment from [CircleCI](https://circleci.com) is actually going to work.
+I'll write notes-to-self here on how my deployment on Github actions is actually going to work.
 
 Following the notes from [here](https://docs.npmjs.com/getting-started/publishing-npm-packages). Important points:
 
 - Everything in the package that isn't in .gitignore or .npmignore gets uploaded. Review before post
 
-For circleci using [these notes](https://circleci.com/docs/1.0/npm-continuous-deployment/)
-
-Looks like it's my standard - set a release tag and push to Github, CircleCI takes care of the rest:
+* Set a release tag and push to Github, Github actions takes care of the rest:
 
 ```
     git commit -m "New stuff"
-    git tag -a release-0.0.5 -m "Because I like it a lot"
+    mytag release
     git push origin master --tags
 
 ```
