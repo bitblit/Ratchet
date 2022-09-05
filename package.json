@@ -7,7 +7,7 @@
     "ratchet-apply-ci-env-variables-to-files": "./cli-bootstrap/ratchet-apply-ci-env-variables-to-files.js",
     "ratchet-publish-ci-release-to-slack": "./cli-bootstrap/ratchet-publish-ci-release-to-slack.js",
     "ratchet-files-to-static-class": "./cli-bootstrap/ratchet-files-to-static-class.js",
-    "ratchet-site-uploader": "./cli-bootstrap/ratchet-site-uploader.js",
+    "ratchet-site-uploader": "./cli-bootstrap/ratchet-site-uploader.js"
   },
   "files": [
     "dist"
