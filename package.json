@@ -3,11 +3,11 @@
   "version": "0.0.0",
   "description": "Common tools for general use",
   "bin": {
-    "ratchet-start-instance-and-ssh": "./dist/node-only/aws/start-instance-and-ssh.js",
-    "ratchet-apply-ci-env-variables-to-files": "./dist/node-only/ci/apply-ci-env-variables-to-files.js",
-    "ratchet-publish-ci-release-to-slack": "./dist/node-only/ci/publish-ci-release-to-slack.js",
-    "ratchet-files-to-static-class": "./dist/node-only/common/files-to-static-class.js",
-    "ratchet-site-uploader": "./dist/site-uploader/site-uploader.js"
+    "ratchet-start-instance-and-ssh": "./cli-bootstrap/ratchet-start-instance-and-ssh.js",
+    "ratchet-apply-ci-env-variables-to-files": "./cli-bootstrap/ratchet-apply-ci-env-variables-to-files.js",
+    "ratchet-publish-ci-release-to-slack": "./cli-bootstrap/ratchet-publish-ci-release-to-slack.js",
+    "ratchet-files-to-static-class": "./cli-bootstrap/ratchet-files-to-static-class.js",
+    "ratchet-site-uploader": "./cli-bootstrap/ratchet-site-uploader.js",
   },
   "files": [
     "dist"
@@ -34,7 +34,7 @@
   },
   "config": {},
   "scripts": {
-    "prepare-to-publish": "yarn build && yarn run apply-ci-vars && yarn remove-compiled-tests",
+    "prepare-to-publish": "yarn build && cp package.json README.md CHANGELOG.md License.txt dist && yarn run apply-ci-vars && yarn remove-compiled-tests",
     "copy-static-files": "shx cp -R src/static dist",
     "build": "yarn run clean && yarn run generate-barrels && yarn run compile && yarn copy-static-files",
     "compile": "tsc",

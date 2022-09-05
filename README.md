@@ -195,7 +195,7 @@ folder separately in the "exports" section of the package.json file.
 
 Worst of all, the Typescript infrastructure is such that if I make Ratchet ESM-only (as opposed to a dual-built ESM and 
 CJS module) then everything downstream of it (notably Epsilon and ALL my various projects which use Ratchet, which is 
-to say all of them) must also by ESM only.  Given that Neon uses Ratchet, and that everything up until this point has 
+to say all of them) must also be ESM only.  Given that Neon uses Ratchet, and that everything up until this point has 
 been incredibly fragile, I'm going to commit everything I have into a branch (cw/feat/esm) and push it, and then put 
 it back on the shelf for 6 months to age.  We'll see how it looks then - until then, I'm not willing to take on that 
 much risk just to get rid of a warning in my Angular builds.
