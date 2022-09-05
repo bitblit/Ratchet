@@ -90,19 +90,3 @@ export class StartInstanceAndSsh {
     //});
   }
 }
-
-if (CliRatchet.isCalledFromCLI('start-instance-and-ssh')) {
-  /**
-   And, in case you are running this command line...
-   **/
-  Logger.info('Running start-instance-and-ssh from command line arguments');
-  const startInstanceAndSsh: StartInstanceAndSsh = StartInstanceAndSsh.createFromArgs();
-  if (startInstanceAndSsh) {
-    startInstanceAndSsh
-      .run()
-      .then((out) => {
-        Logger.info('Complete : %j', out);
-      })
-      .catch((err) => Logger.error('Caught error : %s', err, err));
-  }
-}

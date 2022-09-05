@@ -52,30 +52,29 @@ export class FilesToStaticClass {
 
     return rval;
   }
-}
 
-if (CliRatchet.isCalledFromCLI('files-to-static-class')) {
-  if (process.argv.length < 4) {
-    console.log('Usage: files-to-static-class {outFileName} {outClassName} {file0} ... {fileN}');
-  } else {
-    const idx: number = CliRatchet.indexOfCommandArgument('files-to-static-class');
-    const outFileName: string = process.argv[idx + 1];
-    const outClassName: string = process.argv[idx + 2];
-    const files: string[] = process.argv.slice(idx + 3);
+  /**
+   And, in case you are running this command line...
+   TODO: should use switches to allow setting the various non-filename params
+   **/
+  public static async runFromCliArgs(args: string[]): Promise<string> {
+    if (args.length < 4) {
+      Logger.infoP('Usage: ratchet-files-to-static-class {outFileName} {outClassName} {file0} ... {fileN}');
+      return null;
+    } else {
+      const idx: number = CliRatchet.indexOfCommandArgument('files-to-static-class');
+      const outFileName: string = process.argv[idx + 1];
+      const outClassName: string = process.argv[idx + 2];
+      const files: string[] = process.argv.slice(idx + 3);
 
-    Logger.info(
-      'Running FilesToStaticClass from command line arguments Target: %s TargetClass: %s InFiles: %j',
-      outFileName,
-      outClassName,
-      files
-    );
+      Logger.info(
+        'Running FilesToStaticClass from command line arguments Target: %s TargetClass: %s InFiles: %j',
+        outFileName,
+        outClassName,
+        files
+      );
 
-    FilesToStaticClass.process(files, outClassName, outFileName)
-      .then((res) => {
-        // For the moment, do nothing
-      })
-      .catch((err) => {
-        Logger.error('Error processing : %s', err, err);
-      });
+      return FilesToStaticClass.process(files, outClassName, outFileName);
+    }
   }
 }

@@ -95,20 +95,18 @@ export class ApplyCiEnvVariablesToFiles {
 
     return rval;
   }
-}
 
-if (CliRatchet.isCalledFromCLI('apply-ci-env-variables-to-files')) {
   /**
    And, in case you are running this command line...
-  TODO: should use switches to allow setting the various non-filename params
-  **/
-  Logger.info('Running ApplyCiEnvVariablesToFiles from command line arguments');
-  const filenames: string[] = ApplyCiEnvVariablesToFiles.extractFileNames();
-  if (filenames.length > 0) {
-    ApplyCiEnvVariablesToFiles.process(filenames, ApplyCiEnvVariablesToFiles.extractVariableConfig()).then((res) => {
-      Logger.info('Processed %d files of %d', res, filenames.length);
-    });
-  } else {
-    console.log('Usage : node apply-ci-env-variables-to-files {file1} {file2} ...');
+   TODO: should use switches to allow setting the various non-filename params
+   **/
+  public static async runFromCliArgs(args: string[]): Promise<number> {
+    const filenames: string[] = ApplyCiEnvVariablesToFiles.extractFileNames();
+    if (filenames.length > 0) {
+      return ApplyCiEnvVariablesToFiles.process(filenames, ApplyCiEnvVariablesToFiles.extractVariableConfig());
+    } else {
+      Logger.infoP('Usage : ratchet-apply-ci-env-variables-to-files {file1} {file2} ...');
+      return -1;
+    }
   }
 }

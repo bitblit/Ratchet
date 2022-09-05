@@ -130,14 +130,3 @@ export class SiteUploader {
     });
   }
 }
-
-if (CliRatchet.isCalledFromCLI('site-uploader')) {
-  /**
-   And, in case you are running this command line...
-   **/
-  Logger.info('Running site uploader from command line arguments');
-  const uploader: SiteUploader = SiteUploader.createFromArgs();
-  if (uploader) {
-    uploader.runPump();
-  }
-}
