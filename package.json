@@ -11,9 +11,6 @@
     "ratchet-files-to-static-class": "./cli-bootstrap/ratchet-files-to-static-class.js",
     "ratchet-site-uploader": "./cli-bootstrap/ratchet-site-uploader.js"
   },
-  "files": [
-    "dist"
-  ],
   "main": "./index.js",
   "typings": "./index.d.ts",
   "contributors": [
