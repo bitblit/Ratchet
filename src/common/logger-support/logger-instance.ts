@@ -46,6 +46,12 @@ export class LoggerInstance {
     this.verbose('VERBOSE enabled');
     this.debug('DEBUG enabled');
     this.silly('SILLY enabled');
+
+    this.info('Options: %j', this.options);
+    if (this?.options?.preProcessors?.length) {
+      const labels: string[] = this.options.preProcessors.map((p) => StringRatchet.trimToNull(p.label()) || 'Unlabelled');
+      this.info('Preprocessors: %j', labels);
+    }
   }
 
   // This will always clear the buffer
