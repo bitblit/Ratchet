@@ -46,7 +46,9 @@ export class LoggerInstance {
     this.verbose('VERBOSE enabled');
     this.debug('DEBUG enabled');
     this.silly('SILLY enabled');
+  }
 
+  public dumpOptionsIntoLog(): void {
     this.info('Options: %j', this.options);
     if (this?.options?.preProcessors?.length) {
       const labels: string[] = this.options.preProcessors.map((p) => StringRatchet.trimToNull(p.label()) || 'Unlabelled');

@@ -93,6 +93,10 @@ export class Logger {
     return Logger.getLogger().dumpConfigurationIntoLog();
   }
 
+  public static dumpOptionsIntoLog(): void {
+    return Logger.getLogger().dumpOptionsIntoLog();
+  }
+
   public static getLevel(): LoggerLevelName {
     return Logger.getLogger().level;
   }
