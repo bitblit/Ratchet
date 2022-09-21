@@ -22,7 +22,8 @@ export class TransactionRatchet {
     RequireRatchet.true(steps.length > 0, 'steps may not be empty');
 
     // You must have a config, and it must set a log level
-    const config: TransactionConfiguration<T> = inConfiguration || {};
+    // Have to copy it here, since the provided one might only have a getter for the log level
+    const config: TransactionConfiguration<T> = Object.assign({}, inConfiguration || {});
     config.stepLogLevel = config.stepLogLevel || LoggerLevelName.info;
 
     const rval: TransactionResult<T> = {

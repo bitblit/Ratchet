@@ -2,6 +2,9 @@ import { TransactionStep } from './transaction-step';
 import { TransactionRatchet } from './transaction-ratchet';
 import { TransactionResult } from './transaction-result';
 import { TransactionFinalState } from './transaction-final-state';
+import { TransactionConfiguration } from './transaction-configuration';
+import { LoggerLevelName } from '../logger-support/logger-level-name';
+import { Logger } from '../logger';
 
 interface TestTransactionContext {
   runningTotal: number;
@@ -109,6 +112,28 @@ describe('#TransactionRatchet.execute', function () {
     const steps: TestTransactionStep[] = [new TestTransactionStep(), new TestTransactionStep(), new TestTransactionStep()];
     const ctx: TestTransactionContext = { runningTotal: 0, failStep: 2, failRollbackStep: 1 };
     const result: TransactionResult<TestTransactionContext> = await TransactionRatchet.execute(steps, ctx, {
+      executeAfterRollback: async (res) => {
+        res.finalContext.postTxTracker = 1;
+      },
+      executeAfterRollbackFailure: async (res) => {
+        res.finalContext.postTxTracker += 1;
+        throw new Error('Forced tracker failure');
+      },
+    });
+    expect(result).not.toBeUndefined();
+    expect(result.finalState).toEqual(TransactionFinalState.RollbackFailed);
+    expect(result.errorStep).toEqual(2);
+    expect(result.error).not.toBeUndefined();
+    expect(result.finalContext.postTxTracker).toEqual(2);
+  });
+
+  it('should work with transaction configuration that only provides read log level access', async () => {
+    const steps: TestTransactionStep[] = [new TestTransactionStep(), new TestTransactionStep(), new TestTransactionStep()];
+    const ctx: TestTransactionContext = { runningTotal: 0, failStep: 2, failRollbackStep: 1 };
+    const result: TransactionResult<TestTransactionContext> = await TransactionRatchet.execute(steps, ctx, {
+      get stepLogLevel(): LoggerLevelName {
+        return LoggerLevelName.info;
+      },
       executeAfterRollback: async (res) => {
         res.finalContext.postTxTracker = 1;
       },
