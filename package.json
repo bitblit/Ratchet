@@ -43,6 +43,7 @@
     "compile-test": "yarn compile && yarn test",
     "apply-ci-vars": "node dist/node-only/ci/apply-ci-env-variables-to-files github dist/static/build-properties.json",
     "test": "jest",
+    "docs": "typedoc",
     "lint": "eslint src/**/*.ts",
     "lint-fix": "eslint --fix src/**/*.ts",
     "generate-barrels": "barrelsby -q --delete -d src -l below -e .*\\.spec\\.ts"
@@ -117,6 +118,7 @@
     "pretty-quick": "3.1.3",
     "rimraf": "3.0.2",
     "shx": "0.3.4",
+    "typedoc": "0.23.19",
     "ts-jest": "29.0.3",
     "ts-node": "10.9.1",
     "tsc-watch": "5.0.3",

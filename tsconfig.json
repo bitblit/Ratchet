@@ -21,6 +21,11 @@
     "forceConsistentCasingInFileNames": true,
     "lib": ["es2015", "es6", "dom"]
   },
+  "typedocOptions": {
+    "entryPointStrategy": "expand",
+    "entryPoints": ["src"],
+    "out": "artifacts/typedocs"
+  },
   "include": ["src/**/*.ts"],
   "exclude": ["node_modules", "build", "webpack"],
   "types": ["typePatches"],
