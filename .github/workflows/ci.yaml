@@ -29,16 +29,8 @@ jobs:
         run: yarn test
         shell: bash
 
-      - name: step 2 - Add artifacts to publish to the temp folder
-        run: |
-          cd artifacts
-          echo 'alpha'    > alpha.html
-          echo 'bravo'    > bravo.html
-          echo 'charlie'  > charlie.html
-          cd ..
-
-      - name: Step 3 - Use the Upload Artifact GitHub Action
+      - name: Uploading artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: artifacts-for-download
+          name: ratchet-build-artifacts-$GITHUB_RUN_NUMBER
           path: artifacts

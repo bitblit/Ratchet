@@ -32,6 +32,3 @@ jobs:
         shell: bash
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-      - name: Save coverage reports
-        uses: ./.github/workflows/actions/test-report
