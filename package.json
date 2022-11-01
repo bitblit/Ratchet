@@ -43,7 +43,6 @@
     "compile-test": "yarn compile && yarn test",
     "apply-ci-vars": "node dist/node-only/ci/apply-ci-env-variables-to-files github dist/static/build-properties.json",
     "test": "jest",
-    "test-cov": "jest --coverage",
     "lint": "eslint src/**/*.ts",
     "lint-fix": "eslint --fix src/**/*.ts",
     "generate-barrels": "barrelsby -q --delete -d src -l below -e .*\\.spec\\.ts"
