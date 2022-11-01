@@ -21,4 +21,10 @@ jobs:
 
       - uses: ./.github/workflows/actions/build-env-setup
 
-      - uses: ./.github/workflows/actions/build
+      - name: Build
+        run: yarn build
+        shell: bash
+
+      - name: Test
+        run: yarn test-cov
+        shell: bash
