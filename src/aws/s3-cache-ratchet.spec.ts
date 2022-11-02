@@ -4,8 +4,15 @@ import { Logger } from '../common/logger';
 import { CopyObjectOutput, CopyObjectResult, PutObjectOutput } from 'aws-sdk/clients/s3';
 import fs from 'fs';
 import { ReadStream } from 'fs';
+import { JestRatchet } from '../jest';
+
+let mockS3: jest.Mocked<AWS.S3>;
 
 describe('#fileExists', function () {
+  beforeEach(() => {
+    mockS3 = JestRatchet.mock();
+  });
+
   xit('should sync 2 folders', async () => {
     const s3: AWS.S3 = new AWS.S3({ region: 'us-east-1' });
     const cache1: S3CacheRatchet = new S3CacheRatchet(s3, 'test1');
@@ -15,9 +22,10 @@ describe('#fileExists', function () {
     expect(out).not.toBeNull();
   }, 60_000);
 
-  xit('should return false for files that do not exist', async () => {
-    const s3: AWS.S3 = new AWS.S3({ region: 'us-east-1' });
-    const cache: S3CacheRatchet = new S3CacheRatchet(s3, 'test-bucket');
+  it('should return false for files that do not exist', async () => {
+    //const s3: AWS.S3 = new AWS.S3({ region: 'us-east-1' });
+    mockS3.headObject.mockResolvedValueOnce({} as never);
+    const cache: S3CacheRatchet = new S3CacheRatchet(mockS3, 'test-bucket');
     const out: boolean = await cache.fileExists('test-missing-file');
 
     expect(out).toEqual(false);

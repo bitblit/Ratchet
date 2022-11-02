@@ -34,3 +34,4 @@ jobs:
         with:
           name: ratchet-build-artifacts-$GITHUB_RUN_NUMBER
           path: artifacts
+            retention-days: 30
