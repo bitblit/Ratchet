@@ -1,10 +1,21 @@
 import { InboundEmailRatchet } from './inbound-email-ratchet';
 import AWS from 'aws-sdk';
 import { S3CacheRatchet } from '../../aws/s3-cache-ratchet';
+import { JestRatchet } from '../../jest';
+
+let mockS3CR: jest.Mocked<S3CacheRatchet>;
 
 describe('#inboundEmailService', () => {
-  xit('should process an email', async () => {
-    const svc: InboundEmailRatchet = new InboundEmailRatchet(new S3CacheRatchet(new AWS.S3({ region: 'us-east-1' }), 'test-bucket'));
+  beforeEach(() => {
+    mockS3CR = JestRatchet.mock();
+  });
+
+  xit('should process an email from S3', async () => {
+    mockS3CR.getDefaultBucket.mockReturnValueOnce('TEST-BUCKET');
+    mockS3CR.fileExists.mockResolvedValueOnce(true);
+    mockS3CR.readCacheFileToString.mockResolvedValueOnce('TEST');
+
+    const svc: InboundEmailRatchet = new InboundEmailRatchet(mockS3CR);
 
     //const buf: Buffer = fs.readFileSync('testemail.txt');
     //const res: boolean = await svc.processEmailFromBuffer(buf);

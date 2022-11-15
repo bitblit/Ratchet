@@ -2,8 +2,40 @@ import { RequireRatchet } from './require-ratchet';
 import { fail } from 'assert';
 import { Logger } from './logger';
 
+describe('#standardCases', function () {
+  it('should throw exception on null value', function () {
+    try {
+      RequireRatchet.notNullOrUndefined(null, 'test1');
+      fail('Should have thrown exception');
+    } catch (err) {
+      Logger.debug('Correctly threw exception : %s', err);
+    }
+    try {
+      RequireRatchet.notNullOrUndefined(undefined, 'test2');
+      fail('Should have thrown exception');
+    } catch (err) {
+      Logger.debug('Correctly threw exception : %s', err);
+    }
+  });
+
+  it('should throw exception on whitespace value', function () {
+    try {
+      RequireRatchet.notNullUndefinedOrOnlyWhitespaceString('', 'test1');
+      fail('Should have thrown exception');
+    } catch (err) {
+      Logger.debug('Correctly threw exception : %s', err);
+    }
+    try {
+      RequireRatchet.notNullUndefinedOrOnlyWhitespaceString('    ', 'test2');
+      fail('Should have thrown exception');
+    } catch (err) {
+      Logger.debug('Correctly threw exception : %s', err);
+    }
+  });
+});
+
 describe('#noNullOrUndefinedValuesInArray', function () {
-  xit('should throw exception on null value', function () {
+  it('should throw exception on null value', function () {
     const arr: any[] = [1, null, 'a'];
     try {
       RequireRatchet.noNullOrUndefinedValuesInArray(arr);
@@ -13,7 +45,7 @@ describe('#noNullOrUndefinedValuesInArray', function () {
     }
   });
 
-  xit('throw exception on bad length', function () {
+  it('throw exception on bad length', function () {
     const arr: any[] = [1, 2, 'a'];
     try {
       RequireRatchet.noNullOrUndefinedValuesInArray(arr, 4);
@@ -23,7 +55,7 @@ describe('#noNullOrUndefinedValuesInArray', function () {
     }
   });
 
-  xit('should not throw exception on good values', function () {
+  it('should not throw exception on good values', function () {
     const arr: any[] = [1, 2, 'a'];
     RequireRatchet.noNullOrUndefinedValuesInArray(arr, 3);
   });

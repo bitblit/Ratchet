@@ -23,6 +23,7 @@ export class ExpiringCodeRatchet {
     const rval: ExpiringCode = {
       code: code,
       context: params.context,
+      tags: params.tags,
       expiresEpochMS: Date.now() + params.timeToLiveSeconds * 1000,
     };
     return rval;

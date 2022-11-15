@@ -6,13 +6,20 @@ import { Logger } from '../../common/logger';
 import { ReadStream } from 'fs';
 import fs from 'fs';
 import { DaemonProcessCreateOptions } from './daemon-process-create-options';
+import { JestRatchet } from '../../jest';
+
+let mockS3CR: jest.Mocked<S3CacheRatchet>;
 
 describe('#DaemonUtil', function () {
-  xit('should test the daemon util', async () => {
-    const s3: AWS.S3 = new AWS.S3({ region: 'us-east-1' });
-    const cache: S3CacheRatchet = new S3CacheRatchet(s3, 'test-bucket');
+  beforeEach(() => {
+    mockS3CR = JestRatchet.mock();
+  });
 
-    const t1: DaemonProcessState = await DaemonUtil.stat(cache, 'test1.csv');
+  it('should test the daemon util', async () => {
+    mockS3CR.getDefaultBucket.mockReturnValueOnce('TEST-BUCKET');
+    mockS3CR.fetchMetaForCacheFile.mockResolvedValue({});
+
+    const t1: DaemonProcessState = await DaemonUtil.stat(mockS3CR, 'test1.csv');
     Logger.info('Got : %j', t1);
 
     /*
@@ -30,10 +37,10 @@ describe('#DaemonUtil', function () {
 
          */
 
-    const t2: DaemonProcessState = await DaemonUtil.updateMessage(cache, 'test1.csv', 'msg : ' + new Date());
+    const t2: DaemonProcessState = await DaemonUtil.updateMessage(mockS3CR, 'test1.csv', 'msg : ' + new Date());
     Logger.info('Got : %j', t2);
 
-    const result: DaemonProcessState = await DaemonUtil.stat(cache, 'test1.csv');
+    const result: DaemonProcessState = await DaemonUtil.stat(mockS3CR, 'test1.csv');
 
     Logger.info('Got : %j', result);
 
