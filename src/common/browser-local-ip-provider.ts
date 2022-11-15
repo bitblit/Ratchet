@@ -16,6 +16,10 @@ export class BrowserLocalIpProvider implements LocalIpProvider {
       });
   }
 
+  ready(): boolean {
+    return this.currentIp !== 'UNSET';
+  }
+
   currentLocalIpAddress(): string {
     return this.currentIp;
   }

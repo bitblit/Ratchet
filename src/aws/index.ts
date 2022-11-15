@@ -45,6 +45,7 @@ export * from './expiring-code/expiring-code-params';
 export * from './expiring-code/expiring-code-provider';
 export * from './expiring-code/expiring-code-ratchet';
 export * from './expiring-code/expiring-code';
+export * from './expiring-code/s3-expiring-code-provider';
 export * from './model/cloud-watch-metrics-minute-level-dynamo-count-request';
 export * from './model/cloud-watch-metrics-unit';
 export * from './model/dynamo-count-result';

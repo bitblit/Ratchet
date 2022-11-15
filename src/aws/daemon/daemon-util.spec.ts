@@ -17,10 +17,13 @@ describe('#DaemonUtil', function () {
 
   it('should test the daemon util', async () => {
     mockS3CR.getDefaultBucket.mockReturnValueOnce('TEST-BUCKET');
-    mockS3CR.fetchMetaForCacheFile.mockResolvedValue({});
+    mockS3CR.fetchMetaForCacheFile.mockResolvedValue({ Metadata: { daemon_meta: '{"id":"testid", "completedEpochMS":123456}' } });
+    mockS3CR.preSignedDownloadUrlForCacheFile.mockReturnValueOnce('https://test-link');
 
     const t1: DaemonProcessState = await DaemonUtil.stat(mockS3CR, 'test1.csv');
     Logger.info('Got : %j', t1);
+    expect(t1).not.toBeNull();
+    expect(t1.link).not.toBeNull();
 
     /*
         let id = 'test';
@@ -35,7 +38,6 @@ describe('#DaemonUtil', function () {
         const t2: DaemonProcessState = await DaemonUtil.start(cache, id,'test1.csv', newDaemonOptions);
         Logger.info('Got : %j', t2);
 
-         */
 
     const t2: DaemonProcessState = await DaemonUtil.updateMessage(mockS3CR, 'test1.csv', 'msg : ' + new Date());
     Logger.info('Got : %j', t2);
@@ -46,6 +48,7 @@ describe('#DaemonUtil', function () {
 
     expect(result).toBeTruthy();
     Logger.info('Got objects : %j', result);
+         */
   });
 
   xit('should test the daemon util streaming', async () => {
