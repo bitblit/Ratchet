@@ -54,7 +54,7 @@ export class S3ExpiringCodeProvider implements ExpiringCodeProvider {
       }
     }
 
-    return rval && rval.expiresEpochMS > Date.now();
+    return !!rval && rval.expiresEpochMS > Date.now();
   }
 
   public async storeCode(code: ExpiringCode): Promise<boolean> {
