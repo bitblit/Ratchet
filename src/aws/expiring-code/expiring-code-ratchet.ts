@@ -29,10 +29,10 @@ export class ExpiringCodeRatchet {
     return rval;
   }
 
-  public async createNewCode(params: ExpiringCodeParams): Promise<boolean> {
+  public async createNewCode(params: ExpiringCodeParams): Promise<ExpiringCode> {
     const value: ExpiringCode = ExpiringCodeRatchet.generateCode(params);
     const rval: boolean = await this.provider.storeCode(value);
-    return rval;
+    return rval ? value : null;
   }
 
   public async checkCode(code: string, context: string, deleteOnMatch?: boolean): Promise<boolean> {
