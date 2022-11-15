@@ -44,7 +44,7 @@ export class S3ExpiringCodeProvider implements ExpiringCodeProvider {
   public async checkCode(code: string, context: string, deleteOnMatch?: boolean): Promise<boolean> {
     const val: S3ExpiringCodeProviderFileWrapper = await this.fetchFile();
     const rval: ExpiringCode = val.data.find(
-      (d) => d.code.toUpperCase() === code.toUpperCase() && d.context.toUpperCase() === context.toUpperCase()
+      (d) => d?.code?.toUpperCase() === code?.toUpperCase() && d?.context?.toUpperCase() === context?.toUpperCase()
     );
     if (rval) {
       if (deleteOnMatch || rval.expiresEpochMS < Date.now()) {

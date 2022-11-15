@@ -1,4 +1,4 @@
-import { RequireRatchet } from '../../common';
+import { RequireRatchet, StringRatchet } from '../../common';
 import { ExpiringCodeProvider } from './expiring-code-provider';
 import { ExpiringCodeParams } from './expiring-code-params';
 import { ExpiringCode } from './expiring-code';
@@ -36,7 +36,7 @@ export class ExpiringCodeRatchet {
   }
 
   public async checkCode(code: string, context: string, deleteOnMatch?: boolean): Promise<boolean> {
-    const rval: boolean = await this.provider.checkCode(code, context, deleteOnMatch);
+    const rval: boolean = await this.provider.checkCode(StringRatchet.trimToEmpty(code), StringRatchet.trimToEmpty(context), deleteOnMatch);
     return rval;
   }
 }
