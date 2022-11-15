@@ -16,6 +16,16 @@ package without knowing why it is alpha you'll get exactly what you deserve.
 - All my work to date on making Ratchet ESM friendly is in cw/feat/esm .   See the README for my current rant on the state
  of this
 
+## [2.1.x] - 2022-11-14
+### Added
+- Adding expiring code support
+### Changed
+- Updated sub libraries
+
+## [2.0.x] - 2022-09-05
+### Changed
+- Changed out the cli params to use the correct node package.json approach
+
 ## [1.0.x] - 2022-08-23
 ### Added
 - New logger instances, structured logging support for AWS
