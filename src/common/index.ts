@@ -17,6 +17,7 @@ export * from './expiring-object';
 export * from './fixed-local-ip-provider';
 export * from './geolocation-ratchet';
 export * from './jwt-ratchet';
+export * from './jwt-token-base';
 export * from './key-value';
 export * from './last-success-provider';
 export * from './local-ip-provider';

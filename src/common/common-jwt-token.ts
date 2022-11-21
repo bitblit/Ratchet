@@ -9,15 +9,9 @@
  *
  * Note: other interfaces can extend this token to gain more functionality
  */
+import { JwtTokenBase } from './jwt-token-base';
 
-export interface CommonJwtToken<T> {
-  exp: number; // Expiration time
-  iat: number; // Issued at (time of creation)
-  iss: string; // Issuer
-  sub: string; // Subject
-  aud: string; // Audience
-  jti: string; // Unique ID for the token
-
+export interface CommonJwtToken<T> extends JwtTokenBase {
   user: T; // Data for the authenticated user
   proxy: T; // Data for the proxy user (if any)
 
