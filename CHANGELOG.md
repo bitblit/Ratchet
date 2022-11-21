@@ -20,6 +20,8 @@ package without knowing why it is alpha you'll get exactly what you deserve.
 ### Added
 - Added JwtTokenBase to more clearly follow spec
 - Added ability for JwtRatchet to accept multiple encryption keys and select one at random
+- Changed JwtRatchet to use Epoch seconds instead of milliseconds (see https://www.rfc-editor.org/rfc/rfc7519#section-2, NumericDate)
+- Added RefreshToken ability to JwtRatchet
 ### Changed
 - Updated sub libraries
 

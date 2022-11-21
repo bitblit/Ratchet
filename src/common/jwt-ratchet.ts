@@ -17,7 +17,11 @@ import { JwtTokenBase } from './jwt-token-base';
 export class JwtRatchet {
   private static readonly EXPIRED_FLAG_NAME: string = '__jwtServiceExpiredFlag';
 
-  constructor(private encryptionKeyPromise: Promise<string | string[]>, private inDecryptKeysPromise?: Promise<string[]>) {
+  constructor(
+    private encryptionKeyPromise: Promise<string | string[]>,
+    private inDecryptKeysPromise?: Promise<string[]>,
+    private jtiGenerator: () => string = StringRatchet.createType4Guid
+  ) {
     RequireRatchet.notNullOrUndefined(encryptionKeyPromise, 'encryptionKeyPromise');
   }
 
@@ -58,11 +62,11 @@ export class JwtRatchet {
 
     Logger.debug('Got Payload : %j', payload);
     if (payload) {
-      const now = new Date().getTime();
-      if (payload.exp && now >= payload.exp) {
+      const nowSeconds: number = Math.floor(Date.now() / 1000);
+      if ((payload.exp && nowSeconds >= payload.exp) || (payload.nbf && nowSeconds <= payload.nbf)) {
         // Only do this if expiration is defined
-        const age: number = now - payload.exp;
-        Logger.debug('JWT token expired : on %d, %s ago', payload.exp, DurationRatchet.formatMsDuration(age));
+        const age: number = nowSeconds - payload.exp;
+        Logger.debug('JWT token expired or before NBF : on %d, %s ago', payload.exp, DurationRatchet.formatMsDuration(age));
         switch (expiredHandling) {
           case ExpiredJwtHandling.THROW_EXCEPTION:
             throw new Error('JWT Token was expired');
@@ -93,9 +97,10 @@ export class JwtRatchet {
       : await this.selectRandomEncryptionKey();
 
     RequireRatchet.notNullOrUndefined(payload, 'payload');
+    payload.jti = this.jtiGenerator ? this.jtiGenerator() : null; // Setup unique code
     if (expirationSeconds) {
-      const now = new Date().getTime();
-      const expires = now + expirationSeconds * 1000;
+      const nowSeconds = Math.floor(Date.now() / 1000);
+      const expires = nowSeconds + expirationSeconds;
       Logger.debug('Forcing expiration to %d', expires);
       payload.exp = expires;
     }
@@ -103,9 +108,38 @@ export class JwtRatchet {
     return token;
   }
 
+  public async refreshJWTString<T>(tokenString: string, allowExpired?: boolean, expirationSeconds?: number): Promise<string> {
+    const nowSeconds: number = Math.floor(new Date().getTime() / 1000);
+    const handling: ExpiredJwtHandling = allowExpired ? ExpiredJwtHandling.ADD_FLAG : ExpiredJwtHandling.THROW_EXCEPTION;
+    const payload: JwtTokenBase = await this.decodeToken(tokenString, handling);
+
+    const originalDurationSeconds: number = payload.exp && payload.iat ? payload.exp - payload.iat : null;
+    const newExpirationSeconds: number = expirationSeconds || originalDurationSeconds;
+    // Remove any old stuff
+    JwtRatchet.removeJwtFields(payload);
+    JwtRatchet.removeExpiredFlag(payload); // If it wasnt allowed an exception was thrown above anyway
+    const token: string = await this.createTokenString(payload, newExpirationSeconds);
+    return token;
+  }
+
   // Helper method that reads the token without checking it, therefore the keys arent needed
   public static decodeTokenNoVerify<T extends JwtTokenBase>(token: string): T {
     return jwt.decode(token) as T;
+  }
+
+  // Removes any jwt fields from an object
+  public static removeJwtFields(ob: any) {
+    if (ob) {
+      ['iss', 'sub', 'aud', 'exp', 'nbf', 'iat', 'jti'].forEach((k) => {
+        delete ob[k];
+      });
+    }
+  }
+
+  public static removeExpiredFlag(ob: any) {
+    if (ob) {
+      delete ob[JwtRatchet.EXPIRED_FLAG_NAME];
+    }
   }
 }
 
