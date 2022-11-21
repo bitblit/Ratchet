@@ -146,7 +146,7 @@ export class JwtRatchet {
     return token;
   }
 
-  public async refreshJWTString<T>(tokenString: string, allowExpired?: boolean, expirationSeconds?: number): Promise<string> {
+  public async refreshJWTString(tokenString: string, allowExpired?: boolean, expirationSeconds?: number): Promise<string> {
     const handling: ExpiredJwtHandling = allowExpired ? ExpiredJwtHandling.ADD_FLAG : ExpiredJwtHandling.THROW_EXCEPTION;
     const payload: JwtTokenBase = await this.decodeToken(tokenString, handling);
 
