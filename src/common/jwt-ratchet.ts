@@ -32,7 +32,7 @@ export class JwtRatchet {
     return this._encryptionKeyPromise;
   }
 
-  public get inDecryptKeysPromise(): Promise<string[]> {
+  public get decryptKeysPromise(): Promise<string[]> {
     return this._decryptKeysPromise;
   }
 
@@ -72,8 +72,8 @@ export class JwtRatchet {
   ): Promise<T> {
     const encKeys: string[] = await this.encryptionKeyArray();
     let decKeys: string[] = Object.assign([], encKeys);
-    if (this.inDecryptKeysPromise) {
-      decKeys = decKeys.concat(await this.inDecryptKeysPromise);
+    if (this.decryptKeysPromise) {
+      decKeys = decKeys.concat(await this.decryptKeysPromise);
     }
 
     const keysTried: string[] = []; //[StringRatchet.obscure(encKey, 1, 1)];
