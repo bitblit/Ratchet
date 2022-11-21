@@ -72,7 +72,7 @@
   },
   "optionalDependencies": {
     "@types/aws-lambda": "8.10.108",
-    "aws-sdk": "2.1254.0",
+    "aws-sdk": "2.1259.0",
     "cross-fetch": "3.1.5",
     "csv": "6.2.2",
     "handlebars": "4.7.7",
@@ -122,6 +122,6 @@
     "ts-node": "10.9.1",
     "tsc-watch": "5.0.3",
     "typedoc": "0.23.21",
-    "typescript": "4.8.4"
+    "typescript": "4.9.3"
   }
 }
