@@ -4,6 +4,7 @@ import { Logger } from './logger';
 import { StringRatchet } from './string-ratchet';
 import { DurationRatchet } from './duration-ratchet';
 import { JwtTokenBase } from './jwt-token-base';
+import { LoggerLevelName } from './logger-support/logger-level-name';
 
 /**
  * Functions to help with creating and decoding JWTs
@@ -18,23 +19,49 @@ export class JwtRatchet {
   private static readonly EXPIRED_FLAG_NAME: string = '__jwtServiceExpiredFlag';
 
   constructor(
-    private encryptionKeyPromise: Promise<string | string[]>,
-    private inDecryptKeysPromise?: Promise<string[]>,
-    private jtiGenerator: () => string = StringRatchet.createType4Guid
+    private _encryptionKeyPromise: Promise<string | string[]>,
+    private _decryptKeysPromise?: Promise<string[]>,
+    private _jtiGenerator: () => string = StringRatchet.createType4Guid,
+    private _decryptOnlyKeyUseLogLevel: LoggerLevelName = LoggerLevelName.info,
+    private _parseFailureLogLevel: LoggerLevelName = LoggerLevelName.debug
   ) {
-    RequireRatchet.notNullOrUndefined(encryptionKeyPromise, 'encryptionKeyPromise');
+    RequireRatchet.notNullOrUndefined(_encryptionKeyPromise, 'encryptionKeyPromise');
+  }
+
+  public get encryptionKeyPromise(): Promise<string | string[]> {
+    return this._encryptionKeyPromise;
+  }
+
+  public get inDecryptKeysPromise(): Promise<string[]> {
+    return this._decryptKeysPromise;
+  }
+
+  public get jtiGenerator(): () => string {
+    return this._jtiGenerator;
+  }
+
+  public get decryptOnlyKeyUseLogLevel(): LoggerLevelName {
+    return this._decryptOnlyKeyUseLogLevel;
+  }
+
+  public get parseFailureLogLevel(): LoggerLevelName {
+    return this._parseFailureLogLevel;
   }
 
   public static hasExpiredFlag(ob: any): boolean {
     return ob && ob[JwtRatchet.EXPIRED_FLAG_NAME] === true;
   }
 
-  public static async invalidSafeDecode<T>(payloadString: string, decryptKey: string): Promise<T> {
+  public static async invalidSafeDecode<T>(
+    payloadString: string,
+    decryptKey: string,
+    logLevel: LoggerLevelName = LoggerLevelName.silly
+  ): Promise<T> {
     let rval: T = null;
     try {
       rval = jwt.verify(payloadString, decryptKey) as unknown as T;
     } catch (err) {
-      Logger.silly('Caught %s - ignoring', err);
+      Logger.logByLevel(logLevel, 'Caught %s - ignoring', err);
     }
     return rval;
   }
@@ -43,8 +70,8 @@ export class JwtRatchet {
     payloadString: string,
     expiredHandling: ExpiredJwtHandling = ExpiredJwtHandling.RETURN_NULL
   ): Promise<T> {
-    const encKey: string | string[] = await this.encryptionKeyPromise;
-    let decKeys: string[] = Array.isArray(encKey) ? encKey : [encKey];
+    const encKeys: string[] = await this.encryptionKeyArray();
+    let decKeys: string[] = Object.assign([], encKeys);
     if (this.inDecryptKeysPromise) {
       decKeys = decKeys.concat(await this.inDecryptKeysPromise);
     }
@@ -54,13 +81,15 @@ export class JwtRatchet {
 
     for (let i = 0; i < decKeys.length && !payload; i++) {
       keysTried.push(StringRatchet.obscure(decKeys[i], 1, 1));
-      payload = await JwtRatchet.invalidSafeDecode(payloadString, decKeys[i]);
-      if (payload) {
-        Logger.debug('Decrypted with key %d', i);
+      // Only Log on the last one since it might have just been an old key
+      const logLevel: LoggerLevelName =
+        i === decKeys.length - 1 && this.parseFailureLogLevel ? this.parseFailureLogLevel : LoggerLevelName.silly;
+      payload = await JwtRatchet.invalidSafeDecode(payloadString, decKeys[i], logLevel);
+      if (payload && i >= encKeys.length) {
+        Logger.logByLevel(this.decryptOnlyKeyUseLogLevel, 'Used old key to decode token : %s', StringRatchet.obscure(decKeys[i], 2));
       }
     }
 
-    Logger.debug('Got Payload : %j', payload);
     if (payload) {
       const nowSeconds: number = Math.floor(Date.now() / 1000);
       if ((payload.exp && nowSeconds >= payload.exp) || (payload.nbf && nowSeconds <= payload.nbf)) {
@@ -85,9 +114,18 @@ export class JwtRatchet {
     return payload;
   }
 
-  public async selectRandomEncryptionKey(): Promise<string> {
+  public async encryptionKeyArray(): Promise<string[]> {
     const encKey: string | string[] = await this.encryptionKeyPromise;
-    const rval: string = Array.isArray(encKey) ? encKey[Math.floor(Math.random() * encKey.length)] : encKey;
+    const rval: string[] = Array.isArray(encKey) ? encKey : [encKey];
+    if (rval.length < 1) {
+      throw new Error('Cannot create JwtRatchet with empty encryption key set');
+    }
+    return rval;
+  }
+
+  public async selectRandomEncryptionKey(): Promise<string> {
+    const encKey: string[] = await this.encryptionKeyArray();
+    const rval: string = encKey[Math.floor(Math.random() * encKey.length)];
     return rval;
   }
 
@@ -109,7 +147,6 @@ export class JwtRatchet {
   }
 
   public async refreshJWTString<T>(tokenString: string, allowExpired?: boolean, expirationSeconds?: number): Promise<string> {
-    const nowSeconds: number = Math.floor(new Date().getTime() / 1000);
     const handling: ExpiredJwtHandling = allowExpired ? ExpiredJwtHandling.ADD_FLAG : ExpiredJwtHandling.THROW_EXCEPTION;
     const payload: JwtTokenBase = await this.decodeToken(tokenString, handling);
 
