@@ -16,6 +16,14 @@ package without knowing why it is alpha you'll get exactly what you deserve.
 - All my work to date on making Ratchet ESM friendly is in cw/feat/esm .   See the README for my current rant on the state
  of this
 
+## [2.2.x] - 2022-11-21
+### Added
+- Added JwtTokenBase to more clearly follow spec
+- Added ability for JwtRatchet to accept multiple encryption keys and select one at random
+### Changed
+- Updated sub libraries
+
+
 ## [2.1.x] - 2022-11-14
 ### Added
 - Adding expiring code support
