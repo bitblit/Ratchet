@@ -1,5 +1,4 @@
 import AWS from 'aws-sdk';
-import { PrototypeDaoItem } from './prototype-dao-item';
 import { PrototypeDao } from './prototype-dao';
 import { S3PrototypeDaoProvider } from './s3-prototype-dao-provider';
 import { S3CacheRatchet } from '../s3-cache-ratchet';
@@ -35,8 +34,11 @@ describe('#PrototypeDao', () => {
   }, 300_000);
 });
 
-export interface TestPrototypeItem extends PrototypeDaoItem {
+export interface TestPrototypeItem {
   fieldA: number;
   fieldB: string;
   type: string;
+  createdEpochMS?: number;
+  updatedEpochMS?: number;
+  guid?: string;
 }

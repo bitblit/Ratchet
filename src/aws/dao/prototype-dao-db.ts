@@ -1,6 +1,4 @@
-import { PrototypeDaoItem } from './prototype-dao-item';
-
-export interface PrototypeDaoDb<T extends PrototypeDaoItem> {
+export interface PrototypeDaoDb<T> {
   items: T[];
   lastModifiedEpochMS: number;
 }

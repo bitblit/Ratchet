@@ -1,7 +1,8 @@
 import { MapRatchet, RequireRatchet, StringRatchet } from '../../common';
 import { PrototypeDaoProvider } from './prototype-dao-provider';
 import { PrototypeDaoDb } from './prototype-dao-db';
-import { PrototypeDaoItem } from './prototype-dao-item';
+import { PrototypeDaoConfig } from './prototype-dao-config';
+import { DateTime } from 'luxon';
 
 /*
   PrototypeDao makes it quick to stand up a simple data access object
@@ -14,9 +15,23 @@ import { PrototypeDaoItem } from './prototype-dao-item';
   for anything like serious workloads
 
  */
-export class PrototypeDao<T extends PrototypeDaoItem> {
-  constructor(private provider: PrototypeDaoProvider<T>) {
+export class PrototypeDao<T> {
+  public static defaultDaoConfig(): PrototypeDaoConfig {
+    return {
+      guidCreateFunction: StringRatchet.createType4Guid,
+      guidFieldName: 'guid',
+      createdEpochMSFieldName: 'createdEpochMS',
+      updatedEpochMSFieldName: 'updatedEpochMS',
+      createdUtcTimestampFieldName: null,
+      updatedUtcTimestampFieldName: null,
+    };
+  }
+
+  constructor(private provider: PrototypeDaoProvider<T>, private cfg: PrototypeDaoConfig = PrototypeDao.defaultDaoConfig()) {
     RequireRatchet.notNullOrUndefined(provider, 'provider');
+    RequireRatchet.notNullOrUndefined(cfg, 'cfg');
+    RequireRatchet.notNullOrUndefined(cfg.guidCreateFunction, 'cfg.guidCreateFunction');
+    RequireRatchet.notNullOrUndefined(cfg.guidFieldName, 'cfg.guidFieldName');
   }
 
   public async fetchAll(): Promise<T[]> {
@@ -31,7 +46,7 @@ export class PrototypeDao<T extends PrototypeDaoItem> {
   public async removeItems(guids: string[]): Promise<T[]> {
     let old: T[] = await this.fetchAll();
     if (guids) {
-      old = old.filter((t) => !guids.includes(t.guid));
+      old = old.filter((t) => !guids.includes(t[this.cfg.guidFieldName]));
       await this.provider.storeDatabase({ items: old, lastModifiedEpochMS: Date.now() });
     }
     return old;
@@ -40,10 +55,20 @@ export class PrototypeDao<T extends PrototypeDaoItem> {
   public async store(value: T): Promise<T[]> {
     let old: T[] = await this.fetchAll();
     if (value) {
-      value.guid = value.guid || StringRatchet.createType4Guid();
-      value.createdEpochMS = value.createdEpochMS || Date.now();
-      value.updatedEpochMS = Date.now();
-      old = old.filter((t) => t.guid !== value.guid);
+      value[this.cfg.guidFieldName] = value[this.cfg.guidFieldName] || this.cfg.guidCreateFunction();
+      if (this.cfg.createdEpochMSFieldName) {
+        value[this.cfg.createdEpochMSFieldName] = value[this.cfg.createdEpochMSFieldName] || Date.now();
+      }
+      if (this.cfg.createdUtcTimestampFieldName) {
+        value[this.cfg.createdUtcTimestampFieldName] = value[this.cfg.createdUtcTimestampFieldName] || DateTime.utc().toISO();
+      }
+      if (this.cfg.updatedEpochMSFieldName) {
+        value[this.cfg.updatedEpochMSFieldName] = Date.now();
+      }
+      if (this.cfg.updatedUtcTimestampFieldName) {
+        value[this.cfg.updatedUtcTimestampFieldName] = DateTime.utc().toISO();
+      }
+      old = old.filter((t) => t[this.cfg.guidFieldName] !== value[this.cfg.guidFieldName]);
       old.push(value);
       await this.provider.storeDatabase({ items: old, lastModifiedEpochMS: Date.now() });
     }
@@ -52,7 +77,7 @@ export class PrototypeDao<T extends PrototypeDaoItem> {
 
   public async fetchById(guid: string): Promise<T> {
     const old: T[] = await this.fetchAll();
-    return old.find((t) => t.guid === guid);
+    return old.find((t) => t[this.cfg.guidFieldName] === guid);
   }
 
   public async searchByField<R>(fieldDotPath: string, fieldValue: R): Promise<T[]> {
