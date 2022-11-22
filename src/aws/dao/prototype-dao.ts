@@ -52,7 +52,7 @@ export class PrototypeDao<T> {
     return old;
   }
 
-  public async store(value: T): Promise<T[]> {
+  public async store(value: T): Promise<T> {
     let old: T[] = await this.fetchAll();
     if (value) {
       value[this.cfg.guidFieldName] = value[this.cfg.guidFieldName] || this.cfg.guidCreateFunction();
@@ -72,7 +72,7 @@ export class PrototypeDao<T> {
       old.push(value);
       await this.provider.storeDatabase({ items: old, lastModifiedEpochMS: Date.now() });
     }
-    return old;
+    return value;
   }
 
   public async fetchById(guid: string): Promise<T> {
