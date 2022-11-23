@@ -45,6 +45,26 @@ describe('#mailer', function () {
     expect(result).toBeTruthy();
   });
 
+  xit('should allow for unicode in email subject', async () => {
+    const ses: AWS.SES = new AWS.SES({ region: 'us-east-1' });
+    const config: MailerConfig = {
+      defaultSendingAddress: 'jflint@adomni.com',
+      autoBccAddresses: [],
+      archive: null,
+      archivePrefix: null,
+    };
+    const svc: Mailer = new Mailer(ses, config);
+    const rts: ReadyToSendEmail = {
+      txtMessage: 'test txt',
+      htmlMessage: '<h1>Test html</h1><p>Test paragraph</p>',
+      subject: "Rappel: Votre panneau d'affichage Shout est diffusé aujourd'hui!", // <==== We are testing these unicode characters
+      fromAddress: 'jflint@adomni.com',
+      destinationAddresses: ['jflint@adomni.com'],
+    };
+    const result: SendEmailResponse = await svc.sendEmail(rts);
+    expect(result).toBeTruthy();
+  });
+
   xit('should filter outbound', async () => {
     const config: MailerConfig = {
       allowedDestinationEmails: [/.*test\.com/, /.*.test2\.com/],
