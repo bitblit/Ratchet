@@ -206,7 +206,7 @@ export class Mailer {
         rawMail += 'Content-Type: multipart/alternative; boundary="' + altBoundary + '"\n';
         if (!!StringRatchet.trimToNull(rts.htmlMessage)) {
           rawMail += '\n\n--' + altBoundary + '\n';
-          rawMail += 'Content-Type: text/html\n\n';
+          rawMail += 'Content-Type: text/html; charset="UTF-8"\n\n';
           rawMail += rts.htmlMessage;
         }
         if (!!StringRatchet.trimToNull(rts.txtMessage)) {
