@@ -47,13 +47,57 @@ export class DynamoRatchet {
   }
 
   public async tableIsEmpty(tableName: string): Promise<boolean> {
-    const scanInput: ScanInput = {
+    const scan: ScanInput = {
       TableName: tableName,
       Limit: 1,
     };
 
-    const scanOutput: ScanOutput = await this.awsDDB.scan(scanInput).promise();
+    const scanOutput: ScanOutput = await this.throughputSafeScanOrQuery<ScanInput, ScanOutput>((o) => this.scanPromise(o), scan);
     return scanOutput.Items.length === 0;
+  }
+
+  // A little pass-thru to simplify passing around this function
+  public async scanPromise(input: ScanInput): Promise<ScanOutput> {
+    return this.awsDDB.scan(input).promise();
+  }
+
+  // A little pass-thru to simplify passing around this function
+  public async queryPromise(input: QueryInput): Promise<QueryOutput> {
+    return this.awsDDB.query(input).promise();
+  }
+
+  // This basically wraps up scans and queries with a function that will auto-retry them if a
+  // Throughput exception is encountered (up to a limit) but lets other errors get thrown.
+  // Drop-in replacement to make sure that things do not fail just because of throughput issues
+  public async throughputSafeScanOrQuery<T, R>(proc: (T) => Promise<R>, input: T, maxTries?: number, inCurrentTry?: number): Promise<R> {
+    let rval: R = null;
+    if (input) {
+      let currentTry: number = inCurrentTry ?? 0;
+      do {
+        currentTry++;
+        try {
+          rval = await proc(input);
+        } catch (err) {
+          if (DynamoRatchet.objectIsErrorWithProvisionedThroughputExceededExceptionCode(err)) {
+            const wait: number = Math.pow(2, currentTry) * 1000;
+            Logger.debug('Exceeded scan throughput for %j : Try %d of %d (Waiting %d ms)', input, currentTry, maxTries, wait);
+            await PromiseRatchet.wait(wait);
+            currentTry++;
+          } else {
+            throw err; // We only catch throughput issues
+          }
+        }
+      } while (!rval && (!maxTries || currentTry < maxTries));
+      if (!rval) {
+        // We got here because we ran out of tries
+        ErrorRatchet.throwFormattedErr(
+          'throughputSafeScan failed - tried %d times, kept running into throughput exceeded : %j',
+          maxTries,
+          input
+        );
+      }
+    }
+    return rval;
   }
 
   public async fullyExecuteQueryCount(qry: QueryInput, delayMS = 0): Promise<DynamoCountResult> {
@@ -74,7 +118,7 @@ export class DynamoRatchet {
       qry.Limit = null;
 
       do {
-        qryResults = await this.awsDDB.query(qry).promise();
+        qryResults = await this.throughputSafeScanOrQuery<QueryInput, QueryOutput>((o) => this.queryPromise(o), qry);
         rval.count += qryResults['Count'];
         rval.scannedCount += qryResults['ScannedCount'];
         rval.pages++;
@@ -122,7 +166,7 @@ export class DynamoRatchet {
       const start: number = new Date().getTime();
       Logger.debug('Pulling %j', qry);
 
-      let qryResults: QueryOutput = await this.awsDDB.query(qry).promise();
+      let qryResults: QueryOutput = await this.throughputSafeScanOrQuery<QueryInput, QueryOutput>((o) => this.queryPromise(o), qry);
       for (let i = 0; i < qryResults.Items.length; i++) {
         await proc(qryResults.Items[i] as unknown as T);
         cnt++;
@@ -135,7 +179,7 @@ export class DynamoRatchet {
         // If Limit was set on the initial query, stop after 1
         Logger.silly('Found more rows - requery with key %j', qryResults.LastEvaluatedKey);
         qry['ExclusiveStartKey'] = qryResults.LastEvaluatedKey;
-        qryResults = await this.awsDDB.query(qry).promise();
+        qryResults = await this.throughputSafeScanOrQuery<QueryInput, QueryOutput>((o) => this.queryPromise(o), qry);
         for (let i = 0; i < qryResults.Items.length; i++) {
           await proc(qryResults.Items[i] as unknown as T);
           cnt++;
@@ -180,7 +224,7 @@ export class DynamoRatchet {
       scan.Limit = null;
 
       do {
-        qryResults = await this.awsDDB.scan(scan).promise();
+        qryResults = await this.throughputSafeScanOrQuery<ScanInput, ScanOutput>((o) => this.scanPromise(o), scan);
         rval.count += qryResults['Count'];
         rval.scannedCount += qryResults['ScannedCount'];
         rval.pages++;
@@ -229,7 +273,10 @@ export class DynamoRatchet {
 
       Logger.debug('Pulling %j', scan);
 
-      let qryResults: PromiseResult<any, any> = await this.awsDDB.scan(scan).promise();
+      let qryResults: PromiseResult<any, any> = await this.throughputSafeScanOrQuery<ScanInput, ScanOutput>(
+        (o) => this.scanPromise(o),
+        scan
+      );
       for (let i = 0; i < qryResults.Items.length; i++) {
         await proc(qryResults.Items[i] as unknown as T);
         cnt++;
@@ -238,7 +285,7 @@ export class DynamoRatchet {
       while (qryResults.LastEvaluatedKey && (softLimit === null || cnt < softLimit) && !scan.Limit) {
         Logger.silly('Found more rows - requery with key %j', qryResults.LastEvaluatedKey);
         scan['ExclusiveStartKey'] = qryResults.LastEvaluatedKey;
-        qryResults = await this.awsDDB.scan(scan).promise();
+        qryResults = await this.throughputSafeScanOrQuery<ScanInput, ScanOutput>((o) => this.scanPromise(o), scan);
         for (let i = 0; i < qryResults.Items.length; i++) {
           await proc(qryResults.Items[i] as unknown as T);
           cnt++;
@@ -471,7 +518,7 @@ export class DynamoRatchet {
       try {
         rval = await this.awsDDB.put(params).promise();
       } catch (err) {
-        if (!!err && !!err['code'] && err['code'] === 'ProvisionedThroughputExceededException') {
+        if (DynamoRatchet.objectIsErrorWithProvisionedThroughputExceededExceptionCode(err)) {
           const wait: number = Math.pow(2, currentTry) * 1000;
           Logger.debug('Exceeded write throughput for %j : Try %d of %d (Waiting %d ms)', params, currentTry, autoRetryCount, wait);
           await PromiseRatchet.wait(wait);
@@ -506,7 +553,7 @@ export class DynamoRatchet {
       Logger.silly('Wrote : %j', wrote);
       rval = true;
     } catch (err) {
-      if (err && err['code'] && err['code'] === 'ProvisionedThroughputExceededException') {
+      if (DynamoRatchet.objectIsErrorWithProvisionedThroughputExceededExceptionCode(err)) {
         // Infinite retry - probably not smart
         Logger.debug('Exceeded write throughput for %j : (Waiting 2000 ms)', params);
         await PromiseRatchet.wait(2000);
@@ -563,7 +610,7 @@ export class DynamoRatchet {
       try {
         pio = await this.awsDDB.put(params).promise();
       } catch (err) {
-        if (err && err['code'] && err['code'] === 'ProvisionedThroughputExceededException') {
+        if (DynamoRatchet.objectIsErrorWithProvisionedThroughputExceededExceptionCode(err)) {
           currentTry++;
           const wait: number = Math.pow(2, currentTry) * 1000;
           Logger.debug('Exceeded write throughput for %j : Try %d of %d (Waiting %d ms)', params, currentTry, autoRetryCount, wait);
@@ -608,7 +655,7 @@ export class DynamoRatchet {
       try {
         holder = await this.awsDDB.get(params).promise();
       } catch (err) {
-        if (!!err && !!err['code'] && err['code'] === 'ProvisionedThroughputExceededException') {
+        if (DynamoRatchet.objectIsErrorWithProvisionedThroughputExceededExceptionCode(err)) {
           const wait: number = Math.pow(2, currentTry) * 1000;
           Logger.debug('Exceeded read throughput for %j : Try %d of %d (Waiting %d ms)', params, currentTry, autoRetryCount, wait);
           await PromiseRatchet.wait(wait);
@@ -623,6 +670,10 @@ export class DynamoRatchet {
     }
     const rval: T = !!holder && !!holder.Item ? Object.assign({} as T, holder.Item) : null;
     return rval;
+  }
+
+  public static objectIsErrorWithProvisionedThroughputExceededExceptionCode(err: any): boolean {
+    return !!err && !!err['code'] && err['code'] === 'ProvisionedThroughputExceededException';
   }
 
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
@@ -656,7 +707,7 @@ export class DynamoRatchet {
       try {
         holder = await this.awsDDB.update(params).promise();
       } catch (err) {
-        if (!!err && !!err['code'] && err['code'] === 'ProvisionedThroughputExceededException') {
+        if (DynamoRatchet.objectIsErrorWithProvisionedThroughputExceededExceptionCode(err)) {
           const wait: number = Math.pow(2, currentTry) * 1000;
           Logger.debug('Exceeded update throughput for %j : Try %d of %d (Waiting %d ms)', params, currentTry, autoRetryCount, wait);
           await PromiseRatchet.wait(wait);

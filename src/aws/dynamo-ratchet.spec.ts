@@ -3,8 +3,29 @@ import { DynamoRatchet } from './dynamo-ratchet';
 import { Logger } from '../common/logger';
 import { ExpressionAttributeValueMap, PutItemOutput, QueryInput } from 'aws-sdk/clients/dynamodb';
 import { LoggerLevelName } from '../common';
+import { DocumentClient } from 'aws-sdk/lib/dynamodb/document_client';
+import ScanInput = DocumentClient.ScanInput;
 
-describe('#atomicCounter', function () {
+describe('#dynamoRatchet', function () {
+  xit('should handle ProvisionedThroughputExceeded exceptions', async () => {
+    const dr: DynamoRatchet = new DynamoRatchet(new AWS.DynamoDB.DocumentClient({ region: 'us-east-1' }));
+    let row: number = 0;
+    const scan: ScanInput = {
+      TableName: 'cache-device-data',
+      ProjectionExpression: 'compositeKey',
+    };
+
+    Logger.info('Starting scan');
+    const cnt: number = await dr.fullyExecuteProcessOverScan<any>(scan, async (ob) => {
+      if (row % 100 === 0) {
+        Logger.info('Row : %d : %j', row, ob);
+      }
+      row++;
+    });
+
+    Logger.info('Count was : %d', cnt);
+  }, 300_000_000);
+
   xit('should only write if a field is null', async () => {
     const dr: DynamoRatchet = new DynamoRatchet(new AWS.DynamoDB.DocumentClient({ region: 'us-east-1' }));
     const tableName: string = 'some-table';
@@ -71,7 +92,7 @@ describe('#atomicCounter', function () {
 
     Logger.info('Got : %s', res);
     expect(res).toBeTruthy();
-  });
+  }, 300_000);
 
   xit('should run an insert / read test for slowdown', async () => {
     const dr: DynamoRatchet = new DynamoRatchet(new AWS.DynamoDB.DocumentClient({ region: 'us-east-1' }));
