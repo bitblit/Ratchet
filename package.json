@@ -72,7 +72,7 @@
   },
   "optionalDependencies": {
     "@types/aws-lambda": "8.10.109",
-    "aws-sdk": "2.1266.0",
+    "aws-sdk": "2.1267.0",
     "cross-fetch": "3.1.5",
     "csv": "6.2.5",
     "handlebars": "4.7.7",
@@ -82,7 +82,7 @@
     "jsonwebtoken": "8.5.1",
     "mailparser": "3.5.0",
     "mime-types": "2.1.35",
-    "rxjs": "7.5.7",
+    "rxjs": "7.6.0",
     "swagger-model-validator": "3.0.21",
     "tmp": "0.2.1",
     "walk": "2.3.15"
