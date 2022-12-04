@@ -19,9 +19,11 @@ package without knowing why it is alpha you'll get exactly what you deserve.
 
 ## [2.3.x] - 2022-12-03
 ### Added
+- JwtRatchet gets helper methods to list time remaining in tokens
 ### Changed
 - DynamoRatchet refactored so that FullyExecuteScan* and FullyExecuteQuery* methods auto-recover from ProvisionedThroughputExceededException
-
+- DynamoRatchet refactored so that BatchWrite and BatchDelete methods auto-recover from ProvisionedThroughputExceededException
+- JwtRatchet now correctly handles malformed JWT's with exp values set in MS (this isnt allowed by the spec)
 
 ## [2.2.x] - 2022-11-21
 ### Added
