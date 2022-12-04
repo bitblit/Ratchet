@@ -1,6 +1,28 @@
-import { JwtRatchet } from './jwt-ratchet';
+import { ExpiredJwtHandling, JwtRatchet } from './jwt-ratchet';
+import { PromiseRatchet } from './promise-ratchet';
 
 describe('#jwtRatchet', function () {
+  it('should test expiration flag for a token with millisecond expiration', async () => {
+    const jwt: JwtRatchet = new JwtRatchet(Promise.resolve('test1234'), Promise.resolve([]));
+
+    const token1: string = await jwt.createTokenString({ test: 1, exp: Date.now() - 100 }, null);
+
+    const output: any = await jwt.decodeToken(token1, ExpiredJwtHandling.ADD_FLAG);
+    expect(output).not.toBeNull();
+    expect(JwtRatchet.hasExpiredFlag(output)).toBeTruthy();
+  });
+
+  it('should test expiration calculation for a token', async () => {
+    const jwt: JwtRatchet = new JwtRatchet(Promise.resolve('test1234'), Promise.resolve([]));
+
+    const token1: string = await jwt.createTokenString({ test: 1 }, 120);
+    const output: number = await JwtRatchet.secondsRemainingUntilExpiration(token1);
+
+    expect(output).not.toBeNull();
+    expect(output).toBeLessThan(121);
+    expect(output).toBeGreaterThan(115);
+  });
+
   it('should test round-trip for a token', async () => {
     const jwt: JwtRatchet = new JwtRatchet(Promise.resolve('test1234'), Promise.resolve([]));
 

@@ -59,9 +59,32 @@ export class JwtRatchet {
   ): Promise<T> {
     let rval: T = null;
     try {
-      rval = jwt.verify(payloadString, decryptKey) as unknown as T;
+      rval = jwt.verify(payloadString, decryptKey, { ignoreExpiration: true }) as unknown as T; // We'll check/flag expiration later
     } catch (err) {
       Logger.logByLevel(logLevel, 'Caught %s - ignoring', err);
+    }
+    return rval;
+  }
+
+  public static async secondsRemainingUntilExpiration(payloadString: string): Promise<number> {
+    let rval: number = null;
+    if (StringRatchet.trimToNull(payloadString)) {
+      const output: JwtTokenBase = await JwtRatchet.decodeTokenNoVerify<any>(payloadString);
+      const nowSecond: number = Math.floor(Date.now() / 1000);
+      if (output.exp) {
+        // A backwards compatibility hack since some of my old code used to incorrectly write the exp field in milliseconds
+        const expSeconds: number = output.exp > nowSecond * 100 ? Math.floor(output.exp / 1000) : output.exp;
+        rval = Math.max(0, expSeconds - nowSecond);
+      }
+    }
+    return rval;
+  }
+
+  public static async msRemainingUntilExpiration(payloadString: string): Promise<number> {
+    const secs: number = await JwtRatchet.secondsRemainingUntilExpiration(payloadString);
+    let rval: number = null;
+    if (secs !== null && secs !== undefined) {
+      rval = secs * 1000;
     }
     return rval;
   }
@@ -92,10 +115,14 @@ export class JwtRatchet {
 
     if (payload) {
       const nowSeconds: number = Math.floor(Date.now() / 1000);
-      if ((payload.exp && nowSeconds >= payload.exp) || (payload.nbf && nowSeconds <= payload.nbf)) {
+      // A backwards compatibility hack since some of my old code used to incorrectly write the exp field in milliseconds
+      const expSeconds: number = payload?.exp && payload.exp > nowSeconds * 100 ? Math.floor(payload.exp / 1000) : payload?.exp;
+      const nbfSeconds: number = payload?.nbf && payload.nbf > nowSeconds * 100 ? Math.floor(payload.nbf / 1000) : payload?.nbf;
+
+      if ((expSeconds && nowSeconds >= expSeconds) || (nbfSeconds && nowSeconds <= nbfSeconds)) {
         // Only do this if expiration is defined
-        const age: number = nowSeconds - payload.exp;
-        Logger.debug('JWT token expired or before NBF : on %d, %s ago', payload.exp, DurationRatchet.formatMsDuration(age));
+        const age: number = nowSeconds - expSeconds;
+        Logger.debug('JWT token expired or before NBF : on %d, %s ago', payload.exp, DurationRatchet.formatMsDuration(age * 1000));
         switch (expiredHandling) {
           case ExpiredJwtHandling.THROW_EXCEPTION:
             throw new Error('JWT Token was expired');

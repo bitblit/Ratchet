@@ -9,6 +9,7 @@ import { DurationRatchet } from '../common/duration-ratchet';
 import {
   BatchGetItemInput,
   BatchGetItemOutput,
+  BatchWriteItemInput,
   BatchWriteItemOutput,
   DeleteItemInput,
   DeleteItemOutput,
@@ -325,7 +326,7 @@ export class DynamoRatchet {
       while (batchItems.length > 0) {
         const curBatch: any[] = batchItems.slice(0, Math.min(batchItems.length, batchSize));
         batchItems = batchItems.slice(curBatch.length);
-        const params: any = {
+        const params: BatchWriteItemInput = {
           RequestItems: {},
           ReturnConsumedCapacity: 'TOTAL',
           ReturnItemCollectionMetrics: 'SIZE',
@@ -336,7 +337,16 @@ export class DynamoRatchet {
         let done = false;
         let batchResults: BatchWriteItemOutput = null;
         while (!done && tryCount < 7) {
-          batchResults = await this.awsDDB.batchWrite(params).promise();
+          try {
+            batchResults = await this.awsDDB.batchWrite(params).promise();
+          } catch (err) {
+            if (DynamoRatchet.objectIsErrorWithProvisionedThroughputExceededExceptionCode(err)) {
+              Logger.info('Caught ProvisionedThroughputExceededException - retrying delete');
+              batchResults = { UnprocessedItems: params.RequestItems }; // Just retry everything
+            } else {
+              throw err; // We only retry on throughput
+            }
+          }
           if (
             !!batchResults &&
             !!batchResults.UnprocessedItems &&
@@ -453,7 +463,7 @@ export class DynamoRatchet {
       while (batchItems.length > 0) {
         const curBatch: any[] = batchItems.slice(0, Math.min(batchItems.length, batchSize));
         batchItems = batchItems.slice(curBatch.length);
-        const params: any = {
+        const params: BatchWriteItemInput = {
           RequestItems: {},
           ReturnConsumedCapacity: 'TOTAL',
           ReturnItemCollectionMetrics: 'SIZE',
@@ -462,9 +472,18 @@ export class DynamoRatchet {
 
         let tryCount = 1;
         let done = false;
-        let batchResults: PromiseResult<BatchWriteItemOutput, AWSError> = null;
+        let batchResults: BatchWriteItemOutput = null;
         while (!done && tryCount < 7) {
-          batchResults = await this.awsDDB.batchWrite(params).promise();
+          try {
+            batchResults = await this.awsDDB.batchWrite(params).promise();
+          } catch (err) {
+            if (DynamoRatchet.objectIsErrorWithProvisionedThroughputExceededExceptionCode(err)) {
+              Logger.info('Caught ProvisionedThroughputExceededException - retrying delete');
+              batchResults = { UnprocessedItems: params.RequestItems }; // Just retry everything
+            } else {
+              throw err; // We only retry on throughput
+            }
+          }
           if (
             !!batchResults &&
             !!batchResults.UnprocessedItems &&

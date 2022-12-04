@@ -16,6 +16,13 @@ package without knowing why it is alpha you'll get exactly what you deserve.
 - All my work to date on making Ratchet ESM friendly is in cw/feat/esm .   See the README for my current rant on the state
  of this
 
+
+## [2.3.x] - 2022-12-03
+### Added
+### Changed
+- DynamoRatchet refactored so that FullyExecuteScan* and FullyExecuteQuery* methods auto-recover from ProvisionedThroughputExceededException
+
+
 ## [2.2.x] - 2022-11-21
 ### Added
 - Added JwtTokenBase to more clearly follow spec
