@@ -36,7 +36,7 @@ export class PrototypeDao<T> {
 
   public async fetchAll(): Promise<T[]> {
     const db: PrototypeDaoDb<T> = await this.provider.loadDatabase();
-    return db.items;
+    return db.items || [];
   }
 
   public async resetDatabase(): Promise<void> {
