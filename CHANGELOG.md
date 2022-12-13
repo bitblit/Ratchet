@@ -17,6 +17,11 @@ package without knowing why it is alpha you'll get exactly what you deserve.
  of this
 
 
+## [2.4.x] - 2022-12-13
+### Changed
+- Updated dependant libraries
+- Changed minimal Node version to 16.x
+
 ## [2.3.x] - 2022-12-03
 ### Added
 - JwtRatchet gets helper methods to list time remaining in tokens
