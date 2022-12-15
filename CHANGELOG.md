@@ -16,6 +16,10 @@ package without knowing why it is alpha you'll get exactly what you deserve.
 - All my work to date on making Ratchet ESM friendly is in cw/feat/esm .   See the README for my current rant on the state
  of this
 
+## In Flight
+* StringReadable : Adapters from string to readable
+
+
 
 ## [2.4.x] - 2022-12-13
 ### Changed
