@@ -1,8 +1,4 @@
-import AWS, { AWSError } from 'aws-sdk';
 import { Logger } from '../../common/logger';
-import { GetParameterResult } from 'aws-sdk/clients/ssm';
-import { PromiseResult } from 'aws-sdk/lib/request';
-import { PromiseRatchet } from '../../common/promise-ratchet';
 import { RequireRatchet } from '../../common/require-ratchet';
 import { ErrorRatchet } from '../../common/error-ratchet';
 import { EnvironmentServiceProvider } from './environment-service-provider';
@@ -11,7 +7,7 @@ import { NodeRatchet } from '../../node-only/common/node-ratchet';
 
 /**
  * Service for reading environmental variables
- * Also hides the decryption detail from higher up services
+ * Also hides the decryption detail from higher up servicess
  */
 export class EnvVarEnvironmentServiceProvider<T> implements EnvironmentServiceProvider<T> {
   public constructor(private envVarName: string) {

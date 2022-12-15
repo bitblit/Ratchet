@@ -4,8 +4,6 @@ import { RequireRatchet } from '../common/require-ratchet';
 import { ErrorRatchet } from '../common/error-ratchet';
 import { EnvironmentServiceProvider } from './environment/environment-service-provider';
 import { EnvironmentServiceConfig } from './environment/environment-service-config';
-import { SsmEnvironmentServiceProvider } from './environment/ssm-environment-service-provider';
-import { S3EnvironmentServiceProvider } from './environment/s3-environment-service-provider';
 
 /**
  * Wraps up a EnvironmentServiceProvider and provides caching and retry-on-failure logic

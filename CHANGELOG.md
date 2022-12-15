@@ -20,7 +20,6 @@ package without knowing why it is alpha you'll get exactly what you deserve.
 * StringReadable : Adapters from string to readable
 
 
-
 ## [2.4.x] - 2022-12-13
 ### Changed
 - Updated dependant libraries

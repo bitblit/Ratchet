@@ -9,7 +9,6 @@ import {
   CopyObjectRequest,
   DeleteObjectOutput,
   GetObjectOutput,
-  GetObjectRequest,
   HeadObjectOutput,
   ListObjectsOutput,
   ListObjectsRequest,
@@ -19,9 +18,8 @@ import {
   PutObjectRequest,
 } from 'aws-sdk/clients/s3';
 import { RequireRatchet } from '../common/require-ratchet';
-import { PassThrough, Readable } from 'stream';
+import { Readable } from 'stream';
 import { ErrorRatchet, StopWatch } from '../common';
-import * as stream from 'stream';
 
 export class S3CacheRatchet {
   constructor(private s3: AWS.S3, private defaultBucket: string = null) {

@@ -1,9 +1,6 @@
 import { ExpiringCodeProvider } from './expiring-code-provider';
-import { DynamoRatchet } from '../dynamo-ratchet';
 import { ExpiringCode } from './expiring-code';
 import { DocumentClient } from 'aws-sdk/lib/dynamodb/document_client';
-import PutItemOutput = DocumentClient.PutItemOutput;
-import { DynamoTableRatchet } from '../dynamo-table-ratchet';
 import { S3CacheRatchet } from '../s3-cache-ratchet';
 import { Logger, RequireRatchet } from '../../common';
 import { PutObjectOutput } from 'aws-sdk/clients/s3';

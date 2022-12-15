@@ -7,7 +7,6 @@
 import { Logger } from '../../common/logger';
 import fs from 'fs';
 import { CliRatchet } from './cli-ratchet';
-import { ApplyCiEnvVariablesToFiles } from '../ci/apply-ci-env-variables-to-files';
 
 export class FilesToStaticClass {
   public static async process(fileNames: string[], outClassName: string, outFileName: string = null): Promise<string> {

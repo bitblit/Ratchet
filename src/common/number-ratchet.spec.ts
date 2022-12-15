@@ -1,7 +1,6 @@
 import { NumberRatchet, Point2d, SinglesAndRanges } from './number-ratchet';
 import fs from 'fs';
 import path from 'path';
-import __ = require('lodash/fp/__');
 
 describe('#toFixedDecimalNumber', function () {
   it('should convert "5.1234 to 5.12', function () {

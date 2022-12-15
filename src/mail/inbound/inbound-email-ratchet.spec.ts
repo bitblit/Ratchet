@@ -1,5 +1,4 @@
 import { InboundEmailRatchet } from './inbound-email-ratchet';
-import AWS from 'aws-sdk';
 import { S3CacheRatchet } from '../../aws/s3-cache-ratchet';
 import { JestRatchet } from '../../jest';
 

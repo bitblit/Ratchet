@@ -2,9 +2,7 @@ import { TransactionStep } from './transaction-step';
 import { TransactionRatchet } from './transaction-ratchet';
 import { TransactionResult } from './transaction-result';
 import { TransactionFinalState } from './transaction-final-state';
-import { TransactionConfiguration } from './transaction-configuration';
 import { LoggerLevelName } from '../logger-support/logger-level-name';
-import { Logger } from '../logger';
 
 interface TestTransactionContext {
   runningTotal: number;

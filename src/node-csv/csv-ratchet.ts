@@ -2,11 +2,10 @@
     Functions for working with csv data
 */
 
-import { ReadStream } from 'fs';
-import { parse, Options as ParseOptions } from 'csv-parse';
-import fs from 'fs';
+import fs, { ReadStream } from 'fs';
+import { Options as ParseOptions, parse } from 'csv-parse';
 import { Logger } from '../common/logger';
-import { stringify, Options } from 'csv-stringify';
+import { Options, stringify } from 'csv-stringify';
 import { RequireRatchet } from '../common/require-ratchet';
 import { MapRatchet } from '../common/map-ratchet';
 import { Subject, Subscription } from 'rxjs';

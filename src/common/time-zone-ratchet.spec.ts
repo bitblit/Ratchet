@@ -1,5 +1,4 @@
 import { TimeZoneRatchet } from './time-zone-ratchet';
-import { Logger } from './logger';
 
 const tz: TimeZoneRatchet = TimeZoneRatchet.PACIFIC;
 

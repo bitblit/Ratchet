@@ -1,6 +1,6 @@
 import AWS from 'aws-sdk';
 import { DateTime } from 'luxon';
-import { ListJobsRequest, ListJobsResponse, SubmitJobRequest, SubmitJobResponse, JobSummary, JobStatus } from 'aws-sdk/clients/batch';
+import { JobStatus, JobSummary, ListJobsRequest, ListJobsResponse, SubmitJobRequest, SubmitJobResponse } from 'aws-sdk/clients/batch';
 import { Logger, RequireRatchet } from '../common';
 
 /**

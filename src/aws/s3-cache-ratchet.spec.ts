@@ -1,11 +1,8 @@
 import AWS from 'aws-sdk';
 import { S3CacheRatchet } from './s3-cache-ratchet';
 import { Logger } from '../common/logger';
-import { CopyObjectOutput, CopyObjectResult, GetObjectOutput, HeadObjectOutput, PutObjectOutput } from 'aws-sdk/clients/s3';
-import fs from 'fs';
-import { ReadStream } from 'fs';
+import { CopyObjectOutput, GetObjectOutput, HeadObjectOutput, PutObjectOutput } from 'aws-sdk/clients/s3';
 import { JestRatchet } from '../jest';
-import { JobSummary } from 'aws-sdk/clients/batch';
 import { StringReadable } from '../stream/string-readable';
 import { Readable } from 'stream';
 import { StringRatchet } from '../common';
