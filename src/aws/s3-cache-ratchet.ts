@@ -257,6 +257,10 @@ export class S3CacheRatchet {
   public async fetchMetaForCacheFile(key: string, bucket: string = null): Promise<HeadObjectOutput> {
     let rval: HeadObjectOutput = null;
     try {
+      const x = this.s3.headObject({
+        Bucket: this.bucketVal(bucket),
+        Key: key,
+      });
       rval = await this.s3
         .headObject({
           Bucket: this.bucketVal(bucket),

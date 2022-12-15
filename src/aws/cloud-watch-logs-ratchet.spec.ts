@@ -1,20 +1,45 @@
 import { Logger } from '../common/logger';
 import { CloudWatchLogsRatchet } from './cloud-watch-logs-ratchet';
-import { GetQueryResultsResponse, LogGroup, StartQueryRequest } from 'aws-sdk/clients/cloudwatchlogs';
+import {
+  DescribeLogGroupsResponse,
+  GetQueryResultsResponse,
+  LogGroup,
+  StartQueryRequest,
+  StartQueryResponse,
+} from 'aws-sdk/clients/cloudwatchlogs';
+import AWS from 'aws-sdk';
+import { JestRatchet } from '../jest';
+
+let mockCW: jest.Mocked<AWS.CloudWatchLogs>;
 
 describe('#cloudWatchLogsRatchet', function () {
-  xit('should find all matching groups', async () => {
-    const cw: CloudWatchLogsRatchet = new CloudWatchLogsRatchet();
+  beforeEach(() => {
+    mockCW = JestRatchet.mock();
+  });
+
+  it('should find all matching groups', async () => {
+    mockCW.describeLogGroups.mockReturnValue({
+      promise: async () => Promise.resolve({ logGroups: [{ logGroupName: '1' }, { logGroupName: '2' }] } as DescribeLogGroupsResponse),
+    } as never);
+
+    const cw: CloudWatchLogsRatchet = new CloudWatchLogsRatchet(mockCW);
     const prefix: string = '/';
 
     const res: LogGroup[] = await cw.findLogGroups(prefix);
     expect(res).toBeTruthy();
-
-    Logger.info('Got : %j', res);
+    expect(res.length).toEqual(2);
   });
 
-  xit('should execute an insights query', async () => {
-    const cw: CloudWatchLogsRatchet = new CloudWatchLogsRatchet();
+  it('should execute an insights query', async () => {
+    mockCW.startQuery.mockReturnValue({
+      promise: async () => Promise.resolve({ queryId: 'test' } as StartQueryResponse),
+    } as never);
+
+    mockCW.getQueryResults.mockReturnValue({
+      promise: async () => Promise.resolve({} as GetQueryResultsResponse),
+    } as never);
+
+    const cw: CloudWatchLogsRatchet = new CloudWatchLogsRatchet(mockCW);
 
     const logGroups: string[] = ['/someGroup'];
 
