@@ -7,7 +7,11 @@ import fetch from 'cross-fetch';
 export class GoogleRecaptchaRatchet {
   private static readonly GOOGLE_VERIFY_URL: string = 'https://www.google.com/recaptcha/api/siteverify?secret={{KEY}}&response={{TOKEN}}';
 
-  public static async verifyRecaptchaToken(keySecret: string, token: string): Promise<boolean> {
+  public static async verifyRecaptchaToken(
+    keySecret: string,
+    token: string,
+    fetchFn: (input: RequestInfo | URL, init?: RequestInit) => Promise<Response> = fetch
+  ): Promise<boolean> {
     Logger.debug('Verifying recaptcha token : %s', token);
     let rval: boolean = null;
 
@@ -21,7 +25,7 @@ export class GoogleRecaptchaRatchet {
     url = url.split('{{KEY}}').join(keySecret);
     url = url.split('{{TOKEN}}').join(token);
     try {
-      const resp: Response = await fetch(url);
+      const resp: Response = await fetchFn(url);
       const body: any = await resp.json();
       rval = body && body.success;
     } catch (err) {
