@@ -40,16 +40,9 @@ export class SyncLockRatchet {
   }
 
   public async releaseLock(lockKey: string): Promise<void> {
-    if (lockKey) {
-      const params = {
-        Key: {
-          lockingKey: lockKey,
-        },
-        TableName: this.tableName,
-      };
-
+    if (StringRatchet.trimToNull(lockKey)) {
       try {
-        const dio: DeleteItemOutput = await this.ratchet.getDDB().delete(params).promise();
+        const dio: DeleteItemOutput = await this.ratchet.simpleDelete(this.tableName, { lockingKey: lockKey });
         Logger.silly('Released lock %s : %s', lockKey, dio);
       } catch (err) {
         Logger.warn('Failed to release lock key : %s : %s', lockKey, err, err);
@@ -68,28 +61,11 @@ export class SyncLockRatchet {
     };
 
     const vals: any[] = await this.ratchet.fullyExecuteScan(scan);
-
-    const removed: number = 0;
-    if (vals.length > 0) {
-      Logger.info(
-        'Deleting %d elements (Now is : %s)',
-        vals.length,
-        DateTime.fromObject({}, { zone: DateRatchet.PACIFIC_TIME_ZONE }).toFormat(DateRatchet.FULL_DATE_FORMAT)
-      );
-      for (let i = 0; i < vals.length; i++) {
-        try {
-          Logger.warn(
-            'Removing expired sync lock : %s (expired %s PT)',
-            vals[i]['lockingKey'],
-            DateTime.fromSeconds(vals[i]['expires'], { zone: DateRatchet.PACIFIC_TIME_ZONE }).toFormat(DateRatchet.FULL_DATE_FORMAT)
-          );
-          const keys: any = { lockingKey: vals[i]['lockingKey'] };
-          await this.ratchet.simpleDelete(this.tableName, keys);
-        } catch (err) {
-          Logger.error('Failed to remove sync lock : %s : %s', vals[i]['lockingKey'], err, err);
-        }
-      }
-    }
+    const keysOnly: any[] = vals.map((v) => {
+      const next: any = { lockingKey: v['lockingKey'] };
+      return next;
+    });
+    const removed: number = await this.ratchet.deleteAllInBatches(this.tableName, keysOnly, 25);
 
     return removed;
   }

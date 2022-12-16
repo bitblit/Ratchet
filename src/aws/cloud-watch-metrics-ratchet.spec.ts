@@ -1,11 +1,22 @@
 import { CloudWatchMetricsRatchet } from './cloud-watch-metrics-ratchet';
 import { KeyValue } from '../common/key-value';
 import { CloudWatchMetricsUnit } from './model/cloud-watch-metrics-unit';
-import { Logger } from '../common/logger';
+import AWS from 'aws-sdk';
+import { JestRatchet } from '../jest';
+
+let mockCW: jest.Mocked<AWS.CloudWatch>;
 
 describe('#cloudWatchMetricsRatchet', function () {
-  xit('should log a cloudwatch metric', async () => {
-    const cw: CloudWatchMetricsRatchet = new CloudWatchMetricsRatchet();
+  beforeEach(() => {
+    mockCW = JestRatchet.mock();
+  });
+
+  it('should log a cloudwatch metric', async () => {
+    mockCW.putMetricData.mockReturnValue({
+      promise: async () => Promise.resolve({ ok: true }),
+    } as never);
+
+    const cw: CloudWatchMetricsRatchet = new CloudWatchMetricsRatchet(mockCW);
     const dims: KeyValue[] = [
       { key: 'server', value: 'prod' } as KeyValue,
       { key: 'stage', value: 'v0' },
@@ -21,6 +32,6 @@ describe('#cloudWatchMetricsRatchet', function () {
       false
     );
 
-    Logger.info('Got : %j', res);
+    expect(res).toBeTruthy();
   });
 });

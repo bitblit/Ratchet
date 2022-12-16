@@ -36,7 +36,11 @@ export class S3CacheToLocalDiskRatchet {
   public removeCacheFileForKey(key: string): void {
     const localCachePath = this.keyToLocalCachePath(key);
     Logger.info('Removing cache file for %s : %s', key, localCachePath);
-    fs.unlinkSync(localCachePath);
+    if (fs.existsSync(localCachePath)) {
+      fs.unlinkSync(localCachePath);
+    } else {
+      Logger.debug('Skipping delete for %s - does not exist', localCachePath);
+    }
   }
 
   public async getFileBuffer(key: string): Promise<Buffer> {

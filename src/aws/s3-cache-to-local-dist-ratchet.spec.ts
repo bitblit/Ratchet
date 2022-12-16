@@ -1,16 +1,21 @@
-import AWS from 'aws-sdk';
 import { S3CacheToLocalDiskRatchet } from './s3-cache-to-local-disk-ratchet';
 import { S3CacheRatchet } from './s3-cache-ratchet';
-import { Logger } from '../common';
 import { tmpdir } from 'os';
+import { JestRatchet } from '../jest';
+
+let mockS3CR: jest.Mocked<S3CacheRatchet>;
 
 describe('#S3CacheToLocalDiskRatchet', () => {
-  xit('should download file and store in tmp', async () => {
-    const s3: AWS.S3 = new AWS.S3({ region: 'us-east-1' });
-    const cache: S3CacheRatchet = new S3CacheRatchet(s3, 'test-bucket');
+  beforeEach(() => {
+    mockS3CR = JestRatchet.mock();
+  });
+
+  it('should download file and store in tmp', async () => {
+    mockS3CR.readCacheFileToBuffer.mockResolvedValue(Buffer.from(JSON.stringify({ a: 'b' })));
+
     const pth: string = 'test-path';
 
-    const svc: S3CacheToLocalDiskRatchet = new S3CacheToLocalDiskRatchet(cache, tmpdir()); //, 'tmp', 1000);
+    const svc: S3CacheToLocalDiskRatchet = new S3CacheToLocalDiskRatchet(mockS3CR, tmpdir()); //, 'tmp', 1000);
     svc.removeCacheFileForKey(pth);
 
     const proms: Promise<Buffer>[] = [];
@@ -20,7 +25,6 @@ describe('#S3CacheToLocalDiskRatchet', () => {
 
     const all: Buffer[] = await Promise.all(proms);
 
-    //const res: string = await svc.getFileString('some-key');
-    Logger.info('Wrote %j', all.length);
+    expect(all.length).toEqual(5);
   });
 });

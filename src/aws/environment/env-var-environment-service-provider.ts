@@ -15,7 +15,7 @@ export class EnvVarEnvironmentServiceProvider<T> implements EnvironmentServicePr
   }
 
   public async fetchConfig(): Promise<T> {
-    Logger.silly('EnvVarEnvironmentServiceProvider fetch for %s', name);
+    Logger.silly('EnvVarEnvironmentServiceProvider fetch for %s', this.envVarName);
 
     let rval: T = null;
     const toParse: string = StringRatchet.trimToNull(NodeRatchet.fetchProcessEnvVar(this.envVarName));

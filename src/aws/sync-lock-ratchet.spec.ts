@@ -1,15 +1,17 @@
 import { SyncLockRatchet } from './sync-lock-ratchet';
 import { DynamoRatchet } from './dynamo-ratchet';
-import AWS from 'aws-sdk';
 import { Logger } from '../common';
-import { NodeRatchet } from '../node-only/common/node-ratchet';
+import { JestRatchet } from '../jest';
+
+let mockDR: jest.Mocked<DynamoRatchet>;
 
 describe('#syncLockService', () => {
+  beforeEach(() => {
+    mockDR = JestRatchet.mock();
+  });
+
   xit('should test sync locks', async () => {
-    const svc: SyncLockRatchet = new SyncLockRatchet(
-      new DynamoRatchet(new AWS.DynamoDB.DocumentClient({ region: 'us-east-1' })),
-      'test-table'
-    );
+    const svc: SyncLockRatchet = new SyncLockRatchet(mockDR, 'test-table');
 
     const lockTestValue: string = 'SYNC_LOCK_TEST';
 
@@ -23,17 +25,15 @@ describe('#syncLockService', () => {
     await svc.releaseLock(lockTestValue);
   });
 
-  xit('should clear expired sync locks', async () => {
-    NodeRatchet.setProcessEnvVar('NEON_ENCRYPTION_KEY_NAME', 'prod');
+  it('should clear expired sync locks', async () => {
+    mockDR.fullyExecuteScan.mockResolvedValue([{ lockingKey: 'aa' }, { lockingKey: 'ab' }]);
+    mockDR.deleteAllInBatches.mockResolvedValue(2);
 
-    const svc: SyncLockRatchet = new SyncLockRatchet(
-      new DynamoRatchet(new AWS.DynamoDB.DocumentClient({ region: 'us-east-1' })),
-      'test-table'
-    );
+    const svc: SyncLockRatchet = new SyncLockRatchet(mockDR, 'test-table');
 
     const res: number = await svc.clearExpiredSyncLocks();
     Logger.info('Got : %s', res);
 
-    expect(res).not.toBeUndefined();
+    expect(res).toEqual(2);
   });
 });

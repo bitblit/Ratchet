@@ -5,10 +5,17 @@ import { ExpressionAttributeValueMap, PutItemOutput, QueryInput } from 'aws-sdk/
 import { LoggerLevelName } from '../common';
 import { DocumentClient } from 'aws-sdk/lib/dynamodb/document_client';
 import ScanInput = DocumentClient.ScanInput;
+import { JestRatchet } from '../jest';
+
+let mockDynamo: jest.Mocked<AWS.DynamoDB.DocumentClient>;
 
 describe('#dynamoRatchet', function () {
+  beforeEach(() => {
+    mockDynamo = JestRatchet.mock();
+  });
+
   xit('should handle ProvisionedThroughputExceeded exceptions', async () => {
-    const dr: DynamoRatchet = new DynamoRatchet(new AWS.DynamoDB.DocumentClient({ region: 'us-east-1' }));
+    const dr: DynamoRatchet = new DynamoRatchet(mockDynamo);
     let row: number = 0;
     const scan: ScanInput = {
       TableName: 'cache-device-data',
@@ -27,7 +34,7 @@ describe('#dynamoRatchet', function () {
   }, 300_000_000);
 
   xit('should only write if a field is null', async () => {
-    const dr: DynamoRatchet = new DynamoRatchet(new AWS.DynamoDB.DocumentClient({ region: 'us-east-1' }));
+    const dr: DynamoRatchet = new DynamoRatchet(mockDynamo);
     const tableName: string = 'some-table';
 
     const test1: any = { lockingKey: 'aaa', xx: null };
@@ -45,7 +52,7 @@ describe('#dynamoRatchet', function () {
   });
 
   xit('should fetch items from a key-only index query', async () => {
-    const dr: DynamoRatchet = new DynamoRatchet(new AWS.DynamoDB.DocumentClient({ region: 'us-east-1' }));
+    const dr: DynamoRatchet = new DynamoRatchet(mockDynamo);
     const tableName: string = 'some-table';
     const limit: number = 200;
 
@@ -66,7 +73,7 @@ describe('#dynamoRatchet', function () {
   });
 
   xit('should increment the counter and return the new value', async () => {
-    const dr: DynamoRatchet = new DynamoRatchet(new AWS.DynamoDB.DocumentClient({ region: 'us-east-1' }));
+    const dr: DynamoRatchet = new DynamoRatchet(mockDynamo);
     const tableName: string = 'xxx';
     const res: number = await dr.atomicCounter(tableName, { groupId: 'global', unitId: 'sequence' }, 'lastValue', 1);
     Logger.info('Got : %s', res);
@@ -74,7 +81,7 @@ describe('#dynamoRatchet', function () {
   });
 
   xit('should stop after the soft limit', async () => {
-    const dr: DynamoRatchet = new DynamoRatchet(new AWS.DynamoDB.DocumentClient({ region: 'us-east-1' }));
+    const dr: DynamoRatchet = new DynamoRatchet(mockDynamo);
 
     const now: number = new Date().getTime();
     const nowSec: number = Math.floor(now / 1000);
@@ -95,7 +102,7 @@ describe('#dynamoRatchet', function () {
   }, 300_000);
 
   xit('should run an insert / read test for slowdown', async () => {
-    const dr: DynamoRatchet = new DynamoRatchet(new AWS.DynamoDB.DocumentClient({ region: 'us-east-1' }));
+    const dr: DynamoRatchet = new DynamoRatchet(mockDynamo);
 
     Logger.setLevel(LoggerLevelName.debug);
     const now: number = new Date().getTime();
@@ -126,7 +133,7 @@ describe('#dynamoRatchet', function () {
   });
 
   xit('should run a collision test', async () => {
-    const dr: DynamoRatchet = new DynamoRatchet(new AWS.DynamoDB.DocumentClient({ region: 'us-east-1' }));
+    const dr: DynamoRatchet = new DynamoRatchet(mockDynamo);
 
     Logger.setLevel(LoggerLevelName.debug);
 
@@ -152,7 +159,7 @@ describe('#dynamoRatchet', function () {
   });
 
   xit('should do a simple get with counter decrement', async () => {
-    const dr: DynamoRatchet = new DynamoRatchet(new AWS.DynamoDB.DocumentClient({ region: 'us-east-1' }));
+    const dr: DynamoRatchet = new DynamoRatchet(mockDynamo);
 
     Logger.setLevel(LoggerLevelName.debug);
 
@@ -161,7 +168,7 @@ describe('#dynamoRatchet', function () {
   });
 
   xit('should do a full query', async () => {
-    const dr: DynamoRatchet = new DynamoRatchet(new AWS.DynamoDB.DocumentClient({ region: 'us-east-1' }));
+    const dr: DynamoRatchet = new DynamoRatchet(mockDynamo);
 
     Logger.setLevel(LoggerLevelName.debug);
 
@@ -178,7 +185,7 @@ describe('#dynamoRatchet', function () {
   });
 
   xit('should do a process over full query', async () => {
-    const dr: DynamoRatchet = new DynamoRatchet(new AWS.DynamoDB.DocumentClient({ region: 'us-east-1' }));
+    const dr: DynamoRatchet = new DynamoRatchet(mockDynamo);
 
     Logger.setLevel(LoggerLevelName.debug);
 

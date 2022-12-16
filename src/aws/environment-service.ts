@@ -42,6 +42,7 @@ export class EnvironmentService<T> {
     let rval: T = null;
 
     while (!rval && tryCount < this.cfg.maxRetries) {
+      tryCount++;
       Logger.silly('Attempting fetch of %s', name);
       try {
         rval = await this.provider.fetchConfig(name);
@@ -57,7 +58,6 @@ export class EnvironmentService<T> {
           err
         );
         await PromiseRatchet.wait(waitMS);
-        tryCount++;
       }
     }
 

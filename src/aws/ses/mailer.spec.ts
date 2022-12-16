@@ -1,23 +1,31 @@
 import AWS from 'aws-sdk';
 import { ReadyToSendEmail } from './ready-to-send-email';
-import { SendEmailResponse } from 'aws-sdk/clients/ses';
+import { SendEmailResponse, SendRawEmailResponse } from 'aws-sdk/clients/ses';
 import { Mailer } from './mailer';
 import { EmailAttachment } from './email-attachment';
 import { StringRatchet } from '../../common/string-ratchet';
 import { Base64Ratchet } from '../../common/base64-ratchet';
 import fs from 'fs';
 import { MailerConfig } from './mailer-config';
+import { JestRatchet } from '../../jest';
+
+let mockSES: jest.Mocked<AWS.SES>;
+const smallImageBase64: string =
+  'iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII';
 
 describe('#mailer', function () {
-  xit('should send email', async () => {
-    const ses: AWS.SES = new AWS.SES({ region: 'us-east-1' });
+  beforeEach(() => {
+    mockSES = JestRatchet.mock();
+  });
+
+  it('should send email', async () => {
     const config: MailerConfig = {
       defaultSendingAddress: 'test1@test.com',
       autoBccAddresses: [], //['test2@test.com','test2@test.com'],
       archive: null, //new S3CacheRatchet(new AWS.S3(), 'outbound-email-archive'),
       archivePrefix: null, //'test'
     };
-    const svc: Mailer = new Mailer(ses, config);
+    const svc: Mailer = new Mailer(mockSES, config);
 
     const attach1: EmailAttachment = {
       filename: 'test.txt',
@@ -28,7 +36,7 @@ describe('#mailer', function () {
     const attach2: EmailAttachment = {
       filename: 'a2.png',
       contentType: 'image/png',
-      base64Data: fs.readFileSync('test/data/a2.png').toString('base64'),
+      base64Data: smallImageBase64,
     };
 
     const rts: ReadyToSendEmail = {
@@ -40,20 +48,23 @@ describe('#mailer', function () {
       attachments: [attach1, attach2],
     };
 
+    mockSES.sendRawEmail.mockReturnValue({
+      promise: async () => Promise.resolve({} as SendRawEmailResponse),
+    } as never);
+
     const result: SendEmailResponse = await svc.sendEmail(rts);
 
     expect(result).toBeTruthy();
   });
 
-  xit('should allow for unicode in email subject', async () => {
-    const ses: AWS.SES = new AWS.SES({ region: 'us-east-1' });
+  it('should allow for unicode in email subject', async () => {
     const config: MailerConfig = {
       defaultSendingAddress: 'jflint@adomni.com',
       autoBccAddresses: [],
       archive: null,
       archivePrefix: null,
     };
-    const svc: Mailer = new Mailer(ses, config);
+    const svc: Mailer = new Mailer(mockSES, config);
     const rts: ReadyToSendEmail = {
       txtMessage: 'test txt',
       htmlMessage: '<h1>Test html</h1><p>Test paragraph</p>',
@@ -61,11 +72,16 @@ describe('#mailer', function () {
       fromAddress: 'jflint@adomni.com',
       destinationAddresses: ['jflint@adomni.com'],
     };
+
+    mockSES.sendRawEmail.mockReturnValue({
+      promise: async () => Promise.resolve({} as SendRawEmailResponse),
+    } as never);
+
     const result: SendEmailResponse = await svc.sendEmail(rts);
     expect(result).toBeTruthy();
   });
 
-  xit('should filter outbound', async () => {
+  it('should filter outbound', async () => {
     const config: MailerConfig = {
       allowedDestinationEmails: [/.*test\.com/, /.*.test2\.com/],
     };
@@ -82,8 +98,7 @@ describe('#mailer', function () {
     expect(res2.length).toEqual(0);
   });
 
-  xit('should fix a huge text/html body', async () => {
-    const ses: AWS.SES = new AWS.SES({ region: 'us-east-1' });
+  it('should fix a huge text/html body', async () => {
     const config: MailerConfig = {
       defaultSendingAddress: 'test@test.com',
       autoBccAddresses: [], //['test2@test.com','test2@test.com'],
@@ -92,7 +107,7 @@ describe('#mailer', function () {
       maxMessageBodySizeInBytes: 500,
       maxAttachmentSizeInBase64Bytes: 1000,
     };
-    const svc: Mailer = new Mailer(ses, config);
+    const svc: Mailer = new Mailer(mockSES, config);
 
     const bigBody: string = StringRatchet.createRandomHexString(300);
 
@@ -110,6 +125,10 @@ describe('#mailer', function () {
       destinationAddresses: ['test@test.com'],
       attachments: [bigAttach],
     };
+
+    mockSES.sendRawEmail.mockReturnValue({
+      promise: async () => Promise.resolve({} as SendRawEmailResponse),
+    } as never);
 
     const result: SendEmailResponse = await svc.sendEmail(rts);
 

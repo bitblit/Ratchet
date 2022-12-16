@@ -1,27 +1,27 @@
 import { EnvironmentService } from './environment-service';
 import { Logger } from '../common/logger';
-import { SsmEnvironmentServiceProvider } from './environment/ssm-environment-service-provider';
-import { S3EnvironmentServiceProvider } from './environment/s3-environment-service-provider';
-import { LoggerLevelName } from '../common';
+import { FixedEnvironmentServiceProvider } from './environment/fixed-environment-service-provider';
+
+const fixed: FixedEnvironmentServiceProvider<any> = FixedEnvironmentServiceProvider.fromRecord<any>({ a: 'b', c: 5 });
 
 describe('#environmentService', function () {
-  xit('should throw exception on missing environment values', async () => {
+  it('should throw exception on missing environment values', async () => {
     try {
-      const es: EnvironmentService<any> = new EnvironmentService(new SsmEnvironmentServiceProvider('us-east-1', true));
+      const es: EnvironmentService<any> = new EnvironmentService(fixed);
       const vals: any = await es.getConfig('i_do_not_exist');
-      this.bail();
+      this.bail('Should not have returned a value');
     } catch (err) {
       expect(err).toBeTruthy();
       Logger.info('Success - threw %s', err);
     }
   });
 
-  xit('should find a valid value', async () => {
-    const es: EnvironmentService<any> = new EnvironmentService(new SsmEnvironmentServiceProvider('us-east-1', true));
-    const vals: any = await es.getConfig('xxx');
+  it('should find a valid value', async () => {
+    const es: EnvironmentService<any> = new EnvironmentService(fixed);
+    const vals: any = await es.getConfig('c');
     expect(vals).toBeTruthy();
   });
-
+  /*
   xit('should load config from s3', async () => {
     Logger.setLevel(LoggerLevelName.silly);
     const bucket: string = 'xxx';
@@ -35,4 +35,6 @@ describe('#environmentService', function () {
     const vals2: any = await es.getConfig(path);
     expect(vals).toBeTruthy();
   });
+  
+ */
 });
