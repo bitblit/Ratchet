@@ -6,6 +6,11 @@ import { Logger } from '../../common/logger';
 import fs, { ReadStream } from 'fs';
 import { DaemonProcessCreateOptions } from './daemon-process-create-options';
 import { JestRatchet } from '../../jest';
+import { LoggerLevelName, PromiseRatchet } from '../../common';
+import { Subject } from 'rxjs';
+import { PassThrough } from 'stream';
+import { CsvRatchet } from '../../node-csv';
+import { TestItem } from '../../node-csv/csv-ratchet.spec';
 
 let mockS3CR: jest.Mocked<S3CacheRatchet>;
 
@@ -73,5 +78,44 @@ describe('#DaemonUtil', function () {
 
     expect(result).toBeTruthy();
     Logger.info('Got objects : %j', result);
+  });
+
+  xit('should stream objects to a csv', async () => {
+    Logger.setLevel(LoggerLevelName.debug);
+    const sub: Subject<TestItem> = new Subject<TestItem>();
+    const out: PassThrough = new PassThrough();
+    const s3: AWS.S3 = new AWS.S3({ region: 'us-east-1' });
+    const cache: S3CacheRatchet = new S3CacheRatchet(s3, 'test-bucket');
+    const key: string = 'test.csv';
+
+    const newDaemonOptions: DaemonProcessCreateOptions = {
+      title: 'test',
+      contentType: 'text/csv',
+      group: 'NA',
+      meta: {},
+      targetFileName: 'test.csv',
+    };
+    const t2: DaemonProcessState = await DaemonUtil.start(cache, key, key, newDaemonOptions);
+
+    const dProm: Promise<DaemonProcessState> = DaemonUtil.streamDataAndFinish(cache, key, out);
+
+    const prom: Promise<number> = CsvRatchet.streamObjectsToCsv<TestItem>(sub, out); //, opts);
+
+    for (let i = 1; i < 6; i++) {
+      Logger.debug('Proc : %d', i);
+      sub.next({ a: i, b: 'test ' + i + ' ,,' });
+      await PromiseRatchet.wait(10);
+    }
+    sub.complete();
+
+    Logger.debug('Waiting on write');
+
+    const result: number = await prom;
+    Logger.debug('Write complete');
+
+    const val: DaemonProcessState = await dProm;
+
+    expect(result).toEqual(5);
+    Logger.debug('Have res : %d and val : \n%j', result, val);
   });
 });

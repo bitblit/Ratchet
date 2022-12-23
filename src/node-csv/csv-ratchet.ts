@@ -20,6 +20,13 @@ export class CsvRatchet {
     return rval;
   }
 
+  public static defaultStringifyOptions(): Options {
+    const rval: Options = {
+      header: true,
+    };
+    return rval;
+  }
+
   public static async stringParse<T>(
     input: string,
     pf: ParseFunction<T>,
@@ -67,7 +74,7 @@ export class CsvRatchet {
     return CsvRatchet.streamParse<T>(readStream, pf);
   }
 
-  public static async generateCsvData(objectsToConvert: any[], opts: Options): Promise<string> {
+  public static async generateCsvData(objectsToConvert: any[], opts: Options = CsvRatchet.defaultStringifyOptions()): Promise<string> {
     Logger.silly('Converting %d items into csv file', objectsToConvert.length);
     const genProm: Promise<string> = new Promise<string>((res, rej) => {
       stringify(objectsToConvert, opts, function (err, data) {
@@ -152,9 +159,7 @@ export class CsvRatchet {
   public static async streamObjectsToCsv<T>(srcSubject: Subject<T>, output: Writable, inOpts?: Options): Promise<number> {
     RequireRatchet.notNullOrUndefined(srcSubject, 'srcSubject');
     RequireRatchet.notNullOrUndefined(output, 'output');
-    const opts: Options = inOpts || {
-      header: true,
-    };
+    const opts: Options = inOpts || CsvRatchet.defaultStringifyOptions();
 
     Logger.silly('Running pipe to csv output : %j', opts);
     let count: number = 0;
@@ -191,6 +196,10 @@ export class CsvRatchet {
       );
     });
     return genProm;
+  }
+
+  public static defaultParseFunction<T>(row: any): T {
+    return row as T;
   }
 }
 

@@ -12,7 +12,29 @@ import { DaemonUtil } from '../aws/daemon/daemon-util';
 import { LoggerLevelName } from '../common';
 
 describe('#streamObjectsToCsv', function () {
-  xit('should stream objects to a csv', async () => {
+  it('should parse a string', async () => {
+    const testString: string = 'a,b\n1,2\n3,4\n';
+    const out: TestItem[] = await CsvRatchet.stringParse<TestItem>(testString, CsvRatchet.defaultParseFunction<TestItem>);
+
+    expect(out).toBeTruthy();
+    expect(out.length).toEqual(2);
+    // Need a real parse function to make this a number, and I am not testing that part here
+    expect(out[0].a).toEqual('1');
+    expect(out[1].a).toEqual('3');
+  });
+
+  it('should generate csv data', async () => {
+    const output: TestItem[] = [
+      { a: 1, b: '2' },
+      { a: 3, b: '4' },
+    ];
+    const testString: string = await CsvRatchet.generateCsvData(output);
+
+    expect(testString).toBeTruthy();
+    expect(testString.length).toBeGreaterThan(10);
+  });
+
+  it('should stream objects to a csv', async () => {
     // Logger.setLevel(LoggerLevelName.debug);
     const sub: Subject<TestItem> = new Subject<TestItem>();
     const out: StringWritable = new StringWritable();
@@ -22,7 +44,7 @@ describe('#streamObjectsToCsv', function () {
     for (let i = 1; i < 6; i++) {
       Logger.debug('Proc : %d', i);
       sub.next({ a: i, b: 'test ' + i + ' ,,' });
-      await PromiseRatchet.wait(1000);
+      await PromiseRatchet.wait(10);
     }
     sub.complete();
 
@@ -34,45 +56,6 @@ describe('#streamObjectsToCsv', function () {
 
     expect(result).toEqual(5);
     Logger.debug('Have res : %d and val : \n%s', result, val);
-  });
-
-  xit('should stream objects to a csv', async () => {
-    Logger.setLevel(LoggerLevelName.debug);
-    const sub: Subject<TestItem> = new Subject<TestItem>();
-    const out: PassThrough = new PassThrough();
-    const s3: AWS.S3 = new AWS.S3({ region: 'us-east-1' });
-    const cache: S3CacheRatchet = new S3CacheRatchet(s3, 'test-bucket');
-    const key: string = 'test.csv';
-
-    const newDaemonOptions: DaemonProcessCreateOptions = {
-      title: 'test',
-      contentType: 'text/csv',
-      group: 'NA',
-      meta: {},
-      targetFileName: 'test.csv',
-    };
-    const t2: DaemonProcessState = await DaemonUtil.start(cache, key, key, newDaemonOptions);
-
-    const dProm: Promise<DaemonProcessState> = DaemonUtil.streamDataAndFinish(cache, key, out);
-
-    const prom: Promise<number> = CsvRatchet.streamObjectsToCsv<TestItem>(sub, out); //, opts);
-
-    for (let i = 1; i < 6; i++) {
-      Logger.debug('Proc : %d', i);
-      sub.next({ a: i, b: 'test ' + i + ' ,,' });
-      await PromiseRatchet.wait(1000);
-    }
-    sub.complete();
-
-    Logger.debug('Waiting on write');
-
-    const result: number = await prom;
-    Logger.debug('Write complete');
-
-    const val: DaemonProcessState = await dProm;
-
-    expect(result).toEqual(5);
-    Logger.debug('Have res : %d and val : \n%j', result, val);
   });
 });
 
