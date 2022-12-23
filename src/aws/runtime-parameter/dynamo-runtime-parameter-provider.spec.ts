@@ -1,20 +1,28 @@
-import { DynamoRatchet } from './dynamo-ratchet';
-import { Logger } from '../common/logger';
-import { RuntimeParameterRatchet } from './runtime-parameter-ratchet';
-import { PromiseRatchet } from '../common/promise-ratchet';
-import { LoggerLevelName } from '../common';
-import { JestRatchet } from '../jest';
-import { StoredRuntimeParameter } from './runtime-parameter/stored-runtime-parameter';
-import { MemoryRuntimeParameterProvider } from './runtime-parameter/memory-runtime-parameter-provider';
+import { DynamoRuntimeParameterProvider } from './dynmo-runtime-parameter-provider';
+import { DynamoRatchet } from '../dynamo-ratchet';
+import { StoredRuntimeParameter } from './stored-runtime-parameter';
+import { JestRatchet } from '../../jest/jest-ratchet';
+import { LoggerLevelName } from '../../common/logger-support/logger-level-name';
+import { Logger } from '../../common/logger';
+import { RuntimeParameterRatchet } from '../runtime-parameter-ratchet';
+import { PromiseRatchet } from '../../common/promise-ratchet';
 
+let mockDynamoRatchet: jest.Mocked<DynamoRatchet>;
 const testEntry: StoredRuntimeParameter = { groupId: 'test', paramKey: 'test', paramValue: '15', ttlSeconds: 0.5 };
 const testEntry2: StoredRuntimeParameter = { groupId: 'test', paramKey: 'test1', paramValue: '20', ttlSeconds: 0.5 };
 
 describe('#runtimeParameterRatchet', function () {
+  beforeEach(() => {
+    mockDynamoRatchet = JestRatchet.mock();
+  });
+
   it('fetch and cache a runtime parameter', async () => {
     Logger.setLevel(LoggerLevelName.silly);
-    const mp: MemoryRuntimeParameterProvider = new MemoryRuntimeParameterProvider();
-    const rpr: RuntimeParameterRatchet = new RuntimeParameterRatchet(mp);
+    const tableName: string = 'default-table';
+    mockDynamoRatchet.simpleGet.mockResolvedValue(testEntry);
+    mockDynamoRatchet.simplePut.mockResolvedValue({});
+    const drpp: DynamoRuntimeParameterProvider = new DynamoRuntimeParameterProvider(mockDynamoRatchet, tableName);
+    const rpr: RuntimeParameterRatchet = new RuntimeParameterRatchet(drpp);
 
     const stored: StoredRuntimeParameter = await rpr.storeParameter('test', 'test1', 15, 0.5);
     Logger.info('Stored : %j', stored);
@@ -31,6 +39,7 @@ describe('#runtimeParameterRatchet', function () {
     const cache2: number = await rpr.fetchParameter<number>('test', 'test1');
     expect(cache2).toEqual(15);
 
+    mockDynamoRatchet.simpleGet.mockResolvedValue(null);
     const cacheMiss: number = await rpr.fetchParameter<number>('test', 'test-miss');
     expect(cacheMiss).toBeNull();
 
@@ -40,11 +49,10 @@ describe('#runtimeParameterRatchet', function () {
 
   it('reads underlying entries', async () => {
     Logger.setLevel(LoggerLevelName.silly);
-    const mrpp: MemoryRuntimeParameterProvider = new MemoryRuntimeParameterProvider();
-    await mrpp.writeParameter(testEntry);
-    await mrpp.writeParameter(testEntry2);
-
-    const rpr: RuntimeParameterRatchet = new RuntimeParameterRatchet(mrpp);
+    const tableName: string = 'default-table';
+    mockDynamoRatchet.fullyExecuteQuery.mockResolvedValue([testEntry, testEntry2]);
+    const drpp: DynamoRuntimeParameterProvider = new DynamoRuntimeParameterProvider(mockDynamoRatchet, tableName);
+    const rpr: RuntimeParameterRatchet = new RuntimeParameterRatchet(drpp);
 
     const vals: StoredRuntimeParameter[] = await rpr.readUnderlyingEntries('test');
 

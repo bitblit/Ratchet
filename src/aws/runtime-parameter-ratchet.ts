@@ -1,19 +1,19 @@
 import { Logger } from '../common/logger';
-import { DynamoRatchet } from './dynamo-ratchet';
 import { RequireRatchet } from '../common/require-ratchet';
-import { ExpressionAttributeValueMap, QueryInput } from 'aws-sdk/clients/dynamodb';
+import { CachedStoredRuntimeParameter } from './runtime-parameter/cached-stored-runtime-parameter';
+import { RuntimeParameterProvider } from './runtime-parameter/runtime-parameter-provider';
+import { StoredRuntimeParameter } from './runtime-parameter/stored-runtime-parameter';
 
 export class RuntimeParameterRatchet {
   private cache: Map<string, CachedStoredRuntimeParameter> = new Map<string, CachedStoredRuntimeParameter>();
 
-  constructor(private dynamo: DynamoRatchet, private tableName: string) {
-    RequireRatchet.notNullOrUndefined(this.dynamo);
-    RequireRatchet.notNullOrUndefined(this.tableName);
+  constructor(private provider: RuntimeParameterProvider) {
+    RequireRatchet.notNullOrUndefined(this.provider);
   }
 
   public async fetchParameter<T>(groupId: string, paramKey: string, defaultValue: T = null, forceFreshRead = false): Promise<T> {
     Logger.debug('Reading parameter %s / %s / Force : %s', groupId, paramKey, forceFreshRead);
-    const cached: CachedStoredRuntimeParameter = this.cache.get(this.toCacheStoreKey(groupId, paramKey));
+    const cached: CachedStoredRuntimeParameter = this.cache.get(RuntimeParameterRatchet.toCacheStoreKey(groupId, paramKey));
 
     let rval: T = null;
     const now: number = new Date().getTime();
@@ -48,26 +48,11 @@ export class RuntimeParameterRatchet {
   }
 
   public async readUnderlyingEntry(groupId: string, paramKey: string): Promise<StoredRuntimeParameter> {
-    Logger.silly('Reading %s / %s from underlying db', groupId, paramKey);
-    const req: any = {
-      groupId: groupId,
-      paramKey: paramKey,
-    };
-    const rval: StoredRuntimeParameter = await this.dynamo.simpleGet<StoredRuntimeParameter>(this.tableName, req);
-    return rval;
+    return this.provider.readParameter(groupId, paramKey);
   }
 
   public async readUnderlyingEntries(groupId: string): Promise<StoredRuntimeParameter[]> {
-    const qry: QueryInput = {
-      TableName: this.tableName,
-      KeyConditionExpression: 'groupId = :groupId',
-      ExpressionAttributeValues: {
-        ':groupId': groupId,
-      } as ExpressionAttributeValueMap,
-    };
-
-    const all: StoredRuntimeParameter[] = await this.dynamo.fullyExecuteQuery<StoredRuntimeParameter>(qry);
-    return all;
+    return this.provider.readAllParametersForGroup(groupId);
   }
 
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
@@ -78,11 +63,10 @@ export class RuntimeParameterRatchet {
       paramValue: JSON.stringify(paramValue),
       ttlSeconds: ttlSeconds,
     };
-    await this.dynamo.simplePut(this.tableName, toStore);
-    return this.readUnderlyingEntry(groupId, paramKey);
+    const wrote: boolean = await this.provider.writeParameter(toStore);
+    return this.provider.readParameter(groupId, paramKey);
   }
-
-  private toCacheStoreKey(groupId: string, paramKey: string): string {
+  private static toCacheStoreKey(groupId: string, paramKey: string): string {
     return groupId + ':::' + paramKey;
   }
 
@@ -90,7 +74,7 @@ export class RuntimeParameterRatchet {
     if (!!temp) {
       const now: number = new Date().getTime();
       const toStore: CachedStoredRuntimeParameter = Object.assign({ storedEpochMS: now }, temp);
-      this.cache.set(this.toCacheStoreKey(temp.groupId, temp.paramKey), toStore);
+      this.cache.set(RuntimeParameterRatchet.toCacheStoreKey(temp.groupId, temp.paramKey), toStore);
     }
   }
 
@@ -98,15 +82,4 @@ export class RuntimeParameterRatchet {
     Logger.debug('Clearing runtime parameter cache');
     this.cache = new Map<string, CachedStoredRuntimeParameter>();
   }
-}
-
-export interface StoredRuntimeParameter {
-  groupId: string;
-  paramKey: string;
-  paramValue: string;
-  ttlSeconds: number;
-}
-
-export interface CachedStoredRuntimeParameter extends StoredRuntimeParameter {
-  storedEpochMS: number;
 }

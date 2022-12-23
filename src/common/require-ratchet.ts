@@ -6,20 +6,25 @@ import { ErrorRatchet } from './error-ratchet';
 
 export class RequireRatchet {
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+  public static isNullOrUndefined(ob: any): boolean {
+    return ob === null || ob === undefined;
+  }
+
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   public static notNullOrUndefined(ob: any, name = 'object'): void {
-    if (ob === null || ob === undefined) {
+    if (RequireRatchet.isNullOrUndefined(ob)) {
       throw new Error(name + ' may not be null or undefined');
     }
   }
 
   public static notNullUndefinedOrOnlyWhitespaceString(ob: string, name: string = 'string'): void {
-    if (ob === null || ob === undefined || ob.trim() === '') {
+    if (RequireRatchet.isNullOrUndefined(ob) || ob.trim() === '') {
       throw new Error(name + ' may not be null or undefined or only whitespace string');
     }
   }
 
   public static notNullUndefinedOrEmptyArray(ob: any[], name: string = 'string'): void {
-    if (ob === null || ob === undefined || ob.length === 0) {
+    if (RequireRatchet.isNullOrUndefined(ob) || ob.length === 0) {
       throw new Error(name + ' may not be null or undefined or an empty array');
     }
   }
@@ -41,7 +46,7 @@ export class RequireRatchet {
       ErrorRatchet.throwFormattedErr('Expected array of length %d but was %d %s', expectedLength, arr.length, customMsg);
     }
     for (let i = 0; i < arr.length; i++) {
-      if (arr[i] === null || arr[i] === undefined) {
+      if (RequireRatchet.isNullOrUndefined(arr[i])) {
         ErrorRatchet.throwFormattedErr('Array index %d was null or undefined %s', i, customMsg);
       }
     }
@@ -53,7 +58,7 @@ export class RequireRatchet {
       ErrorRatchet.throwFormattedErr('Expected array of length %d but was %d', expectedLength, restArgs.length);
     }
     for (let i = 0; i < restArgs.length; i++) {
-      if (restArgs[i] === null || restArgs[i] === undefined) {
+      if (RequireRatchet.isNullOrUndefined(restArgs[i])) {
         ErrorRatchet.throwFormattedErr('Array index %d was null or undefined', i);
       }
     }
