@@ -15,7 +15,7 @@ describe('#AthenaRatchet', function () {
     mockS3 = JestRatchet.mock();
   });
 
-  it('should test a query', async () => {
+  xit('should test a query', async () => {
     const outputDir: string = 's3://your-bucket/your-prefix';
     const qry: string = 'select * from test limit 20000';
 
