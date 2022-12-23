@@ -79,7 +79,7 @@
     "handlebars-layouts": "3.1.4",
     "js-yaml": "4.1.0",
     "json-loader": "0.5.7",
-    "jsonwebtoken": "8.5.1",
+    "jsonwebtoken": "9.0.0",
     "mailparser": "3.6.0",
     "mime-types": "2.1.35",
     "rxjs": "7.6.0",
