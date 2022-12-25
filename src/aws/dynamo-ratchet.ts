@@ -33,8 +33,9 @@ import { ErrorRatchet } from '../common/error-ratchet';
 import { RequireRatchet } from '../common/require-ratchet';
 import PutItemOutput = DocumentClient.PutItemOutput;
 import GetItemInput = DocumentClient.GetItemInput;
+import { DynamoRatchetLike } from './dynamo-ratchet-like';
 
-export class DynamoRatchet {
+export class DynamoRatchet implements DynamoRatchetLike {
   constructor(private awsDDB: AWS.DynamoDB.DocumentClient) {
     if (!awsDDB) {
       throw 'awsDDB may not be null';

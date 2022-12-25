@@ -6,6 +6,7 @@ export * from './aws-batch-ratchet';
 export * from './cloud-watch-log-group-ratchet';
 export * from './cloud-watch-logs-ratchet';
 export * from './cloud-watch-metrics-ratchet';
+export * from './dynamo-ratchet-like';
 export * from './dynamo-ratchet';
 export * from './dynamo-table-ratchet';
 export * from './ec2-ratchet';

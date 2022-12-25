@@ -23,6 +23,7 @@ package without knowing why it is alpha you'll get exactly what you deserve.
 ### Added
 - StringReadable : Adapters from string to readable
 - HandlebarsRatchet : A bunch of useful helpers
+- DynamoRatchetLike : Interface to (hopefully) allow a bit more forgiveness on varying ratchet versions
 ### Changed
 - Changed RuntimeParametersRatchet in a backwards-incompatible way to make the datasource pluggable and overrideable
 - Adding a EnvironmentalParameters wrapper to be able to locally override a runtime params object
