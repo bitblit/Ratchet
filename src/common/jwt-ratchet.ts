@@ -5,6 +5,8 @@ import { StringRatchet } from './string-ratchet';
 import { DurationRatchet } from './duration-ratchet';
 import { JwtTokenBase } from './jwt-token-base';
 import { LoggerLevelName } from './logger-support/logger-level-name';
+import { ExpiredJwtHandling } from './expired-jwt-handling';
+import { JwtRatchetLike } from './jwt-ratchet-like';
 
 /**
  * Functions to help with creating and decoding JWTs
@@ -15,7 +17,7 @@ import { LoggerLevelName } from './logger-support/logger-level-name';
  * accepting promises here, we make it easy to do JwtRatchet construction in a place (like an IOT container)
  * that itself must be synchronous
  */
-export class JwtRatchet {
+export class JwtRatchet implements JwtRatchetLike {
   private static readonly EXPIRED_FLAG_NAME: string = '__jwtServiceExpiredFlag';
 
   constructor(
@@ -205,10 +207,4 @@ export class JwtRatchet {
       delete ob[JwtRatchet.EXPIRED_FLAG_NAME];
     }
   }
-}
-
-export enum ExpiredJwtHandling {
-  RETURN_NULL,
-  THROW_EXCEPTION,
-  ADD_FLAG,
 }
