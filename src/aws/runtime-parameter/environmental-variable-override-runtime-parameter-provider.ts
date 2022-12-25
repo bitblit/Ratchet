@@ -1,7 +1,7 @@
 import { RuntimeParameterProvider } from './runtime-parameter-provider';
 import { StoredRuntimeParameter } from './stored-runtime-parameter';
 import { RequireRatchet } from '../../common/require-ratchet';
-import { StringRatchet } from '../../common';
+import { ErrorRatchet, StringRatchet } from '../../common';
 
 /**
  * Provides parameters for a runtime parameter from an environmental variable, where the key follows
@@ -11,33 +11,51 @@ import { StringRatchet } from '../../common';
  * envvar itself can be just a string instead of a complex value
  */
 export class EnvironmentalVariableOverrideRuntimeParameterProvider implements RuntimeParameterProvider {
-  constructor(
-    private wrapped: RuntimeParameterProvider,
-    private globalTTL: number = 1,
-    private separator: string = '.',
-    private prefix: string = 'RuntimeEnv-',
-    private suffix = ''
-  ) {
+  private options: EnvironmentalVariableOverrideRuntimeParameterProviderOptions = {
+    globalTTL: 1,
+    separator: '.',
+    prefix: 'RuntimeEnv-',
+    suffix: '',
+  };
+
+  constructor(private wrapped: RuntimeParameterProvider, opts?: EnvironmentalVariableOverrideRuntimeParameterProviderOptions) {
     // They can be empty but they cannot be null
     RequireRatchet.notNullOrUndefined(this.wrapped, 'wrapped');
-    RequireRatchet.notNullOrUndefined(this.separator, 'separator');
-    RequireRatchet.notNullOrUndefined(this.prefix, 'separator');
-    RequireRatchet.notNullOrUndefined(this.suffix, 'separator');
     RequireRatchet.notNullOrUndefined(global?.process?.env, '"process" not found - this only runs in Node, not the browser');
+
+    if (opts) {
+      this.options = opts;
+    }
+    RequireRatchet.notNullOrUndefined(this.options.globalTTL, 'this.options.globalTTL');
+    RequireRatchet.notNullOrUndefined(this.options.separator, 'this.options.separator');
+    RequireRatchet.true(this.options.globalTTL > 0, 'this.options.globalTTL must be larger than 0');
   }
 
   public generateName(groupId: string, paramKey: string): string {
-    return this.prefix + groupId + this.separator + paramKey + this.suffix;
+    return (
+      StringRatchet.trimToEmpty(this.options.prefix) +
+      groupId +
+      StringRatchet.trimToEmpty(this.options.separator) +
+      paramKey +
+      StringRatchet.trimToEmpty(this.options.suffix)
+    );
   }
 
   public async readParameter(groupId: string, paramKey: string): Promise<StoredRuntimeParameter> {
     const asString = StringRatchet.trimToNull(process.env[this.generateName(groupId, paramKey)]);
+    if (asString && !StringRatchet.canParseAsJson(asString)) {
+      ErrorRatchet.throwFormattedErr(
+        'Cannot parse ENV override (%s / %s) as JSON - did you forget the quotes on a string?',
+        groupId,
+        paramKey
+      );
+    }
     const rval: StoredRuntimeParameter = asString
       ? {
           groupId: groupId,
           paramKey: paramKey,
-          paramValue: JSON.parse(asString),
-          ttlSeconds: this.globalTTL,
+          paramValue: asString,
+          ttlSeconds: this.options.globalTTL,
         }
       : await this.wrapped.readParameter(groupId, paramKey);
     return rval;
@@ -50,4 +68,11 @@ export class EnvironmentalVariableOverrideRuntimeParameterProvider implements Ru
   public async writeParameter(toStore: StoredRuntimeParameter): Promise<boolean> {
     return this.wrapped.writeParameter(toStore);
   }
+}
+
+export interface EnvironmentalVariableOverrideRuntimeParameterProviderOptions {
+  globalTTL: number;
+  separator: string;
+  prefix?: string;
+  suffix?: string;
 }

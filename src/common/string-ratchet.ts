@@ -8,6 +8,25 @@ export class StringRatchet {
   // % isn't technically reserved but its still a pain in the butt
   public static RFC_3986_RESERVED = ['!', '*', "'", '(', ')', ';', ':', '@', '&', '=', '+', '$', ',', '/', '?', '#', '[', ']', '%'];
 
+  // Really only useful if you wanna swallow the exception when something is not valid JSON (or at least not
+  // parseable as JSON - the spec says 'true' or '2' are not technically valid JSON strings
+  public static attemptJsonParse(val: string): any {
+    let rval: any = null;
+    if (StringRatchet.trimToNull(val)) {
+      try {
+        rval = JSON.parse(val);
+      } catch (err) {
+        rval = null;
+      }
+    }
+    return rval;
+  }
+
+  // For when you do not care about the response
+  public static canParseAsJson(val: string): boolean {
+    return !!StringRatchet.attemptJsonParse(val);
+  }
+
   public static allUnique(input: string): boolean {
     let rval: boolean = true;
     if (input) {

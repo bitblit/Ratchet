@@ -17,7 +17,15 @@ package without knowing why it is alpha you'll get exactly what you deserve.
  of this
 
 ## In Flight
-* StringReadable : Adapters from string to readable
+
+
+## [2.4.x] - 2022-12-13
+### Added
+- StringReadable : Adapters from string to readable
+- HandlebarsRatchet : A bunch of useful helpers
+### Changed
+- Changed RuntimeParametersRatchet in a backwards-incompatible way to make the datasource pluggable and overrideable
+- Adding a EnvironmentalParameters wrapper to be able to locally override a runtime params object
 
 
 ## [2.4.x] - 2022-12-13
