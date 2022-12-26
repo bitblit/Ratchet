@@ -61,7 +61,7 @@
   },
   "homepage": "https://github.com/bitblit/Ratchet#readme",
   "engines": {
-    "node": ">=16.15"
+    "node": ">=14.18"
   },
   "license": "Apache-2.0",
   "dependencies": {
