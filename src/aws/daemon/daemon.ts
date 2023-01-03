@@ -5,14 +5,24 @@ import { S3CacheRatchet } from '../s3-cache-ratchet';
 import { StringRatchet } from '../../common/string-ratchet';
 import { DaemonProcessCreateOptions } from './daemon-process-create-options';
 import { DaemonUtil } from './daemon-util';
+import { DaemonLike } from './daemon-like';
 
-export class Daemon {
-  public static DEFAULT_GROUP: string = 'DEFAULT';
+export class Daemon implements DaemonLike {
+  public static DEFAULT_DEFAULT_GROUP: string = 'DEFAULT';
 
   private cache: S3CacheRatchet;
 
-  constructor(private s3: AWS.S3, private bucket: string, private prefix: string = '') {
+  constructor(
+    private s3: AWS.S3,
+    private bucket: string,
+    private prefix: string = '',
+    private _defaultGroup: string = Daemon.DEFAULT_DEFAULT_GROUP
+  ) {
     this.cache = new S3CacheRatchet(this.s3, this.bucket);
+  }
+
+  public get defaultGroup(): string {
+    return this._defaultGroup;
   }
 
   private keyToPath(key: string): string {
@@ -23,16 +33,16 @@ export class Daemon {
     return Buffer.from(path).toString('base64');
   }
 
-  private generatePath(group: string = Daemon.DEFAULT_GROUP): string {
+  private generatePath(group: string = this._defaultGroup): string {
     return this.generatePrefix(group) + StringRatchet.createType4Guid();
   }
 
-  private generatePrefix(group: string = Daemon.DEFAULT_GROUP): string {
+  private generatePrefix(group: string = this._defaultGroup): string {
     return this.prefix + group + '/';
   }
 
   public async start(options: DaemonProcessCreateOptions): Promise<DaemonProcessState> {
-    options.group = options.group || Daemon.DEFAULT_GROUP;
+    options.group = options.group || this._defaultGroup;
     const path: string = this.generatePath(options.group);
     const key: string = this.pathToKey(path);
     return DaemonUtil.start(this.cache, key, path, options);
@@ -43,7 +53,7 @@ export class Daemon {
     return DaemonUtil.writeState(this.cache, key, newState, contents);
   }
 
-  public async clean(group: string = Daemon.DEFAULT_GROUP, olderThanSeconds: number = 60 * 60 * 24 * 7): Promise<DaemonProcessState[]> {
+  public async clean(group: string = this._defaultGroup, olderThanSeconds: number = 60 * 60 * 24 * 7): Promise<DaemonProcessState[]> {
     try {
       Logger.info('Daemon removing items older than %d seconds from group %s', olderThanSeconds, group);
       const original: DaemonProcessState[] = await this.list(group);
@@ -65,7 +75,7 @@ export class Daemon {
     }
   }
 
-  public async listKeys(group: string = Daemon.DEFAULT_GROUP): Promise<string[]> {
+  public async listKeys(group: string = this._defaultGroup): Promise<string[]> {
     try {
       const prefix: string = this.generatePrefix(group);
       Logger.info('Fetching children of %s', prefix);
@@ -78,7 +88,7 @@ export class Daemon {
     }
   }
 
-  public async list(group: string = Daemon.DEFAULT_GROUP): Promise<DaemonProcessState[]> {
+  public async list(group: string = this._defaultGroup): Promise<DaemonProcessState[]> {
     try {
       const prefix: string = this.generatePrefix(group);
       Logger.info('Fetching children of %s', prefix);
