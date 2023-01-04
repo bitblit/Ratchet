@@ -1,10 +1,5 @@
-import AWS from 'aws-sdk';
-import { Logger } from '../../common/logger';
 import { DaemonProcessState } from './daemon-process-state';
-import { S3CacheRatchet } from '../s3-cache-ratchet';
-import { StringRatchet } from '../../common/string-ratchet';
 import { DaemonProcessCreateOptions } from './daemon-process-create-options';
-import { DaemonUtil } from './daemon-util';
 
 /*
     Classes implementing this interface provide the ability to monitor and update long-running
@@ -25,7 +20,9 @@ export interface DaemonLike {
 
   updateMessage(id: string, newMessage: string): Promise<DaemonProcessState>;
 
-  stat(id: string): Promise<DaemonProcessState>;
+  statFromPublicToken(publicToken: string): Promise<DaemonProcessState>;
+
+  stat(key: string): Promise<DaemonProcessState>;
 
   abort(id: string): Promise<DaemonProcessState>;
 
