@@ -20,7 +20,7 @@ export class Daemon implements DaemonLike {
     private bucket: string,
     private prefix: string = '',
     private _defaultGroup: string = Daemon.DEFAULT_DEFAULT_GROUP,
-    private jwtRatchet: JwtRatchetLike
+    private jwtRatchet?: JwtRatchetLike
   ) {
     this.cache = new S3CacheRatchet(this.s3, this.bucket);
   }
