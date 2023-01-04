@@ -30,6 +30,7 @@ export * from './cache/simple-cache-storage-provider';
 export * from './cache/simple-cache';
 export * from './daemon/daemon-like';
 export * from './daemon/daemon-process-create-options';
+export * from './daemon/daemon-process-state-public-token';
 export * from './daemon/daemon-process-state';
 export * from './daemon/daemon-util';
 export * from './daemon/daemon';

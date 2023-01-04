@@ -5,6 +5,12 @@ import { DaemonProcessCreateOptions } from './daemon-process-create-options';
 import { HeadObjectOutput, PutObjectOutput, PutObjectRequest } from 'aws-sdk/clients/s3';
 import { Readable } from 'stream';
 
+/**
+ * Internal utilities which are here for the USE OF THE DAEMON OBJECT ONLY - if you are trying to use this
+ * class outside of Ratchet, you are doing it wrong.  Instantiate a Daemon object and use that instead.
+ *
+ * The details of storage and retrieval of a DaemonProcessState is meant to be transparent to the user
+ */
 export class DaemonUtil {
   public static DEFAULT_CONTENT: Buffer = Buffer.from('DAEMON_PLACEHOLDER');
   public static DAEMON_METADATA_KEY: string = 'daemon_meta'; // Must be lowercase for s3
@@ -34,7 +40,7 @@ export class DaemonUtil {
         error: null,
         link: null,
         contentType: options.contentType,
-      } as DaemonProcessState;
+      };
 
       const rval: DaemonProcessState = await DaemonUtil.writeState(cache, s3Key, newState, DaemonUtil.DEFAULT_CONTENT);
       return rval;

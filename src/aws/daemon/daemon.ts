@@ -6,6 +6,9 @@ import { StringRatchet } from '../../common/string-ratchet';
 import { DaemonProcessCreateOptions } from './daemon-process-create-options';
 import { DaemonUtil } from './daemon-util';
 import { DaemonLike } from './daemon-like';
+import { JwtRatchetLike } from '../../common/jwt-ratchet-like';
+import { RequireRatchet } from '../../common/require-ratchet';
+import { DaemonProcessStatePublicToken } from './daemon-process-state-public-token';
 
 export class Daemon implements DaemonLike {
   public static DEFAULT_DEFAULT_GROUP: string = 'DEFAULT';
@@ -16,13 +19,24 @@ export class Daemon implements DaemonLike {
     private s3: AWS.S3,
     private bucket: string,
     private prefix: string = '',
-    private _defaultGroup: string = Daemon.DEFAULT_DEFAULT_GROUP
+    private _defaultGroup: string = Daemon.DEFAULT_DEFAULT_GROUP,
+    private jwtRatchet: JwtRatchetLike
   ) {
     this.cache = new S3CacheRatchet(this.s3, this.bucket);
   }
 
   public get defaultGroup(): string {
     return this._defaultGroup;
+  }
+
+  public async keyToPublicToken(key: string, expirationSeconds: number): Promise<string> {
+    RequireRatchet.notNullOrUndefined(this.jwtRatchet, 'You must set jwtRatchet if you wish to use public tokens');
+    RequireRatchet.notNullOrUndefined(key, 'key');
+    RequireRatchet.true(expirationSeconds > 0, 'Expiration seconds must be larger than 0');
+
+    const token: DaemonProcessStatePublicToken = { daemonKey: key };
+    const publicToken: string = await this.jwtRatchet.createTokenString(token, expirationSeconds);
+    return publicToken;
   }
 
   private keyToPath(key: string): string {
@@ -108,9 +122,17 @@ export class Daemon implements DaemonLike {
     return DaemonUtil.updateMessage(this.cache, itemPath, newMessage);
   }
 
-  public async stat(id: string): Promise<DaemonProcessState> {
-    const itemPath: string = this.keyToPath(id);
+  public async stat(key: string): Promise<DaemonProcessState> {
+    const itemPath: string = this.keyToPath(key);
     return DaemonUtil.stat(this.cache, itemPath);
+  }
+
+  public async statFromPublicToken(publicToken: string): Promise<DaemonProcessState> {
+    RequireRatchet.notNullOrUndefined(this.jwtRatchet, 'You must set jwtRatchet if you wish to use public tokens');
+    RequireRatchet.notNullOrUndefined(publicToken, 'publicToken');
+    const parsed: DaemonProcessStatePublicToken = await this.jwtRatchet.decodeToken<DaemonProcessStatePublicToken>(publicToken);
+    const key: string = parsed.daemonKey;
+    return this.stat(key);
   }
 
   public async abort(id: string): Promise<DaemonProcessState> {
