@@ -131,8 +131,8 @@ export class Daemon implements DaemonLike {
     RequireRatchet.notNullOrUndefined(this.jwtRatchet, 'You must set jwtRatchet if you wish to use public tokens');
     RequireRatchet.notNullOrUndefined(publicToken, 'publicToken');
     const parsed: DaemonProcessStatePublicToken = await this.jwtRatchet.decodeToken<DaemonProcessStatePublicToken>(publicToken);
-    const key: string = parsed.daemonKey;
-    return this.stat(key);
+    const key: string = parsed?.daemonKey;
+    return key ? this.stat(key) : null;
   }
 
   public async abort(id: string): Promise<DaemonProcessState> {
