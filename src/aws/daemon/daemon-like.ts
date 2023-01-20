@@ -10,6 +10,8 @@ import { DaemonProcessCreateOptions } from './daemon-process-create-options';
 export interface DaemonLike {
   get defaultGroup(): string;
 
+  keyToPublicToken(key: string, expirationSeconds: number): Promise<string>;
+
   start(options: DaemonProcessCreateOptions): Promise<DaemonProcessState>;
 
   clean(group?: string, olderThanSeconds?: number): Promise<DaemonProcessState[]>;
