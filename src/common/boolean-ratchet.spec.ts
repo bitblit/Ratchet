@@ -2,6 +2,27 @@ import { BooleanRatchet } from './boolean-ratchet';
 import { NumberRatchet } from './number-ratchet';
 
 describe('#parseBool', function () {
+  it('should check all true', function () {
+    expect(BooleanRatchet.allTrue(null)).toEqual(false);
+    expect(BooleanRatchet.allTrue([])).toEqual(false);
+    expect(BooleanRatchet.allTrue([], true)).toEqual(true);
+    expect(BooleanRatchet.allTrue([true])).toEqual(true);
+    expect(BooleanRatchet.allTrue([true, true])).toEqual(true);
+    expect(BooleanRatchet.allTrue([true, false, true])).toEqual(false);
+    expect(BooleanRatchet.allTrue([false])).toEqual(false);
+    expect(BooleanRatchet.allTrue([false, false])).toEqual(false);
+  });
+  it('should check any true', function () {
+    expect(BooleanRatchet.anyTrue(null)).toEqual(false);
+    expect(BooleanRatchet.anyTrue([])).toEqual(false);
+    expect(BooleanRatchet.anyTrue([], true)).toEqual(true);
+    expect(BooleanRatchet.anyTrue([true])).toEqual(true);
+    expect(BooleanRatchet.anyTrue([true, true])).toEqual(true);
+    expect(BooleanRatchet.anyTrue([true, false, true])).toEqual(true);
+    expect(BooleanRatchet.anyTrue([false])).toEqual(false);
+    expect(BooleanRatchet.anyTrue([false, false])).toEqual(false);
+  });
+
   it('should xxx', function () {
     const val: string = 'false';
     const r1: boolean = BooleanRatchet.parseBool(val);

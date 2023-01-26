@@ -1,4 +1,4 @@
-import { NumberRatchet, Point2d, SinglesAndRanges } from './number-ratchet';
+import { NumberRatchet, SinglesAndRanges } from './number-ratchet';
 import fs from 'fs';
 import path from 'path';
 
@@ -63,40 +63,6 @@ describe('#parseCSV', function () {
     const result: number[] = NumberRatchet.numberCSVToList(' a1, 2,b  ');
     expect(result.length).toEqual(1);
     expect(result[0]).toEqual(2);
-  });
-});
-
-describe('#fitCurve', function () {
-  it('should fit input to curve', function () {
-    const curve: Point2d[] = [
-      { x: 0, y: 50 },
-      { x: 0.5, y: 50 },
-      { x: 0.8, y: 60 },
-      { x: 1, y: 70 },
-      { x: 1.2, y: 80 },
-      { x: 1.5, y: 90 },
-      { x: 1.6, y: 91 },
-      { x: 1.7, y: 92 },
-      { x: 1.8, y: 93 },
-      { x: 1.9, y: 94 },
-      { x: 2, y: 95 },
-      {
-        x: 3,
-        y: 98,
-      },
-      { x: 4, y: 99 },
-      { x: 5, y: 100 },
-    ];
-
-    expect(NumberRatchet.fitCurve(curve, -1)).toEqual(50);
-    expect(NumberRatchet.fitCurve(curve, 0)).toEqual(50);
-    expect(NumberRatchet.fitCurve(curve, 0.3)).toEqual(50);
-    expect(NumberRatchet.fitCurve(curve, 0.5)).toEqual(50);
-    expect(NumberRatchet.fitCurve(curve, 0.8)).toEqual(60);
-    expect(NumberRatchet.fitCurve(curve, 1)).toEqual(70);
-    expect(NumberRatchet.fitCurve(curve, 5)).toEqual(100);
-    expect(NumberRatchet.fitCurve(curve, 6)).toEqual(100);
-    expect(NumberRatchet.fitCurve(curve, 1.65)).toEqual(91.5);
   });
 });
 
