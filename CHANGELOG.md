@@ -18,8 +18,15 @@ package without knowing why it is alpha you'll get exactly what you deserve.
 
 ## In Flight
 
+## [3.1.x] - 2023-01-25
 
-## [2.4.x] - 2022-12-13
+### Added
+- New 2d package with various things for handling 2d points without adding a larger library
+### Changed
+- Updated libraries (of course)
+
+
+## [3.0.x] - 2022-12-13
 ### Added
 - StringReadable : Adapters from string to readable
 - HandlebarsRatchet : A bunch of useful helpers

@@ -72,7 +72,7 @@
   },
   "optionalDependencies": {
     "@types/aws-lambda": "8.10.109",
-    "aws-sdk": "2.1301.0",
+    "aws-sdk": "2.1302.0",
     "cross-fetch": "3.1.5",
     "csv": "6.2.5",
     "handlebars": "4.7.7",
@@ -102,7 +102,7 @@
     "y18n": "^5.0.8"
   },
   "devDependencies": {
-    "@types/jest": "29.2.6",
+    "@types/jest": "29.4.0",
     "@types/luxon": "3.2.0",
     "@types/node": "16.11.58",
     "@types/yargs": "17.0.20",
