@@ -297,7 +297,7 @@ export class WardenService {
   }
 
   public async removeSingleWebAuthnRegistration(userId: string, key: string): Promise<WardenEntry> {
-    let ent: WardenEntry = await this.storageProvider.readEntryById(userId);
+    let ent: WardenEntry = await this.storageProvider.findEntryById(userId);
     if (ent) {
       ent.webAuthnAuthenticators = (ent.webAuthnAuthenticators || []).filter((s) => s.credentialIdBase64 !== key);
       ent = await this.storageProvider.saveEntry(ent);

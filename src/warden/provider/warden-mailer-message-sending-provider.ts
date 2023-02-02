@@ -4,14 +4,14 @@ import { ReadyToSendEmail } from '../../aws/ses/ready-to-send-email';
 import { WardenMessageSendingProvider } from './warden-message-sending-provider';
 import { WardenContactType } from '../model/warden-contact-type';
 import { WardenContactEntry } from '../model/warden-contact-entry';
-import { WardenEmailSendingProviderOptions } from './warden-email-sending-provider-options';
+import { WardenMailerMessageSendingProviderOptions } from './warden-mailer-message-sending-provider-options';
 import { SendRawEmailResponse } from 'aws-sdk/clients/ses';
 import { Logger } from '../../common/logger';
 import { WardenCustomerMessageType } from '../model/warden-customer-message-type';
 
-export class WardenEmailSendingProvider implements WardenMessageSendingProvider<ReadyToSendEmail> {
-  private static defaultOptions(): WardenEmailSendingProviderOptions {
-    const rval: WardenEmailSendingProviderOptions = {
+export class WardenMailerMessageSendingProvider implements WardenMessageSendingProvider<ReadyToSendEmail> {
+  private static defaultOptions(): WardenMailerMessageSendingProviderOptions {
+    const rval: WardenMailerMessageSendingProviderOptions = {
       emailBaseLayoutName: undefined,
       expiringTokenHtmlTemplateName: 'expiring-token-request-email',
       expiringTokenTxtTemplateName: undefined,
@@ -19,7 +19,7 @@ export class WardenEmailSendingProvider implements WardenMessageSendingProvider<
     return rval;
   }
 
-  constructor(private mailer: Mailer, private options: WardenEmailSendingProviderOptions = WardenEmailSendingProvider.defaultOptions()) {}
+  constructor(private mailer: Mailer, private options: WardenMailerMessageSendingProviderOptions = WardenMailerMessageSendingProvider.defaultOptions()) {}
 
   public async formatMessage(
     contact: WardenContactEntry,

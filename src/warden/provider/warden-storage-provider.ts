@@ -7,7 +7,7 @@ import { WardenContactEntry } from '../model/warden-contact-entry';
  */
 
 export interface WardenStorageProvider {
-  readEntryById(userId: string): Promise<WardenEntry>;
+  findEntryById(userId: string): Promise<WardenEntry>;
   findEntryByContact(contact: WardenContactEntry): Promise<WardenEntry>;
   saveEntry(entry: WardenEntry): Promise<WardenEntry>;
   removeEntry(userId: string): Promise<boolean>;

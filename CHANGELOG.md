@@ -18,6 +18,10 @@ package without knowing why it is alpha you'll get exactly what you deserve.
 
 ## In Flight
 
+### Added
+- Added "Warden" subsystem to simplify creation of SimpleWebAuthn authentication systems + one time tokens to email and text message
+
+
 ## [3.1.x] - 2023-01-25
 
 ### Added
