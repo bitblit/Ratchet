@@ -5,6 +5,7 @@ import { WardenContactEntry } from '../model/warden-contact-entry';
 import { Logger } from '../../common/logger';
 import { WardenTwilioTextMessageSendingProviderOptions } from './warden-twilio-text-message-sending-provider-options';
 import { TwilioRatchet } from '../../common/twilio-ratchet';
+import { WardenCustomerMessageType } from '../model/warden-customer-message-type';
 
 export class WardenTwilioTextMessageSendingProvider implements WardenMessageSendingProvider<string> {
   constructor(private optsPromise: Promise<WardenTwilioTextMessageSendingProviderOptions>) {}
@@ -21,7 +22,7 @@ export class WardenTwilioTextMessageSendingProvider implements WardenMessageSend
       ' is your ' +
       context['relyingPartyName'] +
       ' authentication code.\n@' +
-      context['relyingPartyName'] +
+      context['relyingPartyName'] + // should be domain name?
       ' #' +
       context['code'];
     return msg;

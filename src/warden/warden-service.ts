@@ -20,8 +20,6 @@ import {
 import { WardenServiceOptions } from './model/warden-service-options';
 import { Base64Ratchet } from '../common/base64-ratchet';
 import { WardenStorageProvider } from './provider/warden-storage-provider';
-import { JwtRatchetLike } from '../common/jwt-ratchet-like';
-import { Mailer } from '../aws/ses/mailer';
 import { ExpiringCodeRatchet } from '../aws/expiring-code/expiring-code-ratchet';
 import { WardenContactEntry } from './model/warden-contact-entry';
 import { WardenEntry } from './model/warden-entry';
@@ -32,9 +30,11 @@ import { WardenContactType } from './model/warden-contact-type';
 import { WardenWebAuthnEntry } from './model/warden-web-authn-entry';
 import { ErrorRatchet } from '../common/error-ratchet';
 import { WardenMessageSendingProvider } from './provider/warden-message-sending-provider';
-import { ExpiringCode } from '../aws';
+import { ExpiringCode } from '../aws/expiring-code/expiring-code';
 import { WardenLoginRequest } from './model/warden-login-request';
-import { RequireRatchet } from '../common';
+import { RequireRatchet } from '../common/require-ratchet';
+import { WardenStoreRegistrationResponseType } from './model/warden-store-registration-response-type';
+import { WardenCustomerMessageType } from './model/warden-customer-message-type';
 
 export class WardenService {
   constructor(
@@ -213,35 +213,6 @@ export class WardenService {
           relyingPartyName: this.options.relyingPartyName,
         });
         rval = await prov.sendMessage(request, msg);
-
-        /*
-        if (request.method === ParaTradeContactMethod.Email) {
-          Logger.info('Sending email');
-          const rts: ReadyToSendEmail = {
-            destinationAddresses: [request.emailAddress],
-            subject: 'Your login token',
-          };
-
-          const context: any = {
-            token: token.code,
-          };
-
-          await this.mailer.fillEmailBodyAndSend(rts, context, 'validation-token-request-email', null, 'email-base');
-
-          rval = true;
-        } else if (request.method === ParaTradeContactMethod.TextMessage) {
-          Logger.info('Sending text');
-          // https://www.macrumors.com/2020/01/31/apple-standardized-format-sms-one-time-passcodes/
-          const msg: string = token.code + ' is your ParaTrade authentication code.\n@para.trade #' + token.code;
-          const user: ParaTradeUser = await this.userDao.fetchUserByEmail(request.emailAddress);
-          const out: any[] = await TextMessageUtil.sendTextMessage([user.contactPhone], msg);
-
-          rval = true;
-        } else {
-          ErrorRatchet.throwFormattedErr('No such method : %s', request.method);
-        }
-        
-         */
       } else {
         ErrorRatchet.throwFormattedErr('No provider found for contact type %s', request.type);
       }

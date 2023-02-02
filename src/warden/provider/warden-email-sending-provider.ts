@@ -7,6 +7,7 @@ import { WardenContactEntry } from '../model/warden-contact-entry';
 import { WardenEmailSendingProviderOptions } from './warden-email-sending-provider-options';
 import { SendRawEmailResponse } from 'aws-sdk/clients/ses';
 import { Logger } from '../../common/logger';
+import { WardenCustomerMessageType } from '../model/warden-customer-message-type';
 
 export class WardenEmailSendingProvider implements WardenMessageSendingProvider<ReadyToSendEmail> {
   private static defaultOptions(): WardenEmailSendingProviderOptions {
