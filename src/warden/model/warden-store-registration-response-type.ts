@@ -1,4 +1,4 @@
-enum StoreSimpleAuthenticationRegistrationResponseType {
+enum WardenStoreRegistrationResponseType {
   Verified = 'Verified',
   Failed = 'Failed',
   Error = 'Error',

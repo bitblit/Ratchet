@@ -1,4 +1,4 @@
-enum WebAuthnTransportFutureType {
+enum WardenWebAuthnTransportFutureType {
   ble = 'ble',
   internal = 'internal',
   nfc = 'nfc',

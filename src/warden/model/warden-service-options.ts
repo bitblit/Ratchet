@@ -1,5 +1,5 @@
-export interface SimpleAuthenticationServiceOptions {
+export interface WardenServiceOptions {
   // Human-readable title for your website
-  rpName: string;
+  relyingPartyName: string;
   allowedOrigins: string[];
 }

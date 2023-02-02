@@ -1,0 +1,3 @@
+enum WardenCustomerMessageType {
+  ExpiringCode = 'ExpiringCode',
+}

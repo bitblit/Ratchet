@@ -17,50 +17,45 @@ import {
   PublicKeyCredentialRequestOptionsJSON,
   RegistrationResponseJSON,
 } from '@simplewebauthn/typescript-types';
-import { SimpleAuthenticationServiceOptions } from './simple-authentication-service-options';
+import { WardenServiceOptions } from './model/warden-service-options';
 import { Base64Ratchet } from '../common/base64-ratchet';
-import { SimpleAuthenticationStorageProvider } from './provider/simple-authentication-storage-provider';
+import { WardenStorageProvider } from './provider/warden-storage-provider';
 import { JwtRatchetLike } from '../common/jwt-ratchet-like';
 import { Mailer } from '../aws/ses/mailer';
 import { ExpiringCodeRatchet } from '../aws/expiring-code/expiring-code-ratchet';
-import { SimpleAuthenticationContactEntry } from './model/simple-authentication-contact-entry';
-import { SimpleAuthenticationEntry } from './model/simple-authentication-entry';
+import { WardenContactEntry } from './model/warden-contact-entry';
+import { WardenEntry } from './model/warden-entry';
 import { Logger } from '../common/logger';
 import { StringRatchet } from '../common/string-ratchet';
-import { StoreSimpleAuthenticationRegistrationResponse } from './model/store-simple-authentication-registration-response';
-import { SimpleAuthenticationContactType } from './model/simple-authentication-contact-type';
-import { SimpleAuthenticationWebAuthnEntry } from './model/simple-authentication-web-authn-entry';
+import { WardenStoreRegistrationResponse } from './model/warden-store-registration-response';
+import { WardenContactType } from './model/warden-contact-type';
+import { WardenWebAuthnEntry } from './model/warden-web-authn-entry';
 import { ErrorRatchet } from '../common/error-ratchet';
-import { SimpleAuthenticationExpiringTokenSendingProvider } from './provider/simple-authentication-expiring-token-sending-provider';
+import { WardenMessageSendingProvider } from './provider/warden-message-sending-provider';
 import { ExpiringCode } from '../aws';
-import { SimpleAuthenticationLoginRequest } from './model/simple-authentication-login-request';
+import { WardenLoginRequest } from './model/warden-login-request';
 import { RequireRatchet } from '../common';
 
-export class SimpleAuthenticationService {
+export class WardenService {
   constructor(
-    private options: SimpleAuthenticationServiceOptions,
-    private storageProvider: SimpleAuthenticationStorageProvider,
-    private expiringTokenProviders: SimpleAuthenticationExpiringTokenSendingProvider[],
-    private jwtRatchet: JwtRatchetLike,
-    private mailer: Mailer,
+    private options: WardenServiceOptions,
+    private storageProvider: WardenStorageProvider,
+    private messageSendingProviders: WardenMessageSendingProvider<any>[],
     private expiringCodeRatchet: ExpiringCodeRatchet
   ) {}
 
-  public async generateWebAuthnRegistrationOptionsForContact(contact: SimpleAuthenticationContactEntry, origin: string): Promise<any> {
+  public async generateWebAuthnRegistrationOptionsForContact(contact: WardenContactEntry, origin: string): Promise<any> {
     // (Pseudocode) Retrieve the user from the database
     // after they've logged in
     let rval: any = null;
     if (contact?.type && StringRatchet.trimToNull(contact?.value) && StringRatchet.trimToNull(origin)) {
-      const entry: SimpleAuthenticationEntry = await this.storageProvider.findEntryByContact(contact);
+      const entry: WardenEntry = await this.storageProvider.findEntryByContact(contact);
       rval = this.generateRegistrationOptions(entry, origin);
     }
     return rval;
   }
 
-  public async generateRegistrationOptions(
-    entry: SimpleAuthenticationEntry,
-    origin: string
-  ): Promise<PublicKeyCredentialCreationOptionsJSON> {
+  public async generateRegistrationOptions(entry: WardenEntry, origin: string): Promise<PublicKeyCredentialCreationOptionsJSON> {
     if (!origin || !this.options.allowedOrigins.includes(origin)) {
       throw new Error('Invalid origin : ' + origin);
     }
@@ -68,7 +63,7 @@ export class SimpleAuthenticationService {
     const rpID: string = asUrl.hostname;
 
     const options = generateRegistrationOptions({
-      rpName: this.options.rpName,
+      rpName: this.options.relyingPartyName,
       rpID: rpID,
       userID: entry.userId,
       userName: entry.userLabel,
@@ -93,9 +88,9 @@ export class SimpleAuthenticationService {
     email: string,
     origin: string,
     data: RegistrationResponseJSON
-  ): Promise<StoreSimpleAuthenticationRegistrationResponse> {
+  ): Promise<WardenStoreRegistrationResponse> {
     Logger.info('Store authn data : %j', data);
-    let rval: StoreSimpleAuthenticationRegistrationResponse = null;
+    let rval: WardenStoreRegistrationResponse = null;
     try {
       if (!origin || !this.options.allowedOrigins.includes(origin)) {
         throw new Error('Invalid origin : ' + origin);
@@ -103,8 +98,8 @@ export class SimpleAuthenticationService {
       const asUrl: URL = new URL(origin);
       const rpID: string = asUrl.hostname;
 
-      const user: SimpleAuthenticationEntry = await this.storageProvider.findEntryByContact({
-        type: SimpleAuthenticationContactType.EmailAddress,
+      const user: WardenEntry = await this.storageProvider.findEntryByContact({
+        type: WardenContactType.EmailAddress,
         value: email,
       });
       // (Pseudocode) Get `options.challenge` that was saved above
@@ -122,14 +117,12 @@ export class SimpleAuthenticationService {
 
       rval = {
         id: data.id,
-        result: verification.verified
-          ? StoreSimpleAuthenticationRegistrationResponseType.Verified
-          : StoreSimpleAuthenticationRegistrationResponseType.Failed,
+        result: verification.verified ? WardenStoreRegistrationResponseType.Verified : WardenStoreRegistrationResponseType.Failed,
       };
 
-      if (rval.result === StoreSimpleAuthenticationRegistrationResponseType.Verified) {
+      if (rval.result === WardenStoreRegistrationResponseType.Verified) {
         Logger.info('Storing registration');
-        const newAuth: SimpleAuthenticationWebAuthnEntry = {
+        const newAuth: WardenWebAuthnEntry = {
           counter: verification.registrationInfo.counter,
           credentialBackedUp: verification.registrationInfo.credentialBackedUp,
           credentialDeviceType: verification.registrationInfo.credentialDeviceType,
@@ -146,13 +139,13 @@ export class SimpleAuthenticationService {
           (wa) => wa.credentialIdBase64 !== newAuth.credentialIdBase64
         );
         user.webAuthnAuthenticators.push(newAuth);
-        const storedUser: SimpleAuthenticationEntry = await this.storageProvider.saveEntry(user);
+        const storedUser: WardenEntry = await this.storageProvider.saveEntry(user);
         Logger.info('Stored auth : %j', storedUser);
       }
     } catch (err) {
       rval = {
         id: data.id,
-        result: StoreSimpleAuthenticationRegistrationResponseType.Error,
+        result: WardenStoreRegistrationResponseType.Error,
         notes: ErrorRatchet.safeStringifyErr(err),
       };
     }
@@ -163,21 +156,18 @@ export class SimpleAuthenticationService {
   public async generateAuthenticationOptionsForEmailAddress(email: string, origin: string): Promise<PublicKeyCredentialRequestOptionsJSON> {
     // (Pseudocode) Retrieve the user from the database
     // after they've logged in
-    const user: SimpleAuthenticationEntry = await this.storageProvider.findEntryByContact({
-      type: SimpleAuthenticationContactType.EmailAddress,
+    const user: WardenEntry = await this.storageProvider.findEntryByContact({
+      type: WardenContactType.EmailAddress,
       value: email,
     });
     const rval: PublicKeyCredentialRequestOptionsJSON = await this.generateAuthenticationOptions(user, origin);
     return rval;
   }
 
-  public async generateAuthenticationOptions(
-    user: SimpleAuthenticationEntry,
-    origin: string
-  ): Promise<PublicKeyCredentialRequestOptionsJSON> {
+  public async generateAuthenticationOptions(user: WardenEntry, origin: string): Promise<PublicKeyCredentialRequestOptionsJSON> {
     // (Pseudocode) Retrieve any of the user's previously-
     // registered authenticators
-    const userAuthenticators: SimpleAuthenticationWebAuthnEntry[] = user.webAuthnAuthenticators;
+    const userAuthenticators: WardenWebAuthnEntry[] = user.webAuthnAuthenticators;
     if (!origin || !this.options.allowedOrigins.includes(origin)) {
       throw new Error('Invalid origin : ' + origin);
     }
@@ -206,12 +196,10 @@ export class SimpleAuthenticationService {
     return options;
   }
 
-  public async sendExpiringValidationToken(request: SimpleAuthenticationContactEntry): Promise<boolean> {
+  public async sendExpiringValidationToken(request: WardenContactEntry): Promise<boolean> {
     let rval: boolean = false;
     if (request?.type && StringRatchet.trimToNull(request?.value)) {
-      const prov: SimpleAuthenticationExpiringTokenSendingProvider = (this.expiringTokenProviders || []).find((p) =>
-        p.handlesContactType(request.type)
-      );
+      const prov: WardenMessageSendingProvider<any> = (this.messageSendingProviders || []).find((p) => p.handlesContactType(request.type));
       if (prov) {
         const token: ExpiringCode = await this.expiringCodeRatchet.createNewCode({
           context: request.value,
@@ -220,7 +208,11 @@ export class SimpleAuthenticationService {
           timeToLiveSeconds: 300,
           tags: ['Login'],
         });
-        rval = await prov.sendExpiringToken(request, token.code);
+        const msg: any = await prov.formatMessage(request, WardenCustomerMessageType.ExpiringCode, {
+          code: token.code,
+          relyingPartyName: this.options.relyingPartyName,
+        });
+        rval = await prov.sendMessage(request, msg);
 
         /*
         if (request.method === ParaTradeContactMethod.Email) {
@@ -259,7 +251,7 @@ export class SimpleAuthenticationService {
     return rval;
   }
 
-  public async processLogin(request: SimpleAuthenticationLoginRequest, origin: string): Promise<boolean> {
+  public async processLogin(request: WardenLoginRequest, origin: string): Promise<boolean> {
     let rval: boolean = false;
     RequireRatchet.notNullOrUndefined(request, 'request');
     RequireRatchet.notNullOrUndefined(request?.contact?.value, 'request.contact.value');
@@ -273,7 +265,7 @@ export class SimpleAuthenticationService {
       'WebAuthn and ExpiringToken may not BOTH be set'
     );
 
-    const user: SimpleAuthenticationEntry = await this.storageProvider.findEntryByContact(request.contact);
+    const user: WardenEntry = await this.storageProvider.findEntryByContact(request.contact);
     if (!user) {
       ErrorRatchet.throwFormattedErr('No user found for %j', request.contact);
     }
@@ -296,11 +288,7 @@ export class SimpleAuthenticationService {
     return rval;
   }
 
-  public async loginWithWebAuthnRequest(
-    user: SimpleAuthenticationEntry,
-    origin: string,
-    data: AuthenticationResponseJSON
-  ): Promise<boolean> {
+  public async loginWithWebAuthnRequest(user: WardenEntry, origin: string, data: AuthenticationResponseJSON): Promise<boolean> {
     let rval: boolean = false;
     const asUrl: URL = new URL(origin);
     const rpID: string = asUrl.hostname;
@@ -309,7 +297,7 @@ export class SimpleAuthenticationService {
     // (Pseudocode} Retrieve an authenticator from the DB that
     // should match the `id` in the returned credential
     //const b64id: string = Base64Ratchet.base64StringToString(data.id);
-    const auth: SimpleAuthenticationWebAuthnEntry = (user.webAuthnAuthenticators || []).find((s) => s.credentialIdBase64 === data.id);
+    const auth: WardenWebAuthnEntry = (user.webAuthnAuthenticators || []).find((s) => s.credentialIdBase64 === data.id);
 
     if (!auth) {
       throw new Error(`Could not find authenticator ${data.id} for user ${user.userId}`);
@@ -337,8 +325,8 @@ export class SimpleAuthenticationService {
     return rval;
   }
 
-  public async removeSingleWebAuthnRegistration(userId: string, key: string): Promise<SimpleAuthenticationEntry> {
-    let ent: SimpleAuthenticationEntry = await this.storageProvider.readEntryById(userId);
+  public async removeSingleWebAuthnRegistration(userId: string, key: string): Promise<WardenEntry> {
+    let ent: WardenEntry = await this.storageProvider.readEntryById(userId);
     if (ent) {
       ent.webAuthnAuthenticators = (ent.webAuthnAuthenticators || []).filter((s) => s.credentialIdBase64 !== key);
       ent = await this.storageProvider.saveEntry(ent);
