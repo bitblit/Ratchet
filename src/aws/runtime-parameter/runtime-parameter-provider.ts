@@ -1,5 +1,5 @@
 /**
- * Classes implementing RuntimeParameterProvider offer the ability to fetch a runtime parameter
+ * Classes implementing SimpleAuthenticationStorageProvider offer the ability to fetch a runtime parameter
  * object from _somewhere_
  * They do NOT handle local caching - the RuntimeParameterRatchet does that
  */

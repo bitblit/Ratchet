@@ -72,6 +72,7 @@
   },
   "optionalDependencies": {
     "@types/aws-lambda": "8.10.109",
+    "@simplewebauthn/server": "7.0.0",
     "aws-sdk": "2.1302.0",
     "cross-fetch": "3.1.5",
     "csv": "6.2.5",
@@ -106,6 +107,7 @@
     "@types/luxon": "3.2.0",
     "@types/node": "16.11.58",
     "@types/yargs": "17.0.20",
+    "@simplewebauthn/typescript-types": "7.0.0",
     "@typescript-eslint/eslint-plugin": "5.49.0",
     "@typescript-eslint/parser": "5.49.0",
     "barrelsby": "2.5.1",
