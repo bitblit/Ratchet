@@ -44,6 +44,26 @@ export class WardenService {
     private expiringCodeRatchet: ExpiringCodeRatchet
   ) {}
 
+  public async addContactMethodToUser(userId: string, contact: WardenContactEntry): Promise<boolean> {
+    let rval: boolean = false;
+    if (StringRatchet.trimToNull(userId) && StringRatchet.trimToNull(contact?.value) && contact?.type) {
+      const otherUser: WardenEntry = await this.storageProvider.findEntryByContact(contact);
+      if (otherUser && otherUser.userId !== userId) {
+        ErrorRatchet.throwFormattedErr('Cannot add contact to this user, another user already has that contact');
+      }
+      const curUser: WardenEntry = await this.storageProvider.findEntryById(userId);
+      if (!curUser) {
+        ErrorRatchet.throwFormattedErr('Cannot add contact to this user, user does not exist');
+      }
+      curUser.contactMethods.push(contact);
+      await this.storageProvider.saveEntry(curUser);
+      rval = true;
+    } else {
+      ErrorRatchet.throwFormattedErr('Cannot add - invalid config : %s %j', userId, contact);
+    }
+    return rval;
+  }
+
   public async generateWebAuthnRegistrationOptionsForContact(contact: WardenContactEntry, origin: string): Promise<any> {
     // (Pseudocode) Retrieve the user from the database
     // after they've logged in
