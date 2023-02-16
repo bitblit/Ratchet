@@ -18,6 +18,14 @@ package without knowing why it is alpha you'll get exactly what you deserve.
 
 ## In Flight
 
+## [3.2.x] - 2023-02-16
+
+### Added
+- New graphql package with the GraphQL ratchet for caching of queries and jwt token handling
+### Changed
+- Updated libraries (of course)
+
+
 ## [3.1.x] - 2023-01-25
 
 ### Added

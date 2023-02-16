@@ -70,11 +70,33 @@
     "luxon": "3.2.1",
     "ts-enum-util": "4.0.2"
   },
+  "peerDependencies": {
+    "@types/aws-lambda": "8.10.110",
+    "@apollo/client": "3.7.8",
+    "aws-sdk": "2.1316.0",
+    "graphql": "16.6.0"
+  },
+  "peerDependenciesMeta": {
+    "@types/aws-lambda": {
+      "optional": true
+    },
+    "@apollo/client": {
+      "optional": true
+    },
+    "aws-sdk": {
+      "optional": true
+    },
+    "graphql": {
+      "optional": true
+    }
+  },
   "optionalDependencies": {
     "@types/aws-lambda": "8.10.110",
+    "@apollo/client": "3.7.8",
     "aws-sdk": "2.1316.0",
     "cross-fetch": "3.1.5",
     "csv": "6.2.7",
+    "graphql": "16.6.0",
     "handlebars": "4.7.7",
     "handlebars-layouts": "3.1.4",
     "js-yaml": "4.1.0",
