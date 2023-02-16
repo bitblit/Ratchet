@@ -11,7 +11,6 @@ import { GraphqlRatchetJwtTokenProvider } from './provider/graphql-ratchet-jwt-t
 import { GraphqlRatchetQueryProvider } from './provider/graphql-ratchet-query-provider';
 import { GraphqlRatchetErrorHandler } from './provider/graphql-ratchet-error-handler';
 import { DefaultGraphqlRatchetErrorHandler } from './provider/default-graphql-ratchet-error-handler';
-import { LoggerLevelName } from '../common';
 
 /**
  * CAW: 2023-02-16 : I'm well aware that this ratchet currently blows away any useful caching done by
