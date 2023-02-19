@@ -42,6 +42,8 @@ export class GraphqlRatchet {
     const text: string = await this.queryProvider.fetchQueryText(qry);
     if (text) {
       rval = gql(text);
+    } else {
+      Logger.warn('Could not find requested query : %s', qry);
     }
     return rval;
   }
@@ -67,23 +69,31 @@ export class GraphqlRatchet {
 
     if (StringRatchet.trimToNull(jwtToken)) {
       if (!this.apolloCache.get(jwtToken)) {
-        this.apolloCache.set(jwtToken, this.createAuthApi(jwtToken));
+        const newValue: ApolloClient<any> = this.createAuthApi(jwtToken);
+        Logger.debug('Setting apollo cache for this token to %s', newValue);
+        this.apolloCache.set(jwtToken, newValue);
+      } else {
+        Logger.debug('Fetching apollo client from cache');
       }
       rval = this.apolloCache.get(jwtToken);
     } else {
       if (runAnonymous) {
         if (!this.noAuthApollo) {
           this.noAuthApollo = this.createAnonymousApi();
+        } else {
+          Logger.debug('Fetching anonymous client from cache');
         }
         rval = this.noAuthApollo;
       } else {
         ErrorRatchet.throwFormattedErr('Cannot fetch api - no token and runAnonymous is set to false');
       }
     }
+    Logger.debug('FetchApi returning %s', rval);
     return rval;
   }
 
   private createAuthApi(jwtToken: string): ApolloClient<any> {
+    Logger.info('Creating a new authenticated api for %s : %s', this.cachedEndpoint, StringRatchet.obscure(jwtToken, 2, 2));
     let rval: ApolloClient<any> = null;
     RequireRatchet.notNullUndefinedOrOnlyWhitespaceString(jwtToken, 'jwtToken');
     Logger.info('Creating auth apollo client %s', StringRatchet.obscure(jwtToken, 2, 2));
