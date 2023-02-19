@@ -10,6 +10,7 @@ import { ResolvedReadyToSendEmail } from './resolved-ready-to-send-email';
 import { EmailAttachment } from './email-attachment';
 import { DateTime } from 'luxon';
 import { Base64Ratchet } from '../../common/base64-ratchet';
+import { MailerLike } from './mailer-like';
 
 /**
  * Generic Mail Sender for AWS.
@@ -18,7 +19,7 @@ import { Base64Ratchet } from '../../common/base64-ratchet';
  * ses: AWS SES handler, properly configured
  * defaultSendingAddress:
  */
-export class Mailer {
+export class Mailer implements MailerLike {
   public static readonly EMAIL: RegExp = new RegExp('.+@.+\\.[a-z]+');
 
   constructor(private ses: AWS.SES, private config: MailerConfig = {} as MailerConfig) {

@@ -65,6 +65,7 @@ export * from './runtime-parameter/runtime-parameter-provider';
 export * from './runtime-parameter/stored-runtime-parameter';
 export * from './ses/email-attachment';
 export * from './ses/mailer-config';
+export * from './ses/mailer-like';
 export * from './ses/mailer';
 export * from './ses/ratchet-template-renderer';
 export * from './ses/ready-to-send-email';
