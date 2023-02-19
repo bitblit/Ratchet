@@ -68,7 +68,7 @@ export class GraphqlRatchet {
     Logger.info('Fetch auth apollo client %s', StringRatchet.obscure(StringRatchet.trimToEmpty(jwtToken), 2, 2));
 
     if (StringRatchet.trimToNull(jwtToken)) {
-      if (!this.apolloCache.get(jwtToken)) {
+      if (!this.apolloCache.has(jwtToken)) {
         const newValue: ApolloClient<any> = this.createAuthApi(jwtToken);
         Logger.debug('Setting apollo cache for this token to %s', newValue);
         this.apolloCache.set(jwtToken, newValue);
@@ -85,7 +85,7 @@ export class GraphqlRatchet {
         }
         rval = this.noAuthApollo;
       } else {
-        ErrorRatchet.throwFormattedErr('Cannot fetch api - no token and runAnonymous is set to false');
+        ErrorRatchet.throwFormattedErr('Cannot fetch api - no token and runAnonymous is set to %s : -%s-', runAnonymous, jwtToken);
       }
     }
     Logger.debug('FetchApi returning %s', rval);
@@ -135,7 +135,9 @@ export class GraphqlRatchet {
     try {
       const api: ApolloClient<any> = this.fetchApi(runAnonymous);
       if (api) {
+        Logger.debug('API fetched for %s, fetching gql', queryName);
         const GQL = await this.fetchQueryAsGql(queryName);
+        Logger.debug('API and GQL fetched for %s - running %s %s', queryName, GQL, api);
         const newValues: ApolloQueryResult<any> = await api.query<any>({
           query: GQL,
           variables: variables,
