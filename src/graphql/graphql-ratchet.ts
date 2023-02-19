@@ -68,6 +68,7 @@ export class GraphqlRatchet {
     Logger.info('Fetch auth apollo client %s', StringRatchet.obscure(StringRatchet.trimToEmpty(jwtToken), 2, 2));
 
     if (StringRatchet.trimToNull(jwtToken)) {
+      Logger.debug('Fetching authd api');
       if (!this.apolloCache.has(jwtToken)) {
         const newValue: ApolloClient<any> = this.createAuthApi(jwtToken);
         Logger.debug('Setting apollo cache for this token to %s', newValue);
@@ -77,6 +78,7 @@ export class GraphqlRatchet {
       }
       rval = this.apolloCache.get(jwtToken);
     } else {
+      Logger.debug('Fetching unauthd ap');
       if (runAnonymous) {
         if (!this.noAuthApollo) {
           this.noAuthApollo = this.createAnonymousApi();
@@ -154,6 +156,7 @@ export class GraphqlRatchet {
         ErrorRatchet.throwFormattedErr('Cannot run - no api fetched');
       }
     } catch (err) {
+      Logger.silly('Exception caught in executeQuery : %s %s %j %s', err, queryName, variables, runAnonymous, err);
       this.errorHandler.handleError(err, queryName, variables, runAnonymous);
     }
     return rval;
