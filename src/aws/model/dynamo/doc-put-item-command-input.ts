@@ -4,9 +4,8 @@ in the fields below to AttributeValue - but, the only way to do that is to use t
 allows you to strongly type everything else while still using the document client.  Makes me wonder if
 anyone at AMZN actually uses their own library...
  */
-import { UpdateItemCommandInput } from '@aws-sdk/client-dynamodb';
+import { PutItemCommandInput } from '@aws-sdk/client-dynamodb';
 
-export interface DocUpdateItemCommandInput extends UpdateItemCommandInput {
-  ExpressionAttributeValues?: Record<string, any>;
-  ExpressionAttributeNames?: Record<string, any>;
+export interface DocPutItemCommandInput extends PutItemCommandInput {
+  Item: Record<string, any>;
 }

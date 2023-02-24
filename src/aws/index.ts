@@ -57,6 +57,7 @@ export * from './expiring-code/s3-expiring-code-provider';
 export * from './model/cloud-watch-metrics-minute-level-dynamo-count-request';
 export * from './model/cloud-watch-metrics-unit';
 export * from './model/dynamo-count-result';
+export * from './model/dynamo/doc-put-item-command-input';
 export * from './model/dynamo/doc-query-command-input';
 export * from './model/dynamo/doc-scan-command-input';
 export * from './model/dynamo/doc-update-item-command-input';

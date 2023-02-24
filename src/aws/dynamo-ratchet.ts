@@ -7,7 +7,6 @@ import {
   BatchWriteCommand,
   DeleteCommand,
   DynamoDBDocument,
-  DynamoDBDocumentClient,
   GetCommand,
   PutCommand,
   QueryCommand,
@@ -38,10 +37,12 @@ import {
   ScanCommandInput,
   ScanCommandOutput,
   UpdateItemCommand,
-  UpdateItemCommandInput,
   UpdateItemCommandOutput,
 } from '@aws-sdk/client-dynamodb';
 import { DocUpdateItemCommandInput } from './model/dynamo/doc-update-item-command-input';
+import { DocScanCommandInput } from './model/dynamo/doc-scan-command-input';
+import { DocQueryCommandInput } from './model/dynamo/doc-query-command-input';
+import { DocPutItemCommandInput } from './model/dynamo/doc-put-item-command-input';
 
 export class DynamoRatchet implements DynamoRatchetLike {
   constructor(private awsDDB: DynamoDBDocument) {
@@ -68,12 +69,12 @@ export class DynamoRatchet implements DynamoRatchetLike {
   }
 
   // A little pass-thru to simplify passing around this function
-  public async scanPromise(input: ScanCommandInput): Promise<ScanCommandOutput> {
+  public async scanPromise(input: DocScanCommandInput): Promise<ScanCommandOutput> {
     return this.awsDDB.send(new ScanCommand(input));
   }
 
   // A little pass-thru to simplify passing around this function
-  public async queryPromise(input: QueryCommandInput): Promise<QueryCommandOutput> {
+  public async queryPromise(input: DocQueryCommandInput): Promise<QueryCommandOutput> {
     return this.awsDDB.send(new QueryCommand(input));
   }
 
@@ -111,7 +112,7 @@ export class DynamoRatchet implements DynamoRatchetLike {
     return rval;
   }
 
-  public async fullyExecuteQueryCount(qry: QueryCommandInput, delayMS = 0): Promise<DynamoCountResult> {
+  public async fullyExecuteQueryCount(qry: DocQueryCommandInput, delayMS = 0): Promise<DynamoCountResult> {
     try {
       qry.Select = 'COUNT'; // Force it to be a count query
       Logger.debug('Executing count query : %j', qry);
@@ -152,7 +153,7 @@ export class DynamoRatchet implements DynamoRatchetLike {
     }
   }
 
-  public async fullyExecuteQuery<T>(qry: QueryCommandInput, delayMS = 0, softLimit: number = null): Promise<T[]> {
+  public async fullyExecuteQuery<T>(qry: DocQueryCommandInput, delayMS = 0, softLimit: number = null): Promise<T[]> {
     const rval: T[] = [];
     await this.fullyExecuteProcessOverQuery<T>(
       qry,
@@ -166,7 +167,7 @@ export class DynamoRatchet implements DynamoRatchetLike {
   }
 
   public async fullyExecuteProcessOverQuery<T>(
-    qry: QueryCommandInput,
+    qry: DocQueryCommandInput,
     proc: (val: T) => Promise<void>,
     delayMS = 0,
     softLimit: number = null
@@ -220,7 +221,7 @@ export class DynamoRatchet implements DynamoRatchetLike {
     return cnt;
   }
 
-  public async fullyExecuteScanCount(scan: ScanCommandInput, delayMS = 0): Promise<DynamoCountResult> {
+  public async fullyExecuteScanCount(scan: DocScanCommandInput, delayMS = 0): Promise<DynamoCountResult> {
     try {
       scan.Select = 'COUNT'; // Force it to be a count query
       const rval: DynamoCountResult = {
@@ -261,7 +262,7 @@ export class DynamoRatchet implements DynamoRatchetLike {
     }
   }
 
-  public async fullyExecuteScan<T>(scan: ScanCommandInput, delayMS = 0, softLimit: number = null): Promise<T[]> {
+  public async fullyExecuteScan<T>(scan: DocScanCommandInput, delayMS = 0, softLimit: number = null): Promise<T[]> {
     const rval: T[] = [];
     await this.fullyExecuteProcessOverScan<T>(
       scan,
@@ -275,7 +276,7 @@ export class DynamoRatchet implements DynamoRatchetLike {
   }
 
   public async fullyExecuteProcessOverScan<T>(
-    scan: ScanCommandInput,
+    scan: DocScanCommandInput,
     proc: (val: T) => Promise<void>,
     delayMS = 0,
     softLimit: number = null
@@ -324,7 +325,7 @@ export class DynamoRatchet implements DynamoRatchetLike {
 
     let rval = 0;
     if (!!elements && elements.length > 0) {
-      let batchItems: any[] = [];
+      let batchItems: Record<string, any>[] = [];
       elements.forEach((el) => {
         batchItems.push({
           PutRequest: {
@@ -337,7 +338,7 @@ export class DynamoRatchet implements DynamoRatchetLike {
       Logger.debug('Processing %d batch items to %s', batchItems.length, tableName);
 
       while (batchItems.length > 0) {
-        const curBatch: any[] = batchItems.slice(0, Math.min(batchItems.length, batchSize));
+        const curBatch: Record<string, any>[] = batchItems.slice(0, Math.min(batchItems.length, batchSize));
         batchItems = batchItems.slice(curBatch.length);
         const params: BatchWriteItemCommandInput = {
           RequestItems: {},
@@ -397,7 +398,7 @@ export class DynamoRatchet implements DynamoRatchetLike {
   }
 
   public async fetchFullObjectsMatchingKeysOnlyIndexQuery<T>(
-    qry: QueryCommandInput,
+    qry: DocQueryCommandInput,
     keyNames: string[],
     batchSize: number = 25
   ): Promise<T[]> {
@@ -406,24 +407,24 @@ export class DynamoRatchet implements DynamoRatchetLike {
     RequireRatchet.notNullOrUndefined(keyNames);
     RequireRatchet.true(keyNames.length > 0);
 
-    const keyDataSrc: any[] = await this.fullyExecuteQuery<any>(qry);
-    const keysOnly: any[] = DynamoRatchet.stripAllToKeysOnly(keyDataSrc, keyNames);
+    const keyDataSrc: Record<string, any>[] = await this.fullyExecuteQuery<Record<string, any>>(qry);
+    const keysOnly: Record<string, any>[] = DynamoRatchet.stripAllToKeysOnly(keyDataSrc, keyNames);
     const rval: T[] = await this.fetchAllInBatches<T>(qry.TableName, keysOnly, batchSize);
     return rval;
   }
 
-  public async fetchAllInBatches<T>(tableName: string, inKeys: any[], batchSize: number): Promise<T[]> {
+  public async fetchAllInBatches<T>(tableName: string, inKeys: Record<string, any>[], batchSize: number): Promise<T[]> {
     if (!batchSize || batchSize < 2 || batchSize > 100) {
       throw new Error('Batch size needs to be at least 2 and no more than 100, was ' + batchSize);
     }
 
     let rval: T[] = [];
     const batches: BatchGetItemCommandInput[] = [];
-    let remain: any[][] = Object.assign([], inKeys);
+    let remain: Record<string, any>[][] = Object.assign([], inKeys);
     while (remain.length > 0) {
-      const curBatch: any[] = remain.slice(0, Math.min(remain.length, batchSize));
+      const curBatch: Record<string, any>[] = remain.slice(0, Math.min(remain.length, batchSize));
       remain = remain.slice(curBatch.length);
-      const tableEntry: any = {};
+      const tableEntry: Record<string, any> = {};
       tableEntry[tableName] = {
         Keys: curBatch,
       };
@@ -458,14 +459,14 @@ export class DynamoRatchet implements DynamoRatchetLike {
     return rval;
   }
 
-  public async deleteAllInBatches(tableName: string, keys: any[], batchSize: number): Promise<number> {
+  public async deleteAllInBatches(tableName: string, keys: Record<string, any>[], batchSize: number): Promise<number> {
     if (!batchSize || batchSize < 2) {
       throw new Error('Batch size needs to be at least 2, was ' + batchSize);
     }
 
     let rval = 0;
     if (!!keys && keys.length > 0) {
-      let batchItems: any[] = [];
+      let batchItems: Record<string, any>[] = [];
       keys.forEach((el) => {
         batchItems.push({
           DeleteRequest: {
@@ -478,7 +479,7 @@ export class DynamoRatchet implements DynamoRatchetLike {
       Logger.debug('Processing %d DeleteBatch items to %s', batchItems.length, tableName);
 
       while (batchItems.length > 0) {
-        const curBatch: any[] = batchItems.slice(0, Math.min(batchItems.length, batchSize));
+        const curBatch: Record<string, any>[] = batchItems.slice(0, Math.min(batchItems.length, batchSize));
         batchItems = batchItems.slice(curBatch.length);
         const params: BatchWriteItemCommandInput = {
           RequestItems: {},
@@ -540,7 +541,7 @@ export class DynamoRatchet implements DynamoRatchetLike {
   }
 
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-  public async simplePut(tableName: string, value: any, autoRetryCount: number = 3): Promise<PutItemCommandOutput> {
+  public async simplePut(tableName: string, value: Record<string, any>, autoRetryCount: number = 3): Promise<PutItemCommandOutput> {
     let rval: PutItemCommandOutput = null;
     let currentTry: number = 0;
 
@@ -570,10 +571,10 @@ export class DynamoRatchet implements DynamoRatchetLike {
     return rval;
   }
 
-  public async simplePutOnlyIfFieldIsNullOrUndefined(tableName: string, value: any, fieldName: string): Promise<boolean> {
+  public async simplePutOnlyIfFieldIsNullOrUndefined(tableName: string, value: Record<string, any>, fieldName: string): Promise<boolean> {
     let rval: boolean = false;
     const params: PutItemCommandInput = {
-      Item: value as any,
+      Item: value,
       ReturnConsumedCapacity: 'TOTAL',
       ConditionExpression: 'attribute_not_exists(#fieldName) OR #fieldName = :null ',
       ExpressionAttributeNames: {
@@ -632,8 +633,8 @@ export class DynamoRatchet implements DynamoRatchetLike {
       attrValues[':key1'] = value[keyNames[1]];
     }
 
-    const params: PutItemCommandInput = {
-      Item: value as any,
+    const params: DocPutItemCommandInput = {
+      Item: value,
       ReturnConsumedCapacity: 'TOTAL',
       ConditionExpression: condExp,
       ExpressionAttributeNames: attrNames,
@@ -655,7 +656,7 @@ export class DynamoRatchet implements DynamoRatchetLike {
           let newValue: T = Object.assign({}, params.Item as unknown) as T;
           Logger.info('Failed to write %j due to collision - adjusting and retrying', newValue);
           newValue = adjustFunction(newValue);
-          params.Item = newValue as any;
+          params.Item = newValue;
           params.ExpressionAttributeValues[':key0'] = newValue[keyNames[0]];
           if (keyNames.length > 1) {
             params.ExpressionAttributeValues[':key1'] = newValue[keyNames[1]];
@@ -678,7 +679,7 @@ export class DynamoRatchet implements DynamoRatchetLike {
   }
 
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-  public async simpleGet<T>(tableName: string, keys: any, autoRetryCount: number = 3): Promise<T> {
+  public async simpleGet<T>(tableName: string, keys: Record<string, any>, autoRetryCount: number = 3): Promise<T> {
     let holder: GetItemCommandOutput = null;
     let currentTry: number = 0;
 
@@ -708,14 +709,14 @@ export class DynamoRatchet implements DynamoRatchetLike {
     return rval;
   }
 
-  public static objectIsErrorWithProvisionedThroughputExceededExceptionCode(err: any): boolean {
+  public static objectIsErrorWithProvisionedThroughputExceededExceptionCode(err: Record<string, any>): boolean {
     return !!err && !!err['code'] && err['code'] === 'ProvisionedThroughputExceededException';
   }
 
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   public async simpleGetWithCounterDecrement<T>(
     tableName: string,
-    keys: any,
+    keys: Record<string, any>,
     counterAttributeName: string,
     deleteOnZero: boolean,
     autoRetryCount: number = 3
@@ -771,7 +772,7 @@ export class DynamoRatchet implements DynamoRatchetLike {
   }
 
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-  public async simpleDelete(tableName: string, keys: any): Promise<DeleteItemCommandOutput> {
+  public async simpleDelete(tableName: string, keys: Record<string, any>): Promise<DeleteItemCommandOutput> {
     const params: DeleteItemCommandInput = {
       TableName: tableName,
       Key: keys,
@@ -782,7 +783,7 @@ export class DynamoRatchet implements DynamoRatchetLike {
   }
 
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-  public async atomicCounter(tableName: string, keys: any, counterFieldName: string, increment = 1): Promise<number> {
+  public async atomicCounter(tableName: string, keys: Record<string, any>, counterFieldName: string, increment = 1): Promise<number> {
     const update: DocUpdateItemCommandInput = {
       TableName: tableName,
       Key: keys,
@@ -802,8 +803,10 @@ export class DynamoRatchet implements DynamoRatchetLike {
   }
 
   // Recursively Removes any empty strings in place
+  // Here for backwards compatibility - really should just configure your document client the
+  // way you want it instead
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-  public static cleanObject(ob: any): void {
+  public static cleanObject(ob: Record<string, any>): void {
     if (!!ob) {
       const rem: string[] = [];
       Object.keys(ob).forEach((k) => {
@@ -822,11 +825,11 @@ export class DynamoRatchet implements DynamoRatchetLike {
   }
 
   // Given an object, deletes anything that isnt part of the key
-  public static stripToKeysOnly(input: any, keys: string[]): any {
-    let rval: any = null;
-    if (!!input && !!keys && keys.length > 0) {
+  public static stripToKeysOnly(input: Record<string, any>, keysNames: string[]): Record<string, any> {
+    let rval: Record<string, any> = null;
+    if (!!input && !!keysNames && keysNames.length > 0) {
       rval = {};
-      keys.forEach((k) => {
+      keysNames.forEach((k) => {
         if (!input[k]) {
           ErrorRatchet.throwFormattedErr('Failed key extraction on %j - missing %s', input, k);
         }
@@ -836,29 +839,8 @@ export class DynamoRatchet implements DynamoRatchetLike {
     return rval;
   }
 
-  public static stripAllToKeysOnly(input: any[], keys: string[]): any[] {
-    const rval: any[] = input.map((i) => DynamoRatchet.stripToKeysOnly(i, keys));
+  public static stripAllToKeysOnly(input: Record<string, any>[], keys: string[]): Record<string, any>[] {
+    const rval: Record<string, any>[] = input.map((i) => DynamoRatchet.stripToKeysOnly(i, keys));
     return rval;
   }
-
-  /*
-  public static jsRecordToDynamoExpressionAttributeValues(record: Record<string, string | number>): Record<string, AttributeValue> {
-    let rval: ExpressionAttributeValueMap = null;
-    if (record) {
-      rval = {};
-      Object.keys(record).forEach((k) => {
-        const val: string | number = record[k];
-        if (typeof val === 'string') {
-          rval[k] = { S: val };
-        } else if (typeof val === 'number') {
-          rval[k] = { N: StringRatchet.safeString(val) };
-        } else {
-          ErrorRatchet.throwFormattedErr('Not string or number for key %s : %s :%s', k, typeof val, val);
-        }
-      });
-    }
-    return rval;
-  }
-
-   */
 }
