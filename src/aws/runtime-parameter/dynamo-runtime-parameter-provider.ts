@@ -4,6 +4,7 @@ import { StoredRuntimeParameter } from './stored-runtime-parameter';
 import { DynamoRatchet } from '../dynamo-ratchet';
 import { RequireRatchet } from '../../common/require-ratchet';
 import { Logger } from '../../common/logger';
+import { DocQueryCommandInput } from '../model/dynamo/doc-query-command-input';
 
 export class DynamoRuntimeParameterProvider implements RuntimeParameterProvider {
   constructor(private dynamo: DynamoRatchet, private tableName: string) {
@@ -22,12 +23,12 @@ export class DynamoRuntimeParameterProvider implements RuntimeParameterProvider 
   }
 
   public async readAllParametersForGroup(groupId: string): Promise<StoredRuntimeParameter[]> {
-    const qry: QueryInput = {
+    const qry: DocQueryCommandInput = {
       TableName: this.tableName,
       KeyConditionExpression: 'groupId = :groupId',
-      ExpressionAttributeValues: DynamoRatchet.jsRecordToDynamoExpressionAttributeValues({
+      ExpressionAttributeValues: {
         ':groupId': groupId,
-      }),
+      },
     };
 
     const all: StoredRuntimeParameter[] = await this.dynamo.fullyExecuteQuery<StoredRuntimeParameter>(qry);

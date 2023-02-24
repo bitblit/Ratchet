@@ -82,7 +82,58 @@
     "@apollo/client": {
       "optional": true
     },
+    "@types/aws-lambda": {
+      "optional": true
+    },
+    "@aws-sdk/types": {
+      "optional": true
+    },
+    "@aws-sdk/client-athena": {
+      "optional": true
+    },
+    "@aws-sdk/client-batch": {
+      "optional": true
+    },
+    "@aws-sdk/client-cloudwatch": {
+      "optional": true
+    },
+    "@aws-sdk/client-cloudwatch-logs": {
+      "optional": true
+    },
     "@aws-sdk/client-dynamodb": {
+      "optional": true
+    },
+    "@aws-sdk/client-s3": {
+      "optional": true
+    },
+    "@aws-sdk/client-ses": {
+      "optional": true
+    },
+    "@aws-sdk/client-sns": {
+      "optional": true
+    },
+    "@aws-sdk/client-ssm": {
+      "optional": true
+    },
+    "@aws-sdk/client-ec2": {
+      "optional": true
+    },
+    "@aws-sdk/client-ec2-instance-connect": {
+      "optional": true
+    },
+    "@aws-sdk/client-route-53": {
+      "optional": true
+    },
+    "@aws-sdk/lib-dynamodb": {
+      "optional": true
+    },
+    "@aws-sdk/s3-request-presigner": {
+      "optional": true
+    },
+    "@aws-sdk/smithy-client": {
+      "optional": true
+    },
+    "@aws-sdk/util-waiter": {
       "optional": true
     },
     "graphql": {

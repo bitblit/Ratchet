@@ -8,6 +8,7 @@ import { SimpleCacheStorageProvider } from './simple-cache-storage-provider';
 import { RequireRatchet } from '../../common';
 import { DynamoRatchet } from '../dynamo-ratchet';
 import { PutItemCommandOutput, QueryCommandInput, ScanCommandInput } from '@aws-sdk/client-dynamodb';
+import { DocQueryCommandInput } from '../model/dynamo/doc-query-command-input';
 
 export class DynamoDbStorageProvider implements SimpleCacheStorageProvider {
   // If hash key is provided, then the cache key is the range, otherwise the cache key is the hash
@@ -101,7 +102,7 @@ export class DynamoDbStorageProvider implements SimpleCacheStorageProvider {
   public async readAll(): Promise<SimpleCacheObjectWrapper<any>[]> {
     let rval: SimpleCacheObjectWrapper<any>[] = null;
     if (this.opts.useRangeKeys) {
-      const qry: QueryCommandInput = {
+      const qry: DocQueryCommandInput = {
         TableName: this.opts.tableName,
         KeyConditionExpression: '#cacheKey = :cacheKey',
         ExpressionAttributeNames: {

@@ -5,6 +5,10 @@ import { JestRatchet } from '../jest';
 import { StringReadable } from '../stream/string-readable';
 import { StringRatchet } from '../common';
 
+jest.mock('@aws-sdk/s3-request-presigner', () => ({
+  getSignedUrl: jest.fn(() => Promise.resolve('https://test.link/test.jpg')),
+}));
+
 let mockS3: jest.Mocked<S3>;
 let mockS3OtherAccount: jest.Mocked<S3>;
 
@@ -33,7 +37,7 @@ describe('#fileExists', function () {
   });
 
   it('should create a expiring link', async () => {
-    mockS3.getSignedUrl.mockReturnValue('https://test.link/test.jpg');
+    //mockS3.getSignedUrl.mockReturnValue('https://test.link/test.jpg');
 
     const cache: S3CacheRatchet = new S3CacheRatchet(mockS3, 'test-bucket');
     const out: string = await cache.preSignedDownloadUrlForCacheFile('test.jpg', 300);

@@ -6,6 +6,7 @@ import {
   BatchGetCommand,
   BatchWriteCommand,
   DeleteCommand,
+  DynamoDBDocument,
   DynamoDBDocumentClient,
   GetCommand,
   PutCommand,
@@ -40,15 +41,16 @@ import {
   UpdateItemCommandInput,
   UpdateItemCommandOutput,
 } from '@aws-sdk/client-dynamodb';
+import { DocUpdateItemCommandInput } from './model/dynamo/doc-update-item-command-input';
 
 export class DynamoRatchet implements DynamoRatchetLike {
-  constructor(private awsDDB: DynamoDBDocumentClient) {
+  constructor(private awsDDB: DynamoDBDocument) {
     if (!awsDDB) {
       throw 'awsDDB may not be null';
     }
   }
 
-  public getDDB(): DynamoDBDocumentClient {
+  public getDDB(): DynamoDBDocument {
     return this.awsDDB;
   }
 
@@ -721,7 +723,7 @@ export class DynamoRatchet implements DynamoRatchetLike {
     let holder: UpdateItemCommandOutput = null;
     let currentTry: number = 0;
 
-    const params: UpdateItemCommandInput = {
+    const params: DocUpdateItemCommandInput = {
       TableName: tableName,
       Key: keys,
       UpdateExpression: 'set #counter = #counter-:decVal',
@@ -731,7 +733,7 @@ export class DynamoRatchet implements DynamoRatchetLike {
       ExpressionAttributeValues: {
         ':decVal': 1,
         ':minVal': 0,
-      } as Record<string, AttributeValue>,
+      },
       ConditionExpression: '#counter > :minVal',
       ReturnValues: 'ALL_NEW',
     };
@@ -781,7 +783,7 @@ export class DynamoRatchet implements DynamoRatchetLike {
 
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   public async atomicCounter(tableName: string, keys: any, counterFieldName: string, increment = 1): Promise<number> {
-    const update: UpdateItemCommandInput = {
+    const update: DocUpdateItemCommandInput = {
       TableName: tableName,
       Key: keys,
       UpdateExpression: 'SET #counterFieldName = #counterFieldName + :inc',

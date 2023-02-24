@@ -1,4 +1,4 @@
-import { DynamoRuntimeParameterProvider } from './dynmo-runtime-parameter-provider';
+import { DynamoRuntimeParameterProvider } from './dynamo-runtime-parameter-provider';
 import { DynamoRatchet } from '../dynamo-ratchet';
 import { StoredRuntimeParameter } from './stored-runtime-parameter';
 import { JestRatchet } from '../../jest/jest-ratchet';

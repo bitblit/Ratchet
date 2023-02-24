@@ -2,10 +2,11 @@ import { DynamoRatchet } from './dynamo-ratchet';
 import { Logger } from '../common/logger';
 import { LoggerLevelName } from '../common';
 import { JestRatchet } from '../jest';
-import { DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
+import { DynamoDBDocument } from '@aws-sdk/lib-dynamodb';
 import { AttributeValue, PutItemCommandOutput, QueryCommandInput, QueryInput, ScanCommandInput } from '@aws-sdk/client-dynamodb';
+import { DocQueryCommandInput } from './model/dynamo/doc-query-command-input';
 
-let mockDynamo: jest.Mocked<DynamoDBDocumentClient>;
+let mockDynamo: jest.Mocked<DynamoDBDocument>;
 
 describe('#dynamoRatchet', function () {
   beforeEach(() => {
@@ -54,14 +55,14 @@ describe('#dynamoRatchet', function () {
     const tableName: string = 'some-table';
     const limit: number = 200;
 
-    const qry: QueryInput = {
+    const qry: DocQueryCommandInput = {
       TableName: tableName,
       IndexName: 'purchaseId-notBeforeEpochMS-index',
       KeyConditionExpression: 'purchaseId = :purchaseId',
       Limit: limit,
       ExpressionAttributeValues: {
         ':purchaseId': 'some-purchase',
-      } as Record<string, AttributeValue>,
+      },
     };
 
     const res: any[] = await dr.fetchFullObjectsMatchingKeysOnlyIndexQuery(qry, ['key1', 'key2']);
@@ -85,12 +86,12 @@ describe('#dynamoRatchet', function () {
     const nowSec: number = Math.floor(now / 1000);
     const curHash: string = 'someHash';
 
-    const qry: QueryCommandInput = {
+    const qry: DocQueryCommandInput = {
       TableName: 'some-table',
       KeyConditionExpression: 'hashVal = :hashVal',
       ExpressionAttributeValues: {
         ':hashVal': curHash,
-      } as Record<string, AttributeValue>,
+      },
     };
 
     const res: any[] = await dr.fullyExecuteQuery<any>(qry, null, 150);
@@ -170,12 +171,12 @@ describe('#dynamoRatchet', function () {
 
     Logger.setLevel(LoggerLevelName.debug);
 
-    const input: QueryCommandInput = {
+    const input: DocQueryCommandInput = {
       TableName: 'some-table',
       KeyConditionExpression: 'groupId = :g',
       ExpressionAttributeValues: {
         ':g': 'NeonBatch',
-      } as Record<string, AttributeValue>,
+      },
     };
 
     const res: any[] = await dr.fullyExecuteQuery<any>(input);
@@ -187,12 +188,12 @@ describe('#dynamoRatchet', function () {
 
     Logger.setLevel(LoggerLevelName.debug);
 
-    const input: QueryCommandInput = {
+    const input: DocQueryCommandInput = {
       TableName: 'some-table',
       KeyConditionExpression: 'groupId = :g',
       ExpressionAttributeValues: {
         ':g': 'NeonBatch',
-      } as Record<string, AttributeValue>,
+      },
     };
 
     const res: number = await dr.fullyExecuteProcessOverQuery(input, async (v) => {
