@@ -1,7 +1,6 @@
-import { DeleteItemOutput, ExpressionAttributeValueMap, PutItemOutput, ScanInput } from 'aws-sdk/clients/dynamodb';
-import { DateTime } from 'luxon';
-import { DateRatchet, Logger, RequireRatchet, StringRatchet } from '../common';
+import { Logger, RequireRatchet, StringRatchet } from '../common';
 import { DynamoRatchet } from './dynamo-ratchet';
+import { DeleteItemOutput, PutItemOutput, ScanCommandInput } from '@aws-sdk/client-dynamodb';
 
 export class SyncLockRatchet {
   constructor(private ratchet: DynamoRatchet, private tableName: string) {
@@ -27,7 +26,7 @@ export class SyncLockRatchet {
       };
 
       try {
-        const pio: PutItemOutput = await this.ratchet.getDDB().put(params).promise();
+        const pio: PutItemOutput = await this.ratchet.getDDB().put(params);
         rval = true;
       } catch (err) {
         if (String(err).indexOf('ConditionalCheckFailedException') > -1) {
@@ -52,12 +51,12 @@ export class SyncLockRatchet {
 
   public async clearExpiredSyncLocks(): Promise<number> {
     const nowSeconds: number = Math.floor(new Date().getTime() / 1000);
-    const scan: ScanInput = {
+    const scan: ScanCommandInput = {
       TableName: this.tableName,
       FilterExpression: 'expires < :now',
-      ExpressionAttributeValues: {
+      ExpressionAttributeValues: DynamoRatchet.jsRecordToDynamoExpressionAttributeValues({
         ':now': nowSeconds,
-      } as ExpressionAttributeValueMap,
+      }),
     };
 
     const vals: any[] = await this.ratchet.fullyExecuteScan(scan);

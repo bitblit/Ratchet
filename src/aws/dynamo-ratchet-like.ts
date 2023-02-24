@@ -1,30 +1,34 @@
-/*
-    Classes implementing this interface provide helper functions for DynamoDB
-*/
-
-import AWS from 'aws-sdk';
-import { DeleteItemOutput, QueryInput, ScanInput } from 'aws-sdk/clients/dynamodb';
-import { DocumentClient } from 'aws-sdk/lib/dynamodb/document_client';
 import { DynamoCountResult } from './model/dynamo-count-result';
-import PutItemOutput = DocumentClient.PutItemOutput;
+import { DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
+import { DeleteItemCommandOutput, PutItemOutput, QueryCommandInput, ScanCommandInput } from '@aws-sdk/client-dynamodb';
 
 export interface DynamoRatchetLike {
-  getDDB(): AWS.DynamoDB.DocumentClient;
+  getDDB(): DynamoDBDocumentClient;
   tableIsEmpty(tableName: string): Promise<boolean>;
   // This basically wraps up scans and queries with a function that will auto-retry them if a
   // Throughput exception is encountered (up to a limit) but lets other errors get thrown.
   // Drop-in replacement to make sure that things do not fail just because of throughput issues
   throughputSafeScanOrQuery<T, R>(proc: (T) => Promise<R>, input: T, maxTries?: number, inCurrentTry?: number): Promise<R>;
-  fullyExecuteQueryCount(qry: QueryInput, delayMS?: number): Promise<DynamoCountResult>;
-  fullyExecuteQuery<T>(qry: QueryInput, delayMS?: number, softLimit?: number): Promise<T[]>;
-  fullyExecuteProcessOverQuery<T>(qry: QueryInput, proc: (val: T) => Promise<void>, delayMS?: number, softLimit?: number): Promise<number>;
+  fullyExecuteQueryCount(qry: QueryCommandInput, delayMS?: number): Promise<DynamoCountResult>;
+  fullyExecuteQuery<T>(qry: QueryCommandInput, delayMS?: number, softLimit?: number): Promise<T[]>;
+  fullyExecuteProcessOverQuery<T>(
+    qry: QueryCommandInput,
+    proc: (val: T) => Promise<void>,
+    delayMS?: number,
+    softLimit?: number
+  ): Promise<number>;
 
-  fullyExecuteScanCount(scan: ScanInput, delayMS?: number): Promise<DynamoCountResult>;
-  fullyExecuteScan<T>(scan: ScanInput, delayMS?: number, softLimit?: number): Promise<T[]>;
-  fullyExecuteProcessOverScan<T>(scan: ScanInput, proc: (val: T) => Promise<void>, delayMS?: number, softLimit?: number): Promise<number>;
+  fullyExecuteScanCount(scan: ScanCommandInput, delayMS?: number): Promise<DynamoCountResult>;
+  fullyExecuteScan<T>(scan: ScanCommandInput, delayMS?: number, softLimit?: number): Promise<T[]>;
+  fullyExecuteProcessOverScan<T>(
+    scan: ScanCommandInput,
+    proc: (val: T) => Promise<void>,
+    delayMS?: number,
+    softLimit?: number
+  ): Promise<number>;
 
   writeAllInBatches<T>(tableName: string, elements: T[], batchSize: number): Promise<number>;
-  fetchFullObjectsMatchingKeysOnlyIndexQuery<T>(qry: QueryInput, keyNames: string[], batchSize?: number): Promise<T[]>;
+  fetchFullObjectsMatchingKeysOnlyIndexQuery<T>(qry: QueryCommandInput, keyNames: string[], batchSize?: number): Promise<T[]>;
   fetchAllInBatches<T>(tableName: string, inKeys: any[], batchSize: number): Promise<T[]>;
   deleteAllInBatches(tableName: string, keys: any[], batchSize: number): Promise<number>;
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
@@ -52,7 +56,7 @@ export interface DynamoRatchetLike {
     autoRetryCount?: number
   ): Promise<T>;
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-  simpleDelete(tableName: string, keys: any): Promise<DeleteItemOutput>;
+  simpleDelete(tableName: string, keys: any): Promise<DeleteItemCommandOutput>;
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   atomicCounter(tableName: string, keys: any, counterFieldName: string, increment?: number): Promise<number>;
 }

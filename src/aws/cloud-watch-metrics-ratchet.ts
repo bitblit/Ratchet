@@ -2,21 +2,19 @@
     Service for interacting with cloudwatch
 */
 
-import AWS, { AWSError } from 'aws-sdk';
+import AWS_CloudWatch, { CloudWatch, PutMetricDataCommandOutput } from '@aws-sdk/client-cloudwatch';
 import { Logger } from '../common/logger';
 import { KeyValue } from '../common/key-value';
 import { CloudWatchMetricsUnit } from './model/cloud-watch-metrics-unit';
-import { PutMetricDataInput } from 'aws-sdk/clients/cloudwatch';
-import { PromiseResult } from 'aws-sdk/lib/request';
 import { DynamoCountResult } from './model/dynamo-count-result';
 import { CloudWatchMetricsMinuteLevelDynamoCountRequest } from './model/cloud-watch-metrics-minute-level-dynamo-count-request';
 import { DateTime } from 'luxon';
 
 export class CloudWatchMetricsRatchet {
-  private cw: AWS.CloudWatch;
+  private cw: CloudWatch;
 
-  constructor(cloudWatch: AWS.CloudWatch = null) {
-    this.cw = cloudWatch ? cloudWatch : new AWS.CloudWatch({ region: 'us-east-1', apiVersion: '2010-08-01' });
+  constructor(cloudWatch: CloudWatch = null) {
+    this.cw = cloudWatch ? cloudWatch : new CloudWatch({ region: 'us-east-1', apiVersion: '2010-08-01' });
   }
 
   public async writeSingleMetric(
@@ -36,7 +34,7 @@ export class CloudWatchMetricsRatchet {
     }
     const storageResolution: number = highResolution ? 1 : 60;
 
-    const metricData: PutMetricDataInput = {
+    const metricData: AWS_CloudWatch.PutMetricDataCommandInput = {
       Namespace: namespace,
       MetricData: [
         {
@@ -51,7 +49,7 @@ export class CloudWatchMetricsRatchet {
     };
     Logger.silly('Writing metric to cw : %j', metricData);
 
-    const result: PromiseResult<any, AWSError> = await this.cw.putMetricData(metricData).promise();
+    const result: PutMetricDataCommandOutput = await this.cw.putMetricData(metricData);
     Logger.silly('Result: %j', result);
     return result;
   }

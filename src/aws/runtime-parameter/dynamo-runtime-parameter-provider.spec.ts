@@ -6,6 +6,7 @@ import { LoggerLevelName } from '../../common/logger-support/logger-level-name';
 import { Logger } from '../../common/logger';
 import { RuntimeParameterRatchet } from '../runtime-parameter-ratchet';
 import { PromiseRatchet } from '../../common/promise-ratchet';
+import { PutItemCommandOutput } from '@aws-sdk/client-dynamodb';
 
 let mockDynamoRatchet: jest.Mocked<DynamoRatchet>;
 const testEntry: StoredRuntimeParameter = { groupId: 'test', paramKey: 'test', paramValue: '15', ttlSeconds: 0.5 };
@@ -20,7 +21,7 @@ describe('#runtimeParameterRatchet', function () {
     Logger.setLevel(LoggerLevelName.silly);
     const tableName: string = 'default-table';
     mockDynamoRatchet.simpleGet.mockResolvedValue(testEntry);
-    mockDynamoRatchet.simplePut.mockResolvedValue({});
+    mockDynamoRatchet.simplePut.mockResolvedValue({} as PutItemCommandOutput);
     const drpp: DynamoRuntimeParameterProvider = new DynamoRuntimeParameterProvider(mockDynamoRatchet, tableName);
     const rpr: RuntimeParameterRatchet = new RuntimeParameterRatchet(drpp);
 

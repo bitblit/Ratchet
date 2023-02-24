@@ -1,7 +1,6 @@
 import fs from 'fs';
 import walk from 'walk';
-import AWS from 'aws-sdk';
-import { ClientConfiguration } from 'aws-sdk/clients/s3';
+import { S3 } from '@aws-sdk/client-s3';
 import path from 'path';
 import mime from 'mime-types';
 import { Logger } from '../common/logger';
@@ -10,7 +9,7 @@ export class SiteUploader {
   private srcDir: string;
   private bucketName: string;
   private config: any;
-  private readonly s3: AWS.S3 = new AWS.S3({ region: 'us-east-1' } as ClientConfiguration);
+  private readonly s3: S3 = new S3({ region: 'us-east-1' });
 
   constructor(srcDir: string, bucketName: string, configFile: string) {
     this.srcDir = srcDir;

@@ -1,11 +1,11 @@
 import { Logger } from '../../common/logger';
 import { Ec2Ratchet } from '../../aws';
-import { Instance } from 'aws-sdk/clients/ec2';
 import { spawnSync, SpawnSyncReturns } from 'child_process';
 import fs from 'fs';
 import os from 'os';
 import path from 'path';
-import { SendSSHPublicKeyResponse } from 'aws-sdk/clients/ec2instanceconnect';
+import { Instance } from '@aws-sdk/client-ec2';
+import { SendSSHPublicKeyResponse } from '@aws-sdk/client-ec2-instance-connect';
 
 export class StartInstanceAndSsh {
   private instanceId: string;

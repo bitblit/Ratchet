@@ -1,14 +1,15 @@
 import { Logger } from '../common/logger';
-import AWS from 'aws-sdk';
 import {
-  ChangeResourceRecordSetsRequest,
-  ChangeResourceRecordSetsResponse,
-  GetChangeRequest,
-  GetChangeResponse,
-} from 'aws-sdk/clients/route53';
+  ChangeResourceRecordSetsCommandInput,
+  ChangeResourceRecordSetsCommandOutput,
+  GetChangeCommandInput,
+  Route53,
+  waitUntilResourceRecordSetsChanged,
+} from '@aws-sdk/client-route-53';
+import { WaiterResult, WaiterState } from '@aws-sdk/util-waiter';
 
 export class Route53Ratchet {
-  constructor(private route53: AWS.Route53, private hostedZoneId: string) {
+  constructor(private route53: Route53, private hostedZoneId: string) {
     if (!this.route53) {
       throw 'route53 may not be null';
     }
@@ -23,7 +24,7 @@ export class Route53Ratchet {
     Logger.info('Updating %s to point to %s', domainName, target);
 
     try {
-      const params: ChangeResourceRecordSetsRequest = {
+      const params: ChangeResourceRecordSetsCommandInput = {
         ChangeBatch: {
           Changes: [
             {
@@ -44,17 +45,17 @@ export class Route53Ratchet {
         HostedZoneId: hostedZoneId,
       };
 
-      const result: ChangeResourceRecordSetsResponse = await this.route53.changeResourceRecordSets(params).promise();
+      const result: ChangeResourceRecordSetsCommandOutput = await this.route53.changeResourceRecordSets(params);
       Logger.debug('Updated domain result: %j', result);
 
-      const waitParams: GetChangeRequest = {
+      const waitParams: GetChangeCommandInput = {
         Id: result.ChangeInfo.Id,
       };
 
-      const waitResult: GetChangeResponse = await this.route53.waitFor('resourceRecordSetsChanged', waitParams).promise();
+      const waitResult: WaiterResult = await waitUntilResourceRecordSetsChanged({ client: this.route53, maxWaitTime: 300 }, waitParams);
       Logger.debug('Wait responsed: %j', waitResult);
 
-      if (waitResult.ChangeInfo.Status === 'INSYNC') {
+      if (waitResult.state === WaiterState.SUCCESS) {
         Logger.info('Updated %s to point to %s', domainName, hostedZoneId);
         return true;
       }

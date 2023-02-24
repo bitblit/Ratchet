@@ -1,6 +1,5 @@
-import AWS, { AWSError } from 'aws-sdk';
-import { PromiseResult } from 'aws-sdk/lib/request';
 import {
+  Athena,
   GetNamedQueryOutput,
   GetQueryExecutionOutput,
   ListNamedQueriesOutput,
@@ -8,20 +7,19 @@ import {
   Row,
   StartQueryExecutionInput,
   StartQueryExecutionOutput,
-} from 'aws-sdk/clients/athena';
+} from '@aws-sdk/client-athena';
 import { StringRatchet } from '../../common/string-ratchet';
 import { Logger } from '../../common/logger';
 import { StopWatch } from '../../common/stop-watch';
 import { PromiseRatchet } from '../../common/promise-ratchet';
-import { RequireRatchet } from '../../common/require-ratchet';
-import { GetObjectOutput, GetObjectRequest } from 'aws-sdk/clients/s3';
+import { GetObjectCommandOutput, GetObjectOutput, GetObjectRequest, S3 } from '@aws-sdk/client-s3';
 import tmp from 'tmp';
 import fs from 'fs';
-import { Readable } from 'stream';
 import { CsvRatchet } from '../../node-csv';
+import { RequireRatchet } from '../../common/require-ratchet';
 
 export class AthenaRatchet {
-  constructor(private athena: AWS.Athena, private s3: AWS.S3, private outputLocation: string) {
+  constructor(private athena: Athena, private s3: S3, private outputLocation: string) {
     RequireRatchet.notNullOrUndefined(athena);
     RequireRatchet.notNullOrUndefined(s3);
     RequireRatchet.notNullOrUndefined(outputLocation);
@@ -60,10 +58,10 @@ export class AthenaRatchet {
     };
 
     let rval: string[] = [];
-    let next: PromiseResult<ListNamedQueriesOutput, AWSError> = null;
+    let next: ListNamedQueriesOutput = null;
 
     do {
-      next = await this.athena.listNamedQueries(params).promise();
+      next = await this.athena.listNamedQueries(params);
       rval = rval.concat(next.NamedQueryIds);
       params.NextToken = next.NextToken;
     } while (!!params.NextToken);
@@ -79,7 +77,7 @@ export class AthenaRatchet {
       const params = {
         NamedQueryId: ids[i],
       };
-      const val: PromiseResult<GetNamedQueryOutput, AWSError> = await this.athena.getNamedQuery(params).promise();
+      const val: GetNamedQueryOutput = await this.athena.getNamedQuery(params);
       rval.push(val.NamedQuery);
     }
 
@@ -104,7 +102,7 @@ export class AthenaRatchet {
       Bucket: bucketName,
       Key: obKey,
     };
-    const getFileOut: GetObjectOutput = await this.s3.getObject(req).promise();
+    const getFileOut: GetObjectOutput = await this.s3.getObject(req);
 
     const rval: T[] = await CsvRatchet.stringParse<T>(
       getFileOut.Body.toString(),
@@ -132,9 +130,10 @@ export class AthenaRatchet {
 
     const targetDataFile: string = targetDataFileIn || tmp.fileSync({ postfix: '.csv', keep: false }).name;
     const fileStream: any = fs.createWriteStream(targetDataFile);
-    const readStream: Readable = this.s3.getObject(req).createReadStream();
+    const output: GetObjectCommandOutput = await this.s3.getObject(req);
+    const readStream: ReadableStream = output.Body.transformToWebStream();
 
-    readStream.pipe(fileStream);
+    readStream.pipeTo(fileStream);
     const rval: string = await PromiseRatchet.resolveOnEvent<string>(readStream, ['finish', 'close'], ['error'], targetDataFile);
     Logger.silly('Response: %s', rval);
     return targetDataFile;
@@ -166,18 +165,18 @@ export class AthenaRatchet {
         },
       };
 
-      const startToken: PromiseResult<StartQueryExecutionOutput, AWSError> = await this.athena.startQueryExecution(params).promise();
+      const startToken: StartQueryExecutionOutput = await this.athena.startQueryExecution(params);
 
       const getExecParams: any = {
         QueryExecutionId: startToken.QueryExecutionId,
       };
 
       const finalStates: string[] = ['FAILED', 'CANCELLED', 'SUCCEEDED'];
-      let curState: GetQueryExecutionOutput = await this.athena.getQueryExecution(getExecParams).promise();
+      let curState: GetQueryExecutionOutput = await this.athena.getQueryExecution(getExecParams);
       while (finalStates.indexOf(curState.QueryExecution.Status.State) === -1) {
         await PromiseRatchet.createTimeoutPromise('wait', pingTimeMS);
         Logger.debug('%s : %s : %s', curState.QueryExecution.Status.State, timer.dump(), query);
-        curState = await this.athena.getQueryExecution(getExecParams).promise();
+        curState = await this.athena.getQueryExecution(getExecParams);
       }
 
       if (curState.QueryExecution.Status.State === 'FAILED') {

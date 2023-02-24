@@ -1,27 +1,26 @@
 import { Logger } from '../common/logger';
-import AWS from 'aws-sdk';
-import { PublishInput, PublishResponse } from 'aws-sdk/clients/sns';
+import { PublishCommandInput, PublishCommandOutput, SNS } from '@aws-sdk/client-sns';
 import { RequireRatchet } from '../common';
 
 export class SnsRatchet {
-  constructor(private sns: AWS.SNS = new AWS.SNS({ apiVersion: '2010-03-31', region: 'us-east-1' }), private topicArn: string) {
+  constructor(private sns: SNS = new SNS({ apiVersion: '2010-03-31', region: 'us-east-1' }), private topicArn: string) {
     RequireRatchet.notNullOrUndefined(this.sns, 'sns');
     RequireRatchet.notNullOrUndefined(this.topicArn, 'topicArn');
   }
 
-  public async sendMessage(inMsg: any, suppressErrors: boolean = false): Promise<PublishResponse> {
-    let result: PublishResponse = null;
+  public async sendMessage(inMsg: any, suppressErrors: boolean = false): Promise<PublishCommandOutput> {
+    let result: PublishCommandOutput = null;
     try {
       const safeInMsg: any = inMsg ? inMsg : 'NO-MESSAGE-PROVIDED';
       const msg: string = typeof safeInMsg === 'string' ? safeInMsg : JSON.stringify(safeInMsg);
 
-      const params: PublishInput = {
+      const params: PublishCommandInput = {
         TopicArn: this.topicArn,
         Message: msg,
       };
 
       Logger.debug('Sending via SNS : %j', params);
-      result = await this.sns.publish(params).promise();
+      result = await this.sns.publish(params);
     } catch (err) {
       if (suppressErrors) {
         Logger.error('Failed to fire SNS notification : %j : %s', inMsg, err);
@@ -34,8 +33,8 @@ export class SnsRatchet {
 
   // Kinda a special case, used for when you want to only send messages when a certain condition is true
   // (Like when you are running in production)
-  public async conditionallySendMessage(inMsg: any, condition: boolean, suppressErrors: boolean = false): Promise<PublishResponse> {
-    let rval: PublishResponse = null;
+  public async conditionallySendMessage(inMsg: any, condition: boolean, suppressErrors: boolean = false): Promise<PublishCommandOutput> {
+    let rval: PublishCommandOutput = null;
     if (condition) {
       rval = await this.sendMessage(inMsg, suppressErrors);
     } else {

@@ -71,19 +71,18 @@
     "ts-enum-util": "4.0.2"
   },
   "peerDependencies": {
-    "@types/aws-lambda": "8.10.110",
     "@apollo/client": "3.7.8",
-    "aws-sdk": "2.1316.0",
+    "@aws-sdk/client-dynamodb": "3.276.0",
+    "@aws-sdk/client-s3": "3.276.0",
+    "@aws-sdk/client-ec2": "3.276.0",
+    "@aws-sdk/lib-dynamodb": "3.276.0",
     "graphql": "16.6.0"
   },
   "peerDependenciesMeta": {
-    "@types/aws-lambda": {
-      "optional": true
-    },
     "@apollo/client": {
       "optional": true
     },
-    "aws-sdk": {
+    "@aws-sdk/client-dynamodb": {
       "optional": true
     },
     "graphql": {
@@ -92,8 +91,24 @@
   },
   "optionalDependencies": {
     "@types/aws-lambda": "8.10.110",
+    "@aws-sdk/types": "3.272.0",
+    "@aws-sdk/client-athena": "3.276.0",
+    "@aws-sdk/client-batch": "3.276.0",
+    "@aws-sdk/client-cloudwatch": "3.276.0",
+    "@aws-sdk/client-cloudwatch-logs": "3.276.0",
+    "@aws-sdk/client-dynamodb": "3.276.0",
+    "@aws-sdk/client-s3": "3.276.0",
+    "@aws-sdk/client-ses": "3.276.0",
+    "@aws-sdk/client-sns": "3.276.0",
+    "@aws-sdk/client-ssm": "3.276.0",
+    "@aws-sdk/client-ec2": "3.276.0",
+    "@aws-sdk/client-ec2-instance-connect": "3.276.0",
+    "@aws-sdk/client-route-53": "3.276.0",
+    "@aws-sdk/lib-dynamodb": "3.276.0",
+    "@aws-sdk/s3-request-presigner": "3.276.0",
+    "@aws-sdk/smithy-client": "3.272.0",
+    "@aws-sdk/util-waiter": "3.272.0",
     "@apollo/client": "3.7.8",
-    "aws-sdk": "2.1316.0",
     "cross-fetch": "3.1.5",
     "csv": "6.2.7",
     "graphql": "16.6.0",

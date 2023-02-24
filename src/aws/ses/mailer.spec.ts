@@ -1,15 +1,13 @@
-import AWS from 'aws-sdk';
 import { ReadyToSendEmail } from './ready-to-send-email';
-import { SendEmailResponse, SendRawEmailResponse } from 'aws-sdk/clients/ses';
+import { SendEmailResponse, SendRawEmailResponse, SES } from '@aws-sdk/client-ses';
 import { Mailer } from './mailer';
 import { EmailAttachment } from './email-attachment';
 import { StringRatchet } from '../../common/string-ratchet';
 import { Base64Ratchet } from '../../common/base64-ratchet';
-import fs from 'fs';
 import { MailerConfig } from './mailer-config';
 import { JestRatchet } from '../../jest';
 
-let mockSES: jest.Mocked<AWS.SES>;
+let mockSES: jest.Mocked<SES>;
 const smallImageBase64: string =
   'iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII';
 
@@ -22,7 +20,7 @@ describe('#mailer', function () {
     const config: MailerConfig = {
       defaultSendingAddress: 'test1@test.com',
       autoBccAddresses: [], //['test2@test.com','test2@test.com'],
-      archive: null, //new S3CacheRatchet(new AWS.S3(), 'outbound-email-archive'),
+      archive: null, //new S3CacheRatchet(new S3(), 'outbound-email-archive'),
       archivePrefix: null, //'test'
     };
     const svc: Mailer = new Mailer(mockSES, config);
@@ -85,7 +83,7 @@ describe('#mailer', function () {
     const config: MailerConfig = {
       allowedDestinationEmails: [/.*test\.com/, /.*.test2\.com/],
     };
-    const svc: Mailer = new Mailer({} as AWS.SES, config);
+    const svc: Mailer = new Mailer({} as SES, config);
 
     const out1: string[] = ['a@test.com', 'b@fail.com'];
     const res1: string[] = svc.filterEmailsToValid(out1);
@@ -102,7 +100,7 @@ describe('#mailer', function () {
     const config: MailerConfig = {
       defaultSendingAddress: 'test@test.com',
       autoBccAddresses: [], //['test2@test.com','test2@test.com'],
-      archive: null, //new S3CacheRatchet(new AWS.S3(), 'outbound-email-archive'),
+      archive: null, //new S3CacheRatchet(new S3(), 'outbound-email-archive'),
       archivePrefix: null, //'test'
       maxMessageBodySizeInBytes: 500,
       maxAttachmentSizeInBase64Bytes: 1000,

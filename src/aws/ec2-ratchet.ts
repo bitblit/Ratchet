@@ -1,12 +1,5 @@
-import AWS from 'aws-sdk';
-import {
-  DescribeInstancesRequest,
-  DescribeInstancesResult,
-  Instance,
-  StartInstancesRequest,
-  StopInstancesRequest,
-} from 'aws-sdk/clients/ec2';
-import { SendSSHPublicKeyRequest, SendSSHPublicKeyResponse } from 'aws-sdk/clients/ec2instanceconnect';
+import AWS_EC2, { EC2 } from '@aws-sdk/client-ec2';
+import AWS_EC2InstanceConnect, { EC2InstanceConnect } from '@aws-sdk/client-ec2-instance-connect';
 import { Logger } from '../common/logger';
 import { DurationRatchet } from '../common/duration-ratchet';
 import { PromiseRatchet } from '../common/promise-ratchet';
@@ -23,27 +16,27 @@ import { PromiseRatchet } from '../common/promise-ratchet';
  * Really should combine start and stop below
  */
 export class Ec2Ratchet {
-  private ec2: AWS.EC2;
-  private ec2InstanceConnect: AWS.EC2InstanceConnect;
+  private ec2: EC2;
+  private ec2InstanceConnect: EC2InstanceConnect;
 
   constructor(private region: string = 'us-east-1', private availabilityZone: string = 'us-east-1a') {
-    this.ec2 = new AWS.EC2({ region: region });
-    this.ec2InstanceConnect = new AWS.EC2InstanceConnect({ region: region });
+    this.ec2 = new EC2({ region: region });
+    this.ec2InstanceConnect = new EC2InstanceConnect({ region: region });
   }
 
   public async stopInstance(instanceId: string, maxWaitForShutdownMS: number = 0): Promise<boolean> {
     let rval: boolean = true;
 
     try {
-      const stopParams: StopInstancesRequest = {
+      const stopParams: AWS_EC2.StopInstancesCommandInput = {
         InstanceIds: [instanceId],
         DryRun: false,
       };
 
       Logger.info('About to stop instances : %j', stopParams);
-      await this.ec2.stopInstances(stopParams).promise();
+      await this.ec2.stopInstances(stopParams);
       Logger.info('Stop instance command sent, waiting on shutdown');
-      let status: Instance = await this.describeInstance(instanceId);
+      let status: AWS_EC2.Instance = await this.describeInstance(instanceId);
 
       if (maxWaitForShutdownMS > 0) {
         const start: number = new Date().getTime();
@@ -68,16 +61,16 @@ export class Ec2Ratchet {
     let rval: boolean = true;
 
     try {
-      const startParams: StartInstancesRequest = {
+      const startParams: AWS_EC2.StartInstancesCommandInput = {
         InstanceIds: [instanceId],
         DryRun: false,
       };
 
       // const result: StartInstancesResult =
       Logger.info('About to start instance : %j', startParams);
-      await this.ec2.startInstances(startParams).promise();
+      await this.ec2.startInstances(startParams);
       Logger.info('Start instance command sent, waiting on startup');
-      let status: Instance = await this.describeInstance(instanceId);
+      let status: AWS_EC2.Instance = await this.describeInstance(instanceId);
 
       if (maxWaitForStartupMS > 0) {
         const start: number = new Date().getTime();
@@ -103,15 +96,15 @@ export class Ec2Ratchet {
     return rval;
   }
 
-  public async describeInstance(instanceId: string): Promise<Instance> {
-    const res: Instance[] = await this.listAllInstances([instanceId]);
+  public async describeInstance(instanceId: string): Promise<AWS_EC2.Instance> {
+    const res: AWS_EC2.Instance[] = await this.listAllInstances([instanceId]);
     return res.length === 1 ? res[0] : null;
   }
 
-  public async listAllInstances(instanceIds: string[] = []): Promise<Instance[]> {
-    let rval: Instance[] = [];
+  public async listAllInstances(instanceIds: string[] = []): Promise<AWS_EC2.Instance[]> {
+    let rval: AWS_EC2.Instance[] = [];
 
-    const req: DescribeInstancesRequest = {
+    const req: AWS_EC2.DescribeInstancesCommandInput = {
       NextToken: null,
     };
 
@@ -121,7 +114,7 @@ export class Ec2Ratchet {
 
     do {
       Logger.debug('Pulling instances... (%j)', req);
-      const res: DescribeInstancesResult = await this.ec2.describeInstances(req).promise();
+      const res: AWS_EC2.DescribeInstancesResult = await this.ec2.describeInstances(req);
       res.Reservations.forEach((r) => {
         rval = rval.concat(r.Instances);
       });
@@ -136,16 +129,16 @@ export class Ec2Ratchet {
     instanceId: string,
     publicKeyString: string,
     instanceOsUser?: string
-  ): Promise<SendSSHPublicKeyResponse> {
+  ): Promise<AWS_EC2InstanceConnect.SendSSHPublicKeyCommandOutput> {
     const userName: string = instanceOsUser || 'ec2-user';
-    const req: SendSSHPublicKeyRequest = {
+    const req: AWS_EC2InstanceConnect.SendSSHPublicKeyCommandInput = {
       InstanceId: instanceId,
       AvailabilityZone: this.availabilityZone,
       InstanceOSUser: userName,
       SSHPublicKey: publicKeyString,
     };
 
-    const rval: SendSSHPublicKeyResponse = await this.ec2InstanceConnect.sendSSHPublicKey(req).promise();
+    const rval: AWS_EC2InstanceConnect.SendSSHPublicKeyCommandOutput = await this.ec2InstanceConnect.sendSSHPublicKey(req);
     return rval;
   }
 }

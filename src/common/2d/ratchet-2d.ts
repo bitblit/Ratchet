@@ -3,7 +3,6 @@ import { Plane2d } from './plane-2d';
 import { Line2d } from './line-2d';
 import { PolyLine2d } from './poly-line-2d';
 import { BooleanRatchet } from '../boolean-ratchet';
-import { RequireRatchet } from '../require-ratchet';
 
 export class Ratchet2d {
   // Empty constructor prevents instantiation

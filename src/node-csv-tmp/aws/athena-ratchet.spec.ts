@@ -1,13 +1,11 @@
-import AWS, { AWSError } from 'aws-sdk';
 import { AthenaRatchet } from './athena-ratchet';
 import { Logger } from '../../common/logger';
 import { JestRatchet } from '../../jest';
-import { PromiseResult } from 'aws-sdk/lib/request';
-import { GetQueryExecutionOutput, StartQueryExecutionOutput } from 'aws-sdk/clients/athena';
-import { SubmitJobResponse } from 'aws-sdk/clients/batch';
+import { Athena, GetQueryExecutionOutput, StartQueryExecutionOutput } from '@aws-sdk/client-athena';
+import { S3 } from '@aws-sdk/client-s3';
 
-let mockAthena: jest.Mocked<AWS.Athena>;
-let mockS3: jest.Mocked<AWS.S3>;
+let mockAthena: jest.Mocked<Athena>;
+let mockS3: jest.Mocked<S3>;
 
 describe('#AthenaRatchet', function () {
   beforeEach(() => {

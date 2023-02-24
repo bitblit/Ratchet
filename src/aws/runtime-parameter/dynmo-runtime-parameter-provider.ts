@@ -1,4 +1,4 @@
-import { ExpressionAttributeValueMap, PutItemOutput, QueryInput } from 'aws-sdk/clients/dynamodb';
+import { PutItemOutput, QueryInput } from '@aws-sdk/client-dynamodb';
 import { RuntimeParameterProvider } from './runtime-parameter-provider';
 import { StoredRuntimeParameter } from './stored-runtime-parameter';
 import { DynamoRatchet } from '../dynamo-ratchet';
@@ -25,9 +25,9 @@ export class DynamoRuntimeParameterProvider implements RuntimeParameterProvider 
     const qry: QueryInput = {
       TableName: this.tableName,
       KeyConditionExpression: 'groupId = :groupId',
-      ExpressionAttributeValues: {
+      ExpressionAttributeValues: DynamoRatchet.jsRecordToDynamoExpressionAttributeValues({
         ':groupId': groupId,
-      } as ExpressionAttributeValueMap,
+      }),
     };
 
     const all: StoredRuntimeParameter[] = await this.dynamo.fullyExecuteQuery<StoredRuntimeParameter>(qry);

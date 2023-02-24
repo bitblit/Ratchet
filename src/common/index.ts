@@ -10,7 +10,6 @@ export * from './common-jwt-token';
 export * from './composite-last-success-provider';
 export * from './date-ratchet';
 export * from './duration-ratchet';
-export * from './dynamic-import-ratchet';
 export * from './enum-ratchet';
 export * from './error-ratchet';
 export * from './expired-jwt-handling';

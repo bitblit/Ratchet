@@ -1,31 +1,27 @@
-/*
-    Service for interacting with cloudwatch
-*/
-
-import AWS from 'aws-sdk';
-import { Logger } from '../common/logger';
 import {
-  DeleteLogGroupRequest,
-  DescribeLogGroupsRequest,
-  DescribeLogGroupsResponse,
-  DescribeLogStreamsResponse,
-  GetQueryResultsResponse,
+  CloudWatchLogs,
+  DeleteLogGroupCommandInput,
+  DescribeLogGroupsCommandInput,
+  DescribeLogGroupsCommandOutput,
+  DescribeLogStreamsCommandOutput,
+  GetQueryResultsCommandOutput,
   LogGroup,
   LogStream,
-  StartQueryRequest,
-  StartQueryResponse,
-  StopQueryResponse,
-} from 'aws-sdk/clients/cloudwatchlogs';
+  StartQueryCommandInput,
+  StartQueryCommandOutput,
+  StopQueryCommandOutput,
+} from '@aws-sdk/client-cloudwatch-logs';
+import { Logger } from '../common/logger';
 import { PromiseRatchet } from '../common/promise-ratchet';
 import { RequireRatchet } from '../common/require-ratchet';
 import { StringRatchet } from '../common/string-ratchet';
 
 export class CloudWatchLogsRatchet {
   private static readonly MAX_DELETE_RETRIES = 5;
-  private cwLogs: AWS.CloudWatchLogs;
+  private cwLogs: CloudWatchLogs;
 
-  constructor(cloudwatchLogs: AWS.CloudWatchLogs = null) {
-    this.cwLogs = cloudwatchLogs ? cloudwatchLogs : new AWS.CloudWatchLogs({ region: 'us-east-1' });
+  constructor(cloudwatchLogs: CloudWatchLogs = null) {
+    this.cwLogs = cloudwatchLogs ? cloudwatchLogs : new CloudWatchLogs({ region: 'us-east-1' });
   }
 
   public async removeEmptyOrOldLogStreams(
@@ -48,7 +44,7 @@ export class CloudWatchLogsRatchet {
     do {
       Logger.debug('Executing search for streams');
       try {
-        const streams: DescribeLogStreamsResponse = await this.cwLogs.describeLogStreams(streamSearchParams).promise();
+        const streams: DescribeLogStreamsCommandOutput = await this.cwLogs.describeLogStreams(streamSearchParams);
         totalStreams += streams.logStreams.length;
 
         Logger.debug('Found %d streams (%d so far, %d to delete)', streams.logStreams.length, totalStreams, removedStreams.length);
@@ -85,7 +81,7 @@ export class CloudWatchLogsRatchet {
       let retry = 0;
       while (!removed && retry < CloudWatchLogsRatchet.MAX_DELETE_RETRIES) {
         try {
-          await this.cwLogs.deleteLogStream(delParams).promise();
+          await this.cwLogs.deleteLogStream(delParams);
           removed = true;
           await PromiseRatchet.wait(waitPer);
         } catch (err) {
@@ -129,7 +125,7 @@ export class CloudWatchLogsRatchet {
       let totalStreams = 0;
       do {
         Logger.debug('Executing search for streams');
-        const streams: DescribeLogStreamsResponse = await this.cwLogs.describeLogStreams(streamSearchParams).promise();
+        const streams: DescribeLogStreamsCommandOutput = await this.cwLogs.describeLogStreams(streamSearchParams);
         totalStreams += streams.logStreams.length;
 
         Logger.debug('Found %d streams (%d so far)', streams.logStreams.length, totalStreams);
@@ -151,14 +147,14 @@ export class CloudWatchLogsRatchet {
   public async findLogGroups(prefix: string): Promise<LogGroup[]> {
     RequireRatchet.notNullOrUndefined(prefix);
 
-    const params: DescribeLogGroupsRequest = {
+    const params: DescribeLogGroupsCommandInput = {
       logGroupNamePrefix: prefix,
     };
     let rval: LogGroup[] = [];
 
     do {
       Logger.info('%d found, pulling log groups : %j', rval.length, params);
-      const res: DescribeLogGroupsResponse = await this.cwLogs.describeLogGroups(params).promise();
+      const res: DescribeLogGroupsCommandOutput = await this.cwLogs.describeLogGroups(params);
       rval = rval.concat(res.logGroups);
       params.nextToken = res.nextToken;
     } while (!!params.nextToken);
@@ -173,10 +169,10 @@ export class CloudWatchLogsRatchet {
     for (let i = 0; i < groups.length; i++) {
       try {
         Logger.info('Deleting %j', groups[i]);
-        const req: DeleteLogGroupRequest = {
+        const req: DeleteLogGroupCommandInput = {
           logGroupName: groups[i].logGroupName,
         };
-        await this.cwLogs.deleteLogGroup(req).promise();
+        await this.cwLogs.deleteLogGroup(req);
         rval.push(true);
       } catch (err) {
         Logger.error('Failure to delete %j : %s', groups[i], err);
@@ -196,16 +192,16 @@ export class CloudWatchLogsRatchet {
     return await this.removeLogGroups(groups);
   }
 
-  public async fullyExecuteInsightsQuery(sqr: StartQueryRequest): Promise<GetQueryResultsResponse> {
+  public async fullyExecuteInsightsQuery(sqr: StartQueryCommandInput): Promise<GetQueryResultsCommandOutput> {
     RequireRatchet.notNullOrUndefined(sqr);
     Logger.debug('Starting insights query : %j', sqr);
-    const resp: StartQueryResponse = await this.cwLogs.startQuery(sqr).promise();
+    const resp: StartQueryCommandOutput = await this.cwLogs.startQuery(sqr);
     Logger.debug('Got query id %j', resp);
 
-    let rval: GetQueryResultsResponse = null;
+    let rval: GetQueryResultsCommandOutput = null;
     let delayMS: number = 100;
     while (!rval || ['Running', 'Scheduled'].includes(rval.status)) {
-      rval = await this.cwLogs.getQueryResults({ queryId: resp.queryId }).promise();
+      rval = await this.cwLogs.getQueryResults({ queryId: resp.queryId });
       await PromiseRatchet.wait(delayMS);
       delayMS *= 2;
       Logger.info('Got : %j', rval);
@@ -213,10 +209,10 @@ export class CloudWatchLogsRatchet {
     return rval;
   }
 
-  public async abortInsightsQuery(queryId: string): Promise<StopQueryResponse> {
-    let rval: StopQueryResponse = null;
+  public async abortInsightsQuery(queryId: string): Promise<StopQueryCommandOutput> {
+    let rval: StopQueryCommandOutput = null;
     if (!!queryId) {
-      rval = await this.cwLogs.stopQuery({ queryId: queryId }).promise();
+      rval = await this.cwLogs.stopQuery({ queryId: queryId });
     }
     return rval;
   }

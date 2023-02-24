@@ -4,12 +4,12 @@
 
 import { KeyValue } from '../../common/key-value';
 import { DynamoRatchet } from '../dynamo-ratchet';
-import { QueryInput, ScanInput } from 'aws-sdk/clients/dynamodb';
+import { QueryInput, ScanCommandInput } from '@aws-sdk/client-dynamodb';
 
 export interface CloudWatchMetricsMinuteLevelDynamoCountRequest {
   dynamoRatchet: DynamoRatchet;
   query: QueryInput;
-  scan: ScanInput;
+  scan: ScanCommandInput;
 
   minuteUTC: string; // Format yyyy-MM-dd HH:mm
   namespace: string;

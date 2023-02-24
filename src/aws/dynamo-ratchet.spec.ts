@@ -1,13 +1,11 @@
-import AWS from 'aws-sdk';
 import { DynamoRatchet } from './dynamo-ratchet';
 import { Logger } from '../common/logger';
-import { ExpressionAttributeValueMap, PutItemOutput, QueryInput } from 'aws-sdk/clients/dynamodb';
 import { LoggerLevelName } from '../common';
-import { DocumentClient } from 'aws-sdk/lib/dynamodb/document_client';
-import ScanInput = DocumentClient.ScanInput;
 import { JestRatchet } from '../jest';
+import { DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
+import { AttributeValue, PutItemCommandOutput, QueryCommandInput, QueryInput, ScanCommandInput } from '@aws-sdk/client-dynamodb';
 
-let mockDynamo: jest.Mocked<AWS.DynamoDB.DocumentClient>;
+let mockDynamo: jest.Mocked<DynamoDBDocumentClient>;
 
 describe('#dynamoRatchet', function () {
   beforeEach(() => {
@@ -17,7 +15,7 @@ describe('#dynamoRatchet', function () {
   xit('should handle ProvisionedThroughputExceeded exceptions', async () => {
     const dr: DynamoRatchet = new DynamoRatchet(mockDynamo);
     let row: number = 0;
-    const scan: ScanInput = {
+    const scan: ScanCommandInput = {
       TableName: 'cache-device-data',
       ProjectionExpression: 'compositeKey',
     };
@@ -63,7 +61,7 @@ describe('#dynamoRatchet', function () {
       Limit: limit,
       ExpressionAttributeValues: {
         ':purchaseId': 'some-purchase',
-      } as ExpressionAttributeValueMap,
+      } as Record<string, AttributeValue>,
     };
 
     const res: any[] = await dr.fetchFullObjectsMatchingKeysOnlyIndexQuery(qry, ['key1', 'key2']);
@@ -87,12 +85,12 @@ describe('#dynamoRatchet', function () {
     const nowSec: number = Math.floor(now / 1000);
     const curHash: string = 'someHash';
 
-    const qry: QueryInput = {
+    const qry: QueryCommandInput = {
       TableName: 'some-table',
       KeyConditionExpression: 'hashVal = :hashVal',
       ExpressionAttributeValues: {
         ':hashVal': curHash,
-      } as ExpressionAttributeValueMap,
+      } as Record<string, AttributeValue>,
     };
 
     const res: any[] = await dr.fullyExecuteQuery<any>(qry, null, 150);
@@ -143,7 +141,7 @@ describe('#dynamoRatchet', function () {
     };
 
     for (let i = 0; i < 5; i++) {
-      const rval: PutItemOutput = await dr.simplePutWithCollisionAvoidance(
+      const rval: PutItemCommandOutput = await dr.simplePutWithCollisionAvoidance(
         'cwtest',
         val,
         ['k1', 'k2'],
@@ -172,12 +170,12 @@ describe('#dynamoRatchet', function () {
 
     Logger.setLevel(LoggerLevelName.debug);
 
-    const input: QueryInput = {
+    const input: QueryCommandInput = {
       TableName: 'some-table',
       KeyConditionExpression: 'groupId = :g',
       ExpressionAttributeValues: {
         ':g': 'NeonBatch',
-      } as ExpressionAttributeValueMap,
+      } as Record<string, AttributeValue>,
     };
 
     const res: any[] = await dr.fullyExecuteQuery<any>(input);
@@ -189,12 +187,12 @@ describe('#dynamoRatchet', function () {
 
     Logger.setLevel(LoggerLevelName.debug);
 
-    const input: QueryInput = {
+    const input: QueryCommandInput = {
       TableName: 'some-table',
       KeyConditionExpression: 'groupId = :g',
       ExpressionAttributeValues: {
         ':g': 'NeonBatch',
-      } as ExpressionAttributeValueMap,
+      } as Record<string, AttributeValue>,
     };
 
     const res: number = await dr.fullyExecuteProcessOverQuery(input, async (v) => {

@@ -1,4 +1,3 @@
-import AWS from 'aws-sdk';
 import { S3CacheRatchet } from '../s3-cache-ratchet';
 import { DaemonProcessState } from './daemon-process-state';
 import { DaemonUtil } from './daemon-util';
@@ -11,6 +10,7 @@ import { Subject } from 'rxjs';
 import { PassThrough } from 'stream';
 import { CsvRatchet } from '../../node-csv';
 import { TestItem } from '../../node-csv/csv-ratchet.spec';
+import { S3 } from '@aws-sdk/client-s3';
 
 let mockS3CR: jest.Mocked<S3CacheRatchet>;
 
@@ -21,8 +21,11 @@ describe('#DaemonUtil', function () {
 
   it('should test the daemon util', async () => {
     mockS3CR.getDefaultBucket.mockReturnValueOnce('TEST-BUCKET');
-    mockS3CR.fetchMetaForCacheFile.mockResolvedValue({ Metadata: { daemon_meta: '{"id":"testid", "completedEpochMS":123456}' } });
-    mockS3CR.preSignedDownloadUrlForCacheFile.mockReturnValueOnce('https://test-link');
+    mockS3CR.fetchMetaForCacheFile.mockResolvedValue({
+      Metadata: { daemon_meta: '{"id":"testid", "completedEpochMS":123456}' },
+      $metadata: null,
+    });
+    mockS3CR.preSignedDownloadUrlForCacheFile.mockResolvedValue('https://test-link');
 
     const t1: DaemonProcessState = await DaemonUtil.stat(mockS3CR, 'test1.csv');
     Logger.info('Got : %j', t1);
@@ -56,7 +59,7 @@ describe('#DaemonUtil', function () {
   });
 
   xit('should test the daemon util streaming', async () => {
-    const s3: AWS.S3 = new AWS.S3({ region: 'us-east-1' });
+    const s3: S3 = new S3({ region: 'us-east-1' });
     const cache: S3CacheRatchet = new S3CacheRatchet(s3, 'test-bucket');
     const key: string = 's3-cache-ratchet.spec.ts';
 
@@ -84,7 +87,7 @@ describe('#DaemonUtil', function () {
     Logger.setLevel(LoggerLevelName.debug);
     const sub: Subject<TestItem> = new Subject<TestItem>();
     const out: PassThrough = new PassThrough();
-    const s3: AWS.S3 = new AWS.S3({ region: 'us-east-1' });
+    const s3: S3 = new S3({ region: 'us-east-1' });
     const cache: S3CacheRatchet = new S3CacheRatchet(s3, 'test-bucket');
     const key: string = 'test.csv';
 

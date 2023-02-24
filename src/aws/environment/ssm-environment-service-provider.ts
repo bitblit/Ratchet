@@ -1,7 +1,5 @@
-import AWS, { AWSError } from 'aws-sdk';
 import { Logger } from '../../common/logger';
-import { GetParameterResult } from 'aws-sdk/clients/ssm';
-import { PromiseResult } from 'aws-sdk/lib/request';
+import { GetParameterResult, SSM } from '@aws-sdk/client-ssm';
 import { PromiseRatchet } from '../../common/promise-ratchet';
 import { RequireRatchet } from '../../common/require-ratchet';
 import { ErrorRatchet } from '../../common/error-ratchet';
@@ -13,11 +11,11 @@ import { StringRatchet } from '../../common/string-ratchet';
  * Also hides the decryption detail from higher up services
  */
 export class SsmEnvironmentServiceProvider<T> implements EnvironmentServiceProvider<T> {
-  private ssm: AWS.SSM;
+  private ssm: SSM;
   public constructor(private region = 'us-east-1', private ssmEncrypted = true) {
     RequireRatchet.notNullOrUndefined(region);
     RequireRatchet.notNullOrUndefined(ssmEncrypted);
-    this.ssm = new AWS.SSM({ apiVersion: '2014-11-06', region: this.region });
+    this.ssm = new SSM({ apiVersion: '2014-11-06', region: this.region });
   }
 
   public async fetchConfig(name: string): Promise<T> {
@@ -30,7 +28,7 @@ export class SsmEnvironmentServiceProvider<T> implements EnvironmentServiceProvi
     let rval: T = null;
     let toParse: string = null;
     try {
-      const value: PromiseResult<GetParameterResult, AWSError> = await this.ssm.getParameter(params).promise();
+      const value: GetParameterResult = await this.ssm.getParameter(params);
       toParse = StringRatchet.trimToNull(value?.Parameter?.Value);
     } catch (err) {
       const errCode: string = err['code'] || '';

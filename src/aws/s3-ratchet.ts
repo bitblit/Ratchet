@@ -1,13 +1,6 @@
 import { RequireRatchet } from '../common/require-ratchet';
 
 export class S3Ratchet {
-  // Here because the native AWS SDK did not USED to have this function.  It
-  // Does now, so this is just a pass-thru for backwards compatibility
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-  public static async createPresignedUrl(s3: AWS.S3, operation: string, params: any): Promise<string> {
-    return s3.getSignedUrlPromise(operation, params);
-  }
-
   // Returns whether the URL passed is s3 valid (not whether it exists or not)
   public static checkS3UrlForValidity(value: string): boolean {
     let rval: boolean = false;

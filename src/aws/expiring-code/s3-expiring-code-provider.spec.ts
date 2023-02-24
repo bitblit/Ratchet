@@ -1,7 +1,7 @@
 import { JestRatchet } from '../../jest';
 import { S3CacheRatchet } from '../s3-cache-ratchet';
 import { S3ExpiringCodeProvider, S3ExpiringCodeProviderFileWrapper } from './s3-expiring-code-provider';
-import { PutObjectOutput } from 'aws-sdk/clients/s3';
+import { PutObjectCommandOutput, PutObjectOutput } from '@aws-sdk/client-s3';
 import { ExpiringCode } from './expiring-code';
 
 let mockS3Ratchet: jest.Mocked<S3CacheRatchet>;
@@ -25,7 +25,7 @@ describe('#S3ExpiringCodeProvider', () => {
 
   it('Should update file', async () => {
     const val: S3ExpiringCodeProvider = new S3ExpiringCodeProvider(mockS3Ratchet, 'test.json');
-    mockS3Ratchet.writeObjectToCacheFile.mockResolvedValue({} as PutObjectOutput);
+    mockS3Ratchet.writeObjectToCacheFile.mockResolvedValue({} as unknown as PutObjectCommandOutput);
 
     const wrote: PutObjectOutput = await val.updateFile([testCode]);
 
@@ -51,7 +51,7 @@ describe('#S3ExpiringCodeProvider', () => {
       data: [testCode],
       lastModifiedEpochMS: 1234,
     });
-    mockS3Ratchet.writeObjectToCacheFile.mockResolvedValue({} as PutObjectOutput);
+    mockS3Ratchet.writeObjectToCacheFile.mockResolvedValue({} as unknown as PutObjectCommandOutput);
     const val: S3ExpiringCodeProvider = new S3ExpiringCodeProvider(mockS3Ratchet, 'test.json');
 
     const output: boolean = await val.storeCode(testCode2);

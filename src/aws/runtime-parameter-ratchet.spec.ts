@@ -1,9 +1,7 @@
-import { DynamoRatchet } from './dynamo-ratchet';
 import { Logger } from '../common/logger';
 import { RuntimeParameterRatchet } from './runtime-parameter-ratchet';
 import { PromiseRatchet } from '../common/promise-ratchet';
 import { LoggerLevelName } from '../common';
-import { JestRatchet } from '../jest';
 import { StoredRuntimeParameter } from './runtime-parameter/stored-runtime-parameter';
 import { MemoryRuntimeParameterProvider } from './runtime-parameter/memory-runtime-parameter-provider';
 

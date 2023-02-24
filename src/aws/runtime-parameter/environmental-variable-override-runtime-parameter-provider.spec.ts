@@ -5,8 +5,6 @@ import { JestRatchet } from '../../jest/jest-ratchet';
 import { LoggerLevelName } from '../../common/logger-support/logger-level-name';
 import { Logger } from '../../common/logger';
 import { RuntimeParameterRatchet } from '../runtime-parameter-ratchet';
-import { PromiseRatchet } from '../../common/promise-ratchet';
-import AWS, { AWSError } from 'aws-sdk';
 import { EnvironmentalVariableOverrideRuntimeParameterProvider } from './environmental-variable-override-runtime-parameter-provider';
 
 let mockDynamoRatchet: jest.Mocked<DynamoRatchet>;

@@ -1,28 +1,26 @@
-/*
-    Wrap S3 with an ability to store and retrieve objects cached as json files
-*/
-
-import AWS from 'aws-sdk';
-import { Logger } from '../common/logger';
 import {
-  CopyObjectOutput,
-  CopyObjectRequest,
-  DeleteObjectOutput,
-  GetObjectOutput,
-  HeadObjectOutput,
-  ListObjectsOutput,
-  ListObjectsRequest,
-  ListObjectsV2Output,
-  ListObjectsV2Request,
-  PutObjectOutput,
-  PutObjectRequest,
-} from 'aws-sdk/clients/s3';
+  CopyObjectCommandInput,
+  CopyObjectCommandOutput,
+  DeleteObjectCommandOutput,
+  GetObjectCommand,
+  GetObjectCommandInput,
+  GetObjectCommandOutput,
+  HeadObjectCommandOutput,
+  ListObjectsCommandInput,
+  ListObjectsCommandOutput,
+  ListObjectsV2CommandInput,
+  ListObjectsV2CommandOutput,
+  PutObjectCommandInput,
+  PutObjectCommandOutput,
+  S3,
+} from '@aws-sdk/client-s3';
+import { Logger } from '../common/logger';
 import { RequireRatchet } from '../common/require-ratchet';
-import { Readable } from 'stream';
 import { ErrorRatchet, StopWatch } from '../common';
+import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 
 export class S3CacheRatchet {
-  constructor(private s3: AWS.S3, private defaultBucket: string = null) {
+  constructor(private s3: S3, private defaultBucket: string = null) {
     RequireRatchet.notNullOrUndefined(this.s3, 's3');
   }
 
@@ -30,13 +28,13 @@ export class S3CacheRatchet {
     return this.defaultBucket;
   }
 
-  public getS3(): AWS.S3 {
+  public getS3(): S3 {
     return this.s3;
   }
 
   public async fileExists(key: string, bucket: string = null): Promise<boolean> {
     try {
-      const head: HeadObjectOutput = await this.fetchMetaForCacheFile(key, this.bucketVal(bucket));
+      const head: HeadObjectCommandOutput = await this.fetchMetaForCacheFile(key, this.bucketVal(bucket));
       return !!head;
     } catch (err) {
       Logger.silly('Error calling file exists (as expected) %s', err);
@@ -52,7 +50,7 @@ export class S3CacheRatchet {
     };
 
     try {
-      const res: GetObjectOutput = await this.s3.getObject(params).promise();
+      const res: GetObjectCommandOutput = await this.s3.getObject(params);
       if (res && res.Body) {
         if (res.Body instanceof Buffer) {
           rval = res.Body;
@@ -92,14 +90,14 @@ export class S3CacheRatchet {
     return value ? (JSON.parse(value) as T) : null;
   }
 
-  public async removeCacheFile(key: string, bucket: string = null): Promise<DeleteObjectOutput> {
-    let rval: DeleteObjectOutput = null;
+  public async removeCacheFile(key: string, bucket: string = null): Promise<DeleteObjectCommandOutput> {
+    let rval: DeleteObjectCommandOutput = null;
     const params = {
       Bucket: this.bucketVal(bucket),
       Key: key,
     };
     try {
-      rval = await this.s3.deleteObject(params).promise();
+      rval = await this.s3.deleteObject(params);
     } catch (err) {
       if (err && err['statusCode'] == 404) {
         Logger.info('Swallowing 404 deleting missing object %s %s', bucket, key);
@@ -119,7 +117,7 @@ export class S3CacheRatchet {
     meta: any = {},
     cacheControl = 'max-age=30',
     contentType = 'application/json'
-  ): Promise<PutObjectOutput> {
+  ): Promise<PutObjectCommandOutput> {
     const json = JSON.stringify(dataObject);
     return this.writeStringToCacheFile(key, json, bucket, meta, cacheControl, contentType);
   }
@@ -132,7 +130,7 @@ export class S3CacheRatchet {
     meta: any = {},
     cacheControl = 'max-age=30',
     contentType = 'text/plain'
-  ): Promise<PutObjectOutput> {
+  ): Promise<PutObjectCommandOutput> {
     const params = {
       Bucket: this.bucketVal(bucket),
       Key: key,
@@ -142,19 +140,19 @@ export class S3CacheRatchet {
       Metadata: meta,
     };
 
-    const result: PutObjectOutput = await this.s3.putObject(params).promise();
+    const result: PutObjectCommandOutput = await this.s3.putObject(params);
     return result;
   }
 
-  public async writeStreamToCacheFile(
+  public async writeReadableStreamToCacheFile(
     key: string,
-    data: Readable,
+    data: ReadableStream,
     bucket: string = null,
     meta: any = {},
     cacheControl = 'max-age=30',
     contentType = 'text/plain'
-  ): Promise<PutObjectOutput> {
-    const params: PutObjectRequest = {
+  ): Promise<PutObjectCommandOutput> {
+    const params: PutObjectCommandInput = {
       Bucket: this.bucketVal(bucket),
       Key: key,
       Body: data,
@@ -163,7 +161,7 @@ export class S3CacheRatchet {
       Metadata: meta,
     };
 
-    const result: PutObjectOutput = await this.s3.upload(params).promise();
+    const result: PutObjectCommandOutput = await this.s3.putObject(params);
     return result;
   }
 
@@ -201,9 +199,9 @@ export class S3CacheRatchet {
         }
       } else {
         let shouldCopy: boolean = true;
-        const srcMeta: HeadObjectOutput = await this.fetchMetaForCacheFile(srcPrefix + sourceFile);
+        const srcMeta: HeadObjectCommandOutput = await this.fetchMetaForCacheFile(srcPrefix + sourceFile);
         if (targetFiles.includes(sourceFile)) {
-          const targetMeta: HeadObjectOutput = await targetRatchet.fetchMetaForCacheFile(targetPrefix + sourceFile);
+          const targetMeta: HeadObjectCommandOutput = await targetRatchet.fetchMetaForCacheFile(targetPrefix + sourceFile);
           if (srcMeta.ETag === targetMeta.ETag) {
             Logger.debug('Skipping - identical');
             shouldCopy = false;
@@ -211,9 +209,9 @@ export class S3CacheRatchet {
         }
         if (shouldCopy) {
           Logger.debug('Copying...');
-          const srcStream: Readable = this.fetchCacheFileAsReadable(srcPrefix + sourceFile);
+          const srcStream: ReadableStream = await this.fetchCacheFileAsReadableStream(srcPrefix + sourceFile);
           try {
-            const written: PutObjectOutput = await targetRatchet.writeStreamToCacheFile(
+            const written: PutObjectCommandOutput = await targetRatchet.writeReadableStreamToCacheFile(
               targetPrefix + sourceFile,
               srcStream,
               undefined,
@@ -234,37 +232,27 @@ export class S3CacheRatchet {
     return rval;
   }
 
-  public fetchCacheFileAsReadable(key: string, bucket: string = null): Readable {
+  public async fetchCacheFileAsReadableStream(key: string, bucket: string = null): Promise<ReadableStream> {
     const params = {
       Bucket: this.bucketVal(bucket),
       Key: key,
     };
-    const res: Readable = this.s3.getObject(params).createReadStream();
-    return res;
+    const output: GetObjectCommandOutput = await this.s3.getObject(params);
+    const readStream: ReadableStream = output.Body.transformToWebStream();
+    return readStream;
   }
 
-  public preSignedDownloadUrlForCacheFile(key: string, expirationSeconds = 3600, bucket: string = null): string {
-    const link: string = this.s3.getSignedUrl('getObject', {
-      Bucket: this.bucketVal(bucket),
-      Key: key,
-      Expires: expirationSeconds,
-    });
-    return link;
-  }
-
-  public async fetchMetaForCacheFile(key: string, bucket: string = null): Promise<HeadObjectOutput> {
-    let rval: HeadObjectOutput = null;
+  public async fetchMetaForCacheFile(key: string, bucket: string = null): Promise<HeadObjectCommandOutput> {
+    let rval: HeadObjectCommandOutput = null;
     try {
       const x = this.s3.headObject({
         Bucket: this.bucketVal(bucket),
         Key: key,
       });
-      rval = await this.s3
-        .headObject({
-          Bucket: this.bucketVal(bucket),
-          Key: key,
-        })
-        .promise();
+      rval = await this.s3.headObject({
+        Bucket: this.bucketVal(bucket),
+        Key: key,
+      });
     } catch (err) {
       if (err && err['statusCode'] == 404) {
         Logger.warn('Cache file %s %s not found returning null', this.bucketVal(bucket), key);
@@ -278,7 +266,7 @@ export class S3CacheRatchet {
 
   public async cacheFileAgeInSeconds(key: string, bucket: string = null): Promise<number> {
     try {
-      const res: HeadObjectOutput = await this.fetchMetaForCacheFile(key, bucket);
+      const res: HeadObjectCommandOutput = await this.fetchMetaForCacheFile(key, bucket);
       if (res && res.LastModified) {
         return Math.floor((new Date().getTime() - res.LastModified.getTime()) / 1000);
       } else {
@@ -295,21 +283,26 @@ export class S3CacheRatchet {
     }
   }
 
-  public async copyFile(srcKey: string, dstKey: string, srcBucket: string = null, dstBucket: string = null): Promise<CopyObjectOutput> {
-    const params: CopyObjectRequest = {
+  public async copyFile(
+    srcKey: string,
+    dstKey: string,
+    srcBucket: string = null,
+    dstBucket: string = null
+  ): Promise<CopyObjectCommandOutput> {
+    const params: CopyObjectCommandInput = {
       CopySource: '/' + this.bucketVal(srcBucket) + '/' + srcKey,
       Bucket: this.bucketVal(dstBucket),
       Key: dstKey,
       MetadataDirective: 'COPY',
     };
-    const rval: CopyObjectOutput = await this.s3.copyObject(params).promise();
+    const rval: CopyObjectCommandOutput = await this.s3.copyObject(params);
     return rval;
   }
 
   public async quietCopyFile(srcKey: string, dstKey: string, srcBucket: string = null, dstBucket: string = null): Promise<boolean> {
     let rval: boolean = false;
     try {
-      const tmp: CopyObjectOutput = await this.copyFile(srcKey, dstKey, srcBucket, dstBucket);
+      const tmp: CopyObjectCommandOutput = await this.copyFile(srcKey, dstKey, srcBucket, dstBucket);
       rval = true;
     } catch (err) {
       Logger.silly('Failed to copy file in S3 : %s', err);
@@ -317,11 +310,13 @@ export class S3CacheRatchet {
     return rval;
   }
 
-  public createDownloadLink(key: string, secondsUntilExpiration = 3600, bucket: string = null): string {
-    // URL
-    const params = { Bucket: this.bucketVal(bucket), Key: key, Expires: secondsUntilExpiration };
-    const url = this.s3.getSignedUrl('getObject', params);
-    return url;
+  public async preSignedDownloadUrlForCacheFile(key: string, expirationSeconds = 3600, bucket: string = null): Promise<string> {
+    const getCommand: GetObjectCommandInput = {
+      Bucket: this.bucketVal(bucket),
+      Key: key,
+    };
+    const link: string = await getSignedUrl(this.s3, new GetObjectCommand(getCommand), { expiresIn: expirationSeconds });
+    return link;
   }
 
   public async directChildrenOfPrefix(
@@ -332,15 +327,15 @@ export class S3CacheRatchet {
   ): Promise<string[]> {
     const returnValue: any[] = [];
 
-    const params: ListObjectsRequest = {
+    const params: ListObjectsCommandInput = {
       Bucket: this.bucketVal(bucket),
       Prefix: prefix,
       Delimiter: '/',
     };
 
-    let response: ListObjectsOutput = null;
+    let response: ListObjectsCommandOutput = null;
     do {
-      response = await this.s3.listObjects(params).promise();
+      response = await this.s3.listObjects(params);
 
       const prefixLength = prefix.length;
       // Process directories
@@ -355,20 +350,22 @@ export class S3CacheRatchet {
 
       // Process files
       if (response['Contents']) {
-        response['Contents'].forEach((cp) => {
-          if (!maxToReturn || returnValue.length < maxToReturn) {
-            if (expandFiles) {
-              const expanded: ExpandedFileChildren = {
-                link: this.createDownloadLink(cp['Key'], 3600, bucket),
-                name: cp['Key'].substring(prefixLength),
-                size: cp['Size'],
-              };
-              returnValue.push(expanded);
-            } else {
-              returnValue.push(cp['Key'].substring(prefixLength));
+        await Promise.all(
+          response['Contents'].map(async (cp) => {
+            if (!maxToReturn || returnValue.length < maxToReturn) {
+              if (expandFiles) {
+                const expanded: ExpandedFileChildren = {
+                  link: await this.preSignedDownloadUrlForCacheFile(cp['Key'], 3600, bucket),
+                  name: cp['Key'].substring(prefixLength),
+                  size: cp['Size'],
+                };
+                returnValue.push(expanded);
+              } else {
+                returnValue.push(cp['Key'].substring(prefixLength));
+              }
             }
-          }
-        });
+          })
+        );
       }
       params.Marker = response.NextMarker;
     } while (params.Marker && (!maxToReturn || returnValue.length < maxToReturn));
@@ -383,16 +380,16 @@ export class S3CacheRatchet {
     while (idx < returnValue.length) {
       const next: string = returnValue[idx++];
       Logger.debug('Pulling %s (%d remaining)', next, returnValue.length - idx);
-      const req: ListObjectsV2Request = {
+      const req: ListObjectsV2CommandInput = {
         Bucket: this.bucketVal(bucket),
         Prefix: next,
         Delimiter: '/',
       };
-      let resp: ListObjectsV2Output = null;
+      let resp: ListObjectsV2CommandOutput = null;
 
       do {
         req.ContinuationToken = resp ? resp.NextContinuationToken : null;
-        resp = await this.s3.listObjectsV2(req).promise();
+        resp = await this.s3.listObjectsV2(req);
         resp.CommonPrefixes.forEach((p) => {
           returnValue.push(p.Prefix);
         });

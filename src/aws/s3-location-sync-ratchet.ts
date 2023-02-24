@@ -1,13 +1,19 @@
-import AWS from 'aws-sdk';
+import {
+  CopyObjectCommandInput,
+  GetObjectOutput,
+  ListObjectsV2CommandInput,
+  ListObjectsV2CommandOutput,
+  PutObjectCommandInput,
+  S3,
+} from '@aws-sdk/client-s3';
 import _ from 'lodash';
-import { CopyObjectRequest, ListObjectsV2Output, ListObjectsV2Request, PutObjectRequest } from 'aws-sdk/clients/s3';
 import { Logger, PromiseRatchet, RequireRatchet } from '../common';
 
 export interface S3LocationSyncRatchetConfig {
-  srcS3: AWS.S3;
+  srcS3: S3;
   srcBucket: string;
   srcPrefix: string;
-  dstS3: AWS.S3;
+  dstS3: S3;
   dstBucket: string;
   dstPrefix: string;
   maxNumThreads?: number;
@@ -61,22 +67,23 @@ export class S3LocationSyncRatchet {
                 [${[this.config.srcBucket, key].join('/')} ---> ${[this.config.dstBucket, dstKey].join('/')}]`);
       try {
         if (express) {
-          const params: CopyObjectRequest = {
+          const params: CopyObjectCommandInput = {
             CopySource: encodeURIComponent([this.config.srcBucket, key].join('/')),
             Bucket: this.config.dstBucket,
             Key: dstKey,
             MetadataDirective: 'COPY',
           };
-          await this.config.dstS3.copyObject(params).promise();
+          await this.config.dstS3.copyObject(params);
         } else {
-          const params: PutObjectRequest = {
+          const fetched: GetObjectOutput = await this.config.srcS3.getObject({ Bucket: this.config.srcBucket, Key: key });
+          const params: PutObjectCommandInput = {
             Bucket: this.config.dstBucket,
             Key: dstKey,
-            Body: this.config.srcS3.getObject({ Bucket: this.config.srcBucket, Key: key }).createReadStream(),
+            Body: fetched.Body,
             ContentLength: size,
           };
 
-          await this.config.dstS3.upload(params).promise();
+          await this.config.dstS3.putObject(params);
         }
 
         completedCopying = true;
@@ -94,10 +101,10 @@ export class S3LocationSyncRatchet {
                   [${[this.config.srcBucket, key].join('/')} ---> ${[this.config.dstBucket, dstKey].join('/')}]`);
   }
 
-  public async listObjects(bucket: string, prefix: string, s3: AWS.S3): Promise<any> {
+  public async listObjects(bucket: string, prefix: string, s3: S3): Promise<any> {
     Logger.info(`Scanning bucket [${[bucket, prefix].join('/')}]`);
 
-    const params: ListObjectsV2Request = {
+    const params: ListObjectsV2CommandInput = {
       Bucket: bucket,
       Prefix: prefix,
     };
@@ -106,7 +113,7 @@ export class S3LocationSyncRatchet {
     const rval = {};
 
     while (more) {
-      const response: ListObjectsV2Output = await s3.listObjectsV2(params).promise();
+      const response: ListObjectsV2CommandOutput = await s3.listObjectsV2(params);
       more = response.IsTruncated;
       _.each(response.Contents, (obj) => {
         rval[obj.Key] = { Key: obj.Key, LastModified: obj.LastModified, ETag: obj.ETag, Size: obj.Size };

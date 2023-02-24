@@ -1,9 +1,8 @@
 import { AwsBatchRatchet } from './aws-batch-ratchet';
-import { JobSummary, SubmitJobResponse } from 'aws-sdk/clients/batch';
-import AWS from 'aws-sdk';
+import { Batch, JobStatus, JobSummary, SubmitJobCommandOutput } from '@aws-sdk/client-batch';
 import { JestRatchet } from '../jest';
 
-let mockBatch: jest.Mocked<AWS.Batch>;
+let mockBatch: jest.Mocked<Batch>;
 
 describe('#AwsBatchService', () => {
   beforeEach(() => {
@@ -13,20 +12,24 @@ describe('#AwsBatchService', () => {
   it('Should schedule background task', async () => {
     const svc: AwsBatchRatchet = new AwsBatchRatchet(mockBatch);
     mockBatch.submitJob.mockReturnValue({
-      promise: async () => Promise.resolve({ jobName: 'b' } as SubmitJobResponse),
+      promise: async () => Promise.resolve({ jobName: 'b' } as SubmitJobCommandOutput),
     } as never);
 
-    const res: SubmitJobResponse = await svc.scheduleBackgroundTask('BACKGROUND_TASK_NAME', {}, 'JOB-DEFINITION', 'QUEUE-NAME');
+    const res: SubmitJobCommandOutput = await svc.scheduleBackgroundTask('BACKGROUND_TASK_NAME', {}, 'JOB-DEFINITION', 'QUEUE-NAME');
     expect(res).not.toBeNull();
   });
 
   it('Should schedule batch job', async () => {
     const svc: AwsBatchRatchet = new AwsBatchRatchet(mockBatch);
     mockBatch.submitJob.mockReturnValue({
-      promise: async () => Promise.resolve({ jobName: 'b' } as SubmitJobResponse),
+      promise: async () => Promise.resolve({ jobName: 'b' } as SubmitJobCommandOutput),
     } as never);
 
-    const res: SubmitJobResponse = await svc.scheduleJob({ jobName: 'testName', jobDefinition: 'testDefinition', jobQueue: 'testQueue' });
+    const res: SubmitJobCommandOutput = await svc.scheduleJob({
+      jobName: 'testName',
+      jobDefinition: 'testDefinition',
+      jobQueue: 'testQueue',
+    });
     expect(res).not.toBeNull();
   });
 
@@ -47,7 +50,7 @@ describe('#AwsBatchService', () => {
       promise: async () => Promise.resolve([{}] as JobSummary[]),
     } as never);
 
-    const res: number = await svc.jobCountInState('testStatus', 'testQueue');
+    const res: number = await svc.jobCountInState(JobStatus.RUNNABLE, 'testQueue');
     expect(res).toEqual(1);
   });
 });

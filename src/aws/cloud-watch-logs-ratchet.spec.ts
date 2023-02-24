@@ -1,18 +1,18 @@
 import { Logger } from '../common/logger';
 import { CloudWatchLogsRatchet } from './cloud-watch-logs-ratchet';
 import {
-  DescribeLogGroupsResponse,
-  DescribeLogStreamsResponse,
-  GetQueryResultsResponse,
+  CloudWatchLogs,
+  DescribeLogGroupsCommandOutput,
+  DescribeLogStreamsCommandOutput,
+  GetQueryResultsCommandOutput,
   LogGroup,
   LogStream,
-  StartQueryRequest,
-  StartQueryResponse,
-} from 'aws-sdk/clients/cloudwatchlogs';
-import AWS from 'aws-sdk';
+  StartQueryCommandInput,
+  StartQueryCommandOutput,
+} from '@aws-sdk/client-cloudwatch-logs';
 import { JestRatchet } from '../jest';
 
-let mockCW: jest.Mocked<AWS.CloudWatchLogs>;
+let mockCW: jest.Mocked<CloudWatchLogs>;
 
 describe('#cloudWatchLogsRatchet', function () {
   beforeEach(() => {
@@ -27,7 +27,7 @@ describe('#cloudWatchLogsRatchet', function () {
             { logStreamName: '1', firstEventTimestamp: 100 },
             { logStreamName: '2', firstEventTimestamp: 200 },
           ],
-        } as DescribeLogStreamsResponse),
+        } as DescribeLogStreamsCommandOutput),
     } as never);
 
     const cw: CloudWatchLogsRatchet = new CloudWatchLogsRatchet(mockCW);
@@ -44,7 +44,7 @@ describe('#cloudWatchLogsRatchet', function () {
             { logStreamName: '1', firstEventTimestamp: 100 },
             { logStreamName: '2', firstEventTimestamp: 200 },
           ],
-        } as DescribeLogStreamsResponse),
+        } as DescribeLogStreamsCommandOutput),
     } as never);
 
     const cw: CloudWatchLogsRatchet = new CloudWatchLogsRatchet(mockCW);
@@ -67,7 +67,7 @@ describe('#cloudWatchLogsRatchet', function () {
       promise: async () =>
         Promise.resolve({
           logGroups: [{ logGroupName: 'pre1' }, { logGroupName: 'pre2' }],
-        } as DescribeLogGroupsResponse),
+        } as DescribeLogGroupsCommandOutput),
     } as never);
 
     mockCW.deleteLogGroup.mockReturnValue({
@@ -81,7 +81,10 @@ describe('#cloudWatchLogsRatchet', function () {
 
   it('should remove empty or old log streams', async () => {
     mockCW.describeLogStreams.mockReturnValue({
-      promise: async () => Promise.resolve({ logStreams: [{ logStreamName: '1' }, { logStreamName: '2' }] } as DescribeLogStreamsResponse),
+      promise: async () =>
+        Promise.resolve({
+          logStreams: [{ logStreamName: '1' }, { logStreamName: '2' }],
+        } as DescribeLogStreamsCommandOutput),
     } as never);
 
     mockCW.deleteLogStream.mockReturnValue({
@@ -96,7 +99,7 @@ describe('#cloudWatchLogsRatchet', function () {
 
   it('should find all matching groups', async () => {
     mockCW.describeLogGroups.mockReturnValue({
-      promise: async () => Promise.resolve({ logGroups: [{ logGroupName: '1' }, { logGroupName: '2' }] } as DescribeLogGroupsResponse),
+      promise: async () => Promise.resolve({ logGroups: [{ logGroupName: '1' }, { logGroupName: '2' }] } as DescribeLogGroupsCommandOutput),
     } as never);
 
     const cw: CloudWatchLogsRatchet = new CloudWatchLogsRatchet(mockCW);
@@ -109,11 +112,11 @@ describe('#cloudWatchLogsRatchet', function () {
 
   it('should execute an insights query', async () => {
     mockCW.startQuery.mockReturnValue({
-      promise: async () => Promise.resolve({ queryId: 'test' } as StartQueryResponse),
+      promise: async () => Promise.resolve({ queryId: 'test' } as StartQueryCommandOutput),
     } as never);
 
     mockCW.getQueryResults.mockReturnValue({
-      promise: async () => Promise.resolve({} as GetQueryResultsResponse),
+      promise: async () => Promise.resolve({} as GetQueryResultsCommandOutput),
     } as never);
 
     const cw: CloudWatchLogsRatchet = new CloudWatchLogsRatchet(mockCW);
@@ -122,14 +125,14 @@ describe('#cloudWatchLogsRatchet', function () {
 
     const now: number = Math.floor(new Date().getTime() / 1000);
 
-    const req: StartQueryRequest = {
+    const req: StartQueryCommandInput = {
       endTime: now,
       limit: 200,
       logGroupNames: logGroups,
       queryString: 'fields @timestamp, @message | sort @timestamp desc',
       startTime: now - 60 * 60 * 24, // 1 day ago
     };
-    const res: GetQueryResultsResponse = await cw.fullyExecuteInsightsQuery(req);
+    const res: GetQueryResultsCommandOutput = await cw.fullyExecuteInsightsQuery(req);
 
     expect(res).toBeTruthy();
 

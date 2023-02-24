@@ -7,7 +7,7 @@ import { SimpleCacheObjectWrapper } from './simple-cache-object-wrapper';
 import { SimpleCacheStorageProvider } from './simple-cache-storage-provider';
 import { RequireRatchet } from '../../common';
 import { DynamoRatchet } from '../dynamo-ratchet';
-import { ExpressionAttributeValueMap, PutItemOutput, QueryInput, ScanInput } from 'aws-sdk/clients/dynamodb';
+import { PutItemCommandOutput, QueryCommandInput, ScanCommandInput } from '@aws-sdk/client-dynamodb';
 
 export class DynamoDbStorageProvider implements SimpleCacheStorageProvider {
   // If hash key is provided, then the cache key is the range, otherwise the cache key is the hash
@@ -82,7 +82,7 @@ export class DynamoDbStorageProvider implements SimpleCacheStorageProvider {
     if (this.opts.dynamoExpiresColumnName && value.expiresEpochMS) {
       toSave[this.opts.dynamoExpiresColumnName] = Math.floor(value.expiresEpochMS / 1000);
     }
-    const wrote: PutItemOutput = await this.dynamo.simplePut(this.opts.tableName, toSave);
+    const wrote: PutItemCommandOutput = await this.dynamo.simplePut(this.opts.tableName, toSave);
     return !!wrote;
   }
 
@@ -101,7 +101,7 @@ export class DynamoDbStorageProvider implements SimpleCacheStorageProvider {
   public async readAll(): Promise<SimpleCacheObjectWrapper<any>[]> {
     let rval: SimpleCacheObjectWrapper<any>[] = null;
     if (this.opts.useRangeKeys) {
-      const qry: QueryInput = {
+      const qry: QueryCommandInput = {
         TableName: this.opts.tableName,
         KeyConditionExpression: '#cacheKey = :cacheKey',
         ExpressionAttributeNames: {
@@ -109,11 +109,11 @@ export class DynamoDbStorageProvider implements SimpleCacheStorageProvider {
         },
         ExpressionAttributeValues: {
           ':cacheKey': this.opts.hashKeyValue,
-        } as ExpressionAttributeValueMap,
+        },
       };
       rval = await this.dynamo.fullyExecuteQuery<SimpleCacheObjectWrapper<any>>(qry);
     } else {
-      const scan: ScanInput = {
+      const scan: ScanCommandInput = {
         TableName: this.opts.tableName,
       };
       rval = await this.dynamo.fullyExecuteScan<SimpleCacheObjectWrapper<any>>(scan);

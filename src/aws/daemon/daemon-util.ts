@@ -2,7 +2,7 @@ import { Logger } from '../../common/logger';
 import { DaemonProcessState } from './daemon-process-state';
 import { S3CacheRatchet } from '../s3-cache-ratchet';
 import { DaemonProcessCreateOptions } from './daemon-process-create-options';
-import { HeadObjectOutput, PutObjectOutput, PutObjectRequest } from 'aws-sdk/clients/s3';
+import { HeadObjectOutput, PutObjectOutput, PutObjectRequest } from '@aws-sdk/client-s3';
 import { Readable } from 'stream';
 
 /**
@@ -66,13 +66,13 @@ export class DaemonUtil {
         Key: s3Key,
         ContentType: newState.contentType,
         Metadata: s3meta,
-        Body: contents,
+        Body: new Blob([contents]),
       };
       if (newState.targetFileName) {
         params.ContentDisposition = 'attachment;filename="' + newState.targetFileName + '"';
       }
 
-      const written: PutObjectOutput = await cache.getS3().putObject(params).promise();
+      const written: PutObjectOutput = await cache.getS3().putObject(params);
       Logger.silly('Daemon wrote : %s', written);
 
       return DaemonUtil.stat(cache, s3Key);
@@ -99,7 +99,7 @@ export class DaemonUtil {
       Body: data,
     };
 
-    const written: PutObjectOutput = await cache.getS3().upload(params).promise();
+    const written: PutObjectOutput = await cache.getS3().putObject(params);
     Logger.silly('Daemon wrote : %s', written);
 
     return DaemonUtil.stat(cache, s3Key);
@@ -128,7 +128,7 @@ export class DaemonUtil {
         stat = JSON.parse(metaString) as DaemonProcessState;
 
         if (stat.completedEpochMS && !stat.error) {
-          stat.link = s3Cache.preSignedDownloadUrlForCacheFile(path);
+          stat.link = await s3Cache.preSignedDownloadUrlForCacheFile(path);
         }
       } else {
         Logger.warn('No metadata found! (Head was %j)', meta);

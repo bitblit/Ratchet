@@ -1,10 +1,10 @@
 import { CloudWatchMetricsRatchet } from './cloud-watch-metrics-ratchet';
 import { KeyValue } from '../common/key-value';
 import { CloudWatchMetricsUnit } from './model/cloud-watch-metrics-unit';
-import AWS from 'aws-sdk';
+import { CloudWatch } from '@aws-sdk/client-cloudwatch';
 import { JestRatchet } from '../jest';
 
-let mockCW: jest.Mocked<AWS.CloudWatch>;
+let mockCW: jest.Mocked<CloudWatch>;
 
 describe('#cloudWatchMetricsRatchet', function () {
   beforeEach(() => {

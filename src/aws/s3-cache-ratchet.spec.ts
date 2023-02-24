@@ -1,14 +1,12 @@
-import AWS from 'aws-sdk';
+import { CopyObjectCommandOutput, GetObjectCommandOutput, HeadObjectCommandOutput, PutObjectCommandOutput, S3 } from '@aws-sdk/client-s3';
 import { S3CacheRatchet } from './s3-cache-ratchet';
 import { Logger } from '../common/logger';
-import { CopyObjectOutput, GetObjectOutput, HeadObjectOutput, PutObjectOutput } from 'aws-sdk/clients/s3';
 import { JestRatchet } from '../jest';
 import { StringReadable } from '../stream/string-readable';
-import { Readable } from 'stream';
 import { StringRatchet } from '../common';
 
-let mockS3: jest.Mocked<AWS.S3>;
-let mockS3OtherAccount: jest.Mocked<AWS.S3>;
+let mockS3: jest.Mocked<S3>;
+let mockS3OtherAccount: jest.Mocked<S3>;
 
 describe('#fileExists', function () {
   beforeEach(() => {
@@ -26,7 +24,7 @@ describe('#fileExists', function () {
 
   it('should return false for files that do not exist', async () => {
     mockS3.headObject.mockReturnValue({
-      promise: async () => Promise.reject({ statusCode: 404 } as HeadObjectOutput),
+      promise: async () => Promise.reject({ statusCode: 404, $metadata: null } as HeadObjectCommandOutput),
     } as never);
     const cache: S3CacheRatchet = new S3CacheRatchet(mockS3, 'test-bucket');
     const out: boolean = await cache.fileExists('test-missing-file');
@@ -38,14 +36,14 @@ describe('#fileExists', function () {
     mockS3.getSignedUrl.mockReturnValue('https://test.link/test.jpg');
 
     const cache: S3CacheRatchet = new S3CacheRatchet(mockS3, 'test-bucket');
-    const out: string = await cache.createDownloadLink('test.jpg', 300);
+    const out: string = await cache.preSignedDownloadUrlForCacheFile('test.jpg', 300);
 
     expect(out).toEqual('https://test.link/test.jpg');
   });
 
   it('should copy an object', async () => {
     mockS3.copyObject.mockReturnValue({
-      promise: async () => Promise.resolve({} as CopyObjectOutput),
+      promise: async () => Promise.resolve({} as CopyObjectCommandOutput),
     } as never);
     const cache: S3CacheRatchet = new S3CacheRatchet(mockS3, 'test-bucket');
     const out: boolean = await cache.quietCopyFile('test.png', 'test2.png');
@@ -54,20 +52,27 @@ describe('#fileExists', function () {
   });
 
   it('should copy a file to s3', async () => {
-    mockS3.upload.mockReturnValue({
-      promise: async () => Promise.resolve({} as PutObjectOutput),
+    mockS3.putObject.mockReturnValue({
+      promise: async () => Promise.resolve({} as PutObjectCommandOutput),
     } as never);
 
     const cache: S3CacheRatchet = new S3CacheRatchet(mockS3, 'test-bucket');
-    const stream: Readable = StringReadable.stringToReadable('tester');
+    const stream: ReadableStream = StringReadable.stringToWebReadableStream('tester');
 
-    const out: PutObjectOutput = await cache.writeStreamToCacheFile('s3-cache-ratchet.spec.ts', stream, null, {}, null, 'text/typescript');
+    const out: PutObjectCommandOutput = await cache.writeReadableStreamToCacheFile(
+      's3-cache-ratchet.spec.ts',
+      stream,
+      null,
+      {},
+      null,
+      'text/typescript'
+    );
 
     expect(out).toBeTruthy();
   });
 
   xit('should list direct children past 1000', async () => {
-    const s3: AWS.S3 = new AWS.S3({ region: 'us-east-1' });
+    const s3: S3 = new S3({ region: 'us-east-1' });
     const cache: S3CacheRatchet = new S3CacheRatchet(s3, 'test-bucket');
     const out: string[] = await cache.directChildrenOfPrefix('test/aws/test-path-with-lots-of-childen/');
     expect(out).toBeTruthy();
@@ -80,7 +85,10 @@ describe('#fileExists', function () {
   it('should pull a file as a string', async () => {
     mockS3.getObject.mockReturnValue({
       promise: async () =>
-        Promise.resolve({ Body: Buffer.from(JSON.stringify({ test: StringRatchet.createRandomHexString(128) })) } as GetObjectOutput),
+        Promise.resolve({
+          Body: StringReadable.stringToWebReadableStream(JSON.stringify({ test: StringRatchet.createRandomHexString(128) })),
+          $metadata: null,
+        } as GetObjectCommandOutput),
     } as never);
 
     const cache: S3CacheRatchet = new S3CacheRatchet(mockS3, 'test-bucket');

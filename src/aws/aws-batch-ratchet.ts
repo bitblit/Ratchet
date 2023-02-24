@@ -1,18 +1,25 @@
-import AWS from 'aws-sdk';
+import {
+  Batch,
+  JobStatus,
+  JobSummary,
+  ListJobsCommandInput,
+  ListJobsCommandOutput,
+  SubmitJobCommandInput,
+  SubmitJobCommandOutput,
+} from '@aws-sdk/client-batch';
 import { DateTime } from 'luxon';
-import { JobStatus, JobSummary, ListJobsRequest, ListJobsResponse, SubmitJobRequest, SubmitJobResponse } from 'aws-sdk/clients/batch';
 import { Logger, RequireRatchet } from '../common';
 
 /**
  * Endpoints for doing api level integrations
  */
 export class AwsBatchRatchet {
-  constructor(private batch: AWS.Batch, private defaultQueueName?: string, private defaultJobDefinition?: string) {}
+  constructor(private batch: Batch, private defaultQueueName?: string, private defaultJobDefinition?: string) {}
 
-  public async scheduleJob(options: SubmitJobRequest): Promise<SubmitJobResponse> {
+  public async scheduleJob(options: SubmitJobCommandInput): Promise<SubmitJobCommandOutput> {
     Logger.info('Submitting batch job %s', options.jobName);
     try {
-      const rval: SubmitJobResponse = await this.batch.submitJob(options).promise();
+      const rval: SubmitJobCommandOutput = await this.batch.submitJob(options);
       Logger.info('Job %s(%s) submitted', rval.jobName, rval.jobId);
       return rval;
     } catch (err) {
@@ -29,7 +36,7 @@ export class AwsBatchRatchet {
   public async listJobs(queueName: string = this.defaultQueueName, jobStatus: JobStatus = null): Promise<JobSummary[]> {
     RequireRatchet.notNullOrUndefined(queueName, 'queueName');
     let rval: JobSummary[] = [];
-    const request: ListJobsRequest = {
+    const request: ListJobsCommandInput = {
       jobQueue: queueName,
       jobStatus: jobStatus,
       nextToken: null,
@@ -37,7 +44,7 @@ export class AwsBatchRatchet {
     Logger.info('Fetching %j', request);
     do {
       Logger.info('Pulling page...');
-      const tmp: ListJobsResponse = await this.batch.listJobs(request).promise();
+      const tmp: ListJobsCommandOutput = await this.batch.listJobs(request);
       rval = rval.concat(tmp.jobSummaryList);
       request.nextToken = tmp.nextToken;
     } while (request.nextToken);
@@ -50,17 +57,17 @@ export class AwsBatchRatchet {
     data: any = {},
     jobDefinition: string = this.defaultJobDefinition,
     queueName: string = this.defaultQueueName
-  ): Promise<SubmitJobResponse> {
+  ): Promise<SubmitJobCommandOutput> {
     Logger.info('Submitting background task to AWS batch: %s %j %s', taskName, data, queueName);
 
     RequireRatchet.notNullOrUndefined(jobDefinition, 'jobDefinition');
     RequireRatchet.notNullOrUndefined(queueName, 'queueName');
 
-    let rval: SubmitJobResponse = null;
+    let rval: SubmitJobCommandOutput = null;
 
     const jobName: string = `${jobDefinition}-${taskName}_${DateTime.utc().toFormat('yyyy-MM-dd-HH-mm')}`;
 
-    const options: SubmitJobRequest = {
+    const options: SubmitJobCommandInput = {
       jobName,
       jobDefinition,
       jobQueue: queueName,
@@ -72,7 +79,7 @@ export class AwsBatchRatchet {
     };
 
     try {
-      rval = await this.batch.submitJob(options).promise();
+      rval = await this.batch.submitJob(options);
       Logger.info('Job %s(%s) submitted', rval.jobName, rval.jobId);
     } catch (err) {
       Logger.error(

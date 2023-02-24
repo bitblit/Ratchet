@@ -1,9 +1,8 @@
-import { DescribeLogGroupsResponse, DescribeLogStreamsResponse } from 'aws-sdk/clients/cloudwatchlogs';
-import AWS from 'aws-sdk';
+import { CloudWatchLogs, DescribeLogStreamsCommandOutput } from '@aws-sdk/client-cloudwatch-logs';
 import { JestRatchet } from '../jest';
 import { CloudWatchLogGroupRatchet } from './cloud-watch-log-group-ratchet';
 
-let mockCW: jest.Mocked<AWS.CloudWatchLogs>;
+let mockCW: jest.Mocked<CloudWatchLogs>;
 
 describe('#CloudWatchLogGroupRatchet', function () {
   beforeEach(() => {
@@ -12,7 +11,10 @@ describe('#CloudWatchLogGroupRatchet', function () {
 
   it('should read log stream names', async () => {
     mockCW.describeLogStreams.mockReturnValue({
-      promise: async () => Promise.resolve({ logStreams: [{ logStreamName: '1' }, { logStreamName: '2' }] } as DescribeLogStreamsResponse),
+      promise: async () =>
+        Promise.resolve({
+          logStreams: [{ logStreamName: '1' }, { logStreamName: '2' }],
+        } as DescribeLogStreamsCommandOutput),
     } as never);
 
     const cw: CloudWatchLogGroupRatchet = new CloudWatchLogGroupRatchet('testGroup', mockCW);

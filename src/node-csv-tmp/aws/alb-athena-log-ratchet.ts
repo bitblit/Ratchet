@@ -6,6 +6,7 @@ import { RequireRatchet } from '../../common/require-ratchet';
 import { StringRatchet } from '../../common/string-ratchet';
 import { S3Ratchet } from '../../aws/s3-ratchet';
 import { CsvRatchet } from '../../node-csv/csv-ratchet';
+import { S3 } from '@aws-sdk/client-s3';
 
 // A class to simplify reading an Athena table based on ALB Logs
 // NOTE: This class only runs on Node since it depends on fs and path
@@ -17,7 +18,7 @@ export class AlbAthenaLogRatchet {
 
   public async updatePartitions(
     rootPath: string,
-    s3: AWS.S3,
+    s3: S3,
     startTimeEpochMS: number = new Date().getTime() - 1000 * 60 * 60 * 24,
     endTimeEpochMS: number = new Date().getTime()
   ): Promise<string[]> {

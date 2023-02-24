@@ -1,8 +1,6 @@
-import AWS from 'aws-sdk';
 import { ReadyToSendEmail } from './ready-to-send-email';
-import { RequireRatchet } from '../../common/require-ratchet';
 import { Logger } from '../../common/logger';
-import { SendRawEmailRequest, SendRawEmailResponse } from 'aws-sdk/clients/ses';
+import { SendRawEmailRequest, SendRawEmailResponse, SES } from '@aws-sdk/client-ses';
 import { StringRatchet } from '../../common/string-ratchet';
 import { MailerConfig } from './mailer-config';
 import { ErrorRatchet } from '../../common/error-ratchet';
@@ -11,6 +9,7 @@ import { EmailAttachment } from './email-attachment';
 import { DateTime } from 'luxon';
 import { Base64Ratchet } from '../../common/base64-ratchet';
 import { MailerLike } from './mailer-like';
+import { RequireRatchet } from '../../common/require-ratchet';
 
 /**
  * Generic Mail Sender for AWS.
@@ -22,7 +21,7 @@ import { MailerLike } from './mailer-like';
 export class Mailer implements MailerLike {
   public static readonly EMAIL: RegExp = new RegExp('.+@.+\\.[a-z]+');
 
-  constructor(private ses: AWS.SES, private config: MailerConfig = {} as MailerConfig) {
+  constructor(private ses: SES, private config: MailerConfig = {} as MailerConfig) {
     RequireRatchet.notNullOrUndefined(this.ses);
     if (!!config.archive && !config.archive.getDefaultBucket()) {
       throw new Error('If archive specified, must set a default bucket');
@@ -230,10 +229,10 @@ export class Mailer implements MailerLike {
         rawMail += '\n\n--' + boundary + '--\n';
 
         const params: SendRawEmailRequest = {
-          RawMessage: { Data: rawMail },
+          RawMessage: { Data: new TextEncoder().encode(rawMail) },
         };
 
-        rval = await this.ses.sendRawEmail(params).promise();
+        rval = await this.ses.sendRawEmail(params);
       } catch (err) {
         Logger.error('Error while processing email: %s', err, err);
       }
@@ -273,7 +272,7 @@ export class Mailer implements MailerLike {
                 Source: rts.fromAddress || this.defaultSendingAddress
             };
 
-            rval = await this.ses.sendEmail(params).promise();
+            rval = await this.ses.sendEmail(params);
 
             Logger.debug('Got send result : %j', rval);
         } catch (err) {

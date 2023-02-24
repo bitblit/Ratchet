@@ -2,68 +2,77 @@
     Helper functions for DynamoDB
 */
 
-import AWS, { AWSError } from 'aws-sdk';
-import { Logger } from '../common/logger';
-import { PromiseResult } from 'aws-sdk/lib/request';
-import { DurationRatchet } from '../common/duration-ratchet';
 import {
-  BatchGetItemInput,
-  BatchGetItemOutput,
-  BatchWriteItemInput,
-  BatchWriteItemOutput,
-  DeleteItemInput,
-  DeleteItemOutput,
-  ExpressionAttributeNameMap,
-  ExpressionAttributeValueMap,
-  GetItemOutput,
-  PutItemInput,
-  QueryInput,
-  QueryOutput,
-  ScanInput,
-  ScanOutput,
-  UpdateItemInput,
-  UpdateItemOutput,
-} from 'aws-sdk/clients/dynamodb';
-import { DocumentClient } from 'aws-sdk/lib/dynamodb/document_client';
+  BatchGetCommand,
+  BatchWriteCommand,
+  DeleteCommand,
+  DynamoDBDocumentClient,
+  GetCommand,
+  PutCommand,
+  QueryCommand,
+  ScanCommand,
+} from '@aws-sdk/lib-dynamodb';
+import { Logger } from '../common/logger';
+import { DurationRatchet } from '../common/duration-ratchet';
 import { DynamoCountResult } from './model/dynamo-count-result';
 import { PromiseRatchet } from '../common/promise-ratchet';
-import { Object } from 'aws-sdk/clients/s3';
 import { NumberRatchet } from '../common/number-ratchet';
 import { ErrorRatchet } from '../common/error-ratchet';
 import { RequireRatchet } from '../common/require-ratchet';
-import PutItemOutput = DocumentClient.PutItemOutput;
-import GetItemInput = DocumentClient.GetItemInput;
 import { DynamoRatchetLike } from './dynamo-ratchet-like';
+import {
+  AttributeValue,
+  BatchGetItemCommandInput,
+  BatchGetItemCommandOutput,
+  BatchWriteItemCommandInput,
+  BatchWriteItemCommandOutput,
+  DeleteItemCommandInput,
+  DeleteItemCommandOutput,
+  GetItemCommandInput,
+  GetItemCommandOutput,
+  PutItemCommandInput,
+  PutItemCommandOutput,
+  QueryCommandInput,
+  QueryCommandOutput,
+  ScanCommandInput,
+  ScanCommandOutput,
+  UpdateItemCommand,
+  UpdateItemCommandInput,
+  UpdateItemCommandOutput,
+} from '@aws-sdk/client-dynamodb';
 
 export class DynamoRatchet implements DynamoRatchetLike {
-  constructor(private awsDDB: AWS.DynamoDB.DocumentClient) {
+  constructor(private awsDDB: DynamoDBDocumentClient) {
     if (!awsDDB) {
       throw 'awsDDB may not be null';
     }
   }
 
-  public getDDB(): AWS.DynamoDB.DocumentClient {
+  public getDDB(): DynamoDBDocumentClient {
     return this.awsDDB;
   }
 
   public async tableIsEmpty(tableName: string): Promise<boolean> {
-    const scan: ScanInput = {
+    const scan: ScanCommandInput = {
       TableName: tableName,
       Limit: 1,
     };
 
-    const scanOutput: ScanOutput = await this.throughputSafeScanOrQuery<ScanInput, ScanOutput>((o) => this.scanPromise(o), scan);
-    return scanOutput.Items.length === 0;
+    const ScanCommandOutput: ScanCommandOutput = await this.throughputSafeScanOrQuery<ScanCommandInput, ScanCommandOutput>(
+      (o) => this.scanPromise(o),
+      scan
+    );
+    return ScanCommandOutput.Items.length === 0;
   }
 
   // A little pass-thru to simplify passing around this function
-  public async scanPromise(input: ScanInput): Promise<ScanOutput> {
-    return this.awsDDB.scan(input).promise();
+  public async scanPromise(input: ScanCommandInput): Promise<ScanCommandOutput> {
+    return this.awsDDB.send(new ScanCommand(input));
   }
 
   // A little pass-thru to simplify passing around this function
-  public async queryPromise(input: QueryInput): Promise<QueryOutput> {
-    return this.awsDDB.query(input).promise();
+  public async queryPromise(input: QueryCommandInput): Promise<QueryCommandOutput> {
+    return this.awsDDB.send(new QueryCommand(input));
   }
 
   // This basically wraps up scans and queries with a function that will auto-retry them if a
@@ -100,7 +109,7 @@ export class DynamoRatchet implements DynamoRatchetLike {
     return rval;
   }
 
-  public async fullyExecuteQueryCount(qry: QueryInput, delayMS = 0): Promise<DynamoCountResult> {
+  public async fullyExecuteQueryCount(qry: QueryCommandInput, delayMS = 0): Promise<DynamoCountResult> {
     try {
       qry.Select = 'COUNT'; // Force it to be a count query
       Logger.debug('Executing count query : %j', qry);
@@ -112,13 +121,13 @@ export class DynamoRatchet implements DynamoRatchetLike {
       };
 
       const start: number = new Date().getTime();
-      let qryResults: PromiseResult<any, any> = null;
+      let qryResults: QueryCommandOutput = null;
 
       const myLimit: number = qry.Limit;
       qry.Limit = null;
 
       do {
-        qryResults = await this.throughputSafeScanOrQuery<QueryInput, QueryOutput>((o) => this.queryPromise(o), qry);
+        qryResults = await this.throughputSafeScanOrQuery<QueryCommandInput, QueryCommandOutput>((o) => this.queryPromise(o), qry);
         rval.count += qryResults['Count'];
         rval.scannedCount += qryResults['ScannedCount'];
         rval.pages++;
@@ -141,7 +150,7 @@ export class DynamoRatchet implements DynamoRatchetLike {
     }
   }
 
-  public async fullyExecuteQuery<T>(qry: QueryInput, delayMS = 0, softLimit: number = null): Promise<T[]> {
+  public async fullyExecuteQuery<T>(qry: QueryCommandInput, delayMS = 0, softLimit: number = null): Promise<T[]> {
     const rval: T[] = [];
     await this.fullyExecuteProcessOverQuery<T>(
       qry,
@@ -155,7 +164,7 @@ export class DynamoRatchet implements DynamoRatchetLike {
   }
 
   public async fullyExecuteProcessOverQuery<T>(
-    qry: QueryInput,
+    qry: QueryCommandInput,
     proc: (val: T) => Promise<void>,
     delayMS = 0,
     softLimit: number = null
@@ -166,7 +175,10 @@ export class DynamoRatchet implements DynamoRatchetLike {
       const start: number = new Date().getTime();
       Logger.debug('Pulling %j', qry);
 
-      let qryResults: QueryOutput = await this.throughputSafeScanOrQuery<QueryInput, QueryOutput>((o) => this.queryPromise(o), qry);
+      let qryResults: QueryCommandOutput = await this.throughputSafeScanOrQuery<QueryCommandInput, QueryCommandOutput>(
+        (o) => this.queryPromise(o),
+        qry
+      );
       for (let i = 0; i < qryResults.Items.length; i++) {
         await proc(qryResults.Items[i] as unknown as T);
         cnt++;
@@ -179,7 +191,7 @@ export class DynamoRatchet implements DynamoRatchetLike {
         // If Limit was set on the initial query, stop after 1
         Logger.silly('Found more rows - requery with key %j', qryResults.LastEvaluatedKey);
         qry['ExclusiveStartKey'] = qryResults.LastEvaluatedKey;
-        qryResults = await this.throughputSafeScanOrQuery<QueryInput, QueryOutput>((o) => this.queryPromise(o), qry);
+        qryResults = await this.throughputSafeScanOrQuery<QueryCommandInput, QueryCommandOutput>((o) => this.queryPromise(o), qry);
         for (let i = 0; i < qryResults.Items.length; i++) {
           await proc(qryResults.Items[i] as unknown as T);
           cnt++;
@@ -206,7 +218,7 @@ export class DynamoRatchet implements DynamoRatchetLike {
     return cnt;
   }
 
-  public async fullyExecuteScanCount(scan: ScanInput, delayMS = 0): Promise<DynamoCountResult> {
+  public async fullyExecuteScanCount(scan: ScanCommandInput, delayMS = 0): Promise<DynamoCountResult> {
     try {
       scan.Select = 'COUNT'; // Force it to be a count query
       const rval: DynamoCountResult = {
@@ -218,13 +230,13 @@ export class DynamoRatchet implements DynamoRatchetLike {
       Logger.debug('Executing scan count : %j', scan);
       const start: number = new Date().getTime();
 
-      let qryResults: PromiseResult<any, any> = null;
+      let qryResults: ScanCommandOutput = null;
 
       const myLimit: number = scan.Limit;
       scan.Limit = null;
 
       do {
-        qryResults = await this.throughputSafeScanOrQuery<ScanInput, ScanOutput>((o) => this.scanPromise(o), scan);
+        qryResults = await this.throughputSafeScanOrQuery<ScanCommandInput, ScanCommandOutput>((o) => this.scanPromise(o), scan);
         rval.count += qryResults['Count'];
         rval.scannedCount += qryResults['ScannedCount'];
         rval.pages++;
@@ -247,7 +259,7 @@ export class DynamoRatchet implements DynamoRatchetLike {
     }
   }
 
-  public async fullyExecuteScan<T>(scan: ScanInput, delayMS = 0, softLimit: number = null): Promise<T[]> {
+  public async fullyExecuteScan<T>(scan: ScanCommandInput, delayMS = 0, softLimit: number = null): Promise<T[]> {
     const rval: T[] = [];
     await this.fullyExecuteProcessOverScan<T>(
       scan,
@@ -261,7 +273,7 @@ export class DynamoRatchet implements DynamoRatchetLike {
   }
 
   public async fullyExecuteProcessOverScan<T>(
-    scan: ScanInput,
+    scan: ScanCommandInput,
     proc: (val: T) => Promise<void>,
     delayMS = 0,
     softLimit: number = null
@@ -273,7 +285,7 @@ export class DynamoRatchet implements DynamoRatchetLike {
 
       Logger.debug('Pulling %j', scan);
 
-      let qryResults: PromiseResult<any, any> = await this.throughputSafeScanOrQuery<ScanInput, ScanOutput>(
+      let qryResults: ScanCommandOutput = await this.throughputSafeScanOrQuery<ScanCommandInput, ScanCommandOutput>(
         (o) => this.scanPromise(o),
         scan
       );
@@ -285,7 +297,7 @@ export class DynamoRatchet implements DynamoRatchetLike {
       while (qryResults.LastEvaluatedKey && (softLimit === null || cnt < softLimit) && !scan.Limit) {
         Logger.silly('Found more rows - requery with key %j', qryResults.LastEvaluatedKey);
         scan['ExclusiveStartKey'] = qryResults.LastEvaluatedKey;
-        qryResults = await this.throughputSafeScanOrQuery<ScanInput, ScanOutput>((o) => this.scanPromise(o), scan);
+        qryResults = await this.throughputSafeScanOrQuery<ScanCommandInput, ScanCommandOutput>((o) => this.scanPromise(o), scan);
         for (let i = 0; i < qryResults.Items.length; i++) {
           await proc(qryResults.Items[i] as unknown as T);
           cnt++;
@@ -325,7 +337,7 @@ export class DynamoRatchet implements DynamoRatchetLike {
       while (batchItems.length > 0) {
         const curBatch: any[] = batchItems.slice(0, Math.min(batchItems.length, batchSize));
         batchItems = batchItems.slice(curBatch.length);
-        const params: BatchWriteItemInput = {
+        const params: BatchWriteItemCommandInput = {
           RequestItems: {},
           ReturnConsumedCapacity: 'TOTAL',
           ReturnItemCollectionMetrics: 'SIZE',
@@ -334,14 +346,14 @@ export class DynamoRatchet implements DynamoRatchetLike {
 
         let tryCount = 1;
         let done = false;
-        let batchResults: BatchWriteItemOutput = null;
+        let batchResults: BatchWriteItemCommandOutput = null;
         while (!done && tryCount < 7) {
           try {
-            batchResults = await this.awsDDB.batchWrite(params).promise();
+            batchResults = await this.awsDDB.send(new BatchWriteCommand(params));
           } catch (err) {
             if (DynamoRatchet.objectIsErrorWithProvisionedThroughputExceededExceptionCode(err)) {
               Logger.info('Caught ProvisionedThroughputExceededException - retrying delete');
-              batchResults = { UnprocessedItems: params.RequestItems }; // Just retry everything
+              batchResults = { UnprocessedItems: params.RequestItems } as BatchWriteItemCommandOutput; // Just retry everything
             } else {
               throw err; // We only retry on throughput
             }
@@ -382,7 +394,11 @@ export class DynamoRatchet implements DynamoRatchetLike {
     return rval;
   }
 
-  public async fetchFullObjectsMatchingKeysOnlyIndexQuery<T>(qry: QueryInput, keyNames: string[], batchSize: number = 25): Promise<T[]> {
+  public async fetchFullObjectsMatchingKeysOnlyIndexQuery<T>(
+    qry: QueryCommandInput,
+    keyNames: string[],
+    batchSize: number = 25
+  ): Promise<T[]> {
     RequireRatchet.notNullOrUndefined(qry);
     RequireRatchet.notNullOrUndefined(qry.TableName);
     RequireRatchet.notNullOrUndefined(keyNames);
@@ -400,7 +416,7 @@ export class DynamoRatchet implements DynamoRatchetLike {
     }
 
     let rval: T[] = [];
-    const batches: BatchGetItemInput[] = [];
+    const batches: BatchGetItemCommandInput[] = [];
     let remain: any[][] = Object.assign([], inKeys);
     while (remain.length > 0) {
       const curBatch: any[] = remain.slice(0, Math.min(remain.length, batchSize));
@@ -409,7 +425,7 @@ export class DynamoRatchet implements DynamoRatchetLike {
       tableEntry[tableName] = {
         Keys: curBatch,
       };
-      const nextBatch: BatchGetItemInput = {
+      const nextBatch: BatchGetItemCommandInput = {
         RequestItems: tableEntry,
         ReturnConsumedCapacity: 'TOTAL',
       };
@@ -419,11 +435,11 @@ export class DynamoRatchet implements DynamoRatchetLike {
 
     for (let i = 0; i < batches.length; i++) {
       Logger.info('Processing batch %d of %d', i, batches.length);
-      const input: BatchGetItemInput = batches[i];
+      const input: BatchGetItemCommandInput = batches[i];
       let tryCount: number = 1;
       do {
         Logger.silly('Pulling %j', input);
-        const res: BatchGetItemOutput = await this.awsDDB.batchGet(input).promise();
+        const res: BatchGetItemCommandOutput = await this.awsDDB.send(new BatchGetCommand(input));
 
         // Copy in all the data
         rval = rval.concat(res.Responses[tableName] as unknown as T[]);
@@ -462,7 +478,7 @@ export class DynamoRatchet implements DynamoRatchetLike {
       while (batchItems.length > 0) {
         const curBatch: any[] = batchItems.slice(0, Math.min(batchItems.length, batchSize));
         batchItems = batchItems.slice(curBatch.length);
-        const params: BatchWriteItemInput = {
+        const params: BatchWriteItemCommandInput = {
           RequestItems: {},
           ReturnConsumedCapacity: 'TOTAL',
           ReturnItemCollectionMetrics: 'SIZE',
@@ -471,14 +487,14 @@ export class DynamoRatchet implements DynamoRatchetLike {
 
         let tryCount = 1;
         let done = false;
-        let batchResults: BatchWriteItemOutput = null;
+        let batchResults: BatchWriteItemCommandOutput = null;
         while (!done && tryCount < 7) {
           try {
-            batchResults = await this.awsDDB.batchWrite(params).promise();
+            batchResults = await this.awsDDB.send(new BatchWriteCommand(params));
           } catch (err) {
             if (DynamoRatchet.objectIsErrorWithProvisionedThroughputExceededExceptionCode(err)) {
               Logger.info('Caught ProvisionedThroughputExceededException - retrying delete');
-              batchResults = { UnprocessedItems: params.RequestItems }; // Just retry everything
+              batchResults = { UnprocessedItems: params.RequestItems } as BatchWriteItemCommandOutput; // Just retry everything
             } else {
               throw err; // We only retry on throughput
             }
@@ -522,11 +538,11 @@ export class DynamoRatchet implements DynamoRatchetLike {
   }
 
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-  public async simplePut(tableName: string, value: any, autoRetryCount: number = 3): Promise<PutItemOutput> {
-    let rval: PutItemOutput = null;
+  public async simplePut(tableName: string, value: any, autoRetryCount: number = 3): Promise<PutItemCommandOutput> {
+    let rval: PutItemCommandOutput = null;
     let currentTry: number = 0;
 
-    const params: PutItemInput = {
+    const params: PutItemCommandInput = {
       Item: value,
       ReturnConsumedCapacity: 'TOTAL',
       TableName: tableName,
@@ -534,7 +550,7 @@ export class DynamoRatchet implements DynamoRatchetLike {
 
     while (!rval && currentTry < autoRetryCount) {
       try {
-        rval = await this.awsDDB.put(params).promise();
+        rval = await this.awsDDB.send(new PutCommand(params));
       } catch (err) {
         if (DynamoRatchet.objectIsErrorWithProvisionedThroughputExceededExceptionCode(err)) {
           const wait: number = Math.pow(2, currentTry) * 1000;
@@ -554,20 +570,20 @@ export class DynamoRatchet implements DynamoRatchetLike {
 
   public async simplePutOnlyIfFieldIsNullOrUndefined(tableName: string, value: any, fieldName: string): Promise<boolean> {
     let rval: boolean = false;
-    const params: PutItemInput = {
+    const params: PutItemCommandInput = {
       Item: value as any,
       ReturnConsumedCapacity: 'TOTAL',
       ConditionExpression: 'attribute_not_exists(#fieldName) OR #fieldName = :null ',
       ExpressionAttributeNames: {
         '#fieldName': fieldName,
-      } as ExpressionAttributeNameMap,
+      } as Record<string, string>,
       ExpressionAttributeValues: {
         ':null': null,
-      } as ExpressionAttributeValueMap,
+      } as Record<string, AttributeValue>,
       TableName: tableName,
     };
     try {
-      const wrote: PutItemOutput = await this.awsDDB.put(params).promise();
+      const wrote: PutItemCommandOutput = await this.awsDDB.send(new PutCommand(params));
       Logger.silly('Wrote : %j', wrote);
       rval = true;
     } catch (err) {
@@ -597,13 +613,13 @@ export class DynamoRatchet implements DynamoRatchetLike {
     autoRetryCount: number = 3
   ): Promise<T> {
     RequireRatchet.true(keyNames && keyNames.length > 0 && keyNames.length < 3, 'You must pass 1 or 2 key names');
-    let pio: PutItemOutput = null;
+    let pio: PutItemCommandOutput = null;
     let currentTry: number = 0;
 
-    const attrNames: ExpressionAttributeNameMap = {
+    const attrNames: Record<string, string> = {
       '#key0': keyNames[0],
     };
-    const attrValues: ExpressionAttributeValueMap = {
+    const attrValues: Record<string, AttributeValue> = {
       ':key0': value[keyNames[0]],
     };
 
@@ -614,7 +630,7 @@ export class DynamoRatchet implements DynamoRatchetLike {
       attrValues[':key1'] = value[keyNames[1]];
     }
 
-    const params: PutItemInput = {
+    const params: PutItemCommandInput = {
       Item: value as any,
       ReturnConsumedCapacity: 'TOTAL',
       ConditionExpression: condExp,
@@ -626,7 +642,7 @@ export class DynamoRatchet implements DynamoRatchetLike {
     let adjustCount: number = 0;
     while (!pio && currentTry < autoRetryCount && (!maxAdjusts || adjustCount < maxAdjusts)) {
       try {
-        pio = await this.awsDDB.put(params).promise();
+        pio = await this.awsDDB.send(new PutCommand(params));
       } catch (err) {
         if (DynamoRatchet.objectIsErrorWithProvisionedThroughputExceededExceptionCode(err)) {
           currentTry++;
@@ -661,17 +677,17 @@ export class DynamoRatchet implements DynamoRatchetLike {
 
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   public async simpleGet<T>(tableName: string, keys: any, autoRetryCount: number = 3): Promise<T> {
-    let holder: GetItemOutput = null;
+    let holder: GetItemCommandOutput = null;
     let currentTry: number = 0;
 
-    const params: GetItemInput = {
+    const params: GetItemCommandInput = {
       TableName: tableName,
       Key: keys,
     };
 
     while (!holder && currentTry < autoRetryCount) {
       try {
-        holder = await this.awsDDB.get(params).promise();
+        holder = await this.awsDDB.send(new GetCommand(params));
       } catch (err) {
         if (DynamoRatchet.objectIsErrorWithProvisionedThroughputExceededExceptionCode(err)) {
           const wait: number = Math.pow(2, currentTry) * 1000;
@@ -702,20 +718,20 @@ export class DynamoRatchet implements DynamoRatchetLike {
     deleteOnZero: boolean,
     autoRetryCount: number = 3
   ): Promise<T> {
-    let holder: UpdateItemOutput = null;
+    let holder: UpdateItemCommandOutput = null;
     let currentTry: number = 0;
 
-    const params: UpdateItemInput = {
+    const params: UpdateItemCommandInput = {
       TableName: tableName,
       Key: keys,
       UpdateExpression: 'set #counter = #counter-:decVal',
       ExpressionAttributeNames: {
         '#counter': counterAttributeName,
-      } as ExpressionAttributeNameMap,
+      },
       ExpressionAttributeValues: {
         ':decVal': 1,
         ':minVal': 0,
-      } as ExpressionAttributeValueMap,
+      } as Record<string, AttributeValue>,
       ConditionExpression: '#counter > :minVal',
       ReturnValues: 'ALL_NEW',
     };
@@ -723,7 +739,7 @@ export class DynamoRatchet implements DynamoRatchetLike {
     let updateFailed: boolean = false;
     while (!holder && currentTry < autoRetryCount && !updateFailed) {
       try {
-        holder = await this.awsDDB.update(params).promise();
+        holder = await this.awsDDB.send(new UpdateItemCommand(params));
       } catch (err) {
         if (DynamoRatchet.objectIsErrorWithProvisionedThroughputExceededExceptionCode(err)) {
           const wait: number = Math.pow(2, currentTry) * 1000;
@@ -753,33 +769,32 @@ export class DynamoRatchet implements DynamoRatchetLike {
   }
 
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-  public async simpleDelete(tableName: string, keys: any): Promise<DeleteItemOutput> {
-    const params: DeleteItemInput = {
+  public async simpleDelete(tableName: string, keys: any): Promise<DeleteItemCommandOutput> {
+    const params: DeleteItemCommandInput = {
       TableName: tableName,
       Key: keys,
     };
 
-    const holder: PromiseResult<DeleteItemOutput, AWSError> = await this.awsDDB.delete(params).promise();
+    const holder: DeleteItemCommandOutput = await this.awsDDB.send(new DeleteCommand(params));
     return holder;
   }
 
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   public async atomicCounter(tableName: string, keys: any, counterFieldName: string, increment = 1): Promise<number> {
-    const update: UpdateItemInput = {
+    const update: UpdateItemCommandInput = {
       TableName: tableName,
       Key: keys,
-      //UpdateExpression: 'SET '+counterFieldName+' = '+counterFieldName+' + :inc',
       UpdateExpression: 'SET #counterFieldName = #counterFieldName + :inc',
       ExpressionAttributeNames: {
         '#counterFieldName': counterFieldName,
-      } as ExpressionAttributeNameMap,
+      },
       ExpressionAttributeValues: {
         ':inc': increment,
-      } as ExpressionAttributeValueMap,
+      },
       ReturnValues: 'UPDATED_NEW',
     };
 
-    const ui: UpdateItemOutput = await this.awsDDB.update(update).promise();
+    const ui: UpdateItemCommandOutput = await this.awsDDB.send(new UpdateItemCommand(update));
     const rval: number = NumberRatchet.safeNumber(ui.Attributes[counterFieldName]);
     return rval;
   }
@@ -823,4 +838,25 @@ export class DynamoRatchet implements DynamoRatchetLike {
     const rval: any[] = input.map((i) => DynamoRatchet.stripToKeysOnly(i, keys));
     return rval;
   }
+
+  /*
+  public static jsRecordToDynamoExpressionAttributeValues(record: Record<string, string | number>): Record<string, AttributeValue> {
+    let rval: ExpressionAttributeValueMap = null;
+    if (record) {
+      rval = {};
+      Object.keys(record).forEach((k) => {
+        const val: string | number = record[k];
+        if (typeof val === 'string') {
+          rval[k] = { S: val };
+        } else if (typeof val === 'number') {
+          rval[k] = { N: StringRatchet.safeString(val) };
+        } else {
+          ErrorRatchet.throwFormattedErr('Not string or number for key %s : %s :%s', k, typeof val, val);
+        }
+      });
+    }
+    return rval;
+  }
+
+   */
 }
