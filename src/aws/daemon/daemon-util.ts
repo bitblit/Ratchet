@@ -2,7 +2,7 @@ import { Logger } from '../../common/logger';
 import { DaemonProcessState } from './daemon-process-state';
 import { S3CacheRatchet } from '../s3-cache-ratchet';
 import { DaemonProcessCreateOptions } from './daemon-process-create-options';
-import { HeadObjectOutput, PutObjectOutput, PutObjectRequest } from '@aws-sdk/client-s3';
+import { HeadObjectOutput, PutObjectCommand, PutObjectOutput, PutObjectRequest } from '@aws-sdk/client-s3';
 import { Readable } from 'stream';
 
 /**
@@ -72,7 +72,7 @@ export class DaemonUtil {
         params.ContentDisposition = 'attachment;filename="' + newState.targetFileName + '"';
       }
 
-      const written: PutObjectOutput = await cache.getS3().putObject(params);
+      const written: PutObjectOutput = await cache.getS3Client().send(new PutObjectCommand(params));
       Logger.silly('Daemon wrote : %s', written);
 
       return DaemonUtil.stat(cache, s3Key);
@@ -99,7 +99,7 @@ export class DaemonUtil {
       Body: data,
     };
 
-    const written: PutObjectOutput = await cache.getS3().putObject(params);
+    const written: PutObjectOutput = await cache.getS3Client().send(new PutObjectCommand(params));
     Logger.silly('Daemon wrote : %s', written);
 
     return DaemonUtil.stat(cache, s3Key);

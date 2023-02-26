@@ -12,9 +12,7 @@ describe('#cloudWatchMetricsRatchet', function () {
   });
 
   it('should log a cloudwatch metric', async () => {
-    mockCW.putMetricData.mockReturnValue({
-      promise: async () => Promise.resolve({ ok: true }),
-    } as never);
+    mockCW.putMetricData.mockResolvedValue({ ok: true } as never);
 
     const cw: CloudWatchMetricsRatchet = new CloudWatchMetricsRatchet(mockCW);
     const dims: KeyValue[] = [

@@ -20,14 +20,11 @@ describe('#cloudWatchLogsRatchet', function () {
   });
 
   it('should find the stream with the oldest timestamp in a group', async () => {
-    mockCW.describeLogStreams.mockReturnValue({
-      promise: async () =>
-        Promise.resolve({
-          logStreams: [
-            { logStreamName: '1', firstEventTimestamp: 100 },
-            { logStreamName: '2', firstEventTimestamp: 200 },
-          ],
-        } as DescribeLogStreamsCommandOutput),
+    mockCW.describeLogStreams.mockResolvedValue({
+      logStreams: [
+        { logStreamName: '1', firstEventTimestamp: 100 },
+        { logStreamName: '2', firstEventTimestamp: 200 },
+      ],
     } as never);
 
     const cw: CloudWatchLogsRatchet = new CloudWatchLogsRatchet(mockCW);
@@ -37,14 +34,11 @@ describe('#cloudWatchLogsRatchet', function () {
   });
 
   it('should find the oldest timestamp in group', async () => {
-    mockCW.describeLogStreams.mockReturnValue({
-      promise: async () =>
-        Promise.resolve({
-          logStreams: [
-            { logStreamName: '1', firstEventTimestamp: 100 },
-            { logStreamName: '2', firstEventTimestamp: 200 },
-          ],
-        } as DescribeLogStreamsCommandOutput),
+    mockCW.describeLogStreams.mockResolvedValue({
+      logStreams: [
+        { logStreamName: '1', firstEventTimestamp: 100 },
+        { logStreamName: '2', firstEventTimestamp: 200 },
+      ],
     } as never);
 
     const cw: CloudWatchLogsRatchet = new CloudWatchLogsRatchet(mockCW);
@@ -53,9 +47,7 @@ describe('#cloudWatchLogsRatchet', function () {
   });
 
   it('should remove log groups', async () => {
-    mockCW.deleteLogGroup.mockReturnValue({
-      promise: async () => Promise.resolve(null),
-    } as never);
+    mockCW.deleteLogGroup.mockResolvedValue(null as never);
 
     const cw: CloudWatchLogsRatchet = new CloudWatchLogsRatchet(mockCW);
     const res: boolean[] = await cw.removeLogGroups([{ logGroupName: '1' }, { logGroupName: '2' }]);
@@ -63,16 +55,11 @@ describe('#cloudWatchLogsRatchet', function () {
   });
 
   it('should remove log groups with prefix', async () => {
-    mockCW.describeLogGroups.mockReturnValue({
-      promise: async () =>
-        Promise.resolve({
-          logGroups: [{ logGroupName: 'pre1' }, { logGroupName: 'pre2' }],
-        } as DescribeLogGroupsCommandOutput),
+    mockCW.describeLogGroups.mockResolvedValue({
+      logGroups: [{ logGroupName: 'pre1' }, { logGroupName: 'pre2' }],
     } as never);
 
-    mockCW.deleteLogGroup.mockReturnValue({
-      promise: async () => Promise.resolve(null),
-    } as never);
+    mockCW.deleteLogGroup.mockResolvedValue(null as never);
 
     const cw: CloudWatchLogsRatchet = new CloudWatchLogsRatchet(mockCW);
     const res: boolean[] = await cw.removeLogGroupsWithPrefix('pre');
@@ -80,16 +67,11 @@ describe('#cloudWatchLogsRatchet', function () {
   });
 
   it('should remove empty or old log streams', async () => {
-    mockCW.describeLogStreams.mockReturnValue({
-      promise: async () =>
-        Promise.resolve({
-          logStreams: [{ logStreamName: '1' }, { logStreamName: '2' }],
-        } as DescribeLogStreamsCommandOutput),
+    mockCW.describeLogStreams.mockResolvedValue({
+      logStreams: [{ logStreamName: '1' }, { logStreamName: '2' }],
     } as never);
 
-    mockCW.deleteLogStream.mockReturnValue({
-      promise: async () => Promise.resolve(null),
-    } as never);
+    mockCW.deleteLogStream.mockResolvedValue(null as never);
 
     const cw: CloudWatchLogsRatchet = new CloudWatchLogsRatchet(mockCW);
     const res: LogStream[] = await cw.removeEmptyOrOldLogStreams('test', 1000);
@@ -98,9 +80,7 @@ describe('#cloudWatchLogsRatchet', function () {
   });
 
   it('should find all matching groups', async () => {
-    mockCW.describeLogGroups.mockReturnValue({
-      promise: async () => Promise.resolve({ logGroups: [{ logGroupName: '1' }, { logGroupName: '2' }] } as DescribeLogGroupsCommandOutput),
-    } as never);
+    mockCW.describeLogGroups.mockResolvedValue({ logGroups: [{ logGroupName: '1' }, { logGroupName: '2' }] } as never);
 
     const cw: CloudWatchLogsRatchet = new CloudWatchLogsRatchet(mockCW);
     const prefix: string = '/';
@@ -111,13 +91,9 @@ describe('#cloudWatchLogsRatchet', function () {
   });
 
   it('should execute an insights query', async () => {
-    mockCW.startQuery.mockReturnValue({
-      promise: async () => Promise.resolve({ queryId: 'test' } as StartQueryCommandOutput),
-    } as never);
+    mockCW.startQuery.mockResolvedValue({ queryId: 'test' } as never);
 
-    mockCW.getQueryResults.mockReturnValue({
-      promise: async () => Promise.resolve({} as GetQueryResultsCommandOutput),
-    } as never);
+    mockCW.getQueryResults.mockResolvedValue({} as GetQueryResultsCommandOutput as never);
 
     const cw: CloudWatchLogsRatchet = new CloudWatchLogsRatchet(mockCW);
 

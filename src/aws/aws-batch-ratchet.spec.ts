@@ -11,9 +11,7 @@ describe('#AwsBatchService', () => {
 
   it('Should schedule background task', async () => {
     const svc: AwsBatchRatchet = new AwsBatchRatchet(mockBatch);
-    mockBatch.submitJob.mockReturnValue({
-      promise: async () => Promise.resolve({ jobName: 'b' } as SubmitJobCommandOutput),
-    } as never);
+    mockBatch.submitJob.mockResolvedValue({ jobName: 'b' } as never);
 
     const res: SubmitJobCommandOutput = await svc.scheduleBackgroundTask('BACKGROUND_TASK_NAME', {}, 'JOB-DEFINITION', 'QUEUE-NAME');
     expect(res).not.toBeNull();
@@ -21,9 +19,7 @@ describe('#AwsBatchService', () => {
 
   it('Should schedule batch job', async () => {
     const svc: AwsBatchRatchet = new AwsBatchRatchet(mockBatch);
-    mockBatch.submitJob.mockReturnValue({
-      promise: async () => Promise.resolve({ jobName: 'b' } as SubmitJobCommandOutput),
-    } as never);
+    mockBatch.submitJob.mockResolvedValue({ jobName: 'b' } as never);
 
     const res: SubmitJobCommandOutput = await svc.scheduleJob({
       jobName: 'testName',
@@ -35,9 +31,7 @@ describe('#AwsBatchService', () => {
 
   it('Should list jobs', async () => {
     const svc: AwsBatchRatchet = new AwsBatchRatchet(mockBatch);
-    mockBatch.listJobs.mockReturnValue({
-      promise: async () => Promise.resolve([{}] as JobSummary[]),
-    } as never);
+    mockBatch.listJobs.mockResolvedValue([{}] as JobSummary[] as never);
 
     const res: JobSummary[] = await svc.listJobs('testQueue');
     expect(res).not.toBeNull();
@@ -46,9 +40,7 @@ describe('#AwsBatchService', () => {
 
   it('Should count jobs in state', async () => {
     const svc: AwsBatchRatchet = new AwsBatchRatchet(mockBatch);
-    mockBatch.listJobs.mockReturnValue({
-      promise: async () => Promise.resolve([{}] as JobSummary[]),
-    } as never);
+    mockBatch.listJobs.mockResolvedValue([{}] as JobSummary[] as never);
 
     const res: number = await svc.jobCountInState(JobStatus.RUNNABLE, 'testQueue');
     expect(res).toEqual(1);

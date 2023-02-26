@@ -1,35 +1,31 @@
-import { CopyObjectCommandOutput, GetObjectCommandOutput, HeadObjectCommandOutput, PutObjectCommandOutput, S3 } from '@aws-sdk/client-s3';
-import { S3CacheRatchet } from './s3-cache-ratchet';
-import { Logger } from '../common/logger';
-import { JestRatchet } from '../jest';
-import { StringReadable } from '../stream/string-readable';
-import { StringRatchet } from '../common';
-
 jest.mock('@aws-sdk/s3-request-presigner', () => ({
   getSignedUrl: jest.fn(() => Promise.resolve('https://test.link/test.jpg')),
 }));
+import {
+  CopyObjectCommand,
+  GetObjectCommand,
+  HeadObjectCommand,
+  PutObjectCommand,
+  PutObjectCommandOutput,
+  S3Client,
+} from '@aws-sdk/client-s3';
+import { S3CacheRatchet } from './s3-cache-ratchet';
+import { Logger } from '../common/logger';
+import { StringReadable } from '../stream/string-readable';
+import { StringRatchet } from '../common';
+import { mockClient } from 'aws-sdk-client-mock';
 
-let mockS3: jest.Mocked<S3>;
-let mockS3OtherAccount: jest.Mocked<S3>;
+let mockS3;
+let mockS3OtherAccount;
 
 describe('#fileExists', function () {
   beforeEach(() => {
-    mockS3 = JestRatchet.mock();
-    mockS3OtherAccount = JestRatchet.mock();
+    mockS3 = mockClient(S3Client);
+    mockS3OtherAccount = mockClient(S3Client);
   });
 
-  xit('should sync 2 folders', async () => {
-    const cache1: S3CacheRatchet = new S3CacheRatchet(mockS3, 'test1');
-    const cache2: S3CacheRatchet = new S3CacheRatchet(mockS3, 'test2');
-    const out: string[] = await cache1.synchronize('src/', 'dst/', cache2);
-
-    expect(out).not.toBeNull();
-  }, 60_000);
-
   it('should return false for files that do not exist', async () => {
-    mockS3.headObject.mockReturnValue({
-      promise: async () => Promise.reject({ statusCode: 404, $metadata: null } as HeadObjectCommandOutput),
-    } as never);
+    mockS3.on(HeadObjectCommand).rejects({ statusCode: 404, $metadata: null });
     const cache: S3CacheRatchet = new S3CacheRatchet(mockS3, 'test-bucket');
     const out: boolean = await cache.fileExists('test-missing-file');
 
@@ -46,9 +42,7 @@ describe('#fileExists', function () {
   });
 
   it('should copy an object', async () => {
-    mockS3.copyObject.mockReturnValue({
-      promise: async () => Promise.resolve({} as CopyObjectCommandOutput),
-    } as never);
+    mockS3.on(CopyObjectCommand).resolves({});
     const cache: S3CacheRatchet = new S3CacheRatchet(mockS3, 'test-bucket');
     const out: boolean = await cache.quietCopyFile('test.png', 'test2.png');
 
@@ -56,9 +50,7 @@ describe('#fileExists', function () {
   });
 
   it('should copy a file to s3', async () => {
-    mockS3.putObject.mockReturnValue({
-      promise: async () => Promise.resolve({} as PutObjectCommandOutput),
-    } as never);
+    mockS3.on(PutObjectCommand).resolves({});
 
     const cache: S3CacheRatchet = new S3CacheRatchet(mockS3, 'test-bucket');
     const stream: ReadableStream = StringReadable.stringToWebReadableStream('tester');
@@ -75,25 +67,11 @@ describe('#fileExists', function () {
     expect(out).toBeTruthy();
   });
 
-  xit('should list direct children past 1000', async () => {
-    const s3: S3 = new S3({ region: 'us-east-1' });
-    const cache: S3CacheRatchet = new S3CacheRatchet(s3, 'test-bucket');
-    const out: string[] = await cache.directChildrenOfPrefix('test/aws/test-path-with-lots-of-childen/');
-    expect(out).toBeTruthy();
-    expect(out.length).toBeGreaterThan(1000);
-
-    Logger.info('Got: %s', out);
-    expect(out).toBeTruthy();
-  });
-
   it('should pull a file as a string', async () => {
-    mockS3.getObject.mockReturnValue({
-      promise: async () =>
-        Promise.resolve({
-          Body: StringReadable.stringToWebReadableStream(JSON.stringify({ test: StringRatchet.createRandomHexString(128) })),
-          $metadata: null,
-        } as GetObjectCommandOutput),
-    } as never);
+    mockS3.on(GetObjectCommand).resolves({
+      Body: new Blob([Buffer.from(JSON.stringify({ test: StringRatchet.createRandomHexString(128) }))]),
+      $metadata: null,
+    });
 
     const cache: S3CacheRatchet = new S3CacheRatchet(mockS3, 'test-bucket');
     const fileName: string = 'test-file.json';
@@ -109,6 +87,27 @@ describe('#fileExists', function () {
     const outObject: any = await cache.readCacheFileToObject(fileName);
     expect(outObject).toBeTruthy();
     expect(outObject['test']).toBeTruthy();
+  });
+
+  //---
+
+  xit('should sync 2 folders', async () => {
+    const cache1: S3CacheRatchet = new S3CacheRatchet(mockS3, 'test1');
+    const cache2: S3CacheRatchet = new S3CacheRatchet(mockS3, 'test2');
+    const out: string[] = await cache1.synchronize('src/', 'dst/', cache2);
+
+    expect(out).not.toBeNull();
+  }, 60_000);
+
+  xit('should list direct children past 1000', async () => {
+    const s3: S3Client = new S3Client({ region: 'us-east-1' });
+    const cache: S3CacheRatchet = new S3CacheRatchet(s3, 'test-bucket');
+    const out: string[] = await cache.directChildrenOfPrefix('test/aws/test-path-with-lots-of-childen/');
+    expect(out).toBeTruthy();
+    expect(out.length).toBeGreaterThan(1000);
+
+    Logger.info('Got: %s', out);
+    expect(out).toBeTruthy();
   });
 
   xit('should sync cross-account', async () => {

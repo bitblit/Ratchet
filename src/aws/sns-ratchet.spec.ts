@@ -10,9 +10,7 @@ describe('#SNSRatchet', function () {
   });
 
   it('should send a message', async () => {
-    mockSNS.publish.mockReturnValue({
-      promise: async () => Promise.resolve({} as AWS_SNS.PublishCommandOutput),
-    } as never);
+    mockSNS.publish.mockResolvedValue({} as AWS_SNS.PublishCommandOutput as never);
 
     const topicArn: string = 'TOPIC-ARN-HERE';
     const ratchet: SnsRatchet = new SnsRatchet(mockSNS, topicArn);

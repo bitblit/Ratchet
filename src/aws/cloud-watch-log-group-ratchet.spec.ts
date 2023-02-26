@@ -10,12 +10,9 @@ describe('#CloudWatchLogGroupRatchet', function () {
   });
 
   it('should read log stream names', async () => {
-    mockCW.describeLogStreams.mockReturnValue({
-      promise: async () =>
-        Promise.resolve({
-          logStreams: [{ logStreamName: '1' }, { logStreamName: '2' }],
-        } as DescribeLogStreamsCommandOutput),
-    } as never);
+    mockCW.describeLogStreams.mockResolvedValue({
+      logStreams: [{ logStreamName: '1' }, { logStreamName: '2' }],
+    } as DescribeLogStreamsCommandOutput as never);
 
     const cw: CloudWatchLogGroupRatchet = new CloudWatchLogGroupRatchet('testGroup', mockCW);
 

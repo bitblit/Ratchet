@@ -8,6 +8,10 @@ export class StringRatchet {
   // % isn't technically reserved but its still a pain in the butt
   public static RFC_3986_RESERVED = ['!', '*', "'", '(', ')', ';', ':', '@', '&', '=', '+', '$', ',', '/', '?', '#', '[', ']', '%'];
 
+  public static stringToUint8Array(val: string): Uint8Array {
+    return val ? Uint8Array.from(atob(val), (c) => c.charCodeAt(0)) : null;
+  }
+
   // Really only useful if you wanna swallow the exception when something is not valid JSON (or at least not
   // parseable as JSON - the spec says 'true' or '2' are not technically valid JSON strings
   public static attemptJsonParse(val: string): any {

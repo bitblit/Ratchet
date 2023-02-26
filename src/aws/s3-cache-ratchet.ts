@@ -1,26 +1,33 @@
 import {
+  CopyObjectCommand,
   CopyObjectCommandInput,
   CopyObjectCommandOutput,
+  DeleteObjectCommand,
+  DeleteObjectCommandInput,
   DeleteObjectCommandOutput,
   GetObjectCommand,
   GetObjectCommandInput,
   GetObjectCommandOutput,
+  HeadObjectCommand,
   HeadObjectCommandOutput,
+  ListObjectsCommand,
   ListObjectsCommandInput,
   ListObjectsCommandOutput,
   ListObjectsV2CommandInput,
   ListObjectsV2CommandOutput,
+  PutObjectCommand,
   PutObjectCommandInput,
   PutObjectCommandOutput,
-  S3,
+  S3Client,
 } from '@aws-sdk/client-s3';
 import { Logger } from '../common/logger';
 import { RequireRatchet } from '../common/require-ratchet';
 import { ErrorRatchet, StopWatch } from '../common';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
+import { StringReadable } from '../stream';
 
 export class S3CacheRatchet {
-  constructor(private s3: S3, private defaultBucket: string = null) {
+  constructor(private s3: S3Client, private defaultBucket: string = null) {
     RequireRatchet.notNullOrUndefined(this.s3, 's3');
   }
 
@@ -28,7 +35,7 @@ export class S3CacheRatchet {
     return this.defaultBucket;
   }
 
-  public getS3(): S3 {
+  public getS3Client(): S3Client {
     return this.s3;
   }
 
@@ -50,7 +57,7 @@ export class S3CacheRatchet {
     };
 
     try {
-      const res: GetObjectCommandOutput = await this.s3.getObject(params);
+      const res: GetObjectCommandOutput = await this.s3.send(new GetObjectCommand(params));
       if (res && res.Body) {
         if (res.Body instanceof Buffer) {
           rval = res.Body;
@@ -61,6 +68,8 @@ export class S3CacheRatchet {
           rval = Buffer.from(arr);
         } else if (res.Body instanceof String) {
           rval = Buffer.from(res.Body);
+        } else if (res.Body instanceof ReadableStream) {
+          rval = await StringReadable.webReadableStreamToBuffer(res.Body);
         } else {
           Logger.error('Could not handle res body type : %s', typeof res.Body);
           ErrorRatchet.throwFormattedErr('Cound not handle res body type : %s', typeof res.Body);
@@ -92,12 +101,12 @@ export class S3CacheRatchet {
 
   public async removeCacheFile(key: string, bucket: string = null): Promise<DeleteObjectCommandOutput> {
     let rval: DeleteObjectCommandOutput = null;
-    const params = {
+    const params: DeleteObjectCommandInput = {
       Bucket: this.bucketVal(bucket),
       Key: key,
     };
     try {
-      rval = await this.s3.deleteObject(params);
+      rval = await this.s3.send(new DeleteObjectCommand(params));
     } catch (err) {
       if (err && err['statusCode'] == 404) {
         Logger.info('Swallowing 404 deleting missing object %s %s', bucket, key);
@@ -131,7 +140,7 @@ export class S3CacheRatchet {
     cacheControl = 'max-age=30',
     contentType = 'text/plain'
   ): Promise<PutObjectCommandOutput> {
-    const params = {
+    const params: PutObjectCommandInput = {
       Bucket: this.bucketVal(bucket),
       Key: key,
       Body: dataString,
@@ -140,7 +149,7 @@ export class S3CacheRatchet {
       Metadata: meta,
     };
 
-    const result: PutObjectCommandOutput = await this.s3.putObject(params);
+    const result: PutObjectCommandOutput = await this.s3.send(new PutObjectCommand(params));
     return result;
   }
 
@@ -161,7 +170,7 @@ export class S3CacheRatchet {
       Metadata: meta,
     };
 
-    const result: PutObjectCommandOutput = await this.s3.putObject(params);
+    const result: PutObjectCommandOutput = await this.s3.send(new PutObjectCommand(params));
     return result;
   }
 
@@ -233,11 +242,11 @@ export class S3CacheRatchet {
   }
 
   public async fetchCacheFileAsReadableStream(key: string, bucket: string = null): Promise<ReadableStream> {
-    const params = {
+    const params: GetObjectCommandInput = {
       Bucket: this.bucketVal(bucket),
       Key: key,
     };
-    const output: GetObjectCommandOutput = await this.s3.getObject(params);
+    const output: GetObjectCommandOutput = await this.s3.send(new GetObjectCommand(params));
     const readStream: ReadableStream = output.Body.transformToWebStream();
     return readStream;
   }
@@ -245,19 +254,18 @@ export class S3CacheRatchet {
   public async fetchMetaForCacheFile(key: string, bucket: string = null): Promise<HeadObjectCommandOutput> {
     let rval: HeadObjectCommandOutput = null;
     try {
-      const x = this.s3.headObject({
-        Bucket: this.bucketVal(bucket),
-        Key: key,
-      });
-      rval = await this.s3.headObject({
-        Bucket: this.bucketVal(bucket),
-        Key: key,
-      });
+      rval = await this.s3.send(
+        new HeadObjectCommand({
+          Bucket: this.bucketVal(bucket),
+          Key: key,
+        })
+      );
     } catch (err) {
       if (err && err['statusCode'] == 404) {
-        Logger.warn('Cache file %s %s not found returning null', this.bucketVal(bucket), key);
+        Logger.info('Cache file %s %s not found returning null', this.bucketVal(bucket), key);
         rval = null;
       } else {
+        Logger.error('Unrecognized error, rethrowing : %s', err, err);
         throw err;
       }
     }
@@ -295,7 +303,7 @@ export class S3CacheRatchet {
       Key: dstKey,
       MetadataDirective: 'COPY',
     };
-    const rval: CopyObjectCommandOutput = await this.s3.copyObject(params);
+    const rval: CopyObjectCommandOutput = await this.s3.send(new CopyObjectCommand(params));
     return rval;
   }
 
@@ -335,7 +343,7 @@ export class S3CacheRatchet {
 
     let response: ListObjectsCommandOutput = null;
     do {
-      response = await this.s3.listObjects(params);
+      response = await this.s3.send(new ListObjectsCommand(params));
 
       const prefixLength = prefix.length;
       // Process directories
@@ -389,7 +397,7 @@ export class S3CacheRatchet {
 
       do {
         req.ContinuationToken = resp ? resp.NextContinuationToken : null;
-        resp = await this.s3.listObjectsV2(req);
+        resp = await this.s3.send(new ListObjectsCommand(req));
         resp.CommonPrefixes.forEach((p) => {
           returnValue.push(p.Prefix);
         });

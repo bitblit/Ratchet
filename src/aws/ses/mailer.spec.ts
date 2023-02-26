@@ -46,9 +46,7 @@ describe('#mailer', function () {
       attachments: [attach1, attach2],
     };
 
-    mockSES.sendRawEmail.mockReturnValue({
-      promise: async () => Promise.resolve({} as SendRawEmailResponse),
-    } as never);
+    mockSES.sendRawEmail.mockResolvedValue({} as SendRawEmailResponse as never);
 
     const result: SendEmailResponse = await svc.sendEmail(rts);
 
@@ -71,9 +69,7 @@ describe('#mailer', function () {
       destinationAddresses: ['jflint@adomni.com'],
     };
 
-    mockSES.sendRawEmail.mockReturnValue({
-      promise: async () => Promise.resolve({} as SendRawEmailResponse),
-    } as never);
+    mockSES.sendRawEmail.mockResolvedValue({} as SendRawEmailResponse as never);
 
     const result: SendEmailResponse = await svc.sendEmail(rts);
     expect(result).toBeTruthy();
@@ -124,9 +120,7 @@ describe('#mailer', function () {
       attachments: [bigAttach],
     };
 
-    mockSES.sendRawEmail.mockReturnValue({
-      promise: async () => Promise.resolve({} as SendRawEmailResponse),
-    } as never);
+    mockSES.sendRawEmail.mockResolvedValue({} as SendRawEmailResponse as never);
 
     const result: SendEmailResponse = await svc.sendEmail(rts);
 
