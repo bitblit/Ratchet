@@ -18,6 +18,17 @@ package without knowing why it is alpha you'll get exactly what you deserve.
 
 ## In Flight
 
+## [4.0.x]
+### Changed
+- Switched to AWS Library V3.x since they are now deprecating the 2.x one.  This has a number of backwards incompatibilities,
+and I took the opportunity to clean up some API inconsistencies since it was going to be broken anyway.  This version
+uses the AWS-preferred method of sending command objects to a more generic HTTP client, and also uses the AWS provided
+mock library instead of mocking everything manually with Jest (for non-AWS stuff, Jest mocks are still used).  This handles
+some issues with type overloading in the AWS library itself.
+
+### Removed
+- Removed the DynamicImportRatchet - it didn't end up doing what I wanted, and just made Angular whine all the time
+
 ## [3.2.x] - 2023-02-16
 
 ### Added

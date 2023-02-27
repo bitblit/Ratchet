@@ -8,6 +8,7 @@ import {
 } from '@aws-sdk/client-s3';
 import _ from 'lodash';
 import { Logger, PromiseRatchet, RequireRatchet } from '../common';
+import { Upload } from '@aws-sdk/lib-storage';
 
 export interface S3LocationSyncRatchetConfig {
   srcS3: S3;
@@ -83,7 +84,19 @@ export class S3LocationSyncRatchet {
             ContentLength: size,
           };
 
-          await this.config.dstS3.putObject(params);
+          const upload: Upload = new Upload({
+            client: this.config.dstS3,
+            params: params,
+            tags: [],
+            queueSize: 4,
+            partSize: 1024 * 1024 * 5,
+            leavePartsOnError: false,
+          });
+
+          upload.on('httpUploadProgress', (progress) => {
+            Logger.info('Uploading : %s', progress);
+          });
+          await upload.done();
         }
 
         completedCopying = true;

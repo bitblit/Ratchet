@@ -170,6 +170,7 @@
     "@aws-sdk/client-sns": "3.279.0",
     "@aws-sdk/client-ssm": "3.279.0",
     "@aws-sdk/lib-dynamodb": "3.279.0",
+    "@aws-sdk/lib-storage": "3.279.0",
     "@aws-sdk/s3-request-presigner": "3.279.0",
     "@aws-sdk/smithy-client": "3.279.0",
     "@aws-sdk/types": "3.272.0",

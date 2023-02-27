@@ -3,11 +3,13 @@ jest.mock('@aws-sdk/s3-request-presigner', () => ({
 }));
 import {
   CopyObjectCommand,
+  CreateMultipartUploadCommand,
   GetObjectCommand,
   HeadObjectCommand,
   PutObjectCommand,
   PutObjectCommandOutput,
   S3Client,
+  UploadPartCommand,
 } from '@aws-sdk/client-s3';
 import { S3CacheRatchet } from './s3-cache-ratchet';
 import { Logger } from '../common/logger';
@@ -15,13 +17,17 @@ import { StringReadable } from '../stream/string-readable';
 import { StringRatchet } from '../common';
 import { mockClient } from 'aws-sdk-client-mock';
 
-let mockS3;
-let mockS3OtherAccount;
+let mockS3 = null;
+let mockS3OtherAccount = null;
 
 describe('#fileExists', function () {
+  // I'd rather do this above but then typescript screams it does not implement S3Client
+  mockS3 = mockClient(S3Client);
+  mockS3OtherAccount = mockClient(S3Client);
+
   beforeEach(() => {
-    mockS3 = mockClient(S3Client);
-    mockS3OtherAccount = mockClient(S3Client);
+    mockS3.reset();
+    mockS3OtherAccount.reset();
   });
 
   it('should return false for files that do not exist', async () => {
@@ -50,7 +56,11 @@ describe('#fileExists', function () {
   });
 
   it('should copy a file to s3', async () => {
+    // This mocks for uploading small files
     mockS3.on(PutObjectCommand).resolves({});
+    // These mock for the multipart upload command
+    mockS3.on(CreateMultipartUploadCommand).resolves({ UploadId: '1' });
+    mockS3.on(UploadPartCommand).resolves({ ETag: '1' });
 
     const cache: S3CacheRatchet = new S3CacheRatchet(mockS3, 'test-bucket');
     const stream: ReadableStream = StringReadable.stringToWebReadableStream('tester');

@@ -1,15 +1,16 @@
 import fs from 'fs';
 import walk from 'walk';
-import { S3 } from '@aws-sdk/client-s3';
+import { S3Client } from '@aws-sdk/client-s3';
 import path from 'path';
 import mime from 'mime-types';
 import { Logger } from '../common/logger';
+import { Upload } from '@aws-sdk/lib-storage';
 
 export class SiteUploader {
   private srcDir: string;
   private bucketName: string;
   private config: any;
-  private readonly s3: S3 = new S3({ region: 'us-east-1' });
+  private readonly s3: S3Client = new S3Client({ region: 'us-east-1' });
 
   constructor(srcDir: string, bucketName: string, configFile: string) {
     this.srcDir = srcDir;
@@ -103,9 +104,20 @@ export class SiteUploader {
             params.ContentType = this.findMime(fileStats.name, this.config);
           }
 
-          this.s3
-            .putObject(params)
-            .promise()
+          const upload: Upload = new Upload({
+            client: this.s3,
+            params: params,
+            tags: [],
+            queueSize: 4,
+            partSize: 1024 * 1024 * 5,
+            leavePartsOnError: false,
+          });
+
+          upload.on('httpUploadProgress', (progress) => {
+            Logger.info('Uploading : %s', progress);
+          });
+          upload
+            .done()
             .then((result) => {
               Logger.info('Finished upload of %s: %j', key, result);
               next();

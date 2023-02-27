@@ -2,8 +2,15 @@ import { Logger } from '../../common/logger';
 import { DaemonProcessState } from './daemon-process-state';
 import { S3CacheRatchet } from '../s3-cache-ratchet';
 import { DaemonProcessCreateOptions } from './daemon-process-create-options';
-import { HeadObjectOutput, PutObjectCommand, PutObjectOutput, PutObjectRequest } from '@aws-sdk/client-s3';
+import {
+  CompleteMultipartUploadCommandOutput,
+  HeadObjectOutput,
+  PutObjectCommand,
+  PutObjectOutput,
+  PutObjectRequest,
+} from '@aws-sdk/client-s3';
 import { Readable } from 'stream';
+import { Upload } from '@aws-sdk/lib-storage';
 
 /**
  * Internal utilities which are here for the USE OF THE DAEMON OBJECT ONLY - if you are trying to use this
@@ -99,7 +106,20 @@ export class DaemonUtil {
       Body: data,
     };
 
-    const written: PutObjectOutput = await cache.getS3Client().send(new PutObjectCommand(params));
+    const upload: Upload = new Upload({
+      client: cache.getS3Client(),
+      params: params,
+      tags: [],
+      queueSize: 4,
+      partSize: 1024 * 1024 * 5,
+      leavePartsOnError: false,
+    });
+
+    upload.on('httpUploadProgress', (progress) => {
+      Logger.info('Uploading : %s', progress);
+    });
+    const written: CompleteMultipartUploadCommandOutput = await upload.done();
+
     Logger.silly('Daemon wrote : %s', written);
 
     return DaemonUtil.stat(cache, s3Key);

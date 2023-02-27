@@ -1,4 +1,5 @@
 import {
+  CompleteMultipartUploadCommandOutput,
   CopyObjectCommand,
   CopyObjectCommandInput,
   CopyObjectCommandOutput,
@@ -25,6 +26,7 @@ import { RequireRatchet } from '../common/require-ratchet';
 import { ErrorRatchet, StopWatch } from '../common';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { StringReadable } from '../stream';
+import { Upload } from '@aws-sdk/lib-storage';
 
 export class S3CacheRatchet {
   constructor(private s3: S3Client, private defaultBucket: string = null) {
@@ -160,7 +162,7 @@ export class S3CacheRatchet {
     meta: any = {},
     cacheControl = 'max-age=30',
     contentType = 'text/plain'
-  ): Promise<PutObjectCommandOutput> {
+  ): Promise<CompleteMultipartUploadCommandOutput> {
     const params: PutObjectCommandInput = {
       Bucket: this.bucketVal(bucket),
       Key: key,
@@ -170,7 +172,20 @@ export class S3CacheRatchet {
       Metadata: meta,
     };
 
-    const result: PutObjectCommandOutput = await this.s3.send(new PutObjectCommand(params));
+    const upload: Upload = new Upload({
+      client: this.s3,
+      params: params,
+      tags: [],
+      queueSize: 4,
+      partSize: 1024 * 1024 * 5,
+      leavePartsOnError: false,
+    });
+
+    upload.on('httpUploadProgress', (progress) => {
+      Logger.debug('Uploading : %s', progress);
+    });
+    const result: CompleteMultipartUploadCommandOutput = await upload.done();
+
     return result;
   }
 
