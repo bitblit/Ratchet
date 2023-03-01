@@ -3,6 +3,7 @@
  */
 
 export * from './aws-batch-ratchet';
+export * from './aws-credentials-ratchet';
 export * from './cloud-watch-log-group-ratchet';
 export * from './cloud-watch-logs-ratchet';
 export * from './cloud-watch-metrics-ratchet';

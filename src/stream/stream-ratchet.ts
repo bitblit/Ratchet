@@ -2,8 +2,24 @@ import { Readable } from 'stream';
 import { ErrorRatchet } from '../common/error-ratchet';
 import { StringRatchet } from '../common/string-ratchet';
 import { Logger } from '../common/logger';
+import { BufferWritable } from './buffer-writable';
+import { PromiseRatchet } from '../common';
 
-export class StringReadable extends Readable {
+export class StreamRatchet {
+  // Empty constructor prevents instantiation
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  private constructor() {}
+
+  public static readableToBufferSync(stream: Readable): Buffer {
+    const bufs = [];
+    let next: any = stream.read();
+    while (next) {
+      bufs.push(next);
+      next = stream.read();
+    }
+    return Buffer.concat(bufs);
+  }
+
   public static async webReadableStreamToBuffer(stream: ReadableStream): Promise<Buffer> {
     const out: Uint8Array[] = [];
     const writer: WritableStream = new WritableStream(
@@ -16,10 +32,6 @@ export class StringReadable extends Readable {
           }
 
           return null;
-          /*const buffer = new ArrayBuffer(1);
-            const view = new Uint8Array(buffer);
-            view[0] = chunk;
-            this._val.push(view);*/
         },
         abort(reason) {
           ErrorRatchet.throwFormattedErr('StringWebWritableStream failure : %s', reason);
@@ -34,17 +46,17 @@ export class StringReadable extends Readable {
     return Buffer.concat(out);
   }
   public static async webReadableStreamToString(stream: ReadableStream): Promise<string> {
-    const buf: Buffer = await StringReadable.webReadableStreamToBuffer(stream);
+    const buf: Buffer = await StreamRatchet.webReadableStreamToBuffer(stream);
     return buf.toString();
   }
 
   public static stringToReadable(input: string): Readable {
-    const s: Readable = new Readable();
-    if (input !== null && input !== undefined) {
-      s.push(input);
-    }
-    s.push(null); // indicates end-of-file basically - the end of the stream
-    return s;
+    return new Readable({
+      read() {
+        this.push(input);
+        this.push(null);
+      },
+    });
   }
 
   public static stringToWebReadableStream(input: string): ReadableStream {
@@ -71,7 +83,7 @@ export class StringReadable extends Readable {
 
   public static anyToStringReadable(input: any): Readable {
     return input === null || input === undefined
-      ? StringReadable.stringToReadable(null)
-      : StringReadable.stringToReadable(StringRatchet.safeString(input));
+      ? StreamRatchet.stringToReadable(null)
+      : StreamRatchet.stringToReadable(StringRatchet.safeString(input));
   }
 }

@@ -23,10 +23,12 @@ import {
 } from '@aws-sdk/client-s3';
 import { Logger } from '../common/logger';
 import { RequireRatchet } from '../common/require-ratchet';
-import { ErrorRatchet, StopWatch } from '../common';
+import { StopWatch } from '../common/stop-watch';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
-import { StringReadable } from '../stream';
+import { StreamRatchet } from '../stream/stream-ratchet';
 import { Upload } from '@aws-sdk/lib-storage';
+import { Readable } from 'stream';
+import { ErrorRatchet } from '../common';
 
 export class S3CacheRatchet {
   constructor(private s3: S3Client, private defaultBucket: string = null) {
@@ -61,6 +63,18 @@ export class S3CacheRatchet {
     try {
       const res: GetObjectCommandOutput = await this.s3.send(new GetObjectCommand(params));
       if (res && res.Body) {
+        if (res.Body instanceof Blob) {
+          const arr: ArrayBuffer = await res.Body.arrayBuffer();
+          rval = Buffer.from(arr);
+        } else if (res.Body instanceof ReadableStream) {
+          rval = await StreamRatchet.webReadableStreamToBuffer(res.Body.transformToWebStream());
+        } else if (res.Body instanceof Readable) {
+          rval = StreamRatchet.readableToBufferSync(res.Body as Readable);
+        } else {
+          ErrorRatchet.throwFormattedErr('Cannot recognize res.Body : %s', res.Body);
+        }
+
+        /*
         if (res.Body instanceof Buffer) {
           rval = res.Body;
         } else if (res.Body instanceof Uint8Array) {
@@ -73,9 +87,10 @@ export class S3CacheRatchet {
         } else if (res.Body instanceof ReadableStream) {
           rval = await StringReadable.webReadableStreamToBuffer(res.Body);
         } else {
-          Logger.error('Could not handle res body type : %s', typeof res.Body);
+          Logger.error('Could not handle res body type : %s : %j', typeof res.Body, Object.keys(res.Body));
           ErrorRatchet.throwFormattedErr('Cound not handle res body type : %s', typeof res.Body);
         }
+        */
         return rval;
       } else {
         Logger.warn('Could not find cache file : %s / %s', bucket, key);
@@ -155,9 +170,9 @@ export class S3CacheRatchet {
     return result;
   }
 
-  public async writeReadableStreamToCacheFile(
+  public async writeStreamToCacheFile(
     key: string,
-    data: ReadableStream,
+    data: ReadableStream | Readable,
     bucket: string = null,
     meta: any = {},
     cacheControl = 'max-age=30',
@@ -182,7 +197,7 @@ export class S3CacheRatchet {
     });
 
     upload.on('httpUploadProgress', (progress) => {
-      Logger.debug('Uploading : %s', progress);
+      Logger.info('Uploading : %s', progress);
     });
     const result: CompleteMultipartUploadCommandOutput = await upload.done();
 
@@ -235,7 +250,7 @@ export class S3CacheRatchet {
           Logger.debug('Copying...');
           const srcStream: ReadableStream = await this.fetchCacheFileAsReadableStream(srcPrefix + sourceFile);
           try {
-            const written: PutObjectCommandOutput = await targetRatchet.writeReadableStreamToCacheFile(
+            const written: PutObjectCommandOutput = await targetRatchet.writeStreamToCacheFile(
               targetPrefix + sourceFile,
               srcStream,
               undefined,
@@ -264,6 +279,15 @@ export class S3CacheRatchet {
     const output: GetObjectCommandOutput = await this.s3.send(new GetObjectCommand(params));
     const readStream: ReadableStream = output.Body.transformToWebStream();
     return readStream;
+  }
+
+  public async fetchCacheFileAsReadable(key: string, bucket: string = null): Promise<Readable> {
+    const params: GetObjectCommandInput = {
+      Bucket: this.bucketVal(bucket),
+      Key: key,
+    };
+    const output: GetObjectCommandOutput = await this.s3.send(new GetObjectCommand(params));
+    return output.Body as Readable;
   }
 
   public async fetchMetaForCacheFile(key: string, bucket: string = null): Promise<HeadObjectCommandOutput> {
