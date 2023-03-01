@@ -73,6 +73,7 @@
   },
   "peerDependencies": {
     "@apollo/client": "^3.7.8",
+    "@aws-sdk/abort-controller": "^3.272.0",
     "@aws-sdk/client-athena": "^3.279.0",
     "@aws-sdk/client-batch": "^3.279.0",
     "@aws-sdk/client-cloudwatch": "^3.279.0",
@@ -157,6 +158,7 @@
   },
   "optionalDependencies": {
     "@apollo/client": "3.7.9",
+    "@aws-sdk/abort-controller": "3.272.0",
     "@aws-sdk/client-athena": "3.279.0",
     "@aws-sdk/client-batch": "3.279.0",
     "@aws-sdk/client-cloudwatch": "3.279.0",
