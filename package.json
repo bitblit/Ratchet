@@ -104,6 +104,9 @@
     "@aws-sdk/types": {
       "optional": true
     },
+    "@aws-sdk/abort-controller": {
+      "optional": true
+    },
     "@aws-sdk/client-athena": {
       "optional": true
     },
