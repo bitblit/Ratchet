@@ -1,4 +1,4 @@
-import { S3CacheRatchet } from '../s3-cache-ratchet';
+import { S3CacheRatchet } from '../s3/s3-cache-ratchet';
 import { RequireRatchet } from '../../common';
 import { PutObjectOutput } from '@aws-sdk/client-s3';
 import { PrototypeDaoProvider } from './prototype-dao-provider';

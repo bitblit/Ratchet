@@ -1,5 +1,5 @@
 import { EnvironmentServiceProvider } from './environment-service-provider';
-import { S3CacheRatchet } from '../s3-cache-ratchet';
+import { S3CacheRatchet } from '../s3/s3-cache-ratchet';
 import { RequireRatchet } from '../../common/require-ratchet';
 import { StopWatch } from '../../common/stop-watch';
 import { Logger } from '../../common/logger';

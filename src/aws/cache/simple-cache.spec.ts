@@ -1,8 +1,8 @@
 import { S3StorageProvider } from './s3-storage-provider';
 import { SimpleCache } from './simple-cache';
-import { S3CacheRatchet } from '../s3-cache-ratchet';
+import { S3CacheRatchet } from '../s3/s3-cache-ratchet';
 import { SimpleCacheObjectWrapper } from './simple-cache-object-wrapper';
-import { DynamoRatchet } from '../dynamo-ratchet';
+import { DynamoRatchet } from '../dynamodb/dynamo-ratchet';
 import { DynamoDbSimpleCacheOptions, DynamoDbStorageProvider } from './dynamo-db-storage-provider';
 import { S3Client } from '@aws-sdk/client-s3';
 import { DynamoDBDocument } from '@aws-sdk/lib-dynamodb';

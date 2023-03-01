@@ -4,7 +4,7 @@ import { AthenaRatchet } from './athena-ratchet';
 import { Logger } from '../../common/logger';
 import { RequireRatchet } from '../../common/require-ratchet';
 import { StringRatchet } from '../../common/string-ratchet';
-import { S3Ratchet } from '../../aws/s3-ratchet';
+import { S3Ratchet } from '../../aws/s3/s3-ratchet';
 import { CsvRatchet } from '../../node-csv/csv-ratchet';
 import { S3Client } from '@aws-sdk/client-s3';
 

@@ -1,6 +1,6 @@
 import { ExpiringCodeProvider } from './expiring-code-provider';
 import { ExpiringCode } from './expiring-code';
-import { S3CacheRatchet } from '../s3-cache-ratchet';
+import { S3CacheRatchet } from '../s3/s3-cache-ratchet';
 import { Logger, RequireRatchet } from '../../common';
 import { PutObjectOutput } from '@aws-sdk/client-s3';
 

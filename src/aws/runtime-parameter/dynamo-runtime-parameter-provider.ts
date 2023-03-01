@@ -1,7 +1,7 @@
 import { PutItemOutput } from '@aws-sdk/client-dynamodb';
 import { RuntimeParameterProvider } from './runtime-parameter-provider';
 import { StoredRuntimeParameter } from './stored-runtime-parameter';
-import { DynamoRatchet } from '../dynamo-ratchet';
+import { DynamoRatchet } from '../dynamodb/dynamo-ratchet';
 import { RequireRatchet } from '../../common/require-ratchet';
 import { Logger } from '../../common/logger';
 import { DocQueryCommandInput } from '../model/dynamo/doc-query-command-input';

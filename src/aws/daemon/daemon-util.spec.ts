@@ -1,4 +1,4 @@
-import { S3CacheRatchet } from '../s3-cache-ratchet';
+import { S3CacheRatchet } from '../s3/s3-cache-ratchet';
 import { DaemonProcessState } from './daemon-process-state';
 import { DaemonUtil } from './daemon-util';
 import { Logger } from '../../common/logger';

@@ -1,6 +1,6 @@
 import { Logger } from '../../common/logger';
 import { DaemonProcessState } from './daemon-process-state';
-import { S3CacheRatchet } from '../s3-cache-ratchet';
+import { S3CacheRatchet } from '../s3/s3-cache-ratchet';
 import { DaemonProcessCreateOptions } from './daemon-process-create-options';
 import {
   CompleteMultipartUploadCommandOutput,

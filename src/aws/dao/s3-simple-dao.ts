@@ -3,7 +3,7 @@
 */
 
 import { Logger } from '../../common/logger';
-import { S3CacheRatchet } from '../s3-cache-ratchet';
+import { S3CacheRatchet } from '../s3/s3-cache-ratchet';
 import { SimpleDaoItem } from './simple-dao-item';
 import { DeleteObjectOutput, PutObjectOutput } from '@aws-sdk/client-s3';
 import { StringRatchet } from '../../common/string-ratchet';

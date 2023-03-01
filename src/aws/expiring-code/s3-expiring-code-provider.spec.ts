@@ -1,5 +1,5 @@
 import { JestRatchet } from '../../jest';
-import { S3CacheRatchet } from '../s3-cache-ratchet';
+import { S3CacheRatchet } from '../s3/s3-cache-ratchet';
 import { S3ExpiringCodeProvider, S3ExpiringCodeProviderFileWrapper } from './s3-expiring-code-provider';
 import { PutObjectCommandOutput, PutObjectOutput } from '@aws-sdk/client-s3';
 import { ExpiringCode } from './expiring-code';
