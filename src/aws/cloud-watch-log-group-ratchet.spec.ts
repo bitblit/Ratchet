@@ -1,18 +1,19 @@
-import { CloudWatchLogs, DescribeLogStreamsCommandOutput } from '@aws-sdk/client-cloudwatch-logs';
-import { JestRatchet } from '../jest';
+import { CloudWatchLogsClient, DescribeLogStreamsCommand, DescribeLogStreamsCommandOutput } from '@aws-sdk/client-cloudwatch-logs';
 import { CloudWatchLogGroupRatchet } from './cloud-watch-log-group-ratchet';
+import { mockClient } from 'aws-sdk-client-mock';
 
-let mockCW: jest.Mocked<CloudWatchLogs>;
+let mockCW;
 
 describe('#CloudWatchLogGroupRatchet', function () {
+  mockCW = mockClient(CloudWatchLogsClient);
   beforeEach(() => {
-    mockCW = JestRatchet.mock();
+    mockCW.reset();
   });
 
   it('should read log stream names', async () => {
-    mockCW.describeLogStreams.mockResolvedValue({
+    mockCW.on(DescribeLogStreamsCommand).resolves({
       logStreams: [{ logStreamName: '1' }, { logStreamName: '2' }],
-    } as DescribeLogStreamsCommandOutput as never);
+    } as DescribeLogStreamsCommandOutput);
 
     const cw: CloudWatchLogGroupRatchet = new CloudWatchLogGroupRatchet('testGroup', mockCW);
 

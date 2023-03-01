@@ -1,19 +1,21 @@
 import { ReadyToSendEmail } from './ready-to-send-email';
-import { SendEmailResponse, SendRawEmailResponse, SES } from '@aws-sdk/client-ses';
+import { SendEmailResponse, SendRawEmailCommand, SendRawEmailCommandOutput, SESClient } from '@aws-sdk/client-ses';
 import { Mailer } from './mailer';
 import { EmailAttachment } from './email-attachment';
 import { StringRatchet } from '../../common/string-ratchet';
 import { Base64Ratchet } from '../../common/base64-ratchet';
 import { MailerConfig } from './mailer-config';
-import { JestRatchet } from '../../jest';
+import { mockClient } from 'aws-sdk-client-mock';
 
-let mockSES: jest.Mocked<SES>;
+let mockSES;
 const smallImageBase64: string =
   'iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII';
 
 describe('#mailer', function () {
+  mockSES = mockClient(SESClient);
+
   beforeEach(() => {
-    mockSES = JestRatchet.mock();
+    mockSES.reset();
   });
 
   it('should send email', async () => {
@@ -46,7 +48,7 @@ describe('#mailer', function () {
       attachments: [attach1, attach2],
     };
 
-    mockSES.sendRawEmail.mockResolvedValue({} as SendRawEmailResponse as never);
+    mockSES.on(SendRawEmailCommand).resolves({} as SendRawEmailCommandOutput);
 
     const result: SendEmailResponse = await svc.sendEmail(rts);
 
@@ -69,7 +71,7 @@ describe('#mailer', function () {
       destinationAddresses: ['jflint@adomni.com'],
     };
 
-    mockSES.sendRawEmail.mockResolvedValue({} as SendRawEmailResponse as never);
+    mockSES.on(SendRawEmailCommand).resolves({} as SendRawEmailCommandOutput);
 
     const result: SendEmailResponse = await svc.sendEmail(rts);
     expect(result).toBeTruthy();
@@ -79,7 +81,7 @@ describe('#mailer', function () {
     const config: MailerConfig = {
       allowedDestinationEmails: [/.*test\.com/, /.*.test2\.com/],
     };
-    const svc: Mailer = new Mailer({} as SES, config);
+    const svc: Mailer = new Mailer({} as SESClient, config);
 
     const out1: string[] = ['a@test.com', 'b@fail.com'];
     const res1: string[] = svc.filterEmailsToValid(out1);
@@ -120,7 +122,7 @@ describe('#mailer', function () {
       attachments: [bigAttach],
     };
 
-    mockSES.sendRawEmail.mockResolvedValue({} as SendRawEmailResponse as never);
+    mockSES.on(SendRawEmailCommand).resolves({} as SendRawEmailCommandOutput);
 
     const result: SendEmailResponse = await svc.sendEmail(rts);
 

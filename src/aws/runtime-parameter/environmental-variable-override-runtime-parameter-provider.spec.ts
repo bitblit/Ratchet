@@ -18,7 +18,7 @@ describe('#environmentalVariableOverrideRuntimeParameterProvider', function () {
 
   it('reads underlying entries', async () => {
     Logger.setLevel(LoggerLevelName.silly);
-    //mockDynamoRatchet.fullyExecuteQuery.mockResolvedValue([testEntry, testEntry2]);
+    //mockDynamoRatchet.fullyExecuteQuery.resolves([testEntry, testEntry2]);
     mockDynamoRatchet.simpleGet.mockResolvedValue(testEntry2);
     const drpp: DynamoRuntimeParameterProvider = new DynamoRuntimeParameterProvider(mockDynamoRatchet, 'test-table');
     const er: EnvironmentalVariableOverrideRuntimeParameterProvider = new EnvironmentalVariableOverrideRuntimeParameterProvider(drpp, {

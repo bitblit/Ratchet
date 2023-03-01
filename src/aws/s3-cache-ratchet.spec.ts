@@ -13,7 +13,6 @@ import { Logger } from '../common/logger';
 import { StringRatchet } from '../common';
 import { mockClient } from 'aws-sdk-client-mock';
 import { StreamRatchet } from '../stream/stream-ratchet';
-import fs from 'fs';
 
 jest.mock('@aws-sdk/s3-request-presigner', () => ({
   getSignedUrl: jest.fn(() => Promise.resolve('https://test.link/test.jpg')),

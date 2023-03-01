@@ -1,6 +1,6 @@
 import { Logger, RequireRatchet, StringRatchet } from '../common';
 import { DynamoRatchet } from './dynamo-ratchet';
-import { DeleteItemOutput, PutItemOutput, ScanCommandInput } from '@aws-sdk/client-dynamodb';
+import { DeleteItemOutput, PutItemOutput } from '@aws-sdk/client-dynamodb';
 import { DocScanCommandInput } from './model/dynamo/doc-scan-command-input';
 
 export class SyncLockRatchet {

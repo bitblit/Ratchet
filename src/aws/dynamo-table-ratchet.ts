@@ -1,10 +1,13 @@
 import {
+  CreateTableCommand,
   CreateTableCommandInput,
   CreateTableCommandOutput,
+  DeleteTableCommand,
   DeleteTableCommandInput,
   DeleteTableCommandOutput,
+  DescribeTableCommand,
   DescribeTableCommandOutput,
-  DynamoDB,
+  DynamoDBClient,
 } from '@aws-sdk/client-dynamodb';
 import { Logger } from '../common/logger';
 import { RequireRatchet } from '../common/require-ratchet';
@@ -12,7 +15,7 @@ import { PromiseRatchet } from '../common/promise-ratchet';
 import { ErrorRatchet } from '../common/error-ratchet';
 
 export class DynamoTableRatchet {
-  constructor(private awsDDB: DynamoDB) {
+  constructor(private awsDDB: DynamoDBClient) {
     if (!awsDDB) {
       throw 'awsDDB may not be null';
     }
@@ -24,7 +27,7 @@ export class DynamoTableRatchet {
       TableName: tableName,
     };
     Logger.debug('Deleting ddb table %s', tableName);
-    const rval: DeleteTableCommandOutput = await this.awsDDB.deleteTable(input);
+    const rval: DeleteTableCommandOutput = await this.awsDDB.send(new DeleteTableCommand(input));
 
     if (waitForDelete) {
       Logger.debug('Table marked for delete, waiting for deletion');
@@ -54,7 +57,7 @@ export class DynamoTableRatchet {
       }
     }
 
-    const rval: CreateTableCommandOutput = await this.awsDDB.createTable(input);
+    const rval: CreateTableCommandOutput = await this.awsDDB.send(new CreateTableCommand(input));
 
     if (waitForReady) {
       Logger.debug('Table created, awaiting ready');
@@ -99,7 +102,7 @@ export class DynamoTableRatchet {
 
   public async safeDescribeTable(tableName: string): Promise<DescribeTableCommandOutput> {
     try {
-      const out: DescribeTableCommandOutput = await this.awsDDB.describeTable({ TableName: tableName });
+      const out: DescribeTableCommandOutput = await this.awsDDB.send(new DescribeTableCommand({ TableName: tableName }));
       return out;
     } catch (err) {
       if (!!err['code'] && err['code'] === 'ResourceNotFoundException') {

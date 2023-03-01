@@ -1,8 +1,10 @@
 import {
-  CloudWatchLogs,
+  CloudWatchLogsClient,
+  DescribeLogStreamsCommand,
   DescribeLogStreamsCommandInput,
   DescribeLogStreamsCommandOutput,
   FilteredLogEvent,
+  FilterLogEventsCommand,
   FilterLogEventsCommandInput,
   FilterLogEventsCommandOutput,
   LogStream,
@@ -11,7 +13,7 @@ import { Logger } from '../common/logger';
 import { StopWatch } from '../common/stop-watch';
 
 export class CloudWatchLogGroupRatchet {
-  constructor(private logGroup: string, private awsCWLogs: CloudWatchLogs = new CloudWatchLogs({ region: 'us-east-1' })) {}
+  constructor(private logGroup: string, private awsCWLogs: CloudWatchLogsClient = new CloudWatchLogsClient({ region: 'us-east-1' })) {}
 
   public async readLogStreams(startTimestamp: number = null, endTimestamp: number = null): Promise<LogStream[]> {
     const params: DescribeLogStreamsCommandInput = {
@@ -24,7 +26,7 @@ export class CloudWatchLogGroupRatchet {
 
     do {
       Logger.debug('Pulling more log streams (%d found so far)', rval.length);
-      const temp: DescribeLogStreamsCommandOutput = await this.awsCWLogs.describeLogStreams(params);
+      const temp: DescribeLogStreamsCommandOutput = await this.awsCWLogs.send(new DescribeLogStreamsCommand(params));
 
       temp.logStreams.forEach((s) => {
         if (s.lastEventTimestamp !== null) {
@@ -74,7 +76,7 @@ export class CloudWatchLogGroupRatchet {
 
     do {
       Logger.debug('Pulling more log events (%d found so far) : %s', rval.length, sw.dump());
-      const temp: FilterLogEventsCommandOutput = await this.awsCWLogs.filterLogEvents(params);
+      const temp: FilterLogEventsCommandOutput = await this.awsCWLogs.send(new FilterLogEventsCommand(params));
       rval = rval.concat(temp.events);
       params.nextToken = temp.nextToken;
     } while (!!params.nextToken && (!maxEvents || rval.length < maxEvents));

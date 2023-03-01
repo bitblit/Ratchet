@@ -1,26 +1,31 @@
 import { Logger } from '../common/logger';
 import { CloudWatchLogsRatchet } from './cloud-watch-logs-ratchet';
 import {
-  CloudWatchLogs,
-  DescribeLogGroupsCommandOutput,
-  DescribeLogStreamsCommandOutput,
+  CloudWatchLogsClient,
+  DeleteLogGroupCommand,
+  DeleteLogStreamCommand,
+  DescribeLogGroupsCommand,
+  DescribeLogStreamsCommand,
+  GetQueryResultsCommand,
   GetQueryResultsCommandOutput,
   LogGroup,
   LogStream,
+  StartQueryCommand,
   StartQueryCommandInput,
-  StartQueryCommandOutput,
 } from '@aws-sdk/client-cloudwatch-logs';
-import { JestRatchet } from '../jest';
+import { mockClient } from 'aws-sdk-client-mock';
 
-let mockCW: jest.Mocked<CloudWatchLogs>;
+let mockCW;
 
 describe('#cloudWatchLogsRatchet', function () {
+  mockCW = mockClient(CloudWatchLogsClient);
+
   beforeEach(() => {
-    mockCW = JestRatchet.mock();
+    mockCW.reset();
   });
 
   it('should find the stream with the oldest timestamp in a group', async () => {
-    mockCW.describeLogStreams.mockResolvedValue({
+    mockCW.on(DescribeLogStreamsCommand).resolves({
       logStreams: [
         { logStreamName: '1', firstEventTimestamp: 100 },
         { logStreamName: '2', firstEventTimestamp: 200 },
@@ -34,7 +39,7 @@ describe('#cloudWatchLogsRatchet', function () {
   });
 
   it('should find the oldest timestamp in group', async () => {
-    mockCW.describeLogStreams.mockResolvedValue({
+    mockCW.on(DescribeLogStreamsCommand).resolves({
       logStreams: [
         { logStreamName: '1', firstEventTimestamp: 100 },
         { logStreamName: '2', firstEventTimestamp: 200 },
@@ -47,7 +52,7 @@ describe('#cloudWatchLogsRatchet', function () {
   });
 
   it('should remove log groups', async () => {
-    mockCW.deleteLogGroup.mockResolvedValue(null as never);
+    mockCW.on(DeleteLogGroupCommand).resolves(null);
 
     const cw: CloudWatchLogsRatchet = new CloudWatchLogsRatchet(mockCW);
     const res: boolean[] = await cw.removeLogGroups([{ logGroupName: '1' }, { logGroupName: '2' }]);
@@ -55,11 +60,11 @@ describe('#cloudWatchLogsRatchet', function () {
   });
 
   it('should remove log groups with prefix', async () => {
-    mockCW.describeLogGroups.mockResolvedValue({
+    mockCW.on(DescribeLogGroupsCommand).resolves({
       logGroups: [{ logGroupName: 'pre1' }, { logGroupName: 'pre2' }],
     } as never);
 
-    mockCW.deleteLogGroup.mockResolvedValue(null as never);
+    mockCW.on(DeleteLogGroupCommand).resolves(null);
 
     const cw: CloudWatchLogsRatchet = new CloudWatchLogsRatchet(mockCW);
     const res: boolean[] = await cw.removeLogGroupsWithPrefix('pre');
@@ -67,11 +72,11 @@ describe('#cloudWatchLogsRatchet', function () {
   });
 
   it('should remove empty or old log streams', async () => {
-    mockCW.describeLogStreams.mockResolvedValue({
+    mockCW.on(DescribeLogStreamsCommand).resolves({
       logStreams: [{ logStreamName: '1' }, { logStreamName: '2' }],
     } as never);
 
-    mockCW.deleteLogStream.mockResolvedValue(null as never);
+    mockCW.on(DeleteLogStreamCommand).resolves(null);
 
     const cw: CloudWatchLogsRatchet = new CloudWatchLogsRatchet(mockCW);
     const res: LogStream[] = await cw.removeEmptyOrOldLogStreams('test', 1000);
@@ -80,7 +85,7 @@ describe('#cloudWatchLogsRatchet', function () {
   });
 
   it('should find all matching groups', async () => {
-    mockCW.describeLogGroups.mockResolvedValue({ logGroups: [{ logGroupName: '1' }, { logGroupName: '2' }] } as never);
+    mockCW.on(DescribeLogGroupsCommand).resolves({ logGroups: [{ logGroupName: '1' }, { logGroupName: '2' }] } as never);
 
     const cw: CloudWatchLogsRatchet = new CloudWatchLogsRatchet(mockCW);
     const prefix: string = '/';
@@ -91,9 +96,9 @@ describe('#cloudWatchLogsRatchet', function () {
   });
 
   it('should execute an insights query', async () => {
-    mockCW.startQuery.mockResolvedValue({ queryId: 'test' } as never);
+    mockCW.on(StartQueryCommand).resolves({ queryId: 'test' });
 
-    mockCW.getQueryResults.mockResolvedValue({} as GetQueryResultsCommandOutput as never);
+    mockCW.on(GetQueryResultsCommand).resolves({});
 
     const cw: CloudWatchLogsRatchet = new CloudWatchLogsRatchet(mockCW);
 

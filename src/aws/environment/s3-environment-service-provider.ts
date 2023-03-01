@@ -4,7 +4,7 @@ import { RequireRatchet } from '../../common/require-ratchet';
 import { StopWatch } from '../../common/stop-watch';
 import { Logger } from '../../common/logger';
 import { StringRatchet } from '../../common';
-import { S3 } from '@aws-sdk/client-s3';
+import { S3Client } from '@aws-sdk/client-s3';
 
 /**
  * Service for reading environmental variables from S3
@@ -17,7 +17,7 @@ export class S3EnvironmentServiceProvider<T> implements EnvironmentServiceProvid
     RequireRatchet.notNullOrUndefined(cfg.bucketName);
     RequireRatchet.notNullOrUndefined(cfg.region);
     RequireRatchet.true(!!cfg.s3Override || !!cfg.region, 'You must set either region or S3Override');
-    const s3: S3 = cfg.s3Override || new S3({ region: cfg.region });
+    const s3: S3Client = cfg.s3Override || new S3Client({ region: cfg.region });
     this.ratchet = new S3CacheRatchet(s3, cfg.bucketName);
   }
 
@@ -32,7 +32,7 @@ export class S3EnvironmentServiceProvider<T> implements EnvironmentServiceProvid
 }
 
 export interface S3EnvironmentServiceProviderConfig {
-  s3Override?: S3;
+  s3Override?: S3Client;
   bucketName: string;
   region?: string;
   pathPrefix?: string;

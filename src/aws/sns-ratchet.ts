@@ -1,9 +1,9 @@
 import { Logger } from '../common/logger';
-import { PublishCommandInput, PublishCommandOutput, SNS } from '@aws-sdk/client-sns';
+import { PublishCommand, PublishCommandInput, PublishCommandOutput, SNSClient } from '@aws-sdk/client-sns';
 import { RequireRatchet } from '../common';
 
 export class SnsRatchet {
-  constructor(private sns: SNS = new SNS({ apiVersion: '2010-03-31', region: 'us-east-1' }), private topicArn: string) {
+  constructor(private sns: SNSClient = new SNSClient({ region: 'us-east-1' }), private topicArn: string) {
     RequireRatchet.notNullOrUndefined(this.sns, 'sns');
     RequireRatchet.notNullOrUndefined(this.topicArn, 'topicArn');
   }
@@ -20,7 +20,7 @@ export class SnsRatchet {
       };
 
       Logger.debug('Sending via SNS : %j', params);
-      result = await this.sns.publish(params);
+      result = await this.sns.send(new PublishCommand(params));
     } catch (err) {
       if (suppressErrors) {
         Logger.error('Failed to fire SNS notification : %j : %s', inMsg, err);

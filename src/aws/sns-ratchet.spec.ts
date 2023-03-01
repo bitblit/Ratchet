@@ -1,20 +1,23 @@
-import AWS_SNS, { SNS } from '@aws-sdk/client-sns';
+import { PublishCommand, PublishCommandOutput, SNSClient } from '@aws-sdk/client-sns';
 import { SnsRatchet } from './sns-ratchet';
 import { JestRatchet } from '../jest';
+import { mockClient } from 'aws-sdk-client-mock';
 
-let mockSNS: jest.Mocked<SNS>;
+let mockSNS;
 
 describe('#SNSRatchet', function () {
+  mockSNS = mockClient(SNSClient);
   beforeEach(() => {
-    mockSNS = JestRatchet.mock();
+    mockSNS.reset();
   });
 
   it('should send a message', async () => {
-    mockSNS.publish.mockResolvedValue({} as AWS_SNS.PublishCommandOutput as never);
+    //mockSNS.publish.resolves({} as PublishCommandOutput as never);
+    mockSNS.on(PublishCommand).resolves({} as PublishCommandOutput);
 
     const topicArn: string = 'TOPIC-ARN-HERE';
     const ratchet: SnsRatchet = new SnsRatchet(mockSNS, topicArn);
-    const out: AWS_SNS.PublishCommandOutput = await ratchet.sendMessage('test \n\n' + new Date() + '\n\n---\n\nTest CR');
+    const out: PublishCommandOutput = await ratchet.sendMessage('test \n\n' + new Date() + '\n\n---\n\nTest CR');
 
     expect(out).toBeTruthy();
   });

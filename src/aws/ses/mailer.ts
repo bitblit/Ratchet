@@ -1,6 +1,6 @@
 import { ReadyToSendEmail } from './ready-to-send-email';
 import { Logger } from '../../common/logger';
-import { SendRawEmailRequest, SendRawEmailResponse, SES } from '@aws-sdk/client-ses';
+import { SendRawEmailCommand, SendRawEmailCommandOutput, SendRawEmailRequest, SendRawEmailResponse, SESClient } from '@aws-sdk/client-ses';
 import { StringRatchet } from '../../common/string-ratchet';
 import { MailerConfig } from './mailer-config';
 import { ErrorRatchet } from '../../common/error-ratchet';
@@ -21,7 +21,7 @@ import { RequireRatchet } from '../../common/require-ratchet';
 export class Mailer implements MailerLike {
   public static readonly EMAIL: RegExp = new RegExp('.+@.+\\.[a-z]+');
 
-  constructor(private ses: SES, private config: MailerConfig = {} as MailerConfig) {
+  constructor(private ses: SESClient, private config: MailerConfig = {} as MailerConfig) {
     RequireRatchet.notNullOrUndefined(this.ses);
     if (!!config.archive && !config.archive.getDefaultBucket()) {
       throw new Error('If archive specified, must set a default bucket');
@@ -161,10 +161,10 @@ export class Mailer implements MailerLike {
     }
   }
 
-  public async sendEmail(inRts: ReadyToSendEmail): Promise<SendRawEmailResponse> {
+  public async sendEmail(inRts: ReadyToSendEmail): Promise<SendRawEmailCommandOutput> {
     RequireRatchet.notNullOrUndefined(inRts, 'RTS must be defined');
     RequireRatchet.notNullOrUndefined(inRts.destinationAddresses, 'Destination addresses must be defined');
-    let rval: SendRawEmailResponse = null;
+    let rval: SendRawEmailCommandOutput = null;
 
     let toAddresses: string[] = this.filterEmailsToValid(inRts.destinationAddresses);
     const autoBcc: string[] = inRts.doNotAutoBcc ? [] : this.config.autoBccAddresses || [];
@@ -232,7 +232,7 @@ export class Mailer implements MailerLike {
           RawMessage: { Data: new TextEncoder().encode(rawMail) },
         };
 
-        rval = await this.ses.sendRawEmail(params);
+        rval = await this.ses.send(new SendRawEmailCommand(params));
       } catch (err) {
         Logger.error('Error while processing email: %s', err, err);
       }

@@ -2,7 +2,7 @@
     Service for interacting with cloudwatch
 */
 
-import AWS_CloudWatch, { CloudWatch, PutMetricDataCommandOutput } from '@aws-sdk/client-cloudwatch';
+import AWS_CloudWatch, { CloudWatchClient, PutMetricDataCommand, PutMetricDataCommandOutput } from '@aws-sdk/client-cloudwatch';
 import { Logger } from '../common/logger';
 import { KeyValue } from '../common/key-value';
 import { CloudWatchMetricsUnit } from './model/cloud-watch-metrics-unit';
@@ -11,10 +11,10 @@ import { CloudWatchMetricsMinuteLevelDynamoCountRequest } from './model/cloud-wa
 import { DateTime } from 'luxon';
 
 export class CloudWatchMetricsRatchet {
-  private cw: CloudWatch;
+  private cw: CloudWatchClient;
 
-  constructor(cloudWatch: CloudWatch = null) {
-    this.cw = cloudWatch ? cloudWatch : new CloudWatch({ region: 'us-east-1', apiVersion: '2010-08-01' });
+  constructor(cloudWatch: CloudWatchClient = null) {
+    this.cw = cloudWatch ? cloudWatch : new CloudWatchClient({ region: 'us-east-1', apiVersion: '2010-08-01' });
   }
 
   public async writeSingleMetric(
@@ -49,7 +49,7 @@ export class CloudWatchMetricsRatchet {
     };
     Logger.silly('Writing metric to cw : %j', metricData);
 
-    const result: PutMetricDataCommandOutput = await this.cw.putMetricData(metricData);
+    const result: PutMetricDataCommandOutput = await this.cw.send(new PutMetricDataCommand(metricData));
     Logger.silly('Result: %j', result);
     return result;
   }

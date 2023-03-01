@@ -1,12 +1,13 @@
-import { S3 } from '@aws-sdk/client-s3';
-import { JestRatchet } from '../jest';
+import { S3Client } from '@aws-sdk/client-s3';
 import { S3Ratchet } from './s3-ratchet';
+import { mockClient } from 'aws-sdk-client-mock';
 
-let mockS3: jest.Mocked<S3>;
+let mockS3;
 
 describe('#S3Ratchet', function () {
+  mockS3 = mockClient(S3Client);
   beforeEach(() => {
-    mockS3 = JestRatchet.mock();
+    mockS3.reset();
   });
 
   it('should checkS3UrlForValidity', async () => {

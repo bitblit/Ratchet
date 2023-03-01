@@ -1,20 +1,23 @@
 import {
+  CopyObjectCommand,
   CopyObjectCommandInput,
+  GetObjectCommand,
   GetObjectOutput,
+  ListObjectsV2Command,
   ListObjectsV2CommandInput,
   ListObjectsV2CommandOutput,
   PutObjectCommandInput,
-  S3,
+  S3Client,
 } from '@aws-sdk/client-s3';
 import _ from 'lodash';
 import { Logger, PromiseRatchet, RequireRatchet } from '../common';
 import { Upload } from '@aws-sdk/lib-storage';
 
 export interface S3LocationSyncRatchetConfig {
-  srcS3: S3;
+  srcS3: S3Client;
   srcBucket: string;
   srcPrefix: string;
-  dstS3: S3;
+  dstS3: S3Client;
   dstBucket: string;
   dstPrefix: string;
   maxNumThreads?: number;
@@ -74,9 +77,9 @@ export class S3LocationSyncRatchet {
             Key: dstKey,
             MetadataDirective: 'COPY',
           };
-          await this.config.dstS3.copyObject(params);
+          await this.config.dstS3.send(new CopyObjectCommand(params));
         } else {
-          const fetched: GetObjectOutput = await this.config.srcS3.getObject({ Bucket: this.config.srcBucket, Key: key });
+          const fetched: GetObjectOutput = await this.config.srcS3.send(new GetObjectCommand({ Bucket: this.config.srcBucket, Key: key }));
           const params: PutObjectCommandInput = {
             Bucket: this.config.dstBucket,
             Key: dstKey,
@@ -114,7 +117,7 @@ export class S3LocationSyncRatchet {
                   [${[this.config.srcBucket, key].join('/')} ---> ${[this.config.dstBucket, dstKey].join('/')}]`);
   }
 
-  public async listObjects(bucket: string, prefix: string, s3: S3): Promise<any> {
+  public async listObjects(bucket: string, prefix: string, s3: S3Client): Promise<any> {
     Logger.info(`Scanning bucket [${[bucket, prefix].join('/')}]`);
 
     const params: ListObjectsV2CommandInput = {
@@ -126,7 +129,7 @@ export class S3LocationSyncRatchet {
     const rval = {};
 
     while (more) {
-      const response: ListObjectsV2CommandOutput = await s3.listObjectsV2(params);
+      const response: ListObjectsV2CommandOutput = await s3.send(new ListObjectsV2Command(params));
       more = response.IsTruncated;
       _.each(response.Contents, (obj) => {
         rval[obj.Key] = { Key: obj.Key, LastModified: obj.LastModified, ETag: obj.ETag, Size: obj.Size };

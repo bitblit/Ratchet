@@ -1,9 +1,11 @@
 import {
-  Batch,
+  BatchClient,
   JobStatus,
   JobSummary,
+  ListJobsCommand,
   ListJobsCommandInput,
   ListJobsCommandOutput,
+  SubmitJobCommand,
   SubmitJobCommandInput,
   SubmitJobCommandOutput,
 } from '@aws-sdk/client-batch';
@@ -14,12 +16,12 @@ import { Logger, RequireRatchet } from '../common';
  * Endpoints for doing api level integrations
  */
 export class AwsBatchRatchet {
-  constructor(private batch: Batch, private defaultQueueName?: string, private defaultJobDefinition?: string) {}
+  constructor(private batch: BatchClient, private defaultQueueName?: string, private defaultJobDefinition?: string) {}
 
   public async scheduleJob(options: SubmitJobCommandInput): Promise<SubmitJobCommandOutput> {
     Logger.info('Submitting batch job %s', options.jobName);
     try {
-      const rval: SubmitJobCommandOutput = await this.batch.submitJob(options);
+      const rval: SubmitJobCommandOutput = await this.batch.send(new SubmitJobCommand(options));
       Logger.info('Job %s(%s) submitted', rval.jobName, rval.jobId);
       return rval;
     } catch (err) {
@@ -44,7 +46,7 @@ export class AwsBatchRatchet {
     Logger.info('Fetching %j', request);
     do {
       Logger.info('Pulling page...');
-      const tmp: ListJobsCommandOutput = await this.batch.listJobs(request);
+      const tmp: ListJobsCommandOutput = await this.batch.send(new ListJobsCommand(request));
       rval = rval.concat(tmp.jobSummaryList);
       request.nextToken = tmp.nextToken;
     } while (request.nextToken);
@@ -79,7 +81,7 @@ export class AwsBatchRatchet {
     };
 
     try {
-      rval = await this.batch.submitJob(options);
+      rval = await this.batch.send(new SubmitJobCommand(options));
       Logger.info('Job %s(%s) submitted', rval.jobName, rval.jobId);
     } catch (err) {
       Logger.error(

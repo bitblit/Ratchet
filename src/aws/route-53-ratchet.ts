@@ -1,15 +1,16 @@
 import { Logger } from '../common/logger';
 import {
+  ChangeResourceRecordSetsCommand,
   ChangeResourceRecordSetsCommandInput,
   ChangeResourceRecordSetsCommandOutput,
   GetChangeCommandInput,
-  Route53,
+  Route53Client,
   waitUntilResourceRecordSetsChanged,
 } from '@aws-sdk/client-route-53';
 import { WaiterResult, WaiterState } from '@aws-sdk/util-waiter';
 
 export class Route53Ratchet {
-  constructor(private route53: Route53, private hostedZoneId: string) {
+  constructor(private route53: Route53Client, private hostedZoneId: string) {
     if (!this.route53) {
       throw 'route53 may not be null';
     }
@@ -45,7 +46,7 @@ export class Route53Ratchet {
         HostedZoneId: hostedZoneId,
       };
 
-      const result: ChangeResourceRecordSetsCommandOutput = await this.route53.changeResourceRecordSets(params);
+      const result: ChangeResourceRecordSetsCommandOutput = await this.route53.send(new ChangeResourceRecordSetsCommand(params));
       Logger.debug('Updated domain result: %j', result);
 
       const waitParams: GetChangeCommandInput = {

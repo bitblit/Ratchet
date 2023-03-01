@@ -1,17 +1,18 @@
 import { AwsBatchRatchet } from './aws-batch-ratchet';
-import { Batch, JobStatus, JobSummary, SubmitJobCommandOutput } from '@aws-sdk/client-batch';
-import { JestRatchet } from '../jest';
+import { BatchClient, JobStatus, JobSummary, ListJobsCommand, SubmitJobCommand, SubmitJobCommandOutput } from '@aws-sdk/client-batch';
+import { mockClient } from 'aws-sdk-client-mock';
 
-let mockBatch: jest.Mocked<Batch>;
+let mockBatch;
 
 describe('#AwsBatchService', () => {
+  mockBatch = mockClient(BatchClient);
   beforeEach(() => {
-    mockBatch = JestRatchet.mock();
+    mockBatch.reset();
   });
 
   it('Should schedule background task', async () => {
     const svc: AwsBatchRatchet = new AwsBatchRatchet(mockBatch);
-    mockBatch.submitJob.mockResolvedValue({ jobName: 'b' } as never);
+    mockBatch.on(SubmitJobCommand).resolves({ jobName: 'b' });
 
     const res: SubmitJobCommandOutput = await svc.scheduleBackgroundTask('BACKGROUND_TASK_NAME', {}, 'JOB-DEFINITION', 'QUEUE-NAME');
     expect(res).not.toBeNull();
@@ -19,7 +20,7 @@ describe('#AwsBatchService', () => {
 
   it('Should schedule batch job', async () => {
     const svc: AwsBatchRatchet = new AwsBatchRatchet(mockBatch);
-    mockBatch.submitJob.mockResolvedValue({ jobName: 'b' } as never);
+    mockBatch.on(SubmitJobCommand).resolves({ jobName: 'b' });
 
     const res: SubmitJobCommandOutput = await svc.scheduleJob({
       jobName: 'testName',
@@ -31,7 +32,7 @@ describe('#AwsBatchService', () => {
 
   it('Should list jobs', async () => {
     const svc: AwsBatchRatchet = new AwsBatchRatchet(mockBatch);
-    mockBatch.listJobs.mockResolvedValue([{}] as JobSummary[] as never);
+    mockBatch.on(ListJobsCommand).resolves([{}] as JobSummary[]);
 
     const res: JobSummary[] = await svc.listJobs('testQueue');
     expect(res).not.toBeNull();
@@ -40,7 +41,7 @@ describe('#AwsBatchService', () => {
 
   it('Should count jobs in state', async () => {
     const svc: AwsBatchRatchet = new AwsBatchRatchet(mockBatch);
-    mockBatch.listJobs.mockResolvedValue([{}] as JobSummary[] as never);
+    mockBatch.on(ListJobsCommand).resolves([{}] as JobSummary[]);
 
     const res: number = await svc.jobCountInState(JobStatus.RUNNABLE, 'testQueue');
     expect(res).toEqual(1);

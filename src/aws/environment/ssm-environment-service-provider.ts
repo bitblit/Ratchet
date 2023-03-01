@@ -1,5 +1,5 @@
 import { Logger } from '../../common/logger';
-import { GetParameterResult, SSM } from '@aws-sdk/client-ssm';
+import { GetParameterCommand, GetParameterCommandOutput, GetParameterResult, SSMClient } from '@aws-sdk/client-ssm';
 import { PromiseRatchet } from '../../common/promise-ratchet';
 import { RequireRatchet } from '../../common/require-ratchet';
 import { ErrorRatchet } from '../../common/error-ratchet';
@@ -11,11 +11,11 @@ import { StringRatchet } from '../../common/string-ratchet';
  * Also hides the decryption detail from higher up services
  */
 export class SsmEnvironmentServiceProvider<T> implements EnvironmentServiceProvider<T> {
-  private ssm: SSM;
+  private ssm: SSMClient;
   public constructor(private region = 'us-east-1', private ssmEncrypted = true) {
     RequireRatchet.notNullOrUndefined(region);
     RequireRatchet.notNullOrUndefined(ssmEncrypted);
-    this.ssm = new SSM({ apiVersion: '2014-11-06', region: this.region });
+    this.ssm = new SSMClient({ region: this.region });
   }
 
   public async fetchConfig(name: string): Promise<T> {
@@ -28,7 +28,7 @@ export class SsmEnvironmentServiceProvider<T> implements EnvironmentServiceProvi
     let rval: T = null;
     let toParse: string = null;
     try {
-      const value: GetParameterResult = await this.ssm.getParameter(params);
+      const value: GetParameterCommandOutput = await this.ssm.send(new GetParameterCommand(params));
       toParse = StringRatchet.trimToNull(value?.Parameter?.Value);
     } catch (err) {
       const errCode: string = err['code'] || '';
