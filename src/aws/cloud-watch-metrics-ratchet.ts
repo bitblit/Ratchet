@@ -2,7 +2,7 @@
     Service for interacting with cloudwatch
 */
 
-import AWS_CloudWatch, { CloudWatchClient, PutMetricDataCommand, PutMetricDataCommandOutput } from '@aws-sdk/client-cloudwatch';
+import { CloudWatchClient, PutMetricDataCommand, PutMetricDataCommandInput, PutMetricDataCommandOutput } from '@aws-sdk/client-cloudwatch';
 import { Logger } from '../common/logger';
 import { KeyValue } from '../common/key-value';
 import { CloudWatchMetricsUnit } from './model/cloud-watch-metrics-unit';
@@ -34,7 +34,7 @@ export class CloudWatchMetricsRatchet {
     }
     const storageResolution: number = highResolution ? 1 : 60;
 
-    const metricData: AWS_CloudWatch.PutMetricDataCommandInput = {
+    const metricData: PutMetricDataCommandInput = {
       Namespace: namespace,
       MetricData: [
         {

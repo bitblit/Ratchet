@@ -1,7 +1,8 @@
 import { Logger, RequireRatchet, StringRatchet } from '../common';
 import { DynamoRatchet } from './dynamo-ratchet';
-import { DeleteItemOutput, PutItemOutput } from '@aws-sdk/client-dynamodb';
+import { DeleteItemOutput, PutItemCommand, PutItemCommandOutput, PutItemOutput } from '@aws-sdk/client-dynamodb';
 import { DocScanCommandInput } from './model/dynamo/doc-scan-command-input';
+import { PutCommand } from '@aws-sdk/lib-dynamodb';
 
 export class SyncLockRatchet {
   constructor(private ratchet: DynamoRatchet, private tableName: string) {
@@ -27,7 +28,7 @@ export class SyncLockRatchet {
       };
 
       try {
-        const pio: PutItemOutput = await this.ratchet.getDDB().put(params);
+        const pio: PutItemCommandOutput = await this.ratchet.getDDB().send(new PutItemCommand(params));
         rval = true;
       } catch (err) {
         if (String(err).indexOf('ConditionalCheckFailedException') > -1) {

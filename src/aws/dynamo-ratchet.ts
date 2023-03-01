@@ -6,7 +6,7 @@ import {
   BatchGetCommand,
   BatchWriteCommand,
   DeleteCommand,
-  DynamoDBDocument,
+  DynamoDBDocumentClient,
   GetCommand,
   PutCommand,
   QueryCommand,
@@ -45,13 +45,13 @@ import { DocQueryCommandInput } from './model/dynamo/doc-query-command-input';
 import { DocPutItemCommandInput } from './model/dynamo/doc-put-item-command-input';
 
 export class DynamoRatchet implements DynamoRatchetLike {
-  constructor(private awsDDB: DynamoDBDocument) {
+  constructor(private awsDDB: DynamoDBDocumentClient) {
     if (!awsDDB) {
       throw 'awsDDB may not be null';
     }
   }
 
-  public getDDB(): DynamoDBDocument {
+  public getDDB(): DynamoDBDocumentClient {
     return this.awsDDB;
   }
 

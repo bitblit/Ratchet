@@ -1,9 +1,6 @@
 import { Readable } from 'stream';
 import { ErrorRatchet } from '../common/error-ratchet';
 import { StringRatchet } from '../common/string-ratchet';
-import { Logger } from '../common/logger';
-import { BufferWritable } from './buffer-writable';
-import { PromiseRatchet } from '../common';
 
 export class StreamRatchet {
   // Empty constructor prevents instantiation

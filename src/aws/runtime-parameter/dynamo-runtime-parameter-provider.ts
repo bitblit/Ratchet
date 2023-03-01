@@ -1,4 +1,4 @@
-import { PutItemOutput, QueryInput } from '@aws-sdk/client-dynamodb';
+import { PutItemOutput } from '@aws-sdk/client-dynamodb';
 import { RuntimeParameterProvider } from './runtime-parameter-provider';
 import { StoredRuntimeParameter } from './stored-runtime-parameter';
 import { DynamoRatchet } from '../dynamo-ratchet';

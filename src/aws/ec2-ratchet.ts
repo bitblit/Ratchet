@@ -2,7 +2,6 @@ import {
   DescribeInstancesCommand,
   DescribeInstancesCommandInput,
   DescribeInstancesCommandOutput,
-  DescribeInstancesResult,
   EC2Client,
   Instance,
   StartInstancesCommand,

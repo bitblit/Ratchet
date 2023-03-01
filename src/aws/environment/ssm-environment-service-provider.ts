@@ -1,5 +1,5 @@
 import { Logger } from '../../common/logger';
-import { GetParameterCommand, GetParameterCommandOutput, GetParameterResult, SSMClient } from '@aws-sdk/client-ssm';
+import { GetParameterCommand, GetParameterCommandOutput, SSMClient } from '@aws-sdk/client-ssm';
 import { PromiseRatchet } from '../../common/promise-ratchet';
 import { RequireRatchet } from '../../common/require-ratchet';
 import { ErrorRatchet } from '../../common/error-ratchet';

@@ -7,7 +7,7 @@ import { SimpleCacheObjectWrapper } from './simple-cache-object-wrapper';
 import { SimpleCacheStorageProvider } from './simple-cache-storage-provider';
 import { RequireRatchet } from '../../common';
 import { DynamoRatchet } from '../dynamo-ratchet';
-import { PutItemCommandOutput, QueryCommandInput, ScanCommandInput } from '@aws-sdk/client-dynamodb';
+import { PutItemCommandOutput, ScanCommandInput } from '@aws-sdk/client-dynamodb';
 import { DocQueryCommandInput } from '../model/dynamo/doc-query-command-input';
 
 export class DynamoDbStorageProvider implements SimpleCacheStorageProvider {

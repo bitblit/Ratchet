@@ -1,11 +1,11 @@
 import { DynamoCountResult } from './model/dynamo-count-result';
-import { DynamoDBDocument, DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
+import { DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
 import { DeleteItemCommandOutput, PutItemOutput } from '@aws-sdk/client-dynamodb';
 import { DocQueryCommandInput } from './model/dynamo/doc-query-command-input';
 import { DocScanCommandInput } from './model/dynamo/doc-scan-command-input';
 
 export interface DynamoRatchetLike {
-  getDDB(): DynamoDBDocument;
+  getDDB(): DynamoDBDocumentClient;
   tableIsEmpty(tableName: string): Promise<boolean>;
   // This basically wraps up scans and queries with a function that will auto-retry them if a
   // Throughput exception is encountered (up to a limit) but lets other errors get thrown.

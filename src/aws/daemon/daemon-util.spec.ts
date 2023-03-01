@@ -10,7 +10,7 @@ import { Subject } from 'rxjs';
 import { PassThrough } from 'stream';
 import { CsvRatchet } from '../../node-csv';
 import { TestItem } from '../../node-csv/csv-ratchet.spec';
-import { S3 } from '@aws-sdk/client-s3';
+import { S3Client } from '@aws-sdk/client-s3';
 
 let mockS3CR: jest.Mocked<S3CacheRatchet>;
 
@@ -59,7 +59,7 @@ describe('#DaemonUtil', function () {
   });
 
   xit('should test the daemon util streaming', async () => {
-    const s3: S3 = new S3({ region: 'us-east-1' });
+    const s3: S3Client = new S3Client({ region: 'us-east-1' });
     const cache: S3CacheRatchet = new S3CacheRatchet(s3, 'test-bucket');
     const key: string = 's3-cache-ratchet.spec.ts';
 
@@ -87,7 +87,7 @@ describe('#DaemonUtil', function () {
     Logger.setLevel(LoggerLevelName.debug);
     const sub: Subject<TestItem> = new Subject<TestItem>();
     const out: PassThrough = new PassThrough();
-    const s3: S3 = new S3({ region: 'us-east-1' });
+    const s3: S3Client = new S3Client({ region: 'us-east-1' });
     const cache: S3CacheRatchet = new S3CacheRatchet(s3, 'test-bucket');
     const key: string = 'test.csv';
 

@@ -7,7 +7,7 @@ import {
   StartQueryExecutionCommand,
   StartQueryExecutionOutput,
 } from '@aws-sdk/client-athena';
-import { S3 } from '@aws-sdk/client-s3';
+import { S3Client } from '@aws-sdk/client-s3';
 import { mockClient } from 'aws-sdk-client-mock';
 
 let mockAthena;
@@ -15,7 +15,7 @@ let mockS3;
 
 describe('#AthenaRatchet', function () {
   mockAthena = mockClient(AthenaClient);
-  mockS3 = mockClient(S3);
+  mockS3 = mockClient(S3Client);
 
   beforeEach(() => {
     mockAthena.reset();
