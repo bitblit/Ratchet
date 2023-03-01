@@ -1,16 +1,19 @@
 import { DynamoRatchet } from './dynamo-ratchet';
 import { Logger } from '../common/logger';
 import { LoggerLevelName } from '../common';
-import { JestRatchet } from '../jest';
-import { DynamoDBDocument } from '@aws-sdk/lib-dynamodb';
-import { AttributeValue, PutItemCommandOutput, QueryCommandInput, QueryInput, ScanCommandInput } from '@aws-sdk/client-dynamodb';
+import { DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
+import { PutItemCommandOutput, ScanCommandInput } from '@aws-sdk/client-dynamodb';
 import { DocQueryCommandInput } from './model/dynamo/doc-query-command-input';
 
-let mockDynamo: jest.Mocked<DynamoDBDocument>;
+import { mockClient } from 'aws-sdk-client-mock';
+
+let mockDynamo;
 
 describe('#dynamoRatchet', function () {
+  mockDynamo = mockClient(DynamoDBDocumentClient);
+
   beforeEach(() => {
-    mockDynamo = JestRatchet.mock();
+    mockDynamo.reset();
   });
 
   xit('should handle ProvisionedThroughputExceeded exceptions', async () => {
