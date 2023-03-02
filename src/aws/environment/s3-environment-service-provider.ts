@@ -25,8 +25,8 @@ export class S3EnvironmentServiceProvider<T> implements EnvironmentServiceProvid
     const readPath: string = StringRatchet.trimToEmpty(this.cfg.pathPrefix) + name + StringRatchet.trimToEmpty(this.cfg.pathSuffix);
     Logger.silly('S3EnvironmentServiceProvider:Request to read config from : %s / %s', this.cfg.bucketName, readPath);
     const sw: StopWatch = new StopWatch();
-    sw.start();
     const rval: T = await this.ratchet.readCacheFileToObject<T>(readPath);
+    sw.log();
     return rval;
   }
 }

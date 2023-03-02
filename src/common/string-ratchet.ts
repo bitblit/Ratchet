@@ -5,7 +5,7 @@
 import { RequireRatchet } from './require-ratchet';
 
 export class StringRatchet {
-  // % isn't technically reserved but its still a pain in the butt
+  // % isn't technically reserved, but it is still a pain in the butt
   public static RFC_3986_RESERVED = ['!', '*', "'", '(', ')', ';', ':', '@', '&', '=', '+', '$', ',', '/', '?', '#', '[', ']', '%'];
 
   public static stringToUint8Array(val: string): Uint8Array {

@@ -10,14 +10,6 @@ describe('#AwsBatchService', () => {
     mockBatch.reset();
   });
 
-  it('Should schedule background task', async () => {
-    const svc: AwsBatchRatchet = new AwsBatchRatchet(mockBatch);
-    mockBatch.on(SubmitJobCommand).resolves({ jobName: 'b' });
-
-    const res: SubmitJobCommandOutput = await svc.scheduleBackgroundTask('BACKGROUND_TASK_NAME', {}, 'JOB-DEFINITION', 'QUEUE-NAME');
-    expect(res).not.toBeNull();
-  });
-
   it('Should schedule batch job', async () => {
     const svc: AwsBatchRatchet = new AwsBatchRatchet(mockBatch);
     mockBatch.on(SubmitJobCommand).resolves({ jobName: 'b' });

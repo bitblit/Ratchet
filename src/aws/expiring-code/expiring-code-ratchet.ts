@@ -1,4 +1,5 @@
-import { RequireRatchet, StringRatchet } from '../../common';
+import { RequireRatchet } from '../../common/require-ratchet';
+import { StringRatchet } from '../../common/string-ratchet';
 import { ExpiringCodeProvider } from './expiring-code-provider';
 import { ExpiringCodeParams } from './expiring-code-params';
 import { ExpiringCode } from './expiring-code';

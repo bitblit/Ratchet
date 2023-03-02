@@ -1,6 +1,6 @@
 import { BrowserLocalIpProvider } from './browser-local-ip-provider';
 import { NetworkRatchet } from './network-ratchet';
-import { PromiseRatchet } from './promise-ratchet';
+import { PromiseRatchet } from '../promise-ratchet';
 
 jest.mock('./network-ratchet');
 

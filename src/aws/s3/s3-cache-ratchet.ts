@@ -217,7 +217,7 @@ export class S3CacheRatchet {
     let rval: string[] = [];
     const sourceFiles: string[] = await this.directChildrenOfPrefix(srcPrefix);
     const targetFiles: string[] = await targetRatchet.directChildrenOfPrefix(targetPrefix);
-    const sw: StopWatch = new StopWatch(true);
+    const sw: StopWatch = new StopWatch();
 
     for (let i = 0; i < sourceFiles.length; i++) {
       const sourceFile: string = sourceFiles[i];
@@ -268,6 +268,7 @@ export class S3CacheRatchet {
     }
 
     Logger.info('Found %d files, copied %d', sourceFiles.length, rval.length);
+    sw.log();
     return rval;
   }
 

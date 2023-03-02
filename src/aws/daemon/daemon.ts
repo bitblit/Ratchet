@@ -5,7 +5,7 @@ import { StringRatchet } from '../../common/string-ratchet';
 import { DaemonProcessCreateOptions } from './daemon-process-create-options';
 import { DaemonUtil } from './daemon-util';
 import { DaemonLike } from './daemon-like';
-import { JwtRatchetLike } from '../../common/jwt-ratchet-like';
+import { JwtRatchetLike } from '../../common/jwt/jwt-ratchet-like';
 import { RequireRatchet } from '../../common/require-ratchet';
 import { DaemonProcessStatePublicToken } from './daemon-process-state-public-token';
 import { S3Client } from '@aws-sdk/client-s3';

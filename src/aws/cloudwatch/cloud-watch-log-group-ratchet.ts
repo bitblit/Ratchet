@@ -59,7 +59,6 @@ export class CloudWatchLogGroupRatchet {
     maxEvents: number = null
   ): Promise<FilteredLogEvent[]> {
     const sw: StopWatch = new StopWatch();
-    sw.start();
     const params: FilterLogEventsCommandInput = {
       logGroupName: this.logGroup,
       endTime: endTimestamp,
@@ -94,6 +93,7 @@ export class CloudWatchLogGroupRatchet {
       });
     }
 
+    sw.log();
     return rval;
   }
 }

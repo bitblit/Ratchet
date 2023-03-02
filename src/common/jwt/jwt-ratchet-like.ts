@@ -1,5 +1,5 @@
 import { JwtTokenBase } from './jwt-token-base';
-import { LoggerLevelName } from './logger-support/logger-level-name';
+import { LoggerLevelName } from '../logger-support/logger-level-name';
 import { ExpiredJwtHandling } from './expired-jwt-handling';
 
 /**

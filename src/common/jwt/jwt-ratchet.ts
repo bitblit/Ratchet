@@ -1,10 +1,10 @@
 import jwt from 'jsonwebtoken';
-import { RequireRatchet } from './require-ratchet';
-import { Logger } from './logger';
-import { StringRatchet } from './string-ratchet';
-import { DurationRatchet } from './duration-ratchet';
+import { RequireRatchet } from '../require-ratchet';
+import { Logger } from '../logger';
+import { StringRatchet } from '../string-ratchet';
+import { DurationRatchet } from '../duration-ratchet';
 import { JwtTokenBase } from './jwt-token-base';
-import { LoggerLevelName } from './logger-support/logger-level-name';
+import { LoggerLevelName } from '../logger-support/logger-level-name';
 import { ExpiredJwtHandling } from './expired-jwt-handling';
 import { JwtRatchetLike } from './jwt-ratchet-like';
 

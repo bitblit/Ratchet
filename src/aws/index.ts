@@ -3,6 +3,7 @@
  */
 
 export * from './aws-credentials-ratchet';
+export * from './batch/aws-batch-background-processor';
 export * from './batch/aws-batch-ratchet';
 export * from './cache/dynamo-db-storage-provider';
 export * from './cache/s3-storage-provider';

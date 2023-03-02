@@ -1,12 +1,13 @@
 import { Logger } from './logger';
+import { LoggerLevelName } from './logger-support/logger-level-name';
 
 export class TimeoutToken {
   private __timeoutTokenFlagField = true;
 
   constructor(private title: string, private timeoutMS: number) {}
 
-  public writeToLog(): void {
-    Logger.warn('Timed out after %d ms waiting for results of %s', this.timeoutMS, this.title);
+  public writeToLog(logLevel: LoggerLevelName = LoggerLevelName.warn): void {
+    Logger.logByLevel(logLevel, 'Timed out after %d ms waiting for results of %s', this.timeoutMS, this.title);
   }
 
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types

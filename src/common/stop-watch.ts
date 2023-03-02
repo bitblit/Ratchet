@@ -1,86 +1,119 @@
 import { DurationRatchet } from './duration-ratchet';
+import { StringRatchet } from './string-ratchet';
+import { RequireRatchet } from './require-ratchet';
+import { LoggerLevelName } from './logger-support/logger-level-name';
+import { Logger } from './logger';
 
 /*
     Class to simplify timing
 */
 
 export class StopWatch {
-  public static readonly DEFAULT_TIMER_NAME: string = 'default';
   private starts: Map<string, number> = new Map<string, number>();
   private ends: Map<string, number> = new Map<string, number>();
 
-  constructor(autoStartDefault: boolean = false) {
-    if (autoStartDefault) {
-      this.start();
-    }
-  }
+  private createTime: number = Date.now();
 
-  public start(name: string = StopWatch.DEFAULT_TIMER_NAME): number {
-    const now: number = new Date().getTime();
-    this.starts.set(name, now);
+  constructor(private label: string = StringRatchet.createRandomHexString(4)) {}
+
+  public start(name: string): number {
+    RequireRatchet.notNullUndefinedOrOnlyWhitespaceString(name, 'name');
+    const now: number = Date.now();
+    this.starts.set(StringRatchet.trimToNull(name), now);
     return now;
   }
 
-  public stop(name: string = StopWatch.DEFAULT_TIMER_NAME): number {
-    const now: number = new Date().getTime();
-    this.ends.set(name, now);
+  public stop(name: string): number {
+    RequireRatchet.notNullUndefinedOrOnlyWhitespaceString(name, 'name');
+    const now: number = Date.now();
+    this.ends.set(StringRatchet.trimToNull(name), now);
     return now;
   }
 
-  public reset(name: string = StopWatch.DEFAULT_TIMER_NAME): void {
-    this.starts.delete(name);
-    this.ends.delete(name);
+  public reset(name: string): void {
+    RequireRatchet.notNullUndefinedOrOnlyWhitespaceString(name, 'name');
+    this.starts.delete(StringRatchet.trimToNull(name));
+    this.ends.delete(StringRatchet.trimToNull(name));
   }
 
-  public dump(name: string = StopWatch.DEFAULT_TIMER_NAME, includeMS = true): string {
-    let rval: string = 'No timer set for ' + name;
-    const start: number = this.starts.get(name);
-    const end: number = this.ends.get(name);
-    if (!!start && !!end) {
-      rval = 'completed in ' + DurationRatchet.formatMsDuration(end - start, includeMS);
-    } else if (!!start) {
-      rval = 'running for ' + DurationRatchet.formatMsDuration(new Date().getTime() - start, includeMS);
-    }
-    return rval;
+  public hasTimer(name: string): boolean {
+    RequireRatchet.notNullUndefinedOrOnlyWhitespaceString(name, 'name');
+    return this.starts.has(name);
   }
 
-  public dumpExpected(pctComplete: number, name: string = StopWatch.DEFAULT_TIMER_NAME, includeMS = true): string {
-    let rval: string = 'No timer set for ' + name;
-    if (!pctComplete || pctComplete <= 0) {
-      rval = 'Cannot generate output for 0 percent complete';
-    } else if (pctComplete > 1) {
-      rval = 'Cannot generate output for percent > 1';
+  public log(name?: string, shortForm?: boolean, logLevel: LoggerLevelName = LoggerLevelName.info): void {
+    Logger.logByLevel(logLevel, this.dump(name, shortForm));
+  }
+
+  public logExpected(pctComplete: number, name?: string, shortForm?: boolean, logLevel: LoggerLevelName = LoggerLevelName.info): void {
+    Logger.logByLevel(logLevel, this.dumpExpected(pctComplete, name, shortForm));
+  }
+
+  public dump(name?: string, shortForm?: boolean): string {
+    let rval: string = this.label + ' ';
+    const cleanName: string = StringRatchet.trimToNull(name);
+    if (cleanName && !this.hasTimer(cleanName)) {
+      rval += 'No such timer : ' + cleanName;
     } else {
-      const start: number = this.starts.get(name);
-      const end: number = this.ends.get(name);
+      const start: number = name ? this.starts.get(cleanName) : this.createTime;
+      const end: number = name ? this.ends.get(cleanName) : Date.now();
+      rval += (cleanName || 'Default') + ' ';
       if (!!start && !!end) {
-        rval = name + ' completed in ' + DurationRatchet.formatMsDuration(end - start, includeMS);
+        rval += 'completed in ' + DurationRatchet.formatMsDuration(end - start, !shortForm);
       } else if (!!start) {
-        const now: number = new Date().getTime();
-        const elapsedMS: number = now - start;
-        const expectedTotalMS: number = elapsedMS / pctComplete;
-        const remainMS: number = expectedTotalMS - elapsedMS;
-        rval =
-          name +
-          ' running for ' +
-          DurationRatchet.formatMsDuration(elapsedMS, includeMS) +
-          ' approx ' +
-          DurationRatchet.formatMsDuration(remainMS, includeMS) +
-          ' remaining';
+        rval += 'running for ' + DurationRatchet.formatMsDuration(Date.now() - start, !shortForm);
       }
     }
     return rval;
   }
 
-  public elapsedMS(name: string = StopWatch.DEFAULT_TIMER_NAME): number {
-    const start: number = this.starts.get(name);
-    const end: number = this.ends.get(name);
-    if (!!start && !!end) {
-      return end - start;
-    } else if (!!start) {
-      return new Date().getTime() - start;
+  public dumpExpected(pctComplete: number, name?: string, shortForm?: boolean): string {
+    let rval: string = this.label + ' ';
+    const cleanName: string = StringRatchet.trimToNull(name);
+    if (cleanName && !this.hasTimer(cleanName)) {
+      rval += 'No such timer : ' + cleanName;
     } else {
-      return 0;
+      if (!pctComplete || pctComplete <= 0) {
+        rval += 'Cannot generate output for 0 percent complete';
+      } else if (pctComplete > 1) {
+        rval += 'Cannot generate output for percent > 1';
+      } else {
+        rval += (cleanName || 'Default') + ' ';
+        const start: number = name ? this.starts.get(cleanName) : this.createTime;
+        const end: number = name ? this.ends.get(cleanName) : Date.now();
+        if (!!start && !!end) {
+          rval += 'completed in ' + DurationRatchet.formatMsDuration(end - start, !shortForm);
+        } else if (!!start) {
+          const now: number = Date.now();
+          const elapsedMS: number = now - start;
+          const expectedTotalMS: number = elapsedMS / pctComplete;
+          const remainMS: number = expectedTotalMS - elapsedMS;
+          rval +=
+            'running for ' +
+            DurationRatchet.formatMsDuration(elapsedMS, !shortForm) +
+            ' approx ' +
+            DurationRatchet.formatMsDuration(remainMS, !shortForm) +
+            ' remaining';
+        }
+      }
     }
+    return rval;
+  }
+
+  public elapsedMS(name?: string): number {
+    let rval: number = null;
+    const cleanName: string = StringRatchet.trimToNull(name);
+    if (cleanName && !this.hasTimer(cleanName)) {
+      rval = null;
+    } else {
+      const start: number = name ? this.starts.get(cleanName) : this.createTime;
+      const end: number = name ? this.ends.get(cleanName) : Date.now();
+      if (!!start && !!end) {
+        rval = end - start;
+      } else if (!!start) {
+        rval = Date.now() - start;
+      }
+    }
+    return rval;
   }
 }

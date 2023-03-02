@@ -154,7 +154,6 @@ export class PromiseRatchet {
     logLevel = LoggerLevelName.debug
   ): Promise<T[]> {
     const sw: StopWatch = new StopWatch();
-    sw.start();
     let rval: T[] = [];
     let remain: any[][] = params;
     Logger.logByLevel(logLevel, 'Processing %d total elements %d at a time', params.length, maxConcurrent);
@@ -175,6 +174,7 @@ export class PromiseRatchet {
       const pct: number = processed / totalCount;
       Logger.logByLevel(logLevel, '%d elements remain : %s', remain.length, sw.dumpExpected(pct));
     }
+    sw.log();
     return rval;
   }
 

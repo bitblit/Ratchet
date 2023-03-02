@@ -146,7 +146,6 @@ export class AthenaRatchet {
   private async runQueryToOutputLocation(queryIn: string, queryParams: any = {}, pingTimeMS = 2000): Promise<string> {
     let rval: string = null;
     const timer: StopWatch = new StopWatch();
-    timer.start();
     const query: string = AthenaRatchet.applyParamsToQuery(queryIn, queryParams);
 
     try {

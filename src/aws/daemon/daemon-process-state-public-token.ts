@@ -1,4 +1,4 @@
-import { JwtTokenBase } from '../../common/jwt-token-base';
+import { JwtTokenBase } from '../../common/jwt/jwt-token-base';
 
 export interface DaemonProcessStatePublicToken extends JwtTokenBase {
   daemonKey: string;
