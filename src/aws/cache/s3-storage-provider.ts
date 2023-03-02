@@ -25,7 +25,7 @@ export class S3StorageProvider implements SimpleCacheStorageProvider {
   }
 
   public async readFromCache<T>(cacheKey: string): Promise<SimpleCacheObjectWrapper<T>> {
-    const rval: SimpleCacheObjectWrapper<T> = await this.s3CacheRatchet.readCacheFileToObject<SimpleCacheObjectWrapper<T>>(
+    const rval: SimpleCacheObjectWrapper<T> = await this.s3CacheRatchet.fetchCacheFileAsObject<SimpleCacheObjectWrapper<T>>(
       this.keyToPath(cacheKey)
     );
     return rval;

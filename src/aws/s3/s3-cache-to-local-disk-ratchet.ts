@@ -72,7 +72,7 @@ export class S3CacheToLocalDiskRatchet {
   }
 
   private async updateLocalCacheFile(key: string, localCachePath: string): Promise<Buffer> {
-    const rval: Buffer = await this.s3.readCacheFileToBuffer(key);
+    const rval: Buffer = await this.s3.fetchCacheFileAsBuffer(key);
     if (rval && rval.length > 0) {
       Logger.info('Saving %d bytes to disk for cache', rval.length);
       fs.writeFileSync(localCachePath, rval);

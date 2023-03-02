@@ -33,7 +33,7 @@ describe('#S3ExpiringCodeProvider', () => {
   });
 
   it('Should check code', async () => {
-    mockS3Ratchet.readCacheFileToObject.mockResolvedValue({
+    mockS3Ratchet.fetchCacheFileAsObject.mockResolvedValue({
       data: [testCode],
       lastModifiedEpochMS: 1234,
     });
@@ -47,7 +47,7 @@ describe('#S3ExpiringCodeProvider', () => {
   });
 
   it('Should store code', async () => {
-    mockS3Ratchet.readCacheFileToObject.mockResolvedValue({
+    mockS3Ratchet.fetchCacheFileAsObject.mockResolvedValue({
       data: [testCode],
       lastModifiedEpochMS: 1234,
     });

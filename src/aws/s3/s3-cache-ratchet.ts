@@ -16,6 +16,7 @@ import {
   ListObjectsCommandOutput,
   ListObjectsV2CommandInput,
   ListObjectsV2CommandOutput,
+  NoSuchKey,
   PutObjectCommand,
   PutObjectCommandInput,
   PutObjectCommandOutput,
@@ -25,14 +26,29 @@ import { Logger } from '../../common/logger';
 import { RequireRatchet } from '../../common/require-ratchet';
 import { StopWatch } from '../../common/stop-watch';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
-import { StreamRatchet } from '../../stream/stream-ratchet';
 import { Upload } from '@aws-sdk/lib-storage';
 import { Readable } from 'stream';
-import { ErrorRatchet } from '../../common';
+import { StringRatchet } from '../../common';
+import { StreamRatchet } from '../../stream/stream-ratchet';
 
 export class S3CacheRatchet {
   constructor(private s3: S3Client, private defaultBucket: string = null) {
     RequireRatchet.notNullOrUndefined(this.s3, 's3');
+  }
+
+  public static applyCacheControlMaxAge(input: PutObjectCommandInput, seconds: number): PutObjectCommandInput {
+    if (input && seconds) {
+      input.CacheControl = 'max-age=' + seconds;
+    }
+    return input;
+  }
+
+  public static applyUserMetaData(input: PutObjectCommandInput, key: string, value: string): PutObjectCommandInput {
+    if (input && StringRatchet.trimToNull(key) && StringRatchet.trimToNull(value)) {
+      input.Metadata = input.Metadata || {};
+      input.Metadata[key] = value;
+    }
+    return input;
   }
 
   public getDefaultBucket(): string {
@@ -53,66 +69,52 @@ export class S3CacheRatchet {
     }
   }
 
-  public async readCacheFileToBuffer(key: string, bucket: string = null): Promise<Buffer> {
-    let rval: Buffer = null;
-    const params = {
-      Bucket: this.bucketVal(bucket),
-      Key: key,
-    };
-
+  public async fetchCacheFileAsS3GetObjectCommandOutput(key: string, bucket: string = null): Promise<GetObjectCommandOutput> {
+    let rval: GetObjectCommandOutput = null;
     try {
-      const res: GetObjectCommandOutput = await this.s3.send(new GetObjectCommand(params));
-      if (res && res.Body) {
-        if (res.Body instanceof Blob) {
-          const arr: ArrayBuffer = await res.Body.arrayBuffer();
-          rval = Buffer.from(arr);
-        } else if (res.Body instanceof ReadableStream) {
-          rval = await StreamRatchet.webReadableStreamToBuffer(res.Body.transformToWebStream());
-        } else if (res.Body instanceof Readable) {
-          rval = StreamRatchet.readableToBufferSync(res.Body as Readable);
-        } else {
-          ErrorRatchet.throwFormattedErr('Cannot recognize res.Body : %s', res.Body);
-        }
-
-        /*
-        if (res.Body instanceof Buffer) {
-          rval = res.Body;
-        } else if (res.Body instanceof Uint8Array) {
-          rval = new Buffer(res.Body);
-        } else if (res.Body instanceof Blob) {
-          const arr: ArrayBuffer = await res.Body.arrayBuffer();
-          rval = Buffer.from(arr);
-        } else if (res.Body instanceof String) {
-          rval = Buffer.from(res.Body);
-        } else if (res.Body instanceof ReadableStream) {
-          rval = await StringReadable.webReadableStreamToBuffer(res.Body);
-        } else {
-          Logger.error('Could not handle res body type : %s : %j', typeof res.Body, Object.keys(res.Body));
-          ErrorRatchet.throwFormattedErr('Cound not handle res body type : %s', typeof res.Body);
-        }
-        */
-        return rval;
-      } else {
-        Logger.warn('Could not find cache file : %s / %s', bucket, key);
-        return null;
-      }
+      const params: GetObjectCommandInput = {
+        Bucket: this.bucketVal(bucket),
+        Key: key,
+      };
+      rval = await this.s3.send(new GetObjectCommand(params));
     } catch (err) {
-      if (err && err['statusCode'] === 404) {
-        Logger.warn('Cache file %s %s not found returning null', bucket, key);
-        return null;
+      if (err instanceof NoSuchKey) {
+        Logger.debug('Key %s not found - returning null', key);
+        rval = null;
       } else {
+        // Rethrow everything else
         throw err;
       }
     }
+    return rval;
   }
 
-  public async readCacheFileToString(key: string, bucket: string = null): Promise<string> {
-    const buf: Buffer = await this.readCacheFileToBuffer(key, bucket);
-    return buf ? buf.toString() : null;
+  public async fetchCacheFileAsReadableStream(key: string, bucket: string = null): Promise<ReadableStream> {
+    const out: GetObjectCommandOutput = await this.fetchCacheFileAsS3GetObjectCommandOutput(key, bucket);
+    return out.Body.transformToWebStream();
   }
 
-  public async readCacheFileToObject<T>(key: string, bucket: string = null): Promise<T> {
-    const value: string = await this.readCacheFileToString(key, bucket);
+  public async fetchCacheFileAsBuffer(key: string, bucket: string = null): Promise<Buffer> {
+    let rval: Buffer = null;
+    const out: GetObjectCommandOutput = await this.fetchCacheFileAsS3GetObjectCommandOutput(key, bucket);
+    if (out?.Body) {
+      const tmp: Uint8Array = await out.Body.transformToByteArray();
+      rval = Buffer.from(tmp);
+    }
+    return rval;
+  }
+
+  public async fetchCacheFileAsString(key: string, bucket: string = null): Promise<string> {
+    let rval: string = null;
+    const out: GetObjectCommandOutput = await this.fetchCacheFileAsS3GetObjectCommandOutput(key, bucket);
+    if (out?.Body) {
+      rval = await out.Body.transformToString();
+    }
+    return rval;
+  }
+
+  public async fetchCacheFileAsObject<T>(key: string, bucket: string = null): Promise<T> {
+    const value: string = await this.fetchCacheFileAsString(key, bucket);
     return value ? (JSON.parse(value) as T) : null;
   }
 
@@ -139,53 +141,35 @@ export class S3CacheRatchet {
   public async writeObjectToCacheFile(
     key: string,
     dataObject: any, // eslint-disable-line @typescript-eslint/explicit-module-boundary-types
-    bucket: string = null,
-    meta: any = {},
-    cacheControl = 'max-age=30',
-    contentType = 'application/json'
-  ): Promise<PutObjectCommandOutput> {
+    template?: PutObjectCommandInput,
+    bucket?: string
+  ): Promise<CompleteMultipartUploadCommandOutput> {
     const json = JSON.stringify(dataObject);
-    return this.writeStringToCacheFile(key, json, bucket, meta, cacheControl, contentType);
+    return this.writeStringToCacheFile(key, json, template, bucket);
   }
 
   // Given new board data, write it to the S3 file and set the refresh flag appropriately
   public async writeStringToCacheFile(
     key: string,
     dataString: string,
-    bucket: string = null,
-    meta: any = {},
-    cacheControl = 'max-age=30',
-    contentType = 'text/plain'
-  ): Promise<PutObjectCommandOutput> {
-    const params: PutObjectCommandInput = {
-      Bucket: this.bucketVal(bucket),
-      Key: key,
-      Body: dataString,
-      CacheControl: cacheControl,
-      ContentType: contentType,
-      Metadata: meta,
-    };
-
-    const result: PutObjectCommandOutput = await this.s3.send(new PutObjectCommand(params));
-    return result;
+    template?: PutObjectCommandInput,
+    bucket?: string
+  ): Promise<CompleteMultipartUploadCommandOutput> {
+    const stream: ReadableStream = StreamRatchet.stringToWebReadableStream(dataString);
+    return this.writeStreamToCacheFile(key, stream, template, bucket);
   }
 
   public async writeStreamToCacheFile(
     key: string,
     data: ReadableStream | Readable,
-    bucket: string = null,
-    meta: any = {},
-    cacheControl = 'max-age=30',
-    contentType = 'text/plain'
+    template?: PutObjectCommandInput,
+    bucket?: string
   ): Promise<CompleteMultipartUploadCommandOutput> {
-    const params: PutObjectCommandInput = {
+    const params: PutObjectCommandInput = Object.assign({}, template || {}, {
       Bucket: this.bucketVal(bucket),
       Key: key,
       Body: data,
-      CacheControl: cacheControl,
-      ContentType: contentType,
-      Metadata: meta,
-    };
+    });
 
     const upload: Upload = new Upload({
       client: this.s3,
@@ -253,10 +237,8 @@ export class S3CacheRatchet {
             const written: PutObjectCommandOutput = await targetRatchet.writeStreamToCacheFile(
               targetPrefix + sourceFile,
               srcStream,
-              undefined,
-              srcMeta.Metadata,
-              srcMeta.CacheControl,
-              srcMeta.ContentType
+              srcMeta as unknown as PutObjectCommandInput, // Carry forward any metadata
+              undefined
             );
             Logger.silly('Write result : %j', written);
             rval.push(sourceFile);
@@ -270,25 +252,6 @@ export class S3CacheRatchet {
     Logger.info('Found %d files, copied %d', sourceFiles.length, rval.length);
     sw.log();
     return rval;
-  }
-
-  public async fetchCacheFileAsReadableStream(key: string, bucket: string = null): Promise<ReadableStream> {
-    const params: GetObjectCommandInput = {
-      Bucket: this.bucketVal(bucket),
-      Key: key,
-    };
-    const output: GetObjectCommandOutput = await this.s3.send(new GetObjectCommand(params));
-    const readStream: ReadableStream = output.Body.transformToWebStream();
-    return readStream;
-  }
-
-  public async fetchCacheFileAsReadable(key: string, bucket: string = null): Promise<Readable> {
-    const params: GetObjectCommandInput = {
-      Bucket: this.bucketVal(bucket),
-      Key: key,
-    };
-    const output: GetObjectCommandOutput = await this.s3.send(new GetObjectCommand(params));
-    return output.Body as Readable;
   }
 
   public async fetchMetaForCacheFile(key: string, bucket: string = null): Promise<HeadObjectCommandOutput> {

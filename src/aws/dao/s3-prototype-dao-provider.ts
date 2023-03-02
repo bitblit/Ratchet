@@ -25,7 +25,7 @@ export class S3PrototypeDaoProvider<T> implements PrototypeDaoProvider<T> {
   }
 
   public async loadDatabase(): Promise<PrototypeDaoDb<T>> {
-    const rval: PrototypeDaoDb<T> = (await this.s3CacheRatchet.readCacheFileToObject<PrototypeDaoDb<any>>(this.keyName)) || {
+    const rval: PrototypeDaoDb<T> = (await this.s3CacheRatchet.fetchCacheFileAsObject<PrototypeDaoDb<any>>(this.keyName)) || {
       items: [],
       lastModifiedEpochMS: Date.now(),
     };

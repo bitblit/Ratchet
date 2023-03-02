@@ -9,7 +9,11 @@ export class StringRatchet {
   public static RFC_3986_RESERVED = ['!', '*', "'", '(', ')', ';', ':', '@', '&', '=', '+', '$', ',', '/', '?', '#', '[', ']', '%'];
 
   public static stringToUint8Array(val: string): Uint8Array {
-    return val ? Uint8Array.from(atob(val), (c) => c.charCodeAt(0)) : null;
+    return val ? new TextEncoder().encode(val) : null;
+  }
+
+  public static uint8ArrayToString(val: Uint8Array): string {
+    return val ? new TextDecoder().decode(val) : null;
   }
 
   // Really only useful if you wanna swallow the exception when something is not valid JSON (or at least not

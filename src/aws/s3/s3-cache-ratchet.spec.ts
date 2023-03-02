@@ -4,6 +4,7 @@ import {
   GetObjectCommand,
   HeadObjectCommand,
   PutObjectCommand,
+  PutObjectCommandInput,
   PutObjectCommandOutput,
   S3Client,
   UploadPartCommand,
@@ -70,14 +71,9 @@ describe('#fileExists', function () {
     const cache: S3CacheRatchet = new S3CacheRatchet(mockS3, 'test-bucket');
     const stream: ReadableStream = StreamRatchet.stringToWebReadableStream(StringRatchet.createRandomHexString(1024 * 1024 * 6));
 
-    const out: PutObjectCommandOutput = await cache.writeStreamToCacheFile(
-      's3-cache-ratchet.spec.ts',
-      stream,
-      null,
-      {},
-      null,
-      'text/typescript'
-    );
+    const out: PutObjectCommandOutput = await cache.writeStreamToCacheFile('s3-cache-ratchet.spec.ts', stream, {
+      ContentType: 'text/typescript',
+    } as PutObjectCommandInput);
 
     Logger.info('Calls: %j', mockS3.calls());
     expect(out).toBeTruthy();
@@ -87,7 +83,11 @@ describe('#fileExists', function () {
     // Need to re-call this multiple times to get the stream reset
     async function createNew(): Promise<any> {
       return {
-        Body: StreamRatchet.stringToReadable(JSON.stringify({ test: StringRatchet.createRandomHexString(128) })),
+        Body: {
+          transformToByteArray: async () =>
+            Promise.resolve(StringRatchet.stringToUint8Array(JSON.stringify({ test: StringRatchet.createRandomHexString(128) }))),
+          transformToString: async () => Promise.resolve(JSON.stringify({ test: StringRatchet.createRandomHexString(128) })),
+        },
         $metadata: null,
       };
     }
@@ -97,19 +97,19 @@ describe('#fileExists', function () {
     const cache: S3CacheRatchet = new S3CacheRatchet(mockS3, 'test-bucket');
     const fileName: string = 'test-file.json';
 
-    const outBuf: Buffer = await cache.readCacheFileToBuffer(fileName);
+    const outBuf: Buffer = await cache.fetchCacheFileAsBuffer(fileName);
     expect(outBuf).toBeTruthy();
     expect(outBuf.length).toBeGreaterThan(100);
     mockS3.reset();
     mockS3.on(GetObjectCommand).resolves(createNew());
 
-    const outString: string = await cache.readCacheFileToString(fileName);
+    const outString: string = await cache.fetchCacheFileAsString(fileName);
     expect(outString).toBeTruthy();
     expect(outString.length).toBeGreaterThan(100);
     mockS3.reset();
     mockS3.on(GetObjectCommand).resolves(createNew());
 
-    const outObject: any = await cache.readCacheFileToObject(fileName);
+    const outObject: any = await cache.fetchCacheFileAsObject(fileName);
     expect(outObject).toBeTruthy();
     expect(outObject['test']).toBeTruthy();
   });

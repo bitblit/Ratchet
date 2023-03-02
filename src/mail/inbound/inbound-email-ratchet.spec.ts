@@ -12,7 +12,7 @@ describe('#inboundEmailService', () => {
   xit('should process an email from S3', async () => {
     mockS3CR.getDefaultBucket.mockReturnValueOnce('TEST-BUCKET');
     mockS3CR.fileExists.mockResolvedValueOnce(true);
-    mockS3CR.readCacheFileToString.mockResolvedValueOnce('TEST');
+    mockS3CR.fetchCacheFileAsString.mockResolvedValueOnce('TEST');
 
     const svc: InboundEmailRatchet = new InboundEmailRatchet(mockS3CR);
 

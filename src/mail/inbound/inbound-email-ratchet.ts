@@ -15,7 +15,7 @@ export class InboundEmailRatchet {
   public async processEmailFromS3(key: string): Promise<boolean> {
     const rval: boolean = false;
     if (await this.cache.fileExists(key)) {
-      const data: string = await this.cache.readCacheFileToString(key);
+      const data: string = await this.cache.fetchCacheFileAsString(key);
       return this.processEmailFromBuffer(new Buffer(data));
     } else {
       Logger.warn('Cannot process inbound email - no such key : %s', key);

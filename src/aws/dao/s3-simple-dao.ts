@@ -47,7 +47,7 @@ export class S3SimpleDao<T extends SimpleDaoItem> {
   public async fetch(id: string, path?: string): Promise<T> {
     const fullPath: string = this.buildFullPath(id, path);
     Logger.debug('Fetching : %s', fullPath);
-    const rval: T = (await this.cache.readCacheFileToObject(fullPath)) as T;
+    const rval: T = (await this.cache.fetchCacheFileAsObject(fullPath)) as T;
     // Force-set id and path
     rval.id = id;
     rval.path = path;

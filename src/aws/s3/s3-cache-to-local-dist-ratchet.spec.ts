@@ -11,7 +11,7 @@ describe('#S3CacheToLocalDiskRatchet', () => {
   });
 
   it('should download file and store in tmp', async () => {
-    mockS3CR.readCacheFileToBuffer.mockResolvedValue(Buffer.from(JSON.stringify({ a: 'b' })));
+    mockS3CR.fetchCacheFileAsBuffer.mockResolvedValue(Buffer.from(JSON.stringify({ a: 'b' })));
 
     const pth: string = 'test-path';
 

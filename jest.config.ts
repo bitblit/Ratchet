@@ -5,7 +5,7 @@ const config: Config = {
   testEnvironment: 'node',
   collectCoverage: true,
   coverageDirectory: 'artifacts/coverage',
-  rootDir: 'src',
+  roots: ['src'],
   maxConcurrency: 10,
   /*
     This is recommended to catch files you are not testing at all, but will

@@ -17,7 +17,7 @@ export class S3ExpiringCodeProvider implements ExpiringCodeProvider {
   }
 
   public async fetchFile(): Promise<S3ExpiringCodeProviderFileWrapper> {
-    const rval: S3ExpiringCodeProviderFileWrapper = (await this.s3CacheRatchet.readCacheFileToObject<S3ExpiringCodeProviderFileWrapper>(
+    const rval: S3ExpiringCodeProviderFileWrapper = (await this.s3CacheRatchet.fetchCacheFileAsObject<S3ExpiringCodeProviderFileWrapper>(
       this.keyName
     )) || {
       data: [],
