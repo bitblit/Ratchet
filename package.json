@@ -51,7 +51,7 @@
     "docs": "typedoc",
     "lint": "eslint src/**/*.ts",
     "lint-fix": "eslint --fix src/**/*.ts",
-    "generate-barrels": "barrelsby -q --delete -d src -e .*\\.spec\\.ts -e jest\\.*",
+    "generate-barrels": "barrelsby -q --delete -d src -e .*\\.spec\\.ts -e .*\\jest\\.*",
     "pwatch": "parcel watch",
     "pbuild": "parcel build"
   },
