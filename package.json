@@ -16,6 +16,11 @@
   "main": "./dist/commonjs/index.js",
   "module": "./dist/esm/index.js",
   "types": "./dist/types/types.d.ts",
+  "files": [
+    "esm",
+    "commonjs",
+    "types"
+  ],
   "contributors": [
     "Christopher Weiss <bitblit@gmail.com>",
     "William Weiss <npm@codification.org>",
