@@ -48,23 +48,14 @@ export class PublishCiReleaseToSlack {
     return bodyOut;
   }
 
-  public static extractHookUrl(): string {
-    let rval: string = null;
-    if (process && process.argv && process.argv.length > 2) {
-      rval = process.argv[2];
-    }
-    return rval;
-  }
-
   /**
    And, in case you are running this command line...
    TODO: should use switches to allow setting the various non-filename params
    **/
   public static async runFromCliArgs(args: string[]): Promise<string> {
     Logger.info('Running PublishCiReleaseToSlack from command line arguments');
-    const hook: string = PublishCiReleaseToSlack.extractHookUrl();
-    if (!!hook) {
-      return PublishCiReleaseToSlack.process(hook);
+    if (args?.length === 1) {
+      return PublishCiReleaseToSlack.process(args[0]);
     } else {
       Logger.infoP('Usage : ratchet-publish-circle-ci-release-to-slack {hookUrl} ...');
       return null;

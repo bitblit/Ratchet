@@ -6,6 +6,7 @@ import { NodeRatchet } from '../common/node-ratchet';
 import { RequireRatchet } from '../../common/require-ratchet';
 import { ErrorRatchet } from '../../common/error-ratchet';
 import { StringRatchet } from '../../common/string-ratchet';
+import { CliRatchet } from '../common/cli-ratchet';
 
 export class ApplyCiEnvVariablesToFiles {
   public static async process(
@@ -68,14 +69,6 @@ export class ApplyCiEnvVariablesToFiles {
     return foundCount;
   }
 
-  public static extractFileNames(): string[] {
-    let rval: string[] = [];
-    if (process && process.argv && process.argv.length > 3) {
-      rval = process.argv.slice(3);
-    }
-    return rval;
-  }
-
   public static extractVariableConfig(): CiEnvVariableConfig {
     let rval: CiEnvVariableConfig = null;
     if (process && process.argv && process.argv.length > 2) {
@@ -100,8 +93,7 @@ export class ApplyCiEnvVariablesToFiles {
    And, in case you are running this command line...
    TODO: should use switches to allow setting the various non-filename params
    **/
-  public static async runFromCliArgs(args: string[]): Promise<number> {
-    const filenames: string[] = ApplyCiEnvVariablesToFiles.extractFileNames();
+  public static async runFromCliArgs(filenames: string[]): Promise<number> {
     if (filenames.length > 0) {
       return ApplyCiEnvVariablesToFiles.process(filenames, ApplyCiEnvVariablesToFiles.extractVariableConfig());
     } else {

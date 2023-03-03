@@ -17,7 +17,6 @@ import {
   ListObjectsV2CommandInput,
   ListObjectsV2CommandOutput,
   NoSuchKey,
-  PutObjectCommand,
   PutObjectCommandInput,
   PutObjectCommandOutput,
   S3Client,

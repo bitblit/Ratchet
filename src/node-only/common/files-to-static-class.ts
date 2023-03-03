@@ -57,14 +57,13 @@ export class FilesToStaticClass {
    TODO: should use switches to allow setting the various non-filename params
    **/
   public static async runFromCliArgs(args: string[]): Promise<string> {
-    if (args.length < 4) {
+    if (args.length < 3) {
       Logger.infoP('Usage: ratchet-files-to-static-class {outFileName} {outClassName} {file0} ... {fileN}');
       return null;
     } else {
-      const idx: number = CliRatchet.indexOfCommandArgument('files-to-static-class');
-      const outFileName: string = process.argv[idx + 1];
-      const outClassName: string = process.argv[idx + 2];
-      const files: string[] = process.argv.slice(idx + 3);
+      const outFileName: string = args[0];
+      const outClassName: string = args[1];
+      const files: string[] = args.slice(2);
 
       Logger.info(
         'Running FilesToStaticClass from command line arguments Target: %s TargetClass: %s InFiles: %j',

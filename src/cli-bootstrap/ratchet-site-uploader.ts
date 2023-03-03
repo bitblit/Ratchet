@@ -4,8 +4,9 @@ import { Logger } from '../common/logger';
 import { SiteUploader } from '../site-uploader/site-uploader';
 import { CliRatchet } from '../node-only/common/cli-ratchet';
 
-if (process?.argv?.length && CliRatchet.isCalledFromCLI(['ratchet-site-uploader.js', 'ratchet-site-uploader'])) {
-  SiteUploader.createFromArgs()
+const progArgs: string[] = CliRatchet.argsAfterCommand(['ratchet-site-uploader.js', 'ratchet-site-uploader']);
+if (progArgs) {
+  SiteUploader.createFromArgs(progArgs)
     .runPump()
     .then((out) => {
       Logger.info('Result : %s', out);

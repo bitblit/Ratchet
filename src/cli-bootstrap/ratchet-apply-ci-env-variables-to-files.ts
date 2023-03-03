@@ -4,11 +4,12 @@ import { ApplyCiEnvVariablesToFiles } from '../node-only/ci/apply-ci-env-variabl
 import { CliRatchet } from '../node-only/common/cli-ratchet';
 import { Logger } from '../common/logger';
 
-if (
-  process?.argv?.length &&
-  CliRatchet.isCalledFromCLI(['ratchet-apply-ci-env-variables-to-files.js', 'ratchet-apply-ci-env-variables-to-files'])
-) {
-  ApplyCiEnvVariablesToFiles.runFromCliArgs(process.argv)
+const progArgs: string[] = CliRatchet.argsAfterCommand([
+  'ratchet-apply-ci-env-variables-to-files.js',
+  'ratchet-apply-ci-env-variables-to-files',
+]);
+if (progArgs) {
+  ApplyCiEnvVariablesToFiles.runFromCliArgs(progArgs)
     .then((out) => {
       Logger.info('Result : %s', out);
     })
