@@ -15,7 +15,7 @@
   "source": "src/index.ts",
   "main": "./dist/commonjs/index.js",
   "module": "./dist/esm/index.js",
-  "types": "./dist/types.d.ts",
+  "types": "./dist/types/types.d.ts",
   "contributors": [
     "Christopher Weiss <bitblit@gmail.com>",
     "William Weiss <npm@codification.org>",
@@ -43,7 +43,7 @@
     "remove-compiled-tests": "rimraf ./dist/**/*.spec.d.ts && rimraf ./dist/**/*.spec.js && rimraf ./dist/**/*.spec.js.map",
     "clean": "shx rm -Rf dist artifacts",
     "compile-test": "yarn compile && yarn test",
-    "apply-ci-vars": "node dist/node-only/ci/apply-ci-env-variables-to-files github dist/build/ratchet-info.js",
+    "apply-ci-vars": "node dist/commonjs/index.js ratchet-apply-ci-env-variables-to-files github dist/commonjs/index.js && node dist/commonjs/index.js ratchet-apply-ci-env-variables-to-files github dist/esm/index.js",
     "test": "jest",
     "docs": "typedoc",
     "lint": "eslint src/**/*.ts",
