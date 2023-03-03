@@ -17,9 +17,7 @@
   "module": "./dist/esm/index.js",
   "types": "./dist/types/types.d.ts",
   "files": [
-    "esm",
-    "commonjs",
-    "types"
+    "dist"
   ],
   "contributors": [
     "Christopher Weiss <bitblit@gmail.com>",
@@ -41,7 +39,7 @@
   },
   "config": {},
   "scripts": {
-    "prepare-to-publish": "yarn pbuild && cp package.json README.md CHANGELOG.md License.txt dist && yarn run apply-ci-vars && yarn remove-compiled-tests",
+    "prepare-to-publish": "yarn run clean && yarn run generate-barrels && yarn pbuild && yarn run apply-ci-vars",
     "build": "yarn run clean && yarn run generate-barrels && yarn run compile",
     "compile": "tsc",
     "watch": "tsc-watch",
