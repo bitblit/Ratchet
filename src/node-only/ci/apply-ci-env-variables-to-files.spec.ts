@@ -1,6 +1,6 @@
 import { ApplyCiEnvVariablesToFiles } from './apply-ci-env-variables-to-files';
 import { Logger } from '../../common/logger';
-import { CiEnvVariableConfigUtil } from './ci-env-variable-config-util';
+import { CiRunInformationUtil } from './ci-run-information-util';
 import { NodeRatchet } from '../common/node-ratchet';
 
 describe('#applyCiEnvVariablesToFiles', function () {
@@ -8,7 +8,7 @@ describe('#applyCiEnvVariablesToFiles', function () {
     try {
       const result: number = await ApplyCiEnvVariablesToFiles.process(
         ['test1.txt'],
-        CiEnvVariableConfigUtil.createDefaultCircleCiVariableConfig()
+        CiRunInformationUtil.createDefaultCircleCiVariableConfig()
       );
       this.bail();
     } catch (err) {
@@ -23,7 +23,7 @@ describe('#applyCiEnvVariablesToFiles', function () {
     NodeRatchet.setProcessEnvVar('CIRCLE_TAG', 'T');
     NodeRatchet.setProcessEnvVar('CIRCLE_SHA1', 'S');
 
-    const result: number = await ApplyCiEnvVariablesToFiles.process([], CiEnvVariableConfigUtil.createDefaultCircleCiVariableConfig());
+    const result: number = await ApplyCiEnvVariablesToFiles.process([], CiRunInformationUtil.createDefaultCircleCiVariableConfig());
     expect(result).toEqual(0);
   });
 });

@@ -1,3 +1,5 @@
+import { Logger } from '../../common/logger';
+
 export class CliRatchet {
   public static isCalledFromCLI(filenames: string[]): boolean {
     let rval: boolean = false;
@@ -9,12 +11,12 @@ export class CliRatchet {
 
   public static argsAfterCommand(filenames: string[]): string[] {
     let rval: string[] = null;
-    if (process?.argv?.length) {
+    if (process?.argv?.length && filenames?.length) {
       let idx: number = null;
-      for (let i = 0; filenames && i < filenames.length && !idx; i++) {
+      for (let i = 0; i < filenames.length && idx === null; i++) {
         idx = CliRatchet.indexOfCommandArgument(filenames[i]);
       }
-      rval = idx !== null ? process.argv.slice(idx, process.argv.length) : null;
+      rval = idx !== null ? process.argv.slice(idx + 1, process.argv.length) : null;
     }
 
     return rval;
@@ -26,6 +28,7 @@ export class CliRatchet {
 
   public static indexOfCommandArgument(filename: string): number {
     const contFileName: boolean[] = process.argv.map((arg) => arg.indexOf(filename) !== -1);
-    return contFileName.indexOf(true);
+    const idx: number = contFileName.indexOf(true);
+    return idx === -1 ? null : idx;
   }
 }
