@@ -22,7 +22,7 @@ jobs:
       - uses: ./.github/workflows/actions/build-env-setup
 
       - name: Build
-        run: yarn build
+        run: yarn pbuild
         shell: bash
 
       - name: Test
