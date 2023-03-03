@@ -123,6 +123,54 @@ export class AlbAthenaLogRatchet {
     const result: string = await this.athena.runQueryToFile(qrySt, null, outputFileName);
     return result;
   }
+
+  public static readonly CREATE_TABLE_STATEMENT: string =
+    'CREATE EXTERNAL TABLE IF NOT EXISTS `{{TABLE NAME}}`(\n' +
+    "  `type` string COMMENT '',\n" +
+    "  `time` string COMMENT '',\n" +
+    "  `elb` string COMMENT '',\n" +
+    "  `client_ip` string COMMENT '',\n" +
+    "  `client_port` int COMMENT '',\n" +
+    "  `target_ip` string COMMENT '',\n" +
+    "  `target_port` int COMMENT '',\n" +
+    "  `request_processing_time` double COMMENT '',\n" +
+    "  `target_processing_time` double COMMENT '',\n" +
+    "  `response_processing_time` double COMMENT '',\n" +
+    "  `elb_status_code` string COMMENT '',\n" +
+    "  `target_status_code` string COMMENT '',\n" +
+    "  `received_bytes` bigint COMMENT '',\n" +
+    "  `sent_bytes` bigint COMMENT '',\n" +
+    "  `request_verb` string COMMENT '',\n" +
+    "  `request_url` string COMMENT '',\n" +
+    "  `request_proto` string COMMENT '',\n" +
+    "  `user_agent` string COMMENT '',\n" +
+    "  `ssl_cipher` string COMMENT '',\n" +
+    "  `ssl_protocol` string COMMENT '',\n" +
+    "  `target_group_arn` string COMMENT '',\n" +
+    "  `trace_id` string COMMENT '',\n" +
+    "  `domain_name` string COMMENT '',\n" +
+    "  `chosen_cert_arn` string COMMENT '',\n" +
+    "  `matched_rule_priority` string COMMENT '',\n" +
+    "  `request_creation_time` string COMMENT '',\n" +
+    "  `actions_executed` string COMMENT '',\n" +
+    "  `redirect_url` string COMMENT '',\n" +
+    "  `lambda_error_reason` string COMMENT '',\n" +
+    "  `target_port_list` string COMMENT '',\n" +
+    "  `target_status_code_list` string COMMENT '',\n" +
+    "  `new_field` string COMMENT '')\n" +
+    'PARTITIONED BY (\n' +
+    '  `date_utc_partition` string\n' +
+    ')\n' +
+    'ROW FORMAT SERDE\n' +
+    "  'org.apache.hadoop.hive.serde2.RegexSerDe'\n" +
+    'WITH SERDEPROPERTIES (\n' +
+    '  \'input.regex\'=\'([^ ]*) ([^ ]*) ([^ ]*) ([^ ]*):([0-9]*) ([^ ]*)[:-]([0-9]*) ([-.0-9]*) ([-.0-9]*) ([-.0-9]*) (|[-0-9]*) (-|[-0-9]*) ([-0-9]*) ([-0-9]*) \\"([^ ]*) ([^ ]*) (- |[^ ]*)\\" \\"([^\\"]*)\\" ([A-Z0-9-]+) ([A-Za-z0-9.-]*) ([^ ]*) \\"([^\\"]*)\\" \\"([^\\"]*)\\" \\"([^\\"]*)\\" ([-.0-9]*) ([^ ]*) \\"([^\\"]*)\\" \\"([^\\"]*)\\" \\"([^ ]*)\\" \\"([^s]+)\\" \\"([^s]+)\\"(.*)\')\n' +
+    'STORED AS INPUTFORMAT\n' +
+    "  'org.apache.hadoop.mapred.TextInputFormat'\n" +
+    'OUTPUTFORMAT\n' +
+    "  'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'\n" +
+    'LOCATION\n' +
+    "  '{{ALB_LOG_ROOT}}'\n";
 }
 
 export interface AlbLogRecordQuery {

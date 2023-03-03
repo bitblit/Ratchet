@@ -27,7 +27,7 @@ export class FilesToStaticClass {
     rval += '* Moves it into code so that it can survive a trip through WebPack \n';
     rval += '*/ \n\n';
     rval += 'export class ' + outClassName + ' { \n';
-    rval += '  public static readonly VALUES:any = { \n';
+    rval += '  public static readonly VALUES:Record<string, string> = { \n';
 
     for (let i = 0; i < fileNames.length; i++) {
       let contents = 'NOT-FOUND';
