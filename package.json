@@ -44,7 +44,7 @@
     "compile": "tsc",
     "watch": "tsc-watch",
     "remove-compiled-tests": "rimraf ./dist/**/*.spec.d.ts && rimraf ./dist/**/*.spec.js && rimraf ./dist/**/*.spec.js.map",
-    "clean": "shx rm -Rf dist artifacts",
+    "clean": "shx rm -Rf dist artifacts src/index.ts",
     "compile-test": "yarn compile && yarn test",
     "apply-ci-vars": "node dist/commonjs/index.js ratchet-apply-ci-env-variables-to-files github dist/commonjs/index.js && node dist/commonjs/index.js ratchet-apply-ci-env-variables-to-files github dist/esm/index.js",
     "test": "jest",
