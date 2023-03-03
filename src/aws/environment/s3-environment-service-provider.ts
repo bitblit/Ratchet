@@ -3,7 +3,7 @@ import { S3CacheRatchet } from '../s3/s3-cache-ratchet';
 import { RequireRatchet } from '../../common/require-ratchet';
 import { StopWatch } from '../../common/stop-watch';
 import { Logger } from '../../common/logger';
-import { StringRatchet } from '../../common';
+import { StringRatchet } from '../../common/string-ratchet';
 import { S3Client } from '@aws-sdk/client-s3';
 
 /**

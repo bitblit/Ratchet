@@ -1,6 +1,6 @@
 import { GraphqlRatchetQueryProvider } from './graphql-ratchet-query-provider';
 import { Logger } from '../../common/logger';
-import { StringRatchet } from '../../common';
+import { StringRatchet } from '../../common/string-ratchet';
 
 export class LocalFetchQueryProvider implements GraphqlRatchetQueryProvider {
   private cacheMap: Map<string, string> = new Map<string, string>();

@@ -1,6 +1,6 @@
 import { InboundEmailRatchet } from './inbound-email-ratchet';
 import { S3CacheRatchet } from '../../aws/s3/s3-cache-ratchet';
-import { JestRatchet } from '../../jest';
+import { JestRatchet } from '../../jest/jest-ratchet';
 
 let mockS3CR: jest.Mocked<S3CacheRatchet>;
 

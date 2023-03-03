@@ -5,9 +5,10 @@
 
 import { SimpleCacheObjectWrapper } from './simple-cache-object-wrapper';
 import { SimpleCacheStorageProvider } from './simple-cache-storage-provider';
-import { RequireRatchet, StringRatchet } from '../../common';
 import { S3CacheRatchet } from '../s3/s3-cache-ratchet';
 import { PutObjectOutput } from '@aws-sdk/client-s3';
+import { RequireRatchet } from '../../common/require-ratchet';
+import { StringRatchet } from '../../common/string-ratchet';
 
 export class S3StorageProvider implements SimpleCacheStorageProvider {
   constructor(private s3CacheRatchet: S3CacheRatchet, private prefix: string) {

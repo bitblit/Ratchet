@@ -1,7 +1,7 @@
 import { Logger } from '../../common/logger';
 import { RuntimeParameterRatchet } from './runtime-parameter-ratchet';
 import { PromiseRatchet } from '../../common/promise-ratchet';
-import { LoggerLevelName } from '../../common';
+import { LoggerLevelName } from '../../common/logger-support/logger-level-name';
 import { StoredRuntimeParameter } from './stored-runtime-parameter';
 import { MemoryRuntimeParameterProvider } from './memory-runtime-parameter-provider';
 

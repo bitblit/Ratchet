@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
-import { Logger } from '../common/logger.js';
-import { PublishCiReleaseToSlack } from '../node-only/ci/publish-ci-release-to-slack.js';
-import { CliRatchet } from '../node-only/common/cli-ratchet.js';
+import { Logger } from '../common/logger';
+import { PublishCiReleaseToSlack } from '../node-only/ci/publish-ci-release-to-slack';
+import { CliRatchet } from '../node-only/common/cli-ratchet';
 
 if (
   process?.argv?.length &&

@@ -1,8 +1,9 @@
 /**
  * Service for functions that communicate to Google Recaptcha service
  */
-import { Logger, StringRatchet } from '../common';
 import fetch from 'cross-fetch';
+import { Logger } from '../common/logger';
+import { StringRatchet } from '../common/string-ratchet';
 
 export class GoogleRecaptchaRatchet {
   private static readonly GOOGLE_VERIFY_URL: string = 'https://www.google.com/recaptcha/api/siteverify?secret={{KEY}}&response={{TOKEN}}';

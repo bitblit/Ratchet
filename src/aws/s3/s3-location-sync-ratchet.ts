@@ -10,8 +10,10 @@ import {
   S3Client,
 } from '@aws-sdk/client-s3';
 import _ from 'lodash';
-import { Logger, PromiseRatchet, RequireRatchet } from '../../common';
 import { Upload } from '@aws-sdk/lib-storage';
+import { RequireRatchet } from '../../common/require-ratchet';
+import { Logger } from '../../common/logger';
+import { PromiseRatchet } from '../../common/promise-ratchet';
 
 export interface S3LocationSyncRatchetConfig {
   srcS3: S3Client;

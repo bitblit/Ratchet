@@ -1,8 +1,10 @@
-import { Logger, RequireRatchet, StringRatchet } from '../../common';
 import { DynamoRatchet } from '../dynamodb/dynamo-ratchet';
 import { DeleteItemOutput, PutItemCommand, PutItemCommandOutput } from '@aws-sdk/client-dynamodb';
 import { DocScanCommandInput } from '../model/dynamo/doc-scan-command-input';
 import { SyncLockProvider } from './sync-lock-provider';
+import { RequireRatchet } from '../../common/require-ratchet';
+import { StringRatchet } from '../../common/string-ratchet';
+import { Logger } from '../../common/logger';
 
 export class DynamoDbSyncLock implements SyncLockProvider {
   constructor(private ratchet: DynamoRatchet, private tableName: string) {

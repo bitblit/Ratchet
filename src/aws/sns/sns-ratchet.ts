@@ -1,6 +1,6 @@
 import { Logger } from '../../common/logger';
 import { PublishCommand, PublishCommandInput, PublishCommandOutput, SNSClient } from '@aws-sdk/client-sns';
-import { RequireRatchet } from '../../common';
+import { RequireRatchet } from '../../common/require-ratchet';
 
 export class SnsRatchet {
   constructor(private sns: SNSClient = new SNSClient({ region: 'us-east-1' }), private topicArn: string) {

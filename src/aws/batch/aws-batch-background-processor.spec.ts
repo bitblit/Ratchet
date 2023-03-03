@@ -1,13 +1,13 @@
 import { AwsBatchRatchet } from './aws-batch-ratchet';
 import { SubmitJobCommandOutput } from '@aws-sdk/client-batch';
-import { JestRatchet } from '../../jest';
 import { AwsBatchBackgroundProcessor } from './aws-batch-background-processor';
+import { JestRatchet } from '../../jest/jest-ratchet';
 
-let mockBatchRatchet: jest.Mocked<AwsBatchRatchet>;
+let mockBatchRatchet: AwsBatchRatchet;
 
 describe('#AwsBatchBackgroundProcessor', () => {
   beforeEach(() => {
-    mockBatchRatchet = JestRatchet.mock();
+    mockBatchRatchet = JestRatchet.mock<AwsBatchRatchet>(jest.fn);
   });
 
   it('Should schedule background task', async () => {

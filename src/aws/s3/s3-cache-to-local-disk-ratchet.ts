@@ -1,8 +1,9 @@
 import crypto from 'crypto';
 import fs from 'fs';
 import path from 'path';
-import { Logger, RequireRatchet, StringRatchet } from '../../common';
+import { RequireRatchet } from '../../common/require-ratchet';
 import { S3CacheRatchet } from './s3-cache-ratchet';
+import { Logger } from '../../common/logger';
 
 /**
  * Use this when you want a lambda to cache a remote S3 bucket locally on disk for faster access
@@ -18,7 +19,7 @@ export class S3CacheToLocalDiskRatchet {
     private cacheTimeoutSeconds: number = S3CacheToLocalDiskRatchet.DEFAULT_CACHE_TIMEOUT_SEC
   ) {
     RequireRatchet.notNullOrUndefined(s3, 's3');
-    RequireRatchet.notNullOrUndefined(StringRatchet.trimToNull(tmpFolder));
+    RequireRatchet.notNullUndefinedOrOnlyWhitespaceString(tmpFolder);
     RequireRatchet.true(fs.existsSync(tmpFolder), 'folder must exist : ' + tmpFolder);
   }
 

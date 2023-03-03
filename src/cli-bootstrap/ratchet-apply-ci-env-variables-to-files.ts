@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
-import { Logger } from '../common/logger.js';
-import { ApplyCiEnvVariablesToFiles } from '../node-only/ci/apply-ci-env-variables-to-files.js';
-import { CliRatchet } from '../node-only/common/cli-ratchet.js';
+import { ApplyCiEnvVariablesToFiles } from '../node-only/ci/apply-ci-env-variables-to-files';
+import { CliRatchet } from '../node-only/common/cli-ratchet';
+import { Logger } from '../common/logger';
 
 if (
   process?.argv?.length &&

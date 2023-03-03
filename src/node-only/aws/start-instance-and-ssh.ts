@@ -1,5 +1,5 @@
 import { Logger } from '../../common/logger';
-import { Ec2Ratchet } from '../../aws';
+import { Ec2Ratchet } from '../../aws/ec2/ec2-ratchet';
 import { spawnSync, SpawnSyncReturns } from 'child_process';
 import fs from 'fs';
 import os from 'os';
@@ -43,7 +43,7 @@ export class StartInstanceAndSsh {
 
       return new StartInstanceAndSsh(instanceId); // , publicKeyFile);
     } else {
-      Logger.infoP(
+      Logger.info(
         'Usage : ratchet-start-instance-and-ssh {instanceId} {publicKeyFile} (Found %s arguments, need at least 2)',
         process.argv.length
       );

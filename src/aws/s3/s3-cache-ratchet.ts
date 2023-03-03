@@ -28,7 +28,7 @@ import { StopWatch } from '../../common/stop-watch';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { Upload } from '@aws-sdk/lib-storage';
 import { Readable } from 'stream';
-import { StringRatchet } from '../../common';
+import { StringRatchet } from '../../common/string-ratchet';
 import { StreamRatchet } from '../../stream/stream-ratchet';
 
 export class S3CacheRatchet {

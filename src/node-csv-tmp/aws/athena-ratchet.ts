@@ -19,7 +19,7 @@ import { PromiseRatchet } from '../../common/promise-ratchet';
 import { GetObjectCommand, GetObjectCommandOutput, GetObjectRequest, S3Client } from '@aws-sdk/client-s3';
 import tmp from 'tmp';
 import fs from 'fs';
-import { CsvRatchet } from '../../node-csv';
+import { CsvRatchet } from '../../node-csv/csv-ratchet';
 import { RequireRatchet } from '../../common/require-ratchet';
 
 export class AthenaRatchet {

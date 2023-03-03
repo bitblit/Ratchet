@@ -11,7 +11,7 @@ import {
 } from '@aws-sdk/client-s3';
 import { S3CacheRatchet } from './s3-cache-ratchet';
 import { Logger } from '../../common/logger';
-import { StringRatchet } from '../../common';
+import { StringRatchet } from '../../common/string-ratchet';
 import { mockClient } from 'aws-sdk-client-mock';
 import { StreamRatchet } from '../../stream/stream-ratchet';
 

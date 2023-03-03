@@ -1,7 +1,8 @@
 /**
  * Some helpers to make it safe to have the node-only classes inside Ratchet
  */
-import { ErrorRatchet, RequireRatchet } from '../../common';
+import { RequireRatchet } from '../../common/require-ratchet';
+import { ErrorRatchet } from '../../common/error-ratchet';
 
 export class NodeRatchet {
   // Empty constructor prevents instantiation

@@ -1,4 +1,4 @@
-import { StringRatchet } from '../../common';
+import { StringRatchet } from '../../common/string-ratchet';
 import { SyncLockProvider } from './sync-lock-provider';
 
 /**

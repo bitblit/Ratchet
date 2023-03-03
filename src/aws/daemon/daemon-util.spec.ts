@@ -4,13 +4,14 @@ import { DaemonUtil } from './daemon-util';
 import { Logger } from '../../common/logger';
 import fs, { ReadStream } from 'fs';
 import { DaemonProcessCreateOptions } from './daemon-process-create-options';
-import { JestRatchet } from '../../jest';
-import { LoggerLevelName, PromiseRatchet } from '../../common';
+import { JestRatchet } from '../../jest/jest-ratchet';
 import { Subject } from 'rxjs';
 import { PassThrough } from 'stream';
-import { CsvRatchet } from '../../node-csv';
-import { TestItem } from '../../node-csv/csv-ratchet.spec';
+import { CsvRatchet } from '../../node-csv/csv-ratchet';
 import { S3Client } from '@aws-sdk/client-s3';
+import { LoggerLevelName } from '../../common/logger-support/logger-level-name';
+import { TestItem } from '../../node-csv/csv-ratchet.spec';
+import { PromiseRatchet } from '../../common/promise-ratchet';
 
 let mockS3CR: jest.Mocked<S3CacheRatchet>;
 

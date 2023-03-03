@@ -5,7 +5,7 @@ export class RatchetInfo {
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   private constructor() {}
 
-  public static buildInformation(): BuildInformation {
+  public static fetchBuildInformation(): BuildInformation {
     const val: BuildInformation = {
       version: 'LOCAL-SNAPSHOT',
       hash: 'LOCAL-HASH',

@@ -1,7 +1,8 @@
 import { RuntimeParameterProvider } from './runtime-parameter-provider';
 import { StoredRuntimeParameter } from './stored-runtime-parameter';
 import { RequireRatchet } from '../../common/require-ratchet';
-import { ErrorRatchet, StringRatchet } from '../../common';
+import { StringRatchet } from '../../common/string-ratchet';
+import { ErrorRatchet } from '../../common/error-ratchet';
 
 /**
  * Provides parameters for a runtime parameter from an environmental variable, where the key follows

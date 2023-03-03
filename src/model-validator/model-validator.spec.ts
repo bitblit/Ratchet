@@ -1,7 +1,7 @@
 import { ModelValidator } from './model-validator';
 import fs from 'fs';
 import path from 'path';
-import { Logger } from '../common';
+import { Logger } from '../common/logger';
 
 describe('#modelValidator', function () {
   it('should list an error', function () {

@@ -3,7 +3,7 @@ import { Logger } from '../../common/logger';
 import { PromiseRatchet } from '../../common/promise-ratchet';
 import { RequireRatchet } from '../../common/require-ratchet';
 import fs, { WriteStream } from 'fs';
-import { DynamoRatchet } from '../../aws';
+import { DynamoRatchet } from '../../aws/dynamodb/dynamo-ratchet';
 import readline from 'readline';
 import { QueryCommandInput, ScanCommandInput } from '@aws-sdk/client-dynamodb';
 
