@@ -23,12 +23,8 @@ jobs:
         run: yarn prepare-to-publish
         shell: bash
 
-      - name: Apply CI vars
-        run: yarn apply-ci-vars
-        shell: bash
-
       - name: Deploy to NPMJS
-        run: yarn publish --no-git-tag-version --non-interactive --new-version 4.0.$GITHUB_RUN_NUMBER dist
+        run: yarn publish --no-git-tag-version --non-interactive --new-version 4.0.$GITHUB_RUN_NUMBER
         shell: bash
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
