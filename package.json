@@ -5,19 +5,19 @@
   "note-on-side-effects": "Technically the entries in 'bin' below might be side effects, but they are called explicitly",
   "sideEffects": false,
   "bin": {
-    "ratchet-start-instance-and-ssh": "./commonjs/index.js",
-    "ratchet-apply-ci-env-variables-to-files": "./commonjs/index.js",
-    "ratchet-publish-ci-release-to-slack": "./commonjs/index.js",
-    "ratchet-files-to-static-class": "./commonjs/index.js",
-    "ratchet-site-uploader": "./commonjs/index.js",
-    "ratchet-print-version-info": "./commonjs/index.js"
+    "ratchet-start-instance-and-ssh": "./cjs/index.js",
+    "ratchet-apply-ci-env-variables-to-files": "./cjs/index.js",
+    "ratchet-publish-ci-release-to-slack": "./cjs/index.js",
+    "ratchet-files-to-static-class": "./cjs/index.js",
+    "ratchet-site-uploader": "./cjs/index.js",
+    "ratchet-print-version-info": "./cjs/index.js"
   },
   "source": "src/index.ts",
-  "main": "./dist/commonjs/index.js",
-  "module": "./dist/esm/index.js",
-  "types": "./dist/types/types.d.ts",
+  "main": "./bundle/cjs/index.js",
+  "module": "./bundle/esm/index.js",
+  "types": "./bundle/types/types.d.ts",
   "files": [
-    "dist"
+    "bundle"
   ],
   "contributors": [
     "Christopher Weiss <bitblit@gmail.com>",
@@ -39,14 +39,14 @@
   },
   "config": {},
   "scripts": {
-    "prepare-to-publish": "yarn run clean && yarn run generate-barrels && yarn pbuild && yarn run apply-ci-vars",
+    "prepare-to-publish": "yarn run clean && yarn run build && yarn run generate-barrels && yarn pbuild",
     "build": "yarn run clean && yarn run generate-barrels && yarn run compile",
     "compile": "tsc",
     "watch": "tsc-watch",
     "remove-compiled-tests": "rimraf ./dist/**/*.spec.d.ts && rimraf ./dist/**/*.spec.js && rimraf ./dist/**/*.spec.js.map",
     "clean": "shx rm -Rf dist artifacts src/index.ts",
     "compile-test": "yarn compile && yarn test",
-    "apply-ci-vars": "node dist/commonjs/index.js ratchet-apply-ci-env-variables-to-files github dist/commonjs/index.js && node dist/commonjs/index.js ratchet-apply-ci-env-variables-to-files github dist/esm/index.js",
+    "apply-ci-vars": "node dist/build/node-only/ci/apply-ci-env-variables-to-files github src/build/ratchet-info.ts",
     "test": "jest",
     "docs": "typedoc",
     "lint": "eslint src/**/*.ts",
