@@ -39,7 +39,7 @@
   },
   "config": {},
   "scripts": {
-    "prepare-to-publish": "yarn run clean && yarn run build && yarn run generate-barrels && yarn pbuild",
+    "prepare-to-publish": "yarn run build && yarn run apply-ci-vars && yarn pbuild",
     "build": "yarn run clean && yarn run generate-barrels && yarn run compile",
     "compile": "tsc",
     "watch": "tsc-watch",
