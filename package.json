@@ -46,7 +46,7 @@
     "remove-compiled-tests": "rimraf ./dist/**/*.spec.d.ts && rimraf ./dist/**/*.spec.js && rimraf ./dist/**/*.spec.js.map",
     "clean": "shx rm -Rf dist artifacts src/index.ts",
     "compile-test": "yarn compile && yarn test",
-    "apply-ci-vars": "node dist/build/node-only/ci/apply-ci-env-variables-to-files github src/build/ratchet-info.ts",
+    "apply-ci-vars": "node dist/node-only/ci/apply-ci-env-variables-to-files github src/build/ratchet-info.ts",
     "test": "jest",
     "docs": "typedoc",
     "lint": "eslint src/**/*.ts",
