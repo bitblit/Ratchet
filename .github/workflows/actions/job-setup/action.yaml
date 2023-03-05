@@ -5,13 +5,6 @@ runs:
   using: "composite"
 
   steps:
-    - name: Parse repo name
-      uses: actions-ecosystem/action-regex-match@v3
-      id: repo-match
-      with:
-        text: ${{ github.repository }}
-        regex: "^(?:.*)/(.*)$"
-
     - uses: zcong1993/setup-timezone@master
       with:
         timezone: America/Los_Angeles
