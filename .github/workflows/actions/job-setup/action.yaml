@@ -6,7 +6,7 @@ runs:
 
   steps:
     - name: Parse repo name
-      uses: actions-ecosystem/action-regex-match@v2
+      uses: actions-ecosystem/action-regex-match@v3
       id: repo-match
       with:
         text: ${{ github.repository }}
