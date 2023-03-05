@@ -11,8 +11,12 @@
     "ratchet-files-to-static-class": "./cli-bootstrap/ratchet-files-to-static-class.js",
     "ratchet-site-uploader": "./cli-bootstrap/ratchet-site-uploader.js"
   },
-  "main": "./index.js",
-  "typings": "./index.d.ts",
+  "main": "./dist/cjs",
+  "module": "./dist/esm",
+  "types": "./dist/types",
+  "files": [
+    "dist/*"
+  ],
   "contributors": [
     "Christopher Weiss <bitblit@gmail.com>",
     "William Weiss <npm@codification.org>",
@@ -33,19 +37,27 @@
   },
   "config": {},
   "scripts": {
-    "prepare-to-publish": "yarn build && cp package.json README.md CHANGELOG.md License.txt dist && yarn run apply-ci-vars && yarn remove-compiled-tests",
+    "prepare-to-publish": "yarn abuild && yarn run apply-ci-vars && yarn remove-compiled-tests",
     "build": "yarn run clean && yarn run generate-barrels && yarn run compile",
     "compile": "tsc",
     "watch": "tsc-watch",
     "remove-compiled-tests": "rimraf ./dist/**/*.spec.d.ts && rimraf ./dist/**/*.spec.js && rimraf ./dist/**/*.spec.js.map",
     "clean": "shx rm -Rf dist",
     "compile-test": "yarn compile && yarn test",
-    "apply-ci-vars": "node dist/node-only/ci/apply-ci-env-variables-to-files github dist/build/ratchet-info.js",
+    "apply-ci-vars": "node dist/cjs/node-only/ci/apply-ci-env-variables-to-files github dist/cjs/build/ratchet-info.js && node dist/cjs/node-only/ci/apply-ci-env-variables-to-files github dist/es/build/ratchet-info.js",
     "test": "jest",
     "docs": "typedoc",
     "lint": "eslint src/**/*.ts",
     "lint-fix": "eslint --fix src/**/*.ts",
-    "generate-barrels": "barrelsby -q --delete -d src -l below -e .*\\.spec\\.ts"
+    "generate-barrels": "barrelsby -q --delete -d src -l below -e .*\\.spec\\.ts",
+
+
+    "abuild": "concurrently 'yarn:abuild:cjs' 'yarn:abuild:es' 'yarn:abuild:types'",
+    "abuild:cjs": "tsc -p tsconfig.cjs.json",
+    "abuild:es": "tsc -p tsconfig.es.json",
+    "abuild:include:deps": "lerna run --scope $npm_package_name --include-dependencies build",
+    "abuild:types": "tsc -p tsconfig.types.json",
+    "abuild:types:downlevel": "downlevel-dts dist-types dist-types/ts3.4"
   },
   "repository": {
     "type": "git",
@@ -210,6 +222,7 @@
     "y18n": "^5.0.8"
   },
   "devDependencies": {
+    "concurrently": "7.0.0",
     "@types/jest": "29.4.0",
     "@types/luxon": "3.2.0",
     "@types/node": "18.14.2",
