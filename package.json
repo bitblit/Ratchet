@@ -5,12 +5,7 @@
   "note-on-side-effects": "Technically the entries in 'bin' below might be side effects, but they are called explicitly",
   "sideEffects": false,
   "bin": {
-    "ratchet-start-instance-and-ssh": "./bundle/cli.js",
-    "ratchet-apply-ci-env-variables-to-files": "./bundle/cli.js",
-    "ratchet-publish-ci-release-to-slack": "./bundle/cli.js",
-    "ratchet-files-to-static-class": "./bundle/cli.js",
-    "ratchet-site-uploader": "./bundle/cli.js",
-    "ratchet-print-version-info": "./bundle/cli.js"
+    "ratchet-cli": "./bundle/cli.js"
   },
   "source": "src/index.ts",
   "main": "./bundle/cjs/index.js",

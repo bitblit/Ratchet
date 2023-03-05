@@ -9,12 +9,12 @@ import { CliRatchet } from '../node-only/common/cli-ratchet';
 
 export class RatchetCliHandler {
   private static HANDLER_MAP: Record<string, any> = {
-    'ratchet-apply-ci-env-variables-to-files': ApplyCiEnvVariablesToFiles.runFromCliArgs,
-    'ratchet-files-to-static-class': FilesToStaticClass.runFromCliArgs,
-    'ratchet-print-version-info': RatchetCliHandler.printRatchetVersionInfo,
-    'ratchet-publish-ci-release-to-slack': PublishCiReleaseToSlack.runFromCliArgs,
-    'ratchet-site-uploader': SiteUploader.runFromCliArgs,
-    'ratchet-start-instance-and-ssh': StartInstanceAndSsh.runFromCliArgs,
+    'apply-ci-env-variables-to-files': ApplyCiEnvVariablesToFiles.runFromCliArgs,
+    'files-to-static-class': FilesToStaticClass.runFromCliArgs,
+    'print-version-info': RatchetCliHandler.printRatchetVersionInfo,
+    'publish-ci-release-to-slack': PublishCiReleaseToSlack.runFromCliArgs,
+    'site-uploader': SiteUploader.runFromCliArgs,
+    'start-instance-and-ssh': StartInstanceAndSsh.runFromCliArgs,
   };
   public static async findAndExecuteHandler(): Promise<void> {
     let handler: any = null;
