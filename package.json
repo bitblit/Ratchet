@@ -5,12 +5,12 @@
   "note-on-side-effects": "Technically the entries in 'bin' below might be side effects, but they are called explicitly",
   "sideEffects": false,
   "bin": {
-    "ratchet-start-instance-and-ssh": "./bundle/cjs/index.js",
-    "ratchet-apply-ci-env-variables-to-files": "./bundle/cjs/index.js",
-    "ratchet-publish-ci-release-to-slack": "./bundle/cjs/index.js",
-    "ratchet-files-to-static-class": "./bundle/cjs/index.js",
-    "ratchet-site-uploader": "./bundle/cjs/index.js",
-    "ratchet-print-version-info": "./bundle/cjs/index.js"
+    "ratchet-start-instance-and-ssh": "./bundle/cli.js",
+    "ratchet-apply-ci-env-variables-to-files": "./bundle/cli.js",
+    "ratchet-publish-ci-release-to-slack": "./bundle/cli.js",
+    "ratchet-files-to-static-class": "./bundle/cli.js",
+    "ratchet-site-uploader": "./bundle/cli.js",
+    "ratchet-print-version-info": "./bundle/cli.js"
   },
   "source": "src/index.ts",
   "main": "./bundle/cjs/index.js",
@@ -39,8 +39,8 @@
   },
   "config": {},
   "scripts": {
-    "prepare-to-publish": "yarn run build && yarn run apply-ci-vars && yarn pbuild && yarn add-shebang-to-cjs-bundle",
-    "add-shebang-to-cjs-bundle": "echo #!/usr/bin/env node | cat - bundle/cjs/index.js > temp && mv temp bundle/cjs/index.js",
+    "prepare-to-publish": "yarn run build && yarn run apply-ci-vars && yarn pbuild && yarn add-cli-handler",
+    "add-cli-handler": "cp includes/cli.js ./bundle",
     "build": "yarn run clean && yarn run generate-barrels && yarn run compile",
     "compile": "tsc",
     "watch": "tsc-watch",

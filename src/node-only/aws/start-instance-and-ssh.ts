@@ -43,6 +43,11 @@ export class StartInstanceAndSsh {
     }
   }
 
+  public static async runFromCliArgs(args: string[]): Promise<void> {
+    const inst: StartInstanceAndSsh = StartInstanceAndSsh.createFromArgs(args);
+    return inst.run();
+  }
+
   public async run(): Promise<any> {
     //return new Promise<any>(async (res, rej) => {
     let instance: Instance = await this.ec2Ratchet.describeInstance(this.instanceId);
