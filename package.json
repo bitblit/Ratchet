@@ -40,7 +40,7 @@
   "config": {},
   "scripts": {
     "prepare-to-publish": "yarn run build && yarn run apply-ci-vars && yarn pbuild && yarn add-shebang-to-cjs-bundle",
-    "add-shebang-to-cjs-bundle": "echo '#!/usr/bin/env node' | cat - bundle/cjs/index.js > temp && mv temp bundle/cjs/index.js",
+    "add-shebang-to-cjs-bundle": "echo #!/usr/bin/env node | cat - bundle/cjs/index.js > temp && mv temp bundle/cjs/index.js",
     "build": "yarn run clean && yarn run generate-barrels && yarn run compile",
     "compile": "tsc",
     "watch": "tsc-watch",
