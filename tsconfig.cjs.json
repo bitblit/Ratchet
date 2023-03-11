@@ -1,8 +1,6 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "outDir": "./dist/cjs",
-
     "importHelpers": true,
     "module": "commonjs",
     "noEmitHelpers": true,

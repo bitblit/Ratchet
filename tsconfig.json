@@ -23,15 +23,13 @@
     "skipLibCheck": true,
     "noImplicitReturns": true,
     "suppressImplicitAnyIndexErrors": true,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "paths": {
+      "@bitblit/ratchet-*": ["modules/"]
+    }
   },
-  "include": [
-    "src/**/*.ts"
-  ],
-  "exclude": [
-    "node_modules/",
-    "**/*.spec.ts"
-  ],
+  "include": ["modules/"],
+  "exclude": ["node_modules/", "**/*.spec.ts"],
   "typedocOptions": {
     "entryPointStrategy": "expand",
     "entryPoints": ["src"],

@@ -1,8 +1,6 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "outDir": "./dist/es",
-
     "importHelpers": true,
     "module": "esnext",
     "noEmitHelpers": true,

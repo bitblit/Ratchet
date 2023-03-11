@@ -2,21 +2,20 @@
   "name": "@bitblit/ratchet",
   "version": "0.0.0",
   "description": "Common tools for general use",
-  "note-on-side-effects": "Technically the entries in 'bin' below might be side effects, but they are called explicitly",
-  "sideEffects": false,
-  "bin": {
-    "ratchet-start-instance-and-ssh": "./cli-bootstrap/ratchet-start-instance-and-ssh.js",
-    "ratchet-apply-ci-env-variables-to-files": "./cli-bootstrap/ratchet-apply-ci-env-variables-to-files.js",
-    "ratchet-publish-ci-release-to-slack": "./cli-bootstrap/ratchet-publish-ci-release-to-slack.js",
-    "ratchet-files-to-static-class": "./cli-bootstrap/ratchet-files-to-static-class.js",
-    "ratchet-site-uploader": "./cli-bootstrap/ratchet-site-uploader.js"
+  "private": true,
+  "workspaces": {
+    "packages": [
+      "modules/*"
+    ],
+    "nohoist": [
+      "**/json5",
+      "**/json5/**",
+      "**/ts-jest",
+      "**/ts-jest/**",
+      "**/canvas",
+      "**/canvas/**"
+    ]
   },
-  "main": "./dist/cjs",
-  "module": "./dist/esm",
-  "types": "./dist/types",
-  "files": [
-    "dist/*"
-  ],
   "contributors": [
     "Christopher Weiss <bitblit@gmail.com>",
     "William Weiss <npm@codification.org>",
@@ -25,45 +24,14 @@
     "Joel Flint <joel@stimulimedia.net>",
     "Bilal Shahid <bshahid@adomni.com>"
   ],
-  "husky": {
-    "hooks": {
-      "pre-commit": "pretty-quick --staged"
-    }
-  },
-  "prettier": {
-    "printWidth": 140,
-    "singleQuote": true,
-    "arrowParens": "always"
-  },
-  "config": {},
   "scripts": {
-    "prepare-to-publish": "yarn abuild && yarn run apply-ci-vars && yarn remove-compiled-tests",
-    "build": "yarn run clean && yarn run generate-barrels && yarn run compile",
-    "compile": "tsc",
-    "watch": "tsc-watch",
-    "remove-compiled-tests": "rimraf ./dist/**/*.spec.d.ts && rimraf ./dist/**/*.spec.js && rimraf ./dist/**/*.spec.js.map",
-    "clean": "shx rm -Rf dist",
-    "compile-test": "yarn compile && yarn test",
-    "apply-ci-vars": "node dist/cjs/node-only/ci/apply-ci-env-variables-to-files github dist/cjs/build/ratchet-info.js && node dist/cjs/node-only/ci/apply-ci-env-variables-to-files github dist/es/build/ratchet-info.js",
-    "test": "jest",
-    "docs": "typedoc",
-    "lint": "eslint src/**/*.ts",
-    "lint-fix": "eslint --fix src/**/*.ts",
-    "generate-barrels": "barrelsby -q --delete -d src -l below -e .*\\.spec\\.ts",
-
-
-    "abuild": "concurrently 'yarn:abuild:cjs' 'yarn:abuild:es' 'yarn:abuild:types'",
-    "abuild:cjs": "tsc -p tsconfig.cjs.json",
-    "abuild:es": "tsc -p tsconfig.es.json",
-    "abuild:include:deps": "lerna run --scope $npm_package_name --include-dependencies build",
-    "abuild:types": "tsc -p tsconfig.types.json",
-    "abuild:types:downlevel": "downlevel-dts dist-types dist-types/ts3.4"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/bitblit/Ratchet"
   },
   "keywords": [
+    "ratchet",
     "wrench",
     "utility"
   ],
@@ -76,160 +44,22 @@
   },
   "license": "Apache-2.0",
   "dependencies": {
-    "browserslist": "4.21.5",
-    "concat-stream": "2.0.0",
-    "lodash": "4.17.21",
     "luxon": "3.2.1",
-    "ts-enum-util": "4.0.2"
+    "cross-fetch": "3.1.5"
   },
   "peerDependencies": {
-    "@apollo/client": "^3.7.8",
-    "@aws-sdk/abort-controller": "^3.272.0",
-    "@aws-sdk/client-athena": "^3.279.0",
-    "@aws-sdk/client-batch": "^3.279.0",
-    "@aws-sdk/client-cloudwatch": "^3.279.0",
-    "@aws-sdk/client-cloudwatch-logs": "^3.279.0",
-    "@aws-sdk/client-dynamodb": "^3.279.0",
-    "@aws-sdk/client-ec2": "^3.279.0",
-    "@aws-sdk/client-ec2-instance-connect": "^3.279.0",
-    "@aws-sdk/client-route-53": "^3.279.0",
-    "@aws-sdk/client-s3": "^3.279.0",
-    "@aws-sdk/client-ses": "^3.279.0",
-    "@aws-sdk/client-sns": "^3.279.0",
-    "@aws-sdk/client-ssm": "^3.279.0",
-    "@aws-sdk/lib-dynamodb": "^3.279.0",
-    "@aws-sdk/s3-request-presigner": "^3.279.0",
-    "@aws-sdk/smithy-client": "^3.279.0",
-    "@aws-sdk/types": "^3.272.0",
-    "@aws-sdk/util-waiter": "^3.272.0",
-    "@types/aws-lambda": "^8.10.111",
-    "graphql": "^16.6.0"
-  },
-  "peerDependenciesMeta": {
-    "@apollo/client": {
-      "optional": true
-    },
-    "@types/aws-lambda": {
-      "optional": true
-    },
-    "@aws-sdk/types": {
-      "optional": true
-    },
-    "@aws-sdk/abort-controller": {
-      "optional": true
-    },
-    "@aws-sdk/client-athena": {
-      "optional": true
-    },
-    "@aws-sdk/client-batch": {
-      "optional": true
-    },
-    "@aws-sdk/client-cloudwatch": {
-      "optional": true
-    },
-    "@aws-sdk/client-cloudwatch-logs": {
-      "optional": true
-    },
-    "@aws-sdk/client-dynamodb": {
-      "optional": true
-    },
-    "@aws-sdk/client-s3": {
-      "optional": true
-    },
-    "@aws-sdk/client-ses": {
-      "optional": true
-    },
-    "@aws-sdk/client-sns": {
-      "optional": true
-    },
-    "@aws-sdk/client-ssm": {
-      "optional": true
-    },
-    "@aws-sdk/client-ec2": {
-      "optional": true
-    },
-    "@aws-sdk/client-ec2-instance-connect": {
-      "optional": true
-    },
-    "@aws-sdk/client-route-53": {
-      "optional": true
-    },
-    "@aws-sdk/lib-dynamodb": {
-      "optional": true
-    },
-    "@aws-sdk/s3-request-presigner": {
-      "optional": true
-    },
-    "@aws-sdk/smithy-client": {
-      "optional": true
-    },
-    "@aws-sdk/util-waiter": {
-      "optional": true
-    },
-    "graphql": {
-      "optional": true
-    }
-  },
-  "optionalDependencies": {
-    "@apollo/client": "3.7.9",
-    "@aws-sdk/types": "3.272.0",
-    "@aws-sdk/abort-controller": "3.272.0",
-    "@aws-sdk/client-athena": "3.272.0",
-    "@aws-sdk/client-batch": "3.272.0",
-    "@aws-sdk/client-cloudwatch": "3.272.0",
-    "@aws-sdk/client-cloudwatch-logs": "3.272.0",
-    "@aws-sdk/client-dynamodb": "3.272.0",
-    "@aws-sdk/client-ec2": "3.272.0",
-    "@aws-sdk/client-ec2-instance-connect": "3.272.0",
-    "@aws-sdk/client-route-53": "3.272.0",
-    "@aws-sdk/client-s3": "3.272.0",
-    "@aws-sdk/client-ses": "3.272.0",
-    "@aws-sdk/client-sns": "3.272.0",
-    "@aws-sdk/client-ssm": "3.272.0",
-    "@aws-sdk/lib-dynamodb": "3.272.0",
-    "@aws-sdk/lib-storage": "3.272.0",
-    "@aws-sdk/s3-request-presigner": "3.272.0",
-    "@aws-sdk/smithy-client": "3.272.0",
-    "@aws-sdk/util-waiter": "3.272.0",
-    "@types/aws-lambda": "8.10.111",
-    "cross-fetch": "3.1.5",
-    "csv": "6.2.7",
-    "graphql": "16.6.0",
-    "handlebars": "4.7.7",
-    "handlebars-layouts": "3.1.4",
-    "js-yaml": "4.1.0",
-    "json-loader": "0.5.7",
-    "jsonwebtoken": "9.0.0",
-    "mailparser": "3.6.3",
-    "mime-types": "2.1.35",
-    "rxjs": "7.8.0",
-    "swagger-model-validator": "3.0.21",
-    "tmp": "0.2.1",
-    "walk": "2.3.15"
+    "luxon": "3.2.1",
+    "cross-fetch": "3.1.5"
   },
   "resolutions": {
-    "ansi-regex": "^5.0.1",
-    "browserslist": "^4.21.4",
-    "glob-parent": "^6.0.2",
-    "hosted-git-info": "^6.1.1",
-    "json5": "^1.0.2",
-    "lodash": "^4.17.21",
-    "minimist": "^1.2.7",
-    "mixme": "^0.5.2",
-    "node-fetch": "^2.6.7",
-    "path-parse": "^1.0.7",
-    "tmpl": "^1.0.5",
-    "y18n": "^5.0.8"
   },
   "devDependencies": {
     "concurrently": "7.0.0",
     "@types/jest": "29.4.0",
     "@types/luxon": "3.2.0",
     "@types/node": "18.14.2",
-    "@types/yargs": "17.0.22",
     "@typescript-eslint/eslint-plugin": "5.54.0",
     "@typescript-eslint/parser": "5.54.0",
-    "aws-sdk-client-mock": "2.0.1",
     "barrelsby": "2.5.1",
     "eslint": "8.22.0",
     "eslint-config-prettier": "8.6.0",
@@ -239,7 +69,7 @@
     "jest": "29.4.3",
     "prettier": "2.8.4",
     "pretty-quick": "3.1.3",
-    "rimraf": "4.1.3",
+    "rimraf": "4.4.0",
     "shx": "0.3.4",
     "ts-jest": "29.0.5",
     "ts-node": "10.9.1",

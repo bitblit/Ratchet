@@ -1,0 +1,72 @@
+{
+  "name": "@bitblit/ratchet-common",
+  "version": "0.0.0",
+  "description": "Common tools for general use",
+  "main": "./dist/cjs",
+  "module": "./dist/esm",
+  "types": "./dist/types",
+  "files": [
+    "dist/*"
+  ],
+  "contributors": [
+    "Christopher Weiss <bitblit@gmail.com>",
+    "William Weiss <npm@codification.org>",
+    "Austin Grantham <agrantham@algidious.com>",
+    "Lucas Myers <veganbeef@protonmail.com>",
+    "Joel Flint <joel@stimulimedia.net>",
+    "Bilal Shahid <bshahid@adomni.com>"
+  ],
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
+  },
+  "prettier": {
+    "printWidth": 140,
+    "singleQuote": true,
+    "arrowParens": "always"
+  },
+  "config": {},
+  "scripts": {
+    "prepare-to-publish": "yarn abuild && yarn run apply-ci-vars && yarn remove-compiled-tests",
+    "watch": "tsc-watch",
+    "remove-compiled-tests": "rimraf ./dist/**/*.spec.d.ts && rimraf ./dist/**/*.spec.js && rimraf ./dist/**/*.spec.js.map",
+    "clean": "shx rm -Rf dist",
+    "compile-test": "yarn compile && yarn test",
+    "apply-ci-vars": "node dist/cjs/node-only/ci/apply-ci-env-variables-to-files github dist/cjs/build/ratchet-info.js && node dist/cjs/node-only/ci/apply-ci-env-variables-to-files github dist/es/build/ratchet-info.js",
+    "test": "jest",
+    "docs": "typedoc",
+    "lint": "eslint src/**/*.ts",
+    "lint-fix": "eslint --fix src/**/*.ts",
+    "generate-barrels": "barrelsby -q --delete -d src -l below -e .*\\.spec\\.ts",
+    "build": "yarn run clean && yarn run generate-barrels && concurrently 'yarn:build:cjs' 'yarn:build:es' 'yarn:build:types'",
+    "build:cjs": "tsc -p tsconfig.cjs.json",
+    "build:es": "tsc -p tsconfig.es.json",
+    "build:types": "tsc -p tsconfig.types.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bitblit/Ratchet"
+  },
+  "keywords": [
+    "wrench",
+    "utility"
+  ],
+  "bugs": {
+    "url": "https://github.com/bitblit/Ratchet/issues"
+  },
+  "homepage": "https://github.com/bitblit/Ratchet#readme",
+  "engines": {
+    "node": ">=14.18"
+  },
+  "license": "Apache-2.0",
+  "dependencies": {
+    "ts-enum-util": "4.0.2"
+  },
+  "peerDependencies": {
+  },
+  "peerDependenciesMeta": {
+  },
+  "devDependencies": {
+  }
+}

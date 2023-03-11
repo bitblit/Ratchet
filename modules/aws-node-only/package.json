@@ -1,0 +1,104 @@
+{
+  "name": "@bitblit/ratchet-aws-node-only",
+  "version": "0.0.0",
+  "description": "Common tools for use with AWS (Node only)",
+  "note-on-side-effects": "Technically the entries in 'bin' below might be side effects, but they are called explicitly",
+  "sideEffects": false,
+  "bin": {
+    "ratchet-start-instance-and-ssh": "./cli-bootstrap/ratchet-start-instance-and-ssh.js",
+    "ratchet-apply-ci-env-variables-to-files": "./cli-bootstrap/ratchet-apply-ci-env-variables-to-files.js",
+    "ratchet-publish-ci-release-to-slack": "./cli-bootstrap/ratchet-publish-ci-release-to-slack.js",
+    "ratchet-files-to-static-class": "./cli-bootstrap/ratchet-files-to-static-class.js",
+    "ratchet-site-uploader": "./cli-bootstrap/ratchet-site-uploader.js"
+  },
+  "main": "./dist/cjs",
+  "module": "./dist/esm",
+  "types": "./dist/types",
+  "files": [
+    "dist/*"
+  ],
+  "contributors": [
+    "Christopher Weiss <bitblit@gmail.com>",
+    "William Weiss <npm@codification.org>",
+    "Austin Grantham <agrantham@algidious.com>",
+    "Lucas Myers <veganbeef@protonmail.com>",
+    "Joel Flint <joel@stimulimedia.net>",
+    "Bilal Shahid <bshahid@adomni.com>"
+  ],
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
+  },
+  "prettier": {
+    "printWidth": 140,
+    "singleQuote": true,
+    "arrowParens": "always"
+  },
+  "config": {},
+  "scripts": {
+    "prepare-to-publish": "yarn abuild && yarn run apply-ci-vars && yarn remove-compiled-tests",
+    "watch": "tsc-watch",
+    "remove-compiled-tests": "rimraf ./dist/**/*.spec.d.ts && rimraf ./dist/**/*.spec.js && rimraf ./dist/**/*.spec.js.map",
+    "clean": "shx rm -Rf dist",
+    "compile-test": "yarn compile && yarn test",
+    "apply-ci-vars": "node dist/cjs/node-only/ci/apply-ci-env-variables-to-files github dist/cjs/build/ratchet-info.js && node dist/cjs/node-only/ci/apply-ci-env-variables-to-files github dist/es/build/ratchet-info.js",
+    "test": "jest",
+    "docs": "typedoc",
+    "lint": "eslint src/**/*.ts",
+    "lint-fix": "eslint --fix src/**/*.ts",
+    "generate-barrels": "barrelsby -q --delete -d src -l below -e .*\\.spec\\.ts",
+
+    "build": "yarn run clean && yarn run generate-barrels && concurrently 'yarn:build:cjs' 'yarn:build:es' 'yarn:build:types'",
+    "build:cjs": "tsc -p tsconfig.cjs.json",
+    "build:es": "tsc -p tsconfig.es.json",
+    "build:types": "tsc -p tsconfig.types.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bitblit/Ratchet"
+  },
+  "keywords": [
+    "wrench",
+    "utility"
+  ],
+  "bugs": {
+    "url": "https://github.com/bitblit/Ratchet/issues"
+  },
+  "homepage": "https://github.com/bitblit/Ratchet#readme",
+  "engines": {
+    "node": ">=14.18"
+  },
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@bitblit/ratchet-aws": "*",
+    "@bitblit/ratchet-common": "*",
+    "@aws-sdk/client-athena": "3.279.0",
+    "@aws-sdk/client-s3": "3.279.0",
+    "@aws-sdk/smithy-client": "3.279.0",
+    "@aws-sdk/types": "3.272.0",
+    "@aws-sdk/lib-storage": "3.279.0",
+    "@aws-sdk/client-ec2": "3.279.0",
+    "@aws-sdk/client-ec2-instance-connect": "3.279.0",
+    "mailparser": "3.6.3",
+    "walk": "2.3.15",
+    "mime-types": "2.1.35",
+    "tmp": "0.2.1"
+  },
+  "peerDependencies": {
+    "@bitblit/ratchet-aws": "*",
+    "@bitblit/ratchet-common": "*",
+    "@aws-sdk/client-athena": "^3.279.0",
+    "@aws-sdk/client-s3": "^3.279.0",
+    "@aws-sdk/smithy-client": "^3.279.0",
+    "@aws-sdk/types": "^3.272.0",
+    "@aws-sdk/lib-storage": "^3.279.0",
+    "@aws-sdk/client-ec2": "^3.279.0",
+    "@aws-sdk/client-ec2-instance-connect": "^3.279.0",
+    "mailparser": "^3.6.3",
+    "walk": "^2.3.15",
+    "mime-types": "^2.1.35"
+  },
+  "devDependencies": {
+  }
+}
