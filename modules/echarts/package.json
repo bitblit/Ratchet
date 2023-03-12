@@ -23,9 +23,8 @@
   },
   "config": {},
   "scripts": {
-    "prepare-to-publish": "yarn build && yarn remove-compiled-tests && yarn run apply-ci-vars",
+    "prepare-to-publish": "yarn build && yarn run apply-ci-vars",
     "watch": "tsc-watch",
-    "remove-compiled-tests": "rimraf ./dist/examples && rimraf ./dist/**/*.spec.d.ts && rimraf ./dist/**/*.spec.js && rimraf ./dist/**/*.spec.js.map",
     "clean": "shx rm -Rf dist",
     "compile-test": "yarn compile && yarn test",
     "apply-ci-vars": "yarn ratchet-apply-ci-env-variables-to-files github src/ratchet-echarts-info.ts",

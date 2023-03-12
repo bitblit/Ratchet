@@ -26,7 +26,8 @@
   ],
   "scripts": {
     "clean": "wsrun clean",
-    "build": "wsrun --serial build"
+    "build": "wsrun --serial build",
+    "prepare-to-publish": "wsrun --serial prepare-to-publish"
   },
   "repository": {
     "type": "git",
