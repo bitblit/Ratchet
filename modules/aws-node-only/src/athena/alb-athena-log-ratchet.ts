@@ -3,9 +3,9 @@ import path from 'path';
 import { AthenaRatchet } from './athena-ratchet';
 import { Logger } from '@bitblit/ratchet-common';
 import { RequireRatchet } from '@bitblit/ratchet-common';
-import { StringRatchet } from '../../common/string-ratchet';
-import { S3Ratchet } from '../../aws/s3/s3-ratchet';
-import { CsvRatchet } from '../../node-csv/csv-ratchet';
+import { StringRatchet } from '@bitblit/ratchet-common';
+import { S3Ratchet } from '@bitblit/ratchet-aws';
+import { CsvRatchet } from '@bitblit/ratchet-node-only';
 import { S3Client } from '@aws-sdk/client-s3';
 
 // A class to simplify reading an Athena table based on ALB Logs

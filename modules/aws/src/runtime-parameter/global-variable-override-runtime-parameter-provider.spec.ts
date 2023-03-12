@@ -5,13 +5,13 @@ import { JestRatchet } from '@bitblit/ratchet-jest';
 import { LoggerLevelName } from '@bitblit/ratchet-common';
 import { Logger } from '@bitblit/ratchet-common';
 import { RuntimeParameterRatchet } from './runtime-parameter-ratchet';
-import { EnvironmentalVariableOverrideRuntimeParameterProvider } from './environmental-variable-override-runtime-parameter-provider';
+import { GlobalVariableOverrideRuntimeParameterProvider } from './global-variable-override-runtime-parameter-provider';
 
 let mockDynamoRatchet: jest.Mocked<DynamoRatchet>;
 const testEntry: StoredRuntimeParameter = { groupId: 'test', paramKey: 'test', paramValue: '15', ttlSeconds: 0.5 };
 const testEntry2: StoredRuntimeParameter = { groupId: 'test', paramKey: 'test1', paramValue: '"not-overridden"', ttlSeconds: 0.5 };
 
-describe('#environmentalVariableOverrideRuntimeParameterProvider', function () {
+describe('#globalVariableOverrideRuntimeParameterProvider', function () {
   beforeEach(() => {
     mockDynamoRatchet = JestRatchet.mock();
   });
@@ -21,7 +21,7 @@ describe('#environmentalVariableOverrideRuntimeParameterProvider', function () {
     //mockDynamoRatchet.fullyExecuteQuery.resolves([testEntry, testEntry2]);
     mockDynamoRatchet.simpleGet.mockResolvedValue(testEntry2);
     const drpp: DynamoRuntimeParameterProvider = new DynamoRuntimeParameterProvider(mockDynamoRatchet, 'test-table');
-    const er: EnvironmentalVariableOverrideRuntimeParameterProvider = new EnvironmentalVariableOverrideRuntimeParameterProvider(drpp, {
+    const er: GlobalVariableOverrideRuntimeParameterProvider = new GlobalVariableOverrideRuntimeParameterProvider(drpp, {
       globalTTL: 1,
       separator: '.',
       prefix: 'p-',

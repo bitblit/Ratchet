@@ -11,9 +11,9 @@
     "ratchet-files-to-static-class": "./cli-bootstrap/ratchet-files-to-static-class.js",
     "ratchet-site-uploader": "./cli-bootstrap/ratchet-site-uploader.js"
   },
-  "main": "./dist/cjs",
-  "module": "./dist/esm",
-  "types": "./dist/types",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "types": "./dist/types/index.d.ts",
   "files": [
     "dist/*"
   ],
@@ -47,7 +47,7 @@
     "docs": "typedoc",
     "lint": "eslint src/**/*.ts",
     "lint-fix": "eslint --fix src/**/*.ts",
-    "generate-barrels": "barrelsby -q --delete -d src -l below -e .*\\.spec\\.ts",
+    "generate-barrels": "barrelsby -q --delete -d src -e .*\\.spec\\.ts",
 
     "build": "yarn run clean && yarn run generate-barrels && concurrently 'yarn:build:cjs' 'yarn:build:es' 'yarn:build:types'",
     "build:cjs": "tsc -p tsconfig.cjs.json",
@@ -94,6 +94,7 @@
     "@types/aws-lambda": "8.10.111"
   },
   "peerDependencies": {
+    "@bitblit/ratchet-jest": "*",
     "@aws-sdk/abort-controller": "^3.272.0",
     "@aws-sdk/client-athena": "^3.272.0",
     "@aws-sdk/client-batch": "^3.272.0",

@@ -29,7 +29,7 @@ import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { Upload } from '@aws-sdk/lib-storage';
 import { Readable } from 'stream';
 import { StringRatchet } from '@bitblit/ratchet-common';
-import { StreamRatchet } from '../../stream/stream-ratchet';
+import { StreamRatchet } from '@bitblit/ratchet-common';
 
 export class S3CacheRatchet {
   constructor(private s3: S3Client, private defaultBucket: string = null) {

@@ -1,6 +1,6 @@
 import { AwsBatchRatchet } from './aws-batch-ratchet';
 import { SubmitJobCommandOutput } from '@aws-sdk/client-batch';
-import { JestRatchet } from '../../jest';
+import { JestRatchet } from '@bitblit/ratchet-jest';
 import { AwsBatchBackgroundProcessor } from './aws-batch-background-processor';
 
 let mockBatchRatchet: jest.Mocked<AwsBatchRatchet>;

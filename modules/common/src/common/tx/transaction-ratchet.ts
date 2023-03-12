@@ -1,7 +1,9 @@
 import { TransactionStep } from './transaction-step';
 import { TransactionResult } from './transaction-result';
 import { TransactionConfiguration } from './transaction-configuration';
-import { Logger, LoggerLevelName, RequireRatchet } from '../index';
+import { Logger } from '../logger';
+import { RequireRatchet } from '../require-ratchet';
+import {  LoggerLevelName } from '../logger-support/logger-level-name';
 import { TransactionFinalState } from './transaction-final-state';
 
 /*

@@ -1,5 +1,6 @@
 import { GraphqlRatchetQueryProvider } from './graphql-ratchet-query-provider';
 import { StringRatchet, Logger } from '@bitblit/ratchet-common';
+import fetch from 'cross-fetch';
 
 export class LocalFetchQueryProvider implements GraphqlRatchetQueryProvider {
   private cacheMap: Map<string, string> = new Map<string, string>();

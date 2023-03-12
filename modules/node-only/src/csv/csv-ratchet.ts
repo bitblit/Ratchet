@@ -4,9 +4,9 @@
 
 import fs, { ReadStream } from 'fs';
 import { Options as ParseOptions, parse } from 'csv-parse';
-import { Logger } from '../common/logger';
+import { Logger } from '@bitblit/ratchet-common';
 import { Options, stringify } from 'csv-stringify';
-import { RequireRatchet } from '../common/require-ratchet';
+import { RequireRatchet } from '@bitblit/ratchet-common';
 import { MapRatchet } from '@bitblit/ratchet-common';
 import { Subject, Subscription } from 'rxjs';
 import { Readable, Writable } from 'stream';

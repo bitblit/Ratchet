@@ -1,6 +1,7 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
+    "declaration": false,
     "importHelpers": true,
     "module": "esnext",
     "noEmitHelpers": true,

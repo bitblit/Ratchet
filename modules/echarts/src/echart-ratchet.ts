@@ -15,7 +15,7 @@ export class EChartRatchet {
     let rval: Buffer = null;
 
     opt.animation = false; // Always do not animate given its is a static image
-    const canvasHtml: HTMLCanvasElement = canvas as unknown as HTMLCanvasElement;
+    const canvasHtml: HTMLElement = canvas as unknown as HTMLElement;
     // This is deprecated, and unneeded so far as I can tell
     //echarts.setCanvasCreator(()=>{return canvasHtml;});
     const chart: ECharts = echarts.init(canvasHtml);

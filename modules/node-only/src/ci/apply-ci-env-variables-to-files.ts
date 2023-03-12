@@ -1,9 +1,8 @@
 import fs from 'fs';
 import { Logger } from '@bitblit/ratchet-common';
 import { CiEnvVariableConfig } from './ci-env-variable-config';
-import { ErrorRatchet, RequireRatchet, StringRatchet } from '@bitblit/ratchet-common';
+import { ErrorRatchet, RequireRatchet, StringRatchet, GlobalRatchet } from '@bitblit/ratchet-common';
 import { CiEnvVariableConfigUtil } from './ci-env-variable-config-util';
-import { NodeRatchet } from '../common/node-ratchet';
 
 export class ApplyCiEnvVariablesToFiles {
   public static async process(
@@ -23,11 +22,11 @@ export class ApplyCiEnvVariablesToFiles {
     if (fileNames.length === 0) {
       Logger.warn('Warning - no files supplied to process');
     }
-    const buildNum: string = NodeRatchet.fetchProcessEnvVar(cfg.buildNumberVar);
-    const branch: string = cfg.branchVar ? NodeRatchet.fetchProcessEnvVar(cfg.branchVar) : null || cfg.branchDefault;
-    const tag: string = cfg.tagVar ? NodeRatchet.fetchProcessEnvVar(cfg.tagVar) : null || cfg.tagDefault;
-    const sha1: string = cfg.hashVar ? NodeRatchet.fetchProcessEnvVar(cfg.hashVar) : null || cfg.hashDefault;
-    const localTime: string = cfg.localTimeVar ? NodeRatchet.fetchProcessEnvVar(cfg.localTimeVar) : null || cfg.localTimeDefault;
+    const buildNum: string = GlobalRatchet.fetchGlobalVar(cfg.buildNumberVar);
+    const branch: string = cfg.branchVar ? GlobalRatchet.fetchGlobalVar(cfg.branchVar) : null || cfg.branchDefault;
+    const tag: string = cfg.tagVar ? GlobalRatchet.fetchGlobalVar(cfg.tagVar) : null || cfg.tagDefault;
+    const sha1: string = cfg.hashVar ? GlobalRatchet.fetchGlobalVar(cfg.hashVar) : null || cfg.hashDefault;
+    const localTime: string = cfg.localTimeVar ? GlobalRatchet.fetchGlobalVar(cfg.localTimeVar) : null || cfg.localTimeDefault;
 
     if (!buildNum) {
       ErrorRatchet.throwFormattedErr('%s env var not set - apparently not in a CI environment', cfg.buildNumberVar);

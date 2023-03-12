@@ -4,3 +4,4 @@
 
 export * from './echart-canvas-config';
 export * from './echart-ratchet';
+export * from './ratchet-echarts-info';

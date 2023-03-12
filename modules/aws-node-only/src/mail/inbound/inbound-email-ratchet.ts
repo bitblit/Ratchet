@@ -1,6 +1,6 @@
 import { ParsedMail, simpleParser } from 'mailparser';
 import { Readable, ReadableOptions } from 'stream';
-import { S3CacheRatchet } from '../../aws/s3/s3-cache-ratchet';
+import { S3CacheRatchet } from '@bitblit/ratchet-aws';
 import { Logger, RequireRatchet } from '@bitblit/ratchet-common';
 
 /**

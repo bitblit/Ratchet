@@ -3,9 +3,9 @@
   "version": "0.0.0",
   "description": "Ratchet miscellaneous tooling that requires smallish dependant libraries",
   "sideEffects": false,
-  "main": "./dist/cjs",
-  "module": "./dist/esm",
-  "types": "./dist/types",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "types": "./dist/types/index.d.ts",
   "files": [
     "dist/*"
   ],
@@ -39,7 +39,7 @@
     "docs": "typedoc",
     "lint": "eslint src/**/*.ts",
     "lint-fix": "eslint --fix src/**/*.ts",
-    "generate-barrels": "barrelsby -q --delete -d src -l below -e .*\\.spec\\.ts",
+    "generate-barrels": "barrelsby -q --delete -d src -e .*\\.spec\\.ts",
 
     "build": "yarn run clean && yarn run generate-barrels && concurrently 'yarn:build:cjs' 'yarn:build:es' 'yarn:build:types'",
     "build:cjs": "tsc -p tsconfig.cjs.json",

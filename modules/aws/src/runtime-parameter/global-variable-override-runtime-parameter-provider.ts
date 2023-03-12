@@ -1,24 +1,25 @@
 import { RuntimeParameterProvider } from './runtime-parameter-provider';
 import { StoredRuntimeParameter } from './stored-runtime-parameter';
 import { RequireRatchet } from '@bitblit/ratchet-common';
+import { GlobalRatchet } from '@bitblit/ratchet-common';
 import { ErrorRatchet, StringRatchet } from '@bitblit/ratchet-common';
 
 /**
- * Provides parameters for a runtime parameter from an environmental variable, where the key follows
+ * Provides parameters for a runtime parameter from an global (ie, process.env or global.xx) variable, where the key follows
  * a given format
  *
  * "Simple" because it forces all ttls to be the same value (ignores what is passed in) so that the
  * envvar itself can be just a string instead of a complex value
  */
-export class EnvironmentalVariableOverrideRuntimeParameterProvider implements RuntimeParameterProvider {
-  private options: EnvironmentalVariableOverrideRuntimeParameterProviderOptions = {
+export class GlobalVariableOverrideRuntimeParameterProvider implements RuntimeParameterProvider {
+  private options: GlobalVariableOverrideRuntimeParameterProviderOptions = {
     globalTTL: 1,
     separator: '.',
     prefix: 'RuntimeEnv-',
     suffix: '',
   };
 
-  constructor(private wrapped: RuntimeParameterProvider, opts?: EnvironmentalVariableOverrideRuntimeParameterProviderOptions) {
+  constructor(private wrapped: RuntimeParameterProvider, opts?: GlobalVariableOverrideRuntimeParameterProviderOptions) {
     // They can be empty but they cannot be null
     RequireRatchet.notNullOrUndefined(this.wrapped, 'wrapped');
     RequireRatchet.notNullOrUndefined(global?.process?.env, '"process" not found - this only runs in Node, not the browser');
@@ -70,7 +71,7 @@ export class EnvironmentalVariableOverrideRuntimeParameterProvider implements Ru
   }
 }
 
-export interface EnvironmentalVariableOverrideRuntimeParameterProviderOptions {
+export interface GlobalVariableOverrideRuntimeParameterProviderOptions {
   globalTTL: number;
   separator: string;
   prefix?: string;
