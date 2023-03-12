@@ -10,10 +10,8 @@ import {
   UploadPartCommand,
 } from '@aws-sdk/client-s3';
 import { S3CacheRatchet } from './s3-cache-ratchet';
-import { Logger } from '@bitblit/ratchet-common';
-import { StringRatchet } from '@bitblit/ratchet-common';
+import { Logger, StreamRatchet, StringRatchet } from '@bitblit/ratchet-common';
 import { mockClient } from 'aws-sdk-client-mock';
-import { StreamRatchet } from '../../stream/stream-ratchet';
 
 jest.mock('@aws-sdk/s3-request-presigner', () => ({
   getSignedUrl: jest.fn(() => Promise.resolve('https://test.link/test.jpg')),

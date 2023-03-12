@@ -19,16 +19,16 @@ jobs:
       - name: Configure environment
         uses: ./.github/workflows/actions/build-env-setup
 
-      - name: Build, Test, Package
+      - name: Install dependencies
+        run: yarn install
+        shell: bash
+
+      - name: Build, Test, Package, Apply CI Vars
         run: yarn prepare-to-publish
         shell: bash
 
-      - name: Apply CI vars
-        run: yarn apply-ci-vars
-        shell: bash
-
       - name: Deploy to NPMJS
-        run: yarn publish --no-git-tag-version --non-interactive --new-version 4.0.$GITHUB_RUN_NUMBER
+        run: yarn publish
         shell: bash
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

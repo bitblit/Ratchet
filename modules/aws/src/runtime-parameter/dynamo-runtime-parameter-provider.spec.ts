@@ -1,7 +1,7 @@
 import { DynamoRuntimeParameterProvider } from './dynamo-runtime-parameter-provider';
 import { DynamoRatchet } from '../dynamodb/dynamo-ratchet';
 import { StoredRuntimeParameter } from './stored-runtime-parameter';
-import { JestRatchet } from '../../jest/jest-ratchet';
+import { JestRatchet } from '@bitblit/ratchet-jest';
 import { LoggerLevelName } from '@bitblit/ratchet-common';
 import { Logger } from '@bitblit/ratchet-common';
 import { RuntimeParameterRatchet } from './runtime-parameter-ratchet';

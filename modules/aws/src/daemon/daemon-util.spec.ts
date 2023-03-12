@@ -4,12 +4,12 @@ import { DaemonUtil } from './daemon-util';
 import { Logger } from '@bitblit/ratchet-common';
 import fs, { ReadStream } from 'fs';
 import { DaemonProcessCreateOptions } from './daemon-process-create-options';
-import { JestRatchet } from '../../jest';
+import { JestRatchet } from '@bitblit/ratchet-jest';
 import { LoggerLevelName, PromiseRatchet } from '@bitblit/ratchet-common';
 import { Subject } from 'rxjs';
 import { PassThrough } from 'stream';
-import { CsvRatchet } from '../../node-csv';
-import { TestItem } from '../../node-csv/csv-ratchet.spec';
+import { CsvRatchet } from '@bitblit/ratchet-node-only';
+import { TestItem } from '@bitblit/ratchet-node-only';
 import { S3Client } from '@aws-sdk/client-s3';
 
 let mockS3CR: jest.Mocked<S3CacheRatchet>;

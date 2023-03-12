@@ -27,7 +27,10 @@
   "scripts": {
     "clean": "wsrun clean",
     "build": "wsrun --serial build",
-    "prepare-to-publish": "yarn build && ./apply-github-info.sh"
+    "test": "wsrun test",
+    "prepare-to-publish": "yarn clean && yarn build && yarn test && ./apply-github-info.sh",
+    "publish": "wsrun publish --new-version 4.0.$GITHUB_RUN_NUMBER --no-git-tag-version --non-interactive ",
+    "publish-alpha": "wsrun publish --new-version 4.0.$GITHUB_RUN_NUMBER-alpha --no-git-tag-version --non-interactive "
   },
   "repository": {
     "type": "git",

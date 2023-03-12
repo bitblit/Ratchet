@@ -107,6 +107,7 @@
   "resolutions": {},
   "devDependencies": {
     "@bitblit/ratchet-jest": "*",
+    "@bitblit/ratchet-node-only": "*",
     "aws-sdk-client-mock": "2.1.1"
   }
 }

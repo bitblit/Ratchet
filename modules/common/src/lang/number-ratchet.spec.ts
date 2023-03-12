@@ -77,7 +77,7 @@ describe('#fitToWindow', function () {
 
 describe('#groupNumbersIntoContiguousRanges', function () {
   it('should group numbers', function () {
-    let input: number[] = JSON.parse(fs.readFileSync(path.join(__dirname, '../../test-data/number_set.json')).toString());
+    let input: number[] = JSON.parse(fs.readFileSync(path.join(__dirname, '../../../../test-data/number_set.json')).toString());
     input = input.map((i) => NumberRatchet.safeNumber(i));
     const grouped: SinglesAndRanges = NumberRatchet.groupNumbersIntoContiguousRanges(input, 5);
     expect(grouped).toBeTruthy();

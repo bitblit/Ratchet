@@ -1,11 +1,11 @@
-import type { Config } from 'jest';
+import type { Config } from "jest";
 
 const config: Config = {
-  preset: 'ts-jest',
-  testEnvironment: 'node',
+  preset: "ts-jest",
+  testEnvironment: "node",
   collectCoverage: true,
-  coverageDirectory: 'artifacts/coverage',
-  roots: ['src'],
+  coverageDirectory: "artifacts/coverage",
+  roots: ["src"],
   maxConcurrency: 10,
   /*
     This is recommended to catch files you are not testing at all, but will
