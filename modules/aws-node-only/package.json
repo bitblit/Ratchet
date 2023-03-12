@@ -46,8 +46,7 @@
     "lint": "eslint src/**/*.ts",
     "lint-fix": "eslint --fix src/**/*.ts",
     "generate-barrels": "barrelsby -q --delete -d src -e .*\\.spec\\.ts",
-
-    "build": "yarn run clean && yarn run generate-barrels && concurrently 'yarn:build:cjs' 'yarn:build:es' 'yarn:build:types'",
+    "build": "yarn run generate-barrels && concurrently 'yarn:build:cjs' 'yarn:build:es' 'yarn:build:types'",
     "build:cjs": "tsc -p tsconfig.cjs.json",
     "build:es": "tsc -p tsconfig.es.json",
     "build:types": "tsc -p tsconfig.types.json"
@@ -69,34 +68,34 @@
   },
   "license": "Apache-2.0",
   "dependencies": {
+    "@aws-sdk/client-athena": "3.289.0",
+    "@aws-sdk/client-ec2": "3.289.0",
+    "@aws-sdk/client-ec2-instance-connect": "3.289.0",
+    "@aws-sdk/client-s3": "3.289.0",
+    "@aws-sdk/lib-storage": "3.289.0",
+    "@aws-sdk/smithy-client": "3.289.0",
+    "@aws-sdk/types": "3.289.0",
     "@bitblit/ratchet-aws": "*",
     "@bitblit/ratchet-common": "*",
-    "@aws-sdk/client-athena": "3.279.0",
-    "@aws-sdk/client-s3": "3.279.0",
-    "@aws-sdk/smithy-client": "3.279.0",
-    "@aws-sdk/types": "3.272.0",
-    "@aws-sdk/lib-storage": "3.279.0",
-    "@aws-sdk/client-ec2": "3.279.0",
-    "@aws-sdk/client-ec2-instance-connect": "3.279.0",
-    "mailparser": "3.6.3",
-    "walk": "2.3.15",
+    "mailparser": "3.6.4",
     "mime-types": "2.1.35",
-    "tmp": "0.2.1"
+    "tmp": "0.2.1",
+    "walk": "2.3.15"
   },
   "peerDependencies": {
+    "@aws-sdk/client-athena": "3.289.0",
+    "@aws-sdk/client-ec2": "3.289.0",
+    "@aws-sdk/client-ec2-instance-connect": "3.289.0",
+    "@aws-sdk/client-s3": "3.289.0",
+    "@aws-sdk/lib-storage": "3.289.0",
+    "@aws-sdk/smithy-client": "3.289.0",
+    "@aws-sdk/types": "3.289.0",
     "@bitblit/ratchet-aws": "*",
     "@bitblit/ratchet-common": "*",
-    "@aws-sdk/client-athena": "^3.279.0",
-    "@aws-sdk/client-s3": "^3.279.0",
-    "@aws-sdk/smithy-client": "^3.279.0",
-    "@aws-sdk/types": "^3.272.0",
-    "@aws-sdk/lib-storage": "^3.279.0",
-    "@aws-sdk/client-ec2": "^3.279.0",
-    "@aws-sdk/client-ec2-instance-connect": "^3.279.0",
-    "mailparser": "^3.6.3",
-    "walk": "^2.3.15",
-    "mime-types": "^2.1.35"
+    "mailparser": "3.6.4",
+    "mime-types": "2.1.35",
+    "tmp": "0.2.1",
+    "walk": "2.3.15"
   },
-  "devDependencies": {
-  }
+  "devDependencies": {}
 }

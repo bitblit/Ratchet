@@ -18,9 +18,10 @@ import { StopWatch } from '@bitblit/ratchet-common';
 import { PromiseRatchet } from '@bitblit/ratchet-common';
 import { GetObjectCommand, GetObjectCommandOutput, GetObjectRequest, S3Client } from '@aws-sdk/client-s3';
 import tmp from 'tmp';
-import fs from 'fs';
+import fs, { WriteStream } from 'fs';
 import { CsvRatchet } from '@bitblit/ratchet-node-only';
 import { RequireRatchet } from '@bitblit/ratchet-common';
+import { Readable } from 'stream';
 
 export class AthenaRatchet {
   constructor(private athena: AthenaClient, private s3: S3Client, private outputLocation: string) {
@@ -133,11 +134,12 @@ export class AthenaRatchet {
     };
 
     const targetDataFile: string = targetDataFileIn || tmp.fileSync({ postfix: '.csv', keep: false }).name;
-    const fileStream: any = fs.createWriteStream(targetDataFile);
+    const fileStream: WriteStream = fs.createWriteStream(targetDataFile);
     const output: GetObjectCommandOutput = await this.s3.send(new GetObjectCommand(req));
-    const readStream: ReadableStream = output.Body.transformToWebStream();
 
-    await readStream.pipeTo(fileStream);
+    const readStream: Readable = output.Body as Readable;
+    readStream.pipe(fileStream);
+
     const rval: string = await PromiseRatchet.resolveOnEvent<string>(readStream, ['finish', 'close'], ['error'], targetDataFile);
     Logger.silly('Response: %s', rval);
     return targetDataFile;
