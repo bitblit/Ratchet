@@ -31,24 +31,21 @@ export class StartInstanceAndSsh {
     this.ec2Ratchet = new Ec2Ratchet(this.region, this.availabilityZone);
   }
 
-  public static createFromArgs(): StartInstanceAndSsh {
-    if (
-      process &&
-      process.argv &&
-      process.argv.length > 1 &&
-      process.argv[process.argv.length - 2].indexOf('start-instance-and-ssh') > -1
-    ) {
-      const instanceId = process.argv[2];
-      //const publicKeyFile = process.argv[3];
+  public static createFromArgs(args: string[]): StartInstanceAndSsh {
+    if (args?.length === 1 || args?.length === 2) {
+      const instanceId = args[0];
+      //const publicKeyFile = args[1];
 
       return new StartInstanceAndSsh(instanceId); // , publicKeyFile);
     } else {
-      Logger.infoP(
-        'Usage : ratchet-start-instance-and-ssh {instanceId} {publicKeyFile} (Found %s arguments, need at least 2)',
-        process.argv.length
-      );
+      Logger.info('Usage : ratchet-start-instance-and-ssh {instanceId} {publicKeyFile} (Found %s arguments, need 1 or 2)', args);
       return null;
     }
+  }
+
+  public static async runFromCliArgs(args: string[]): Promise<void> {
+    const inst: StartInstanceAndSsh = StartInstanceAndSsh.createFromArgs(args);
+    return inst.run();
   }
 
   public async run(): Promise<any> {

@@ -4,7 +4,9 @@
 
 export * from './athena/alb-athena-log-ratchet';
 export * from './athena/athena-ratchet';
+export * from './build/ratchet-aws-node-only-info';
 export * from './cli/dynamo-exporter';
+export * from './cli/ratchet-cli-handler';
 export * from './cli/start-instance-and-ssh';
 export * from './cli/site-uploader/site-uploader';
 export * from './mail/inbound/inbound-email-ratchet';

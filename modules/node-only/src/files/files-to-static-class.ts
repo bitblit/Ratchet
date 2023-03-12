@@ -6,7 +6,7 @@
 
 import { Logger } from '@bitblit/ratchet-common';
 import fs from 'fs';
-import { CliRatchet } from './cli-ratchet';
+import { CliRatchet } from '../cli/cli-ratchet';
 
 export class FilesToStaticClass {
   public static async process(fileNames: string[], outClassName: string, outFileName: string = null): Promise<string> {

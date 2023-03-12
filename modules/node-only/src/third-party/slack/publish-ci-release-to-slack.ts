@@ -2,7 +2,7 @@ import { DateTime } from 'luxon';
 import { GlobalRatchet, Logger } from '@bitblit/ratchet-common';
 import fetch from 'cross-fetch';
 import util from 'util';
-import { GitCommitData, GitRatchet } from '../common/git-ratchet';
+import { GitCommitData, GitRatchet } from '../git/git-ratchet';
 
 export class PublishCiReleaseToSlack {
   public static async process(slackHookUrl: string, timezone = 'America/Los_Angeles'): Promise<string> {

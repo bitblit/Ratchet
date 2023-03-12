@@ -18,19 +18,22 @@ export class SiteUploader {
     this.config = JSON.parse(fs.readFileSync(configFile).toString('ascii'));
   }
 
-  public static createFromArgs(): SiteUploader {
-    if (process && process.argv && process.argv.length > 3 && process.argv[process.argv.length - 4].indexOf('site-uploader') > -1) {
-      const src = process.argv[2];
-      const bucket = process.argv[3];
-      const configFile = process.argv[4];
+  public static createFromArgs(args: string[]): SiteUploader {
+    if (args && args.length === 3) {
+      const src = args[0];
+      const bucket = args[1];
+      const configFile = args[2];
 
       return new SiteUploader(src, bucket, configFile);
     } else {
-      console.log(
-        'Usage : node site-uploader {srcDir} {bucket} {configFile} (Found ' + process.argv.length + ' arguments, need at least 4)'
-      );
+      console.log('Usage : node ratchet-site-uploader {srcDir} {bucket} {configFile} (Found ' + args + ' arguments, need 3)');
       return null;
     }
+  }
+
+  public static async runFromCliArgs(args: string[]): Promise<void> {
+    const inst: SiteUploader = SiteUploader.createFromArgs(args);
+    return inst.runPump();
   }
 
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types

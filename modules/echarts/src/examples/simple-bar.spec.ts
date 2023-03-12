@@ -1,4 +1,4 @@
-import { EChartRatchet } from '../echart-ratchet';
+import { EChartRatchet } from '../common/echart-ratchet';
 import { EChartsOption } from 'echarts';
 
 const options: EChartsOption = {
