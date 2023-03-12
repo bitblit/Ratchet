@@ -5,7 +5,7 @@ import { Logger } from '@bitblit/ratchet-common';
 
 describe('#modelValidator', function () {
   it('should list an error', function () {
-    const yamlString: string = fs.readFileSync(path.join(__dirname, '../../test-data/sample-objects.spec.yaml')).toString();
+    const yamlString: string = fs.readFileSync(path.join(__dirname, '../../../../test-data/sample-objects.spec.yaml')).toString();
     const validator: ModelValidator = ModelValidator.createFromYamlString(yamlString, ['ModelObjects']);
 
     const shouldPass: any = {

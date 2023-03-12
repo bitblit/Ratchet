@@ -1,8 +1,6 @@
 import { AthenaRatchet } from './athena-ratchet';
-import { Logger } from '@bitblit/ratchet-common';
+import { Logger, LoggerLevelName, TimeZoneRatchet } from '@bitblit/ratchet-common';
 import { AlbAthenaLogRatchet, AlbLogRecord, AlbLogRecordQuery } from './alb-athena-log-ratchet';
-import { TimeZoneRatchet } from '../../common/time-zone-ratchet';
-import { LoggerLevelName } from '@bitblit/ratchet-common';
 import { S3Client } from '@aws-sdk/client-s3';
 import { AthenaClient } from '@aws-sdk/client-athena';
 

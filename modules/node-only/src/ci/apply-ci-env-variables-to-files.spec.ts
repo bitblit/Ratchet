@@ -1,14 +1,14 @@
 import { ApplyCiEnvVariablesToFiles } from './apply-ci-env-variables-to-files';
 import { Logger } from '@bitblit/ratchet-common';
-import { CiEnvVariableConfigUtil } from './ci-env-variable-config-util';
 import { GlobalRatchet } from '@bitblit/ratchet-common';
+import { CiRunInformationUtil } from './ci-run-information-util';
 
 describe('#applyCiEnvVariablesToFiles', function () {
   it('should fail if not in a ci environment', async () => {
     try {
       const result: number = await ApplyCiEnvVariablesToFiles.process(
         ['test1.txt'],
-        CiEnvVariableConfigUtil.createDefaultCircleCiVariableConfig()
+        CiRunInformationUtil.createDefaultCircleCiRunInformation()
       );
       this.bail();
     } catch (err) {
@@ -23,7 +23,7 @@ describe('#applyCiEnvVariablesToFiles', function () {
     GlobalRatchet.setGlobalVar('CIRCLE_TAG', 'T');
     GlobalRatchet.setGlobalVar('CIRCLE_SHA1', 'S');
 
-    const result: number = await ApplyCiEnvVariablesToFiles.process([], CiEnvVariableConfigUtil.createDefaultCircleCiVariableConfig());
+    const result: number = await ApplyCiEnvVariablesToFiles.process([], CiRunInformationUtil.createDefaultCircleCiRunInformation());
     expect(result).toEqual(0);
   });
 });

@@ -9,7 +9,6 @@ import { LoggerLevelName, PromiseRatchet } from '@bitblit/ratchet-common';
 import { Subject } from 'rxjs';
 import { PassThrough } from 'stream';
 import { CsvRatchet } from '@bitblit/ratchet-node-only';
-import { TestItem } from '@bitblit/ratchet-node-only';
 import { S3Client } from '@aws-sdk/client-s3';
 
 let mockS3CR: jest.Mocked<S3CacheRatchet>;
@@ -122,3 +121,8 @@ describe('#DaemonUtil', function () {
     Logger.debug('Have res : %d and val : \n%j', result, val);
   });
 });
+
+export interface TestItem {
+  a: number;
+  b: string;
+}
