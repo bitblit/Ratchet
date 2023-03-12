@@ -1,6 +1,6 @@
 import { Readable } from 'stream';
-import { ErrorRatchet } from '../common/error-ratchet';
-import { StringRatchet } from '../common/string-ratchet';
+import { ErrorRatchet } from '../lang/error-ratchet';
+import { StringRatchet } from '../lang/string-ratchet';
 
 export class StreamRatchet {
   // Empty constructor prevents instantiation
