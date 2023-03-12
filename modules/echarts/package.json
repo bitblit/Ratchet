@@ -23,11 +23,8 @@
   },
   "config": {},
   "scripts": {
-    "prepare-to-publish": "yarn build && yarn run apply-ci-vars",
     "watch": "tsc-watch",
     "clean": "shx rm -Rf dist",
-    "compile-test": "yarn compile && yarn test",
-    "apply-ci-vars": "yarn ratchet-apply-ci-env-variables-to-files github src/ratchet-echarts-info.ts",
     "test": "jest",
     "lint": "eslint src/**/*.ts",
     "lint-fix": "eslint --fix src/**/*.ts",

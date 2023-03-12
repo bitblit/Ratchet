@@ -29,11 +29,8 @@
   },
   "config": {},
   "scripts": {
-    "prepare-to-publish": "yarn build && yarn run apply-ci-vars",
     "watch": "tsc-watch",
     "clean": "shx rm -Rf dist",
-    "compile-test": "yarn compile && yarn test",
-    "apply-ci-vars": "node ../node-only/includes/cli.js apply-ci-env-variables-to-files test dist/cjs/build/ratchet-aws-info.js && node node ../node-only/includes/cli.js apply-ci-env-variables-to-files test dist/es/build/ratchet-aws-info.js",
     "test": "jest",
     "docs": "typedoc",
     "lint": "eslint src/**/*.ts",

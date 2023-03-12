@@ -4,8 +4,8 @@
 
 export * from './build/ratchet-node-only-info';
 export * from './ci/apply-ci-env-variables-to-files';
-export * from './ci/ci-env-variable-config-util';
-export * from './ci/ci-env-variable-config';
+export * from './ci/ci-run-information-util';
+export * from './ci/ci-run-information';
 export * from './cli/abstract-ratchet-cli-handler';
 export * from './cli/cli-ratchet';
 export * from './cli/ratchet-cli-handler';

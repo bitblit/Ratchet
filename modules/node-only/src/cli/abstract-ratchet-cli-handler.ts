@@ -20,6 +20,7 @@ export abstract class AbstractRatchetCliHandler {
         }
       }
       if (handler) {
+        console.debug('Running command with args ' + JSON.stringify(remainArgs));
         await handler(remainArgs);
       } else {
         console.log('Unrecognized command : ', process.argv);
