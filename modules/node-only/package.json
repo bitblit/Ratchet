@@ -5,9 +5,7 @@
   "note-on-side-effects": "Technically the entries in 'bin' below might be side effects, but they are called explicitly",
   "sideEffects": false,
   "bin": {
-    "ratchet-apply-ci-env-variables-to-files": "./includes/cli.js",
-    "ratchet-publish-ci-release-to-slack": "./includes/cli.js",
-    "ratchet-files-to-static-class": "./includes/cli.js"
+    "ratchet-cli": "./includes/cli.js"
   },
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",

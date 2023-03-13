@@ -5,8 +5,7 @@
   "note-on-side-effects": "Technically the entries in 'bin' below might be side effects, but they are called explicitly",
   "sideEffects": false,
   "bin": {
-    "ratchet-start-instance-and-ssh": "./includes/cli.js",
-    "ratchet-site-uploader": "./includes/cli.js"
+    "ratchet-aws-cli": "./includes/cli.js"
   },
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
