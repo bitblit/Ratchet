@@ -19,10 +19,6 @@ jobs:
       - name: Configure environment
         uses: ./.github/workflows/actions/build-env-setup
 
-      - name: Install dependencies
-        run: yarn install
-        shell: bash
-
       - name: Build, Test, Package, Apply CI Vars
         run: yarn prepare-to-publish
         shell: bash
