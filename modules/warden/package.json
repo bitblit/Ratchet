@@ -1,0 +1,70 @@
+{
+  "name": "@bitblit/ratchet-warden",
+  "version": "0.0.0",
+  "description": "Typescript library to simplify using simplewebauthn and secondary auth methods over GraphQL",
+  "sideEffects": false,
+  "bin": {},
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "types": "./dist/types/index.d.ts",
+  "files": [
+    "dist/*",
+    "includes/*"
+  ],
+  "contributors": [
+    "Christopher Weiss <bitblit@gmail.com>"
+  ],
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
+  },
+  "prettier": {
+    "printWidth": 140,
+    "singleQuote": true,
+    "arrowParens": "always"
+  },
+  "config": {},
+  "scripts": {
+    "watch": "tsc-watch",
+    "clean": "shx rm -Rf dist",
+    "test": "jest",
+    "docs": "typedoc",
+    "lint": "eslint src/**/*.ts",
+    "lint-fix": "eslint --fix src/**/*.ts",
+    "generate-barrels": "barrelsby -q --delete -d src -e .*\\.spec\\.ts",
+    "build": "yarn run generate-barrels && concurrently 'yarn:build:cjs' 'yarn:build:es' 'yarn:build:types'",
+    "build:cjs": "tsc -p tsconfig.cjs.json",
+    "build:es": "tsc -p tsconfig.es.json",
+    "build:types": "tsc -p tsconfig.types.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bitblit/Ratchet"
+  },
+  "keywords": [
+    "warden",
+    "simplewebauthn"
+  ],
+  "bugs": {
+    "url": "https://github.com/bitblit/Ratchet/issues"
+  },
+  "homepage": "https://github.com/bitblit/Ratchet#readme",
+  "engines": {
+    "node": ">=14.18"
+  },
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@bitblit/ratchet-common": "*",
+    "@bitblit/ratchet-aws": "*",
+    "jwt-decode": "3.1.2",
+    "@simplewebauthn/browser": "7.1.0",
+    "@simplewebauthn/server": "7.0.1",
+    "@simplewebauthn/typescript-types": "7.0.0",
+    "@aws-sdk/client-s3": "3.289.0",
+    "@aws-sdk/client-ses": "3.289.0"
+  },
+  "devDependencies": {
+    "@bitblit/ratchet-jest": "*"
+  }
+}
