@@ -110,6 +110,7 @@
     "walk": "2.3.15"
   },
   "resolutions": {
+    "ajv": "^6.12.6",
     "ansi-regex": "^5.0.1",
     "browserslist": "^4.21.4",
     "glob-parent": "^6.0.2",
@@ -131,7 +132,7 @@
     "@typescript-eslint/eslint-plugin": "5.54.1",
     "@typescript-eslint/parser": "5.54.1",
     "barrelsby": "2.5.1",
-    "eslint": "8.22.0",
+    "eslint": "8.36.0",
     "eslint-config-prettier": "8.7.0",
     "eslint-plugin-import": "2.27.5",
     "eslint-plugin-prettier": "4.2.1",
