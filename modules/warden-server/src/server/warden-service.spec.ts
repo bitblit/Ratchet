@@ -2,9 +2,8 @@ import { WardenStorageProvider } from './provider/warden-storage-provider';
 import { JestRatchet } from '@bitblit/ratchet-jest';
 import { WardenService } from './warden-service';
 import { WardenServiceOptions } from './warden-service-options';
-import { WardenContactType } from '../common/model/warden-contact-type';
+import { WardenContactType, WardenEntry } from '@bitblit/ratchet-warden-common';
 import { WardenMessageSendingProvider } from './provider/warden-message-sending-provider';
-import { WardenEntry } from '../common/model/warden-entry';
 import { ExpiringCodeProvider } from '@bitblit/ratchet-aws';
 import { JwtRatchetLike } from '@bitblit/ratchet-common';
 

@@ -1,6 +1,4 @@
-import { WardenEntry } from '../../common/model/warden-entry';
-import { WardenContact } from '../../common/model/warden-contact';
-import { WardenEntrySummary } from '../../common/model/warden-entry-summary';
+import { WardenContact, WardenEntry, WardenEntrySummary } from '@bitblit/ratchet-warden-common';
 
 /**
  * Classes implementing WardenStorageProvider perform store and

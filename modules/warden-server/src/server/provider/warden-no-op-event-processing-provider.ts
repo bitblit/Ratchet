@@ -1,7 +1,7 @@
 /**
  * Default implementation of the event processing provider - does nothing
  */
-import { WardenEntry } from '../../common/model/warden-entry';
+import { WardenEntry } from '@bitblit/ratchet-warden-common';
 import { WardenEventProcessingProvider } from './warden-event-processing-provider';
 
 export class WardenNoOpEventProcessingProvider implements WardenEventProcessingProvider {

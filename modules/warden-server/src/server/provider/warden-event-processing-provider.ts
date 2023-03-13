@@ -1,4 +1,4 @@
-import { WardenEntry } from '../../common/model/warden-entry';
+import { WardenEntry } from '@bitblit/ratchet-warden-common';
 
 /**
  * Notifies the containing system when significant events happen

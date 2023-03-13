@@ -17,24 +17,26 @@ import {
   RegistrationResponseJSON,
 } from '@simplewebauthn/typescript-types';
 import { WardenServiceOptions } from './warden-service-options';
-import { WardenContact } from '../common/model/warden-contact';
-import { WardenEntry } from '../common/model/warden-entry';
-import { WardenStoreRegistrationResponse } from '../common/model/warden-store-registration-response';
-import { WardenWebAuthnEntry } from '../common/model/warden-web-authn-entry';
+import {
+  WardenCommand,
+  WardenCommandResponse,
+  WardenContact,
+  WardenCustomerMessageType,
+  WardenEntry,
+  WardenJwtToken,
+  WardenLoginRequest,
+  WardenLoginResults,
+  WardenStoreRegistrationResponse,
+  WardenStoreRegistrationResponseType,
+  WardenUserDecoration,
+  WardenUtils,
+  WardenWebAuthnEntry,
+} from '@bitblit/ratchet-warden-common';
 import { WardenMessageSendingProvider } from './provider/warden-message-sending-provider';
-import { WardenLoginRequest } from '../common/model/warden-login-request';
-import { WardenStoreRegistrationResponseType } from '../common/model/warden-store-registration-response-type';
-import { WardenCustomerMessageType } from '../common/model/warden-customer-message-type';
 import { ExpiringCode, ExpiringCodeRatchet } from '@bitblit/ratchet-aws';
 import { Base64Ratchet, ErrorRatchet, ExpiredJwtHandling, Logger, RequireRatchet, StringRatchet } from '@bitblit/ratchet-common';
-import { WardenCommandResponse } from '../common/command/warden-command-response';
-import { WardenCommand } from '../common/command/warden-command';
-import { WardenUtils } from '../common/util/warden-utils';
-import { WardenJwtToken } from '../common/model/warden-jwt-token';
 import { WardenDefaultUserDecorationProvider } from './provider/warden-default-user-decoration-provider';
 import { WardenNoOpEventProcessingProvider } from './provider/warden-no-op-event-processing-provider';
-import { WardenUserDecoration } from '../common/model/warden-user-decoration';
-import { WardenLoginResults } from '../common/model/warden-login-results';
 
 export class WardenService {
   private opts: WardenServiceOptions;

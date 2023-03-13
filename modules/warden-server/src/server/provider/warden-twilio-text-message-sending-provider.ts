@@ -1,9 +1,7 @@
 //    Service for interacting with positions for a given user
 import { WardenMessageSendingProvider } from './warden-message-sending-provider';
-import { WardenContactType } from '../../common/model/warden-contact-type';
-import { WardenContact } from '../../common/model/warden-contact';
+import { WardenContact, WardenContactType, WardenCustomerMessageType } from '@bitblit/ratchet-warden-common';
 import { WardenTwilioTextMessageSendingProviderOptions } from './warden-twilio-text-message-sending-provider-options';
-import { WardenCustomerMessageType } from '../../common/model/warden-customer-message-type';
 import { Logger, TwilioRatchet } from '@bitblit/ratchet-common';
 
 export class WardenTwilioTextMessageSendingProvider implements WardenMessageSendingProvider<string> {

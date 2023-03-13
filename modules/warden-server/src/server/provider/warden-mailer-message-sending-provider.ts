@@ -1,10 +1,8 @@
 //    Service for interacting with positions for a given user
 import { WardenMessageSendingProvider } from './warden-message-sending-provider';
-import { WardenContactType } from '../../common/model/warden-contact-type';
-import { WardenContact } from '../../common/model/warden-contact';
+import { WardenContact, WardenContactType, WardenCustomerMessageType } from '@bitblit/ratchet-warden-common';
 import { WardenMailerMessageSendingProviderOptions } from './warden-mailer-message-sending-provider-options';
 import { SendRawEmailResponse } from '@aws-sdk/client-ses';
-import { WardenCustomerMessageType } from '../../common/model/warden-customer-message-type';
 import { MailerLike, ReadyToSendEmail } from '@bitblit/ratchet-aws';
 import { Logger } from '@bitblit/ratchet-common';
 

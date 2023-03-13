@@ -1,13 +1,10 @@
 //    Service for interacting with positions for a given user
-import { WardenContact } from '../../common/model/warden-contact';
+import { WardenContact, WardenEntry, WardenEntrySummary, WardenUtils } from '@bitblit/ratchet-warden-common';
 import { WardenStorageProvider } from './warden-storage-provider';
 import { WardenS3SingleFileStorageProviderOptions } from './warden-s3-single-file-storage-provider-options';
-import { WardenEntry } from '../../common/model/warden-entry';
 import { PutObjectOutput, S3Client } from '@aws-sdk/client-s3';
 import { S3CacheRatchet } from '@bitblit/ratchet-aws';
 import { ErrorRatchet, StringRatchet } from '@bitblit/ratchet-common';
-import { WardenEntrySummary } from '../../common/model/warden-entry-summary';
-import { WardenUtils } from '../../common/util/warden-utils';
 
 /*
 The most quick and dirty implementation of the storage provider.  Not a good choice if you have
