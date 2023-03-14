@@ -1,0 +1,133 @@
+{
+  "name": "@bitblit/ratchet-epsilon-common",
+  "version": "0.0.0",
+  "description": "Tiny adapter to simplify building API gateway Lambda APIS",
+  "sideEffects": false,
+  "bin": {
+    "epsilon-run-background-process-from-command-line-dry-run": "./cli-bootstrap/epsilon-run-background-process-from-command-line-dry-run.js"
+  },
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "types": "./dist/types/index.d.ts",
+  "files": [
+    "dist/*"
+  ],
+  "contributors": [
+    "Christopher Weiss <bitblit@gmail.com>",
+    "Benn Linger <benn@bennlinger.com>",
+    "Lucas Myers <veganbeef@protonmail.com>",
+    "Zach Herridge"
+  ],
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
+  },
+  "prettier": {
+    "printWidth": 140,
+    "singleQuote": true,
+    "arrowParens": "always"
+  },
+  "config": {},
+  "scripts": {
+    "watch": "tsc-watch",
+    "clean": "shx rm -Rf dist",
+    "test": "jest",
+    "lint": "eslint src/**/*.ts",
+    "lint-fix": "eslint --fix src/**/*.ts",
+    "generate-barrels": "barrelsby -q --delete -d src -e .*\\.spec\\.ts",
+    "build": "yarn run generate-barrels && concurrently 'yarn:build:cjs' 'yarn:build:es' 'yarn:build:types'",
+    "build:cjs": "tsc -p tsconfig.cjs.json",
+    "build:es": "tsc -p tsconfig.es.json",
+    "build:types": "tsc -p tsconfig.types.json",
+
+    "run-local-container-server": "node dist/local-container-server.js",
+    "run-sample-server": "yarn compile && node dist/sample/sample-local-server.js",
+    "run-test-error-server": "yarn compile && node dist/test-error-server.js",
+    "run-batch-sample-server": "yarn compile && node dist/sample/sample-batch-only-local-server.js",
+    "run-background-process-from-command-line-dry-run": "yarn compile && node dist/cli-bootstrap/epsilon-run-background-process-from-command-line-dry-run.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bitblit/Ratchet"
+  },
+  "keywords": [
+    "epsilon",
+    "lambda",
+    "api gateway"
+  ],
+  "bugs": {
+    "url": "https://github.com/bitblit/Ratchet/issues"
+  },
+  "homepage": "https://github.com/bitblit/Ratchet#readme",
+  "engines": {
+    "node": ">=14.18"
+  },
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@bitblit/ratchet-common": "*",
+    "@bitblit/ratchet-aws": "*",
+    "@bitblit/ratchet-misc": "*",
+    "@bitblit/ratchet-node-only": "*",
+    "@aws-sdk/client-s3": "3.289.0",
+    "@aws-sdk/client-sns": "3.289.0",
+    "@aws-sdk/client-sqs": "3.289.0",
+    "clear": "0.1.0",
+    "commander": "10.0.0",
+    "cross-fetch": "3.1.5",
+    "js-yaml": "4.1.0",
+    "jsonwebtoken": "9.0.0",
+    "jwks-rsa": "3.0.1",
+    "luxon": "3.3.0",
+    "reflect-metadata": "0.1.13",
+    "route-parser": "0.0.5",
+    "rxjs": "7.8.0",
+    "strip-js": "1.2.0",
+    "swagger-model-validator": "3.0.21"
+  },
+  "resolutions": {
+    "ansi-regex": "^5.0.1",
+    "ajv": "^6.12.6",
+    "axios": "^1.2.3",
+    "browserslist": "^4.21.4",
+    "express": "^4.18.2",
+    "follow-redirects": "^1.15.2",
+    "glob-parent": "^6.0.2",
+    "hosted-git-info": "^6.1.1",
+    "jose": "^4.11.2",
+    "json5": "^1.0.2",
+    "lodash": "^4.17.21",
+    "minimist": "^1.2.7",
+    "nanoid": "^4.0.0",
+    "node-fetch": "^2.6.7",
+    "nth-check": "^2.1.1",
+    "object-path": "^0.11.8",
+    "path-parse": "^1.0.7",
+    "shelljs": "^0.8.5",
+    "sanitize-html": "^2.8.0",
+    "semver-regex": "^4.0.5",
+    "tmpl": "^1.0.5",
+    "ws": "^8.12.0",
+    "y18n": "^5.0.8"
+  },
+  "peerDependencies": {
+    "@aws-sdk/client-sns": "3.282.0",
+    "@aws-sdk/client-sqs": "3.282.0",
+    "@bitblit/ratchet-common": "*",
+    "@bitblit/ratchet-aws": "*",
+    "@types/aws-lambda": "8.10.111",
+    "graphql": "16.6.0"
+  },
+  "peerDependenciesMeta": {
+    "graphql": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@bitblit/ratchet-jest": "*",
+    "@types/aws-lambda": "8.10.111",
+    "apollo-server-lambda": "3.12.0",
+    "aws-sdk-client-mock": "2.1.1",
+    "graphql": "16.6.0"
+  }
+}

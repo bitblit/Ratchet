@@ -1,0 +1,18 @@
+schema {
+  query: RootQueryType
+}
+
+type RootQueryType {
+  serverMeta: ServerMeta
+  forceTimeout: ForceTimeout
+}
+
+type ServerMeta {
+  version: String
+  serverTime: String
+  status: String
+}
+
+type ForceTimeout {
+  placeholder: String
+}
