@@ -1,6 +1,6 @@
 import { Logger } from '@bitblit/ratchet-common';
 import { EpsilonGlobalHandler } from '../epsilon-global-handler';
-import { BooleanRatchet } from '@bitblit/ratchet-common/dist/types/lang/boolean-ratchet';
+import { BooleanRatchet } from '@bitblit/ratchet-common';
 
 /**
  * IMPORTANT NOTE
