@@ -11,6 +11,8 @@ if (
     'epsilon-run-background-process-from-command-line-dry-run',
   ])
 ) {
+  Logger.info('RunBackgroundProcessFromCommandLine requested (cli is %s) - starting', process?.argv);
+
   RunBackgroundProcessFromCommandLine.processBackgroundCliRequest(null, true)
     .then((out) => {
       Logger.info('Result : %s', out);

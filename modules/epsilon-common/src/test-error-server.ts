@@ -133,6 +133,7 @@ export class TestErrorServer {
 }
 
 if (CliRatchet.isCalledFromCLISingle('test-error-server')) {
+  Logger.info('test-error-server requested (cli is %s) - starting', process?.argv);
   const testServer: TestErrorServer = new TestErrorServer();
   testServer.runServer().then((res) => {
     Logger.info('Got res server');
