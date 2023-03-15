@@ -1,6 +1,5 @@
 import { Logger } from '@bitblit/ratchet-common';
 import { IncomingMessage, Server, ServerResponse } from 'http';
-import { CliRatchet } from '@bitblit/ratchet-node-only';
 import net from 'net';
 
 /**
@@ -130,13 +129,12 @@ export class TestErrorServer {
   }
 
    */
-}
 
-if (CliRatchet.isCalledFromCLISingle('test-error-server')) {
-  Logger.info('test-error-server requested (cli is %s) - starting', process?.argv);
-  const testServer: TestErrorServer = new TestErrorServer();
-  testServer.runServer().then((res) => {
+  public static async runFromCliArgs(args: string[]): Promise<void> {
+    Logger.info('test-error-server requested (cli is %s) - starting', process?.argv);
+    const testServer: TestErrorServer = new TestErrorServer();
+    await testServer.runServer();
     Logger.info('Got res server');
     process.exit(0);
-  });
+  }
 }

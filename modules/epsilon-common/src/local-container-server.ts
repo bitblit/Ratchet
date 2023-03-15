@@ -4,7 +4,6 @@ import http, { IncomingMessage, Server, ServerResponse } from 'http';
 import { EventUtil } from './http/event-util';
 import fetch from 'cross-fetch';
 import { LocalServer } from './local-server';
-import { CliRatchet } from '@bitblit/ratchet-node-only';
 
 /**
  * A simplistic server for testing your lambdas locally
@@ -64,20 +63,18 @@ export class LocalContainerServer {
       }
     }
   }
-}
 
-if (CliRatchet.isCalledFromCLISingle('local-container-server')) {
-  Logger.setLevel(LoggerLevelName.debug);
-  Logger.debug('Running local container server : %j', process?.argv);
-  const testServer: LocalContainerServer = new LocalContainerServer();
-  testServer
-    .runServer()
-    .then((res) => {
-      Logger.info('Got res server');
-      process.exit(0);
-    })
-    .catch((err) => {
+
+  public static async runFromCliArgs(args: string[]): Promise<void> {
+    try{
+    Logger.setLevel(LoggerLevelName.debug);
+    Logger.debug('Running local container server : %j', process?.argv);
+    const testServer: LocalContainerServer = new LocalContainerServer();
+    await testServer.runServer();
+    Logger.info('Got res server');
+    process.exit(0);}catch(err) {
       Logger.error('Error : %s', err);
       process.exit(1);
-    });
+    }
+  }
 }
