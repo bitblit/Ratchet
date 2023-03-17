@@ -46,25 +46,21 @@ export class NumberRatchet {
   // If its a number, leave it alone, if its a string, parse it, anything else, use the default
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   public static safeNumber(input: any, ifNotNumber: number = null): number {
-    let rval: number = null;
-    if (input != null) {
+    let rval: number = ifNotNumber;
+    if (input !== null) {
       const type: string = typeof input;
       if (type == 'number') {
         rval = input;
       } else if (type == 'string') {
-        if (input.trim().length === 0) {
-          rval = ifNotNumber;
-        } else {
+        if (input.trim().length > 0) {
           rval = Number.parseFloat(input);
         }
       } else {
         Logger.warn('Value is of type %s, returning default', type);
-        rval = ifNotNumber;
       }
 
       if (isNaN(rval)) {
         Logger.debug('Parsed string to NaN - using NaN value from param');
-        rval = ifNotNumber;
       }
     }
 

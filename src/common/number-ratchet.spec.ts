@@ -46,6 +46,11 @@ describe('#safeToNumber', function () {
     const result: number = NumberRatchet.safeNumber({ test: '' }, 42);
     expect(result).toEqual(42);
   });
+
+  it('should return the default for null', function () {
+    const result: number = NumberRatchet.safeNumber(null, 42);
+    expect(result).toEqual(42);
+  });
 });
 
 describe('#parseCSV', function () {
