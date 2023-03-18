@@ -46,6 +46,27 @@ describe('#safeToNumber', function () {
     const result: number = NumberRatchet.safeNumber({ test: '' }, 42);
     expect(result).toEqual(42);
   });
+
+  it('should return the default for null/undefined if set true', function () {
+    const result: number = NumberRatchet.safeNumber(null, 42, true);
+    expect(result).toEqual(42);
+    const result2: number = NumberRatchet.safeNumber(undefined, 46, true);
+    expect(result2).toEqual(46);
+  });
+
+  it('should return the passed value for null/undefined if set false', function () {
+    const result: number = NumberRatchet.safeNumber(null, 42, false);
+    expect(result).toEqual(null);
+    const result2: number = NumberRatchet.safeNumber(undefined, 46, false);
+    expect(result2).toEqual(undefined);
+  });
+
+  it('should return the passed value for null/undefined if not set', function () {
+    const result: number = NumberRatchet.safeNumber(null, 42);
+    expect(result).toEqual(null);
+    const result2: number = NumberRatchet.safeNumber(undefined, 46);
+    expect(result2).toEqual(undefined);
+  });
 });
 
 describe('#parseCSV', function () {
