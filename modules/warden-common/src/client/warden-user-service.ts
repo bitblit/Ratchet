@@ -8,7 +8,6 @@ import { WardenJwtToken } from '../common/model/warden-jwt-token';
 import { WardenLoginResults } from '../common/model/warden-login-results';
 import { StringRatchet } from '@bitblit/ratchet-common';
 import { WardenLoginRequest } from '../common/model/warden-login-request';
-import { startAuthentication, startRegistration } from '@simplewebauthn/browser';
 
 import {
   AuthenticationResponseJSON,
@@ -268,6 +267,8 @@ export class WardenUserService<T> {
   public async saveCurrentDeviceAsWebAuthnForCurrentUser(): Promise<WardenEntrySummary> {
     const input: PublicKeyCredentialCreationOptionsJSON =
       await this.options.wardenClient.generateWebAuthnRegistrationChallengeForLoggedInUser();
+    const startRegistration = (await import('@simplewebauthn/browser')).startRegistration;
+
     const creds: RegistrationResponseJSON = await startRegistration(input);
     const output: WardenEntrySummary = await this.options.wardenClient.addWebAuthnRegistrationToLoggedInUser(creds);
     this.updateRecentLoginsFromWardenEntrySummary(output);
@@ -283,6 +284,7 @@ export class WardenUserService<T> {
         userId
       );
       Logger.info('Got login challenge : %s', input);
+      const startAuthentication = (await import('@simplewebauthn/browser')).startAuthentication;
       const creds: AuthenticationResponseJSON = await startAuthentication(input);
       Logger.info('Got creds: %j', creds);
 
