@@ -43,11 +43,16 @@ export class NumberRatchet {
     return (test >= p1 && test <= p2) || (test >= p2 && test <= p1);
   }
 
-  // If its a number, leave it alone, if its a string, parse it, anything else, use the default
+  // If it's a number, leave it alone, if it's a string, parse it.
+  // If its null or undefined, default to passing it through
+  // unmodified to match old behavior, but if the user sets the
+  // useDefaultForNullAndUndefined flag, use it instead
+  // I support both modes because some people consider "null/undefined" a valid value for
+  // numbers and others don't!
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-  public static safeNumber(input: any, ifNotNumber: number = null): number {
-    let rval: number = null;
-    if (input != null) {
+  public static safeNumber(input: any, ifNotNumber: number = null, useDefaultForNullAndUndefined?: boolean): number {
+    let rval: number = undefined;
+    if (input !== null && input !== undefined) {
       const type: string = typeof input;
       if (type == 'number') {
         rval = input;
@@ -66,6 +71,8 @@ export class NumberRatchet {
         Logger.debug('Parsed string to NaN - using NaN value from param');
         rval = ifNotNumber;
       }
+    } else {
+      rval = useDefaultForNullAndUndefined ? ifNotNumber : input;
     }
 
     return rval;
