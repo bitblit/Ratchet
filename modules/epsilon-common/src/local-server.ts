@@ -9,6 +9,9 @@ import { EventUtil } from './http/event-util';
 import { EpsilonGlobalHandler } from './epsilon-global-handler';
 import { LoggerLevelName } from '@bitblit/ratchet-common';
 import { LocalServerCert } from './local-server-cert';
+import { SampleServerComponents } from './sample/sample-server-components';
+import { LocalWebTokenManipulator } from './http/auth/local-web-token-manipulator';
+import { JwtTokenBase } from '@bitblit/ratchet-common/dist/types/jwt/jwt-token-base';
 
 /**
  * A simplistic server for testing your lambdas locally
@@ -171,5 +174,30 @@ export class LocalServer {
 
     response.end(toWrite);
     return !!proxyResult.body;
+  }
+
+  public static async runSampleBatchOnlyServerFromCliArgs(args: string[]): Promise<void> {
+    Logger.setLevel(LoggerLevelName.debug);
+    const handler: EpsilonGlobalHandler = await SampleServerComponents.createSampleBatchOnlyEpsilonGlobalHandler(
+      'SampleBatchOnlyLocalServer-' + Date.now()
+    );
+    const testServer: LocalServer = new LocalServer(handler);
+    const res: boolean = await testServer.runServer();
+    Logger.info('Res was : %s', res);
+  }
+
+  public static async runSampleLocalServerFromCliArgs(args: string[]): Promise<void> {
+    Logger.setLevel(LoggerLevelName.debug);
+    const localTokenHandler: LocalWebTokenManipulator<JwtTokenBase> = new LocalWebTokenManipulator<JwtTokenBase>(
+      ['abcd1234'],
+      'sample-server'
+    );
+    const token: string = await localTokenHandler.createJWTStringAsync('asdf', {}, ['USER'], 3600);
+
+    Logger.info('Use token: %s', token);
+    const handler: EpsilonGlobalHandler = await SampleServerComponents.createSampleEpsilonGlobalHandler('SampleLocalServer-' + Date.now());
+    const testServer: LocalServer = new LocalServer(handler, 8888, true);
+    const res: boolean = await testServer.runServer();
+    Logger.info('Res was : %s', res);
   }
 }

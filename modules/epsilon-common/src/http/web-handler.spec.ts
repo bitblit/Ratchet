@@ -65,7 +65,7 @@ describe('#errorToProxyResult', function () {
     */
 
   it('should gzip responses correctly', async () => {
-    const inst: EpsilonGlobalHandler = await SampleServerComponents.createSampleEpsilonGlobalHandler();
+    const inst: EpsilonGlobalHandler = await SampleServerComponents.createSampleEpsilonGlobalHandler('jest-gzip');
 
     expect(inst.epsilon.modelValidator).toBeTruthy();
 
