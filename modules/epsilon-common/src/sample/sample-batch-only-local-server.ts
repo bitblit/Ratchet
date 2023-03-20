@@ -9,7 +9,7 @@ import { LoggerLevelName } from '@bitblit/ratchet-common';
 
 Logger.setLevel(LoggerLevelName.debug);
 
-SampleServerComponents.createSampleBatchOnlyEpsilonGlobalHandler()
+SampleServerComponents.createSampleBatchOnlyEpsilonGlobalHandler('SampleBatchOnlyLocalServer-' + Date.now())
   .then((handler) => {
     const testServer: LocalServer = new LocalServer(handler);
     testServer.runServer().then((res) => {

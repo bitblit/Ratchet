@@ -90,7 +90,7 @@ export class SampleServerComponents {
   }
 
   // Functions below here are for using as samples
-  public static async createSampleEpsilonConfig(): Promise<EpsilonConfig> {
+  public static async createSampleEpsilonConfig(label: string): Promise<EpsilonConfig> {
     const yamlString: string = SampleServerStaticFiles.SAMPLE_OPEN_API_DOC;
     const authorizers: Map<string, AuthorizerFunction> = new Map<string, AuthorizerFunction>();
     authorizers.set('SampleAuthorizer', (token, evt) => BuiltInAuthorizers.simpleLoggedInAuth(token, evt));
@@ -188,6 +188,7 @@ export class SampleServerComponents {
     };
 
     const epsilonConfig: EpsilonConfig = {
+      label: label,
       openApiYamlString: yamlString,
       httpConfig: cfg,
       backgroundConfig: background,
@@ -195,16 +196,16 @@ export class SampleServerComponents {
     return epsilonConfig;
   }
 
-  public static async createSampleEpsilonGlobalHandler(): Promise<EpsilonGlobalHandler> {
-    const epsilonConfig: EpsilonConfig = await SampleServerComponents.createSampleEpsilonConfig();
+  public static async createSampleEpsilonGlobalHandler(label: string): Promise<EpsilonGlobalHandler> {
+    const epsilonConfig: EpsilonConfig = await SampleServerComponents.createSampleEpsilonConfig(label);
     const backgroundManager: SingleThreadLocalBackgroundManager = new SingleThreadLocalBackgroundManager();
     const epsilonInstance: EpsilonInstance = EpsilonConfigParser.epsilonConfigToEpsilonInstance(epsilonConfig, backgroundManager);
     const rval: EpsilonGlobalHandler = new EpsilonGlobalHandler(epsilonInstance);
     return rval;
   }
 
-  public static async createSampleBatchOnlyEpsilonGlobalHandler(): Promise<EpsilonGlobalHandler> {
-    const epsilonConfig: EpsilonConfig = await SampleServerComponents.createSampleEpsilonConfig();
+  public static async createSampleBatchOnlyEpsilonGlobalHandler(label: string): Promise<EpsilonGlobalHandler> {
+    const epsilonConfig: EpsilonConfig = await SampleServerComponents.createSampleEpsilonConfig(label);
     epsilonConfig.httpConfig.handlers = new Map<string, HandlerFunction<any>>(); // Unused
 
     const byPassCfg: HttpProcessingConfig = Object.assign({}, epsilonConfig.httpConfig.defaultMetaHandling);

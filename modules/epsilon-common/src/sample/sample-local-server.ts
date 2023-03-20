@@ -15,7 +15,7 @@ localTokenHandler
   .createJWTStringAsync('asdf', {}, ['USER'], 3600)
   .then((token) => {
     Logger.info('Use token: %s', token);
-    SampleServerComponents.createSampleEpsilonGlobalHandler()
+    SampleServerComponents.createSampleEpsilonGlobalHandler('SampleLocalServer-' + Date.now())
       .then((handler) => {
         const testServer: LocalServer = new LocalServer(handler, 8888, true);
         testServer.runServer().then((res) => {
