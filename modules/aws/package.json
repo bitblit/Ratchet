@@ -58,6 +58,9 @@
   },
   "license": "Apache-2.0",
   "dependencies": {
+    "@bitblit/ratchet-common": "*"
+  },
+  "optionalDependencies": {
     "@aws-sdk/abort-controller": "3.289.0",
     "@aws-sdk/client-athena": "3.289.0",
     "@aws-sdk/client-batch": "3.289.0",
@@ -77,7 +80,6 @@
     "@aws-sdk/smithy-client": "3.289.0",
     "@aws-sdk/types": "3.289.0",
     "@aws-sdk/util-waiter": "3.289.0",
-    "@bitblit/ratchet-common": "*",
     "@types/aws-lambda": "8.10.111"
   },
   "peerDependencies": {
