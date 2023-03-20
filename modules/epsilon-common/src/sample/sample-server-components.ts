@@ -37,6 +37,7 @@ import { EventUtil } from '../http/event-util';
 import { LogMessageBackgroundErrorProcessor } from '../built-in/background/log-message-background-error-processor';
 import { SingleThreadLocalBackgroundManager } from '../background/manager/single-thread-local-background-manager';
 import { BackgroundManagerLike } from '../background/manager/background-manager-like';
+import { SampleServerStaticFiles } from './sample-server-static-files';
 
 export class SampleServerComponents {
   // Prevent instantiation
@@ -44,7 +45,7 @@ export class SampleServerComponents {
   private constructor() {}
 
   public static async createSampleApollo(): Promise<ApolloServer> {
-    const gqlString: string = SampleServerComponents.loadSampleServerGQL();
+    const gqlString: string = SampleServerStaticFiles.SAMPLE_SERVER_GRAPHQL;
     Logger.silly('Creating apollo from : %s', gqlString);
     const typeDefs = gql(gqlString);
 
@@ -90,7 +91,7 @@ export class SampleServerComponents {
 
   // Functions below here are for using as samples
   public static async createSampleEpsilonConfig(): Promise<EpsilonConfig> {
-    const yamlString: string = SampleServerComponents.loadSampleOpenApiYaml();
+    const yamlString: string = SampleServerStaticFiles.SAMPLE_OPEN_API_DOC;
     const authorizers: Map<string, AuthorizerFunction> = new Map<string, AuthorizerFunction>();
     authorizers.set('SampleAuthorizer', (token, evt) => BuiltInAuthorizers.simpleLoggedInAuth(token, evt));
     authorizers.set('LogAuthorizer', (token, evt) => BuiltInAuthorizers.simpleNoAuthenticationLogAccess(token, evt));
@@ -223,15 +224,5 @@ export class SampleServerComponents {
     const epsilonInstance: EpsilonInstance = EpsilonConfigParser.epsilonConfigToEpsilonInstance(epsilonConfig, backgroundManager);
     const rval: EpsilonGlobalHandler = new EpsilonGlobalHandler(epsilonInstance);
     return rval;
-  }
-
-  public static loadSampleOpenApiYaml(): string {
-    const yamlString: string = fs.readFileSync(path.join(__dirname, '..', 'static', 'sample-open-api-doc.yaml')).toString();
-    return yamlString;
-  }
-
-  public static loadSampleServerGQL(): string {
-    const yamlString: string = fs.readFileSync(path.join(__dirname, '..', 'static', 'sample-server.gql')).toString();
-    return yamlString;
   }
 }

@@ -131,6 +131,7 @@ export * from './open-api-util/yaml-combiner';
 export * from './sample/sample-batch-only-local-server';
 export * from './sample/sample-local-server';
 export * from './sample/sample-server-components';
+export * from './sample/sample-server-static-files';
 export * from './util/aws-util';
 export * from './util/context-util';
 export * from './util/cron-util';
