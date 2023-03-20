@@ -28,7 +28,8 @@ export class EpsilonConfigParser {
 
   public static epsilonConfigToEpsilonInstance(config: EpsilonConfig, backgroundManager?: BackgroundManagerLike): EpsilonInstance {
     this.validateGlobalConfig(config);
-    Logger.info('Creating epsilon : BM : %j', backgroundManager);
+    const label: string = config?.label || 'NO EPSILON CONFIG LABEL SET';
+    Logger.info('Creating epsilon : %s : BM : %j', label, backgroundManager);
     const parsed: OpenApiDocument = EpsilonConfigParser.parseOpenApiDocument(config.openApiYamlString);
     const modelValidator: ModelValidator = EpsilonConfigParser.openApiDocToValidator(parsed);
     const backgroundHttpAdapter: BackgroundHttpAdapterHandler = new BackgroundHttpAdapterHandler(
