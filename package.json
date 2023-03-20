@@ -28,7 +28,7 @@
     "clean": "wsrun clean",
     "build": "wsrun --serial build",
     "test": "wsrun test",
-    "prepare-to-publish": "yarn clean && yarn build && yarn test && ./apply-github-info.sh",
+    "apply-github-info": "./apply-github-info.sh",
     "publish": "wsrun publish --new-version 4.0.$GITHUB_RUN_NUMBER --no-git-tag-version --non-interactive ",
     "publish-alpha": "wsrun publish --new-version 4.0.$GITHUB_RUN_NUMBER-alpha --no-git-tag-version --non-interactive "
   },
