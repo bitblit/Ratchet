@@ -2,10 +2,11 @@ import fs from 'fs';
 import path from 'path';
 import { OpenApiDocModifications } from './open-api-doc-modifications';
 import { OpenApiDocModifier } from './open-api-doc-modifier';
+import { SampleServerStaticFiles } from '../sample/sample-server-static-files';
 
 describe('#openApiDocModifier', function () {
   it('should exist', async () => {
-    const data: string = fs.readFileSync(path.join('src', 'static', 'sample-open-api-doc.yaml')).toString();
+    const data: string = SampleServerStaticFiles.SAMPLE_OPEN_API_DOC;
     expect(data).toBeTruthy();
     expect(data.length).toBeGreaterThan(0);
 
