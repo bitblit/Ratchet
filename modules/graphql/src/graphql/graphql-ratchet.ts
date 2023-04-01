@@ -129,6 +129,13 @@ export class GraphqlRatchet {
     }
   }
 
+  public clearCaches(): void {
+    Logger.info('Clearing cached apollo');
+    this.apolloCache = new Map<string, ApolloClient<any>>();
+    this.noAuthApollo = null;
+    this.cachedEndpoint = null;
+  }
+
   public async executeQuery<T>(queryName: string, variables: Record<string, any>, runAnonymous: boolean = false): Promise<T> {
     let rval: T = null;
     try {
