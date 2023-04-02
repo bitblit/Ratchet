@@ -41,7 +41,6 @@
     "build:cjs": "tsc -p tsconfig.cjs.json",
     "build:es": "tsc -p tsconfig.es.json",
     "build:types": "tsc -p tsconfig.types.json",
-
     "run-local-container-server": "yarn build:cjs && node includes/cli.js run-local-container-server",
     "run-sample-server": "yarn build:cjs && node includes/cli.js run-sample-local-server",
     "run-test-error-server": "yarn build:cjs && node includes/cli.js run-test-error-server",
@@ -66,13 +65,13 @@
   },
   "license": "Apache-2.0",
   "dependencies": {
-    "@bitblit/ratchet-common": "*",
+    "@aws-sdk/client-s3": "3.303.0",
+    "@aws-sdk/client-sns": "3.303.0",
+    "@aws-sdk/client-sqs": "3.303.0",
     "@bitblit/ratchet-aws": "*",
+    "@bitblit/ratchet-common": "*",
     "@bitblit/ratchet-misc": "*",
     "@bitblit/ratchet-node-only": "*",
-    "@aws-sdk/client-s3": "3.289.0",
-    "@aws-sdk/client-sns": "3.289.0",
-    "@aws-sdk/client-sqs": "3.289.0",
     "clear": "0.1.0",
     "commander": "10.0.0",
     "cross-fetch": "3.1.5",
@@ -114,8 +113,8 @@
   "peerDependencies": {
     "@aws-sdk/client-sns": "3.282.0",
     "@aws-sdk/client-sqs": "3.282.0",
-    "@bitblit/ratchet-common": "*",
     "@bitblit/ratchet-aws": "*",
+    "@bitblit/ratchet-common": "*",
     "@types/aws-lambda": "8.10.111",
     "graphql": "16.6.0"
   },
@@ -126,7 +125,7 @@
   },
   "devDependencies": {
     "@bitblit/ratchet-jest": "*",
-    "@types/aws-lambda": "8.10.111",
+    "@types/aws-lambda": "8.10.114",
     "apollo-server-lambda": "3.12.0",
     "aws-sdk-client-mock": "2.1.1",
     "graphql": "16.6.0"
