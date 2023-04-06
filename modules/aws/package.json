@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "description": "Common tools for use with AWS browser and node",
   "sideEffects": false,
+  "type": "module",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
   "types": "./dist/types/index.d.ts",

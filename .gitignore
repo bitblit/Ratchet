@@ -11,3 +11,4 @@ bundles
 temp
 lib
 artifacts
+tsconfig.tsbuildinfo

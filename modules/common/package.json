@@ -2,7 +2,9 @@
   "name": "@bitblit/ratchet-common",
   "version": "0.0.0",
   "description": "Common tools for general use",
+  "type": "module",
   "module": "./dist/index.js",
+  "exports": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "files": [
     "dist/*"
