@@ -1,5 +1,12 @@
 {
   "compilerOptions": {
+    "declaration": true,
+    "importHelpers": true,
+    "module": "esnext",
+    "noEmitHelpers": true,
+    "target": "ES2020",
+    "strict": true,
+
     "baseUrl": ".",
     "downlevelIteration": true,
     "esModuleInterop": true,
@@ -8,13 +15,11 @@
       "es2016",
       "dom"
     ],
-    "module": "commonjs",
     "moduleResolution": "node",
     "noFallthroughCasesInSwitch": true,
     "preserveConstEnums": true,
     "removeComments": true,
     "resolveJsonModule": true,
-    "target": "es5",
     "useUnknownInCatchVariables": false,
     "noImplicitAny": false,
     "noUnusedLocals": false,

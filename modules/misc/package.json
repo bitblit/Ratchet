@@ -37,10 +37,7 @@
     "lint-fix": "eslint --fix src/**/*.ts",
     "generate-barrels": "barrelsby -q --delete -d src -e .*\\.spec\\.ts",
 
-    "build": "yarn run generate-barrels && concurrently 'yarn:build:cjs' 'yarn:build:es' 'yarn:build:types'",
-    "build:cjs": "tsc -p tsconfig.cjs.json",
-    "build:es": "tsc -p tsconfig.es.json",
-    "build:types": "tsc -p tsconfig.types.json"
+    "build": "yarn run generate-barrels && tsc"
   },
   "repository": {
     "type": "git",

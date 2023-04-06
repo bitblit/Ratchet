@@ -1,39 +1,11 @@
 {
   "compilerOptions": {
     "baseUrl": ".",
-    "downlevelIteration": true,
-    "esModuleInterop": true,
-    "incremental": true,
-    "lib": [
-      "es2015",
-      "dom"
-    ],
-    "module": "commonjs",
-    "moduleResolution": "node",
-    "noFallthroughCasesInSwitch": true,
-    "preserveConstEnums": true,
-    "removeComments": true,
-    "resolveJsonModule": true,
-    "target": "es5",
-    "useUnknownInCatchVariables": false,
-    "noImplicitAny": false,
-    "noUnusedLocals": false,
-    "noImplicitThis": false,
-    "strictNullChecks": false,
-    "skipLibCheck": true,
-    "noImplicitReturns": true,
-    "suppressImplicitAnyIndexErrors": true,
-    "forceConsistentCasingInFileNames": true,
-    "paths": {
-      "@bitblit/ratchet-*": ["modules/"]
-    }
+    "lib": [],
+    "outDir": "dist",
+    "rootDir": "src",
+    "stripInternal": true
   },
-  "include": ["modules/"],
-  "exclude": ["node_modules/", "**/*.spec.ts"],
-  "typedocOptions": {
-    "entryPointStrategy": "expand",
-    "entryPoints": ["src"],
-    "out": "artifacts/typedocs"
-  },
-  "CAW_NOTES": "Set noImplicitAny, noImplicitThis and noUnusedLocals back to true at some point"
+  "extends": "../../tsconfig.json",
+  "include": ["src/"]
 }
