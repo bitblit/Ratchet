@@ -3,11 +3,11 @@
 */
 
 import { CloudWatchClient, PutMetricDataCommand, PutMetricDataCommandInput, PutMetricDataCommandOutput } from '@aws-sdk/client-cloudwatch';
-import { Logger } from '@bitblit/ratchet-common';
-import { KeyValue } from '@bitblit/ratchet-common';
-import { CloudWatchMetricsUnit } from '../model/cloud-watch-metrics-unit';
-import { DynamoCountResult } from '../model/dynamo-count-result';
-import { CloudWatchMetricsMinuteLevelDynamoCountRequest } from '../model/cloud-watch-metrics-minute-level-dynamo-count-request';
+import { Logger } from '@bitblit/ratchet-common/logger/logger.js';
+import { KeyValue } from '@bitblit/ratchet-common/lang/key-value.js';
+import { CloudWatchMetricsUnit } from '../model/cloud-watch-metrics-unit.js';
+import { DynamoCountResult } from '../model/dynamo-count-result.js';
+import { CloudWatchMetricsMinuteLevelDynamoCountRequest } from '../model/cloud-watch-metrics-minute-level-dynamo-count-request.js';
 import { DateTime } from 'luxon';
 
 export class CloudWatchMetricsRatchet {

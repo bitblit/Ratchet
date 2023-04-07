@@ -1,8 +1,8 @@
-import { HandlerFunction } from './handler-function';
-import { AuthorizerFunction } from './authorizer-function';
-import { HttpProcessingConfig } from './http-processing-config';
-import { ModelValidator } from '@bitblit/ratchet-misc';
-import { MappedHttpProcessingConfig } from './mapped-http-processing-config';
+import { HandlerFunction } from './handler-function.js';
+import { AuthorizerFunction } from './authorizer-function.js';
+import { HttpProcessingConfig } from './http-processing-config.js';
+import { ModelValidator } from '@bitblit/ratchet-misc/model-validator/model-validator.js';
+import { MappedHttpProcessingConfig } from './mapped-http-processing-config.js';
 
 export interface HttpConfig {
   // This is used for meta handling for any route not overridden by overrideMetaHandling

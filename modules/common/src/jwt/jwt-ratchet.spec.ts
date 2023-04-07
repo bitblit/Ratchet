@@ -1,5 +1,5 @@
-import { JwtRatchet } from './jwt-ratchet';
-import { ExpiredJwtHandling } from './expired-jwt-handling';
+import { JwtRatchet } from './jwt-ratchet.js';
+import { ExpiredJwtHandling } from './expired-jwt-handling.js';
 
 describe('#jwtRatchet', function () {
   it('should test expiration flag for a token with millisecond expiration', async () => {

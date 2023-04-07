@@ -1,5 +1,5 @@
-import { StringRatchet } from '@bitblit/ratchet-common';
-import { ContextUtil } from '../util/context-util';
+import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet.js';
+import { ContextUtil } from '../util/context-util.js';
 
 export class BuiltInTraceIdGenerators {
   public static fullAwsRequestId(): string {

@@ -1,6 +1,6 @@
-import { WardenContactType } from '../model/warden-contact-type';
-import { WardenContact } from '../model/warden-contact';
-import { WardenUtils } from './warden-utils';
+import { WardenContactType } from '../model/warden-contact-type.js';
+import { WardenContact } from '../model/warden-contact.js';
+import { WardenUtils } from './warden-utils.js';
 
 describe('#WardenUtils', () => {
   beforeEach(() => {});

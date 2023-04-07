@@ -1,9 +1,9 @@
-import { EpsilonConfig } from './config/epsilon-config';
-import { WebHandler } from './http/web-handler';
-import { BackgroundHandler } from './background/background-handler';
-import { OpenApiDocument } from './config/open-api/open-api-document';
-import { ModelValidator } from '@bitblit/ratchet-misc';
-import { BackgroundManagerLike } from './background/manager/background-manager-like';
+import { EpsilonConfig } from './config/epsilon-config.js';
+import { WebHandler } from './http/web-handler.js';
+import { BackgroundHandler } from './background/background-handler.js';
+import { OpenApiDocument } from './config/open-api/open-api-document.js';
+import { ModelValidator } from '@bitblit/ratchet-misc/model-validator/model-validator.js';
+import { BackgroundManagerLike } from './background/manager/background-manager-like.js';
 
 /**
  * This interface just wraps up everything that gets created by the config parsing process so that

@@ -1,8 +1,8 @@
-import { TransactionStep } from './transaction-step';
-import { TransactionRatchet } from './transaction-ratchet';
-import { TransactionResult } from './transaction-result';
-import { TransactionFinalState } from './transaction-final-state';
-import { LoggerLevelName } from '../logger/logger-level-name';
+import { TransactionStep } from './transaction-step.js';
+import { TransactionRatchet } from './transaction-ratchet.js';
+import { TransactionResult } from './transaction-result.js';
+import { TransactionFinalState } from './transaction-final-state.js';
+import { LoggerLevelName } from '../logger/logger-level-name.js';
 
 interface TestTransactionContext {
   runningTotal: number;

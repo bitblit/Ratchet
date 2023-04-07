@@ -1,7 +1,7 @@
-import { ExpiringCodeProvider } from './expiring-code-provider';
-import { DynamoRatchet } from '../dynamodb/dynamo-ratchet';
-import { ExpiringCode } from './expiring-code';
-import { DynamoTableRatchet } from '../dynamodb/dynamo-table-ratchet';
+import { ExpiringCodeProvider } from './expiring-code-provider.js';
+import { DynamoRatchet } from '../dynamodb/dynamo-ratchet.js';
+import { ExpiringCode } from './expiring-code.js';
+import { DynamoTableRatchet } from '../dynamodb/dynamo-table-ratchet.js';
 import { PutItemOutput } from '@aws-sdk/client-dynamodb';
 
 export class DynamoExpiringCodeProvider implements ExpiringCodeProvider {

@@ -1,10 +1,14 @@
 //    Service for interacting with positions for a given user
-import { WardenMessageSendingProvider } from './warden-message-sending-provider';
-import { WardenContact, WardenContactType, WardenCustomerMessageType } from '@bitblit/ratchet-warden-common';
-import { WardenMailerMessageSendingProviderOptions } from './warden-mailer-message-sending-provider-options';
+import { WardenMessageSendingProvider } from './warden-message-sending-provider.js';
+import { WardenMailerMessageSendingProviderOptions } from './warden-mailer-message-sending-provider-options.js';
 import { SendRawEmailResponse } from '@aws-sdk/client-ses';
-import { MailerLike, ReadyToSendEmail } from '@bitblit/ratchet-aws';
-import { Logger } from '@bitblit/ratchet-common';
+import { MailerLike } from '@bitblit/ratchet-aws/ses/mailer-like.js';
+import { ReadyToSendEmail } from '@bitblit/ratchet-aws/ses/ready-to-send-email.js';
+
+import { Logger } from '@bitblit/ratchet-common/logger/logger.js';
+import { WardenContact } from '@bitblit/ratchet-warden-common/common/model/warden-contact.js';
+import { WardenContactType } from '@bitblit/ratchet-warden-common/common/model/warden-contact-type.js';
+import { WardenCustomerMessageType } from '@bitblit/ratchet-warden-common/common/model/warden-customer-message-type.js';
 
 export class WardenMailerMessageSendingProvider implements WardenMessageSendingProvider<ReadyToSendEmail> {
   private static defaultOptions(): WardenMailerMessageSendingProviderOptions {

@@ -1,13 +1,14 @@
-import { Logger } from '@bitblit/ratchet-common';
-import { DaemonProcessState } from './daemon-process-state';
-import { S3CacheRatchet } from '../s3/s3-cache-ratchet';
-import { StringRatchet } from '@bitblit/ratchet-common';
-import { DaemonProcessCreateOptions } from './daemon-process-create-options';
-import { DaemonUtil } from './daemon-util';
-import { DaemonLike } from './daemon-like';
-import { JwtRatchetLike } from '@bitblit/ratchet-common';
-import { RequireRatchet } from '@bitblit/ratchet-common';
-import { DaemonProcessStatePublicToken } from './daemon-process-state-public-token';
+import { Logger } from '@bitblit/ratchet-common/logger/logger.js';
+import { RequireRatchet } from '@bitblit/ratchet-common/lang/require-ratchet.js';
+import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet.js';
+import { JwtRatchetLike } from '@bitblit/ratchet-common/jwt/jwt-ratchet-like.js';
+
+import { DaemonProcessState } from './daemon-process-state.js';
+import { S3CacheRatchet } from '../s3/s3-cache-ratchet.js';
+import { DaemonProcessCreateOptions } from './daemon-process-create-options.js';
+import { DaemonUtil } from './daemon-util.js';
+import { DaemonLike } from './daemon-like.js';
+import { DaemonProcessStatePublicToken } from './daemon-process-state-public-token.js';
 import { S3Client } from '@aws-sdk/client-s3';
 
 export class Daemon implements DaemonLike {

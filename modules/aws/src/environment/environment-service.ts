@@ -1,9 +1,9 @@
-import { Logger } from '@bitblit/ratchet-common';
-import { PromiseRatchet } from '@bitblit/ratchet-common';
-import { RequireRatchet } from '@bitblit/ratchet-common';
-import { ErrorRatchet } from '@bitblit/ratchet-common';
-import { EnvironmentServiceProvider } from './environment-service-provider';
-import { EnvironmentServiceConfig } from './environment-service-config';
+import { ErrorRatchet } from '@bitblit/ratchet-common/lang/error-ratchet.js';
+import { Logger } from '@bitblit/ratchet-common/logger/logger.js';
+import { RequireRatchet } from '@bitblit/ratchet-common/lang/require-ratchet.js';
+import { PromiseRatchet } from '@bitblit/ratchet-common/lang/promise-ratchet.js';
+import { EnvironmentServiceProvider } from './environment-service-provider.js';
+import { EnvironmentServiceConfig } from './environment-service-config.js';
 
 /**
  * Wraps up a EnvironmentServiceProvider and provides caching and retry-on-failure logic

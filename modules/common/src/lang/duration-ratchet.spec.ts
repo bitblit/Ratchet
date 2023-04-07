@@ -1,4 +1,4 @@
-import { DurationRatchet } from './duration-ratchet';
+import { DurationRatchet } from './duration-ratchet.js';
 import { DateTime } from 'luxon';
 
 describe('#formatMsDuration', function () {

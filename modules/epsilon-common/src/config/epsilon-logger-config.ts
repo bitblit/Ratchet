@@ -1,5 +1,6 @@
-import { LoggerLevelName, LogMessageFormatType } from '@bitblit/ratchet-common';
-import { LoggingTraceIdGenerator } from './logging-trace-id-generator';
+import { LoggerLevelName } from '@bitblit/ratchet-common/logger/logger-level-name.js';
+import { LogMessageFormatType } from '@bitblit/ratchet-common/logger/log-message-format-type.js';
+import { LoggingTraceIdGenerator } from './logging-trace-id-generator.js';
 
 export interface EpsilonLoggerConfig {
   // If set, the logger will be set to this instead of the default

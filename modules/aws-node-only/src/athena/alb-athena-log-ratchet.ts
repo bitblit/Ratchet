@@ -1,11 +1,12 @@
 import { readFileSync, ReadStream } from 'fs';
 import path from 'path';
-import { AthenaRatchet } from './athena-ratchet';
-import { Logger } from '@bitblit/ratchet-common';
-import { RequireRatchet } from '@bitblit/ratchet-common';
-import { StringRatchet } from '@bitblit/ratchet-common';
-import { S3Ratchet } from '@bitblit/ratchet-aws';
-import { CsvRatchet } from '@bitblit/ratchet-node-only';
+import { AthenaRatchet } from './athena-ratchet.js';
+import { Logger } from '@bitblit/ratchet-common/logger/logger.js';
+import { RequireRatchet } from '@bitblit/ratchet-common/lang/require-ratchet.js';
+import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet.js';
+import { EsmRatchet } from '@bitblit/ratchet-common/lang/esm-ratchet.js';
+import { S3Ratchet } from '@bitblit/ratchet-aws/s3/s3-ratchet.js';
+import { CsvRatchet } from '@bitblit/ratchet-node-only/csv/csv-ratchet.js';
 import { S3Client } from '@aws-sdk/client-s3';
 
 // A class to simplify reading an Athena table based on ALB Logs
@@ -71,7 +72,7 @@ export class AlbAthenaLogRatchet {
       }
     }
 
-    let tableCreateQry: string = readFileSync(path.join(__dirname, '../static/albAthenaTableCreate.txt')).toString();
+    let tableCreateQry: string = readFileSync(path.join(EsmRatchet.fetchDirName(), '../static/albAthenaTableCreate.txt')).toString();
     tableCreateQry = tableCreateQry.split('{{TABLE NAME}}').join(this.athenaTableName);
     tableCreateQry = tableCreateQry.split('{{ALB_LOG_ROOT}}').join(rootPath);
     Logger.info('Creating table with %s', tableCreateQry);

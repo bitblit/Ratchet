@@ -1,12 +1,13 @@
-import { InboundEmailRatchet } from './inbound-email-ratchet';
-import { S3CacheRatchet } from '@bitblit/ratchet-aws';
-import { JestRatchet } from '@bitblit/ratchet-jest';
+import { InboundEmailRatchet } from './inbound-email-ratchet.js';
+import { S3CacheRatchet } from '@bitblit/ratchet-aws/s3/s3-cache-ratchet.js';
+import { JestRatchet } from '@bitblit/ratchet-jest/jest/jest-ratchet.js';
+import { jest } from '@jest/globals';
 
 let mockS3CR: jest.Mocked<S3CacheRatchet>;
 
 describe('#inboundEmailService', () => {
   beforeEach(() => {
-    mockS3CR = JestRatchet.mock();
+    mockS3CR = JestRatchet.mock(jest.fn);
   });
 
   xit('should process an email from S3', async () => {

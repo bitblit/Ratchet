@@ -1,8 +1,10 @@
-import type { Config } from 'jest';
+// Ripped from https://kulshekhar.github.io/ts-jest/docs/next/guides/esm-support/
+import type { JestConfigWithTsJest } from 'ts-jest';
 
-const config: Config = {
+const config: JestConfigWithTsJest = {
+  extensionsToTreatAsEsm: ['.ts'],
   passWithNoTests: true,
-  preset: 'ts-jest',
+  //preset: 'ts-jest',
   testEnvironment: 'node',
   collectCoverage: true,
   coverageDirectory: 'artifacts/coverage',
@@ -20,6 +22,19 @@ const config: Config = {
     },
   },
   verbose: true,
+  moduleNameMapper: {
+    '^(\\.{1,2}/.*)\\.js$': '$1',
+  },
+  transform: {
+    // '^.+\\.[tj]sx?$' to process js/ts with `ts-jest`
+    // '^.+\\.m?[tj]sx?$' to process js/ts/mjs/mts with `ts-jest`
+    '^.+\\.[tj]s?$': [
+      'ts-jest',
+      {
+        useESM: true,
+      },
+    ],
+  },
 };
 
 export default config;

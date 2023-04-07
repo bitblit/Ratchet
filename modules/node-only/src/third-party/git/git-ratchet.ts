@@ -1,5 +1,6 @@
 import process from 'child_process';
-import { Logger } from '@bitblit/ratchet-common';
+import { Logger } from '@bitblit/ratchet-common/logger/logger.js';
+import { EsmRatchet } from '@bitblit/ratchet-common/lang/esm-ratchet.js';
 
 // Mainly ripped from https://raw.githubusercontent.com/seymen/git-last-commit/master/source/index.js
 // All credit due to https://github.com/seymen
@@ -9,7 +10,7 @@ export class GitRatchet {
 
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   public static async executeCommand(command: string, options: any): Promise<string> {
-    let dst: string = __dirname;
+    let dst: string = EsmRatchet.fetchDirName();
 
     if (!!options && !!options.dst) {
       dst = options.dst;

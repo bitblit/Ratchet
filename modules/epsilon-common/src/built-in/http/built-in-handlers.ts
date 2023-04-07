@@ -1,16 +1,16 @@
-import { StringRatchet } from '@bitblit/ratchet-common';
-import { Logger } from '@bitblit/ratchet-common';
+import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet.js';
+import { Logger } from '@bitblit/ratchet-common/logger/logger.js';
 import { APIGatewayEvent, Context } from 'aws-lambda';
-import { NumberRatchet } from '@bitblit/ratchet-common';
-import { ExtendedAPIGatewayEvent } from '../../config/http/extended-api-gateway-event';
-import { BadRequestError } from '../../http/error/bad-request-error';
-import { EpsilonHttpError } from '../../http/error/epsilon-http-error';
-import { EpsilonRouter } from '../../http/route/epsilon-router';
-import { UnauthorizedError } from '../../http/error/unauthorized-error';
-import { NotFoundError } from '../../http/error/not-found-error';
-import { ForbiddenError } from '../../http/error/forbidden-error';
-import { NotImplemented } from '../../http/error/not-implemented';
-import { MisconfiguredError } from '../../http/error/misconfigured-error';
+import { NumberRatchet } from '@bitblit/ratchet-common/lang/number-ratchet.js';
+import { ExtendedAPIGatewayEvent } from '../../config/http/extended-api-gateway-event.js';
+import { BadRequestError } from '../../http/error/bad-request-error.js';
+import { EpsilonHttpError } from '../../http/error/epsilon-http-error.js';
+import { EpsilonRouter } from '../../http/route/epsilon-router.js';
+import { UnauthorizedError } from '../../http/error/unauthorized-error.js';
+import { NotFoundError } from '../../http/error/not-found-error.js';
+import { ForbiddenError } from '../../http/error/forbidden-error.js';
+import { NotImplemented } from '../../http/error/not-implemented.js';
+import { MisconfiguredError } from '../../http/error/misconfigured-error.js';
 
 export class BuiltInHandlers {
   public static async expectedHandledByFilter(evt: ExtendedAPIGatewayEvent, flag?: string): Promise<any> {

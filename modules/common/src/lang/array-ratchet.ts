@@ -2,8 +2,8 @@
     Functions for working with arrays
 */
 
-import { RequireRatchet } from './require-ratchet';
-import { MapRatchet } from './map-ratchet';
+import { RequireRatchet } from './require-ratchet.js';
+import { MapRatchet } from './map-ratchet.js';
 
 export class ArrayRatchet {
   public static wrapElementsInArray(input: any[]): any[][] {

@@ -1,6 +1,6 @@
-import { RequireRatchet } from './require-ratchet';
+import { RequireRatchet } from './require-ratchet.js';
 import { fail } from 'assert';
-import { Logger } from '../logger/logger';
+import { Logger } from '../logger/logger.js';
 
 describe('#standardCases', function () {
   it('should throw exception on null value', function () {

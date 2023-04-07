@@ -1,5 +1,4 @@
-import { WardenEntry } from './warden-entry';
-import { WardenTeamRole } from './warden-team-role';
+import { WardenTeamRole } from './warden-team-role.js';
 
 export interface WardenUserDecoration<T> {
   userTokenData: T;

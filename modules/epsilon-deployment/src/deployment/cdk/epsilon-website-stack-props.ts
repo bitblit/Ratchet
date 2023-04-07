@@ -1,5 +1,5 @@
 import { StackProps } from 'aws-cdk-lib';
-import { SimpleAdditionalS3WebsiteMapping } from './simple-additional-s3-website-mapping';
+import { SimpleAdditionalS3WebsiteMapping } from './simple-additional-s3-website-mapping.js';
 
 export interface EpsilonWebsiteStackProps extends StackProps {
   targetBucketName: string;

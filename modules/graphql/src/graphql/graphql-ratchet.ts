@@ -1,13 +1,19 @@
 // CAW: 2022-08-24 : You must import from @apollo/client/core instead of @apollo/client if you don't wanna drag in React...
 // They are gonna fix this in v4 :https://github.com/apollographql/apollo-client/issues/8190
-import { ApolloClient, ApolloClientOptions, ApolloLink, ApolloQueryResult, gql, HttpLink, InMemoryCache } from '@apollo/client/core';
+import { ApolloClient, ApolloClientOptions, gql, InMemoryCache } from '@apollo/client/core';
+import { ApolloQueryResult } from '@apollo/client/core/types.js';
+import { HttpLink } from '@apollo/client/link/http/HttpLink.js';
+import { ApolloLink } from '@apollo/client/link/core/ApolloLink.js';
 import { ExecutionResult } from 'graphql';
-import { GraphqlRatchetEndpointProvider } from './provider/graphql-ratchet-endpoint-provider';
-import { GraphqlRatchetJwtTokenProvider } from './provider/graphql-ratchet-jwt-token-provider';
-import { GraphqlRatchetQueryProvider } from './provider/graphql-ratchet-query-provider';
-import { GraphqlRatchetErrorHandler } from './provider/graphql-ratchet-error-handler';
-import { DefaultGraphqlRatchetErrorHandler } from './provider/default-graphql-ratchet-error-handler';
-import { RequireRatchet, Logger, StringRatchet, ErrorRatchet } from '@bitblit/ratchet-common';
+import { GraphqlRatchetEndpointProvider } from './provider/graphql-ratchet-endpoint-provider.js';
+import { GraphqlRatchetJwtTokenProvider } from './provider/graphql-ratchet-jwt-token-provider.js';
+import { GraphqlRatchetQueryProvider } from './provider/graphql-ratchet-query-provider.js';
+import { GraphqlRatchetErrorHandler } from './provider/graphql-ratchet-error-handler.js';
+import { DefaultGraphqlRatchetErrorHandler } from './provider/default-graphql-ratchet-error-handler.js';
+import { ErrorRatchet } from '@bitblit/ratchet-common/lang/error-ratchet.js';
+import { Logger } from '@bitblit/ratchet-common/logger/logger.js';
+import { RequireRatchet } from '@bitblit/ratchet-common/lang/require-ratchet.js';
+import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet.js';
 
 /**
  * CAW: 2023-02-16 : I'm well aware that this ratchet currently blows away any useful caching done by

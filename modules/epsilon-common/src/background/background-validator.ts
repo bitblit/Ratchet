@@ -1,11 +1,11 @@
-import { ModelValidator } from '@bitblit/ratchet-misc';
-import { Logger } from '@bitblit/ratchet-common';
-import { ErrorRatchet } from '@bitblit/ratchet-common';
-import { StringRatchet } from '@bitblit/ratchet-common';
-import { BackgroundConfig } from '../config/background/background-config';
-import { BackgroundEntry } from './background-entry';
-import { BackgroundProcessor } from '../config/background/background-processor';
-import { BackgroundAwsConfig } from '../config/background/background-aws-config';
+import { ModelValidator } from '@bitblit/ratchet-misc/model-validator/model-validator.js';
+import { Logger } from '@bitblit/ratchet-common/logger/logger.js';
+import { ErrorRatchet } from '@bitblit/ratchet-common/lang/error-ratchet.js';
+import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet.js';
+import { BackgroundConfig } from '../config/background/background-config.js';
+import { BackgroundEntry } from './background-entry.js';
+import { BackgroundProcessor } from '../config/background/background-processor.js';
+import { BackgroundAwsConfig } from '../config/background/background-aws-config.js';
 
 /**
  * Handles all submission of work to the background processing system.

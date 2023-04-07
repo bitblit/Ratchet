@@ -1,4 +1,4 @@
-import { WardenWebAuthnTransportFutureType } from './warden-web-authn-transport-future-type';
+import { WardenWebAuthnTransportFutureType } from './warden-web-authn-transport-future-type.js';
 
 export interface WardenWebAuthnEntry {
   credentialIdBase64: string;

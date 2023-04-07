@@ -3,7 +3,7 @@ import walk from 'walk';
 import { S3Client } from '@aws-sdk/client-s3';
 import path from 'path';
 import mime from 'mime-types';
-import { Logger } from '@bitblit/ratchet-common';
+import { Logger } from '@bitblit/ratchet-common/logger/logger.js';
 import { Upload } from '@aws-sdk/lib-storage';
 
 export class SiteUploader {

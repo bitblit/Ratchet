@@ -1,5 +1,5 @@
-import { WardenStoreRegistrationResponseType } from './warden-store-registration-response-type';
-import { WardenEntry } from './warden-entry';
+import { WardenStoreRegistrationResponseType } from './warden-store-registration-response-type.js';
+import { WardenEntry } from './warden-entry.js';
 
 export interface WardenStoreRegistrationResponse {
   updatedEntry?: WardenEntry;

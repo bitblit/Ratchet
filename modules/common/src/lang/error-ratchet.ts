@@ -2,7 +2,7 @@
     Functions for working with errors
 */
 
-import { Logger } from '../logger/logger';
+import { Logger } from '../logger/logger.js';
 import util from 'util';
 
 export class ErrorRatchet {

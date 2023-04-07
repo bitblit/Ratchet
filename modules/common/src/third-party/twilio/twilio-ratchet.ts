@@ -1,9 +1,9 @@
 import fetch from 'cross-fetch';
 
-import { RequireRatchet } from '../../lang/require-ratchet';
-import { Base64Ratchet } from '../../lang/base64-ratchet';
-import { StringRatchet } from '../../lang/string-ratchet';
-import { Logger } from '../../logger/logger';
+import { RequireRatchet } from '../../lang/require-ratchet.js';
+import { Base64Ratchet } from '../../lang/base64-ratchet.js';
+import { StringRatchet } from '../../lang/string-ratchet.js';
+import { Logger } from '../../logger/logger.js';
 
 /**
  * This class is for people who just need to send an occasionaly outbound text message and don't need

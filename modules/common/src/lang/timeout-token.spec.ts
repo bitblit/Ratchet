@@ -1,4 +1,4 @@
-import { TimeoutToken } from './timeout-token';
+import { TimeoutToken } from './timeout-token.js';
 
 describe('#timeoutToken', function () {
   it('should return the correct value for isTimeoutToken', function () {

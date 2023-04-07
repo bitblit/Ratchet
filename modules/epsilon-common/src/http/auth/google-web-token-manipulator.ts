@@ -1,10 +1,10 @@
-import { Logger } from '@bitblit/ratchet-common';
-import { StringRatchet } from '@bitblit/ratchet-common';
+import { Logger } from '@bitblit/ratchet-common/logger/logger.js';
+import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet.js';
 import jwt from 'jsonwebtoken';
 import jwks from 'jwks-rsa';
-import { WebTokenManipulator } from './web-token-manipulator';
+import { WebTokenManipulator } from './web-token-manipulator.js';
 import fetch from 'cross-fetch';
-import { JwtTokenBase } from '@bitblit/ratchet-common';
+import { JwtTokenBase } from '@bitblit/ratchet-common/jwt/jwt-token-base.js';
 
 export class GoogleWebTokenManipulator implements WebTokenManipulator<JwtTokenBase> {
   private static readonly GOOGLE_DISCOVERY_DOCUMENT: string = 'https://accounts.google.com/.well-known/openid-configuration';

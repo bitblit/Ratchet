@@ -1,7 +1,7 @@
-import { Logger } from '@bitblit/ratchet-common';
-import { DaemonProcessState } from './daemon-process-state';
-import { S3CacheRatchet } from '../s3/s3-cache-ratchet';
-import { DaemonProcessCreateOptions } from './daemon-process-create-options';
+import { Logger } from '@bitblit/ratchet-common/logger/logger.js';
+import { DaemonProcessState } from './daemon-process-state.js';
+import { S3CacheRatchet } from '../s3/s3-cache-ratchet.js';
+import { DaemonProcessCreateOptions } from './daemon-process-create-options.js';
 import {
   CompleteMultipartUploadCommandOutput,
   HeadObjectOutput,

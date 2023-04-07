@@ -1,8 +1,8 @@
-import { RuntimeParameterProvider } from './runtime-parameter-provider';
-import { StoredRuntimeParameter } from './stored-runtime-parameter';
-import { RequireRatchet } from '@bitblit/ratchet-common';
-import { GlobalRatchet } from '@bitblit/ratchet-common';
-import { ErrorRatchet, StringRatchet } from '@bitblit/ratchet-common';
+import { RuntimeParameterProvider } from './runtime-parameter-provider.js';
+import { StoredRuntimeParameter } from './stored-runtime-parameter.js';
+import { RequireRatchet } from '@bitblit/ratchet-common/lang/require-ratchet.js';
+import { ErrorRatchet } from '@bitblit/ratchet-common/lang/error-ratchet.js';
+import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet.js';
 
 /**
  * Provides parameters for a runtime parameter from an global (ie, process.env or global.xx) variable, where the key follows

@@ -1,8 +1,8 @@
-import { StringRatchet } from '@bitblit/ratchet-common';
+import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet.js';
 import { Effect, PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { Topic } from 'aws-cdk-lib/aws-sns';
 import { Queue } from 'aws-cdk-lib/aws-sqs';
-import { EpsilonApiStackProps } from './epsilon-api-stack-props';
+import { EpsilonApiStackProps } from './epsilon-api-stack-props.js';
 
 export class EpsilonStackUtil {
   // Prevent instantiation

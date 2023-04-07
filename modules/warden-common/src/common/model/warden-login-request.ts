@@ -1,4 +1,4 @@
-import { WardenContact } from './warden-contact';
+import { WardenContact } from './warden-contact.js';
 import { AuthenticationResponseJSON } from '@simplewebauthn/typescript-types';
 
 export interface WardenLoginRequest {

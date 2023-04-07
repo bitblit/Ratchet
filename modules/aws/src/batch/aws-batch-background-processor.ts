@@ -1,7 +1,10 @@
 import { SubmitJobCommandInput, SubmitJobCommandOutput } from '@aws-sdk/client-batch';
 import { DateTime } from 'luxon';
-import { ErrorRatchet, Logger, RequireRatchet, StringRatchet } from '@bitblit/ratchet-common';
-import { AwsBatchRatchet } from './aws-batch-ratchet';
+import { ErrorRatchet } from '@bitblit/ratchet-common/lang/error-ratchet.js';
+import { Logger } from '@bitblit/ratchet-common/logger/logger.js';
+import { RequireRatchet } from '@bitblit/ratchet-common/lang/require-ratchet.js';
+import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet.js';
+import { AwsBatchRatchet } from './aws-batch-ratchet.js';
 
 /**
  * Class to simplify using AWS batch as a background processor

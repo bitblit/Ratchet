@@ -1,17 +1,17 @@
 import { APIGatewayEvent, APIGatewayEventRequestContext, Context, ProxyResult } from 'aws-lambda';
-import { Logger } from '@bitblit/ratchet-common';
+import { Logger } from '@bitblit/ratchet-common/logger/logger.js';
 import http, { IncomingMessage, Server, ServerResponse } from 'http';
 import https from 'https';
-import { StringRatchet } from '@bitblit/ratchet-common';
+import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet.js';
 import { DateTime } from 'luxon';
 import qs from 'querystring';
-import { EventUtil } from './http/event-util';
-import { EpsilonGlobalHandler } from './epsilon-global-handler';
-import { LoggerLevelName } from '@bitblit/ratchet-common';
-import { LocalServerCert } from './local-server-cert';
-import { SampleServerComponents } from './sample/sample-server-components';
-import { LocalWebTokenManipulator } from './http/auth/local-web-token-manipulator';
-import { JwtTokenBase } from '@bitblit/ratchet-common/dist/types/jwt/jwt-token-base';
+import { EventUtil } from './http/event-util.js';
+import { EpsilonGlobalHandler } from './epsilon-global-handler.js';
+import { LoggerLevelName } from '@bitblit/ratchet-common/logger/logger-level-name.js';
+import { JwtTokenBase } from '@bitblit/ratchet-common/jwt/jwt-token-base.js';
+import { LocalServerCert } from './local-server-cert.js';
+import { SampleServerComponents } from './sample/sample-server-components.js';
+import { LocalWebTokenManipulator } from './http/auth/local-web-token-manipulator.js';
 
 /**
  * A simplistic server for testing your lambdas locally

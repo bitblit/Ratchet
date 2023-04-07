@@ -1,6 +1,6 @@
-import { Ratchet2d } from './ratchet-2d';
-import { Point2d } from './point-2d';
-import { Plane2d } from './plane-2d';
+import { Ratchet2d } from './ratchet-2d.js';
+import { Point2d } from './point-2d.js';
+import { Plane2d } from './plane-2d.js';
 
 describe('#ratchet2d', function () {
   it('should check for valid planes', function () {

@@ -1,6 +1,8 @@
-import { WardenRecentLoginDescriptor } from './warden-recent-login-descriptor';
-import { ErrorRatchet, RequireRatchet, StringRatchet } from '@bitblit/ratchet-common';
-import { WardenClientAbstractRecentLoginProvider } from './warden-client-abstract-recent-login-provider';
+import { WardenRecentLoginDescriptor } from './warden-recent-login-descriptor.js';
+import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet.js';
+import { ErrorRatchet } from '@bitblit/ratchet-common/lang/error-ratchet.js';
+import { RequireRatchet } from '@bitblit/ratchet-common/lang/require-ratchet.js';
+import { WardenClientAbstractRecentLoginProvider } from './warden-client-abstract-recent-login-provider.js';
 
 export class WardenClientLocalStorageRecentLoginProvider extends WardenClientAbstractRecentLoginProvider {
   constructor(private localStorageKey: string) {

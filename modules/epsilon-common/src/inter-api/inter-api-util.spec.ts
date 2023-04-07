@@ -1,10 +1,11 @@
 import { SNSEvent } from 'aws-lambda';
-import { InterApiUtil } from './inter-api-util';
-import { InterApiConfig } from '../config/inter-api/inter-api-config';
-import { JestRatchet } from '@bitblit/ratchet-jest';
-import { BackgroundManagerLike } from '../background/manager/background-manager-like';
+import { InterApiUtil } from './inter-api-util.js';
+import { InterApiConfig } from '../config/inter-api/inter-api-config.js';
+import { JestRatchet } from '@bitblit/ratchet-jest/jest/jest-ratchet.js';
+import { BackgroundManagerLike } from '../background/manager/background-manager-like.js';
 import { SNSClient } from '@aws-sdk/client-sns';
 import { SQSClient } from '@aws-sdk/client-sqs';
+import { jest } from '@jest/globals';
 
 describe('#interApiUtil', function () {
   let mockSns;
@@ -37,9 +38,9 @@ describe('#interApiUtil', function () {
   };
 
   beforeEach(() => {
-    mockSns = JestRatchet.mock<SNSClient>();
-    mockSqs = JestRatchet.mock<SQSClient>();
-    mockBgMgr = JestRatchet.mock<BackgroundManagerLike>(); //new AwsSqsSnsBackgroundManager({} as BackgroundAwsConfig, mockSqs, mockSns);
+    mockSns = JestRatchet.mock<SNSClient>(jest.fn);
+    mockSqs = JestRatchet.mock<SQSClient>(jest.fn);
+    mockBgMgr = JestRatchet.mock<BackgroundManagerLike>(jest.fn); //new AwsSqsSnsBackgroundManager({} as BackgroundAwsConfig, mockSqs, mockSns);
   });
 
   it('should translate processes', async () => {

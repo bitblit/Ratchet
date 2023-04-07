@@ -1,16 +1,16 @@
-import { Logger } from '@bitblit/ratchet-common';
+import { Logger } from '@bitblit/ratchet-common/logger/logger.js';
 import { Context } from 'aws-lambda';
-import { ExtendedAPIGatewayEvent } from '../../config/http/extended-api-gateway-event';
-import { PromiseRatchet } from '@bitblit/ratchet-common';
-import { TimeoutToken } from '@bitblit/ratchet-common';
-import { RequestTimeoutError } from '../../http/error/request-timeout-error';
-import { ResponseUtil } from '../../http/response-util';
-import { NotFoundError } from '../../http/error/not-found-error';
-import { RouteAndParse } from '../../http/web-handler';
-import { NullReturnedObjectHandling } from '../../config/http/null-returned-object-handling';
-import { EpsilonHttpError } from '../../http/error/epsilon-http-error';
-import { FilterFunction } from '../../config/http/filter-function';
-import { FilterChainContext } from '../../config/http/filter-chain-context';
+import { ExtendedAPIGatewayEvent } from '../../config/http/extended-api-gateway-event.js';
+import { PromiseRatchet } from '@bitblit/ratchet-common/lang/promise-ratchet.js';
+import { TimeoutToken } from '@bitblit/ratchet-common/lang/timeout-token.js';
+import { RequestTimeoutError } from '../../http/error/request-timeout-error.js';
+import { ResponseUtil } from '../../http/response-util.js';
+import { NotFoundError } from '../../http/error/not-found-error.js';
+import { RouteAndParse } from '../../http/web-handler.js';
+import { NullReturnedObjectHandling } from '../../config/http/null-returned-object-handling.js';
+import { EpsilonHttpError } from '../../http/error/epsilon-http-error.js';
+import { FilterFunction } from '../../config/http/filter-function.js';
+import { FilterChainContext } from '../../config/http/filter-chain-context.js';
 
 export class RunHandlerAsFilter {
   public static async runHandler(fCtx: FilterChainContext, rm: RouteAndParse): Promise<boolean> {

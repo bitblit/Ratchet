@@ -1,9 +1,9 @@
-import { Logger } from '@bitblit/ratchet-common';
-import { RuntimeParameterRatchet } from './runtime-parameter-ratchet';
-import { PromiseRatchet } from '@bitblit/ratchet-common';
-import { LoggerLevelName } from '@bitblit/ratchet-common';
-import { StoredRuntimeParameter } from './stored-runtime-parameter';
-import { MemoryRuntimeParameterProvider } from './memory-runtime-parameter-provider';
+import { RuntimeParameterRatchet } from './runtime-parameter-ratchet.js';
+import { Logger } from '@bitblit/ratchet-common/logger/logger.js';
+import { LoggerLevelName } from '@bitblit/ratchet-common/logger/logger-level-name.js';
+import { PromiseRatchet } from '@bitblit/ratchet-common/lang/promise-ratchet.js';
+import { StoredRuntimeParameter } from './stored-runtime-parameter.js';
+import { MemoryRuntimeParameterProvider } from './memory-runtime-parameter-provider.js';
 
 const testEntry: StoredRuntimeParameter = { groupId: 'test', paramKey: 'test', paramValue: '15', ttlSeconds: 0.5 };
 const testEntry2: StoredRuntimeParameter = { groupId: 'test', paramKey: 'test1', paramValue: '20', ttlSeconds: 0.5 };

@@ -1,4 +1,4 @@
-import { LogMessage } from './log-message';
+import { LogMessage } from './log-message.js';
 
 export interface LogMessageProcessor {
   label?(): string;

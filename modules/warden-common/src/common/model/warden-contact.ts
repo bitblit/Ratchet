@@ -1,4 +1,4 @@
-import { WardenContactType } from './warden-contact-type';
+import { WardenContactType } from './warden-contact-type.js';
 
 export interface WardenContact {
   value: string;

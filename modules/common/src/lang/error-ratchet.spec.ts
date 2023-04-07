@@ -1,4 +1,4 @@
-import { ErrorRatchet } from './error-ratchet';
+import { ErrorRatchet } from './error-ratchet.js';
 
 describe('#errorRatchet', function () {
   it('should cast to error', async () => {

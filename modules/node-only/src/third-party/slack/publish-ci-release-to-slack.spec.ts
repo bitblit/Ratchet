@@ -1,5 +1,6 @@
-import { Logger,GlobalRatchet } from '@bitblit/ratchet-common';
-import { PublishCiReleaseToSlack } from './publish-ci-release-to-slack';
+import { Logger } from '@bitblit/ratchet-common/logger/logger.js';
+import { GlobalRatchet } from '@bitblit/ratchet-common/lang/global-ratchet.js';
+import { PublishCiReleaseToSlack } from './publish-ci-release-to-slack.js';
 
 describe('#publishCircleCiReleaseToSlack', function () {
   it('should fail if not in a circle ci environment', async () => {

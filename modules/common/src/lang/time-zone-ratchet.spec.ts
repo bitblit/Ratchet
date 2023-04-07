@@ -1,4 +1,4 @@
-import { TimeZoneRatchet } from './time-zone-ratchet';
+import { TimeZoneRatchet } from './time-zone-ratchet.js';
 
 const tz: TimeZoneRatchet = TimeZoneRatchet.PACIFIC;
 

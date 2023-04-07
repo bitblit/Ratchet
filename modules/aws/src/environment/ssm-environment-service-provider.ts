@@ -1,10 +1,10 @@
-import { Logger } from '@bitblit/ratchet-common';
+import { ErrorRatchet } from '@bitblit/ratchet-common/lang/error-ratchet.js';
+import { Logger } from '@bitblit/ratchet-common/logger/logger.js';
+import { RequireRatchet } from '@bitblit/ratchet-common/lang/require-ratchet.js';
+import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet.js';
+import { PromiseRatchet } from '@bitblit/ratchet-common/lang/promise-ratchet.js';
 import { GetParameterCommand, GetParameterCommandOutput, SSMClient } from '@aws-sdk/client-ssm';
-import { PromiseRatchet } from '@bitblit/ratchet-common';
-import { RequireRatchet } from '@bitblit/ratchet-common';
-import { ErrorRatchet } from '@bitblit/ratchet-common';
-import { EnvironmentServiceProvider } from './environment-service-provider';
-import { StringRatchet } from '@bitblit/ratchet-common';
+import { EnvironmentServiceProvider } from './environment-service-provider.js';
 
 /**
  * Service for reading environmental variables

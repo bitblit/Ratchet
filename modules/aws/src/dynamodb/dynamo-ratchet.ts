@@ -12,14 +12,15 @@ import {
   QueryCommand,
   ScanCommand,
 } from '@aws-sdk/lib-dynamodb';
-import { Logger } from '@bitblit/ratchet-common';
-import { DurationRatchet } from '@bitblit/ratchet-common';
-import { DynamoCountResult } from '../model/dynamo-count-result';
-import { PromiseRatchet } from '@bitblit/ratchet-common';
-import { NumberRatchet } from '@bitblit/ratchet-common';
-import { ErrorRatchet } from '@bitblit/ratchet-common';
-import { RequireRatchet } from '@bitblit/ratchet-common';
-import { DynamoRatchetLike } from './dynamo-ratchet-like';
+import { ErrorRatchet } from '@bitblit/ratchet-common/lang/error-ratchet.js';
+import { Logger } from '@bitblit/ratchet-common/logger/logger.js';
+import { RequireRatchet } from '@bitblit/ratchet-common/lang/require-ratchet.js';
+import { PromiseRatchet } from '@bitblit/ratchet-common/lang/promise-ratchet.js';
+import { DurationRatchet } from '@bitblit/ratchet-common/lang/duration-ratchet.js';
+import { NumberRatchet } from '@bitblit/ratchet-common/lang/number-ratchet.js';
+
+import { DynamoCountResult } from '../model/dynamo-count-result.js';
+import { DynamoRatchetLike } from './dynamo-ratchet-like.js';
 import {
   AttributeValue,
   BatchGetItemCommandInput,
@@ -39,10 +40,10 @@ import {
   UpdateItemCommand,
   UpdateItemCommandOutput,
 } from '@aws-sdk/client-dynamodb';
-import { DocUpdateItemCommandInput } from '../model/dynamo/doc-update-item-command-input';
-import { DocScanCommandInput } from '../model/dynamo/doc-scan-command-input';
-import { DocQueryCommandInput } from '../model/dynamo/doc-query-command-input';
-import { DocPutItemCommandInput } from '../model/dynamo/doc-put-item-command-input';
+import { DocUpdateItemCommandInput } from '../model/dynamo/doc-update-item-command-input.js';
+import { DocScanCommandInput } from '../model/dynamo/doc-scan-command-input.js';
+import { DocQueryCommandInput } from '../model/dynamo/doc-query-command-input.js';
+import { DocPutItemCommandInput } from '../model/dynamo/doc-put-item-command-input.js';
 
 export class DynamoRatchet implements DynamoRatchetLike {
   constructor(private awsDDB: DynamoDBDocumentClient) {

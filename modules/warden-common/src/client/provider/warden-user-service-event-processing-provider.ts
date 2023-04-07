@@ -1,4 +1,4 @@
-import { WardenLoggedInUserWrapper } from './warden-logged-in-user-wrapper';
+import { WardenLoggedInUserWrapper } from './warden-logged-in-user-wrapper.js';
 
 /**
  * Notifies the containing system when significant events happen

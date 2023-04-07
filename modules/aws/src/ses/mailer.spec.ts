@@ -1,10 +1,10 @@
-import { ReadyToSendEmail } from './ready-to-send-email';
+import { ReadyToSendEmail } from './ready-to-send-email.js';
 import { SendEmailResponse, SendRawEmailCommand, SendRawEmailCommandOutput, SESClient } from '@aws-sdk/client-ses';
-import { Mailer } from './mailer';
-import { EmailAttachment } from './email-attachment';
-import { StringRatchet } from '@bitblit/ratchet-common';
-import { Base64Ratchet } from '@bitblit/ratchet-common';
-import { MailerConfig } from './mailer-config';
+import { Mailer } from './mailer.js';
+import { EmailAttachment } from './email-attachment.js';
+import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet.js';
+import { Base64Ratchet } from '@bitblit/ratchet-common/lang/base64-ratchet.js';
+import { MailerConfig } from './mailer-config.js';
 import { mockClient } from 'aws-sdk-client-mock';
 
 let mockSES;

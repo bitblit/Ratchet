@@ -3,12 +3,12 @@
   approach.
 */
 
-import { SimpleCacheObjectWrapper } from './simple-cache-object-wrapper';
-import { SimpleCacheStorageProvider } from './simple-cache-storage-provider';
-import { RequireRatchet } from '@bitblit/ratchet-common';
-import { DynamoRatchet } from '../dynamodb/dynamo-ratchet';
+import { SimpleCacheObjectWrapper } from './simple-cache-object-wrapper.js';
+import { SimpleCacheStorageProvider } from './simple-cache-storage-provider.js';
+import { RequireRatchet } from '@bitblit/ratchet-common/lang/require-ratchet.js';
+import { DynamoRatchet } from '../dynamodb/dynamo-ratchet.js';
 import { PutItemCommandOutput, ScanCommandInput } from '@aws-sdk/client-dynamodb';
-import { DocQueryCommandInput } from '../model/dynamo/doc-query-command-input';
+import { DocQueryCommandInput } from '../model/dynamo/doc-query-command-input.js';
 
 export class DynamoDbStorageProvider implements SimpleCacheStorageProvider {
   // If hash key is provided, then the cache key is the range, otherwise the cache key is the hash

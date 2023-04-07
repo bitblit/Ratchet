@@ -1,8 +1,8 @@
-import { RouterUtil } from './router-util';
-import { RouteAndParse } from '../web-handler';
+import { RouterUtil } from './router-util.js';
+import { RouteAndParse } from '../web-handler.js';
 import { APIGatewayEvent } from 'aws-lambda';
-import { EpsilonGlobalHandler } from '../../epsilon-global-handler';
-import { SampleServerComponents } from '../../sample/sample-server-components';
+import { EpsilonGlobalHandler } from '../../epsilon-global-handler.js';
+import { SampleServerComponents } from '../../sample/sample-server-components.js';
 
 describe('#routerUtilApplyOpenApiDoc', function () {
   it('should create a router config from a yaml file', async () => {

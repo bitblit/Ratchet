@@ -2,7 +2,7 @@
     Functions for working with strings
 */
 
-import { RequireRatchet } from './require-ratchet';
+import { RequireRatchet } from './require-ratchet.js';
 
 export class StringRatchet {
   // % isn't technically reserved, but it is still a pain in the butt

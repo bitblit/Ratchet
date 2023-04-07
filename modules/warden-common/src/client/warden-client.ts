@@ -1,18 +1,22 @@
 //    Service for interacting with positions for a given user
-import { WardenCommand } from '../common/command/warden-command';
-import { WardenContact } from '../common/model/warden-contact';
-import { WardenCommandExchangeProvider } from './provider/warden-command-exchange-provider';
-import { WardenCommandResponse } from '../common/command/warden-command-response';
-import { ErrorRatchet, Logger, RequireRatchet, StringRatchet } from '@bitblit/ratchet-common';
+import { WardenCommand } from '../common/command/warden-command.js';
+import { WardenContact } from '../common/model/warden-contact.js';
+import { WardenCommandExchangeProvider } from './provider/warden-command-exchange-provider.js';
+import { WardenCommandResponse } from '../common/command/warden-command-response.js';
+
+import { Logger } from '@bitblit/ratchet-common/logger/logger.js';
+import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet.js';
+import { ErrorRatchet } from '@bitblit/ratchet-common/lang/error-ratchet.js';
+import { RequireRatchet } from '@bitblit/ratchet-common/lang/require-ratchet.js';
 import {
   PublicKeyCredentialCreationOptionsJSON,
   PublicKeyCredentialRequestOptionsJSON,
   RegistrationResponseJSON,
 } from '@simplewebauthn/typescript-types';
-import { WardenLoginResults } from '../common/model/warden-login-results';
-import { WardenLoginRequest } from '../common/model/warden-login-request';
-import { WardenClientCurrentLoggedInJwtTokenProvider } from './provider/warden-client-current-logged-in-jwt-token-provider';
-import { WardenEntrySummary } from '../common/model/warden-entry-summary';
+import { WardenLoginResults } from '../common/model/warden-login-results.js';
+import { WardenLoginRequest } from '../common/model/warden-login-request.js';
+import { WardenClientCurrentLoggedInJwtTokenProvider } from './provider/warden-client-current-logged-in-jwt-token-provider.js';
+import { WardenEntrySummary } from '../common/model/warden-entry-summary.js';
 
 export class WardenClient {
   constructor(private commandSender: WardenCommandExchangeProvider, private jwtProvider: WardenClientCurrentLoggedInJwtTokenProvider) {

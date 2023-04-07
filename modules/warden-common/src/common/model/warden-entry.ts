@@ -1,6 +1,5 @@
-import { WardenWebAuthnEntry } from './warden-web-authn-entry';
-import { WardenEntrySummary } from './warden-entry-summary';
-import { WardenContact } from './warden-contact';
+import { WardenWebAuthnEntry } from './warden-web-authn-entry.js';
+import { WardenContact } from './warden-contact.js';
 
 export interface WardenEntry {
   userId: string;

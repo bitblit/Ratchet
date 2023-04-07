@@ -1,5 +1,5 @@
-import { LoggerLevelName } from './logger-level-name';
-import { LogMessage } from './log-message';
+import { LoggerLevelName } from './logger-level-name.js';
+import { LogMessage } from './log-message.js';
 
 export class LogMessageBuilder {
   private wrapped: LogMessage;

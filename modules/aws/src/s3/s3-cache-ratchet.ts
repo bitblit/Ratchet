@@ -17,19 +17,19 @@ import {
   ListObjectsV2CommandInput,
   ListObjectsV2CommandOutput,
   NoSuchKey,
-  PutObjectCommand,
   PutObjectCommandInput,
   PutObjectCommandOutput,
   S3Client,
 } from '@aws-sdk/client-s3';
-import { Logger } from '@bitblit/ratchet-common';
-import { RequireRatchet } from '@bitblit/ratchet-common';
-import { StopWatch } from '@bitblit/ratchet-common';
+import { Logger } from '@bitblit/ratchet-common/logger/logger.js';
+import { RequireRatchet } from '@bitblit/ratchet-common/lang/require-ratchet.js';
+import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet.js';
+import { StopWatch } from '@bitblit/ratchet-common/lang/stop-watch.js';
+import { StreamRatchet } from '@bitblit/ratchet-common/stream/stream-ratchet.js';
+
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { Upload } from '@aws-sdk/lib-storage';
 import { Readable } from 'stream';
-import { StringRatchet } from '@bitblit/ratchet-common';
-import { StreamRatchet } from '@bitblit/ratchet-common';
 
 export class S3CacheRatchet {
   constructor(private s3: S3Client, private defaultBucket: string = null) {

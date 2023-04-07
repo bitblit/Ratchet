@@ -1,8 +1,8 @@
-import { Logger } from '@bitblit/ratchet-common';
-import { RequireRatchet } from '@bitblit/ratchet-common';
-import { ErrorRatchet } from '@bitblit/ratchet-common';
-import { EnvironmentServiceProvider } from './environment-service-provider';
-import { StringRatchet } from '@bitblit/ratchet-common';
+import { ErrorRatchet } from '@bitblit/ratchet-common/lang/error-ratchet.js';
+import { Logger } from '@bitblit/ratchet-common/logger/logger.js';
+import { RequireRatchet } from '@bitblit/ratchet-common/lang/require-ratchet.js';
+import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet.js';
+import { EnvironmentServiceProvider } from './environment-service-provider.js';
 
 /**
  * Service for reading environmental variables
@@ -17,7 +17,7 @@ export class EnvVarEnvironmentServiceProvider<T> implements EnvironmentServicePr
     Logger.silly('EnvVarEnvironmentServiceProvider fetch for %s', this.envVarName);
 
     let rval: T = null;
-    const src: Record<string,any> = process? process.env : global ? global : {};
+    const src: Record<string, any> = process ? process.env : global ? global : {};
     const toParse: string = StringRatchet.trimToNull(src[this.envVarName]);
 
     // If we reach here with a string result, try to parse it

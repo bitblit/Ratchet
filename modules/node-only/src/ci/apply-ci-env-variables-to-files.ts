@@ -1,7 +1,10 @@
 import fs from 'fs';
-import { ErrorRatchet, Logger, RequireRatchet, StringRatchet } from '@bitblit/ratchet-common';
-import { CiRunInformation } from './ci-run-information';
-import { CiRunInformationUtil } from './ci-run-information-util';
+import { ErrorRatchet } from '@bitblit/ratchet-common/lang/error-ratchet.js';
+import { Logger } from '@bitblit/ratchet-common/logger/logger.js';
+import { RequireRatchet } from '@bitblit/ratchet-common/lang/require-ratchet.js';
+import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet.js';
+import { CiRunInformation } from './ci-run-information.js';
+import { CiRunInformationUtil } from './ci-run-information-util.js';
 
 export class ApplyCiEnvVariablesToFiles {
   public static async process(

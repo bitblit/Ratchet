@@ -1,6 +1,6 @@
-import { Logger } from '@bitblit/ratchet-common';
-import { EpsilonGlobalHandler } from '../epsilon-global-handler';
-import { BooleanRatchet } from '@bitblit/ratchet-common';
+import { Logger } from '@bitblit/ratchet-common/logger/logger.js';
+import { EpsilonGlobalHandler } from '../epsilon-global-handler.js';
+import { BooleanRatchet } from '@bitblit/ratchet-common/lang/boolean-ratchet.js';
 
 /**
  * IMPORTANT NOTE

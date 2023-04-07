@@ -1,6 +1,7 @@
-import { NumberRatchet, SinglesAndRanges } from './number-ratchet';
+import { NumberRatchet, SinglesAndRanges } from './number-ratchet.js';
 import fs from 'fs';
 import path from 'path';
+import { EsmRatchet } from './esm-ratchet.js';
 
 describe('#toFixedDecimalNumber', function () {
   it('should convert "5.1234 to 5.12', function () {
@@ -98,7 +99,9 @@ describe('#fitToWindow', function () {
 
 describe('#groupNumbersIntoContiguousRanges', function () {
   it('should group numbers', function () {
-    let input: number[] = JSON.parse(fs.readFileSync(path.join(__dirname, '../../../../test-data/number_set.json')).toString());
+    let input: number[] = JSON.parse(
+      fs.readFileSync(path.join(EsmRatchet.fetchDirName(), '../../../../test-data/number_set.json')).toString()
+    );
     input = input.map((i) => NumberRatchet.safeNumber(i));
     const grouped: SinglesAndRanges = NumberRatchet.groupNumbersIntoContiguousRanges(input, 5);
     expect(grouped).toBeTruthy();

@@ -1,6 +1,6 @@
-import { RouteMapping } from '../../http/route/route-mapping';
-import { EpsilonAuthorizationContext } from './epsilon-authorization-context';
-import { ExtendedAPIGatewayEvent } from './extended-api-gateway-event';
+import { RouteMapping } from '../../http/route/route-mapping.js';
+import { EpsilonAuthorizationContext } from './epsilon-authorization-context.js';
+import { ExtendedAPIGatewayEvent } from './extended-api-gateway-event.js';
 
 export interface AuthorizerFunction {
   (authData: EpsilonAuthorizationContext<any>, event?: ExtendedAPIGatewayEvent, route?: RouteMapping): Promise<boolean>;

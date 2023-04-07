@@ -1,4 +1,5 @@
-import { GoogleRecaptchaRatchet } from './google-recaptcha-ratchet';
+import { GoogleRecaptchaRatchet } from './google-recaptcha-ratchet.js';
+import { jest } from '@jest/globals';
 
 const fakeFetch = jest.fn((input, init) =>
   Promise.resolve({

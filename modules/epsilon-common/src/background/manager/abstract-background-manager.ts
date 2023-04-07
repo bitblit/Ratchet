@@ -1,11 +1,12 @@
-import { ErrorRatchet, Logger } from '@bitblit/ratchet-common';
-import { StringRatchet } from '@bitblit/ratchet-common';
-import { BackgroundEntry } from '../background-entry';
-import { InternalBackgroundEntry } from '../internal-background-entry';
+import { ErrorRatchet } from '@bitblit/ratchet-common/lang/error-ratchet.js';
+import { Logger } from '@bitblit/ratchet-common/logger/logger.js';
+import { RequireRatchet } from '@bitblit/ratchet-common/lang/require-ratchet.js';
+import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet.js';
+import { BackgroundEntry } from '../background-entry.js';
+import { InternalBackgroundEntry } from '../internal-background-entry.js';
 import { DateTime } from 'luxon';
-import { RequireRatchet } from '@bitblit/ratchet-common';
-import { ContextUtil } from '../../util/context-util';
-import { BackgroundManagerLike } from './background-manager-like';
+import { ContextUtil } from '../../util/context-util.js';
+import { BackgroundManagerLike } from './background-manager-like.js';
 
 /**
  * Handles all submission of work to the background processing system.

@@ -1,4 +1,4 @@
-import { HttpProcessingConfig } from './http-processing-config';
+import { HttpProcessingConfig } from './http-processing-config.js';
 
 export interface MappedHttpProcessingConfig {
   // If set and nonempty, only verbs in this list will match

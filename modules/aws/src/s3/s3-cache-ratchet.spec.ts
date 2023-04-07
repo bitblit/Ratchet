@@ -9,9 +9,12 @@ import {
   S3Client,
   UploadPartCommand,
 } from '@aws-sdk/client-s3';
-import { S3CacheRatchet } from './s3-cache-ratchet';
-import { Logger, StreamRatchet, StringRatchet } from '@bitblit/ratchet-common';
+import { S3CacheRatchet } from './s3-cache-ratchet.js';
+import { Logger } from '@bitblit/ratchet-common/logger/logger.js';
+import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet.js';
+import { StreamRatchet } from '@bitblit/ratchet-common/stream/stream-ratchet.js';
 import { mockClient } from 'aws-sdk-client-mock';
+import { jest } from '@jest/globals';
 
 jest.mock('@aws-sdk/s3-request-presigner', () => ({
   getSignedUrl: jest.fn(() => Promise.resolve('https://test.link/test.jpg')),

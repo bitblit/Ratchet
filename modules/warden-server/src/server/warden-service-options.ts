@@ -1,9 +1,9 @@
-import { WardenStorageProvider } from './provider/warden-storage-provider';
-import { WardenMessageSendingProvider } from './provider/warden-message-sending-provider';
-import { ExpiringCodeProvider } from '@bitblit/ratchet-aws';
-import { JwtRatchetLike } from '@bitblit/ratchet-common';
-import { WardenUserDecorationProvider } from './provider/warden-user-decoration-provider';
-import { WardenEventProcessingProvider } from './provider/warden-event-processing-provider';
+import { WardenStorageProvider } from './provider/warden-storage-provider.js';
+import { WardenMessageSendingProvider } from './provider/warden-message-sending-provider.js';
+import { ExpiringCodeProvider } from '@bitblit/ratchet-aws/expiring-code/expiring-code-provider.js';
+import { JwtRatchetLike } from '@bitblit/ratchet-common/jwt/jwt-ratchet-like.js';
+import { WardenUserDecorationProvider } from './provider/warden-user-decoration-provider.js';
+import { WardenEventProcessingProvider } from './provider/warden-event-processing-provider.js';
 
 export interface WardenServiceOptions {
   // Human-readable title for your website

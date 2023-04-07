@@ -1,7 +1,8 @@
 import { ParsedMail, simpleParser } from 'mailparser';
 import { Readable, ReadableOptions } from 'stream';
-import { S3CacheRatchet } from '@bitblit/ratchet-aws';
-import { Logger, RequireRatchet } from '@bitblit/ratchet-common';
+import { S3CacheRatchet } from '@bitblit/ratchet-aws/s3/s3-cache-ratchet.js';
+import { Logger } from '@bitblit/ratchet-common/logger/logger.js';
+import { RequireRatchet } from '@bitblit/ratchet-common/lang/require-ratchet.js';
 
 /**
  * Service for handling inbound emails

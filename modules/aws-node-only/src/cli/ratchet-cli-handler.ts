@@ -1,8 +1,8 @@
-import { AbstractRatchetCliHandler } from '@bitblit/ratchet-node-only';
-import { SiteUploader } from './site-uploader/site-uploader';
-import { StartInstanceAndSsh } from './start-instance-and-ssh';
-import { BuildInformation } from '@bitblit/ratchet-common/dist/types/build/build-information';
-import { RatchetAwsNodeOnlyInfo } from '../build/ratchet-aws-node-only-info';
+import { AbstractRatchetCliHandler } from '@bitblit/ratchet-node-only/cli/abstract-ratchet-cli-handler.js';
+import { SiteUploader } from './site-uploader/site-uploader.js';
+import { StartInstanceAndSsh } from './start-instance-and-ssh.js';
+import { BuildInformation } from '@bitblit/ratchet-common/build/build-information.js';
+import { RatchetAwsNodeOnlyInfo } from '../build/ratchet-aws-node-only-info.js';
 
 export class RatchetCliHandler extends AbstractRatchetCliHandler {
   fetchHandlerMap(): Record<string, any> {

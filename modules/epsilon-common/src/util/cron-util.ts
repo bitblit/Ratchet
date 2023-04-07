@@ -1,10 +1,10 @@
-import { RequireRatchet } from '@bitblit/ratchet-common';
-import { ErrorRatchet } from '@bitblit/ratchet-common';
+import { RequireRatchet } from '@bitblit/ratchet-common/lang/require-ratchet.js';
+import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet.js';
+import { ErrorRatchet } from '@bitblit/ratchet-common/lang/error-ratchet.js';
 import { ScheduledEvent } from 'aws-lambda';
 import { DateTime } from 'luxon';
-import { StringRatchet } from '@bitblit/ratchet-common';
-import { AbstractCronEntry } from '../config/cron/abstract-cron-entry';
-import { CronConfig } from '../config/cron/cron-config';
+import { AbstractCronEntry } from '../config/cron/abstract-cron-entry.js';
+import { CronConfig } from '../config/cron/cron-config.js';
 
 export class CronUtil {
   public static everyNMinuteFilter(n: number): number[] {

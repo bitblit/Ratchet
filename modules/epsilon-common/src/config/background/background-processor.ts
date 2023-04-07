@@ -1,4 +1,4 @@
-import { BackgroundManagerLike } from '../../background/manager/background-manager-like';
+import { BackgroundManagerLike } from '../../background/manager/background-manager-like.js';
 
 export interface BackgroundProcessor<T> {
   typeName: string; // The name for this processor

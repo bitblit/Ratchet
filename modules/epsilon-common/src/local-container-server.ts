@@ -1,9 +1,11 @@
 import { APIGatewayEvent, Context, ProxyResult } from 'aws-lambda';
-import { Logger, LoggerLevelName, StringRatchet } from '@bitblit/ratchet-common';
+import { Logger } from '@bitblit/ratchet-common/logger/logger.js';
+import { LoggerLevelName } from '@bitblit/ratchet-common/logger/logger-level-name.js';
 import http, { IncomingMessage, Server, ServerResponse } from 'http';
-import { EventUtil } from './http/event-util';
+import { EventUtil } from './http/event-util.js';
 import fetch from 'cross-fetch';
-import { LocalServer } from './local-server';
+import { LocalServer } from './local-server.js';
+import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet.js';
 
 /**
  * A simplistic server for testing your lambdas locally
@@ -64,15 +66,15 @@ export class LocalContainerServer {
     }
   }
 
-
   public static async runFromCliArgs(args: string[]): Promise<void> {
-    try{
-    Logger.setLevel(LoggerLevelName.debug);
-    Logger.debug('Running local container server : %j', process?.argv);
-    const testServer: LocalContainerServer = new LocalContainerServer();
-    await testServer.runServer();
-    Logger.info('Got res server');
-    process.exit(0);}catch(err) {
+    try {
+      Logger.setLevel(LoggerLevelName.debug);
+      Logger.debug('Running local container server : %j', process?.argv);
+      const testServer: LocalContainerServer = new LocalContainerServer();
+      await testServer.runServer();
+      Logger.info('Got res server');
+      process.exit(0);
+    } catch (err) {
       Logger.error('Error : %s', err);
       process.exit(1);
     }

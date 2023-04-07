@@ -9,7 +9,7 @@
  *
  * Note: other interfaces can extend this token to gain more functionality
  */
-import { JwtTokenBase } from './jwt-token-base';
+import { JwtTokenBase } from './jwt-token-base.js';
 
 export interface CommonJwtToken<T> extends JwtTokenBase {
   user: T; // Data for the authenticated user

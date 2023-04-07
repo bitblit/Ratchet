@@ -1,4 +1,4 @@
-import { BackgroundExecutionEventType } from './background-execution-event-type';
+import { BackgroundExecutionEventType } from './background-execution-event-type.js';
 
 export interface BackgroundExecutionEvent<T> {
   type: BackgroundExecutionEventType;

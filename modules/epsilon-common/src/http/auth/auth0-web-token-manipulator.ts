@@ -1,7 +1,9 @@
-import { JwtTokenBase, Logger, StringRatchet } from '@bitblit/ratchet-common';
+import { Logger } from '@bitblit/ratchet-common/logger/logger.js';
+import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet.js';
+import { JwtTokenBase } from '@bitblit/ratchet-common/jwt/jwt-token-base.js';
 import jwt from 'jsonwebtoken';
 import jwks from 'jwks-rsa';
-import { WebTokenManipulator } from './web-token-manipulator';
+import { WebTokenManipulator } from './web-token-manipulator.js';
 
 export class Auth0WebTokenManipulator implements WebTokenManipulator<JwtTokenBase> {
   private jwksClient: any;

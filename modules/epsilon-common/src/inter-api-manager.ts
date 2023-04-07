@@ -1,8 +1,8 @@
-import { Logger } from '@bitblit/ratchet-common';
-import { EpsilonConstants } from './epsilon-constants';
-import { InterApiEntry } from './inter-api/inter-api-entry';
-import { InterApiAwsConfig } from './config/inter-api/inter-api-aws-config';
-import { InterApiUtil } from './inter-api/inter-api-util';
+import { Logger } from '@bitblit/ratchet-common/logger/logger.js';
+import { EpsilonConstants } from './epsilon-constants.js';
+import { InterApiEntry } from './inter-api/inter-api-entry.js';
+import { InterApiAwsConfig } from './config/inter-api/inter-api-aws-config.js';
+import { InterApiUtil } from './inter-api/inter-api-util.js';
 import { PublishCommand, PublishCommandOutput, SNSClient } from '@aws-sdk/client-sns';
 
 /**

@@ -1,4 +1,4 @@
-import { GenericAwsEventHandlerFunction } from './generic-aws-event-handler-function';
+import { GenericAwsEventHandlerFunction } from './generic-aws-event-handler-function.js';
 import { DynamoDBStreamEvent } from 'aws-lambda';
 
 export interface DynamoDbConfig {

@@ -1,4 +1,4 @@
-import { WardenLoginRequest } from './warden-login-request';
+import { WardenLoginRequest } from './warden-login-request.js';
 
 export interface WardenLoginResults {
   request: WardenLoginRequest;

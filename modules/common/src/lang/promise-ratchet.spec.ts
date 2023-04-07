@@ -1,7 +1,7 @@
-import { PromiseRatchet } from './promise-ratchet';
-import { Logger } from '../logger/logger';
-import { TimeoutToken } from './timeout-token';
-import { LoggerLevelName } from '../logger/logger-level-name';
+import { PromiseRatchet } from './promise-ratchet.js';
+import { Logger } from '../logger/logger.js';
+import { TimeoutToken } from './timeout-token.js';
+import { LoggerLevelName } from '../logger/logger-level-name.js';
 
 const fnFalse = (ignored) => {
   return false;

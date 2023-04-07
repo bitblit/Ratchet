@@ -1,7 +1,7 @@
-import { LogMessage } from './log-message';
-import { LogSnapshot } from './log-snapshot';
-import { Logger } from './logger';
-import { LoggerLevelName } from './logger-level-name';
+import { LogMessage } from './log-message.js';
+import { LogSnapshot } from './log-snapshot.js';
+import { Logger } from './logger.js';
+import { LoggerLevelName } from './logger-level-name.js';
 
 export class LoggerRingBuffer {
   private _lastLogMessage: LogMessage = { messageSource: 'No message yet', timestamp: new Date().getTime(), lvl: LoggerLevelName.info };

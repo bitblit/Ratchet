@@ -1,4 +1,4 @@
-import { InternalBackgroundEntry } from '../../background/internal-background-entry';
+import { InternalBackgroundEntry } from '../../background/internal-background-entry.js';
 
 export interface BackgroundTransactionLog {
   request: InternalBackgroundEntry<any>;

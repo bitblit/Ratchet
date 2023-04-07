@@ -1,9 +1,9 @@
-import { StringRatchet } from '@bitblit/ratchet-common';
-import { Logger } from '@bitblit/ratchet-common';
-import { PromiseRatchet } from '@bitblit/ratchet-common';
-import { RequireRatchet } from '@bitblit/ratchet-common';
+import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet.js';
+import { Logger } from '@bitblit/ratchet-common/logger/logger.js';
+import { PromiseRatchet } from '@bitblit/ratchet-common/lang/promise-ratchet.js';
+import { RequireRatchet } from '@bitblit/ratchet-common/lang/require-ratchet.js';
 import fs, { WriteStream } from 'fs';
-import { DynamoRatchet } from '@bitblit/ratchet-aws';
+import { DynamoRatchet } from '@bitblit/ratchet-aws/dynamodb/dynamo-ratchet.js';
 import readline from 'readline';
 import { QueryCommandInput, ScanCommandInput } from '@aws-sdk/client-dynamodb';
 

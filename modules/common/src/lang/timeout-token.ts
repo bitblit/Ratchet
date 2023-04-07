@@ -1,5 +1,5 @@
-import { Logger } from '../logger/logger';
-import { LoggerLevelName } from '../logger/logger-level-name';
+import { Logger } from '../logger/logger.js';
+import { LoggerLevelName } from '../logger/logger-level-name.js';
 
 export class TimeoutToken {
   private __timeoutTokenFlagField = true;

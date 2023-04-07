@@ -1,6 +1,6 @@
-import { JwtTokenBase } from './jwt-token-base';
-import { LoggerLevelName } from '../logger/logger-level-name';
-import { ExpiredJwtHandling } from './expired-jwt-handling';
+import { JwtTokenBase } from './jwt-token-base.js';
+import { LoggerLevelName } from '../logger/logger-level-name.js';
+import { ExpiredJwtHandling } from './expired-jwt-handling.js';
 
 /**
  * Classes implementing this interface have Functions to help with creating and decoding JWTs

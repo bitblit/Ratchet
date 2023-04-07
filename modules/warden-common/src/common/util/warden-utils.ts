@@ -1,10 +1,12 @@
-import { WardenContact } from '../model/warden-contact';
-import { WardenContactType } from '../model/warden-contact-type';
-import { Logger, StringRatchet } from '@bitblit/ratchet-common';
-import { WardenEntrySummary } from '../model/warden-entry-summary';
-import { WardenEntry } from '../model/warden-entry';
-import { WardenLoginRequest } from '../model/warden-login-request';
-import { WardenTeamRole } from '../model/warden-team-role';
+import { WardenContact } from '../model/warden-contact.js';
+import { WardenContactType } from '../model/warden-contact-type.js';
+
+import { Logger } from '@bitblit/ratchet-common/logger/logger.js';
+import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet.js';
+import { WardenEntrySummary } from '../model/warden-entry-summary.js';
+import { WardenEntry } from '../model/warden-entry.js';
+import { WardenLoginRequest } from '../model/warden-login-request.js';
+import { WardenTeamRole } from '../model/warden-team-role.js';
 
 export class WardenUtils {
   // Prevent instantiation

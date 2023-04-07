@@ -1,7 +1,7 @@
-import { Logger } from '@bitblit/ratchet-common';
-import { BackgroundProcessor } from '../../config/background/background-processor';
-import { EchoProcessor } from './echo-processor';
-import { BackgroundManagerLike } from '../../background/manager/background-manager-like';
+import { Logger } from '@bitblit/ratchet-common/logger/logger.js';
+import { BackgroundProcessor } from '../../config/background/background-processor.js';
+import { EchoProcessor } from './echo-processor.js';
+import { BackgroundManagerLike } from '../../background/manager/background-manager-like.js';
 
 export class LogAndEnqueueEchoProcessor implements BackgroundProcessor<any> {
   public get typeName(): string {

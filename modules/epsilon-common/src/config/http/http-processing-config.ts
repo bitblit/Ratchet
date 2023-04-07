@@ -1,5 +1,5 @@
-import { NullReturnedObjectHandling } from './null-returned-object-handling';
-import { FilterFunction } from './filter-function';
+import { NullReturnedObjectHandling } from './null-returned-object-handling.js';
+import { FilterFunction } from './filter-function.js';
 
 export interface HttpProcessingConfig {
   // If set, used in logging to help debugging

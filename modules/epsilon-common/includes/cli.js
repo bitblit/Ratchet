@@ -1,7 +1,7 @@
 #!/usr/bin/env node
-const ALL_CJS = require('../dist/cjs');
+import { RatchetCliHandler } from '../dist/cli-bootstrap/ratchet-cli-handler.js';
 
-new ALL_CJS.RatchetCliHandler()
+new RatchetCliHandler()
   .findAndExecuteHandler()
   .then(() => {
     // Do nothing

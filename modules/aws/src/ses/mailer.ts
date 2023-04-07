@@ -1,15 +1,15 @@
-import { ReadyToSendEmail } from './ready-to-send-email';
-import { Logger } from '@bitblit/ratchet-common';
+import { ReadyToSendEmail } from './ready-to-send-email.js';
+import { ErrorRatchet } from '@bitblit/ratchet-common/lang/error-ratchet.js';
+import { Logger } from '@bitblit/ratchet-common/logger/logger.js';
+import { RequireRatchet } from '@bitblit/ratchet-common/lang/require-ratchet.js';
+import { Base64Ratchet } from '@bitblit/ratchet-common/lang/base64-ratchet.js';
+import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet.js';
 import { SendRawEmailCommand, SendRawEmailCommandOutput, SendRawEmailRequest, SendRawEmailResponse, SESClient } from '@aws-sdk/client-ses';
-import { StringRatchet } from '@bitblit/ratchet-common';
-import { MailerConfig } from './mailer-config';
-import { ErrorRatchet } from '@bitblit/ratchet-common';
-import { ResolvedReadyToSendEmail } from './resolved-ready-to-send-email';
-import { EmailAttachment } from './email-attachment';
+import { MailerConfig } from './mailer-config.js';
+import { ResolvedReadyToSendEmail } from './resolved-ready-to-send-email.js';
+import { EmailAttachment } from './email-attachment.js';
 import { DateTime } from 'luxon';
-import { Base64Ratchet } from '@bitblit/ratchet-common';
-import { MailerLike } from './mailer-like';
-import { RequireRatchet } from '@bitblit/ratchet-common';
+import { MailerLike } from './mailer-like.js';
 
 /**
  * Generic Mail Sender for AWS.

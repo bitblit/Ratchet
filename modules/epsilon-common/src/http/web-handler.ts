@@ -1,21 +1,21 @@
-import { EpsilonRouter } from './route/epsilon-router';
+import { EpsilonRouter } from './route/epsilon-router.js';
 import { APIGatewayEvent, Context, ProxyResult } from 'aws-lambda';
-import { Logger } from '@bitblit/ratchet-common';
+import { Logger } from '@bitblit/ratchet-common/logger/logger.js';
 import Route from 'route-parser';
-import { RouteMapping } from './route/route-mapping';
-import { ResponseUtil } from './response-util';
-import { ExtendedAPIGatewayEvent } from '../config/http/extended-api-gateway-event';
-import { RequireRatchet } from '@bitblit/ratchet-common';
-import { EpsilonHttpError } from './error/epsilon-http-error';
-import { BuiltInFilters } from '../built-in/http/built-in-filters';
-import { HttpProcessingConfig } from '../config/http/http-processing-config';
-import { FilterFunction } from '../config/http/filter-function';
-import { RunHandlerAsFilter } from '../built-in/http/run-handler-as-filter';
-import { FilterChainContext } from '../config/http/filter-chain-context';
-import { ContextUtil } from '../util/context-util';
-import { EpsilonLambdaEventHandler } from '../config/epsilon-lambda-event-handler';
-import { StringRatchet } from '@bitblit/ratchet-common';
-import { LambdaEventDetector } from '@bitblit/ratchet-aws';
+import { RouteMapping } from './route/route-mapping.js';
+import { ResponseUtil } from './response-util.js';
+import { ExtendedAPIGatewayEvent } from '../config/http/extended-api-gateway-event.js';
+import { RequireRatchet } from '@bitblit/ratchet-common/lang/require-ratchet.js';
+import { EpsilonHttpError } from './error/epsilon-http-error.js';
+import { BuiltInFilters } from '../built-in/http/built-in-filters.js';
+import { HttpProcessingConfig } from '../config/http/http-processing-config.js';
+import { FilterFunction } from '../config/http/filter-function.js';
+import { RunHandlerAsFilter } from '../built-in/http/run-handler-as-filter.js';
+import { FilterChainContext } from '../config/http/filter-chain-context.js';
+import { ContextUtil } from '../util/context-util.js';
+import { EpsilonLambdaEventHandler } from '../config/epsilon-lambda-event-handler.js';
+import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet.js';
+import { LambdaEventDetector } from '@bitblit/ratchet-aws/lambda/lambda-event-detector.js';
 
 /**
  * This class functions as the adapter from a default lambda function to the handlers exposed via Epsilon

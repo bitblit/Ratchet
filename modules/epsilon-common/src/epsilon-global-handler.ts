@@ -1,31 +1,29 @@
 import { Context, ProxyResult } from 'aws-lambda';
-import { Logger } from '@bitblit/ratchet-common';
-import { EventUtil } from './http/event-util';
-import { BackgroundEntry } from './background/background-entry';
-import { EpsilonInstance } from './epsilon-instance';
-import { TimeoutToken } from '@bitblit/ratchet-common';
-import { PromiseRatchet } from '@bitblit/ratchet-common';
-import { ResponseUtil } from './http/response-util';
-import { EpsilonHttpError } from './http/error/epsilon-http-error';
-import { RequestTimeoutError } from './http/error/request-timeout-error';
-import { InternalBackgroundEntry } from './background/internal-background-entry';
-import {
-  ErrorRatchet,
-  LoggerLevelName,
-  LoggerOptions,
-  LoggerOutputFunction,
-  LogMessageFormatType,
-  LogMessageProcessor,
-} from '@bitblit/ratchet-common';
-import { ContextUtil } from './util/context-util';
-import { EpsilonLambdaEventHandler } from './config/epsilon-lambda-event-handler';
-import { WebV2Handler } from './http/web-v2-handler';
-import { InterApiEpsilonLambdaEventHandler } from './lambda-event-handler/inter-api-epsilon-lambda-event-handler';
-import { GenericSnsEpsilonLambdaEventHandler } from './lambda-event-handler/generic-sns-epsilon-lambda-event-handler';
-import { CronEpsilonLambdaEventHandler } from './lambda-event-handler/cron-epsilon-lambda-event-handler';
-import { S3EpsilonLambdaEventHandler } from './lambda-event-handler/s3-epsilon-lambda-event-handler';
-import { DynamoEpsilonLambdaEventHandler } from './lambda-event-handler/dynamo-epsilon-lambda-event-handler';
-import { EpsilonLoggingExtensionProcessor } from './epsilon-logging-extension-processor';
+import { Logger } from '@bitblit/ratchet-common/logger/logger.js';
+import { EventUtil } from './http/event-util.js';
+import { BackgroundEntry } from './background/background-entry.js';
+import { EpsilonInstance } from './epsilon-instance.js';
+import { ErrorRatchet } from '@bitblit/ratchet-common/lang/error-ratchet.js';
+import { LogMessageProcessor } from '@bitblit/ratchet-common/logger/log-message-processor.js';
+import { LoggerLevelName } from '@bitblit/ratchet-common/logger/logger-level-name.js';
+import { LogMessageFormatType } from '@bitblit/ratchet-common/logger/log-message-format-type.js';
+import { PromiseRatchet } from '@bitblit/ratchet-common/lang/promise-ratchet.js';
+import { TimeoutToken } from '@bitblit/ratchet-common/lang/timeout-token.js';
+import { ResponseUtil } from './http/response-util.js';
+import { EpsilonHttpError } from './http/error/epsilon-http-error.js';
+import { RequestTimeoutError } from './http/error/request-timeout-error.js';
+import { InternalBackgroundEntry } from './background/internal-background-entry.js';
+import { ContextUtil } from './util/context-util.js';
+import { EpsilonLambdaEventHandler } from './config/epsilon-lambda-event-handler.js';
+import { WebV2Handler } from './http/web-v2-handler.js';
+import { InterApiEpsilonLambdaEventHandler } from './lambda-event-handler/inter-api-epsilon-lambda-event-handler.js';
+import { GenericSnsEpsilonLambdaEventHandler } from './lambda-event-handler/generic-sns-epsilon-lambda-event-handler.js';
+import { CronEpsilonLambdaEventHandler } from './lambda-event-handler/cron-epsilon-lambda-event-handler.js';
+import { S3EpsilonLambdaEventHandler } from './lambda-event-handler/s3-epsilon-lambda-event-handler.js';
+import { DynamoEpsilonLambdaEventHandler } from './lambda-event-handler/dynamo-epsilon-lambda-event-handler.js';
+import { EpsilonLoggingExtensionProcessor } from './epsilon-logging-extension-processor.js';
+import { LoggerOptions } from '@bitblit/ratchet-common/logger/logger-options.js';
+import { LoggerOutputFunction } from '@bitblit/ratchet-common/logger/logger-output-function.js';
 
 /**
  * This class functions as the adapter from a default Lambda function to the handlers exposed via Epsilon

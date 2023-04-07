@@ -1,6 +1,7 @@
-import { CloudWatchMetricsRatchet } from './cloud-watch-metrics-ratchet';
-import { KeyValue } from '@bitblit/ratchet-common';
-import { CloudWatchMetricsUnit } from '../model/cloud-watch-metrics-unit';
+import { CloudWatchMetricsRatchet } from './cloud-watch-metrics-ratchet.js';
+import { KeyValue } from '@bitblit/ratchet-common/lang/key-value.js';
+
+import { CloudWatchMetricsUnit } from '../model/cloud-watch-metrics-unit.js';
 import { CloudWatchClient, PutMetricDataCommand } from '@aws-sdk/client-cloudwatch';
 import { mockClient } from 'aws-sdk-client-mock';
 

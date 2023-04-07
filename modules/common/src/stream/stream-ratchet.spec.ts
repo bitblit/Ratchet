@@ -1,5 +1,5 @@
 import { Readable } from 'stream';
-import { StreamRatchet } from './stream-ratchet';
+import { StreamRatchet } from './stream-ratchet.js';
 
 describe('#StreamRatchet', function () {
   it('should wrap a string in a readable', async () => {

@@ -1,4 +1,4 @@
-import { AbstractCronEntry } from './abstract-cron-entry';
+import { AbstractCronEntry } from './abstract-cron-entry.js';
 
 /**
   of 2020-04-30, my recommendation is that CRON should be used ONLY to fire

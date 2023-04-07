@@ -1,15 +1,15 @@
-import { EpsilonLambdaEventHandler } from '../config/epsilon-lambda-event-handler';
+import { EpsilonLambdaEventHandler } from '../config/epsilon-lambda-event-handler.js';
 import { Context, ProxyResult, ScheduledEvent } from 'aws-lambda';
-import { Logger } from '@bitblit/ratchet-common';
-import { AwsUtil } from '../util/aws-util';
-import { EpsilonInstance } from '../epsilon-instance';
-import { CronConfig } from '../config/cron/cron-config';
-import { BackgroundHandler } from '../background/background-handler';
-import { BackgroundEntry } from '../background/background-entry';
-import { CronBackgroundEntry } from '../config/cron/cron-background-entry';
-import { CronUtil } from '../util/cron-util';
-import { BackgroundManagerLike } from '../background/manager/background-manager-like';
-import { LambdaEventDetector } from '@bitblit/ratchet-aws';
+import { Logger } from '@bitblit/ratchet-common/logger/logger.js';
+import { AwsUtil } from '../util/aws-util.js';
+import { EpsilonInstance } from '../epsilon-instance.js';
+import { CronConfig } from '../config/cron/cron-config.js';
+import { BackgroundHandler } from '../background/background-handler.js';
+import { BackgroundEntry } from '../background/background-entry.js';
+import { CronBackgroundEntry } from '../config/cron/cron-background-entry.js';
+import { CronUtil } from '../util/cron-util.js';
+import { BackgroundManagerLike } from '../background/manager/background-manager-like.js';
+import { LambdaEventDetector } from '@bitblit/ratchet-aws/lambda/lambda-event-detector.js';
 
 export class CronEpsilonLambdaEventHandler implements EpsilonLambdaEventHandler<ScheduledEvent> {
   constructor(private _epsilon: EpsilonInstance) {}

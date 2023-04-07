@@ -1,8 +1,6 @@
-import fs from 'fs';
-import path from 'path';
-import { OpenApiDocModifications } from './open-api-doc-modifications';
-import { OpenApiDocModifier } from './open-api-doc-modifier';
-import { SampleServerStaticFiles } from '../sample/sample-server-static-files';
+import { OpenApiDocModifications } from './open-api-doc-modifications.js';
+import { OpenApiDocModifier } from './open-api-doc-modifier.js';
+import { SampleServerStaticFiles } from '../sample/sample-server-static-files.js';
 
 describe('#openApiDocModifier', function () {
   it('should exist', async () => {

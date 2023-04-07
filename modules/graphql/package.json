@@ -3,11 +3,14 @@
   "version": "0.0.0",
   "description": "Ratchet tools to simplify use of graphql",
   "sideEffects": false,
-  "main": "./dist/cjs/index.js",
-  "module": "./dist/esm/index.js",
-  "types": "./dist/types/index.d.ts",
+  "type": "module",
+  "type": "module",
+  "exports": {
+    "./": "./dist/"
+  },
   "files": [
-    "dist/*"
+    "dist/*",
+    "includes/*"
   ],
   "contributors": [
     "Christopher Weiss <bitblit@gmail.com>",
@@ -31,12 +34,13 @@
   "scripts": {
     "watch": "tsc-watch",
     "clean": "shx rm -Rf dist",
-    "test": "jest",
+    "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest",
     "docs": "typedoc",
     "lint": "eslint src/**/*.ts",
     "lint-fix": "eslint --fix src/**/*.ts",
-    "generate-barrels": "barrelsby -q --delete -d src -e .*\\.spec\\.ts",
-    "build": "yarn run generate-barrels && tsc"
+    "__generate-barrels": "barrelsby -q --delete -d src -e .*\\.spec\\.ts",
+    "__build": "yarn run generate-barrels && tsc",
+    "build": "tsc"
   },
   "repository": {
     "type": "git",

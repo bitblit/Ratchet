@@ -1,11 +1,12 @@
-import { DynamoRuntimeParameterProvider } from './dynamo-runtime-parameter-provider';
-import { DynamoRatchet } from '../dynamodb/dynamo-ratchet';
-import { StoredRuntimeParameter } from './stored-runtime-parameter';
-import { JestRatchet } from '@bitblit/ratchet-jest';
-import { LoggerLevelName } from '@bitblit/ratchet-common';
-import { Logger } from '@bitblit/ratchet-common';
-import { RuntimeParameterRatchet } from './runtime-parameter-ratchet';
-import { GlobalVariableOverrideRuntimeParameterProvider } from './global-variable-override-runtime-parameter-provider';
+import { DynamoRuntimeParameterProvider } from './dynamo-runtime-parameter-provider.js';
+import { DynamoRatchet } from '../dynamodb/dynamo-ratchet.js';
+import { StoredRuntimeParameter } from './stored-runtime-parameter.js';
+import { JestRatchet } from '@bitblit/ratchet-jest/jest/jest-ratchet.js';
+import { Logger } from '@bitblit/ratchet-common/logger/logger.js';
+import { LoggerLevelName } from '@bitblit/ratchet-common/logger/logger-level-name.js';
+import { RuntimeParameterRatchet } from './runtime-parameter-ratchet.js';
+import { GlobalVariableOverrideRuntimeParameterProvider } from './global-variable-override-runtime-parameter-provider.js';
+import { jest } from '@jest/globals';
 
 let mockDynamoRatchet: jest.Mocked<DynamoRatchet>;
 const testEntry: StoredRuntimeParameter = { groupId: 'test', paramKey: 'test', paramValue: '15', ttlSeconds: 0.5 };
@@ -13,7 +14,7 @@ const testEntry2: StoredRuntimeParameter = { groupId: 'test', paramKey: 'test1',
 
 describe('#globalVariableOverrideRuntimeParameterProvider', function () {
   beforeEach(() => {
-    mockDynamoRatchet = JestRatchet.mock();
+    mockDynamoRatchet = JestRatchet.mock(jest.fn);
   });
 
   it('reads underlying entries', async () => {

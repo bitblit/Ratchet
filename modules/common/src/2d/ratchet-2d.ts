@@ -1,8 +1,8 @@
-import { Point2d } from './point-2d';
-import { Plane2d } from './plane-2d';
-import { Line2d } from './line-2d';
-import { PolyLine2d } from './poly-line-2d';
-import { BooleanRatchet } from '../lang/boolean-ratchet';
+import { Point2d } from './point-2d.js';
+import { Plane2d } from './plane-2d.js';
+import { Line2d } from './line-2d.js';
+import { PolyLine2d } from './poly-line-2d.js';
+import { BooleanRatchet } from '../lang/boolean-ratchet.js';
 
 export class Ratchet2d {
   // Empty constructor prevents instantiation

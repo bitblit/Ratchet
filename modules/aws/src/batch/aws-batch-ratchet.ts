@@ -9,7 +9,8 @@ import {
   SubmitJobCommandInput,
   SubmitJobCommandOutput,
 } from '@aws-sdk/client-batch';
-import { Logger, RequireRatchet } from '@bitblit/ratchet-common';
+import { RequireRatchet } from '@bitblit/ratchet-common/lang/require-ratchet.js';
+import { Logger } from '@bitblit/ratchet-common/logger/logger.js';
 
 /**
  * Ratchet for simplifying interacting with AWS Batch

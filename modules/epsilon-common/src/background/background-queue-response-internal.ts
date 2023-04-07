@@ -1,4 +1,4 @@
-import { BackgroundProcessHandling } from './background-process-handling';
+import { BackgroundProcessHandling } from './background-process-handling.js';
 
 export interface BackgroundQueueResponseInternal {
   processHandling: BackgroundProcessHandling;

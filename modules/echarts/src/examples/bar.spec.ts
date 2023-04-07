@@ -1,6 +1,6 @@
 import { EChartsOption } from 'echarts';
-import { EChartRatchet } from '../common/echart-ratchet';
-import { LabelOption } from 'echarts/types/src/util/types';
+import { EChartRatchet } from '../common/echart-ratchet.js';
+import { LabelOption } from 'echarts/types/src/util/types.js';
 
 const labelRight: LabelOption = {
   position: 'right',

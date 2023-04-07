@@ -1,6 +1,6 @@
-import { Logger } from '@bitblit/ratchet-common';
+import { Logger } from '@bitblit/ratchet-common/logger/logger.js';
+import { RequireRatchet } from '@bitblit/ratchet-common/lang/require-ratchet.js';
 import { PublishCommand, PublishCommandInput, PublishCommandOutput, SNSClient } from '@aws-sdk/client-sns';
-import { RequireRatchet } from '@bitblit/ratchet-common';
 
 export class SnsRatchet {
   constructor(private sns: SNSClient = new SNSClient({ region: 'us-east-1' }), private topicArn: string) {

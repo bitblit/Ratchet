@@ -1,4 +1,4 @@
-import { BuildInformation } from './build-information';
+import { BuildInformation } from './build-information.js';
 
 export class RatchetInfo {
   // Empty constructor prevents instantiation

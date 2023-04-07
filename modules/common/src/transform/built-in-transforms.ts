@@ -2,9 +2,9 @@
     Some useful transforms for the transform ratchet
 */
 
-import { TransformRule } from './transform-rule';
-import { Logger } from '../logger/logger';
-import { NumberRatchet } from '../lang/number-ratchet';
+import { TransformRule } from './transform-rule.js';
+import { Logger } from '../logger/logger.js';
+import { NumberRatchet } from '../lang/number-ratchet.js';
 import { DateTime } from 'luxon';
 
 export class BuiltInTransforms {

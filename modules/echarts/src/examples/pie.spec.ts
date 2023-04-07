@@ -1,5 +1,5 @@
 import { EChartsOption } from 'echarts';
-import { EChartRatchet } from '../common/echart-ratchet';
+import { EChartRatchet } from '../common/echart-ratchet.js';
 
 const options: EChartsOption = {
   backgroundColor: '#2c343c',

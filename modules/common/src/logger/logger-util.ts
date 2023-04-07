@@ -1,5 +1,5 @@
-import { LoggerLevelName } from './logger-level-name';
-import { LoggerOutputFunction } from './logger-output-function';
+import { LoggerLevelName } from './logger-level-name.js';
+import { LoggerOutputFunction } from './logger-output-function.js';
 
 export class LoggerUtil {
   private static LOG_LEVELS_IN_ORDER: LoggerLevelName[] = [

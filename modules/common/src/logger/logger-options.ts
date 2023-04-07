@@ -1,7 +1,7 @@
-import { LogMessageFormatType } from './log-message-format-type';
-import { LoggerLevelName } from './logger-level-name';
-import { LogMessageProcessor } from './log-message-processor';
-import { LoggerOutputFunction } from './logger-output-function';
+import { LogMessageFormatType } from './log-message-format-type.js';
+import { LoggerLevelName } from './logger-level-name.js';
+import { LogMessageProcessor } from './log-message-processor.js';
+import { LoggerOutputFunction } from './logger-output-function.js';
 
 export interface LoggerOptions {
   initialLevel?: LoggerLevelName;

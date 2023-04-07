@@ -1,13 +1,15 @@
-import { LambdaEventDetector } from '@bitblit/ratchet-aws';
+import { LambdaEventDetector } from '@bitblit/ratchet-aws/lambda/lambda-event-detector.js';
 import { SNSEvent } from 'aws-lambda';
-import { EpsilonConstants } from '../epsilon-constants';
-import { InterApiEntry } from './inter-api-entry';
-import { RequireRatchet } from '@bitblit/ratchet-common';
-import { Logger, StringRatchet } from '@bitblit/ratchet-common';
-import { BackgroundEntry } from '../background/background-entry';
-import { InterApiConfig } from '../config/inter-api/inter-api-config';
-import { ContextUtil } from '../util/context-util';
-import { BackgroundManagerLike } from '../background/manager/background-manager-like';
+import { EpsilonConstants } from '../epsilon-constants.js';
+import { InterApiEntry } from './inter-api-entry.js';
+import { RequireRatchet } from '@bitblit/ratchet-common/lang/require-ratchet.js';
+
+import { Logger } from '@bitblit/ratchet-common/logger/logger.js';
+import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet.js';
+import { BackgroundEntry } from '../background/background-entry.js';
+import { InterApiConfig } from '../config/inter-api/inter-api-config.js';
+import { ContextUtil } from '../util/context-util.js';
+import { BackgroundManagerLike } from '../background/manager/background-manager-like.js';
 
 export class InterApiUtil {
   // eslint-disable-next-line  @typescript-eslint/explicit-module-boundary-types

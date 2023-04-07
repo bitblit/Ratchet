@@ -1,5 +1,6 @@
-import { GraphqlRatchetQueryProvider } from './graphql-ratchet-query-provider';
-import { StringRatchet, Logger } from '@bitblit/ratchet-common';
+import { GraphqlRatchetQueryProvider } from './graphql-ratchet-query-provider.js';
+import { Logger } from '@bitblit/ratchet-common/logger/logger.js';
+import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet.js';
 import fetch from 'cross-fetch';
 
 export class LocalFetchQueryProvider implements GraphqlRatchetQueryProvider {

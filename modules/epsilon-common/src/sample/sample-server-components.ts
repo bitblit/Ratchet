@@ -2,42 +2,42 @@
  * This is an example of how to setup a local server for testing.  Replace the createRouterConfig function
  * with your own.
  */
-import { Logger } from '@bitblit/ratchet-common';
+import { Logger } from '@bitblit/ratchet-common/logger/logger.js';
 import { ApolloServer, CreateHandlerOptions, gql } from 'apollo-server-lambda';
 import { ApolloServerPluginLandingPageGraphQLPlayground } from 'apollo-server-core';
-import { ErrorRatchet } from '@bitblit/ratchet-common';
-import { NumberRatchet } from '@bitblit/ratchet-common';
-import fs from 'fs';
-import path from 'path';
-import { JwtTokenBase, LoggerLevelName, PromiseRatchet } from '@bitblit/ratchet-common';
-import { EpsilonGlobalHandler } from '../epsilon-global-handler';
-import { AuthorizerFunction } from '../config/http/authorizer-function';
-import { HandlerFunction } from '../config/http/handler-function';
-import { BuiltInHandlers } from '../built-in/http/built-in-handlers';
-import { HttpConfig } from '../config/http/http-config';
-import { LocalWebTokenManipulator } from '../http/auth/local-web-token-manipulator';
-import { BackgroundConfig } from '../config/background/background-config';
-import { EchoProcessor } from '../built-in/background/echo-processor';
-import { NoOpProcessor } from '../built-in/background/no-op-processor';
-import { SampleDelayProcessor } from '../built-in/background/sample-delay-processor';
-import { LogAndEnqueueEchoProcessor } from '../built-in/background/log-and-enqueue-echo-processor';
-import { EpsilonConfig } from '../config/epsilon-config';
-import { EpsilonInstance } from '../epsilon-instance';
-import { EpsilonConfigParser } from '../util/epsilon-config-parser';
-import { RouterUtil } from '../http/route/router-util';
-import { SampleInputValidatedProcessor } from '../built-in/background/sample-input-validated-processor';
-import { HttpProcessingConfig } from '../config/http/http-processing-config';
-import { BuiltInAuthorizers } from '../built-in/http/built-in-authorizers';
-import { ApolloFilter } from '../built-in/http/apollo-filter';
-import { SampleInputValidatedProcessorData } from '../built-in/background/sample-input-validated-processor-data';
-import { BooleanRatchet } from '@bitblit/ratchet-common';
-import { StringRatchet } from '@bitblit/ratchet-common';
-import { BuiltInFilters } from '../built-in/http/built-in-filters';
-import { EventUtil } from '../http/event-util';
-import { LogMessageBackgroundErrorProcessor } from '../built-in/background/log-message-background-error-processor';
-import { SingleThreadLocalBackgroundManager } from '../background/manager/single-thread-local-background-manager';
-import { BackgroundManagerLike } from '../background/manager/background-manager-like';
-import { SampleServerStaticFiles } from './sample-server-static-files';
+import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet.js';
+import { ErrorRatchet } from '@bitblit/ratchet-common/lang/error-ratchet.js';
+import { LoggerLevelName } from '@bitblit/ratchet-common/logger/logger-level-name.js';
+import { PromiseRatchet } from '@bitblit/ratchet-common/lang/promise-ratchet.js';
+import { BooleanRatchet } from '@bitblit/ratchet-common/lang/boolean-ratchet.js';
+import { NumberRatchet } from '@bitblit/ratchet-common/lang/number-ratchet.js';
+import { JwtTokenBase } from '@bitblit/ratchet-common/jwt/jwt-token-base.js';
+import { EpsilonGlobalHandler } from '../epsilon-global-handler.js';
+import { AuthorizerFunction } from '../config/http/authorizer-function.js';
+import { HandlerFunction } from '../config/http/handler-function.js';
+import { BuiltInHandlers } from '../built-in/http/built-in-handlers.js';
+import { HttpConfig } from '../config/http/http-config.js';
+import { LocalWebTokenManipulator } from '../http/auth/local-web-token-manipulator.js';
+import { BackgroundConfig } from '../config/background/background-config.js';
+import { EchoProcessor } from '../built-in/background/echo-processor.js';
+import { NoOpProcessor } from '../built-in/background/no-op-processor.js';
+import { SampleDelayProcessor } from '../built-in/background/sample-delay-processor.js';
+import { LogAndEnqueueEchoProcessor } from '../built-in/background/log-and-enqueue-echo-processor.js';
+import { EpsilonConfig } from '../config/epsilon-config.js';
+import { EpsilonInstance } from '../epsilon-instance.js';
+import { EpsilonConfigParser } from '../util/epsilon-config-parser.js';
+import { RouterUtil } from '../http/route/router-util.js';
+import { SampleInputValidatedProcessor } from '../built-in/background/sample-input-validated-processor.js';
+import { HttpProcessingConfig } from '../config/http/http-processing-config.js';
+import { BuiltInAuthorizers } from '../built-in/http/built-in-authorizers.js';
+import { ApolloFilter } from '../built-in/http/apollo-filter.js';
+import { SampleInputValidatedProcessorData } from '../built-in/background/sample-input-validated-processor-data.js';
+import { BuiltInFilters } from '../built-in/http/built-in-filters.js';
+import { EventUtil } from '../http/event-util.js';
+import { LogMessageBackgroundErrorProcessor } from '../built-in/background/log-message-background-error-processor.js';
+import { SingleThreadLocalBackgroundManager } from '../background/manager/single-thread-local-background-manager.js';
+import { BackgroundManagerLike } from '../background/manager/background-manager-like.js';
+import { SampleServerStaticFiles } from './sample-server-static-files.js';
 
 export class SampleServerComponents {
   // Prevent instantiation

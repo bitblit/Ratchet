@@ -1,13 +1,14 @@
-import { DynamoDbSyncLock } from './dynamo-db-sync-lock';
-import { DynamoRatchet } from '../dynamodb/dynamo-ratchet';
-import { Logger } from '@bitblit/ratchet-common';
-import { JestRatchet } from '@bitblit/ratchet-jest';
+import { DynamoDbSyncLock } from './dynamo-db-sync-lock.js';
+import { DynamoRatchet } from '../dynamodb/dynamo-ratchet.js';
+import { Logger } from '@bitblit/ratchet-common/logger/logger.js';
+import { JestRatchet } from '@bitblit/ratchet-jest/jest/jest-ratchet.js';
+import { jest } from '@jest/globals';
 
 let mockDR: jest.Mocked<DynamoRatchet>;
 
 describe('#syncLockService', () => {
   beforeEach(() => {
-    mockDR = JestRatchet.mock();
+    mockDR = JestRatchet.mock(jest.fn);
   });
 
   xit('should test sync locks', async () => {

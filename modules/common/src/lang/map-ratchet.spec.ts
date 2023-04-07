@@ -1,5 +1,5 @@
-import { KeyValue } from './key-value';
-import { MapRatchet } from './map-ratchet';
+import { KeyValue } from './key-value.js';
+import { MapRatchet } from './map-ratchet.js';
 
 describe('#toKeyValueList', function () {
   it('should expand a maps nested keys', function () {

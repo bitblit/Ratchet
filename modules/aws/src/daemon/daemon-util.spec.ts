@@ -1,21 +1,24 @@
-import { S3CacheRatchet } from '../s3/s3-cache-ratchet';
-import { DaemonProcessState } from './daemon-process-state';
-import { DaemonUtil } from './daemon-util';
-import { Logger } from '@bitblit/ratchet-common';
-import fs, { ReadStream } from 'fs';
-import { DaemonProcessCreateOptions } from './daemon-process-create-options';
-import { JestRatchet } from '@bitblit/ratchet-jest';
-import { LoggerLevelName, PromiseRatchet } from '@bitblit/ratchet-common';
+import { S3CacheRatchet } from '../s3/s3-cache-ratchet.js';
+import { DaemonProcessState } from './daemon-process-state.js';
+import { DaemonUtil } from './daemon-util.js';
+import { Logger } from '@bitblit/ratchet-common/logger/logger.js';
+import { LoggerLevelName } from '@bitblit/ratchet-common/logger/logger-level-name.js';
+import { PromiseRatchet } from '@bitblit/ratchet-common/lang/promise-ratchet.js';
+import fs from 'fs';
+import { ReadStream } from 'fs';
+import { DaemonProcessCreateOptions } from './daemon-process-create-options.js';
+import { JestRatchet } from '@bitblit/ratchet-jest/jest/jest-ratchet.js';
 import { Subject } from 'rxjs';
 import { PassThrough } from 'stream';
-import { CsvRatchet } from '@bitblit/ratchet-node-only';
+import { CsvRatchet } from '@bitblit/ratchet-node-only/csv/csv-ratchet.js';
 import { S3Client } from '@aws-sdk/client-s3';
+import { jest } from '@jest/globals';
 
 let mockS3CR: jest.Mocked<S3CacheRatchet>;
 
 describe('#DaemonUtil', function () {
   beforeEach(() => {
-    mockS3CR = JestRatchet.mock();
+    mockS3CR = JestRatchet.mock<S3CacheRatchet>(jest.fn);
   });
 
   it('should test the daemon util', async () => {

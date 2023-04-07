@@ -1,7 +1,7 @@
-import { Logger } from '@bitblit/ratchet-common';
-import { BackgroundProcessor } from '../../config/background/background-processor';
-import { SampleInputValidatedProcessorData } from './sample-input-validated-processor-data';
-import { BackgroundManagerLike } from '../../background/manager/background-manager-like';
+import { Logger } from '@bitblit/ratchet-common/logger/logger.js';
+import { BackgroundProcessor } from '../../config/background/background-processor.js';
+import { SampleInputValidatedProcessorData } from './sample-input-validated-processor-data.js';
+import { BackgroundManagerLike } from '../../background/manager/background-manager-like.js';
 
 export class SampleInputValidatedProcessor implements BackgroundProcessor<SampleInputValidatedProcessorData> {
   public get typeName(): string {

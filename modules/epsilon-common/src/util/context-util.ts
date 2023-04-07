@@ -1,12 +1,12 @@
 import { Context, ProxyResult } from 'aws-lambda';
-import { NumberRatchet } from '@bitblit/ratchet-common';
-import { EpsilonInstance } from '../epsilon-instance';
-import { ErrorRatchet } from '@bitblit/ratchet-common';
-import { LoggingTraceIdGenerator } from '../config/logging-trace-id-generator';
-import { BuiltInTraceIdGenerators } from '../built-in/built-in-trace-id-generators';
-import { InternalBackgroundEntry } from '../background/internal-background-entry';
-import { InterApiEntry } from '../inter-api/inter-api-entry';
-import { StringRatchet } from '@bitblit/ratchet-common';
+import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet.js';
+import { ErrorRatchet } from '@bitblit/ratchet-common/lang/error-ratchet.js';
+import { NumberRatchet } from '@bitblit/ratchet-common/lang/number-ratchet.js';
+import { EpsilonInstance } from '../epsilon-instance.js';
+import { LoggingTraceIdGenerator } from '../config/logging-trace-id-generator.js';
+import { BuiltInTraceIdGenerators } from '../built-in/built-in-trace-id-generators.js';
+import { InternalBackgroundEntry } from '../background/internal-background-entry.js';
+import { InterApiEntry } from '../inter-api/inter-api-entry.js';
 
 // This class serves as a static holder for the AWS Lambda context, and also adds some
 // simple helper functions

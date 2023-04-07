@@ -1,5 +1,5 @@
 import { $enum, EnumWrapper } from 'ts-enum-util';
-import { StringRatchet } from './string-ratchet';
+import { StringRatchet } from './string-ratchet.js';
 
 /**
  * This class is here because Typescript's enums aren't very good - they aren't typesafe, and are difficult

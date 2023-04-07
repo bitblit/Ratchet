@@ -1,11 +1,11 @@
 import { Context, ProxyResult } from 'aws-lambda';
-import { Logger } from '@bitblit/ratchet-common';
-import { EpsilonGlobalHandler } from '../../epsilon-global-handler';
-import { SampleServerComponents } from '../../sample/sample-server-components';
-import { RunHandlerAsFilter } from './run-handler-as-filter';
-import { ExtendedAPIGatewayEvent } from '../../config/http/extended-api-gateway-event';
-import { RouteAndParse } from '../../http/web-handler';
-import { RouterUtil } from '../../http/route/router-util';
+import { Logger } from '@bitblit/ratchet-common/logger/logger.js';
+import { EpsilonGlobalHandler } from '../../epsilon-global-handler.js';
+import { SampleServerComponents } from '../../sample/sample-server-components.js';
+import { RunHandlerAsFilter } from './run-handler-as-filter.js';
+import { ExtendedAPIGatewayEvent } from '../../config/http/extended-api-gateway-event.js';
+import { RouteAndParse } from '../../http/web-handler.js';
+import { RouterUtil } from '../../http/route/router-util.js';
 
 describe('#routerUtilApplyOpenApiDoc', function () {
   it('should find the most specific route and the least specific', async () => {

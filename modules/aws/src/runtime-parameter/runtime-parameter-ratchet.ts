@@ -1,8 +1,8 @@
-import { Logger } from '@bitblit/ratchet-common';
-import { RequireRatchet } from '@bitblit/ratchet-common';
-import { CachedStoredRuntimeParameter } from './cached-stored-runtime-parameter';
-import { RuntimeParameterProvider } from './runtime-parameter-provider';
-import { StoredRuntimeParameter } from './stored-runtime-parameter';
+import { Logger } from '@bitblit/ratchet-common/logger/logger.js';
+import { RequireRatchet } from '@bitblit/ratchet-common/lang/require-ratchet.js';
+import { CachedStoredRuntimeParameter } from './cached-stored-runtime-parameter.js';
+import { RuntimeParameterProvider } from './runtime-parameter-provider.js';
+import { StoredRuntimeParameter } from './stored-runtime-parameter.js';
 
 export class RuntimeParameterRatchet {
   private cache: Map<string, CachedStoredRuntimeParameter> = new Map<string, CachedStoredRuntimeParameter>();

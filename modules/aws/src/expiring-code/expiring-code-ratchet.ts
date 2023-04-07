@@ -1,8 +1,8 @@
-import { RequireRatchet } from '@bitblit/ratchet-common';
-import { StringRatchet } from '@bitblit/ratchet-common';
-import { ExpiringCodeProvider } from './expiring-code-provider';
-import { ExpiringCodeParams } from './expiring-code-params';
-import { ExpiringCode } from './expiring-code';
+import { RequireRatchet } from '@bitblit/ratchet-common/lang/require-ratchet.js';
+import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet.js';
+import { ExpiringCodeProvider } from './expiring-code-provider.js';
+import { ExpiringCodeParams } from './expiring-code-params.js';
+import { ExpiringCode } from './expiring-code.js';
 
 /**
  * Supports creating and checking single use codes

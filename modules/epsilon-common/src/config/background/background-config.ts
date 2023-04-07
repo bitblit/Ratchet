@@ -1,7 +1,7 @@
-import { BackgroundProcessor } from './background-processor';
-import { BackgroundErrorProcessor } from './background-error-processor';
-import { BackgroundExecutionListener } from '../../background/background-execution-listener';
-import { BackgroundTransactionLogger } from './background-transaction-logger';
+import { BackgroundProcessor } from './background-processor.js';
+import { BackgroundErrorProcessor } from './background-error-processor.js';
+import { BackgroundExecutionListener } from '../../background/background-execution-listener.js';
+import { BackgroundTransactionLogger } from './background-transaction-logger.js';
 
 export interface BackgroundConfig {
   transactionLogger?: BackgroundTransactionLogger;

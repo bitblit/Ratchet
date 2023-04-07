@@ -1,20 +1,23 @@
-import { ErrorRatchet, Logger, StopWatch, StringRatchet } from '@bitblit/ratchet-common';
+import { ErrorRatchet } from '@bitblit/ratchet-common/lang/error-ratchet.js';
+import { Logger } from '@bitblit/ratchet-common/logger/logger.js';
 import { Context, ProxyResult, SNSEvent } from 'aws-lambda';
-import { LambdaEventDetector } from '@bitblit/ratchet-aws';
-import { EpsilonConstants } from '../epsilon-constants';
-import { ModelValidator } from '@bitblit/ratchet-misc';
-import { BackgroundValidator } from './background-validator';
-import { BackgroundConfig } from '../config/background/background-config';
-import { BackgroundProcessor } from '../config/background/background-processor';
-import { InternalBackgroundEntry } from './internal-background-entry';
-import { BackgroundTransactionLog } from '../config/background/background-transaction-log';
-import { BackgroundExecutionEvent } from './background-execution-event';
-import { BackgroundExecutionListener } from './background-execution-listener';
-import { BackgroundExecutionEventType } from './background-execution-event-type';
-import { EpsilonLambdaEventHandler } from '../config/epsilon-lambda-event-handler';
-import { ContextUtil } from '../util/context-util';
-import { BackgroundManagerLike } from './manager/background-manager-like';
-import { AbstractBackgroundManager } from './manager/abstract-background-manager';
+import { LambdaEventDetector } from '@bitblit/ratchet-aws/lambda/lambda-event-detector.js';
+import { EpsilonConstants } from '../epsilon-constants.js';
+import { ModelValidator } from '@bitblit/ratchet-misc/model-validator/model-validator.js';
+import { BackgroundValidator } from './background-validator.js';
+import { BackgroundConfig } from '../config/background/background-config.js';
+import { BackgroundProcessor } from '../config/background/background-processor.js';
+import { InternalBackgroundEntry } from './internal-background-entry.js';
+import { BackgroundTransactionLog } from '../config/background/background-transaction-log.js';
+import { BackgroundExecutionEvent } from './background-execution-event.js';
+import { BackgroundExecutionListener } from './background-execution-listener.js';
+import { BackgroundExecutionEventType } from './background-execution-event-type.js';
+import { EpsilonLambdaEventHandler } from '../config/epsilon-lambda-event-handler.js';
+import { ContextUtil } from '../util/context-util.js';
+import { BackgroundManagerLike } from './manager/background-manager-like.js';
+import { AbstractBackgroundManager } from './manager/abstract-background-manager.js';
+import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet.js';
+import { StopWatch } from '@bitblit/ratchet-common/lang/stop-watch.js';
 
 /**
  * We use a FIFO queue so that 2 different Lambdas don't both work on the same

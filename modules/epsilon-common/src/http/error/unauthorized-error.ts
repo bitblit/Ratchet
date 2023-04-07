@@ -1,4 +1,4 @@
-import { EpsilonHttpError } from './epsilon-http-error';
+import { EpsilonHttpError } from './epsilon-http-error.js';
 
 export class UnauthorizedError<T = void> extends EpsilonHttpError<T> {
   public static readonly HTTP_CODE: number = 401;

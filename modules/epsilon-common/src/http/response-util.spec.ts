@@ -1,11 +1,12 @@
 import { APIGatewayEvent, APIGatewayEventRequestContext, ProxyResult } from 'aws-lambda';
-import { ResponseUtil } from './response-util';
+import { ResponseUtil } from './response-util.js';
 import path from 'path';
 import fs from 'fs';
-import { FilterChainContext } from '../config/http/filter-chain-context';
-import { ExtendedAPIGatewayEvent } from '../config/http/extended-api-gateway-event';
-import { BuiltInFilters } from '../built-in/http/built-in-filters';
-import { EpsilonConstants } from '../epsilon-constants';
+import { FilterChainContext } from '../config/http/filter-chain-context.js';
+import { ExtendedAPIGatewayEvent } from '../config/http/extended-api-gateway-event.js';
+import { BuiltInFilters } from '../built-in/http/built-in-filters.js';
+import { EpsilonConstants } from '../epsilon-constants.js';
+import { EsmRatchet } from '@bitblit/ratchet-common/lang/esm-ratchet.js';
 
 describe('#responseUtil', function () {
   it('should correctly combine a redirect url and query params', function () {
@@ -41,7 +42,9 @@ describe('#responseUtil', function () {
   });
 
   it('should leave already encoded stuff alone', async () => {
-    const singlePixel: string = fs.readFileSync(path.join(__dirname, '../../test-data/test.png')).toString('base64');
+    const singlePixel: string = fs
+      .readFileSync(path.join(EsmRatchet.fetchDirName(), '../../../../test-data/epsilon/test.png'))
+      .toString('base64');
 
     const temp: ProxyResult = {
       body: singlePixel,
@@ -62,7 +65,7 @@ describe('#responseUtil', function () {
 
   it('should add cors to proxy result MATCH 1', async () => {
     const evt: ExtendedAPIGatewayEvent = JSON.parse(
-      fs.readFileSync(path.join(__dirname, '../../test-data/sample-json/sample-request-1.json')).toString()
+      fs.readFileSync(path.join(EsmRatchet.fetchDirName(), '../../../../test-data/epsilon/sample-json/sample-request-1.json')).toString()
     );
     const proxy: ProxyResult = {} as ProxyResult;
     const fCtx: FilterChainContext = {
@@ -85,7 +88,7 @@ describe('#responseUtil', function () {
 
   it('should add cors to proxy result MATCH 2', async () => {
     const evt: ExtendedAPIGatewayEvent = JSON.parse(
-      fs.readFileSync(path.join(__dirname, '../../test-data/sample-json/sample-request-2.json')).toString()
+      fs.readFileSync(path.join(EsmRatchet.fetchDirName(), '../../../../test-data/epsilon/sample-json/sample-request-2.json')).toString()
     );
     const proxy: ProxyResult = {} as ProxyResult;
     const fCtx: FilterChainContext = {

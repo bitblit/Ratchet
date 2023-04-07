@@ -1,4 +1,4 @@
-import { EpsilonHttpError } from './epsilon-http-error';
+import { EpsilonHttpError } from './epsilon-http-error.js';
 
 describe('#epsilonHttpError', function () {
   it('chould check if the error is a given class', async () => {

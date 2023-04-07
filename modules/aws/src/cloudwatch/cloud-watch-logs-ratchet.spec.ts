@@ -1,5 +1,5 @@
-import { Logger } from '@bitblit/ratchet-common';
-import { CloudWatchLogsRatchet } from './cloud-watch-logs-ratchet';
+import { Logger } from '@bitblit/ratchet-common/logger/logger.js';
+import { CloudWatchLogsRatchet } from './cloud-watch-logs-ratchet.js';
 import {
   CloudWatchLogsClient,
   DeleteLogGroupCommand,

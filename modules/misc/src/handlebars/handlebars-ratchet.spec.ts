@@ -1,5 +1,5 @@
 import handlebars from 'handlebars';
-import { HandlebarsRatchet } from './handlebars-ratchet';
+import { HandlebarsRatchet } from './handlebars-ratchet.js';
 
 describe('#handlebarsService', () => {
   it('should test equal', async () => {

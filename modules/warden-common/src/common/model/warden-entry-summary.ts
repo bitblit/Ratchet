@@ -1,4 +1,4 @@
-import { WardenContact } from './warden-contact';
+import { WardenContact } from './warden-contact.js';
 
 export interface WardenEntrySummary {
   userId: string;

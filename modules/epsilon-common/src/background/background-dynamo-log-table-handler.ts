@@ -1,9 +1,9 @@
-import { BackgroundExecutionListener } from './background-execution-listener';
-import { BackgroundExecutionEvent } from './background-execution-event';
-import { BackgroundExecutionEventType } from './background-execution-event-type';
-import { DynamoRatchetLike } from '@bitblit/ratchet-aws';
-import { BackgroundProcessLogTableEntry } from './background-process-log-table-entry';
-import { ContextUtil } from '../util/context-util';
+import { BackgroundExecutionListener } from './background-execution-listener.js';
+import { BackgroundExecutionEvent } from './background-execution-event.js';
+import { BackgroundExecutionEventType } from './background-execution-event-type.js';
+import { DynamoRatchetLike } from '@bitblit/ratchet-aws/dynamodb/dynamo-ratchet-like.js';
+import { BackgroundProcessLogTableEntry } from './background-process-log-table-entry.js';
+import { ContextUtil } from '../util/context-util.js';
 
 /*
 Table should be

@@ -1,5 +1,5 @@
 import { PublishCommand, PublishCommandOutput, SNSClient } from '@aws-sdk/client-sns';
-import { SnsRatchet } from './sns-ratchet';
+import { SnsRatchet } from './sns-ratchet.js';
 import { mockClient } from 'aws-sdk-client-mock';
 
 let mockSNS;

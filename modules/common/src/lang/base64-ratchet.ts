@@ -2,7 +2,7 @@
     Functions for working with base64
 */
 
-import { Logger } from '../logger/logger';
+import { Logger } from '../logger/logger.js';
 
 export class Base64Ratchet {
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types

@@ -4,9 +4,9 @@
     content to be passed through webpack safely
  */
 
-import { Logger } from '@bitblit/ratchet-common';
+import { Logger } from '@bitblit/ratchet-common/logger/logger.js';
 import fs from 'fs';
-import { CliRatchet } from '../cli/cli-ratchet';
+import { CliRatchet } from '../cli/cli-ratchet.js';
 
 export class FilesToStaticClass {
   public static async process(fileNames: string[], outClassName: string, outFileName: string = null): Promise<string> {

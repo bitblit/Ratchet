@@ -1,8 +1,8 @@
 import handlebars from 'handlebars';
 import fetch from 'cross-fetch';
-import { StringRatchet } from '@bitblit/ratchet-common';
-import { Logger } from '@bitblit/ratchet-common';
-import { RatchetTemplateRenderer } from './ratchet-template-renderer';
+import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet.js';
+import { Logger } from '@bitblit/ratchet-common/logger/logger.js';
+import { RatchetTemplateRenderer } from './ratchet-template-renderer.js';
 import layouts from 'handlebars-layouts';
 import Template = Handlebars.Template;
 

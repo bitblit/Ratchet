@@ -1,8 +1,8 @@
-import { EpsilonLambdaEventHandler } from '../config/epsilon-lambda-event-handler';
+import { EpsilonLambdaEventHandler } from '../config/epsilon-lambda-event-handler.js';
 import { Context, ProxyResult, SNSEvent } from 'aws-lambda';
-import { EpsilonInstance } from '../epsilon-instance';
-import { InterApiUtil } from '../inter-api/inter-api-util';
-import { InterApiEntry } from '../inter-api/inter-api-entry';
+import { EpsilonInstance } from '../epsilon-instance.js';
+import { InterApiUtil } from '../inter-api/inter-api-util.js';
+import { InterApiEntry } from '../inter-api/inter-api-entry.js';
 
 export class InterApiEpsilonLambdaEventHandler implements EpsilonLambdaEventHandler<SNSEvent> {
   constructor(private _epsilon: EpsilonInstance) {}

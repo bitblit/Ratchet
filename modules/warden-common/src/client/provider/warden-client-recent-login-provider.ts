@@ -1,6 +1,6 @@
-import { WardenRecentLoginDescriptor } from './warden-recent-login-descriptor';
-import { WardenEntrySummary } from '../../common/model/warden-entry-summary';
-import { WardenContact } from '../../common/model/warden-contact';
+import { WardenRecentLoginDescriptor } from './warden-recent-login-descriptor.js';
+import { WardenEntrySummary } from '../../common/model/warden-entry-summary.js';
+import { WardenContact } from '../../common/model/warden-contact.js';
 
 export interface WardenClientRecentLoginProvider {
   saveRecentLogin(entry: WardenEntrySummary): void;

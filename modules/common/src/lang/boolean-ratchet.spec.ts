@@ -1,5 +1,5 @@
-import { BooleanRatchet } from './boolean-ratchet';
-import { NumberRatchet } from './number-ratchet';
+import { BooleanRatchet } from './boolean-ratchet.js';
+import { NumberRatchet } from './number-ratchet.js';
 
 describe('#parseBool', function () {
   it('should check all true', function () {

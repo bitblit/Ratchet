@@ -5,8 +5,8 @@
     - to fixed precision (use lodash round instead)
 */
 
-import { Logger } from '../logger/logger';
-import { RequireRatchet } from './require-ratchet';
+import { Logger } from '../logger/logger.js';
+import { RequireRatchet } from './require-ratchet.js';
 
 export class NumberRatchet {
   private static MAX_LEADING_ZEROS_FORMAT_LENGTH = 1000; // Because really, why?

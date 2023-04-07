@@ -4,11 +4,12 @@
   "description": "Common tools for use with AWS browser and node",
   "sideEffects": false,
   "type": "module",
-  "main": "./dist/cjs/index.js",
-  "module": "./dist/esm/index.js",
-  "types": "./dist/types/index.d.ts",
+  "exports": {
+    "./": "./dist/"
+  },
   "files": [
-    "dist/*"
+    "dist/*",
+    "includes/*"
   ],
   "contributors": [
     "Christopher Weiss <bitblit@gmail.com>",
@@ -32,12 +33,14 @@
   "scripts": {
     "watch": "tsc-watch",
     "clean": "shx rm -Rf dist",
-    "test": "jest",
+    "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest",
     "docs": "typedoc",
     "lint": "eslint src/**/*.ts",
     "lint-fix": "eslint --fix src/**/*.ts",
-    "generate-barrels": "barrelsby -q --delete -d src -e .*\\.spec\\.ts",
-    "build": "yarn run generate-barrels && tsc"
+    "__generate-barrels": "barrelsby -q --delete -d src -e .*\\.spec\\.ts",
+    "__build": "yarn run generate-barrels && tsc",
+    "build": "tsc",
+    "force-build": "tsc --build --force"
   },
   "repository": {
     "type": "git",

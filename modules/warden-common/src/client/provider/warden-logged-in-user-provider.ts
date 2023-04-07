@@ -1,4 +1,4 @@
-import { WardenLoggedInUserWrapper } from './warden-logged-in-user-wrapper';
+import { WardenLoggedInUserWrapper } from './warden-logged-in-user-wrapper.js';
 
 export interface WardenLoggedInUserProvider<T> {
   fetchLoggedInUserWrapper(): WardenLoggedInUserWrapper<T>;

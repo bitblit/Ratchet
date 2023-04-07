@@ -1,5 +1,6 @@
-import { EpsilonGlobalHandler } from './epsilon-global-handler';
-import { Logger } from '@bitblit/ratchet-common';
+import { EpsilonGlobalHandler } from './epsilon-global-handler.js';
+import { Logger } from '@bitblit/ratchet-common/logger/logger.js';
+import { EsmRatchet } from '@bitblit/ratchet-common/lang/esm-ratchet.js';
 
 export class EpsilonConstants {
   public static readonly EPSILON_FINDER_DYNAMIC_IMPORT_PATH_ENV_NAME = 'EPSILON_FINDER_DYNAMIC_IMPORT_PATH';
@@ -18,7 +19,7 @@ export class EpsilonConstants {
 
   private static load<T>(filePath: string, className: string): T {
     // eslint-disable-next-line @typescript-eslint/no-var-frequires
-    Logger.info('Searching for %s : %s : %s', filePath, className, __dirname);
+    Logger.info('Searching for %s : %s : %s', filePath, className, EsmRatchet.fetchDirName());
     let rval: T = null;
     const val = require(filePath);
     if (val) {

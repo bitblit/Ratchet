@@ -1,5 +1,5 @@
-import { StringRatchet } from '@bitblit/ratchet-common';
-import { SyncLockProvider } from './sync-lock-provider';
+import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet.js';
+import { SyncLockProvider } from './sync-lock-provider.js';
 
 /**
  * Simple in-memory implementation of the SyncLockProvider interface

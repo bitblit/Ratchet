@@ -1,6 +1,6 @@
-import { Logger } from '@bitblit/ratchet-common';
-import { BackgroundErrorProcessor } from '../../config/background/background-error-processor';
-import { InternalBackgroundEntry } from '../../background/internal-background-entry';
+import { Logger } from '@bitblit/ratchet-common/logger/logger.js';
+import { BackgroundErrorProcessor } from '../../config/background/background-error-processor.js';
+import { InternalBackgroundEntry } from '../../background/internal-background-entry.js';
 
 // This is just here to test error processor logic (errors are logged anyway)
 export class LogMessageBackgroundErrorProcessor implements BackgroundErrorProcessor {

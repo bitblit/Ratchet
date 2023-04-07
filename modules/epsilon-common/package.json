@@ -6,9 +6,10 @@
   "bin": {
     "epsilon-cli": "./includes/cli.js"
   },
-  "main": "./dist/cjs/index.js",
-  "module": "./dist/esm/index.js",
-  "types": "./dist/types/index.d.ts",
+  "type": "module",
+  "exports": {
+    "./": "./dist/"
+  },
   "files": [
     "dist/*",
     "includes/*"
@@ -33,16 +34,17 @@
   "scripts": {
     "watch": "tsc-watch",
     "clean": "shx rm -Rf dist",
-    "test": "jest",
+    "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest",
     "lint": "eslint src/**/*.ts",
     "lint-fix": "eslint --fix src/**/*.ts",
-    "generate-barrels": "barrelsby -q --delete -d src -e .*\\.spec\\.ts",
-    "build": "yarn run generate-barrels && tsc",
-    "run-local-container-server": "yarn build:cjs && node includes/cli.js run-local-container-server",
-    "run-sample-server": "yarn build:cjs && node includes/cli.js run-sample-local-server",
-    "run-test-error-server": "yarn build:cjs && node includes/cli.js run-test-error-server",
-    "run-batch-sample-server": "yarn build:cjs && node includes/cli.js run-sample-local-batch-server",
-    "run-background-process-from-command-line-dry-run": "yarn build:cjs && node includes/cli.js run-background-process"
+    "__generate-barrels": "barrelsby -q --delete -d src -e .*\\.spec\\.ts",
+    "__build": "yarn run generate-barrels && tsc",
+    "build": "tsc",
+    "run-local-container-server": "yarn build && node includes/cli.js run-local-container-server",
+    "run-sample-server": "yarn build && node includes/cli.js run-sample-local-server",
+    "run-test-error-server": "yarn build && node includes/cli.js run-test-error-server",
+    "run-batch-sample-server": "yarn build && node includes/cli.js run-sample-local-batch-server",
+    "run-background-process-from-command-line-dry-run": "yarn build && node includes/cli.js run-background-process"
   },
   "repository": {
     "type": "git",

@@ -1,5 +1,5 @@
-import { WardenRecentLoginDescriptor } from './warden-recent-login-descriptor';
-import { WardenClientAbstractRecentLoginProvider } from './warden-client-abstract-recent-login-provider';
+import { WardenRecentLoginDescriptor } from './warden-recent-login-descriptor.js';
+import { WardenClientAbstractRecentLoginProvider } from './warden-client-abstract-recent-login-provider.js';
 
 // Stores everything in transient memory - basically just for testing
 export class WardenClientTransientMemoryRecentLoginProvider extends WardenClientAbstractRecentLoginProvider {

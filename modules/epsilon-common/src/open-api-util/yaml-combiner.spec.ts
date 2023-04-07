@@ -1,12 +1,13 @@
-import { Logger } from '@bitblit/ratchet-common';
+import { Logger } from '@bitblit/ratchet-common/logger/logger.js';
 import path from 'path';
-import { YamlCombiner } from './yaml-combiner';
+import { YamlCombiner } from './yaml-combiner.js';
+import { EsmRatchet } from '@bitblit/ratchet-common/lang/esm-ratchet.js';
 
 describe('#yamlCombiner', function () {
   it('should combine yamls', async () => {
     const files: string[] = [
-      path.join(__dirname, '../../test-data/sample-yaml/test1.yaml'),
-      path.join(__dirname, '../../test-data/sample-yaml/test2.yaml'),
+      path.join(EsmRatchet.fetchDirName(), '../../../../test-data/epsilon/sample-yaml/test1.yaml'),
+      path.join(EsmRatchet.fetchDirName(), '../../../../test-data/epsilon/sample-yaml/test2.yaml'),
     ];
     const root: string[] = ['components', 'schemas'];
 

@@ -1,7 +1,7 @@
-import { ApplyCiEnvVariablesToFiles } from './apply-ci-env-variables-to-files';
-import { Logger } from '@bitblit/ratchet-common';
-import { GlobalRatchet } from '@bitblit/ratchet-common';
-import { CiRunInformationUtil } from './ci-run-information-util';
+import { ApplyCiEnvVariablesToFiles } from './apply-ci-env-variables-to-files.js';
+import { Logger } from '@bitblit/ratchet-common/logger/logger.js';
+import { GlobalRatchet } from '@bitblit/ratchet-common/lang/global-ratchet.js';
+import { CiRunInformationUtil } from './ci-run-information-util.js';
 
 describe('#applyCiEnvVariablesToFiles', function () {
   it('should fail if not in a ci environment', async () => {

@@ -1,4 +1,4 @@
-import { WardenContact } from '../model/warden-contact';
+import { WardenContact } from '../model/warden-contact.js';
 
 export interface CreateAccount {
   contact: WardenContact;

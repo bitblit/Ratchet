@@ -1,4 +1,4 @@
-import { EpsilonWebsiteStack } from './epsilon-website-stack';
+import { EpsilonWebsiteStack } from './epsilon-website-stack.js';
 
 describe('#epsilonWebsiteStack', function () {
   it('should extract apex domains', async () => {

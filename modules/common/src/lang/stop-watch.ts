@@ -1,8 +1,8 @@
-import { DurationRatchet } from './duration-ratchet';
-import { StringRatchet } from './string-ratchet';
-import { RequireRatchet } from './require-ratchet';
-import { LoggerLevelName } from '../logger/logger-level-name';
-import { Logger } from '../logger/logger';
+import { DurationRatchet } from './duration-ratchet.js';
+import { StringRatchet } from './string-ratchet.js';
+import { RequireRatchet } from './require-ratchet.js';
+import { LoggerLevelName } from '../logger/logger-level-name.js';
+import { Logger } from '../logger/logger.js';
 
 /*
     Class to simplify timing

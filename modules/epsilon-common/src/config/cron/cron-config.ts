@@ -1,4 +1,4 @@
-import { CronBackgroundEntry } from './cron-background-entry';
+import { CronBackgroundEntry } from './cron-background-entry.js';
 
 export interface CronConfig {
   // Timezone used to evaluate date and time (defaults to etc/gmt)

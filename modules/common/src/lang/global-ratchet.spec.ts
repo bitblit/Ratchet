@@ -1,5 +1,5 @@
-import { GlobalRatchet } from './global-ratchet';
-import { StringRatchet } from './string-ratchet';
+import { GlobalRatchet } from './global-ratchet.js';
+import { StringRatchet } from './string-ratchet.js';
 
 describe('#globalRatchet', function () {
   it('fetch and set global variables', async () => {

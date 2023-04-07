@@ -2,10 +2,10 @@
     Functions for working with maps (dictionaries/objects in javascript)
 */
 
-import { KeyValue } from './key-value';
-import { Logger } from '../logger/logger';
-import { ErrorRatchet } from './error-ratchet';
-import { set } from 'lodash';
+import { KeyValue } from './key-value.js';
+import { Logger } from '../logger/logger.js';
+import { ErrorRatchet } from './error-ratchet.js';
+import { set } from 'lodash-es';
 
 export class MapRatchet {
   // Takes any map with keys that are nested and expands them

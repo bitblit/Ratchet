@@ -1,4 +1,5 @@
-import { ErrorRatchet, StringRatchet } from '@bitblit/ratchet-common';
+import { ErrorRatchet } from '@bitblit/ratchet-common/lang/error-ratchet.js';
+import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet.js';
 
 /**
  * Ratchet for manipulating credentials

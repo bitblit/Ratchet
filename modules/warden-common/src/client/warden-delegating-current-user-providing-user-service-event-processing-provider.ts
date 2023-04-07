@@ -1,7 +1,7 @@
-import { WardenUserServiceEventProcessingProvider } from './provider/warden-user-service-event-processing-provider';
-import { WardenLoggedInUserWrapper } from './provider/warden-logged-in-user-wrapper';
+import { WardenUserServiceEventProcessingProvider } from './provider/warden-user-service-event-processing-provider.js';
+import { WardenLoggedInUserWrapper } from './provider/warden-logged-in-user-wrapper.js';
 import { BehaviorSubject } from 'rxjs';
-import { WardenClientCurrentLoggedInJwtTokenProvider } from './provider/warden-client-current-logged-in-jwt-token-provider';
+import { WardenClientCurrentLoggedInJwtTokenProvider } from './provider/warden-client-current-logged-in-jwt-token-provider.js';
 
 /**
  * This class maintains a BehaviorSubject of the current user for things that want to be

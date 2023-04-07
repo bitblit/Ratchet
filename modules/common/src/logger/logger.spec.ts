@@ -1,12 +1,12 @@
-import { Logger } from './logger';
-import { LogSnapshot } from './log-snapshot';
-import { LogMessage } from './log-message';
-import { LoggerLevelName } from './logger-level-name';
-import { LogMessageProcessor } from './log-message-processor';
-import { StringRatchet } from '../lang/string-ratchet';
-import { LogMessageBuilder } from './log-message-builder';
-import { LogMessageFormatType } from './log-message-format-type';
-import { LoggerOutputFunction } from './logger-output-function';
+import { Logger } from './logger.js';
+import { LogSnapshot } from './log-snapshot.js';
+import { LogMessage } from './log-message.js';
+import { LoggerLevelName } from './logger-level-name.js';
+import { LogMessageProcessor } from './log-message-processor.js';
+import { StringRatchet } from '../lang/string-ratchet.js';
+import { LogMessageBuilder } from './log-message-builder.js';
+import { LogMessageFormatType } from './log-message-format-type.js';
+import { LoggerOutputFunction } from './logger-output-function.js';
 
 describe('#setLevel', function () {
   it('should change the level to debug then info then debug', function () {

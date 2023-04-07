@@ -1,4 +1,4 @@
-import { BackgroundEntry } from './background-entry';
+import { BackgroundEntry } from './background-entry.js';
 
 export interface InternalBackgroundEntry<T> extends BackgroundEntry<T> {
   guid: string;

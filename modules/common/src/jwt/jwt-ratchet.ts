@@ -1,12 +1,12 @@
 import jwt from 'jsonwebtoken';
-import { RequireRatchet } from '../lang/require-ratchet';
-import { Logger } from '../logger/logger';
-import { StringRatchet } from '../lang/string-ratchet';
-import { DurationRatchet } from '../lang/duration-ratchet';
-import { JwtTokenBase } from './jwt-token-base';
-import { LoggerLevelName } from '../logger/logger-level-name';
-import { ExpiredJwtHandling } from './expired-jwt-handling';
-import { JwtRatchetLike } from './jwt-ratchet-like';
+import { RequireRatchet } from '../lang/require-ratchet.js';
+import { Logger } from '../logger/logger.js';
+import { StringRatchet } from '../lang/string-ratchet.js';
+import { DurationRatchet } from '../lang/duration-ratchet.js';
+import { JwtTokenBase } from './jwt-token-base.js';
+import { LoggerLevelName } from '../logger/logger-level-name.js';
+import { ExpiredJwtHandling } from './expired-jwt-handling.js';
+import { JwtRatchetLike } from './jwt-ratchet-like.js';
 
 /**
  * Functions to help with creating and decoding JWTs

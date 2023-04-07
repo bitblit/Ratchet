@@ -1,7 +1,7 @@
-import * as echarts from 'echarts';
+import echarts from 'echarts';
 import { ECharts, EChartsOption } from 'echarts';
 import { Canvas } from 'canvas';
-import { EChartCanvasConfig } from './echart-canvas-config';
+import { EChartCanvasConfig } from './echart-canvas-config.js';
 import fs from 'fs';
 
 export class EChartRatchet {

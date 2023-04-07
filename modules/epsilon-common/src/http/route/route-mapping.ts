@@ -1,6 +1,6 @@
-import { RouteValidatorConfig } from './route-validator-config';
-import { HandlerFunction } from '../../config/http/handler-function';
-import { HttpProcessingConfig } from '../../config/http/http-processing-config';
+import { RouteValidatorConfig } from './route-validator-config.js';
+import { HandlerFunction } from '../../config/http/handler-function.js';
+import { HttpProcessingConfig } from '../../config/http/http-processing-config.js';
 
 export interface RouteMapping {
   method: string;

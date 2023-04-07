@@ -1,11 +1,11 @@
-import { Logger } from '@bitblit/ratchet-common';
+import { Logger } from '@bitblit/ratchet-common/logger/logger.js';
 import { GetQueueAttributesCommand, GetQueueAttributesResult, SQSClient } from '@aws-sdk/client-sqs';
-import { ModelValidator } from '@bitblit/ratchet-misc';
-import { AwsSqsSnsBackgroundManager } from './aws-sqs-sns-background-manager';
-import { BackgroundConfig } from '../../config/background/background-config';
-import { EchoProcessor } from '../../built-in/background/echo-processor';
-import { NoOpProcessor } from '../../built-in/background/no-op-processor';
-import { BackgroundAwsConfig } from '../../config/background/background-aws-config';
+import { ModelValidator } from '@bitblit/ratchet-misc/model-validator/model-validator.js';
+import { AwsSqsSnsBackgroundManager } from './aws-sqs-sns-background-manager.js';
+import { BackgroundConfig } from '../../config/background/background-config.js';
+import { EchoProcessor } from '../../built-in/background/echo-processor.js';
+import { NoOpProcessor } from '../../built-in/background/no-op-processor.js';
+import { BackgroundAwsConfig } from '../../config/background/background-aws-config.js';
 import { SNSClient } from '@aws-sdk/client-sns';
 import { mockClient } from 'aws-sdk-client-mock';
 

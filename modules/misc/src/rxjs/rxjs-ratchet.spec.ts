@@ -1,7 +1,7 @@
 import { BehaviorSubject } from 'rxjs';
-import { RxjsRatchet } from './rxjs-ratchet';
-import { PromiseRatchet } from '@bitblit/ratchet-common';
-import { Logger } from '@bitblit/ratchet-common';
+import { RxjsRatchet } from './rxjs-ratchet.js';
+import { PromiseRatchet } from '@bitblit/ratchet-common/lang/promise-ratchet.js';
+import { Logger } from '@bitblit/ratchet-common/logger/logger.js';
 
 describe('#waitForNonNullOnSubject', function () {
   it('should resolve after 1 second', async () => {

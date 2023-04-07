@@ -1,8 +1,8 @@
 import { APIGatewayEvent, APIGatewayEventRequestContext, Context, ProxyResult } from 'aws-lambda';
-import { Logger } from '@bitblit/ratchet-common';
-import { EpsilonGlobalHandler } from '../epsilon-global-handler';
-import { SampleServerComponents } from '../sample/sample-server-components';
-import { LoggerLevelName } from '@bitblit/ratchet-common';
+import { Logger } from '@bitblit/ratchet-common/logger/logger.js';
+import { EpsilonGlobalHandler } from '../epsilon-global-handler.js';
+import { SampleServerComponents } from '../sample/sample-server-components.js';
+import { LoggerLevelName } from '@bitblit/ratchet-common/logger/logger-level-name.js';
 
 describe('#errorToProxyResult', function () {
   /*

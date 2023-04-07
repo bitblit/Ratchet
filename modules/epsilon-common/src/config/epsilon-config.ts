@@ -1,11 +1,11 @@
-import { HttpConfig } from './http/http-config';
-import { BackgroundConfig } from './background/background-config';
-import { CronConfig } from './cron/cron-config';
-import { DynamoDbConfig } from './dynamo-db-config';
-import { S3Config } from './s3-config';
-import { SnsConfig } from './sns-config';
-import { EpsilonLoggerConfig } from './epsilon-logger-config';
-import { InterApiConfig } from './inter-api/inter-api-config';
+import { HttpConfig } from './http/http-config.js';
+import { BackgroundConfig } from './background/background-config.js';
+import { CronConfig } from './cron/cron-config.js';
+import { DynamoDbConfig } from './dynamo-db-config.js';
+import { S3Config } from './s3-config.js';
+import { SnsConfig } from './sns-config.js';
+import { EpsilonLoggerConfig } from './epsilon-logger-config.js';
+import { InterApiConfig } from './inter-api/inter-api-config.js';
 
 export interface EpsilonConfig {
   label?: string;

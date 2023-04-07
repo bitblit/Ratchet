@@ -1,13 +1,13 @@
-import { Logger } from '@bitblit/ratchet-common';
+import { Logger } from '@bitblit/ratchet-common/logger/logger.js';
+import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet.js';
+import { JwtRatchet } from '@bitblit/ratchet-common/jwt/jwt-ratchet.js';
 import { Subscription, timer } from 'rxjs';
-import jwt_decode from 'jwt-decode';
-import { WardenUserServiceOptions } from './provider/warden-user-service-options';
-import { WardenLoggedInUserWrapper } from './provider/warden-logged-in-user-wrapper';
-import { WardenContact } from '../common/model/warden-contact';
-import { WardenJwtToken } from '../common/model/warden-jwt-token';
-import { WardenLoginResults } from '../common/model/warden-login-results';
-import { StringRatchet } from '@bitblit/ratchet-common';
-import { WardenLoginRequest } from '../common/model/warden-login-request';
+import { WardenUserServiceOptions } from './provider/warden-user-service-options.js';
+import { WardenLoggedInUserWrapper } from './provider/warden-logged-in-user-wrapper.js';
+import { WardenContact } from '../common/model/warden-contact.js';
+import { WardenJwtToken } from '../common/model/warden-jwt-token.js';
+import { WardenLoginResults } from '../common/model/warden-login-results.js';
+import { WardenLoginRequest } from '../common/model/warden-login-request.js';
 
 import {
   AuthenticationResponseJSON,
@@ -15,7 +15,7 @@ import {
   PublicKeyCredentialRequestOptionsJSON,
   RegistrationResponseJSON,
 } from '@simplewebauthn/typescript-types';
-import { WardenEntrySummary } from '../common/model/warden-entry-summary';
+import { WardenEntrySummary } from '../common/model/warden-entry-summary.js';
 
 /**
  * A service that handles logging in, saving the current user, watching
@@ -170,7 +170,8 @@ export class WardenUserService<T> {
       this.logout();
     } else {
       Logger.info('updateLoggedInUserFromTokenString : %s', token);
-      const parsed: WardenJwtToken<T> = jwt_decode<WardenJwtToken<T>>(token);
+
+      const parsed: WardenJwtToken<T> = JwtRatchet.decodeTokenNoVerify<WardenJwtToken<T>>(token);
       if (parsed) {
         rval = {
           userObject: parsed,

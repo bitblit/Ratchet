@@ -1,13 +1,13 @@
-import { Logger } from '@bitblit/ratchet-common';
-import { StringRatchet } from '@bitblit/ratchet-common';
-import { MapRatchet } from '@bitblit/ratchet-common';
-import { EventUtil } from '../../http/event-util';
-import { BadRequestError } from '../../http/error/bad-request-error';
-import { FilterFunction } from '../../config/http/filter-function';
-import { ResponseUtil } from '../../http/response-util';
-import { EpsilonHttpError } from '../../http/error/epsilon-http-error';
-import { FilterChainContext } from '../../config/http/filter-chain-context';
-import { MisconfiguredError } from '../../http/error/misconfigured-error';
+import { Logger } from '@bitblit/ratchet-common/logger/logger.js';
+import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet.js';
+import { MapRatchet } from '@bitblit/ratchet-common/lang/map-ratchet.js';
+import { EventUtil } from '../../http/event-util.js';
+import { BadRequestError } from '../../http/error/bad-request-error.js';
+import { FilterFunction } from '../../config/http/filter-function.js';
+import { ResponseUtil } from '../../http/response-util.js';
+import { EpsilonHttpError } from '../../http/error/epsilon-http-error.js';
+import { FilterChainContext } from '../../config/http/filter-chain-context.js';
+import { MisconfiguredError } from '../../http/error/misconfigured-error.js';
 import { APIGatewayProxyResult } from 'aws-lambda';
 
 export class BuiltInFilters {

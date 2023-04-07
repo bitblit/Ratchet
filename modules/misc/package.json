@@ -3,11 +3,13 @@
   "version": "0.0.0",
   "description": "Ratchet miscellaneous tooling that requires smallish dependant libraries",
   "sideEffects": false,
-  "main": "./dist/cjs/index.js",
-  "module": "./dist/esm/index.js",
-  "types": "./dist/types/index.d.ts",
+  "type": "module",
+  "exports": {
+    "./": "./dist/"
+  },
   "files": [
-    "dist/*"
+    "dist/*",
+    "includes/*"
   ],
   "contributors": [
     "Christopher Weiss <bitblit@gmail.com>",
@@ -31,13 +33,15 @@
   "scripts": {
     "watch": "tsc-watch",
     "clean": "shx rm -Rf dist",
-    "test": "jest",
+    "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest",
     "docs": "typedoc",
     "lint": "eslint src/**/*.ts",
     "lint-fix": "eslint --fix src/**/*.ts",
-    "generate-barrels": "barrelsby -q --delete -d src -e .*\\.spec\\.ts",
+    "__generate-barrels": "barrelsby -q --delete -d src -e .*\\.spec\\.ts",
 
-    "build": "yarn run generate-barrels && tsc"
+    "__build": "yarn run generate-barrels && tsc",
+    "build": "tsc",
+    "force-build": "tsc --build --force"
   },
   "repository": {
     "type": "git",
@@ -58,14 +62,16 @@
   "dependencies": {
     "handlebars": "4.7.7",
     "handlebars-layouts": "3.1.4",
-    "swagger-model-validator": "3.0.21",
-    "rxjs": "7.8.0"
+    "js-yaml": "4.1.0",
+    "rxjs": "7.8.0",
+    "swagger-model-validator": "3.0.21"
   },
   "peerDependencies": {
-    "handlebars": "4.7.7",
-    "handlebars-layouts": "3.1.4",
-    "swagger-model-validator": "3.0.21",
-    "rxjs": "7.8.0"
+    "handlebars": "^4.7.7",
+    "handlebars-layouts": "^3.1.4",
+    "js-yaml": "^4.1.0",
+    "rxjs": "^7.8.0",
+    "swagger-model-validator": "^3.0.21"
   },
   "resolutions": {
   },

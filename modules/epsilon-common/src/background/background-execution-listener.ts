@@ -1,4 +1,4 @@
-import { BackgroundExecutionEvent } from './background-execution-event';
+import { BackgroundExecutionEvent } from './background-execution-event.js';
 
 export interface BackgroundExecutionListener<T> {
   label?: string;

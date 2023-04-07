@@ -1,9 +1,9 @@
 /**
  * Some helpers to make it safe to have the node-only classes inside Ratchet
  */
-import { ErrorRatchet } from './error-ratchet';
-import { RequireRatchet } from './require-ratchet';
-import { Logger } from '../logger/logger';
+import { ErrorRatchet } from './error-ratchet.js';
+import { RequireRatchet } from './require-ratchet.js';
+import { Logger } from '../logger/logger.js';
 
 export class GlobalRatchet {
   // Empty constructor prevents instantiation

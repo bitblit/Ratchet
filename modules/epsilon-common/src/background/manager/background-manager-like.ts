@@ -1,5 +1,5 @@
-import { BackgroundEntry } from '../background-entry';
-import { InternalBackgroundEntry } from '../internal-background-entry';
+import { BackgroundEntry } from '../background-entry.js';
+import { InternalBackgroundEntry } from '../internal-background-entry.js';
 import { Subject } from 'rxjs';
 
 /**

@@ -1,18 +1,18 @@
-import { Logger } from '@bitblit/ratchet-common';
-import { ErrorRatchet } from '@bitblit/ratchet-common';
+import { Logger } from '@bitblit/ratchet-common/logger/logger.js';
+import { ErrorRatchet } from '@bitblit/ratchet-common/lang/error-ratchet.js';
 import yaml from 'js-yaml';
-import { ModelValidator } from '@bitblit/ratchet-misc';
-import { BackgroundHttpAdapterHandler } from '../background/background-http-adapter-handler';
-import { OpenApiDocument } from '../config/open-api/open-api-document';
-import { EpsilonConfig } from '../config/epsilon-config';
-import { EpsilonInstance } from '../epsilon-instance';
-import { BackgroundHandler } from '../background/background-handler';
-import { EpsilonRouter } from '../http/route/epsilon-router';
-import { RouterUtil } from '../http/route/router-util';
-import { WebHandler } from '../http/web-handler';
-import { MisconfiguredError } from '../http/error/misconfigured-error';
-import { EpsilonGlobalHandler } from '../epsilon-global-handler';
-import { BackgroundManagerLike } from '../background/manager/background-manager-like';
+import { ModelValidator } from '@bitblit/ratchet-misc/model-validator/model-validator.js';
+import { BackgroundHttpAdapterHandler } from '../background/background-http-adapter-handler.js';
+import { OpenApiDocument } from '../config/open-api/open-api-document.js';
+import { EpsilonConfig } from '../config/epsilon-config.js';
+import { EpsilonInstance } from '../epsilon-instance.js';
+import { BackgroundHandler } from '../background/background-handler.js';
+import { EpsilonRouter } from '../http/route/epsilon-router.js';
+import { RouterUtil } from '../http/route/router-util.js';
+import { WebHandler } from '../http/web-handler.js';
+import { MisconfiguredError } from '../http/error/misconfigured-error.js';
+import { EpsilonGlobalHandler } from '../epsilon-global-handler.js';
+import { BackgroundManagerLike } from '../background/manager/background-manager-like.js';
 
 export class EpsilonConfigParser {
   // Prevent instantiation

@@ -2,11 +2,11 @@
     Functions for working with promises
 */
 
-import { Logger } from '../logger/logger';
-import { ArrayRatchet } from './array-ratchet';
-import { TimeoutToken } from './timeout-token';
-import { StopWatch } from './stop-watch';
-import { LoggerLevelName } from '../logger/logger-level-name';
+import { Logger } from '../logger/logger.js';
+import { ArrayRatchet } from './array-ratchet.js';
+import { TimeoutToken } from './timeout-token.js';
+import { StopWatch } from './stop-watch.js';
+import { LoggerLevelName } from '../logger/logger-level-name.js';
 
 export class PromiseRatchet {
   /**
