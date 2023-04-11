@@ -3,7 +3,7 @@ import { WardenContact } from '../model/warden-contact.js';
 import { WardenUtils } from './warden-utils.js';
 
 describe('#WardenUtils', () => {
-  beforeEach(() => {});
+  //beforeEach(() => {});
 
   it('Should convert a string to a contact type', async () => {
     const output: WardenContact = WardenUtils.stringToWardenContact('test@test.com');

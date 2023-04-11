@@ -9,7 +9,7 @@ import { jest } from '@jest/globals';
 
 describe('#wardenUserService', function () {
   // Currently disabled because this seems to hang forever on github actions (2023-03-20)
-  xit('should instantiate', async () => {
+  it('should instantiate', async () => {
     const wuso: WardenUserServiceOptions<any> = {
       recentLoginProvider: JestRatchet.mock<WardenClientRecentLoginProvider>(jest.fn),
       loggedInUserProvider: JestRatchet.mock<WardenLoggedInUserProvider<any>>(jest.fn),

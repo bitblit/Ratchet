@@ -12,7 +12,7 @@
     "esModuleInterop": true,
     "incremental": false,
     "lib": [
-      "es2016",
+      "es2022",
       "dom"
     ],
     "moduleResolution": "node16",
