@@ -1,4 +1,4 @@
-import { Logger } from '@bitblit/ratchet-common/logger/logger.js';
+import { Logger } from '@bitblit/ratchet-common/dist/logger/logger.js';
 import { EpsilonConstants } from './epsilon-constants.js';
 import { InterApiEntry } from './inter-api/inter-api-entry.js';
 import { InterApiAwsConfig } from './config/inter-api/inter-api-aws-config.js';

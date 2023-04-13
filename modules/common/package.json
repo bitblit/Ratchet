@@ -3,9 +3,7 @@
   "version": "0.0.0",
   "description": "Common tools for general use",
   "type": "module",
-  "exports": {
-    "./": "./dist/"
-  },
+  "module": "index.js",
   "files": [
     "dist/*",
     "includes/*"

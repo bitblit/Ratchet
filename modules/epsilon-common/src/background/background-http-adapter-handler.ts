@@ -1,21 +1,21 @@
-import { Logger } from '@bitblit/ratchet-common/logger/logger.js';
-import { PromiseRatchet } from '@bitblit/ratchet-common/lang/promise-ratchet.js';
+import { Logger } from '@bitblit/ratchet-common/dist/logger/logger.js';
+import { PromiseRatchet } from '@bitblit/ratchet-common/dist/lang/promise-ratchet.js';
 import { BackgroundEntry } from './background-entry.js';
 import { Context } from 'aws-lambda';
 import { ExtendedAPIGatewayEvent } from '../config/http/extended-api-gateway-event.js';
 import { BackgroundQueueResponseInternal } from './background-queue-response-internal.js';
 import { BackgroundProcessHandling } from './background-process-handling.js';
 import { BackgroundConfig } from '../config/background/background-config.js';
-import { ModelValidator } from '@bitblit/ratchet-misc/model-validator/model-validator.js';
-import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet.js';
-import { BooleanRatchet } from '@bitblit/ratchet-common/lang/boolean-ratchet.js';
+import { ModelValidator } from '@bitblit/ratchet-misc/dist/model-validator/model-validator.js';
+import { StringRatchet } from '@bitblit/ratchet-common/dist/lang/string-ratchet.js';
+import { BooleanRatchet } from '@bitblit/ratchet-common/dist/lang/boolean-ratchet.js';
 import { BadRequestError } from '../http/error/bad-request-error.js';
 import { BackgroundProcessor } from '../config/background/background-processor.js';
 import { BackgroundMetaResponseInternal } from './background-meta-response-internal.js';
 import { BackgroundTransactionLog } from '../config/background/background-transaction-log.js';
 import { NotFoundError } from '../http/error/not-found-error.js';
 import { BackgroundManagerLike } from './manager/background-manager-like.js';
-import { StopWatch } from '@bitblit/ratchet-common/lang/stop-watch.js';
+import { StopWatch } from '@bitblit/ratchet-common/dist/lang/stop-watch.js';
 
 /**
  * We use a FIFO queue so that 2 different Lambdas don't both work on the same

@@ -1,5 +1,5 @@
-import { Logger } from '@bitblit/ratchet-common/logger/logger.js';
-import { Ec2Ratchet } from '@bitblit/ratchet-aws/ec2/ec2-ratchet.js';
+import { Logger } from '@bitblit/ratchet-common/dist/logger/logger.js';
+import { Ec2Ratchet } from '@bitblit/ratchet-aws/dist/ec2/ec2-ratchet.js';
 import { spawnSync, SpawnSyncReturns } from 'child_process';
 import fs from 'fs';
 import os from 'os';

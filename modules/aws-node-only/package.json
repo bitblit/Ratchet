@@ -8,9 +8,7 @@
     "ratchet-aws-cli": "./includes/cli.js"
   },
   "type": "module",
-  "exports": {
-    "./": "./dist/"
-  },
+  "module": "index.js",
   "files": [
     "dist/*",
     "includes/*"

@@ -1,7 +1,7 @@
 import { SNSEvent } from 'aws-lambda';
 import { InterApiUtil } from './inter-api-util.js';
 import { InterApiConfig } from '../config/inter-api/inter-api-config.js';
-import { JestRatchet } from '@bitblit/ratchet-jest/jest/jest-ratchet.js';
+import { JestRatchet } from '@bitblit/ratchet-jest/dist/jest/jest-ratchet.js';
 import { BackgroundManagerLike } from '../background/manager/background-manager-like.js';
 import { SNSClient } from '@aws-sdk/client-sns';
 import { SQSClient } from '@aws-sdk/client-sqs';

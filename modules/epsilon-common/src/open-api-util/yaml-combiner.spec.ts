@@ -1,7 +1,7 @@
-import { Logger } from '@bitblit/ratchet-common/logger/logger.js';
+import { Logger } from '@bitblit/ratchet-common/dist/logger/logger.js';
 import path from 'path';
 import { YamlCombiner } from './yaml-combiner.js';
-import { EsmRatchet } from '@bitblit/ratchet-common/lang/esm-ratchet.js';
+import { EsmRatchet } from '@bitblit/ratchet-common/dist/lang/esm-ratchet.js';
 
 describe('#yamlCombiner', function () {
   it('should combine yamls', async () => {

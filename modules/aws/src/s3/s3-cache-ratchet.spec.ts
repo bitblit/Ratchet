@@ -10,9 +10,9 @@ import {
   UploadPartCommand,
 } from '@aws-sdk/client-s3';
 import { S3CacheRatchet } from './s3-cache-ratchet.js';
-import { Logger } from '@bitblit/ratchet-common/logger/logger.js';
-import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet.js';
-import { StreamRatchet } from '@bitblit/ratchet-common/stream/stream-ratchet.js';
+import { Logger } from '@bitblit/ratchet-common/dist/logger/logger.js';
+import { StringRatchet } from '@bitblit/ratchet-common/dist/lang/string-ratchet.js';
+import { StreamRatchet } from '@bitblit/ratchet-common/dist/stream/stream-ratchet.js';
 import { mockClient } from 'aws-sdk-client-mock';
 import { jest } from '@jest/globals';
 

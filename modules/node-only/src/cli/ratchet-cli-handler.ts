@@ -1,4 +1,4 @@
-import { BuildInformation } from '@bitblit/ratchet-common/build/build-information.js';
+import { BuildInformation } from '@bitblit/ratchet-common/dist/build/build-information.js';
 import { RatchetNodeOnlyInfo } from '../build/ratchet-node-only-info.js';
 import { ApplyCiEnvVariablesToFiles } from '../ci/apply-ci-env-variables-to-files.js';
 import { FilesToStaticClass } from '../files/files-to-static-class.js';

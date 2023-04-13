@@ -1,6 +1,6 @@
 import process from 'child_process';
-import { Logger } from '@bitblit/ratchet-common/logger/logger.js';
-import { EsmRatchet } from '@bitblit/ratchet-common/lang/esm-ratchet.js';
+import { Logger } from '@bitblit/ratchet-common/dist/logger/logger.js';
+import { EsmRatchet } from '@bitblit/ratchet-common/dist/lang/esm-ratchet.js';
 
 // Mainly ripped from https://raw.githubusercontent.com/seymen/git-last-commit/master/source/index.js
 // All credit due to https://github.com/seymen

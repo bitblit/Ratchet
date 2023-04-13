@@ -1,5 +1,5 @@
 import util from 'util';
-import { NumberRatchet } from '@bitblit/ratchet-common/lang/number-ratchet.js';
+import { NumberRatchet } from '@bitblit/ratchet-common/dist/lang/number-ratchet.js';
 
 export class EpsilonHttpError<T = void> extends Error {
   private static readonly EPSILON_HTTP_ERROR_FLAG_KEY: string = '__epsilonHttpErrorFlag';

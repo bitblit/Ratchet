@@ -1,8 +1,8 @@
 import { ModelValidator } from './model-validator.js';
 import fs from 'fs';
 import path from 'path';
-import { Logger } from '@bitblit/ratchet-common/logger/logger.js';
-import { EsmRatchet } from '@bitblit/ratchet-common/lang/esm-ratchet.js';
+import { Logger } from '@bitblit/ratchet-common/dist/logger/logger.js';
+import { EsmRatchet } from '@bitblit/ratchet-common/dist/lang/esm-ratchet.js';
 
 describe('#modelValidator', function () {
   it('should list an error', function () {

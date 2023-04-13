@@ -1,7 +1,7 @@
-import { ErrorRatchet } from '@bitblit/ratchet-common/lang/error-ratchet.js';
-import { Logger } from '@bitblit/ratchet-common/logger/logger.js';
-import { RequireRatchet } from '@bitblit/ratchet-common/lang/require-ratchet.js';
-import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet.js';
+import { ErrorRatchet } from '@bitblit/ratchet-common/dist/lang/error-ratchet.js';
+import { Logger } from '@bitblit/ratchet-common/dist/logger/logger.js';
+import { RequireRatchet } from '@bitblit/ratchet-common/dist/lang/require-ratchet.js';
+import { StringRatchet } from '@bitblit/ratchet-common/dist/lang/string-ratchet.js';
 import { BackgroundEntry } from '../background-entry.js';
 import { InternalBackgroundEntry } from '../internal-background-entry.js';
 import { DateTime } from 'luxon';

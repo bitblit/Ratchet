@@ -1,6 +1,6 @@
 import { ApplyCiEnvVariablesToFiles } from './apply-ci-env-variables-to-files.js';
-import { Logger } from '@bitblit/ratchet-common/logger/logger.js';
-import { GlobalRatchet } from '@bitblit/ratchet-common/lang/global-ratchet.js';
+import { Logger } from '@bitblit/ratchet-common/dist/logger/logger.js';
+import { GlobalRatchet } from '@bitblit/ratchet-common/dist/lang/global-ratchet.js';
 import { CiRunInformationUtil } from './ci-run-information-util.js';
 
 describe('#applyCiEnvVariablesToFiles', function () {

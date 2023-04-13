@@ -2,7 +2,7 @@ import { ScheduledEvent } from 'aws-lambda';
 import { BackgroundHandler } from '../background/background-handler.js';
 import { CronConfig } from '../config/cron/cron-config.js';
 import { BackgroundConfig } from '../config/background/background-config.js';
-import { JestRatchet } from '@bitblit/ratchet-jest/jest/jest-ratchet.js';
+import { JestRatchet } from '@bitblit/ratchet-jest/dist/jest/jest-ratchet.js';
 import { CronEpsilonLambdaEventHandler } from './cron-epsilon-lambda-event-handler.js';
 import { BackgroundManagerLike } from '../background/manager/background-manager-like.js';
 import { SingleThreadLocalBackgroundManager } from '../background/manager/single-thread-local-background-manager.js';

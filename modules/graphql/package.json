@@ -4,10 +4,7 @@
   "description": "Ratchet tools to simplify use of graphql",
   "sideEffects": false,
   "type": "module",
-  "type": "module",
-  "exports": {
-    "./": "./dist/"
-  },
+  "module": "index.js",
   "files": [
     "dist/*",
     "includes/*"

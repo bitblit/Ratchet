@@ -1,9 +1,9 @@
 import { SubmitJobCommandInput, SubmitJobCommandOutput } from '@aws-sdk/client-batch';
 import { DateTime } from 'luxon';
-import { ErrorRatchet } from '@bitblit/ratchet-common/lang/error-ratchet.js';
-import { Logger } from '@bitblit/ratchet-common/logger/logger.js';
-import { RequireRatchet } from '@bitblit/ratchet-common/lang/require-ratchet.js';
-import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet.js';
+import { ErrorRatchet } from '@bitblit/ratchet-common/dist/lang/error-ratchet.js';
+import { Logger } from '@bitblit/ratchet-common/dist/logger/logger.js';
+import { RequireRatchet } from '@bitblit/ratchet-common/dist/lang/require-ratchet.js';
+import { StringRatchet } from '@bitblit/ratchet-common/dist/lang/string-ratchet.js';
 import { AwsBatchRatchet } from './aws-batch-ratchet.js';
 
 /**

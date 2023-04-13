@@ -1,7 +1,7 @@
 import { AthenaRatchet } from './athena-ratchet.js';
-import { Logger } from '@bitblit/ratchet-common/logger/logger.js';
-import { LoggerLevelName } from '@bitblit/ratchet-common/logger/logger-level-name.js';
-import { TimeZoneRatchet } from '@bitblit/ratchet-common/lang/time-zone-ratchet.js';
+import { Logger } from '@bitblit/ratchet-common/dist/logger/logger.js';
+import { LoggerLevelName } from '@bitblit/ratchet-common/dist/logger/logger-level-name.js';
+import { TimeZoneRatchet } from '@bitblit/ratchet-common/dist/lang/time-zone-ratchet.js';
 
 import { AlbAthenaLogRatchet, AlbLogRecord, AlbLogRecordQuery } from './alb-athena-log-ratchet.js';
 import { S3Client } from '@aws-sdk/client-s3';

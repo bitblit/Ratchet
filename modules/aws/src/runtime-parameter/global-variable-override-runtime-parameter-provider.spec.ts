@@ -1,9 +1,9 @@
 import { DynamoRuntimeParameterProvider } from './dynamo-runtime-parameter-provider.js';
 import { DynamoRatchet } from '../dynamodb/dynamo-ratchet.js';
 import { StoredRuntimeParameter } from './stored-runtime-parameter.js';
-import { JestRatchet } from '@bitblit/ratchet-jest/jest/jest-ratchet.js';
-import { Logger } from '@bitblit/ratchet-common/logger/logger.js';
-import { LoggerLevelName } from '@bitblit/ratchet-common/logger/logger-level-name.js';
+import { JestRatchet } from '@bitblit/ratchet-jest/dist/jest/jest-ratchet.js';
+import { Logger } from '@bitblit/ratchet-common/dist/logger/logger.js';
+import { LoggerLevelName } from '@bitblit/ratchet-common/dist/logger/logger-level-name.js';
 import { RuntimeParameterRatchet } from './runtime-parameter-ratchet.js';
 import { GlobalVariableOverrideRuntimeParameterProvider } from './global-variable-override-runtime-parameter-provider.js';
 import { jest } from '@jest/globals';

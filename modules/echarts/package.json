@@ -3,9 +3,7 @@
   "version": "0.0.0",
   "description": "Library for using echarts on Node",
   "type": "module",
-  "main": "./dist/cjs/index.js",
-  "module": "./dist/esm/index.js",
-  "types": "./dist/types/index.d.ts",
+  "module": "index.js",
   "files": [
     "dist/*",
     "includes/*"

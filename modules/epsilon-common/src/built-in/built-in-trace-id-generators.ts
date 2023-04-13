@@ -1,4 +1,4 @@
-import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet.js';
+import { StringRatchet } from '@bitblit/ratchet-common/dist/lang/string-ratchet.js';
 import { ContextUtil } from '../util/context-util.js';
 
 export class BuiltInTraceIdGenerators {

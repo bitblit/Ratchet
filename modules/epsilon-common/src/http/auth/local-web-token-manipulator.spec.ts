@@ -1,7 +1,7 @@
 import { LocalWebTokenManipulator } from './local-web-token-manipulator.js';
-import { Logger } from '@bitblit/ratchet-common/logger/logger.js';
-import { LoggerLevelName } from '@bitblit/ratchet-common/logger/logger-level-name.js';
-import { CommonJwtToken } from '@bitblit/ratchet-common/jwt/common-jwt-token.js';
+import { Logger } from '@bitblit/ratchet-common/dist/logger/logger.js';
+import { LoggerLevelName } from '@bitblit/ratchet-common/dist/logger/logger-level-name.js';
+import { CommonJwtToken } from '@bitblit/ratchet-common/dist/jwt/common-jwt-token.js';
 
 describe('#localWebTokenManipulator', function () {
   it('should round trip a JWT token', async () => {

@@ -2,11 +2,11 @@
 import { WardenMessageSendingProvider } from './warden-message-sending-provider.js';
 import { WardenTwilioTextMessageSendingProviderOptions } from './warden-twilio-text-message-sending-provider-options.js';
 
-import { Logger } from '@bitblit/ratchet-common/logger/logger.js';
-import { TwilioRatchet } from '@bitblit/ratchet-common/third-party/twilio/twilio-ratchet.js';
-import { WardenContact } from '@bitblit/ratchet-warden-common/common/model/warden-contact.js';
-import { WardenCustomerMessageType } from '@bitblit/ratchet-warden-common/common/model/warden-customer-message-type.js';
-import { WardenContactType } from '@bitblit/ratchet-warden-common/common/model/warden-contact-type.js';
+import { Logger } from '@bitblit/ratchet-common/dist/logger/logger.js';
+import { TwilioRatchet } from '@bitblit/ratchet-common/dist/third-party/twilio/twilio-ratchet.js';
+import { WardenContact } from '@bitblit/ratchet-warden-common/dist/common/model/warden-contact.js';
+import { WardenCustomerMessageType } from '@bitblit/ratchet-warden-common/dist/common/model/warden-customer-message-type.js';
+import { WardenContactType } from '@bitblit/ratchet-warden-common/dist/common/model/warden-contact-type.js';
 
 export class WardenTwilioTextMessageSendingProvider implements WardenMessageSendingProvider<string> {
   constructor(private optsPromise: Promise<WardenTwilioTextMessageSendingProviderOptions>) {}

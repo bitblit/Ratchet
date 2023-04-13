@@ -1,5 +1,5 @@
 import { Subject } from 'rxjs';
-import { Logger } from '@bitblit/ratchet-common/logger/logger.js';
+import { Logger } from '@bitblit/ratchet-common/dist/logger/logger.js';
 import { BackgroundEntry } from '../background-entry.js';
 import { InternalBackgroundEntry } from '../internal-background-entry.js';
 import { AbstractBackgroundManager } from './abstract-background-manager.js';

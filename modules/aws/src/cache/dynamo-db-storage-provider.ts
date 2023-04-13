@@ -5,7 +5,7 @@
 
 import { SimpleCacheObjectWrapper } from './simple-cache-object-wrapper.js';
 import { SimpleCacheStorageProvider } from './simple-cache-storage-provider.js';
-import { RequireRatchet } from '@bitblit/ratchet-common/lang/require-ratchet.js';
+import { RequireRatchet } from '@bitblit/ratchet-common/dist/lang/require-ratchet.js';
 import { DynamoRatchet } from '../dynamodb/dynamo-ratchet.js';
 import { PutItemCommandOutput, ScanCommandInput } from '@aws-sdk/client-dynamodb';
 import { DocQueryCommandInput } from '../model/dynamo/doc-query-command-input.js';

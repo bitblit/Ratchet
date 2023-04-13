@@ -6,7 +6,7 @@ import { FilterChainContext } from '../config/http/filter-chain-context.js';
 import { ExtendedAPIGatewayEvent } from '../config/http/extended-api-gateway-event.js';
 import { BuiltInFilters } from '../built-in/http/built-in-filters.js';
 import { EpsilonConstants } from '../epsilon-constants.js';
-import { EsmRatchet } from '@bitblit/ratchet-common/lang/esm-ratchet.js';
+import { EsmRatchet } from '@bitblit/ratchet-common/dist/lang/esm-ratchet.js';
 
 describe('#responseUtil', function () {
   it('should correctly combine a redirect url and query params', function () {

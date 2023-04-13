@@ -2,7 +2,7 @@
     Service for interacting with cloudwatch
 */
 
-import { KeyValue } from '@bitblit/ratchet-common/lang/key-value.js';
+import { KeyValue } from '@bitblit/ratchet-common/dist/lang/key-value.js';
 import { DynamoRatchet } from '../dynamodb/dynamo-ratchet.js';
 import { QueryInput, ScanCommandInput } from '@aws-sdk/client-dynamodb';
 

@@ -1,7 +1,7 @@
 import { Context, ProxyResult } from 'aws-lambda';
-import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet.js';
-import { ErrorRatchet } from '@bitblit/ratchet-common/lang/error-ratchet.js';
-import { NumberRatchet } from '@bitblit/ratchet-common/lang/number-ratchet.js';
+import { StringRatchet } from '@bitblit/ratchet-common/dist/lang/string-ratchet.js';
+import { ErrorRatchet } from '@bitblit/ratchet-common/dist/lang/error-ratchet.js';
+import { NumberRatchet } from '@bitblit/ratchet-common/dist/lang/number-ratchet.js';
 import { EpsilonInstance } from '../epsilon-instance.js';
 import { LoggingTraceIdGenerator } from '../config/logging-trace-id-generator.js';
 import { BuiltInTraceIdGenerators } from '../built-in/built-in-trace-id-generators.js';

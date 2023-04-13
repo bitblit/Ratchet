@@ -2,7 +2,7 @@ import { APIGatewayEvent, APIGatewayProxyEventV2, Context, ProxyResult } from 'a
 import { ExtendedAPIGatewayEvent } from '../config/http/extended-api-gateway-event.js';
 import { AwsUtil } from '../util/aws-util.js';
 import { EpsilonLambdaEventHandler } from '../config/epsilon-lambda-event-handler.js';
-import { LambdaEventDetector } from '@bitblit/ratchet-aws/lambda/lambda-event-detector.js';
+import { LambdaEventDetector } from '@bitblit/ratchet-aws/dist/lambda/lambda-event-detector.js';
 import { WebHandler } from './web-handler.js';
 
 /**

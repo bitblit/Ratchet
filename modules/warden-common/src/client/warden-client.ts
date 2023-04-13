@@ -4,10 +4,10 @@ import { WardenContact } from '../common/model/warden-contact.js';
 import { WardenCommandExchangeProvider } from './provider/warden-command-exchange-provider.js';
 import { WardenCommandResponse } from '../common/command/warden-command-response.js';
 
-import { Logger } from '@bitblit/ratchet-common/logger/logger.js';
-import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet.js';
-import { ErrorRatchet } from '@bitblit/ratchet-common/lang/error-ratchet.js';
-import { RequireRatchet } from '@bitblit/ratchet-common/lang/require-ratchet.js';
+import { Logger } from '@bitblit/ratchet-common/dist/logger/logger.js';
+import { StringRatchet } from '@bitblit/ratchet-common/dist/lang/string-ratchet.js';
+import { ErrorRatchet } from '@bitblit/ratchet-common/dist/lang/error-ratchet.js';
+import { RequireRatchet } from '@bitblit/ratchet-common/dist/lang/require-ratchet.js';
 import {
   PublicKeyCredentialCreationOptionsJSON,
   PublicKeyCredentialRequestOptionsJSON,

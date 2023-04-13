@@ -4,9 +4,7 @@
   "description": "Epsilon CDK extensions to simplify deployment",
   "sideEffects": false,
   "type": "module",
-  "exports": {
-    "./": "./dist/"
-  },
+  "module": "index.js",
   "files": [
     "dist/*",
     "includes/*"

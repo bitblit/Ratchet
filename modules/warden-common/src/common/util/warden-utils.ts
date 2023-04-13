@@ -1,8 +1,8 @@
 import { WardenContact } from '../model/warden-contact.js';
 import { WardenContactType } from '../model/warden-contact-type.js';
 
-import { Logger } from '@bitblit/ratchet-common/logger/logger.js';
-import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet.js';
+import { Logger } from '@bitblit/ratchet-common/dist/logger/logger.js';
+import { StringRatchet } from '@bitblit/ratchet-common/dist/lang/string-ratchet.js';
 import { WardenEntrySummary } from '../model/warden-entry-summary.js';
 import { WardenEntry } from '../model/warden-entry.js';
 import { WardenLoginRequest } from '../model/warden-login-request.js';

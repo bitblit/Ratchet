@@ -4,7 +4,7 @@ import path from 'path';
 import { CronUtil } from './cron-util.js';
 import { CronConfig } from '../config/cron/cron-config.js';
 import { AbstractCronEntry } from '../config/cron/abstract-cron-entry.js';
-import { EsmRatchet } from '@bitblit/ratchet-common/lang/esm-ratchet.js';
+import { EsmRatchet } from '@bitblit/ratchet-common/dist/lang/esm-ratchet.js';
 
 describe('#cronUtil', function () {
   it('should test matching event to entry', async () => {

@@ -4,9 +4,7 @@
   "description": "Ratchet miscellaneous tooling that requires smallish dependant libraries",
   "sideEffects": false,
   "type": "module",
-  "exports": {
-    "./": "./dist/"
-  },
+  "module": "index.js",
   "files": [
     "dist/*",
     "includes/*"

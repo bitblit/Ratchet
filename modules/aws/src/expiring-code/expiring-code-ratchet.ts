@@ -1,5 +1,5 @@
-import { RequireRatchet } from '@bitblit/ratchet-common/lang/require-ratchet.js';
-import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet.js';
+import { RequireRatchet } from '@bitblit/ratchet-common/dist/lang/require-ratchet.js';
+import { StringRatchet } from '@bitblit/ratchet-common/dist/lang/string-ratchet.js';
 import { ExpiringCodeProvider } from './expiring-code-provider.js';
 import { ExpiringCodeParams } from './expiring-code-params.js';
 import { ExpiringCode } from './expiring-code.js';

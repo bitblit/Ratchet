@@ -1,8 +1,8 @@
 import { Subject } from 'rxjs';
-import { StringWritable } from '@bitblit/ratchet-common/stream/string-writable.js';
+import { StringWritable } from '@bitblit/ratchet-common/dist/stream/string-writable.js';
 import { CsvRatchet } from './csv-ratchet.js';
-import { Logger } from '@bitblit/ratchet-common/logger/logger.js';
-import { PromiseRatchet } from '@bitblit/ratchet-common/lang/promise-ratchet.js';
+import { Logger } from '@bitblit/ratchet-common/dist/logger/logger.js';
+import { PromiseRatchet } from '@bitblit/ratchet-common/dist/lang/promise-ratchet.js';
 
 describe('#streamObjectsToCsv', function () {
   it('should parse a string', async () => {

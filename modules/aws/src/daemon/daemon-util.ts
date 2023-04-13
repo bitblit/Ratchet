@@ -1,4 +1,4 @@
-import { Logger } from '@bitblit/ratchet-common/logger/logger.js';
+import { Logger } from '@bitblit/ratchet-common/dist/logger/logger.js';
 import { DaemonProcessState } from './daemon-process-state.js';
 import { S3CacheRatchet } from '../s3/s3-cache-ratchet.js';
 import { DaemonProcessCreateOptions } from './daemon-process-create-options.js';

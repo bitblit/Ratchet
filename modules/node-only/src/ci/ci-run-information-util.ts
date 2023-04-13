@@ -1,6 +1,6 @@
 import { DateTime } from 'luxon';
 import { CiRunInformation } from './ci-run-information.js';
-import { GlobalRatchet } from '@bitblit/ratchet-common/lang/global-ratchet.js';
+import { GlobalRatchet } from '@bitblit/ratchet-common/dist/lang/global-ratchet.js';
 
 export class CiRunInformationUtil {
   public static readonly DEFAULT_TIME_FORMAT: string = 'yyyy-MM-dd HH:mm:ss a z';
