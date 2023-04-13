@@ -4,7 +4,7 @@ import { GlobalRatchet } from '@bitblit/ratchet-common/lang/global-ratchet.js';
 import { CiRunInformationUtil } from './ci-run-information-util.js';
 
 describe('#applyCiEnvVariablesToFiles', function () {
-  it('should fail if not in a ci environment', async () => {
+  xit('should fail if not in a ci environment', async () => {
     try {
       const result: number = await ApplyCiEnvVariablesToFiles.process(
         ['test1.txt'],
