@@ -45,6 +45,12 @@ export class WardenUserService<T> {
     this.loggedInTimerSubscription = timer(0, timerSeconds * 1000).subscribe((t) => this.checkForAutoLogoutOrRefresh(t));
   }
 
+  public cleanShutDown(): void {
+    if (this.loggedInTimerSubscription) {
+      this.loggedInTimerSubscription.unsubscribe();
+    }
+  }
+
   public get serviceOptions(): WardenUserServiceOptions<T> {
     return this.options;
   }

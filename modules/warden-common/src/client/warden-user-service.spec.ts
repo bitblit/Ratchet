@@ -22,5 +22,6 @@ describe('#wardenUserService', function () {
 
     const wus: WardenUserService<any> = new WardenUserService<any>(wuso);
     expect(wus).not.toBeNull();
+    wus.cleanShutDown();
   });
 });
