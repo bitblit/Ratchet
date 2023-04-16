@@ -5,8 +5,8 @@
   "type": "module",
   "module": "index.js",
   "files": [
-    "dist/*",
-    "includes/*"
+    "lib/*",
+    "bin/*"
   ],
   "contributors": [
     "Christopher Weiss <bitblit@gmail.com>"
@@ -24,7 +24,7 @@
   "config": {},
   "scripts": {
     "watch": "tsc-watch",
-    "clean": "shx rm -Rf dist",
+    "clean": "shx rm -Rf lib",
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest",
     "lint": "eslint src/**/*.ts",
     "lint-fix": "eslint --fix src/**/*.ts",

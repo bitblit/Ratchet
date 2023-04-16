@@ -2,7 +2,7 @@
   "compilerOptions": {
     "baseUrl": ".",
     "lib": [],
-    "outDir": "dist",
+    "outDir": "lib",
     "rootDir": "src",
     "stripInternal": true
   },

@@ -6,8 +6,8 @@
   "type": "module",
   "module": "index.js",
   "files": [
-    "dist/*",
-    "includes/*"
+    "lib/*",
+    "bin/*"
   ],
   "contributors": [
     "Christopher Weiss <bitblit@gmail.com>",
@@ -30,7 +30,7 @@
   "config": {},
   "scripts": {
     "watch": "tsc-watch",
-    "clean": "shx rm -Rf dist",
+    "clean": "shx rm -Rf lib",
     "test": "jest",
     "docs": "typedoc",
     "lint": "eslint src/**/*.ts",

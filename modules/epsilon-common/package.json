@@ -4,13 +4,13 @@
   "description": "Tiny adapter to simplify building API gateway Lambda APIS",
   "sideEffects": false,
   "bin": {
-    "epsilon-cli": "./includes/cli.js"
+    "epsilon-cli": "./bin/cli.js"
   },
   "type": "module",
   "module": "index.js",
   "files": [
-    "dist/*",
-    "includes/*"
+    "lib/*",
+    "bin/*"
   ],
   "contributors": [
     "Christopher Weiss <bitblit@gmail.com>",
@@ -31,18 +31,18 @@
   "config": {},
   "scripts": {
     "watch": "tsc-watch",
-    "clean": "shx rm -Rf dist",
+    "clean": "shx rm -Rf lib",
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest",
     "lint": "eslint src/**/*.ts",
     "lint-fix": "eslint --fix src/**/*.ts",
     "__generate-barrels": "barrelsby -q --delete -d src -e .*\\.spec\\.ts",
     "__build": "yarn run generate-barrels && tsc",
     "build": "tsc",
-    "run-local-container-server": "yarn build && node includes/cli.js run-local-container-server",
-    "run-sample-server": "yarn build && node includes/cli.js run-sample-local-server",
-    "run-test-error-server": "yarn build && node includes/cli.js run-test-error-server",
-    "run-batch-sample-server": "yarn build && node includes/cli.js run-sample-local-batch-server",
-    "run-background-process-from-command-line-dry-run": "yarn build && node includes/cli.js run-background-process"
+    "run-local-container-server": "yarn build && node bin/cli.js run-local-container-server",
+    "run-sample-server": "yarn build && node bin/cli.js run-sample-local-server",
+    "run-test-error-server": "yarn build && node bin/cli.js run-test-error-server",
+    "run-batch-sample-server": "yarn build && node bin/cli.js run-sample-local-batch-server",
+    "run-background-process-from-command-line-dry-run": "yarn build && node bin/cli.js run-background-process"
   },
   "repository": {
     "type": "git",

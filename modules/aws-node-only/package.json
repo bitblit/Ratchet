@@ -5,13 +5,13 @@
   "note-on-side-effects": "Technically the entries in 'bin' below might be side effects, but they are called explicitly",
   "sideEffects": false,
   "bin": {
-    "ratchet-aws-cli": "./includes/cli.js"
+    "ratchet-aws-cli": "./bin/cli.js"
   },
   "type": "module",
   "module": "index.js",
   "files": [
-    "dist/*",
-    "includes/*"
+    "lib/*",
+    "bin/*"
   ],
   "contributors": [
     "Christopher Weiss <bitblit@gmail.com>",
@@ -34,7 +34,7 @@
   "config": {},
   "scripts": {
     "watch": "tsc-watch",
-    "clean": "shx rm -Rf dist",
+    "clean": "shx rm -Rf lib",
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest",
     "docs": "typedoc",
     "lint": "eslint src/**/*.ts",
