@@ -1,9 +1,9 @@
 import crypto from 'crypto';
 import fs from 'fs';
 import path from 'path';
-import { Logger } from '@bitblit/ratchet-common/dist/logger/logger.js';
-import { RequireRatchet } from '@bitblit/ratchet-common/dist/lang/require-ratchet.js';
-import { StringRatchet } from '@bitblit/ratchet-common/dist/lang/string-ratchet.js';
+import { Logger } from '@bitblit/ratchet-common/lib/logger/logger.js';
+import { RequireRatchet } from '@bitblit/ratchet-common/lib/lang/require-ratchet.js';
+import { StringRatchet } from '@bitblit/ratchet-common/lib/lang/string-ratchet.js';
 import { S3CacheRatchet } from './s3-cache-ratchet.js';
 
 /**

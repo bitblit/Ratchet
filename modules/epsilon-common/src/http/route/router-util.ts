@@ -1,12 +1,12 @@
 import { EpsilonRouter } from './epsilon-router.js';
 import { MisconfiguredError } from '../error/misconfigured-error.js';
-import { Logger } from '@bitblit/ratchet-common/dist/logger/logger.js';
+import { Logger } from '@bitblit/ratchet-common/lib/logger/logger.js';
 import { RouteMapping } from './route-mapping.js';
 import { RouteValidatorConfig } from './route-validator-config.js';
-import { BooleanRatchet } from '@bitblit/ratchet-common/dist/lang/boolean-ratchet.js';
-import { JwtTokenBase } from '@bitblit/ratchet-common/dist/jwt/jwt-token-base.js';
+import { BooleanRatchet } from '@bitblit/ratchet-common/lib/lang/boolean-ratchet.js';
+import { JwtTokenBase } from '@bitblit/ratchet-common/lib/jwt/jwt-token-base.js';
 import { OpenApiDocument } from '../../config/open-api/open-api-document.js';
-import { ModelValidator } from '@bitblit/ratchet-misc/dist/model-validator/model-validator.js';
+import { ModelValidator } from '@bitblit/ratchet-misc/lib/model-validator/model-validator.js';
 import { BackgroundHttpAdapterHandler } from '../../background/background-http-adapter-handler.js';
 import { HandlerFunction } from '../../config/http/handler-function.js';
 import { HttpConfig } from '../../config/http/http-config.js';

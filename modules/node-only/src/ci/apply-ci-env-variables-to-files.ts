@@ -1,8 +1,8 @@
 import fs from 'fs';
-import { ErrorRatchet } from '@bitblit/ratchet-common/dist/lang/error-ratchet.js';
-import { Logger } from '@bitblit/ratchet-common/dist/logger/logger.js';
-import { RequireRatchet } from '@bitblit/ratchet-common/dist/lang/require-ratchet.js';
-import { StringRatchet } from '@bitblit/ratchet-common/dist/lang/string-ratchet.js';
+import { ErrorRatchet } from '@bitblit/ratchet-common/lib/lang/error-ratchet.js';
+import { Logger } from '@bitblit/ratchet-common/lib/logger/logger.js';
+import { RequireRatchet } from '@bitblit/ratchet-common/lib/lang/require-ratchet.js';
+import { StringRatchet } from '@bitblit/ratchet-common/lib/lang/string-ratchet.js';
 import { CiRunInformation } from './ci-run-information.js';
 import { CiRunInformationUtil } from './ci-run-information-util.js';
 

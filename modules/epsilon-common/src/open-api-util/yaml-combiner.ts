@@ -3,9 +3,9 @@
 */
 
 import fs from 'fs';
-import { RequireRatchet } from '@bitblit/ratchet-common/dist/lang/require-ratchet.js';
+import { RequireRatchet } from '@bitblit/ratchet-common/lib/lang/require-ratchet.js';
 import yaml from 'js-yaml';
-import { Logger } from '@bitblit/ratchet-common/dist/logger/logger.js';
+import { Logger } from '@bitblit/ratchet-common/lib/logger/logger.js';
 
 export class YamlCombiner {
   public static combine(files: string[], inRootPath: string[] = []): string {

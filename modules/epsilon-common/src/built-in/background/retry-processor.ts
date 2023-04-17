@@ -1,9 +1,9 @@
-import { Logger } from '@bitblit/ratchet-common/dist/logger/logger.js';
-import { PromiseRatchet } from '@bitblit/ratchet-common/dist/lang/promise-ratchet.js';
-import { DurationRatchet } from '@bitblit/ratchet-common/dist/lang/duration-ratchet.js';
-import { NumberRatchet } from '@bitblit/ratchet-common/dist/lang/number-ratchet.js';
+import { Logger } from '@bitblit/ratchet-common/lib/logger/logger.js';
+import { PromiseRatchet } from '@bitblit/ratchet-common/lib/lang/promise-ratchet.js';
+import { DurationRatchet } from '@bitblit/ratchet-common/lib/lang/duration-ratchet.js';
+import { NumberRatchet } from '@bitblit/ratchet-common/lib/lang/number-ratchet.js';
 import { BackgroundProcessor } from '../../config/background/background-processor.js';
-import { StringRatchet } from '@bitblit/ratchet-common/dist/lang/string-ratchet.js';
+import { StringRatchet } from '@bitblit/ratchet-common/lib/lang/string-ratchet.js';
 import { BackgroundManagerLike } from '../../background/manager/background-manager-like.js';
 
 export class RetryProcessor implements BackgroundProcessor<any> {

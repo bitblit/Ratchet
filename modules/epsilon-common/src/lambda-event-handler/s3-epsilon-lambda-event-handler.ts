@@ -1,10 +1,10 @@
 import { EpsilonLambdaEventHandler } from '../config/epsilon-lambda-event-handler.js';
 import { Context, ProxyResult, S3Event } from 'aws-lambda';
 import { GenericAwsEventHandlerFunction } from '../config/generic-aws-event-handler-function.js';
-import { Logger } from '@bitblit/ratchet-common/dist/logger/logger.js';
+import { Logger } from '@bitblit/ratchet-common/lib/logger/logger.js';
 import { AwsUtil } from '../util/aws-util.js';
 import { EpsilonInstance } from '../epsilon-instance.js';
-import { LambdaEventDetector } from '@bitblit/ratchet-aws/dist/lambda/lambda-event-detector.js';
+import { LambdaEventDetector } from '@bitblit/ratchet-aws/lib/lambda/lambda-event-detector.js';
 
 export class S3EpsilonLambdaEventHandler implements EpsilonLambdaEventHandler<S3Event> {
   constructor(private _epsilon: EpsilonInstance) {}

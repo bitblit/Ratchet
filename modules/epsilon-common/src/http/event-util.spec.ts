@@ -3,7 +3,7 @@ import { EventUtil } from './event-util.js';
 import { BasicAuthToken } from './auth/basic-auth-token.js';
 import fs from 'fs';
 import path from 'path';
-import { EsmRatchet } from '@bitblit/ratchet-common/dist/lang/esm-ratchet.js';
+import { EsmRatchet } from '@bitblit/ratchet-common/lib/lang/esm-ratchet.js';
 
 describe('#eventUtil', function () {
   it('should extract pieces', function () {

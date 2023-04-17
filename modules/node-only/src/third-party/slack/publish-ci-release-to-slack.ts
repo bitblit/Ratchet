@@ -1,6 +1,6 @@
 import { DateTime } from 'luxon';
-import { Logger } from '@bitblit/ratchet-common/dist/logger/logger.js';
-import { GlobalRatchet } from '@bitblit/ratchet-common/dist/lang/global-ratchet.js';
+import { Logger } from '@bitblit/ratchet-common/lib/logger/logger.js';
+import { GlobalRatchet } from '@bitblit/ratchet-common/lib/lang/global-ratchet.js';
 import fetch from 'cross-fetch';
 import util from 'util';
 import { GitCommitData, GitRatchet } from '../git/git-ratchet.js';

@@ -1,7 +1,7 @@
-import { ErrorRatchet } from '@bitblit/ratchet-common/dist/lang/error-ratchet.js';
-import { Logger } from '@bitblit/ratchet-common/dist/logger/logger.js';
+import { ErrorRatchet } from '@bitblit/ratchet-common/lib/lang/error-ratchet.js';
+import { Logger } from '@bitblit/ratchet-common/lib/logger/logger.js';
 import { BackgroundProcessor } from '../../config/background/background-processor.js';
-import { StringRatchet } from '@bitblit/ratchet-common/dist/lang/string-ratchet.js';
+import { StringRatchet } from '@bitblit/ratchet-common/lib/lang/string-ratchet.js';
 import { BackgroundManagerLike } from '../../background/manager/background-manager-like.js';
 
 export class EchoProcessor implements BackgroundProcessor<any> {

@@ -1,4 +1,4 @@
-import { RequireRatchet } from '@bitblit/ratchet-common/dist/lang/require-ratchet.js';
+import { RequireRatchet } from '@bitblit/ratchet-common/lib/lang/require-ratchet.js';
 
 export class S3Ratchet {
   // Returns whether the URL passed is s3 valid (not whether it exists or not)

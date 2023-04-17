@@ -1,8 +1,8 @@
-import { Logger } from '@bitblit/ratchet-common/dist/logger/logger.js';
+import { Logger } from '@bitblit/ratchet-common/lib/logger/logger.js';
 import { Context } from 'aws-lambda';
 import { ExtendedAPIGatewayEvent } from '../../config/http/extended-api-gateway-event.js';
-import { PromiseRatchet } from '@bitblit/ratchet-common/dist/lang/promise-ratchet.js';
-import { TimeoutToken } from '@bitblit/ratchet-common/dist/lang/timeout-token.js';
+import { PromiseRatchet } from '@bitblit/ratchet-common/lib/lang/promise-ratchet.js';
+import { TimeoutToken } from '@bitblit/ratchet-common/lib/lang/timeout-token.js';
 import { RequestTimeoutError } from '../../http/error/request-timeout-error.js';
 import { ResponseUtil } from '../../http/response-util.js';
 import { NotFoundError } from '../../http/error/not-found-error.js';

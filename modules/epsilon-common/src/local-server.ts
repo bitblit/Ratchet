@@ -1,14 +1,14 @@
 import { APIGatewayEvent, APIGatewayEventRequestContext, Context, ProxyResult } from 'aws-lambda';
-import { Logger } from '@bitblit/ratchet-common/dist/logger/logger.js';
+import { Logger } from '@bitblit/ratchet-common/lib/logger/logger.js';
 import http, { IncomingMessage, Server, ServerResponse } from 'http';
 import https from 'https';
-import { StringRatchet } from '@bitblit/ratchet-common/dist/lang/string-ratchet.js';
+import { StringRatchet } from '@bitblit/ratchet-common/lib/lang/string-ratchet.js';
 import { DateTime } from 'luxon';
 import qs from 'querystring';
 import { EventUtil } from './http/event-util.js';
 import { EpsilonGlobalHandler } from './epsilon-global-handler.js';
-import { LoggerLevelName } from '@bitblit/ratchet-common/dist/logger/logger-level-name.js';
-import { JwtTokenBase } from '@bitblit/ratchet-common/dist/jwt/jwt-token-base.js';
+import { LoggerLevelName } from '@bitblit/ratchet-common/lib/logger/logger-level-name.js';
+import { JwtTokenBase } from '@bitblit/ratchet-common/lib/jwt/jwt-token-base.js';
 import { LocalServerCert } from './local-server-cert.js';
 import { SampleServerComponents } from './sample/sample-server-components.js';
 import { LocalWebTokenManipulator } from './http/auth/local-web-token-manipulator.js';

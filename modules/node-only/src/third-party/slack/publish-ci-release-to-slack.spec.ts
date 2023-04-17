@@ -1,5 +1,5 @@
-import { Logger } from '@bitblit/ratchet-common/dist/logger/logger.js';
-import { GlobalRatchet } from '@bitblit/ratchet-common/dist/lang/global-ratchet.js';
+import { Logger } from '@bitblit/ratchet-common/lib/logger/logger.js';
+import { GlobalRatchet } from '@bitblit/ratchet-common/lib/lang/global-ratchet.js';
 import { PublishCiReleaseToSlack } from './publish-ci-release-to-slack.js';
 
 describe('#publishCircleCiReleaseToSlack', function () {

@@ -1,4 +1,4 @@
-import { BuildInformation } from '@bitblit/ratchet-common/dist/build/build-information.js';
+import { BuildInformation } from '@bitblit/ratchet-common/lib/build/build-information.js';
 
 export class RatchetAwsInfo {
   // Empty constructor prevents instantiation

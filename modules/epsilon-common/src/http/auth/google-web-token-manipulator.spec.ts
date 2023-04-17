@@ -1,5 +1,5 @@
 import { GoogleWebTokenManipulator } from './google-web-token-manipulator.js';
-import { JwtTokenBase } from '@bitblit/ratchet-common/dist/jwt/jwt-token-base.js';
+import { JwtTokenBase } from '@bitblit/ratchet-common/lib/jwt/jwt-token-base.js';
 
 describe('#googleWebTokenManipulator', function () {
   xit('should extract a token', async () => {

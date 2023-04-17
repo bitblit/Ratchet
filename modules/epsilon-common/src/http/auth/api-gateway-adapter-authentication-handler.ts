@@ -1,8 +1,8 @@
 import { AuthResponse, AuthResponseContext, Callback, Context, CustomAuthorizerEvent, PolicyDocument } from 'aws-lambda';
-import { Logger } from '@bitblit/ratchet-common/dist/logger/logger.js';
+import { Logger } from '@bitblit/ratchet-common/lib/logger/logger.js';
 import { LocalWebTokenManipulator } from './local-web-token-manipulator.js';
 import { EpsilonConstants } from '../../epsilon-constants.js';
-import { JwtTokenBase } from '@bitblit/ratchet-common/dist/jwt/jwt-token-base.js';
+import { JwtTokenBase } from '@bitblit/ratchet-common/lib/jwt/jwt-token-base.js';
 
 /**
  * This class is to simplify if the user wants to use a AWS Gateway authorizer in conjunction with Epsilon

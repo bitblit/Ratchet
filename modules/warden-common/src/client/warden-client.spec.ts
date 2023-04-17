@@ -1,4 +1,4 @@
-import { JestRatchet } from '@bitblit/ratchet-jest/dist/jest/jest-ratchet.js';
+import { JestRatchet } from '@bitblit/ratchet-jest/lib/jest/jest-ratchet.js';
 import { WardenClient } from './warden-client.js';
 import { jest } from '@jest/globals';
 import { WardenCommandExchangeProvider } from './provider/warden-command-exchange-provider.js';

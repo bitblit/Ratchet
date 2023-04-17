@@ -1,5 +1,5 @@
-import { LogMessage } from '@bitblit/ratchet-common/dist/logger/log-message.js';
-import { LogMessageProcessor } from '@bitblit/ratchet-common/dist/logger/log-message-processor.js';
+import { LogMessage } from '@bitblit/ratchet-common/lib/logger/log-message.js';
+import { LogMessageProcessor } from '@bitblit/ratchet-common/lib/logger/log-message-processor.js';
 import { ContextUtil } from './util/context-util.js';
 
 export class EpsilonLoggingExtensionProcessor implements LogMessageProcessor {

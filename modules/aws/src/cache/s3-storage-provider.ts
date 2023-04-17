@@ -7,8 +7,8 @@ import { SimpleCacheObjectWrapper } from './simple-cache-object-wrapper.js';
 import { SimpleCacheStorageProvider } from './simple-cache-storage-provider.js';
 import { S3CacheRatchet } from '../s3/s3-cache-ratchet.js';
 import { PutObjectOutput } from '@aws-sdk/client-s3';
-import { RequireRatchet } from '@bitblit/ratchet-common/dist/lang/require-ratchet.js';
-import { StringRatchet } from '@bitblit/ratchet-common/dist/lang/string-ratchet.js';
+import { RequireRatchet } from '@bitblit/ratchet-common/lib/lang/require-ratchet.js';
+import { StringRatchet } from '@bitblit/ratchet-common/lib/lang/string-ratchet.js';
 
 export class S3StorageProvider implements SimpleCacheStorageProvider {
   constructor(private s3CacheRatchet: S3CacheRatchet, private prefix: string) {

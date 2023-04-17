@@ -1,5 +1,5 @@
-import { Logger } from '@bitblit/ratchet-common/dist/logger/logger.js';
-import { PromiseRatchet } from '@bitblit/ratchet-common/dist/lang/promise-ratchet.js';
+import { Logger } from '@bitblit/ratchet-common/lib/logger/logger.js';
+import { PromiseRatchet } from '@bitblit/ratchet-common/lib/lang/promise-ratchet.js';
 import { BackgroundProcessor } from '../../config/background/background-processor.js';
 import { BackgroundManagerLike } from '../../background/manager/background-manager-like.js';
 

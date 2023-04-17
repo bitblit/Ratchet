@@ -1,14 +1,14 @@
 import { Context, ProxyResult } from 'aws-lambda';
-import { Logger } from '@bitblit/ratchet-common/dist/logger/logger.js';
+import { Logger } from '@bitblit/ratchet-common/lib/logger/logger.js';
 import { EventUtil } from './http/event-util.js';
 import { BackgroundEntry } from './background/background-entry.js';
 import { EpsilonInstance } from './epsilon-instance.js';
-import { ErrorRatchet } from '@bitblit/ratchet-common/dist/lang/error-ratchet.js';
-import { LogMessageProcessor } from '@bitblit/ratchet-common/dist/logger/log-message-processor.js';
-import { LoggerLevelName } from '@bitblit/ratchet-common/dist/logger/logger-level-name.js';
-import { LogMessageFormatType } from '@bitblit/ratchet-common/dist/logger/log-message-format-type.js';
-import { PromiseRatchet } from '@bitblit/ratchet-common/dist/lang/promise-ratchet.js';
-import { TimeoutToken } from '@bitblit/ratchet-common/dist/lang/timeout-token.js';
+import { ErrorRatchet } from '@bitblit/ratchet-common/lib/lang/error-ratchet.js';
+import { LogMessageProcessor } from '@bitblit/ratchet-common/lib/logger/log-message-processor.js';
+import { LoggerLevelName } from '@bitblit/ratchet-common/lib/logger/logger-level-name.js';
+import { LogMessageFormatType } from '@bitblit/ratchet-common/lib/logger/log-message-format-type.js';
+import { PromiseRatchet } from '@bitblit/ratchet-common/lib/lang/promise-ratchet.js';
+import { TimeoutToken } from '@bitblit/ratchet-common/lib/lang/timeout-token.js';
 import { ResponseUtil } from './http/response-util.js';
 import { EpsilonHttpError } from './http/error/epsilon-http-error.js';
 import { RequestTimeoutError } from './http/error/request-timeout-error.js';
@@ -22,8 +22,8 @@ import { CronEpsilonLambdaEventHandler } from './lambda-event-handler/cron-epsil
 import { S3EpsilonLambdaEventHandler } from './lambda-event-handler/s3-epsilon-lambda-event-handler.js';
 import { DynamoEpsilonLambdaEventHandler } from './lambda-event-handler/dynamo-epsilon-lambda-event-handler.js';
 import { EpsilonLoggingExtensionProcessor } from './epsilon-logging-extension-processor.js';
-import { LoggerOptions } from '@bitblit/ratchet-common/dist/logger/logger-options.js';
-import { LoggerOutputFunction } from '@bitblit/ratchet-common/dist/logger/logger-output-function.js';
+import { LoggerOptions } from '@bitblit/ratchet-common/lib/logger/logger-options.js';
+import { LoggerOutputFunction } from '@bitblit/ratchet-common/lib/logger/logger-output-function.js';
 
 /**
  * This class functions as the adapter from a default Lambda function to the handlers exposed via Epsilon

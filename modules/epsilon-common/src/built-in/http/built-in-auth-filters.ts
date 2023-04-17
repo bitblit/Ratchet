@@ -1,4 +1,4 @@
-import { StringRatchet } from '@bitblit/ratchet-common/dist/lang/string-ratchet.js';
+import { StringRatchet } from '@bitblit/ratchet-common/lib/lang/string-ratchet.js';
 import { UnauthorizedError } from '../../http/error/unauthorized-error.js';
 import { MisconfiguredError } from '../../http/error/misconfigured-error.js';
 import { FilterChainContext } from '../../config/http/filter-chain-context.js';
@@ -6,8 +6,8 @@ import { ForbiddenError } from '../../http/error/forbidden-error.js';
 import { AuthorizerFunction } from '../../config/http/authorizer-function.js';
 import { WebTokenManipulator } from '../../http/auth/web-token-manipulator.js';
 import { EventUtil } from '../../http/event-util.js';
-import { CommonJwtToken } from '@bitblit/ratchet-common/dist/jwt/common-jwt-token.js';
-import { JwtTokenBase } from '@bitblit/ratchet-common/dist/jwt/jwt-token-base.js';
+import { CommonJwtToken } from '@bitblit/ratchet-common/lib/jwt/common-jwt-token.js';
+import { JwtTokenBase } from '@bitblit/ratchet-common/lib/jwt/jwt-token-base.js';
 
 export class BuiltInAuthFilters {
   public static async requireAllRolesInCommonJwt(fCtx: FilterChainContext, requiredRoleAllOf: string[]): Promise<boolean> {

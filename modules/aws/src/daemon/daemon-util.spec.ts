@@ -1,16 +1,16 @@
 import { S3CacheRatchet } from '../s3/s3-cache-ratchet.js';
 import { DaemonProcessState } from './daemon-process-state.js';
 import { DaemonUtil } from './daemon-util.js';
-import { Logger } from '@bitblit/ratchet-common/dist/logger/logger.js';
-import { LoggerLevelName } from '@bitblit/ratchet-common/dist/logger/logger-level-name.js';
-import { PromiseRatchet } from '@bitblit/ratchet-common/dist/lang/promise-ratchet.js';
+import { Logger } from '@bitblit/ratchet-common/lib/logger/logger.js';
+import { LoggerLevelName } from '@bitblit/ratchet-common/lib/logger/logger-level-name.js';
+import { PromiseRatchet } from '@bitblit/ratchet-common/lib/lang/promise-ratchet.js';
 import fs from 'fs';
 import { ReadStream } from 'fs';
 import { DaemonProcessCreateOptions } from './daemon-process-create-options.js';
-import { JestRatchet } from '@bitblit/ratchet-jest/dist/jest/jest-ratchet.js';
+import { JestRatchet } from '@bitblit/ratchet-jest/lib/jest/jest-ratchet.js';
 import { Subject } from 'rxjs';
 import { PassThrough } from 'stream';
-import { CsvRatchet } from '@bitblit/ratchet-node-only/dist/csv/csv-ratchet.js';
+import { CsvRatchet } from '@bitblit/ratchet-node-only/lib/csv/csv-ratchet.js';
 import { S3Client } from '@aws-sdk/client-s3';
 import { jest } from '@jest/globals';
 

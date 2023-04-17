@@ -21,11 +21,11 @@ import {
   PutObjectCommandOutput,
   S3Client,
 } from '@aws-sdk/client-s3';
-import { Logger } from '@bitblit/ratchet-common/dist/logger/logger.js';
-import { RequireRatchet } from '@bitblit/ratchet-common/dist/lang/require-ratchet.js';
-import { StringRatchet } from '@bitblit/ratchet-common/dist/lang/string-ratchet.js';
-import { StopWatch } from '@bitblit/ratchet-common/dist/lang/stop-watch.js';
-import { StreamRatchet } from '@bitblit/ratchet-common/dist/stream/stream-ratchet.js';
+import { Logger } from '@bitblit/ratchet-common/lib/logger/logger.js';
+import { RequireRatchet } from '@bitblit/ratchet-common/lib/lang/require-ratchet.js';
+import { StringRatchet } from '@bitblit/ratchet-common/lib/lang/string-ratchet.js';
+import { StopWatch } from '@bitblit/ratchet-common/lib/lang/stop-watch.js';
+import { StreamRatchet } from '@bitblit/ratchet-common/lib/stream/stream-ratchet.js';
 
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { Upload } from '@aws-sdk/lib-storage';
