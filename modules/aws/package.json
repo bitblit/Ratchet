@@ -1,6 +1,6 @@
 {
   "name": "@bitblit/ratchet-aws",
-  "version": "0.0.0",
+  "version": "0.0.0-snapshot",
   "description": "Common tools for use with AWS browser and node",
   "sideEffects": false,
   "type": "module",
@@ -57,28 +57,28 @@
   },
   "license": "Apache-2.0",
   "dependencies": {
-    "@bitblit/ratchet-common": "0.0.0"
+    "@bitblit/ratchet-common": "0.0.0-snapshot"
   },
   "optionalDependencies": {
-    "@aws-sdk/abort-controller": "3.303.0",
-    "@aws-sdk/client-athena": "3.303.0",
-    "@aws-sdk/client-batch": "3.303.0",
-    "@aws-sdk/client-cloudwatch": "3.303.0",
-    "@aws-sdk/client-cloudwatch-logs": "3.303.0",
-    "@aws-sdk/client-dynamodb": "3.303.0",
-    "@aws-sdk/client-ec2": "3.303.0",
-    "@aws-sdk/client-ec2-instance-connect": "3.303.0",
-    "@aws-sdk/client-route-53": "3.303.0",
+    "@aws-sdk/abort-controller": "3.310.0",
+    "@aws-sdk/client-athena": "3.315.0",
+    "@aws-sdk/client-batch": "3.315.0",
+    "@aws-sdk/client-cloudwatch": "3.315.0",
+    "@aws-sdk/client-cloudwatch-logs": "3.315.0",
+    "@aws-sdk/client-dynamodb": "3.315.0",
+    "@aws-sdk/client-ec2": "3.315.0",
+    "@aws-sdk/client-ec2-instance-connect": "3.315.0",
+    "@aws-sdk/client-route-53": "3.315.0",
     "@aws-sdk/client-s3": "3.303.0",
-    "@aws-sdk/client-ses": "3.303.0",
-    "@aws-sdk/client-sns": "3.303.0",
-    "@aws-sdk/client-ssm": "3.303.0",
-    "@aws-sdk/lib-dynamodb": "3.303.0",
-    "@aws-sdk/lib-storage": "3.303.0",
-    "@aws-sdk/s3-request-presigner": "3.303.0",
-    "@aws-sdk/smithy-client": "3.303.0",
-    "@aws-sdk/types": "3.303.0",
-    "@aws-sdk/util-waiter": "3.303.0",
+    "@aws-sdk/client-ses": "3.315.0",
+    "@aws-sdk/client-sns": "3.315.0",
+    "@aws-sdk/client-ssm": "3.315.0",
+    "@aws-sdk/lib-dynamodb": "3.315.0",
+    "@aws-sdk/lib-storage": "3.315.0",
+    "@aws-sdk/s3-request-presigner": "3.315.0",
+    "@aws-sdk/smithy-client": "3.315.0",
+    "@aws-sdk/types": "3.310.0",
+    "@aws-sdk/util-waiter": "3.310.0",
     "@types/aws-lambda": "8.10.114"
   },
   "peerDependencies": {
@@ -101,13 +101,13 @@
     "@aws-sdk/smithy-client": "3.303.0",
     "@aws-sdk/types": "3.303.0",
     "@aws-sdk/util-waiter": "3.303.0",
-    "@bitblit/ratchet-common": "0.0.0",
+    "@bitblit/ratchet-common": "0.0.0-snapshot",
     "@types/aws-lambda": "8.10.114"
   },
   "resolutions": {},
   "devDependencies": {
-    "@bitblit/ratchet-jest": "0.0.0",
-    "@bitblit/ratchet-node-only": "0.0.0",
+    "@bitblit/ratchet-jest": "0.0.0-snapshot",
+    "@bitblit/ratchet-node-only": "0.0.0-snapshot",
     "aws-sdk-client-mock": "2.1.1"
   }
 }

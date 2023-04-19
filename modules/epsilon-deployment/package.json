@@ -1,6 +1,6 @@
 {
   "name": "@bitblit/ratchet-epsilon-deployment",
-  "version": "0.0.0",
+  "version": "0.0.0-snapshot",
   "description": "Epsilon CDK extensions to simplify deployment",
   "sideEffects": false,
   "type": "module",
@@ -54,11 +54,11 @@
   },
   "license": "Apache-2.0",
   "dependencies": {
-    "@bitblit/ratchet-aws": "0.0.0",
-    "@bitblit/ratchet-common": "0.0.0",
-    "@bitblit/ratchet-epsilon-common": "0.0.0",
-    "aws-cdk-lib": "2.72.1",
-    "constructs": "10.1.299"
+    "@bitblit/ratchet-aws": "0.0.0-snapshot",
+    "@bitblit/ratchet-common": "0.0.0-snapshot",
+    "@bitblit/ratchet-epsilon-common": "0.0.0-snapshot",
+    "aws-cdk-lib": "2.75.1",
+    "constructs": "10.2.1"
   },
   "resolutions": {},
   "peerDependencies": {

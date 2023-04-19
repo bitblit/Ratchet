@@ -1,6 +1,6 @@
 {
   "name": "@bitblit/ratchet-jest",
-  "version": "0.0.0",
+  "version": "0.0.0-snapshot",
   "description": "Ratchet tools to simplify use of jest",
   "sideEffects": false,
   "type": "module",

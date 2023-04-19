@@ -1,6 +1,6 @@
 {
   "name": "@bitblit/ratchet-graphql",
-  "version": "0.0.0",
+  "version": "0.0.0-snapshot",
   "description": "Ratchet tools to simplify use of graphql",
   "sideEffects": false,
   "type": "module",
@@ -56,8 +56,8 @@
   },
   "license": "Apache-2.0",
   "dependencies": {
-    "@apollo/client": "3.7.11",
-    "@bitblit/ratchet-common": "0.0.0",
+    "@apollo/client": "3.7.12",
+    "@bitblit/ratchet-common": "0.0.0-snapshot",
     "graphql": "16.6.0"
   },
   "peerDependencies": {

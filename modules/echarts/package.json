@@ -1,6 +1,6 @@
 {
   "name": "@bitblit/ratchet-echarts",
-  "version": "0.0.0",
+  "version": "0.0.0-snapshot",
   "description": "Library for using echarts on Node",
   "type": "module",
   "module": "index.js",
@@ -34,11 +34,11 @@
   },
   "license": "Apache-2.0",
   "dependencies": {
-    "canvas": "2.11.0",
+    "canvas": "2.11.2",
     "echarts": "5.4.2"
   },
   "devDependencies": {
-    "@bitblit/ratchet-common": "0.0.0",
-    "jsonwebtoken": "8.5.1"
+    "@bitblit/ratchet-common": "0.0.0-snapshot",
+    "jsonwebtoken": "9.0.0"
   }
 }

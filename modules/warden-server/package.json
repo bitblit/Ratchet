@@ -1,6 +1,6 @@
 {
   "name": "@bitblit/ratchet-warden-server",
-  "version": "0.0.0",
+  "version": "0.0.0-snapshot",
   "description": "Typescript library to simplify using simplewebauthn and secondary auth methods over GraphQL",
   "sideEffects": false,
   "bin": {},
@@ -52,17 +52,17 @@
   },
   "license": "Apache-2.0",
   "dependencies": {
-    "@aws-sdk/client-s3": "3.303.0",
-    "@aws-sdk/client-ses": "3.303.0",
-    "@bitblit/ratchet-aws": "0.0.0",
-    "@bitblit/ratchet-common": "0.0.0",
-    "@bitblit/ratchet-warden-common": "0.0.0",
+    "@aws-sdk/client-s3": "3.315.0",
+    "@aws-sdk/client-ses": "3.315.0",
+    "@bitblit/ratchet-aws": "0.0.0-snapshot",
+    "@bitblit/ratchet-common": "0.0.0-snapshot",
+    "@bitblit/ratchet-warden-common": "0.0.0-snapshot",
     "@simplewebauthn/browser": "7.2.0",
     "@simplewebauthn/server": "7.2.0",
     "@simplewebauthn/typescript-types": "7.0.0",
     "jwt-decode": "3.1.2"
   },
   "devDependencies": {
-    "@bitblit/ratchet-jest": "0.0.0"
+    "@bitblit/ratchet-jest": "0.0.0-snapshot"
   }
 }

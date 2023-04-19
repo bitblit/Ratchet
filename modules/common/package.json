@@ -1,6 +1,6 @@
 {
   "name": "@bitblit/ratchet-common",
-  "version": "0.0.0",
+  "version": "0.0.0-snapshot",
   "description": "Common tools for general use",
   "type": "module",
   "module": "index.js",

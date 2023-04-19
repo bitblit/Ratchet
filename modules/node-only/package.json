@@ -1,6 +1,6 @@
 {
   "name": "@bitblit/ratchet-node-only",
-  "version": "0.0.0",
+  "version": "0.0.0-snapshot",
   "description": "Ratchet tools for use on node-only",
   "note-on-side-effects": "Technically the entries in 'bin' below might be side effects, but they are called explicitly",
   "sideEffects": false,
@@ -61,8 +61,8 @@
   },
   "license": "Apache-2.0",
   "dependencies": {
-    "@bitblit/ratchet-common": "0.0.0",
-    "csv": "6.2.8",
+    "@bitblit/ratchet-common": "0.0.0-snapshot",
+    "csv": "6.2.10",
     "rxjs": "7.8.0"
   },
   "peerDependencies": {

@@ -1,6 +1,6 @@
 {
   "name": "@bitblit/ratchet-epsilon-common",
-  "version": "0.0.0",
+  "version": "0.0.0-snapshot",
   "description": "Tiny adapter to simplify building API gateway Lambda APIS",
   "sideEffects": false,
   "bin": {
@@ -62,15 +62,15 @@
   },
   "license": "Apache-2.0",
   "dependencies": {
-    "@aws-sdk/client-s3": "3.303.0",
-    "@aws-sdk/client-sns": "3.303.0",
-    "@aws-sdk/client-sqs": "3.303.0",
-    "@bitblit/ratchet-aws": "0.0.0",
-    "@bitblit/ratchet-common": "0.0.0",
-    "@bitblit/ratchet-misc": "0.0.0",
-    "@bitblit/ratchet-node-only": "0.0.0",
+    "@aws-sdk/client-s3": "3.315.0",
+    "@aws-sdk/client-sns": "3.315.0",
+    "@aws-sdk/client-sqs": "3.315.0",
+    "@bitblit/ratchet-aws": "0.0.0-snapshot",
+    "@bitblit/ratchet-common": "0.0.0-snapshot",
+    "@bitblit/ratchet-misc": "0.0.0-snapshot",
+    "@bitblit/ratchet-node-only": "0.0.0-snapshot",
     "clear": "0.1.0",
-    "commander": "10.0.0",
+    "commander": "10.0.1",
     "cross-fetch": "3.1.5",
     "js-yaml": "4.1.0",
     "jsonwebtoken": "9.0.0",
@@ -110,8 +110,8 @@
   "peerDependencies": {
     "@aws-sdk/client-sns": "3.282.0",
     "@aws-sdk/client-sqs": "3.282.0",
-    "@bitblit/ratchet-aws": "0.0.0",
-    "@bitblit/ratchet-common": "0.0.0",
+    "@bitblit/ratchet-aws": "0.0.0-snapshot",
+    "@bitblit/ratchet-common": "0.0.0-snapshot",
     "@types/aws-lambda": "8.10.111",
     "graphql": "16.6.0"
   },
@@ -121,7 +121,7 @@
     }
   },
   "devDependencies": {
-    "@bitblit/ratchet-jest": "0.0.0",
+    "@bitblit/ratchet-jest": "0.0.0-snapshot",
     "@types/aws-lambda": "8.10.114",
     "apollo-server-lambda": "3.12.0",
     "aws-sdk-client-mock": "2.1.1",
