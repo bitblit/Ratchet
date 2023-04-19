@@ -61,48 +61,98 @@
   },
   "optionalDependencies": {
     "@aws-sdk/abort-controller": "3.310.0",
-    "@aws-sdk/client-athena": "3.315.0",
-    "@aws-sdk/client-batch": "3.315.0",
-    "@aws-sdk/client-cloudwatch": "3.315.0",
-    "@aws-sdk/client-cloudwatch-logs": "3.315.0",
-    "@aws-sdk/client-dynamodb": "3.315.0",
-    "@aws-sdk/client-ec2": "3.315.0",
-    "@aws-sdk/client-ec2-instance-connect": "3.315.0",
-    "@aws-sdk/client-route-53": "3.315.0",
-    "@aws-sdk/client-s3": "3.303.0",
-    "@aws-sdk/client-ses": "3.315.0",
-    "@aws-sdk/client-sns": "3.315.0",
-    "@aws-sdk/client-ssm": "3.315.0",
-    "@aws-sdk/lib-dynamodb": "3.315.0",
-    "@aws-sdk/lib-storage": "3.315.0",
-    "@aws-sdk/s3-request-presigner": "3.315.0",
-    "@aws-sdk/smithy-client": "3.315.0",
+    "@aws-sdk/client-athena": "3.310.0",
+    "@aws-sdk/client-batch": "3.310.0",
+    "@aws-sdk/client-cloudwatch": "3.310.0",
+    "@aws-sdk/client-cloudwatch-logs": "3.310.0",
+    "@aws-sdk/client-dynamodb": "3.310.0",
+    "@aws-sdk/client-ec2": "3.310.0",
+    "@aws-sdk/client-ec2-instance-connect": "3.310.0",
+    "@aws-sdk/client-route-53": "3.310.0",
+    "@aws-sdk/client-s3": "3.310.0",
+    "@aws-sdk/client-ses": "3.310.0",
+    "@aws-sdk/client-sns": "3.310.0",
+    "@aws-sdk/client-ssm": "3.310.0",
+    "@aws-sdk/lib-dynamodb": "3.310.0",
+    "@aws-sdk/lib-storage": "3.310.0",
+    "@aws-sdk/s3-request-presigner": "3.310.0",
+    "@aws-sdk/smithy-client": "3.310.0",
     "@aws-sdk/types": "3.310.0",
-    "@aws-sdk/util-waiter": "3.310.0",
+    "@aws-sdk/util-waiter": "^3.310.0",
     "@types/aws-lambda": "8.10.114"
   },
   "peerDependencies": {
-    "@aws-sdk/abort-controller": "3.303.0",
-    "@aws-sdk/client-athena": "3.303.0",
-    "@aws-sdk/client-batch": "3.303.0",
-    "@aws-sdk/client-cloudwatch": "3.303.0",
-    "@aws-sdk/client-cloudwatch-logs": "3.303.0",
-    "@aws-sdk/client-dynamodb": "3.303.0",
-    "@aws-sdk/client-ec2": "3.303.0",
-    "@aws-sdk/client-ec2-instance-connect": "3.303.0",
-    "@aws-sdk/client-route-53": "3.303.0",
-    "@aws-sdk/client-s3": "3.303.0",
-    "@aws-sdk/client-ses": "3.303.0",
-    "@aws-sdk/client-sns": "3.303.0",
-    "@aws-sdk/client-ssm": "3.303.0",
-    "@aws-sdk/lib-dynamodb": "3.303.0",
-    "@aws-sdk/lib-storage": "3.303.0",
-    "@aws-sdk/s3-request-presigner": "3.303.0",
-    "@aws-sdk/smithy-client": "3.303.0",
-    "@aws-sdk/types": "3.303.0",
-    "@aws-sdk/util-waiter": "3.303.0",
+    "@aws-sdk/abort-controller": "3.310.0",
+    "@aws-sdk/client-athena": "3.310.0",
+    "@aws-sdk/client-batch": "3.310.0",
+    "@aws-sdk/client-cloudwatch": "3.310.0",
+    "@aws-sdk/client-cloudwatch-logs": "3.310.0",
+    "@aws-sdk/client-dynamodb": "3.310.0",
+    "@aws-sdk/client-ec2": "3.310.0",
+    "@aws-sdk/client-ec2-instance-connect": "3.310.0",
+    "@aws-sdk/client-route-53": "3.310.0",
+    "@aws-sdk/client-s3": "3.310.0",
+    "@aws-sdk/client-ses": "3.310.0",
+    "@aws-sdk/client-sns": "3.310.0",
+    "@aws-sdk/client-ssm": "3.310.0",
+    "@aws-sdk/lib-dynamodb": "3.310.0",
+    "@aws-sdk/lib-storage": "3.310.0",
+    "@aws-sdk/s3-request-presigner": "3.310.0",
+    "@aws-sdk/smithy-client": "3.310.0",
+    "@aws-sdk/types": "3.310.0",
+    "@aws-sdk/util-waiter": "3.310.0",
     "@bitblit/ratchet-common": "0.0.0-snapshot",
     "@types/aws-lambda": "8.10.114"
+  },
+  "peerDependenciesMeta": {
+    "@aws-sdk/client-athena": {
+      "optional": true
+    },
+    "@aws-sdk/client-batch": {
+      "optional": true
+    },
+    "@aws-sdk/client-cloudwatch": {
+      "optional": true
+    },
+    "@aws-sdk/client-cloudwatch-logs": {
+      "optional": true
+    },
+    "@aws-sdk/client-dynamodb": {
+      "optional": true
+    },
+    "@aws-sdk/client-ec2": {
+      "optional": true
+    },
+    "@aws-sdk/client-ec2-instance-connect": {
+      "optional": true
+    },
+    "@aws-sdk/client-route-53": {
+      "optional": true
+    },
+    "@aws-sdk/client-s3": {
+      "optional": true
+    },
+    "@aws-sdk/client-ses": {
+      "optional": true
+    },
+    "@aws-sdk/client-sns": {
+      "optional": true
+    },
+    "@aws-sdk/client-ssm": {
+      "optional": true
+    },
+    "@aws-sdk/lib-dynamodb": {
+      "optional": true
+    },
+    "@aws-sdk/lib-storage": {
+      "optional": true
+    },
+    "@aws-sdk/s3-request-presigner": {
+      "optional": true
+    },
+    "@aws-sdk/smithy-client": {
+      "optional": true
+    }
   },
   "resolutions": {},
   "devDependencies": {
