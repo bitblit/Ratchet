@@ -35,6 +35,10 @@ jobs:
         run: yarn apply-github-info
         shell: bash
 
+      - name: Set Codependency versions
+        run: yarn set-codependencies
+        shell: bash
+
       - name: Deploy to NPMJS
         run: yarn publish
         shell: bash
