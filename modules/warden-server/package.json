@@ -54,15 +54,15 @@
   "dependencies": {
     "@aws-sdk/client-s3": "3.303.0",
     "@aws-sdk/client-ses": "3.303.0",
-    "@bitblit/ratchet-aws": "*",
-    "@bitblit/ratchet-common": "*",
-    "@bitblit/ratchet-warden-common": "*",
+    "@bitblit/ratchet-aws": "0.0.0",
+    "@bitblit/ratchet-common": "0.0.0",
+    "@bitblit/ratchet-warden-common": "0.0.0",
     "@simplewebauthn/browser": "7.2.0",
     "@simplewebauthn/server": "7.2.0",
     "@simplewebauthn/typescript-types": "7.0.0",
     "jwt-decode": "3.1.2"
   },
   "devDependencies": {
-    "@bitblit/ratchet-jest": "*"
+    "@bitblit/ratchet-jest": "0.0.0"
   }
 }
