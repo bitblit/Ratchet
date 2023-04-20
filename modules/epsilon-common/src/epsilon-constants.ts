@@ -19,7 +19,7 @@ export class EpsilonConstants {
 
   private static load<T>(filePath: string, className: string): T {
     // eslint-disable-next-line @typescript-eslint/no-var-frequires
-    Logger.info('Searching for %s : %s : %s', filePath, className, EsmRatchet.fetchDirName());
+    Logger.info('Searching for %s : %s : %s', filePath, className, EsmRatchet.fetchDirName(import.meta.url));
     let rval: T = null;
     const val = require(filePath);
     if (val) {

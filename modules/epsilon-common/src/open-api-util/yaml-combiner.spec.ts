@@ -6,8 +6,8 @@ import { EsmRatchet } from '@bitblit/ratchet-common/lib/lang/esm-ratchet.js';
 describe('#yamlCombiner', function () {
   it('should combine yamls', async () => {
     const files: string[] = [
-      path.join(EsmRatchet.fetchDirName(), '../../../../test-data/epsilon/sample-yaml/test1.yaml'),
-      path.join(EsmRatchet.fetchDirName(), '../../../../test-data/epsilon/sample-yaml/test2.yaml'),
+      path.join(EsmRatchet.fetchDirName(import.meta.url), '../../../../test-data/epsilon/sample-yaml/test1.yaml'),
+      path.join(EsmRatchet.fetchDirName(import.meta.url), '../../../../test-data/epsilon/sample-yaml/test2.yaml'),
     ];
     const root: string[] = ['components', 'schemas'];
 

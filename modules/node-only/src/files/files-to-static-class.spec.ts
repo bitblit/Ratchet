@@ -4,7 +4,7 @@ import { EsmRatchet } from '@bitblit/ratchet-common/lib/lang/esm-ratchet.js';
 //import { fileURLToPath, URL } from 'url';
 //import { Logger } from '../../common/logger.js';
 
-const testDirname: string = EsmRatchet.fetchDirName();
+const testDirname: string = EsmRatchet.fetchDirName(import.meta.url);
 
 describe('#filesToStaticClass', function () {
   it('should convert files to a static class', async () => {

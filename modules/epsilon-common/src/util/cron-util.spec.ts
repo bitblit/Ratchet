@@ -10,7 +10,9 @@ describe('#cronUtil', function () {
   it('should test matching event to entry', async () => {
     const sEvent: ScheduledEvent = JSON.parse(
       fs
-        .readFileSync(path.join(EsmRatchet.fetchDirName(), '../../../../test-data/epsilon/sample-json/sample-schedule-event-1.json'))
+        .readFileSync(
+          path.join(EsmRatchet.fetchDirName(import.meta.url), '../../../../test-data/epsilon/sample-json/sample-schedule-event-1.json')
+        )
         .toString()
     );
 
@@ -52,7 +54,9 @@ describe('#cronUtil', function () {
   it('should match times', async () => {
     const sEvent: ScheduledEvent = JSON.parse(
       fs
-        .readFileSync(path.join(EsmRatchet.fetchDirName(), '../../../../test-data/epsilon/sample-json/sample-schedule-event-1.json'))
+        .readFileSync(
+          path.join(EsmRatchet.fetchDirName(import.meta.url), '../../../../test-data/epsilon/sample-json/sample-schedule-event-1.json')
+        )
         .toString()
     );
     const cfg: CronConfig = {
@@ -95,7 +99,9 @@ describe('#cronUtil', function () {
   it('should match time with override', async () => {
     const sEvent: ScheduledEvent = JSON.parse(
       fs
-        .readFileSync(path.join(EsmRatchet.fetchDirName(), '../../../../test-data/epsilon/sample-json/sample-schedule-event-1.json'))
+        .readFileSync(
+          path.join(EsmRatchet.fetchDirName(import.meta.url), '../../../../test-data/epsilon/sample-json/sample-schedule-event-1.json')
+        )
         .toString()
     );
     const cfg: CronConfig = {
@@ -128,7 +134,9 @@ describe('#cronUtil', function () {
   it('should match day of month filters', async () => {
     const sEvent: ScheduledEvent = JSON.parse(
       fs
-        .readFileSync(path.join(EsmRatchet.fetchDirName(), '../../../../test-data/epsilon/sample-json/sample-schedule-event-1.json'))
+        .readFileSync(
+          path.join(EsmRatchet.fetchDirName(import.meta.url), '../../../../test-data/epsilon/sample-json/sample-schedule-event-1.json')
+        )
         .toString()
     );
     const cfg: CronConfig = {
@@ -154,7 +162,9 @@ describe('#cronUtil', function () {
   it('should match month of year filter', async () => {
     const sEvent: ScheduledEvent = JSON.parse(
       fs
-        .readFileSync(path.join(EsmRatchet.fetchDirName(), '../../../../test-data/epsilon/sample-json/sample-schedule-event-1.json'))
+        .readFileSync(
+          path.join(EsmRatchet.fetchDirName(import.meta.url), '../../../../test-data/epsilon/sample-json/sample-schedule-event-1.json')
+        )
         .toString()
     );
     const cfg: CronConfig = {

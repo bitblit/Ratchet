@@ -7,7 +7,7 @@ import { EsmRatchet } from '@bitblit/ratchet-common/lib/lang/esm-ratchet.js';
 describe('#modelValidator', function () {
   it('should list an error', function () {
     const yamlString: string = fs
-      .readFileSync(path.join(EsmRatchet.fetchDirName(), '../../../../test-data/sample-objects.spec.yaml'))
+      .readFileSync(path.join(EsmRatchet.fetchDirName(import.meta.url), '../../../../test-data/sample-objects.spec.yaml'))
       .toString();
     const validator: ModelValidator = ModelValidator.createFromYamlString(yamlString, ['ModelObjects']);
 

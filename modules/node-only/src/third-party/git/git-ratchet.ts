@@ -10,7 +10,7 @@ export class GitRatchet {
 
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   public static async executeCommand(command: string, options: any): Promise<string> {
-    let dst: string = EsmRatchet.fetchDirName();
+    let dst: string = EsmRatchet.fetchDirName(import.meta.url);
 
     if (!!options && !!options.dst) {
       dst = options.dst;
