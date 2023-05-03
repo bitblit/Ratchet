@@ -62,9 +62,9 @@
   },
   "license": "Apache-2.0",
   "dependencies": {
-    "@aws-sdk/client-s3": "3.315.0",
-    "@aws-sdk/client-sns": "3.315.0",
-    "@aws-sdk/client-sqs": "3.315.0",
+    "@aws-sdk/client-s3": "3.325.0",
+    "@aws-sdk/client-sns": "3.325.0",
+    "@aws-sdk/client-sqs": "3.325.0",
     "@bitblit/ratchet-aws": "0.0.0-snapshot",
     "@bitblit/ratchet-common": "0.0.0-snapshot",
     "@bitblit/ratchet-misc": "0.0.0-snapshot",
@@ -78,7 +78,7 @@
     "luxon": "3.3.0",
     "reflect-metadata": "0.1.13",
     "route-parser": "0.0.5",
-    "rxjs": "7.8.0",
+    "rxjs": "7.8.1",
     "strip-js": "1.2.0",
     "swagger-model-validator": "3.0.21"
   },
@@ -122,7 +122,7 @@
   },
   "devDependencies": {
     "@bitblit/ratchet-jest": "0.0.0-snapshot",
-    "@types/aws-lambda": "8.10.114",
+    "@types/aws-lambda": "8.10.115",
     "apollo-server-lambda": "3.12.0",
     "aws-sdk-client-mock": "2.1.1",
     "graphql": "16.6.0"

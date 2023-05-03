@@ -36,7 +36,6 @@
     "lint": "eslint src/**/*.ts",
     "lint-fix": "eslint --fix src/**/*.ts",
     "__generate-barrels": "barrelsby -q --delete -d src -e .*\\.spec\\.ts",
-
     "__build": "yarn run generate-barrels && tsc",
     "build": "tsc",
     "force-build": "tsc --build --force"
@@ -61,7 +60,7 @@
     "handlebars": "4.7.7",
     "handlebars-layouts": "3.1.4",
     "js-yaml": "4.1.0",
-    "rxjs": "7.8.0",
+    "rxjs": "7.8.1",
     "swagger-model-validator": "3.0.21"
   },
   "peerDependencies": {
@@ -71,8 +70,6 @@
     "rxjs": "^7.8.0",
     "swagger-model-validator": "^3.0.21"
   },
-  "resolutions": {
-  },
-  "devDependencies": {
-  }
+  "resolutions": {},
+  "devDependencies": {}
 }
