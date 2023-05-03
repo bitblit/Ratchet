@@ -438,7 +438,10 @@ export class DynamoRatchet implements DynamoRatchetLike {
     Logger.debug('Created %d batches', batches.length);
 
     for (let i = 0; i < batches.length; i++) {
-      Logger.info('Processing batch %d of %d', i, batches.length);
+      // No need to log batch count if there's only one.
+      if (batches.length > 1) {
+        Logger.info('Processing batch %d of %d', i + 1, batches.length);
+      }
       const input: BatchGetItemCommandInput = batches[i];
       let tryCount: number = 1;
       do {
@@ -596,7 +599,7 @@ export class DynamoRatchet implements DynamoRatchetLike {
         Logger.debug('Exceeded write throughput for %j : (Waiting 2000 ms)', params);
         await PromiseRatchet.wait(2000);
       } else if (err && err['code'] && err['code'] === 'ConditionalCheckFailedException') {
-        Logger.info('Failed to write %j due to null field failure');
+        Logger.debug('Failed to write %j due to null field failure');
         rval = false;
       } else {
         throw err; // We only catch throughput issues
