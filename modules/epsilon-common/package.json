@@ -62,9 +62,9 @@
   },
   "license": "Apache-2.0",
   "dependencies": {
-    "@aws-sdk/client-s3": "3.325.0",
-    "@aws-sdk/client-sns": "3.325.0",
-    "@aws-sdk/client-sqs": "3.325.0",
+    "@aws-sdk/client-s3": "3.328.0",
+    "@aws-sdk/client-sns": "3.328.0",
+    "@aws-sdk/client-sqs": "3.328.0",
     "@bitblit/ratchet-aws": "0.0.0-snapshot",
     "@bitblit/ratchet-common": "0.0.0-snapshot",
     "@bitblit/ratchet-misc": "0.0.0-snapshot",
@@ -108,12 +108,12 @@
     "y18n": "^5.0.8"
   },
   "peerDependencies": {
-    "@aws-sdk/client-sns": "3.303.0",
-    "@aws-sdk/client-sqs": "3.303.0",
+    "@aws-sdk/client-sns": "^3.328.0",
+    "@aws-sdk/client-sqs": "3.328.0",
     "@bitblit/ratchet-aws": "0.0.0-snapshot",
     "@bitblit/ratchet-common": "0.0.0-snapshot",
-    "@types/aws-lambda": "8.10.111",
-    "graphql": "16.6.0"
+    "@types/aws-lambda": "^8.10.115",
+    "graphql": "^16.6.0"
   },
   "peerDependenciesMeta": {
     "graphql": {

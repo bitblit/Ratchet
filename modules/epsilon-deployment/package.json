@@ -57,13 +57,13 @@
     "@bitblit/ratchet-aws": "0.0.0-snapshot",
     "@bitblit/ratchet-common": "0.0.0-snapshot",
     "@bitblit/ratchet-epsilon-common": "0.0.0-snapshot",
-    "aws-cdk-lib": "2.77.0",
-    "constructs": "10.2.14"
+    "aws-cdk-lib": "2.78.0",
+    "constructs": "10.2.17"
   },
   "resolutions": {},
   "peerDependencies": {
-    "aws-cdk": "2.72.1",
-    "constructs": "10.1.299"
+    "aws-cdk": "^2.78.0",
+    "constructs": "^10.2.17"
   },
   "devDependencies": {}
 }

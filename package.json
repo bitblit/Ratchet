@@ -73,7 +73,7 @@
     "esbuild": "0.17.18",
     "esbuild-plugin-glob": "2.2.1",
     "esbuild-plugin-polyfill-node": "0.2.0",
-    "eslint": "8.39.0",
+    "eslint": "8.40.0",
     "eslint-config-prettier": "8.8.0",
     "eslint-plugin-import": "2.27.5",
     "eslint-plugin-prettier": "4.2.1",

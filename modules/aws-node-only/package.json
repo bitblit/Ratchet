@@ -60,11 +60,11 @@
   },
   "license": "Apache-2.0",
   "dependencies": {
-    "@aws-sdk/client-athena": "3.325.0",
-    "@aws-sdk/client-ec2": "3.325.0",
-    "@aws-sdk/client-ec2-instance-connect": "3.325.0",
-    "@aws-sdk/client-s3": "3.325.0",
-    "@aws-sdk/lib-storage": "3.325.0",
+    "@aws-sdk/client-athena": "3.328.0",
+    "@aws-sdk/client-ec2": "3.328.0",
+    "@aws-sdk/client-ec2-instance-connect": "3.328.0",
+    "@aws-sdk/client-s3": "3.328.0",
+    "@aws-sdk/lib-storage": "3.328.0",
     "@aws-sdk/smithy-client": "3.325.0",
     "@aws-sdk/types": "3.310.0",
     "@bitblit/ratchet-aws": "0.0.0-snapshot",
@@ -76,19 +76,19 @@
     "walk": "2.3.15"
   },
   "peerDependencies": {
-    "@aws-sdk/client-athena": "3.325.0",
-    "@aws-sdk/client-ec2": "3.325.0",
-    "@aws-sdk/client-ec2-instance-connect": "3.325.0",
-    "@aws-sdk/client-s3": "3.325.0",
-    "@aws-sdk/lib-storage": "3.325.0",
-    "@aws-sdk/smithy-client": "3.325.0",
-    "@aws-sdk/types": "3.310.0",
+    "@aws-sdk/client-athena": "^3.328.0",
+    "@aws-sdk/client-ec2": "^3.328.0",
+    "@aws-sdk/client-ec2-instance-connect": "^3.328.0",
+    "@aws-sdk/client-s3": "^3.328.0",
+    "@aws-sdk/lib-storage": "^3.328.0",
+    "@aws-sdk/smithy-client": "^3.328.0",
+    "@aws-sdk/types": "^3.310.0",
     "@bitblit/ratchet-aws": "0.0.0-snapshot",
     "@bitblit/ratchet-common": "0.0.0-snapshot",
-    "mailparser": "3.6.4",
-    "mime-types": "2.1.35",
-    "tmp": "0.2.1",
-    "walk": "2.3.15"
+    "mailparser": "^3.6.4",
+    "mime-types": "^2.1.35",
+    "tmp": "^0.2.1",
+    "walk": "^2.3.15"
   },
   "devDependencies": {}
 }
