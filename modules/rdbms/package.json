@@ -1,12 +1,8 @@
 {
-  "name": "@bitblit/ratchet-node-only",
+  "name": "@bitblit/ratchet-rdbms",
   "version": "0.0.0-snapshot",
-  "description": "Ratchet tools for use on node-only",
-  "note-on-side-effects": "Technically the entries in 'bin' below might be side effects, but they are called explicitly",
+  "description": "Ratchet tooling for working with relational databases",
   "sideEffects": false,
-  "bin": {
-    "ratchet-cli": "./bin/cli.js"
-  },
   "type": "module",
   "module": "index.js",
   "files": [
@@ -15,11 +11,7 @@
   ],
   "contributors": [
     "Christopher Weiss <bitblit@gmail.com>",
-    "William Weiss <npm@codification.org>",
-    "Austin Grantham <agrantham@algidious.com>",
-    "Lucas Myers <veganbeef@protonmail.com>",
-    "Joel Flint <joel@stimulimedia.net>",
-    "Bilal Shahid <bshahid@adomni.com>"
+    "Zach Herridge"
   ],
   "husky": {
     "hooks": {
@@ -62,20 +54,15 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@bitblit/ratchet-common": "0.0.0-snapshot",
-    "csv": "6.2.12",
-    "rxjs": "7.8.1"
+    "mysql2": "3.3.0",
+    "tunnel-ssh": "5.0.5",
+    "get-port": "4.0.0"
   },
   "peerDependencies": {
-    "csv": "^6.2.12",
-    "rxjs": "^7.8.1"
+    "mysql2": "3.3.0",
+    "tunnel-ssh": "5.0.5",
+    "get-port": "4.0.0"
   },
-  "peerDependenciesMeta": {
-    "csv": {
-      "optional": true
-    },
-    "rxjs": {
-      "optional": true
-    }
-  },
+  "resolutions": {},
   "devDependencies": {}
 }

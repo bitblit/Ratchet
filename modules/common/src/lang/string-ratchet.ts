@@ -234,4 +234,16 @@ export class StringRatchet {
     }
     return rval;
   }
+
+  // Zach
+  public static stripNonAscii(value: string): string {
+    const reduced = [...value].reduce((previousValue: string, currentValue: string) => {
+      const charCode: number = currentValue.charCodeAt(0);
+      if (charCode > 127) {
+        return previousValue;
+      }
+      return previousValue + currentValue;
+    });
+    return reduced;
+  }
 }

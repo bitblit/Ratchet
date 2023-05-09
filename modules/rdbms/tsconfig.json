@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "outDir": "lib",
+    "rootDir": "src",
+    "stripInternal": true
+  },
+  "extends": "../../tsconfig.json",
+  "include": ["src/"]
+}
