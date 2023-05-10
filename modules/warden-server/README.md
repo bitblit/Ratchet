@@ -1,4 +1,4 @@
-# @bitblit/Warden
+# @bitblit/ratchet-warden-server
 
 Typescript library to simplify using simplewebauthn and secondary auth methods over GraphQL.
 
