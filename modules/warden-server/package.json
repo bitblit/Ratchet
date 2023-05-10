@@ -62,7 +62,7 @@
     "@simplewebauthn/typescript-types": "7.0.0",
     "jwt-decode": "3.1.2"
   },
-  "devDependencies": {
+  "peerDependencies": {
     "@bitblit/ratchet-jest": "0.0.0-snapshot",
     "@simplewebauthn/browser": "^7.2.0",
     "@simplewebauthn/server": "^7.2.0",

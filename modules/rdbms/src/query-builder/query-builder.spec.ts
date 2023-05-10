@@ -1,7 +1,8 @@
 import { QueryTextProvider } from '../model/query-text-provider.js';
 import { NamedParameterMariaDbService } from '../named-parameter-maria-db-service.js';
-import { JestRatchet } from '../../../../dist/jest/index.js';
+import { JestRatchet } from '@bitblit/ratchet-jest/lib/jest/jest-ratchet.js';
 import { SortDirection } from '../model/sort-direction.js';
+import { jest } from '@jest/globals';
 
 const prov: QueryTextProvider = {
   fetchQuery(queryPath: string): string {
@@ -34,7 +35,7 @@ const prov: QueryTextProvider = {
   },
 };
 
-const mariaDb = new NamedParameterMariaDbService(prov, JestRatchet.mock(), { databaseName: 'test', timeoutMS: 2_000 });
+const mariaDb = new NamedParameterMariaDbService(prov, JestRatchet.mock(jest.fn), { databaseName: 'test', timeoutMS: 2_000 });
 
 describe('query-builder', () => {
   it('builds filtered', () => {
