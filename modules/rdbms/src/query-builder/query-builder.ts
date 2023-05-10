@@ -193,7 +193,7 @@ export class QueryBuilder {
     this.runQueryChecks();
     this.stripNonAsciiParams();
 
-    return new QueryBuilderResult(this.query ?? '', this.namedParams, this.paginator, this.transactionIsolationLevel);
+    return new QueryBuilderResult((this.query ?? '').trim(), this.namedParams, this.paginator, this.transactionIsolationLevel);
   }
 
   private stripNonAsciiParams(): void {
