@@ -43,7 +43,7 @@
     "docs": "typedoc",
     "lint": "eslint src/**/*.ts",
     "lint-fix": "eslint --fix src/**/*.ts",
-    "generate-barrels": "barrelsby -q --delete -d src -e .*\\.spec\\.ts && cp src/index.ts src/index.ts.bak && sed -i 's/\\x27;/.js\\x27;/' src/index.ts",
+    "generate-barrels": "barrelsby -q --delete -d src -e .*\\.spec\\.ts && sed -i 's/\\x27;/.js\\x27;/' src/index.ts",
     "__build": "yarn build-code && yarn build-types",
     "__build-code": "yarn run generate-barrels && node esbuild-conf.mjs",
     "__build-types": " npm-dts generate --output lib/index.d.ts",
@@ -51,7 +51,8 @@
     "__build": "tsc",
     "___build": "rollup src/index.ts -f esm -o lib/t.mjs",
     "_build": "yarn clean && yarn generate-barrels && tsc && rollup -c rollup.config.js && cp src/index.ts.bak lib/index.d.ts",
-    "build": "yarn clean && yarn generate-barrels && tsc",
+    "build": "yarn clean && yarn generate-barrels && rollup -c rollup.config.js",
+    "_1build": "yarn clean && yarn generate-barrels && tsc",
     "force-build": "tsc --build --force"
   },
   "repository": {

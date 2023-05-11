@@ -8,6 +8,10 @@ import { S3Client } from '@aws-sdk/client-s3';
 import { AthenaClient } from '@aws-sdk/client-athena';
 
 describe('#AlbAthenaLogRatchet', function () {
+  it('Placeholder', async () => {
+    expect(2).toEqual(2);
+  });
+
   xit('should test a query', async () => {
     Logger.setLevel(LoggerLevelName.debug);
     const athena: AthenaClient = new AthenaClient({ region: 'us-east-1' });

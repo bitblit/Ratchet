@@ -6,7 +6,7 @@
     "noEmitHelpers": true,
     "target": "esnext",
     "strict": true,
-
+    "sourceMap": true,
     "baseUrl": ".",
     "downlevelIteration": true,
     "esModuleInterop": true,
@@ -20,7 +20,6 @@
     "preserveConstEnums": true,
     "removeComments": true,
     "resolveJsonModule": true,
-    "resolvePackageJsonExports": true,
     "useUnknownInCatchVariables": false,
     "noImplicitAny": false,
     "noUnusedLocals": false,
@@ -34,7 +33,8 @@
     }
   },
   "include": ["modules/"],
-  "exclude": ["node_modules/"],
+  "exclude": ["node_modules/", "src/**/*.spec.ts"],
+
   "typedocOptions": {
     "entryPointStrategy": "expand",
     "entryPoints": ["src"],

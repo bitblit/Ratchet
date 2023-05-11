@@ -9,6 +9,7 @@ const config: JestConfigWithTsJest = {
   collectCoverage: true,
   coverageDirectory: 'artifacts/coverage',
   roots: ['src'],
+  testMatch: ['**/__tests__/**/*.ts?(x)', '**/?(*.)+(spec|test).ts?(x)'],
   maxConcurrency: 10,
   /*
     This is recommended to catch files you are not testing at all, but will

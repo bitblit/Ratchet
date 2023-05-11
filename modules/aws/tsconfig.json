@@ -8,5 +8,4 @@
   },
   "extends": "../../tsconfig.json",
   "include": ["src/"],
-  "exclude": ["src/**/*.spec.ts"]
 }
