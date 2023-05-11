@@ -16,6 +16,10 @@ export class Route53Ratchet {
     }
   }
 
+  public get route53Client(): Route53Client {
+    return this.route53;
+  }
+
   public async changeCnameRecordTarget(
     domainName: string,
     target: string,

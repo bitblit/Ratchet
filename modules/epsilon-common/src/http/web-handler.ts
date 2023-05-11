@@ -15,7 +15,7 @@ import { FilterChainContext } from '../config/http/filter-chain-context.js';
 import { ContextUtil } from '../util/context-util.js';
 import { EpsilonLambdaEventHandler } from '../config/epsilon-lambda-event-handler.js';
 import { StringRatchet } from '@bitblit/ratchet-common/lib/lang/string-ratchet.js';
-import { LambdaEventDetector } from '@bitblit/ratchet-aws/lib/lambda/lambda-event-detector.js';
+import { LambdaEventDetector } from '@bitblit/ratchet-aws';
 
 /**
  * This class functions as the adapter from a default lambda function to the handlers exposed via Epsilon

@@ -31,6 +31,10 @@ export class CloudWatchLogsRatchet {
     this.cwLogs = cloudwatchLogs ? cloudwatchLogs : new CloudWatchLogsClient({ region: 'us-east-1' });
   }
 
+  public get cloudWatchLogsClient(): CloudWatchLogsClient {
+    return this.cwLogs;
+  }
+
   public async removeEmptyOrOldLogStreams(
     logGroupName: string,
     maxToRemove = 1000,

@@ -15,6 +15,9 @@ import { StopWatch } from '@bitblit/ratchet-common/lib/lang/stop-watch.js';
 export class CloudWatchLogGroupRatchet {
   constructor(private logGroup: string, private awsCWLogs: CloudWatchLogsClient = new CloudWatchLogsClient({ region: 'us-east-1' })) {}
 
+  public get cloudWatchLogsClient(): CloudWatchLogsClient {
+    return this.awsCWLogs;
+  }
   public async readLogStreams(startTimestamp: number = null, endTimestamp: number = null): Promise<LogStream[]> {
     const params: DescribeLogStreamsCommandInput = {
       logGroupName: this.logGroup,

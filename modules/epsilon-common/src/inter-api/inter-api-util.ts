@@ -1,4 +1,4 @@
-import { LambdaEventDetector } from '@bitblit/ratchet-aws/lib/lambda/lambda-event-detector.js';
+import { LambdaEventDetector } from '@bitblit/ratchet-aws';
 import { SNSEvent } from 'aws-lambda';
 import { EpsilonConstants } from '../epsilon-constants.js';
 import { InterApiEntry } from './inter-api-entry.js';

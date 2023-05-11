@@ -1,5 +1,5 @@
 import { BackgroundTransactionLogger } from '../config/background/background-transaction-logger.js';
-import { S3CacheRatchet } from '@bitblit/ratchet-aws/lib/s3/s3-cache-ratchet.js';
+import { S3CacheRatchet } from '@bitblit/ratchet-aws';
 import { BackgroundTransactionLog } from '../config/background/background-transaction-log.js';
 import { AbstractBackgroundManager } from './manager/abstract-background-manager.js';
 import { ErrorRatchet } from '@bitblit/ratchet-common/lib/lang/error-ratchet.js';

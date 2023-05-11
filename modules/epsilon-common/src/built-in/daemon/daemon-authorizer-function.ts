@@ -1,4 +1,4 @@
-import { DaemonProcessState } from '@bitblit/ratchet-aws/lib/daemon/daemon-process-state.js';
+import { DaemonProcessState } from '@bitblit/ratchet-aws';
 import { ExtendedAPIGatewayEvent } from '../../config/http/extended-api-gateway-event.js';
 
 export interface DaemonAuthorizerFunction {

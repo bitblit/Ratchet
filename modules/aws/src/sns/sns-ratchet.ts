@@ -8,6 +8,10 @@ export class SnsRatchet {
     RequireRatchet.notNullOrUndefined(this.topicArn, 'topicArn');
   }
 
+  public get snsClient(): SNSClient {
+    return this.sns;
+  }
+
   public async sendMessage(inMsg: any, suppressErrors: boolean = false): Promise<PublishCommandOutput> {
     let result: PublishCommandOutput = null;
     try {

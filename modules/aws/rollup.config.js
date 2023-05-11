@@ -9,9 +9,10 @@ import commonjs from '@rollup/plugin-commonjs';
 export default {
   input: './src/index.ts',
   output: {
-    dir: 'lib/',
+    //dir: 'lib/',
+    file: 'lib/index.mjs',
     format: 'esm',
     sourcemap: true,
   },
-  plugins: [nodeResolve({ preferBuilins: true }), terser(), json(), typescript(), commonjs()],
+  plugins: [nodeResolve({ preferBuiltins: true }), terser(), json(), typescript(), commonjs()],
 };

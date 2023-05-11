@@ -2,8 +2,8 @@
 import { WardenMessageSendingProvider } from './warden-message-sending-provider.js';
 import { WardenMailerMessageSendingProviderOptions } from './warden-mailer-message-sending-provider-options.js';
 import { SendRawEmailResponse } from '@aws-sdk/client-ses';
-import { MailerLike } from '@bitblit/ratchet-aws/lib/ses/mailer-like.js';
-import { ReadyToSendEmail } from '@bitblit/ratchet-aws/lib/ses/ready-to-send-email.js';
+import { MailerLike } from '@bitblit/ratchet-aws';
+import { ReadyToSendEmail } from '@bitblit/ratchet-aws';
 
 import { Logger } from '@bitblit/ratchet-common/lib/logger/logger.js';
 import { WardenContact } from '@bitblit/ratchet-warden-common/lib/common/model/warden-contact.js';

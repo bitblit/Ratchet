@@ -17,6 +17,10 @@ export class CloudWatchMetricsRatchet {
     this.cw = cloudWatch ? cloudWatch : new CloudWatchClient({ region: 'us-east-1', apiVersion: '2010-08-01' });
   }
 
+  public get cloudWatchClient(): CloudWatchClient {
+    return this.cw;
+  }
+
   public async writeSingleMetric(
     namespace: string,
     metric: string,

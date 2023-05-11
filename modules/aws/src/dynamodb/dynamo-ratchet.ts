@@ -52,6 +52,10 @@ export class DynamoRatchet implements DynamoRatchetLike {
     }
   }
 
+  public get dynamoDBDocumentClient(): DynamoDBDocumentClient {
+    return this.awsDDB;
+  }
+
   public getDDB(): DynamoDBDocumentClient {
     return this.awsDDB;
   }

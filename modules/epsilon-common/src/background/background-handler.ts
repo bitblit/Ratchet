@@ -1,7 +1,7 @@
 import { ErrorRatchet } from '@bitblit/ratchet-common/lib/lang/error-ratchet.js';
 import { Logger } from '@bitblit/ratchet-common/lib/logger/logger.js';
 import { Context, ProxyResult, SNSEvent } from 'aws-lambda';
-import { LambdaEventDetector } from '@bitblit/ratchet-aws/lib/lambda/lambda-event-detector.js';
+import { LambdaEventDetector } from '@bitblit/ratchet-aws';
 import { EpsilonConstants } from '../epsilon-constants.js';
 import { ModelValidator } from '@bitblit/ratchet-misc/lib/model-validator/model-validator.js';
 import { BackgroundValidator } from './background-validator.js';

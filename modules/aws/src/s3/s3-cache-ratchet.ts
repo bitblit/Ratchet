@@ -36,6 +36,10 @@ export class S3CacheRatchet {
     RequireRatchet.notNullOrUndefined(this.s3, 's3');
   }
 
+  public get s3Client(): S3Client {
+    return this.s3;
+  }
+
   public static applyCacheControlMaxAge(input: PutObjectCommandInput, seconds: number): PutObjectCommandInput {
     if (input && seconds) {
       input.CacheControl = 'max-age=' + seconds;

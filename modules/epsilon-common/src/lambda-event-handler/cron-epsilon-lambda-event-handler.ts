@@ -9,7 +9,7 @@ import { BackgroundEntry } from '../background/background-entry.js';
 import { CronBackgroundEntry } from '../config/cron/cron-background-entry.js';
 import { CronUtil } from '../util/cron-util.js';
 import { BackgroundManagerLike } from '../background/manager/background-manager-like.js';
-import { LambdaEventDetector } from '@bitblit/ratchet-aws/lib/lambda/lambda-event-detector.js';
+import { LambdaEventDetector } from '@bitblit/ratchet-aws';
 
 export class CronEpsilonLambdaEventHandler implements EpsilonLambdaEventHandler<ScheduledEvent> {
   constructor(private _epsilon: EpsilonInstance) {}

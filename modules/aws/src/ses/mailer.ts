@@ -28,6 +28,10 @@ export class Mailer implements MailerLike {
     }
   }
 
+  public get sESClient(): SESClient {
+    return this.ses;
+  }
+
   public async fillEmailBody(
     rts: ReadyToSendEmail,
     context: any,

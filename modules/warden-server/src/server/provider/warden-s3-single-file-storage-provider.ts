@@ -5,7 +5,7 @@ import { WardenUtils } from '@bitblit/ratchet-warden-common/lib/common/util/ward
 import { WardenStorageProvider } from './warden-storage-provider.js';
 import { WardenS3SingleFileStorageProviderOptions } from './warden-s3-single-file-storage-provider-options.js';
 import { PutObjectOutput, S3Client } from '@aws-sdk/client-s3';
-import { S3CacheRatchet } from '@bitblit/ratchet-aws/lib/s3/s3-cache-ratchet.js';
+import { S3CacheRatchet } from '@bitblit/ratchet-aws';
 import { StringRatchet } from '@bitblit/ratchet-common/lib/lang/string-ratchet.js';
 import { ErrorRatchet } from '@bitblit/ratchet-common/lib/lang/error-ratchet.js';
 import { WardenContact } from '@bitblit/ratchet-warden-common/lib/common/model/warden-contact.js';

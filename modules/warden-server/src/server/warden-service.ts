@@ -24,8 +24,8 @@ import { WardenUtils } from '@bitblit/ratchet-warden-common/lib/common/util/ward
 import { WardenJwtToken } from '@bitblit/ratchet-warden-common/lib/common/model/warden-jwt-token.js';
 
 import { WardenMessageSendingProvider } from './provider/warden-message-sending-provider.js';
-import { ExpiringCode } from '@bitblit/ratchet-aws/lib/expiring-code/expiring-code.js';
-import { ExpiringCodeRatchet } from '@bitblit/ratchet-aws/lib/expiring-code/expiring-code-ratchet.js';
+import { ExpiringCode } from '@bitblit/ratchet-aws';
+import { ExpiringCodeRatchet } from '@bitblit/ratchet-aws';
 
 import { Logger } from '@bitblit/ratchet-common/lib/logger/logger.js';
 import { StringRatchet } from '@bitblit/ratchet-common/lib/lang/string-ratchet.js';

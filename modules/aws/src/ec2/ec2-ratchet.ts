@@ -38,6 +38,13 @@ export class Ec2Ratchet {
     this.ec2 = new EC2Client({ region: region });
     this.ec2InstanceConnect = new EC2InstanceConnectClient({ region: region });
   }
+  public get eC2Client(): EC2Client {
+    return this.ec2;
+  }
+
+  public get eC2InstanceConnectClient(): EC2InstanceConnectClient {
+    return this.ec2InstanceConnect;
+  }
 
   public async stopInstance(instanceId: string, maxWaitForShutdownMS: number = 0): Promise<boolean> {
     let rval: boolean = true;
