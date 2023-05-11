@@ -20,6 +20,7 @@
     "preserveConstEnums": true,
     "removeComments": true,
     "resolveJsonModule": true,
+    "resolvePackageJsonExports": true,
     "useUnknownInCatchVariables": false,
     "noImplicitAny": false,
     "noUnusedLocals": false,
@@ -27,7 +28,6 @@
     "strictNullChecks": false,
     "skipLibCheck": true,
     "noImplicitReturns": true,
-    "suppressImplicitAnyIndexErrors": true,
     "forceConsistentCasingInFileNames": true,
     "paths": {
       "@bitblit/ratchet-*": ["modules/"]

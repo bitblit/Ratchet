@@ -4,12 +4,19 @@
   "description": "Common tools for use with AWS browser and node",
   "sideEffects": false,
   "type": "module",
-  "module": "lib/index.mjs",
-  "types": "lib/index.d.ts",
+  "module": "lib/index.js",
+  "typings": "lib/index.d.ts",
   "files": [
     "lib/*",
     "bin/*"
   ],
+  "__exports": {
+    "S3Ratchet": {
+      "types": "./lib/s3/s3-ratchet.d.ts",
+      "import": "./lib/s3/s3-ratchet.js"
+    },
+    "package.json": "./package.json"
+  },
   "contributors": [
     "Christopher Weiss <bitblit@gmail.com>",
     "William Weiss <npm@codification.org>",
@@ -36,12 +43,15 @@
     "docs": "typedoc",
     "lint": "eslint src/**/*.ts",
     "lint-fix": "eslint --fix src/**/*.ts",
-    "generate-barrels": "barrelsby -q --delete -d src -e .*\\.spec\\.ts && sed -i 's/\\x27;/.js\\x27;/' src/index.ts",
-    "build": "yarn build-code && yarn build-types",
-    "build-code": "yarn run generate-barrels && node esbuild-conf.mjs",
-    "build-types": " npm-dts generate --output lib/index.d.ts",
+    "generate-barrels": "barrelsby -q --delete -d src -e .*\\.spec\\.ts && cp src/index.ts src/index.ts.bak && sed -i 's/\\x27;/.js\\x27;/' src/index.ts",
+    "__build": "yarn build-code && yarn build-types",
+    "__build-code": "yarn run generate-barrels && node esbuild-conf.mjs",
+    "__build-types": " npm-dts generate --output lib/index.d.ts",
     "__build-types": "tsc --emitDeclarationOnly",
     "__build": "tsc",
+    "___build": "rollup src/index.ts -f esm -o lib/t.mjs",
+    "_build": "yarn clean && yarn generate-barrels && tsc && rollup -c rollup.config.js && cp src/index.ts.bak lib/index.d.ts",
+    "build": "yarn clean && yarn generate-barrels && tsc",
     "force-build": "tsc --build --force"
   },
   "repository": {

@@ -25,8 +25,8 @@ await esbuild.build({
 await esbuild.build({
     ...sharedConfig,
     splitting: false, // for now
-    outfile: "lib/index.mjs",
-    platform: 'browser', // for ESM
+    outfile: "lib/index.js",
+    //platform: 'browser', // for ESM
     format: "esm",
 });
 

@@ -5,9 +5,9 @@ import { Logger } from '@bitblit/ratchet-common/lib/logger/logger.js';
 import { RequireRatchet } from '@bitblit/ratchet-common/lib/lang/require-ratchet.js';
 import { StringRatchet } from '@bitblit/ratchet-common/lib/lang/string-ratchet.js';
 import { EsmRatchet } from '@bitblit/ratchet-common/lib/lang/esm-ratchet.js';
-import { S3Ratchet } from '@bitblit/ratchet-aws/lib/s3/s3-ratchet.js';
 import { CsvRatchet } from '@bitblit/ratchet-node-only/lib/csv/csv-ratchet.js';
 import { S3Client } from '@aws-sdk/client-s3';
+import { S3Ratchet } from '@bitblit/ratchet-aws';
 
 // A class to simplify reading an Athena table based on ALB Logs
 // NOTE: This class only runs on Node since it depends on fs and path
