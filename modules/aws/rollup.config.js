@@ -5,6 +5,7 @@ import { nodeResolve } from '@rollup/plugin-node-resolve';
 import json from '@rollup/plugin-json';
 import terser from '@rollup/plugin-terser';
 import commonjs from '@rollup/plugin-commonjs';
+//import nodePolyfills from 'rollup-plugin-polyfill-node';
 
 export default {
   input: './src/index.ts',
@@ -14,5 +15,12 @@ export default {
     format: 'esm',
     sourcemap: true,
   },
-  plugins: [nodeResolve({ preferBuiltins: true }), terser(), json(), typescript(), commonjs()],
+  plugins: [
+    nodeResolve({ preferBuiltins: true, browser: true }),
+    terser(),
+    json(),
+    typescript(),
+    commonjs(),
+    //nodePolyfills({ include: null, sourceMap: true }),
+  ],
 };

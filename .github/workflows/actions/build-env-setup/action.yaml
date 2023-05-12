@@ -4,6 +4,7 @@ description: 'Initial setup for node'
 runs:
   using: "composite"
   steps:
+    - uses: ./.github/workflows/actions/commit-comment-flags
     - uses: ./.github/workflows/actions/job-setup
     
     - name: Setup Node
