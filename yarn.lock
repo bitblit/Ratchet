@@ -2808,7 +2808,7 @@
   dependencies:
     "@simplewebauthn/typescript-types" "*"
 
-"@simplewebauthn/iso-webcrypto@^7.2.0":
+"@simplewebauthn/iso-webcrypto@7.2.0", "@simplewebauthn/iso-webcrypto@^7.2.0":
   version "7.2.0"
   resolved "https://registry.yarnpkg.com/@simplewebauthn/iso-webcrypto/-/iso-webcrypto-7.2.0.tgz#9f84a2027ddcdf4afe1750f198f925930c8bfa8f"
   integrity sha512-m8pts+mwPEcTIzBRRlEGTQyx6T2q+aQa6CljnW+VP/3MikKKeOkZEuLhe8bHnmsQNKLF8dtgQ2WyhHe39pzjpg==
