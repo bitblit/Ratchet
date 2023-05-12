@@ -1,6 +1,6 @@
 import path from 'path';
 import { FilesToStaticClass } from './files-to-static-class.js';
-import { EsmRatchet } from '@bitblit/ratchet-common/lib/lang/esm-ratchet.js';
+import { EsmRatchet } from '@bitblit/ratchet-common';
 //import { fileURLToPath, URL } from 'url';
 //import { Logger } from '../../common/logger.js';
 

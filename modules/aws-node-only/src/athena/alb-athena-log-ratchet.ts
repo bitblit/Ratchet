@@ -1,11 +1,11 @@
 import { readFileSync, ReadStream } from 'fs';
 import path from 'path';
 import { AthenaRatchet } from './athena-ratchet.js';
-import { Logger } from '@bitblit/ratchet-common/lib/logger/logger.js';
-import { RequireRatchet } from '@bitblit/ratchet-common/lib/lang/require-ratchet.js';
-import { StringRatchet } from '@bitblit/ratchet-common/lib/lang/string-ratchet.js';
-import { EsmRatchet } from '@bitblit/ratchet-common/lib/lang/esm-ratchet.js';
-import { CsvRatchet } from '@bitblit/ratchet-node-only/lib/csv/csv-ratchet.js';
+import { Logger } from '@bitblit/ratchet-common';
+import { RequireRatchet } from '@bitblit/ratchet-common';
+import { StringRatchet } from '@bitblit/ratchet-common';
+import { EsmRatchet } from '@bitblit/ratchet-common';
+import { CsvRatchet } from '@bitblit/ratchet-node-only';
 import { S3Client } from '@aws-sdk/client-s3';
 import { S3Ratchet } from '@bitblit/ratchet-aws';
 

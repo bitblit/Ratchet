@@ -5,11 +5,16 @@
   "sideEffects": false,
   "bin": {},
   "type": "module",
-  "module": "index.js",
   "files": [
     "lib/*",
     "bin/*"
   ],
+  "exports": {
+    ".": {
+      "types": "./lib/index.d.ts",
+      "import": "./lib/index.mjs"
+    }
+  },
   "contributors": [
     "Christopher Weiss <bitblit@gmail.com>"
   ],
@@ -31,9 +36,9 @@
     "docs": "typedoc",
     "lint": "eslint src/**/*.ts",
     "lint-fix": "eslint --fix src/**/*.ts",
-    "__generate-barrels": "barrelsby -q --delete -d src -e .*\\.spec\\.ts",
-    "__build": "yarn run generate-barrels && tsc",
-    "build": "tsc"
+    "generate-barrels": "barrelsby -q --delete -d src -e .*\\.spec\\.ts && sed -i 's/\\x27;/.js\\x27;/' src/index.ts",
+    "build": "yarn clean && yarn generate-barrels && rollup -c rollup.config.js",
+    "force-build": "tsc --build --force"
   },
   "repository": {
     "type": "git",
@@ -52,8 +57,8 @@
   },
   "license": "Apache-2.0",
   "dependencies": {
-    "@aws-sdk/client-s3": "3.328.0",
-    "@aws-sdk/client-ses": "3.328.0",
+    "@aws-sdk/client-s3": "3.332.0",
+    "@aws-sdk/client-ses": "3.332.0",
     "@bitblit/ratchet-aws": "0.0.0-snapshot",
     "@bitblit/ratchet-common": "0.0.0-snapshot",
     "@bitblit/ratchet-warden-common": "0.0.0-snapshot",
@@ -63,10 +68,5 @@
     "jwt-decode": "3.1.2"
   },
   "peerDependencies": {
-    "@bitblit/ratchet-jest": "0.0.0-snapshot",
-    "@simplewebauthn/browser": "^7.2.0",
-    "@simplewebauthn/server": "^7.2.0",
-    "@simplewebauthn/typescript-types": "^7.0.0",
-    "jwt-decode": "^3.1.2"
   }
 }

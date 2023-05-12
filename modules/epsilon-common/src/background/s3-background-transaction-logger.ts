@@ -2,8 +2,8 @@ import { BackgroundTransactionLogger } from '../config/background/background-tra
 import { S3CacheRatchet } from '@bitblit/ratchet-aws';
 import { BackgroundTransactionLog } from '../config/background/background-transaction-log.js';
 import { AbstractBackgroundManager } from './manager/abstract-background-manager.js';
-import { ErrorRatchet } from '@bitblit/ratchet-common/lib/lang/error-ratchet.js';
-import { Logger } from '@bitblit/ratchet-common/lib/logger/logger.js';
+import { ErrorRatchet } from '@bitblit/ratchet-common';
+import { Logger } from '@bitblit/ratchet-common';
 import { S3Client } from '@aws-sdk/client-s3';
 
 export class S3BackgroundTransactionLogger implements BackgroundTransactionLogger {

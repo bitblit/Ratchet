@@ -1,5 +1,5 @@
-import { Logger } from '@bitblit/ratchet-common/lib/logger/logger.js';
-import { RequireRatchet } from '@bitblit/ratchet-common/lib/lang/require-ratchet.js';
+import { Logger } from '@bitblit/ratchet-common';
+import { RequireRatchet } from '@bitblit/ratchet-common';
 import { EnvironmentServiceProvider } from './environment-service-provider.js';
 
 /**

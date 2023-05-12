@@ -1,9 +1,9 @@
 import { EnvironmentServiceProvider } from './environment-service-provider.js';
 import { S3CacheRatchet } from '../s3/s3-cache-ratchet.js';
-import { RequireRatchet } from '@bitblit/ratchet-common/lib/lang/require-ratchet.js';
-import { Logger } from '@bitblit/ratchet-common/lib/logger/logger.js';
-import { StringRatchet } from '@bitblit/ratchet-common/lib/lang/string-ratchet.js';
-import { StopWatch } from '@bitblit/ratchet-common/lib/lang/stop-watch.js';
+import { RequireRatchet } from '@bitblit/ratchet-common';
+import { Logger } from '@bitblit/ratchet-common';
+import { StringRatchet } from '@bitblit/ratchet-common';
+import { StopWatch } from '@bitblit/ratchet-common';
 import { S3Client } from '@aws-sdk/client-s3';
 
 /**

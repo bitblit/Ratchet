@@ -1,9 +1,9 @@
 import { WebTokenManipulator } from './web-token-manipulator.js';
-import { StringRatchet } from '@bitblit/ratchet-common/lib/lang/string-ratchet.js';
-import { RequireRatchet } from '@bitblit/ratchet-common/lib/lang/require-ratchet.js';
-import { JwtTokenBase } from '@bitblit/ratchet-common/lib/jwt/jwt-token-base.js';
-import { JwtRatchetLike } from '@bitblit/ratchet-common/lib/jwt/jwt-ratchet-like.js';
-import { ExpiredJwtHandling } from '@bitblit/ratchet-common/lib/jwt/expired-jwt-handling.js';
+import { StringRatchet } from '@bitblit/ratchet-common';
+import { RequireRatchet } from '@bitblit/ratchet-common';
+import { JwtTokenBase } from '@bitblit/ratchet-common';
+import { JwtRatchetLike } from '@bitblit/ratchet-common';
+import { ExpiredJwtHandling } from '@bitblit/ratchet-common';
 
 /**
  * Service for handling jwt tokens

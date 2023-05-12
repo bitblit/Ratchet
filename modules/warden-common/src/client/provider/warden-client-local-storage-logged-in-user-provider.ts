@@ -1,8 +1,8 @@
 import { WardenLoggedInUserProvider } from './warden-logged-in-user-provider.js';
 import { WardenLoggedInUserWrapper } from './warden-logged-in-user-wrapper.js';
-import { StringRatchet } from '@bitblit/ratchet-common/lib/lang/string-ratchet.js';
-import { ErrorRatchet } from '@bitblit/ratchet-common/lib/lang/error-ratchet.js';
-import { RequireRatchet } from '@bitblit/ratchet-common/lib/lang/require-ratchet.js';
+import { StringRatchet } from '@bitblit/ratchet-common';
+import { ErrorRatchet } from '@bitblit/ratchet-common';
+import { RequireRatchet } from '@bitblit/ratchet-common';
 
 export class WardenClientLocalStorageLoggedInUserProvider<T> implements WardenLoggedInUserProvider<T> {
   constructor(private localStorageKey: string) {

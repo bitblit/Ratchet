@@ -1,7 +1,7 @@
-import { ModelValidator } from '@bitblit/ratchet-misc/lib/model-validator/model-validator.js';
-import { Logger } from '@bitblit/ratchet-common/lib/logger/logger.js';
-import { ErrorRatchet } from '@bitblit/ratchet-common/lib/lang/error-ratchet.js';
-import { StringRatchet } from '@bitblit/ratchet-common/lib/lang/string-ratchet.js';
+import { ModelValidator } from '@bitblit/ratchet-misc';
+import { Logger } from '@bitblit/ratchet-common';
+import { ErrorRatchet } from '@bitblit/ratchet-common';
+import { StringRatchet } from '@bitblit/ratchet-common';
 import { BackgroundConfig } from '../config/background/background-config.js';
 import { BackgroundEntry } from './background-entry.js';
 import { BackgroundProcessor } from '../config/background/background-processor.js';

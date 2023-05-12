@@ -1,4 +1,4 @@
-import { BuildInformation } from '@bitblit/ratchet-common/lib/build/build-information.js';
+import { BuildInformation } from '@bitblit/ratchet-common';
 
 export class RatchetEchartsInfo {
   // Empty constructor prevents instantiation

@@ -1,9 +1,9 @@
-import { ErrorRatchet } from '@bitblit/ratchet-common/lib/lang/error-ratchet.js';
-import { Logger } from '@bitblit/ratchet-common/lib/logger/logger.js';
+import { ErrorRatchet } from '@bitblit/ratchet-common';
+import { Logger } from '@bitblit/ratchet-common';
 import { Context, ProxyResult, SNSEvent } from 'aws-lambda';
 import { LambdaEventDetector } from '@bitblit/ratchet-aws';
 import { EpsilonConstants } from '../epsilon-constants.js';
-import { ModelValidator } from '@bitblit/ratchet-misc/lib/model-validator/model-validator.js';
+import { ModelValidator } from '@bitblit/ratchet-misc';
 import { BackgroundValidator } from './background-validator.js';
 import { BackgroundConfig } from '../config/background/background-config.js';
 import { BackgroundProcessor } from '../config/background/background-processor.js';
@@ -16,8 +16,8 @@ import { EpsilonLambdaEventHandler } from '../config/epsilon-lambda-event-handle
 import { ContextUtil } from '../util/context-util.js';
 import { BackgroundManagerLike } from './manager/background-manager-like.js';
 import { AbstractBackgroundManager } from './manager/abstract-background-manager.js';
-import { StringRatchet } from '@bitblit/ratchet-common/lib/lang/string-ratchet.js';
-import { StopWatch } from '@bitblit/ratchet-common/lib/lang/stop-watch.js';
+import { StringRatchet } from '@bitblit/ratchet-common';
+import { StopWatch } from '@bitblit/ratchet-common';
 
 /**
  * We use a FIFO queue so that 2 different Lambdas don't both work on the same

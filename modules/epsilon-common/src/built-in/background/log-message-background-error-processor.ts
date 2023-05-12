@@ -1,4 +1,4 @@
-import { Logger } from '@bitblit/ratchet-common/lib/logger/logger.js';
+import { Logger } from '@bitblit/ratchet-common';
 import { BackgroundErrorProcessor } from '../../config/background/background-error-processor.js';
 import { InternalBackgroundEntry } from '../../background/internal-background-entry.js';
 

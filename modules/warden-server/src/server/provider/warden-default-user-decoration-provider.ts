@@ -2,10 +2,10 @@
  * The user details gets jammed into the JWT token upon login.  If one is not provided,
  * the default only puts the WardenEntrySummary in there
  */
-import { WardenEntry } from '@bitblit/ratchet-warden-common/lib/common/model/warden-entry.js';
-import { WardenEntrySummary } from '@bitblit/ratchet-warden-common/lib/common/model/warden-entry-summary.js';
-import { WardenUserDecoration } from '@bitblit/ratchet-warden-common/lib/common/model/warden-user-decoration.js';
-import { WardenUtils } from '@bitblit/ratchet-warden-common/lib/common/util/warden-utils.js';
+import { WardenEntry } from '@bitblit/ratchet-warden-common';
+import { WardenEntrySummary } from '@bitblit/ratchet-warden-common';
+import { WardenUserDecoration } from '@bitblit/ratchet-warden-common';
+import { WardenUtils } from '@bitblit/ratchet-warden-common';
 import { WardenUserDecorationProvider } from './warden-user-decoration-provider.js';
 
 export class WardenDefaultUserDecorationProvider implements WardenUserDecorationProvider<WardenEntrySummary> {

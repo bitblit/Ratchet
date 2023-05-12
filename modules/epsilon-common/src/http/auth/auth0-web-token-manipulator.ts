@@ -1,6 +1,6 @@
-import { Logger } from '@bitblit/ratchet-common/lib/logger/logger.js';
-import { StringRatchet } from '@bitblit/ratchet-common/lib/lang/string-ratchet.js';
-import { JwtTokenBase } from '@bitblit/ratchet-common/lib/jwt/jwt-token-base.js';
+import { Logger } from '@bitblit/ratchet-common';
+import { StringRatchet } from '@bitblit/ratchet-common';
+import { JwtTokenBase } from '@bitblit/ratchet-common';
 import jwt from 'jsonwebtoken';
 import jwks from 'jwks-rsa';
 import { WebTokenManipulator } from './web-token-manipulator.js';

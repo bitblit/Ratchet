@@ -1,6 +1,6 @@
 import { timer } from 'rxjs';
 import { ObservableRatchet } from './observable-ratchet.js';
-import { TimeoutToken } from '@bitblit/ratchet-common/lib/lang/timeout-token.js';
+import { TimeoutToken } from '@bitblit/ratchet-common';
 
 describe('#timeout', function () {
   it('should correctly return before timeout', function () {

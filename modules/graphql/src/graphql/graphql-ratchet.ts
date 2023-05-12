@@ -10,10 +10,10 @@ import { GraphqlRatchetJwtTokenProvider } from './provider/graphql-ratchet-jwt-t
 import { GraphqlRatchetQueryProvider } from './provider/graphql-ratchet-query-provider.js';
 import { GraphqlRatchetErrorHandler } from './provider/graphql-ratchet-error-handler.js';
 import { DefaultGraphqlRatchetErrorHandler } from './provider/default-graphql-ratchet-error-handler.js';
-import { ErrorRatchet } from '@bitblit/ratchet-common/lib/lang/error-ratchet.js';
-import { Logger } from '@bitblit/ratchet-common/lib/logger/logger.js';
-import { RequireRatchet } from '@bitblit/ratchet-common/lib/lang/require-ratchet.js';
-import { StringRatchet } from '@bitblit/ratchet-common/lib/lang/string-ratchet.js';
+import { ErrorRatchet } from '@bitblit/ratchet-common';
+import { Logger } from '@bitblit/ratchet-common';
+import { RequireRatchet } from '@bitblit/ratchet-common';
+import { StringRatchet } from '@bitblit/ratchet-common';
 
 /**
  * CAW: 2023-02-16 : I'm well aware that this ratchet currently blows away any useful caching done by

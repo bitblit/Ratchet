@@ -1,4 +1,4 @@
-import { BuildInformation } from '@bitblit/ratchet-common/lib/build/build-information.js';
+import { BuildInformation } from '@bitblit/ratchet-common';
 import { CliRatchet } from './cli-ratchet.js';
 
 export abstract class AbstractRatchetCliHandler {

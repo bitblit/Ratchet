@@ -8,11 +8,16 @@
     "ratchet-aws-cli": "./bin/cli.js"
   },
   "type": "module",
-  "module": "index.js",
   "files": [
     "lib/*",
     "bin/*"
   ],
+  "exports": {
+    ".": {
+      "types": "./lib/index.d.ts",
+      "import": "./lib/index.mjs"
+    }
+  },
   "contributors": [
     "Christopher Weiss <bitblit@gmail.com>",
     "William Weiss <npm@codification.org>",
@@ -39,9 +44,9 @@
     "docs": "typedoc",
     "lint": "eslint src/**/*.ts",
     "lint-fix": "eslint --fix src/**/*.ts",
-    "__generate-barrels": "barrelsby -q --delete -d src -e .*\\.spec\\.ts",
-    "__build": "yarn run generate-barrels && tsc",
-    "build": "tsc"
+    "generate-barrels": "barrelsby -q --delete -d src -e .*\\.spec\\.ts && sed -i 's/\\x27;/.js\\x27;/' src/index.ts",
+    "build": "yarn clean && yarn generate-barrels && rollup -c rollup.config.js",
+    "force-build": "tsc --build --force"
   },
   "repository": {
     "type": "git",
@@ -60,35 +65,16 @@
   },
   "license": "Apache-2.0",
   "dependencies": {
-    "@aws-sdk/client-athena": "3.328.0",
-    "@aws-sdk/client-ec2": "3.328.0",
-    "@aws-sdk/client-ec2-instance-connect": "3.328.0",
-    "@aws-sdk/client-s3": "3.328.0",
-    "@aws-sdk/lib-storage": "3.328.0",
-    "@aws-sdk/smithy-client": "3.325.0",
-    "@aws-sdk/types": "3.310.0",
+    "@aws-sdk/client-athena": "3.332.0",
     "@bitblit/ratchet-aws": "0.0.0-snapshot",
     "@bitblit/ratchet-common": "0.0.0-snapshot",
     "mailparser": "3.6.4",
     "mime-types": "2.1.35",
     "tmp": "0.2.1",
-    "unzipper": "0.10.11",
+    "unzipper": "0.10.14",
     "walk": "2.3.15"
   },
   "peerDependencies": {
-    "@aws-sdk/client-athena": "^3.328.0",
-    "@aws-sdk/client-ec2": "^3.328.0",
-    "@aws-sdk/client-ec2-instance-connect": "^3.328.0",
-    "@aws-sdk/client-s3": "^3.328.0",
-    "@aws-sdk/lib-storage": "^3.328.0",
-    "@aws-sdk/smithy-client": "^3.328.0",
-    "@aws-sdk/types": "^3.310.0",
-    "@bitblit/ratchet-aws": "0.0.0-snapshot",
-    "@bitblit/ratchet-common": "0.0.0-snapshot",
-    "mailparser": "^3.6.4",
-    "mime-types": "^2.1.35",
-    "tmp": "^0.2.1",
-    "walk": "^2.3.15"
   },
   "devDependencies": {}
 }

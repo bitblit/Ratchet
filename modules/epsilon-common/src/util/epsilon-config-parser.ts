@@ -1,7 +1,7 @@
-import { Logger } from '@bitblit/ratchet-common/lib/logger/logger.js';
-import { ErrorRatchet } from '@bitblit/ratchet-common/lib/lang/error-ratchet.js';
+import { Logger } from '@bitblit/ratchet-common';
+import { ErrorRatchet } from '@bitblit/ratchet-common';
 import yaml from 'js-yaml';
-import { ModelValidator } from '@bitblit/ratchet-misc/lib/model-validator/model-validator.js';
+import { ModelValidator } from '@bitblit/ratchet-misc';
 import { BackgroundHttpAdapterHandler } from '../background/background-http-adapter-handler.js';
 import { OpenApiDocument } from '../config/open-api/open-api-document.js';
 import { EpsilonConfig } from '../config/epsilon-config.js';

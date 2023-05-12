@@ -1,6 +1,6 @@
-import { RequireRatchet } from '@bitblit/ratchet-common/lib/lang/require-ratchet.js';
-import { StringRatchet } from '@bitblit/ratchet-common/lib/lang/string-ratchet.js';
-import { MapRatchet } from '@bitblit/ratchet-common/lib/lang/map-ratchet.js';
+import { RequireRatchet } from '@bitblit/ratchet-common';
+import { StringRatchet } from '@bitblit/ratchet-common';
+import { MapRatchet } from '@bitblit/ratchet-common';
 import { PrototypeDaoProvider } from './prototype-dao-provider.js';
 import { PrototypeDaoDb } from './prototype-dao-db.js';
 import { PrototypeDaoConfig } from './prototype-dao-config.js';

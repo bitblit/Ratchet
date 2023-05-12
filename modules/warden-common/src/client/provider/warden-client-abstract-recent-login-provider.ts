@@ -1,8 +1,8 @@
 import { WardenClientRecentLoginProvider } from './warden-client-recent-login-provider.js';
 import { WardenRecentLoginDescriptor } from './warden-recent-login-descriptor.js';
 
-import { Logger } from '@bitblit/ratchet-common/lib/logger/logger.js';
-import { StringRatchet } from '@bitblit/ratchet-common/lib/lang/string-ratchet.js';
+import { Logger } from '@bitblit/ratchet-common';
+import { StringRatchet } from '@bitblit/ratchet-common';
 import { WardenEntrySummary } from '../../common/model/warden-entry-summary.js';
 import { WardenContact } from '../../common/model/warden-contact.js';
 import { WardenUtils } from '../../common/util/warden-utils.js';

@@ -17,32 +17,32 @@ import {
   RegistrationResponseJSON,
 } from '@simplewebauthn/typescript-types';
 import { WardenServiceOptions } from './warden-service-options.js';
-import { WardenEntry } from '@bitblit/ratchet-warden-common/lib/common/model/warden-entry.js';
-import { WardenStoreRegistrationResponse } from '@bitblit/ratchet-warden-common/lib/common/model/warden-store-registration-response.js';
-import { WardenUserDecoration } from '@bitblit/ratchet-warden-common/lib/common/model/warden-user-decoration.js';
-import { WardenUtils } from '@bitblit/ratchet-warden-common/lib/common/util/warden-utils.js';
-import { WardenJwtToken } from '@bitblit/ratchet-warden-common/lib/common/model/warden-jwt-token.js';
+import { WardenEntry } from '@bitblit/ratchet-warden-common';
+import { WardenStoreRegistrationResponse } from '@bitblit/ratchet-warden-common';
+import { WardenUserDecoration } from '@bitblit/ratchet-warden-common';
+import { WardenUtils } from '@bitblit/ratchet-warden-common';
+import { WardenJwtToken } from '@bitblit/ratchet-warden-common';
 
 import { WardenMessageSendingProvider } from './provider/warden-message-sending-provider.js';
 import { ExpiringCode } from '@bitblit/ratchet-aws';
 import { ExpiringCodeRatchet } from '@bitblit/ratchet-aws';
 
-import { Logger } from '@bitblit/ratchet-common/lib/logger/logger.js';
-import { StringRatchet } from '@bitblit/ratchet-common/lib/lang/string-ratchet.js';
-import { ErrorRatchet } from '@bitblit/ratchet-common/lib/lang/error-ratchet.js';
-import { RequireRatchet } from '@bitblit/ratchet-common/lib/lang/require-ratchet.js';
-import { ExpiredJwtHandling } from '@bitblit/ratchet-common/lib/jwt/expired-jwt-handling.js';
-import { Base64Ratchet } from '@bitblit/ratchet-common/lib/lang/base64-ratchet.js';
+import { Logger } from '@bitblit/ratchet-common';
+import { StringRatchet } from '@bitblit/ratchet-common';
+import { ErrorRatchet } from '@bitblit/ratchet-common';
+import { RequireRatchet } from '@bitblit/ratchet-common';
+import { ExpiredJwtHandling } from '@bitblit/ratchet-common';
+import { Base64Ratchet } from '@bitblit/ratchet-common';
 import { WardenDefaultUserDecorationProvider } from './provider/warden-default-user-decoration-provider.js';
 import { WardenNoOpEventProcessingProvider } from './provider/warden-no-op-event-processing-provider.js';
-import { WardenContact } from '@bitblit/ratchet-warden-common/lib/common/model/warden-contact.js';
-import { WardenCommand } from '@bitblit/ratchet-warden-common/lib/common/command/warden-command.js';
-import { WardenCommandResponse } from '@bitblit/ratchet-warden-common/lib/common/command/warden-command-response.js';
-import { WardenLoginRequest } from '@bitblit/ratchet-warden-common/lib/common/model/warden-login-request.js';
-import { WardenLoginResults } from '@bitblit/ratchet-warden-common/lib/common/model/warden-login-results.js';
-import { WardenStoreRegistrationResponseType } from '@bitblit/ratchet-warden-common/lib/common/model/warden-store-registration-response-type.js';
-import { WardenWebAuthnEntry } from '@bitblit/ratchet-warden-common/lib/common/model/warden-web-authn-entry.js';
-import { WardenCustomerMessageType } from '@bitblit/ratchet-warden-common/lib/common/model/warden-customer-message-type.js';
+import { WardenContact } from '@bitblit/ratchet-warden-common';
+import { WardenCommand } from '@bitblit/ratchet-warden-common';
+import { WardenCommandResponse } from '@bitblit/ratchet-warden-common';
+import { WardenLoginRequest } from '@bitblit/ratchet-warden-common';
+import { WardenLoginResults } from '@bitblit/ratchet-warden-common';
+import { WardenStoreRegistrationResponseType } from '@bitblit/ratchet-warden-common';
+import { WardenWebAuthnEntry } from '@bitblit/ratchet-warden-common';
+import { WardenCustomerMessageType } from '@bitblit/ratchet-warden-common';
 
 export class WardenService {
   private opts: WardenServiceOptions;

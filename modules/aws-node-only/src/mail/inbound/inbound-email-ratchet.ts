@@ -1,7 +1,7 @@
 import { ParsedMail, simpleParser } from 'mailparser';
 import { S3CacheRatchet } from '@bitblit/ratchet-aws';
-import { Logger } from '@bitblit/ratchet-common/lib/logger/logger.js';
-import { RequireRatchet } from '@bitblit/ratchet-common/lib/lang/require-ratchet.js';
+import { Logger } from '@bitblit/ratchet-common';
+import { RequireRatchet } from '@bitblit/ratchet-common';
 import { ParsedEmailProcessor } from './parsed-email-processor.js';
 
 /**

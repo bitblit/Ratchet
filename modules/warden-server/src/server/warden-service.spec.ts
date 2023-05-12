@@ -1,12 +1,12 @@
 /*
 import { WardenStorageProvider } from './provider/warden-storage-provider';
-import { JestRatchet } from '@bitblit/ratchet-jest/lib/jest/jest-ratchet.js';
+import { JestRatchet } from '@bitblit/ratchet-jest';
 import { WardenService } from './warden-service';
 import { WardenServiceOptions } from './warden-service-options';
 import { WardenContactType, WardenEntry } from '@bitblit/ratchet-warden-common';
 import { WardenMessageSendingProvider } from './provider/warden-message-sending-provider';
 import { ExpiringCodeProvider } from '@bitblit/ratchet-aws';
-import { JwtRatchetLike } from '@bitblit/ratchet-common/lib/jwt/jwt-ratchet-like';
+import { JwtRatchetLike } from '@bitblit/ratchet-common';
 
 let mockJwtRatchet: jest.Mocked<JwtRatchetLike>;
 let mockWardenStorageProvider: jest.Mocked<WardenStorageProvider>;

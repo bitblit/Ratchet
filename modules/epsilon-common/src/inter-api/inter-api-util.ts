@@ -2,10 +2,10 @@ import { LambdaEventDetector } from '@bitblit/ratchet-aws';
 import { SNSEvent } from 'aws-lambda';
 import { EpsilonConstants } from '../epsilon-constants.js';
 import { InterApiEntry } from './inter-api-entry.js';
-import { RequireRatchet } from '@bitblit/ratchet-common/lib/lang/require-ratchet.js';
+import { RequireRatchet } from '@bitblit/ratchet-common';
 
-import { Logger } from '@bitblit/ratchet-common/lib/logger/logger.js';
-import { StringRatchet } from '@bitblit/ratchet-common/lib/lang/string-ratchet.js';
+import { Logger } from '@bitblit/ratchet-common';
+import { StringRatchet } from '@bitblit/ratchet-common';
 import { BackgroundEntry } from '../background/background-entry.js';
 import { InterApiConfig } from '../config/inter-api/inter-api-config.js';
 import { ContextUtil } from '../util/context-util.js';

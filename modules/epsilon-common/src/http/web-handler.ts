@@ -1,11 +1,11 @@
 import { EpsilonRouter } from './route/epsilon-router.js';
 import { APIGatewayEvent, Context, ProxyResult } from 'aws-lambda';
-import { Logger } from '@bitblit/ratchet-common/lib/logger/logger.js';
+import { Logger } from '@bitblit/ratchet-common';
 import Route from 'route-parser';
 import { RouteMapping } from './route/route-mapping.js';
 import { ResponseUtil } from './response-util.js';
 import { ExtendedAPIGatewayEvent } from '../config/http/extended-api-gateway-event.js';
-import { RequireRatchet } from '@bitblit/ratchet-common/lib/lang/require-ratchet.js';
+import { RequireRatchet } from '@bitblit/ratchet-common';
 import { EpsilonHttpError } from './error/epsilon-http-error.js';
 import { BuiltInFilters } from '../built-in/http/built-in-filters.js';
 import { HttpProcessingConfig } from '../config/http/http-processing-config.js';
@@ -14,7 +14,7 @@ import { RunHandlerAsFilter } from '../built-in/http/run-handler-as-filter.js';
 import { FilterChainContext } from '../config/http/filter-chain-context.js';
 import { ContextUtil } from '../util/context-util.js';
 import { EpsilonLambdaEventHandler } from '../config/epsilon-lambda-event-handler.js';
-import { StringRatchet } from '@bitblit/ratchet-common/lib/lang/string-ratchet.js';
+import { StringRatchet } from '@bitblit/ratchet-common';
 import { LambdaEventDetector } from '@bitblit/ratchet-aws';
 
 /**

@@ -1,6 +1,6 @@
 import { AwsBatchRatchet } from './aws-batch-ratchet.js';
 import { SubmitJobCommandOutput } from '@aws-sdk/client-batch';
-import { JestRatchet } from '@bitblit/ratchet-jest/lib/jest/jest-ratchet.js';
+import { JestRatchet } from '@bitblit/ratchet-jest';
 import { AwsBatchBackgroundProcessor } from './aws-batch-background-processor.js';
 import { jest } from '@jest/globals';
 

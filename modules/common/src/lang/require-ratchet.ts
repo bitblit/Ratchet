@@ -2,8 +2,6 @@
     Functions for making simple assertions
 */
 
-import { ErrorRatchet } from './error-ratchet.js';
-
 export class RequireRatchet {
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   public static isNullOrUndefined(ob: any): boolean {
@@ -43,11 +41,11 @@ export class RequireRatchet {
   public static noNullOrUndefinedValuesInArray(arr: any[], expectedLength: number = null, customMsg: string = null): void {
     RequireRatchet.notNullOrUndefined(arr, 'Source array may not be null');
     if (expectedLength !== null && arr.length !== expectedLength) {
-      ErrorRatchet.throwFormattedErr('Expected array of length %d but was %d %s', expectedLength, arr.length, customMsg);
+      throw new Error(`Expected array of length ${expectedLength} but was ${arr.length} ${customMsg}`);
     }
     for (let i = 0; i < arr.length; i++) {
       if (RequireRatchet.isNullOrUndefined(arr[i])) {
-        ErrorRatchet.throwFormattedErr('Array index %d was null or undefined %s', i, customMsg);
+        throw new Error(`Array index ${i} was null or undefined ${customMsg}`);
       }
     }
   }
@@ -55,11 +53,11 @@ export class RequireRatchet {
   public static noNullOrUndefinedValuesInRestArgs(expectedLength: number, ...restArgs: any[]): void {
     RequireRatchet.notNullOrUndefined(restArgs, 'Source array may not be null');
     if (expectedLength !== null && restArgs.length !== expectedLength) {
-      ErrorRatchet.throwFormattedErr('Expected array of length %d but was %d', expectedLength, restArgs.length);
+      throw new Error(`Expected array of length ${expectedLength} but was ${restArgs.length}`);
     }
     for (let i = 0; i < restArgs.length; i++) {
       if (RequireRatchet.isNullOrUndefined(restArgs[i])) {
-        ErrorRatchet.throwFormattedErr('Array index %d was null or undefined', i);
+        throw new Error(`Array index ${i} was null or undefined`);
       }
     }
   }

@@ -1,7 +1,7 @@
-import { StringRatchet } from '@bitblit/ratchet-common/lib/lang/string-ratchet.js';
-import { Logger } from '@bitblit/ratchet-common/lib/logger/logger.js';
-import { PromiseRatchet } from '@bitblit/ratchet-common/lib/lang/promise-ratchet.js';
-import { RequireRatchet } from '@bitblit/ratchet-common/lib/lang/require-ratchet.js';
+import { StringRatchet } from '@bitblit/ratchet-common';
+import { Logger } from '@bitblit/ratchet-common';
+import { PromiseRatchet } from '@bitblit/ratchet-common';
+import { RequireRatchet } from '@bitblit/ratchet-common';
 import fs, { WriteStream } from 'fs';
 import { DynamoRatchet } from '@bitblit/ratchet-aws';
 import readline from 'readline';

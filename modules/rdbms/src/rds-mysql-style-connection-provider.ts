@@ -1,14 +1,14 @@
 import maria, { Connection, ConnectionOptions } from 'mysql2/promise';
-import { Logger } from '@bitblit/ratchet-common/lib/logger/logger.js';
+import { Logger } from '@bitblit/ratchet-common';
 import { SshTunnelService } from './ssh-tunnel-service.js';
 import { MysqlStyleConnectionProvider } from './model/mysql/mysql-style-connection-provider.js';
 import { ConnectionConfig } from './model/connection-config.js';
 import getPort from 'get-port';
 import _ from 'lodash';
-import { ErrorRatchet } from '@bitblit/ratchet-common/lib/lang/error-ratchet.js';
+import { ErrorRatchet } from '@bitblit/ratchet-common';
 import { SshTunnelContainer } from './model/ssh/ssh-tunnel-container.js';
 import { DbConfig } from './model/db-config.js';
-import { RequireRatchet } from '@bitblit/ratchet-common/lib/lang/require-ratchet.js';
+import { RequireRatchet } from '@bitblit/ratchet-common';
 import { SshTunnelConfig } from './model/ssh/ssh-tunnel-config.js';
 import { QueryDefaults } from './model/query-defaults.js';
 

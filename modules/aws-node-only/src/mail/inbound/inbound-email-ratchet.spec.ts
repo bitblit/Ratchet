@@ -1,6 +1,6 @@
 import { InboundEmailRatchet } from './inbound-email-ratchet.js';
 import { S3CacheRatchet } from '@bitblit/ratchet-aws';
-import { JestRatchet } from '@bitblit/ratchet-jest/lib/jest/jest-ratchet.js';
+import { JestRatchet } from '@bitblit/ratchet-jest';
 import { jest } from '@jest/globals';
 import { SampleEmailProcessor } from './sample-email-processor.js';
 

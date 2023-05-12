@@ -2,7 +2,7 @@
   Wraps up a simple cache storage provider and gives helper methods
 */
 
-import { Logger } from '@bitblit/ratchet-common/lib/logger/logger.js';
+import { Logger } from '@bitblit/ratchet-common';
 import { SimpleCacheStorageProvider } from './simple-cache-storage-provider.js';
 import { SimpleCacheObjectWrapper } from './simple-cache-object-wrapper.js';
 import { SimpleCacheReadOptions } from './simple-cache-read-options.js';

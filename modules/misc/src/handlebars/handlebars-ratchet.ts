@@ -1,7 +1,7 @@
-import { StringRatchet } from '@bitblit/ratchet-common/lib/lang/string-ratchet.js';
-import { NumberRatchet } from '@bitblit/ratchet-common/lib/lang/number-ratchet.js';
-import { ErrorRatchet } from '@bitblit/ratchet-common/lib/lang/error-ratchet.js';
-import { Logger } from '@bitblit/ratchet-common/lib/logger/logger.js';
+import { StringRatchet } from '@bitblit/ratchet-common';
+import { NumberRatchet } from '@bitblit/ratchet-common';
+import { ErrorRatchet } from '@bitblit/ratchet-common';
+import { Logger } from '@bitblit/ratchet-common';
 
 export class HandlebarsRatchet {
   // Empty constructor prevents instantiation

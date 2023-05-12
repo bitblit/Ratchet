@@ -1,6 +1,6 @@
 import { WardenUserService } from './warden-user-service.js';
 import { WardenUserServiceOptions } from './provider/warden-user-service-options.js';
-import { JestRatchet } from '@bitblit/ratchet-jest/lib/jest/jest-ratchet.js';
+import { JestRatchet } from '@bitblit/ratchet-jest';
 import { WardenClientRecentLoginProvider } from './provider/warden-client-recent-login-provider.js';
 import { WardenLoggedInUserProvider } from './provider/warden-logged-in-user-provider.js';
 import { WardenClient } from './warden-client.js';

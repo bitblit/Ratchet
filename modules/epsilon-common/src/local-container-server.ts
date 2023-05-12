@@ -1,11 +1,11 @@
 import { APIGatewayEvent, Context, ProxyResult } from 'aws-lambda';
-import { Logger } from '@bitblit/ratchet-common/lib/logger/logger.js';
-import { LoggerLevelName } from '@bitblit/ratchet-common/lib/logger/logger-level-name.js';
+import { Logger } from '@bitblit/ratchet-common';
+import { LoggerLevelName } from '@bitblit/ratchet-common';
 import http, { IncomingMessage, Server, ServerResponse } from 'http';
 import { EventUtil } from './http/event-util.js';
 import fetch from 'cross-fetch';
 import { LocalServer } from './local-server.js';
-import { StringRatchet } from '@bitblit/ratchet-common/lib/lang/string-ratchet.js';
+import { StringRatchet } from '@bitblit/ratchet-common';
 
 /**
  * A simplistic server for testing your lambdas locally

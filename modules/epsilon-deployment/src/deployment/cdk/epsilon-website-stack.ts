@@ -18,8 +18,8 @@ import { HostedZone, RecordSet, RecordType } from 'aws-cdk-lib/aws-route53';
 import { CloudFrontTarget } from 'aws-cdk-lib/aws-route53-targets';
 import { BucketDeployment, Source } from 'aws-cdk-lib/aws-s3-deployment';
 import { EpsilonWebsiteStackProps, EpsilonWebsiteStackPropsRoute53Handling } from './epsilon-website-stack-props.js';
-import { StringRatchet } from '@bitblit/ratchet-common/lib/lang/string-ratchet.js';
-import { ErrorRatchet } from '@bitblit/ratchet-common/lib/lang/error-ratchet.js';
+import { StringRatchet } from '@bitblit/ratchet-common';
+import { ErrorRatchet } from '@bitblit/ratchet-common';
 
 export class EpsilonWebsiteStack extends Stack {
   constructor(scope: Construct, id: string, props?: EpsilonWebsiteStackProps) {

@@ -1,6 +1,6 @@
 import { ProxyResult } from 'aws-lambda';
-import { Logger } from '@bitblit/ratchet-common/lib/logger/logger.js';
-import { MapRatchet } from '@bitblit/ratchet-common/lib/lang/map-ratchet.js';
+import { Logger } from '@bitblit/ratchet-common';
+import { MapRatchet } from '@bitblit/ratchet-common';
 import zlib from 'zlib';
 import { EpsilonHttpError } from './error/epsilon-http-error.js';
 

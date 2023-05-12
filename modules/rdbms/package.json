@@ -4,11 +4,16 @@
   "description": "Ratchet tooling for working with relational databases",
   "sideEffects": false,
   "type": "module",
-  "module": "index.js",
   "files": [
     "lib/*",
     "bin/*"
   ],
+  "exports": {
+    ".": {
+      "types": "./lib/index.d.ts",
+      "import": "./lib/index.mjs"
+    }
+  },
   "contributors": [
     "Christopher Weiss <bitblit@gmail.com>",
     "Zach Herridge"
@@ -31,9 +36,8 @@
     "docs": "typedoc",
     "lint": "eslint src/**/*.ts",
     "lint-fix": "eslint --fix src/**/*.ts",
-    "__generate-barrels": "barrelsby -q --delete -d src -e .*\\.spec\\.ts",
-    "__build": "yarn run generate-barrels && tsc",
-    "build": "tsc",
+    "generate-barrels": "barrelsby -q --delete -d src -e .*\\.spec\\.ts && sed -i 's/\\x27;/.js\\x27;/' src/index.ts",
+    "build": "yarn clean && yarn generate-barrels && rollup -c rollup.config.js",
     "force-build": "tsc --build --force"
   },
   "repository": {
@@ -54,14 +58,11 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@bitblit/ratchet-common": "0.0.0-snapshot",
-    "mysql2": "3.3.0",
-    "tunnel-ssh": "5.0.5",
-    "get-port": "4.0.0"
+    "get-port": "6.1.2",
+    "mysql2": "3.3.1",
+    "tunnel-ssh": "5.0.5"
   },
   "peerDependencies": {
-    "mysql2": "3.3.0",
-    "tunnel-ssh": "5.0.5",
-    "get-port": "4.0.0"
   },
   "resolutions": {},
   "devDependencies": {}

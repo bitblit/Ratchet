@@ -4,11 +4,16 @@
   "description": "Epsilon CDK extensions to simplify deployment",
   "sideEffects": false,
   "type": "module",
-  "module": "index.js",
   "files": [
     "lib/*",
     "bin/*"
   ],
+  "exports": {
+    ".": {
+      "types": "./lib/index.d.ts",
+      "import": "./lib/index.mjs"
+    }
+  },
   "contributors": [
     "Christopher Weiss <bitblit@gmail.com>",
     "Benn Linger <benn@bennlinger.com>",
@@ -32,9 +37,9 @@
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest",
     "lint": "eslint src/**/*.ts",
     "lint-fix": "eslint --fix src/**/*.ts",
-    "__generate-barrels": "barrelsby -q --delete -d src -e .*\\.spec\\.ts",
-    "__build": "yarn run generate-barrels && tsc",
-    "build": "tsc"
+    "generate-barrels": "barrelsby -q --delete -d src -e .*\\.spec\\.ts && sed -i 's/\\x27;/.js\\x27;/' src/index.ts",
+    "build": "yarn clean && yarn generate-barrels && rollup -c rollup.config.js",
+    "force-build": "tsc --build --force"
   },
   "repository": {
     "type": "git",
@@ -57,13 +62,11 @@
     "@bitblit/ratchet-aws": "0.0.0-snapshot",
     "@bitblit/ratchet-common": "0.0.0-snapshot",
     "@bitblit/ratchet-epsilon-common": "0.0.0-snapshot",
-    "aws-cdk-lib": "2.78.0",
-    "constructs": "10.2.17"
+    "aws-cdk-lib": "2.79.1",
+    "constructs": "10.2.20"
   },
   "resolutions": {},
   "peerDependencies": {
-    "aws-cdk": "^2.78.0",
-    "constructs": "^10.2.17"
   },
   "devDependencies": {}
 }

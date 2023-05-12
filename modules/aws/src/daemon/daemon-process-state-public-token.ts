@@ -1,4 +1,4 @@
-import { JwtTokenBase } from '@bitblit/ratchet-common/lib/jwt/jwt-token-base.js';
+import { JwtTokenBase } from '@bitblit/ratchet-common';
 
 export interface DaemonProcessStatePublicToken extends JwtTokenBase {
   daemonKey: string;

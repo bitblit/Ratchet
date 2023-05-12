@@ -1,4 +1,4 @@
-import echarts from 'echarts';
+import * as echarts from 'echarts';
 import { ECharts, EChartsOption } from 'echarts';
 import { Canvas } from 'canvas';
 import { EChartCanvasConfig } from './echart-canvas-config.js';

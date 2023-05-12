@@ -1,6 +1,6 @@
 import { EpsilonLambdaEventHandler } from '../config/epsilon-lambda-event-handler.js';
 import { Context, ProxyResult, ScheduledEvent } from 'aws-lambda';
-import { Logger } from '@bitblit/ratchet-common/lib/logger/logger.js';
+import { Logger } from '@bitblit/ratchet-common';
 import { AwsUtil } from '../util/aws-util.js';
 import { EpsilonInstance } from '../epsilon-instance.js';
 import { CronConfig } from '../config/cron/cron-config.js';

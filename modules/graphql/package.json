@@ -4,11 +4,16 @@
   "description": "Ratchet tools to simplify use of graphql",
   "sideEffects": false,
   "type": "module",
-  "module": "index.js",
   "files": [
     "lib/*",
     "bin/*"
   ],
+  "exports": {
+    ".": {
+      "types": "./lib/index.d.ts",
+      "import": "./lib/index.mjs"
+    }
+  },
   "contributors": [
     "Christopher Weiss <bitblit@gmail.com>",
     "William Weiss <npm@codification.org>",
@@ -35,9 +40,9 @@
     "docs": "typedoc",
     "lint": "eslint src/**/*.ts",
     "lint-fix": "eslint --fix src/**/*.ts",
-    "__generate-barrels": "barrelsby -q --delete -d src -e .*\\.spec\\.ts",
-    "__build": "yarn run generate-barrels && tsc",
-    "build": "tsc"
+    "generate-barrels": "barrelsby -q --delete -d src -e .*\\.spec\\.ts && sed -i 's/\\x27;/.js\\x27;/' src/index.ts",
+    "build": "yarn clean && yarn generate-barrels && rollup -c rollup.config.js",
+    "force-build": "tsc --build --force"
   },
   "repository": {
     "type": "git",
@@ -61,8 +66,6 @@
     "graphql": "16.6.0"
   },
   "peerDependencies": {
-    "@apollo/client": "^3.7.9",
-    "graphql": "^16.6.0"
   },
   "devDependencies": {}
 }

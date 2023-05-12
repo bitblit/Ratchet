@@ -1,4 +1,4 @@
-import { StringRatchet } from '@bitblit/ratchet-common/lib/lang/string-ratchet.js';
+import { StringRatchet } from '@bitblit/ratchet-common';
 
 export class EpsilonBuildProperties {
   // Prevent instantiation

@@ -1,6 +1,6 @@
-import { Logger } from '@bitblit/ratchet-common/lib/logger/logger.js';
+import { Logger } from '@bitblit/ratchet-common';
 import { FilterChainContext } from '../../config/http/filter-chain-context.js';
-import { LoggerLevelName } from '@bitblit/ratchet-common/lib/logger/logger-level-name.js';
+import { LoggerLevelName } from '@bitblit/ratchet-common';
 
 /**
  * This only works because Node is single threaded...

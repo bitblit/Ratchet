@@ -2,16 +2,16 @@
  * This is an example of how to setup a local server for testing.  Replace the createRouterConfig function
  * with your own.
  */
-import { Logger } from '@bitblit/ratchet-common/lib/logger/logger.js';
+import { Logger } from '@bitblit/ratchet-common';
 import { ApolloServer, CreateHandlerOptions, gql } from 'apollo-server-lambda';
 import { ApolloServerPluginLandingPageGraphQLPlayground } from 'apollo-server-core';
-import { StringRatchet } from '@bitblit/ratchet-common/lib/lang/string-ratchet.js';
-import { ErrorRatchet } from '@bitblit/ratchet-common/lib/lang/error-ratchet.js';
-import { LoggerLevelName } from '@bitblit/ratchet-common/lib/logger/logger-level-name.js';
-import { PromiseRatchet } from '@bitblit/ratchet-common/lib/lang/promise-ratchet.js';
-import { BooleanRatchet } from '@bitblit/ratchet-common/lib/lang/boolean-ratchet.js';
-import { NumberRatchet } from '@bitblit/ratchet-common/lib/lang/number-ratchet.js';
-import { JwtTokenBase } from '@bitblit/ratchet-common/lib/jwt/jwt-token-base.js';
+import { StringRatchet } from '@bitblit/ratchet-common';
+import { ErrorRatchet } from '@bitblit/ratchet-common';
+import { LoggerLevelName } from '@bitblit/ratchet-common';
+import { PromiseRatchet } from '@bitblit/ratchet-common';
+import { BooleanRatchet } from '@bitblit/ratchet-common';
+import { NumberRatchet } from '@bitblit/ratchet-common';
+import { JwtTokenBase } from '@bitblit/ratchet-common';
 import { EpsilonGlobalHandler } from '../epsilon-global-handler.js';
 import { AuthorizerFunction } from '../config/http/authorizer-function.js';
 import { HandlerFunction } from '../config/http/handler-function.js';

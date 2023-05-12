@@ -1,14 +1,14 @@
 //    Service for interacting with positions for a given user
-import { WardenEntry } from '@bitblit/ratchet-warden-common/lib/common/model/warden-entry.js';
-import { WardenEntrySummary } from '@bitblit/ratchet-warden-common/lib/common/model/warden-entry-summary.js';
-import { WardenUtils } from '@bitblit/ratchet-warden-common/lib/common/util/warden-utils.js';
+import { WardenEntry } from '@bitblit/ratchet-warden-common';
+import { WardenEntrySummary } from '@bitblit/ratchet-warden-common';
+import { WardenUtils } from '@bitblit/ratchet-warden-common';
 import { WardenStorageProvider } from './warden-storage-provider.js';
 import { WardenS3SingleFileStorageProviderOptions } from './warden-s3-single-file-storage-provider-options.js';
 import { PutObjectOutput, S3Client } from '@aws-sdk/client-s3';
 import { S3CacheRatchet } from '@bitblit/ratchet-aws';
-import { StringRatchet } from '@bitblit/ratchet-common/lib/lang/string-ratchet.js';
-import { ErrorRatchet } from '@bitblit/ratchet-common/lib/lang/error-ratchet.js';
-import { WardenContact } from '@bitblit/ratchet-warden-common/lib/common/model/warden-contact.js';
+import { StringRatchet } from '@bitblit/ratchet-common';
+import { ErrorRatchet } from '@bitblit/ratchet-common';
+import { WardenContact } from '@bitblit/ratchet-warden-common';
 
 /*
 The most quick and dirty implementation of the storage provider.  Not a good choice if you have

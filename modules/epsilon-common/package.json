@@ -7,11 +7,16 @@
     "epsilon-cli": "./bin/cli.js"
   },
   "type": "module",
-  "module": "index.js",
   "files": [
     "lib/*",
     "bin/*"
   ],
+  "exports": {
+    ".": {
+      "types": "./lib/index.d.ts",
+      "import": "./lib/index.mjs"
+    }
+  },
   "contributors": [
     "Christopher Weiss <bitblit@gmail.com>",
     "Benn Linger <benn@bennlinger.com>",
@@ -35,9 +40,9 @@
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest",
     "lint": "eslint src/**/*.ts",
     "lint-fix": "eslint --fix src/**/*.ts",
-    "__generate-barrels": "barrelsby -q --delete -d src -e .*\\.spec\\.ts",
-    "__build": "yarn run generate-barrels && tsc",
-    "build": "tsc",
+    "generate-barrels": "barrelsby -q --delete -d src -e .*\\.spec\\.ts && sed -i 's/\\x27;/.js\\x27;/' src/index.ts",
+    "build": "yarn clean && yarn generate-barrels && rollup -c rollup.config.js",
+    "force-build": "tsc --build --force",
     "run-local-container-server": "yarn build && node bin/cli.js run-local-container-server",
     "run-sample-server": "yarn build && node bin/cli.js run-sample-local-server",
     "run-test-error-server": "yarn build && node bin/cli.js run-test-error-server",
@@ -62,9 +67,9 @@
   },
   "license": "Apache-2.0",
   "dependencies": {
-    "@aws-sdk/client-s3": "3.328.0",
-    "@aws-sdk/client-sns": "3.328.0",
-    "@aws-sdk/client-sqs": "3.328.0",
+    "@aws-sdk/client-s3": "3.332.0",
+    "@aws-sdk/client-sns": "3.332.0",
+    "@aws-sdk/client-sqs": "3.332.0",
     "@bitblit/ratchet-aws": "0.0.0-snapshot",
     "@bitblit/ratchet-common": "0.0.0-snapshot",
     "@bitblit/ratchet-misc": "0.0.0-snapshot",
@@ -108,12 +113,6 @@
     "y18n": "^5.0.8"
   },
   "peerDependencies": {
-    "@aws-sdk/client-sns": "^3.328.0",
-    "@aws-sdk/client-sqs": "3.328.0",
-    "@bitblit/ratchet-aws": "0.0.0-snapshot",
-    "@bitblit/ratchet-common": "0.0.0-snapshot",
-    "@types/aws-lambda": "^8.10.115",
-    "graphql": "^16.6.0"
   },
   "peerDependenciesMeta": {
     "graphql": {

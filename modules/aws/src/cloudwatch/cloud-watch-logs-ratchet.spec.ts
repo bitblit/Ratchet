@@ -1,4 +1,4 @@
-import { Logger } from '@bitblit/ratchet-common/lib/logger/logger.js';
+import { Logger } from '@bitblit/ratchet-common';
 import { CloudWatchLogsRatchet } from './cloud-watch-logs-ratchet.js';
 import {
   CloudWatchLogsClient,

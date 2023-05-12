@@ -1,6 +1,6 @@
 import { QueryTextProvider } from '../model/query-text-provider.js';
 import { NamedParameterMariaDbService } from '../named-parameter-maria-db-service.js';
-import { JestRatchet } from '@bitblit/ratchet-jest/lib/jest/jest-ratchet.js';
+import { JestRatchet } from '@bitblit/ratchet-jest';
 import { SortDirection } from '../model/sort-direction.js';
 import { jest } from '@jest/globals';
 

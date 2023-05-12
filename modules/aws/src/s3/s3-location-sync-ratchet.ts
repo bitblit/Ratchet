@@ -10,9 +10,9 @@ import {
   S3Client,
 } from '@aws-sdk/client-s3';
 import _ from 'lodash';
-import { Logger } from '@bitblit/ratchet-common/lib/logger/logger.js';
-import { RequireRatchet } from '@bitblit/ratchet-common/lib/lang/require-ratchet.js';
-import { PromiseRatchet } from '@bitblit/ratchet-common/lib/lang/promise-ratchet.js';
+import { Logger } from '@bitblit/ratchet-common';
+import { RequireRatchet } from '@bitblit/ratchet-common';
+import { PromiseRatchet } from '@bitblit/ratchet-common';
 import { Upload } from '@aws-sdk/lib-storage';
 
 export interface S3LocationSyncRatchetConfig {

@@ -1,6 +1,5 @@
 import { LogMessage } from './log-message.js';
 import { LogSnapshot } from './log-snapshot.js';
-import { Logger } from './logger.js';
 import { LoggerLevelName } from './logger-level-name.js';
 
 export class LoggerRingBuffer {
@@ -64,7 +63,7 @@ export class LoggerRingBuffer {
   public takeSnapshot(): LogSnapshot {
     const trailingEdge = Math.max(0, this._bufferIdx - this._bufferSize);
     const rval: LogSnapshot = {
-      messages: Logger.getMessages(this._lastSnapshotIdx),
+      messages: this.getMessages(this._lastSnapshotIdx),
       logMessagesTruncated: Math.max(0, trailingEdge - this._lastSnapshotIdx),
     } as LogSnapshot;
 
@@ -80,7 +79,6 @@ export class LoggerRingBuffer {
     this._buffer = [];
     this._bufferIdx = 0;
     this._lastSnapshotIdx = 0;
-    Logger.info('Cleared ring buffer (size is now %d)', this._bufferSize);
   }
 
   public addToRingBuffer(newMsg: LogMessage): void {

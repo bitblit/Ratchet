@@ -1,4 +1,4 @@
-import { Logger } from '@bitblit/ratchet-common/lib/logger/logger.js';
+import { Logger } from '@bitblit/ratchet-common';
 import { DaemonLike } from '@bitblit/ratchet-aws';
 import { DaemonProcessState } from '@bitblit/ratchet-aws';
 import { DaemonAuthorizerFunction } from './daemon-authorizer-function.js';
@@ -6,7 +6,7 @@ import { ExtendedAPIGatewayEvent } from '../../config/http/extended-api-gateway-
 import { NotFoundError } from '../../http/error/not-found-error.js';
 import { DaemonProcessStateList } from './daemon-process-state-list.js';
 import { DaemonConfig } from './daemon-config.js';
-import { StringRatchet } from '@bitblit/ratchet-common/lib/lang/string-ratchet.js';
+import { StringRatchet } from '@bitblit/ratchet-common';
 
 /**
  * A helper class to simplify adding Ratchet "Daemon" handling to your application

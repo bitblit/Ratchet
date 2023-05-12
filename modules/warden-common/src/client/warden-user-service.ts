@@ -1,6 +1,6 @@
-import { Logger } from '@bitblit/ratchet-common/lib/logger/logger.js';
-import { StringRatchet } from '@bitblit/ratchet-common/lib/lang/string-ratchet.js';
-import { JwtRatchet } from '@bitblit/ratchet-common/lib/jwt/jwt-ratchet.js';
+import { Logger } from '@bitblit/ratchet-common';
+import { StringRatchet } from '@bitblit/ratchet-common';
+import { JwtRatchet } from '@bitblit/ratchet-common';
 import { Subscription, timer } from 'rxjs';
 import { WardenUserServiceOptions } from './provider/warden-user-service-options.js';
 import { WardenLoggedInUserWrapper } from './provider/warden-logged-in-user-wrapper.js';
@@ -16,6 +16,7 @@ import {
   RegistrationResponseJSON,
 } from '@simplewebauthn/typescript-types';
 import { WardenEntrySummary } from '../common/model/warden-entry-summary.js';
+import { startRegistration, startAuthentication } from '@simplewebauthn/browser';
 
 /**
  * A service that handles logging in, saving the current user, watching
@@ -274,7 +275,6 @@ export class WardenUserService<T> {
   public async saveCurrentDeviceAsWebAuthnForCurrentUser(): Promise<WardenEntrySummary> {
     const input: PublicKeyCredentialCreationOptionsJSON =
       await this.options.wardenClient.generateWebAuthnRegistrationChallengeForLoggedInUser();
-    const startRegistration = (await import('@simplewebauthn/browser')).startRegistration;
 
     const creds: RegistrationResponseJSON = await startRegistration(input);
     const output: WardenEntrySummary = await this.options.wardenClient.addWebAuthnRegistrationToLoggedInUser(creds);
@@ -291,7 +291,6 @@ export class WardenUserService<T> {
         userId
       );
       Logger.info('Got login challenge : %s', input);
-      const startAuthentication = (await import('@simplewebauthn/browser')).startAuthentication;
       const creds: AuthenticationResponseJSON = await startAuthentication(input);
       Logger.info('Got creds: %j', creds);
 

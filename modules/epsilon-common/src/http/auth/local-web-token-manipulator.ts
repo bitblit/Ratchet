@@ -1,13 +1,13 @@
-import { Logger } from '@bitblit/ratchet-common/lib/logger/logger.js';
+import { Logger } from '@bitblit/ratchet-common';
 import { WebTokenManipulator } from './web-token-manipulator.js';
 import { UnauthorizedError } from '../error/unauthorized-error.js';
-import { StringRatchet } from '@bitblit/ratchet-common/lib/lang/string-ratchet.js';
-import { RequireRatchet } from '@bitblit/ratchet-common/lib/lang/require-ratchet.js';
-import { LoggerLevelName } from '@bitblit/ratchet-common/lib/logger/logger-level-name.js';
-import { CommonJwtToken } from '@bitblit/ratchet-common/lib/jwt/common-jwt-token.js';
-import { JwtTokenBase } from '@bitblit/ratchet-common/lib/jwt/jwt-token-base.js';
-import { JwtRatchet } from '@bitblit/ratchet-common/lib/jwt/jwt-ratchet.js';
-import { ExpiredJwtHandling } from '@bitblit/ratchet-common/lib/jwt/expired-jwt-handling.js';
+import { StringRatchet } from '@bitblit/ratchet-common';
+import { RequireRatchet } from '@bitblit/ratchet-common';
+import { LoggerLevelName } from '@bitblit/ratchet-common';
+import { CommonJwtToken } from '@bitblit/ratchet-common';
+import { JwtTokenBase } from '@bitblit/ratchet-common';
+import { JwtRatchet } from '@bitblit/ratchet-common';
+import { ExpiredJwtHandling } from '@bitblit/ratchet-common';
 
 /**
  * Service for handling jwt tokens

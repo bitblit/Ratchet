@@ -1,5 +1,5 @@
 import { EnvironmentService } from './environment-service.js';
-import { Logger } from '@bitblit/ratchet-common/lib/logger/logger.js';
+import { Logger } from '@bitblit/ratchet-common';
 import { FixedEnvironmentServiceProvider } from './fixed-environment-service-provider.js';
 
 const fixed: FixedEnvironmentServiceProvider<any> = FixedEnvironmentServiceProvider.fromRecord<any>({ a: 'b', c: 5 });
