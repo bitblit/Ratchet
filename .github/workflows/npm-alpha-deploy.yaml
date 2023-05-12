@@ -28,7 +28,7 @@ jobs:
         shell: bash
 
       - name: Run Tests (Conditionally)
-        if: ${{ SKIP_TESTS!=true }}
+        if: env.SKIP_TESTS != 'true'
         run: |
           yarn test
         shell: bash
