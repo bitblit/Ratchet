@@ -15,16 +15,18 @@ export default {
     sourcemap: true,
   },
   plugins: [
-    nodeResolve({ preferBuiltins: true }),
+    //nodeResolve({ preferBuiltins: true }),
     terser(),
     json(),
     typescript(),
-    commonjs(),
-    nativePlugin({
+    //commonjs(),
+    /*nativePlugin({
       copyTo: '/lib/native',
       destDir: './native',
       sourcemap: true,
       targetEsm: true,
     }),
+
+     */
   ],
 };
