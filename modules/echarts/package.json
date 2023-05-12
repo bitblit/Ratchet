@@ -34,7 +34,7 @@
     "lint": "eslint src/**/*.ts",
     "lint-fix": "eslint --fix src/**/*.ts",
     "generate-barrels": "barrelsby -q --delete -d src -e .*\\.spec\\.ts && sed -i 's/\\x27;/.js\\x27;/' src/index.ts",
-    "build": "yarn clean && yarn generate-barrels && rollup -c rollup.config.js",
+    "build": "yarn clean && yarn generate-barrels && shx mkdir -p lib/native && rollup -c rollup.config.js",
     "force-build": "tsc --build --force"
   },
   "license": "Apache-2.0",
