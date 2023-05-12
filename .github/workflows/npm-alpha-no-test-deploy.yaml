@@ -1,0 +1,43 @@
+name: Build and Deploy Alpha Library
+
+on:
+  push:
+    tags:
+      - "alpha-min-*"
+
+jobs:
+  build-and-deploy-alpha-library:
+    runs-on: ubuntu-latest
+
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Configure environment
+        uses: ./.github/workflows/actions/build-env-setup
+
+      - name: Clean
+        run: yarn clean
+        shell: bash
+
+      - name: Build
+        run: yarn build
+        shell: bash
+
+      - name: Apply Github Info
+        run: yarn apply-github-info
+        shell: bash
+
+      - name: Set Codependency versions
+        run: yarn set-codependencies-alpha
+        shell: bash
+
+      - name: Deploy to NPMJS
+        run: yarn publish-alpha
+        shell: bash
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
