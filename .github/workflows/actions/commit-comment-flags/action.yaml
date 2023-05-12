@@ -1,0 +1,27 @@
+name: 'Commit Comment Flags'
+description: 'Sets environment variable option flags based on commit comment flags'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Fetch Commit Comment
+      env:
+        GITHUB_CONTEXT: ${{ toJson(github) }}
+      run: |
+        export COMMENT_BODY=$(echo "$GITHUB_CONTEXT" | jq -r .event.head_commit.message )
+        echo 'COMMIT_COMMENT<<EOF' >> $GITHUB_ENV
+        echo "$COMMENT_BODY" >> $GITHUB_ENV
+        echo 'EOF' >> $GITHUB_ENV
+      shell: bash
+
+    - name: Set SKIP_TESTS flag
+      if: ${{ contains(env.COMMIT_COMMENT,'--skipTests') }}
+      run: |
+        echo "SKIP_TESTS=true" >> $GITHUB_ENV
+      shell: bash
+
+    - name: Set ALL_TESTS flag
+      if: ${{ contains(env.COMMIT_COMMENT,'--allTests') }}
+      run: |
+        echo "ALL_TESTS=true" >> $GITHUB_ENV
+      shell: bash
