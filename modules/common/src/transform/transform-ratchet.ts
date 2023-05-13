@@ -10,7 +10,7 @@
 
 */
 
-import { TransformRule } from '../transform/transform-rule.js';
+import { TransformRule } from './transform-rule.js';
 import { Logger } from '../logger/logger.js';
 
 export class TransformRatchet {

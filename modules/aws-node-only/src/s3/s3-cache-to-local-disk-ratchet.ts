@@ -1,10 +1,8 @@
 import crypto from 'crypto';
 import fs from 'fs';
 import path from 'path';
-import { Logger } from '@bitblit/ratchet-common';
-import { RequireRatchet } from '@bitblit/ratchet-common';
-import { StringRatchet } from '@bitblit/ratchet-common';
-import { S3CacheRatchet } from './s3-cache-ratchet.js';
+import { Logger, RequireRatchet, StringRatchet } from '@bitblit/ratchet-common';
+import { S3CacheRatchet } from '@bitblit/ratchet-aws/lib/s3/s3-cache-ratchet.js';
 
 /**
  * Use this when you want a lambda to cache a remote S3 bucket locally on disk for faster access

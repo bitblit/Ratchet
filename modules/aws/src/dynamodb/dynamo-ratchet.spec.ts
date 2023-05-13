@@ -1,6 +1,5 @@
 import { DynamoRatchet } from './dynamo-ratchet.js';
-import { Logger } from '@bitblit/ratchet-common';
-import { LoggerLevelName } from '@bitblit/ratchet-common';
+import { Logger, LoggerLevelName } from '@bitblit/ratchet-common';
 import { DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
 import { PutItemCommandOutput, ScanCommandInput } from '@aws-sdk/client-dynamodb';
 import { DocQueryCommandInput } from '../model/dynamo/doc-query-command-input.js';

@@ -1,6 +1,4 @@
-import { Logger } from '@bitblit/ratchet-common';
-import { RequireRatchet } from '@bitblit/ratchet-common';
-import { StringRatchet } from '@bitblit/ratchet-common';
+import { Logger, RequireRatchet, StringRatchet } from '@bitblit/ratchet-common';
 import { DynamoRatchet } from '../dynamodb/dynamo-ratchet.js';
 import { DeleteItemOutput, PutItemCommand, PutItemCommandOutput } from '@aws-sdk/client-dynamodb';
 import { DocScanCommandInput } from '../model/dynamo/doc-scan-command-input.js';

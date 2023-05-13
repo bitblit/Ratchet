@@ -9,10 +9,7 @@ import {
   PutObjectCommandInput,
   S3Client,
 } from '@aws-sdk/client-s3';
-import _ from 'lodash';
-import { Logger } from '@bitblit/ratchet-common';
-import { RequireRatchet } from '@bitblit/ratchet-common';
-import { PromiseRatchet } from '@bitblit/ratchet-common';
+import { Logger, PromiseRatchet, RequireRatchet } from '@bitblit/ratchet-common';
 import { Upload } from '@aws-sdk/lib-storage';
 
 export interface S3LocationSyncRatchetConfig {
@@ -133,7 +130,7 @@ export class S3LocationSyncRatchet {
     while (more) {
       const response: ListObjectsV2CommandOutput = await s3.send(new ListObjectsV2Command(params));
       more = response.IsTruncated;
-      _.each(response.Contents, (obj) => {
+      response.Contents.forEach((obj) => {
         rval[obj.Key] = { Key: obj.Key, LastModified: obj.LastModified, ETag: obj.ETag, Size: obj.Size };
       });
 

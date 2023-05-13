@@ -15,9 +15,7 @@ import {
   SendSSHPublicKeyCommandInput,
   SendSSHPublicKeyCommandOutput,
 } from '@aws-sdk/client-ec2-instance-connect';
-import { Logger } from '@bitblit/ratchet-common';
-import { PromiseRatchet } from '@bitblit/ratchet-common';
-import { DurationRatchet } from '@bitblit/ratchet-common';
+import { DurationRatchet, Logger, PromiseRatchet } from '@bitblit/ratchet-common';
 
 /**
  * Service to simplify interacting with EC2 instances

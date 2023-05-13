@@ -12,12 +12,7 @@ import {
   QueryCommand,
   ScanCommand,
 } from '@aws-sdk/lib-dynamodb';
-import { ErrorRatchet } from '@bitblit/ratchet-common';
-import { Logger } from '@bitblit/ratchet-common';
-import { RequireRatchet } from '@bitblit/ratchet-common';
-import { PromiseRatchet } from '@bitblit/ratchet-common';
-import { DurationRatchet } from '@bitblit/ratchet-common';
-import { NumberRatchet } from '@bitblit/ratchet-common';
+import { DurationRatchet, ErrorRatchet, Logger, NumberRatchet, PromiseRatchet, RequireRatchet } from '@bitblit/ratchet-common';
 
 import { DynamoCountResult } from '../model/dynamo-count-result.js';
 import { DynamoRatchetLike } from './dynamo-ratchet-like.js';

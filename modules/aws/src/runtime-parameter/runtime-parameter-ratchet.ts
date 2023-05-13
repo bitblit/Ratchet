@@ -1,5 +1,4 @@
-import { Logger } from '@bitblit/ratchet-common';
-import { RequireRatchet } from '@bitblit/ratchet-common';
+import { Logger, RequireRatchet } from '@bitblit/ratchet-common';
 import { CachedStoredRuntimeParameter } from './cached-stored-runtime-parameter.js';
 import { RuntimeParameterProvider } from './runtime-parameter-provider.js';
 import { StoredRuntimeParameter } from './stored-runtime-parameter.js';

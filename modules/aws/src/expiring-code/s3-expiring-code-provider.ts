@@ -1,8 +1,7 @@
 import { ExpiringCodeProvider } from './expiring-code-provider.js';
 import { ExpiringCode } from './expiring-code.js';
 import { S3CacheRatchet } from '../s3/s3-cache-ratchet.js';
-import { Logger } from '@bitblit/ratchet-common';
-import { RequireRatchet } from '@bitblit/ratchet-common';
+import { Logger, RequireRatchet } from '@bitblit/ratchet-common';
 import { PutObjectOutput } from '@aws-sdk/client-s3';
 
 /* An implementation that puts all the values in a single JSON file in S3

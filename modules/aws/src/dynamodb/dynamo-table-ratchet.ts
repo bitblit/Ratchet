@@ -9,10 +9,7 @@ import {
   DescribeTableCommandOutput,
   DynamoDBClient,
 } from '@aws-sdk/client-dynamodb';
-import { ErrorRatchet } from '@bitblit/ratchet-common';
-import { Logger } from '@bitblit/ratchet-common';
-import { RequireRatchet } from '@bitblit/ratchet-common';
-import { PromiseRatchet } from '@bitblit/ratchet-common';
+import { ErrorRatchet, Logger, PromiseRatchet, RequireRatchet } from '@bitblit/ratchet-common';
 
 export class DynamoTableRatchet {
   constructor(private awsDDB: DynamoDBClient) {

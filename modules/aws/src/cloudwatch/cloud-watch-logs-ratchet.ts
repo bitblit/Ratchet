@@ -18,10 +18,7 @@ import {
   StopQueryCommand,
   StopQueryCommandOutput,
 } from '@aws-sdk/client-cloudwatch-logs';
-import { Logger } from '@bitblit/ratchet-common';
-import { RequireRatchet } from '@bitblit/ratchet-common';
-import { StringRatchet } from '@bitblit/ratchet-common';
-import { PromiseRatchet } from '@bitblit/ratchet-common';
+import { Logger, PromiseRatchet, RequireRatchet, StringRatchet } from '@bitblit/ratchet-common';
 
 export class CloudWatchLogsRatchet {
   private static readonly MAX_DELETE_RETRIES = 5;

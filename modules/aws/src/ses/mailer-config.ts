@@ -1,4 +1,4 @@
-import { RatchetTemplateRenderer } from './ratchet-template-renderer.js';
+import { RatchetTemplateRenderer } from '@bitblit/ratchet-common';
 import { S3CacheRatchet } from '../s3/s3-cache-ratchet.js';
 
 /**

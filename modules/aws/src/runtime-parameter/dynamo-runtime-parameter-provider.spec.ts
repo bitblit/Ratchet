@@ -4,9 +4,7 @@ import { StoredRuntimeParameter } from './stored-runtime-parameter.js';
 import { JestRatchet } from '@bitblit/ratchet-jest';
 import { RuntimeParameterRatchet } from './runtime-parameter-ratchet.js';
 import { PutItemCommandOutput } from '@aws-sdk/client-dynamodb';
-import { Logger } from '@bitblit/ratchet-common';
-import { LoggerLevelName } from '@bitblit/ratchet-common';
-import { PromiseRatchet } from '@bitblit/ratchet-common';
+import { Logger, LoggerLevelName, PromiseRatchet } from '@bitblit/ratchet-common';
 import { jest } from '@jest/globals';
 
 let mockDynamoRatchet: jest.Mocked<DynamoRatchet>;

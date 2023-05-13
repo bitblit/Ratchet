@@ -1,9 +1,5 @@
 import { ReadyToSendEmail } from './ready-to-send-email.js';
-import { ErrorRatchet } from '@bitblit/ratchet-common';
-import { Logger } from '@bitblit/ratchet-common';
-import { RequireRatchet } from '@bitblit/ratchet-common';
-import { Base64Ratchet } from '@bitblit/ratchet-common';
-import { StringRatchet } from '@bitblit/ratchet-common';
+import { Base64Ratchet, ErrorRatchet, Logger, RequireRatchet, StringRatchet } from '@bitblit/ratchet-common';
 import { SendRawEmailCommand, SendRawEmailCommandOutput, SendRawEmailRequest, SendRawEmailResponse, SESClient } from '@aws-sdk/client-ses';
 import { MailerConfig } from './mailer-config.js';
 import { ResolvedReadyToSendEmail } from './resolved-ready-to-send-email.js';

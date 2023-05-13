@@ -1,7 +1,5 @@
 import { RuntimeParameterRatchet } from './runtime-parameter-ratchet.js';
-import { Logger } from '@bitblit/ratchet-common';
-import { LoggerLevelName } from '@bitblit/ratchet-common';
-import { PromiseRatchet } from '@bitblit/ratchet-common';
+import { Logger, LoggerLevelName, PromiseRatchet } from '@bitblit/ratchet-common';
 import { StoredRuntimeParameter } from './stored-runtime-parameter.js';
 import { MemoryRuntimeParameterProvider } from './memory-runtime-parameter-provider.js';
 

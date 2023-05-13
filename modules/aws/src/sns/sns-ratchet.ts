@@ -1,5 +1,4 @@
-import { Logger } from '@bitblit/ratchet-common';
-import { RequireRatchet } from '@bitblit/ratchet-common';
+import { Logger, RequireRatchet } from '@bitblit/ratchet-common';
 import { PublishCommand, PublishCommandInput, PublishCommandOutput, SNSClient } from '@aws-sdk/client-sns';
 
 export class SnsRatchet {
