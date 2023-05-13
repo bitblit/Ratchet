@@ -7,7 +7,14 @@
     "lib/*",
     "bin/*"
   ],
-  "exports": "./lib/index.mjs",
+  "module": "./lib/index.mjs",
+  "types": "./lib/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./lib/index.d.ts",
+      "import": "./lib/index.mjs"
+    }
+  },
   "contributors": [
     "Christopher Weiss <bitblit@gmail.com>",
     "William Weiss <npm@codification.org>",

@@ -4,6 +4,8 @@
   "description": "Ratchet tools to simplify use of graphql",
   "sideEffects": false,
   "type": "module",
+  "module": "./lib/index.mjs",
+  "types": "./lib/index.d.ts",
   "files": [
     "lib/*",
     "bin/*"

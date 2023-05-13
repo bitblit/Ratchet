@@ -3,6 +3,8 @@
   "version": "0.0.0-snapshot",
   "description": "Library for using echarts on Node",
   "type": "module",
+  "module": "./lib/index.mjs",
+  "types": "./lib/index.d.ts",
   "files": [
     "lib/*",
     "bin/*"

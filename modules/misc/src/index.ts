@@ -4,6 +4,7 @@
 
 export * from './build/ratchet-misc-info.js';
 export * from './handlebars/handlebars-ratchet.js';
+export * from './handlebars/remote-handlebars-template-renderer.js';
 export * from './model-validator/model-validator.js';
 export * from './rxjs/observable-ratchet.js';
 export * from './rxjs/rxjs-ratchet.js';

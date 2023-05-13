@@ -8,6 +8,8 @@
     "ratchet-cli": "./bin/cli.js"
   },
   "type": "module",
+  "module": "./lib/index.mjs",
+  "types": "./lib/index.d.ts",
   "files": [
     "lib/*",
     "bin/*"

@@ -4,6 +4,8 @@
   "description": "Ratchet miscellaneous tooling that requires smallish dependant libraries",
   "sideEffects": false,
   "type": "module",
+  "module": "./lib/index.mjs",
+  "types": "./lib/index.d.ts",
   "files": [
     "lib/*",
     "bin/*"
