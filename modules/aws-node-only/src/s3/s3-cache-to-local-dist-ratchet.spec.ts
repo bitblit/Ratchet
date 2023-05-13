@@ -1,7 +1,7 @@
 import { S3CacheToLocalDiskRatchet } from './s3-cache-to-local-disk-ratchet.js';
-import { S3CacheRatchet } from '@bitblit/ratchet-aws/lib/s3/s3-cache-ratchet.js';
+import { S3CacheRatchet } from '@bitblit/ratchet-aws';
 import { tmpdir } from 'os';
-import { JestRatchet } from '@bitblit/ratchet-jest/lib/index.ts';
+import { JestRatchet } from '@bitblit/ratchet-jest';
 import { jest } from '@jest/globals';
 
 let mockS3CR: jest.Mocked<S3CacheRatchet>;
