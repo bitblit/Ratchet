@@ -16,18 +16,11 @@ export default {
     sourcemap: true,
   },
   plugins: [
-    //nodeResolve({ preferBuiltins: true }),
+    //nodeResolve({ preferBuiltins: true, browser: true }),
     terser(),
-    json(),
+    //json(),
     typescript(),
     //commonjs(),
-    /*nativePlugin({
-      copyTo: '/lib/native',
-      destDir: './native',
-      sourcemap: true,
-      targetEsm: true,
-    }),
-
-     */
+    //nodePolyfills({ include: null, sourceMap: true }),
   ],
 };

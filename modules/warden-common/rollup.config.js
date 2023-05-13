@@ -14,5 +14,12 @@ export default {
     format: 'esm',
     sourcemap: true,
   },
-  plugins: [nodeResolve({ preferBuiltins: true }), terser(), json(), typescript(), commonjs()],
+  plugins: [
+    //nodeResolve({ preferBuiltins: true, browser: true }),
+    terser(),
+    //json(),
+    typescript(),
+    //commonjs(),
+    //nodePolyfills({ include: null, sourceMap: true }),
+  ],
 };

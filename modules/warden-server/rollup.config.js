@@ -15,17 +15,11 @@ export default {
     sourcemap: true,
   },
   plugins: [
+    //nodeResolve({ preferBuiltins: true, browser: true }),
     terser(),
-    json(),
+    //json(),
     typescript(),
-    /*
-    nodeResolve({ preferBuiltins: false }),
-    terser(),
-    json(),
-    typescript(),
-    commonjs(),
-    nodePolyfills({ include: null, sourceMap: true }),
-
-       */
+    //commonjs(),
+    //nodePolyfills({ include: null, sourceMap: true }),
   ],
 };
