@@ -1,4 +1,5 @@
 import {
+  AttributeDefinition,
   CreateTableCommand,
   CreateTableCommandInput,
   CreateTableCommandOutput,
@@ -8,8 +9,18 @@ import {
   DescribeTableCommand,
   DescribeTableCommandOutput,
   DynamoDBClient,
+  GlobalSecondaryIndex,
+  GlobalSecondaryIndexDescription,
+  KeySchemaElement,
+  ListTablesCommand,
+  ListTablesCommandInput,
+  ListTablesCommandOutput,
+  ProvisionedThroughput,
+  ResourceNotFoundException,
 } from '@aws-sdk/client-dynamodb';
 import { ErrorRatchet, Logger, PromiseRatchet, RequireRatchet } from '@bitblit/ratchet-common';
+import { LocalSecondaryIndex, Tag } from '@aws-sdk/client-dynamodb/dist-types/models/models_0.js';
+import * as punycode from 'punycode';
 
 export class DynamoTableRatchet {
   constructor(private awsDDB: DynamoDBClient) {
@@ -97,16 +108,80 @@ export class DynamoTableRatchet {
     return !!desc;
   }
 
+  public async listAllTables(): Promise<string[]> {
+    const input: ListTablesCommandInput = {};
+    let rval: string[] = [];
+
+    do {
+      const out: ListTablesCommandOutput = await this.awsDDB.send(new ListTablesCommand(input));
+      rval = rval.concat(out.TableNames);
+      input.ExclusiveStartTableName = out.LastEvaluatedTableName;
+    } while (input.ExclusiveStartTableName);
+    return rval;
+  }
+
   public async safeDescribeTable(tableName: string): Promise<DescribeTableCommandOutput> {
     try {
       const out: DescribeTableCommandOutput = await this.awsDDB.send(new DescribeTableCommand({ TableName: tableName }));
       return out;
     } catch (err) {
-      if (!!err['code'] && err['code'] === 'ResourceNotFoundException') {
+      if (err instanceof ResourceNotFoundException) {
         return null;
       } else {
         throw err;
       }
     }
+  }
+
+  public async copyTable(
+    srcTableName: string,
+    dstTableName: string,
+    overrides?: CreateTableCommandInput,
+    copyData?: boolean
+  ): Promise<CreateTableCommandOutput> {
+    RequireRatchet.notNullUndefinedOrOnlyWhitespaceString(srcTableName, 'srcTableName');
+    RequireRatchet.notNullUndefinedOrOnlyWhitespaceString(dstTableName, 'dstTableName');
+    if (copyData) {
+      throw ErrorRatchet.fErr('Cannot copy %s to %s - copy data not supported yet', srcTableName, dstTableName);
+    }
+    const srcTableDef: DescribeTableCommandOutput = await this.safeDescribeTable(srcTableName);
+    if (await this.tableExists(dstTableName)) {
+      throw ErrorRatchet.fErr('Cannot copy to %s - table already exists', dstTableName);
+    }
+    if (!srcTableDef) {
+      throw ErrorRatchet.fErr('Cannot copy %s - doesnt exist', srcTableName);
+    }
+
+    const ads: AttributeDefinition[] = srcTableDef.Table.AttributeDefinitions;
+    const ks: KeySchemaElement[] = srcTableDef.Table.KeySchema;
+    const gi: GlobalSecondaryIndexDescription[] = srcTableDef.Table.GlobalSecondaryIndexes;
+
+    const createInput: CreateTableCommandInput = Object.assign({}, overrides || {}, {
+      AttributeDefinitions: srcTableDef.Table.AttributeDefinitions,
+      TableName: dstTableName,
+      KeySchema: srcTableDef.Table.KeySchema,
+      LocalSecondaryIndexes: srcTableDef.Table.LocalSecondaryIndexes as LocalSecondaryIndex[],
+      GlobalSecondaryIndexes: srcTableDef.Table.GlobalSecondaryIndexes.map((gi) => {
+        const output: GlobalSecondaryIndex = gi as GlobalSecondaryIndex;
+        if (output.ProvisionedThroughput?.WriteCapacityUnits === 0 || output.ProvisionedThroughput?.ReadCapacityUnits === 0) {
+          output.ProvisionedThroughput = undefined;
+        }
+        return output;
+      }),
+      BillingMode: srcTableDef.Table.BillingModeSummary.BillingMode,
+      ProvisionedThroughput:
+        srcTableDef.Table.BillingModeSummary.BillingMode === 'PROVISIONED'
+          ? (srcTableDef.Table.ProvisionedThroughput as ProvisionedThroughput)
+          : undefined,
+      StreamSpecification: srcTableDef.Table.StreamSpecification,
+      SSESpecification: srcTableDef.Table.SSEDescription,
+      Tags: undefined,
+      TableClass: srcTableDef.Table.TableClassSummary?.TableClass,
+      DeletionProtectionEnabled: srcTableDef.Table.DeletionProtectionEnabled,
+    });
+
+    const rval: CreateTableCommandOutput = await this.awsDDB.send(new CreateTableCommand(createInput));
+
+    return rval;
   }
 }
