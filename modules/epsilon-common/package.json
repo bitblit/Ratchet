@@ -69,16 +69,16 @@
   },
   "license": "Apache-2.0",
   "dependencies": {
-    "@aws-sdk/client-s3": "3.332.0",
-    "@aws-sdk/client-sns": "3.332.0",
-    "@aws-sdk/client-sqs": "3.332.0",
+    "@aws-sdk/client-s3": "3.337.0",
+    "@aws-sdk/client-sns": "3.337.0",
+    "@aws-sdk/client-sqs": "3.337.0",
     "@bitblit/ratchet-aws": "0.0.0-snapshot",
     "@bitblit/ratchet-common": "0.0.0-snapshot",
     "@bitblit/ratchet-misc": "0.0.0-snapshot",
     "@bitblit/ratchet-node-only": "0.0.0-snapshot",
     "clear": "0.1.0",
     "commander": "10.0.1",
-    "cross-fetch": "3.1.5",
+    "cross-fetch": "3.1.6",
     "js-yaml": "4.1.0",
     "jsonwebtoken": "9.0.0",
     "jwks-rsa": "3.0.1",
@@ -114,8 +114,7 @@
     "ws": "^8.12.0",
     "y18n": "^5.0.8"
   },
-  "peerDependencies": {
-  },
+  "peerDependencies": {},
   "peerDependenciesMeta": {
     "graphql": {
       "optional": true
