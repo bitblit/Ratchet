@@ -120,8 +120,9 @@ export class ApolloFilter {
     };
 
     // Finally, a double check to set the content type correctly if the browser page was shown
-    if (StringRatchet.trimToEmpty(rval?.body).startsWith('<!DOCTYPE html>')) {
-      Logger.info('Forcing content type to html');
+    // Since otherwise Apollo defaults it to application/json for some reason
+    if (StringRatchet.trimToEmpty(rval?.body).toUpperCase().includes('<!DOCTYPE html>')) {
+      Logger.info('Forcing content type to html for the sandbox page');
       rval.headers = rval.headers || {};
       rval.headers['content-type'] = 'text/html';
     }

@@ -139,7 +139,7 @@ export class SampleServerComponents {
     meta.timeoutMS = 10_000;
 
     ApolloFilter.addApolloFilterToList(meta.preFilters, new RegExp('.*graphql.*'), await SampleServerComponents.createSampleApollo(), {
-      context: ApolloUtil.defaultEpsilonApolloContext,
+      context: (arg) => ApolloUtil.defaultEpsilonApolloContext(arg, tokenManipulator.jwtRatchet),
       timeoutMS: 5_000,
       corsMethod: EpsilonApolloCorsMethod.All,
     });

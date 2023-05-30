@@ -1,8 +1,10 @@
-import { BaseContext, ContextFunction } from '@apollo/server';
+import { BaseContext } from '@apollo/server';
 import { EpsilonLambdaApolloContextFunctionArgument } from './epsilon-lambda-apollo-context-function-argument.js';
 import { EventUtil } from '../../../http/event-util.js';
-import { JwtTokenBase, Logger } from '@bitblit/ratchet-common';
+import { ExpiredJwtHandling, JwtRatchetLike, JwtTokenBase, Logger, MapRatchet } from '@bitblit/ratchet-common';
 import { DefaultEpsilonApolloContext } from './default-epsilon-apollo-context.js';
+import { StringRatchet } from '@bitblit/ratchet-common';
+import { UnauthorizedError } from '../../../http/error/unauthorized-error.js';
 
 export class ApolloUtil {
   // Prevent instantiation
@@ -16,14 +18,15 @@ export class ApolloUtil {
   }
 
   public static async defaultEpsilonApolloContext(
-    args: EpsilonLambdaApolloContextFunctionArgument
+    args: EpsilonLambdaApolloContextFunctionArgument,
+    jwt?: JwtRatchetLike
   ): Promise<DefaultEpsilonApolloContext<any>> {
     const authTokenSt: string = EventUtil.extractBearerTokenFromEvent(args.lambdaEvent);
-    const token: JwtTokenBase = null;
-    if (!!authTokenSt && authTokenSt.startsWith('Bearer')) {
+    let token: JwtTokenBase = null;
+    if (StringRatchet.trimToNull(authTokenSt) && jwt) {
       Logger.info('Got : %s', authTokenSt);
+      token = await jwt.decodeToken(authTokenSt, ExpiredJwtHandling.RETURN_NULL);
     }
-    // TODO: parse token here...
 
     const rval: DefaultEpsilonApolloContext<any> = {
       user: token,
@@ -34,5 +37,18 @@ export class ApolloUtil {
       lambdaContext: args.lambdaContext,
     };
     return rval;
+  }
+
+  public static async nonRouteableOnlyEpsilonApolloContext(
+    args: EpsilonLambdaApolloContextFunctionArgument,
+    jwt?: JwtRatchetLike
+  ): Promise<DefaultEpsilonApolloContext<any>> {
+    const hostName: string = StringRatchet.trimToNull(MapRatchet.extractValueFromMapIgnoreCase(args.lambdaEvent.headers, 'host'));
+    const hostIsLocalOrNotRoutableIP4: boolean = EventUtil.hostIsLocalOrNotRoutableIP4(hostName);
+    if (!hostIsLocalOrNotRoutableIP4) {
+      throw new UnauthorizedError('May only run local / non-routeable : ' + hostName);
+    }
+
+    return ApolloUtil.defaultEpsilonApolloContext(args, jwt);
   }
 }

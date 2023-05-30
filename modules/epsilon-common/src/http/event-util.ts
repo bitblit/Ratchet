@@ -237,4 +237,34 @@ export class EventUtil {
     }
     return rval;
   }
+
+  public static hostIsLocal(host: string): boolean {
+    let rval: boolean = false;
+    if (StringRatchet.trimToNull(host)) {
+      host = host.includes(':') ? host.substring(0, host.indexOf(':')) : host;
+      host = host.toLowerCase();
+      if (host === 'localhost' || host === '127.0.0.1') {
+        rval = true;
+      }
+    }
+    return rval;
+  }
+
+  public static hostIsLocalOrNotRoutableIP4(host: string): boolean {
+    let rval: boolean = false;
+    if (StringRatchet.trimToNull(host)) {
+      host = host.includes(':') ? host.substring(0, host.indexOf(':')) : host;
+      host = host.toLowerCase();
+      if (
+        host === 'localhost' ||
+        host === '127.0.0.1' ||
+        host.startsWith('192.168.') ||
+        host.startsWith('10.') ||
+        host.startsWith('172.16.')
+      ) {
+        rval = true;
+      }
+    }
+    return rval;
+  }
 }
