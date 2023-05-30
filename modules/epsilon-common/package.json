@@ -46,7 +46,8 @@
     "build": "yarn clean && yarn generate-barrels && rollup -c rollup.config.js",
     "force-build": "tsc --build --force",
     "run-local-container-server": "yarn build && node bin/cli.js run-local-container-server",
-    "run-sample-server": "yarn build && node bin/cli.js run-sample-local-server",
+    "run-build-sample-server": "yarn build && node bin/cli.js run-sample-local-server",
+    "run-sample-server": "node bin/cli.js run-sample-local-server",
     "run-test-error-server": "yarn build && node bin/cli.js run-test-error-server",
     "run-batch-sample-server": "yarn build && node bin/cli.js run-sample-local-batch-server",
     "run-background-process-from-command-line-dry-run": "yarn build && node bin/cli.js run-background-process"
@@ -114,8 +115,14 @@
     "ws": "^8.12.0",
     "y18n": "^5.0.8"
   },
-  "peerDependencies": {},
+  "peerDependencies": {
+    "@apollo/server": "^4.7.1",
+    "graphql": "^16.6.0"
+  },
   "peerDependenciesMeta": {
+    "@apollo/server": {
+      "optional": true
+    },
     "graphql": {
       "optional": true
     }
@@ -123,7 +130,8 @@
   "devDependencies": {
     "@bitblit/ratchet-jest": "0.0.0-snapshot",
     "@types/aws-lambda": "8.10.115",
-    "apollo-server-lambda": "3.12.0",
+    "@apollo/server": "4.7.1",
+    "graphql-tag": "2.12.6",
     "aws-sdk-client-mock": "2.1.1",
     "graphql": "16.6.0"
   }

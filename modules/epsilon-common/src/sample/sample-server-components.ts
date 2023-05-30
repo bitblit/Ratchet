@@ -2,16 +2,19 @@
  * This is an example of how to setup a local server for testing.  Replace the createRouterConfig function
  * with your own.
  */
-import { Logger } from '@bitblit/ratchet-common';
-import { ApolloServer, CreateHandlerOptions, gql } from 'apollo-server-lambda';
-import { ApolloServerPluginLandingPageGraphQLPlayground } from 'apollo-server-core';
-import { StringRatchet } from '@bitblit/ratchet-common';
-import { ErrorRatchet } from '@bitblit/ratchet-common';
-import { LoggerLevelName } from '@bitblit/ratchet-common';
-import { PromiseRatchet } from '@bitblit/ratchet-common';
-import { BooleanRatchet } from '@bitblit/ratchet-common';
-import { NumberRatchet } from '@bitblit/ratchet-common';
-import { JwtTokenBase } from '@bitblit/ratchet-common';
+import {
+  BooleanRatchet,
+  ErrorRatchet,
+  JwtTokenBase,
+  Logger,
+  LoggerLevelName,
+  NumberRatchet,
+  PromiseRatchet,
+  StringRatchet,
+} from '@bitblit/ratchet-common';
+import { ApolloServer } from '@apollo/server';
+import { gql } from 'graphql-tag';
+import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
 import { EpsilonGlobalHandler } from '../epsilon-global-handler.js';
 import { AuthorizerFunction } from '../config/http/authorizer-function.js';
 import { HandlerFunction } from '../config/http/handler-function.js';
@@ -33,11 +36,11 @@ import { BuiltInAuthorizers } from '../built-in/http/built-in-authorizers.js';
 import { ApolloFilter } from '../built-in/http/apollo-filter.js';
 import { SampleInputValidatedProcessorData } from '../built-in/background/sample-input-validated-processor-data.js';
 import { BuiltInFilters } from '../built-in/http/built-in-filters.js';
-import { EventUtil } from '../http/event-util.js';
 import { LogMessageBackgroundErrorProcessor } from '../built-in/background/log-message-background-error-processor.js';
 import { SingleThreadLocalBackgroundManager } from '../background/manager/single-thread-local-background-manager.js';
 import { BackgroundManagerLike } from '../background/manager/background-manager-like.js';
 import { SampleServerStaticFiles } from './sample-server-static-files.js';
+import { ApolloUtil } from '../built-in/http/apollo/apollo-util.js';
 
 export class SampleServerComponents {
   // Prevent instantiation
@@ -64,28 +67,26 @@ export class SampleServerComponents {
     };
 
     const server: ApolloServer = new ApolloServer({
-      debug: false,
       introspection: true,
       typeDefs,
       resolvers,
-      plugins: [ApolloServerPluginLandingPageGraphQLPlayground({ endpoint: '/graphql' })],
-      context: async ({ event, context, express }) => {
-        const authTokenSt: string = EventUtil.extractBearerTokenFromEvent(event);
-        const token: JwtTokenBase = null;
-        if (!!authTokenSt && authTokenSt.startsWith('Bearer')) {
-          Logger.info('Got : %s', authTokenSt);
-        }
+      plugins: [
+        /*
+        // Install a landing page plugin based on NODE_ENV
+        process.env.NODE_ENV === 'production'
+          ? ApolloServerPluginLandingPageProductionDefault({
+              graphRef: 'my-graph-id@my-graph-variant',
+              footer: false,
+            })
+          : ApolloServerPluginLandingPageLocalDefault({ footer: false }),
 
-        const rval: any = {
-          user: token,
-          headers: event.headers,
-          functionName: context.functionName,
-          event,
-          context,
-        };
-        return rval;
-      },
+           */
+        ApolloServerPluginLandingPageLocalDefault({ footer: false }),
+      ],
     });
+    // Need the server started before we start processing...
+    await server.start();
+
     return server;
   }
 
@@ -137,11 +138,21 @@ export class SampleServerComponents {
     meta.timeoutMS = 10_000;
 
     ApolloFilter.addApolloFilterToList(meta.preFilters, new RegExp('.*graphql.*'), await SampleServerComponents.createSampleApollo(), {
+      context: ApolloUtil.defaultEpsilonApolloContext,
+      timeoutMS: 5_000,
+    });
+
+    /*
+
+
+        {
       cors: {
         origin: '*',
         credentials: true,
       },
     } as CreateHandlerOptions);
+    
+     */
     meta.errorFilters.push((fCtx) => BuiltInFilters.secureOutboundServerErrorForProduction(fCtx, 'Clean Internal Server Error', 500));
 
     const preFiltersAllowingNull: HttpProcessingConfig = Object.assign({}, meta);

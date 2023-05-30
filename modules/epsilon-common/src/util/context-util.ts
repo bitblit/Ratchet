@@ -4,7 +4,7 @@ import { ErrorRatchet } from '@bitblit/ratchet-common';
 import { NumberRatchet } from '@bitblit/ratchet-common';
 import { EpsilonInstance } from '../epsilon-instance.js';
 import { LoggingTraceIdGenerator } from '../config/logging-trace-id-generator.js';
-import { BuiltInTraceIdGenerators } from '../built-in/built-in-trace-id-generators.js';
+//import { BuiltInTraceIdGenerators } from '../built-in/built-in-trace-id-generators.js';
 import { InternalBackgroundEntry } from '../background/internal-background-entry.js';
 import { InterApiEntry } from '../inter-api/inter-api-entry.js';
 
@@ -84,6 +84,10 @@ export class ContextUtil {
     return ctx ? ctx.awsRequestId : null;
   }
 
+  public static defaultedCurrentRequestId(defaultValueIfMissing: string = StringRatchet.createType4Guid()): string {
+    return ContextUtil.currentRequestId() ?? defaultValueIfMissing;
+  }
+
   public static remainingTimeMS(): number {
     const ctx: Context = ContextUtil.CURRENT_CONTEXT;
     return ctx ? ctx.getRemainingTimeInMillis() : null;
@@ -105,7 +109,7 @@ export class ContextUtil {
 
   public static currentTraceId(): string {
     const traceFn: LoggingTraceIdGenerator =
-      ContextUtil?.CURRENT_EPSILON_REFERENCE?.config?.loggerConfig?.traceIdGenerator || BuiltInTraceIdGenerators.fullAwsRequestId;
+      ContextUtil?.CURRENT_EPSILON_REFERENCE?.config?.loggerConfig?.traceIdGenerator || ContextUtil.defaultedCurrentRequestId;
     const traceId: string =
       ContextUtil.CURRENT_OVERRIDE_TRACE_ID ||
       ContextUtil.CURRENT_EVENT?.headers?.[ContextUtil.traceHeaderName()] ||

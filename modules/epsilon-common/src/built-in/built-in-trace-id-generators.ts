@@ -3,9 +3,7 @@ import { ContextUtil } from '../util/context-util.js';
 
 export class BuiltInTraceIdGenerators {
   public static fullAwsRequestId(): string {
-    let rval: string = ContextUtil.currentRequestId();
-    rval = rval ?? StringRatchet.createType4Guid();
-    return rval;
+    return ContextUtil.defaultedCurrentRequestId();
   }
 
   public static shortAwsRequestId(): string {
