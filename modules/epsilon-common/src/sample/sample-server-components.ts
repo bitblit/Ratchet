@@ -41,6 +41,7 @@ import { SingleThreadLocalBackgroundManager } from '../background/manager/single
 import { BackgroundManagerLike } from '../background/manager/background-manager-like.js';
 import { SampleServerStaticFiles } from './sample-server-static-files.js';
 import { ApolloUtil } from '../built-in/http/apollo/apollo-util.js';
+import { EpsilonApolloCorsMethod } from '../built-in/http/apollo/epsilon-apollo-cors-method.js';
 
 export class SampleServerComponents {
   // Prevent instantiation
@@ -140,6 +141,7 @@ export class SampleServerComponents {
     ApolloFilter.addApolloFilterToList(meta.preFilters, new RegExp('.*graphql.*'), await SampleServerComponents.createSampleApollo(), {
       context: ApolloUtil.defaultEpsilonApolloContext,
       timeoutMS: 5_000,
+      corsMethod: EpsilonApolloCorsMethod.All,
     });
 
     /*

@@ -1,19 +1,16 @@
-import { Logger } from '@bitblit/ratchet-common';
+import { Base64Ratchet, Logger, PromiseRatchet, RequireRatchet, StringRatchet, TimeoutToken } from '@bitblit/ratchet-common';
 import { APIGatewayEvent, Context, ProxyResult } from 'aws-lambda';
-import { PromiseRatchet } from '@bitblit/ratchet-common';
-import { TimeoutToken } from '@bitblit/ratchet-common';
 import { RequestTimeoutError } from '../../http/error/request-timeout-error.js';
 import { FilterFunction } from '../../config/http/filter-function.js';
 import { FilterChainContext } from '../../config/http/filter-chain-context.js';
-import { StringRatchet } from '@bitblit/ratchet-common';
-import { ApolloServer, BaseContext, ContextFunction, HTTPGraphQLRequest, HeaderMap, HTTPGraphQLResponse } from '@apollo/server';
-import { RequireRatchet } from '@bitblit/ratchet-common';
-import { Base64Ratchet } from '@bitblit/ratchet-common';
+import { ApolloServer, BaseContext, ContextFunction, HeaderMap, HTTPGraphQLRequest, HTTPGraphQLResponse } from '@apollo/server';
 import { EpsilonHttpError } from '../../http/error/epsilon-http-error.js';
 import { ContextUtil } from '../../util/context-util.js';
 import { EpsilonLambdaApolloOptions } from './apollo/epsilon-lambda-apollo-options.js';
 import { EpsilonLambdaApolloContextFunctionArgument } from './apollo/epsilon-lambda-apollo-context-function-argument.js';
 import { ApolloUtil } from './apollo/apollo-util.js';
+import { EpsilonApolloCorsMethod } from './apollo/epsilon-apollo-cors-method.js';
+import { BuiltInFilters } from './built-in-filters.js';
 
 export class ApolloFilter {
   public static async handlePathWithApollo<T>(
@@ -22,13 +19,29 @@ export class ApolloFilter {
     apolloServer: ApolloServer<T>,
     options?: EpsilonLambdaApolloOptions<T>
   ): Promise<boolean> {
+    let rval: boolean = false;
+
     if (fCtx.event?.path && apolloPathRegex && apolloPathRegex.test(fCtx.event.path)) {
       fCtx.result = await ApolloFilter.processApolloRequest(fCtx.event, fCtx.context, apolloServer, options);
-      return false;
+
+      if (options?.corsMethod) {
+        switch (options.corsMethod) {
+          case EpsilonApolloCorsMethod.All:
+            await BuiltInFilters.addAllowEverythingCORSHeaders(fCtx);
+            break;
+          case EpsilonApolloCorsMethod.Reflective:
+            await BuiltInFilters.addAllowReflectionCORSHeaders(fCtx);
+            break;
+          default:
+          // Do nothing
+        }
+      }
     } else {
       // Not handled by apollo
-      return true;
+      rval = true;
     }
+
+    return rval;
   }
 
   public static async processApolloRequest<T>(
@@ -112,6 +125,7 @@ export class ApolloFilter {
       rval.headers = rval.headers || {};
       rval.headers['content-type'] = 'text/html';
     }
+
     return rval;
   }
 

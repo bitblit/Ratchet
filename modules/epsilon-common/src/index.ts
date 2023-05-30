@@ -54,6 +54,7 @@ export * from './built-in/http/log-level-manipulation-filter.js';
 export * from './built-in/http/run-handler-as-filter.js';
 export * from './built-in/http/apollo/apollo-util.js';
 export * from './built-in/http/apollo/default-epsilon-apollo-context.js';
+export * from './built-in/http/apollo/epsilon-apollo-cors-method.js';
 export * from './built-in/http/apollo/epsilon-lambda-apollo-context-function-argument.js';
 export * from './built-in/http/apollo/epsilon-lambda-apollo-options.js';
 export * from './cli/ratchet-cli-handler.js';
