@@ -2,7 +2,7 @@ import crypto from 'crypto';
 import fs from 'fs';
 import path from 'path';
 import { Logger, RequireRatchet, StringRatchet } from '../common';
-import { S3CacheRatchet } from './s3-cache-ratchet';
+import {S3CacheRatchetLike} from "./s3-cache-ratchet-like";
 
 /**
  * Use this when you want a lambda to cache a remote S3 bucket locally on disk for faster access
@@ -13,7 +13,7 @@ export class S3CacheToLocalDiskRatchet {
   private currentlyLoading: Map<string, Promise<Buffer>> = new Map<string, Promise<Buffer>>();
 
   constructor(
-    private s3: S3CacheRatchet,
+    private s3: S3CacheRatchetLike,
     private tmpFolder: string,
     private cacheTimeoutSeconds: number = S3CacheToLocalDiskRatchet.DEFAULT_CACHE_TIMEOUT_SEC
   ) {

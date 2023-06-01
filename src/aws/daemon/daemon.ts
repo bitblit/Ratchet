@@ -1,7 +1,6 @@
 import AWS from 'aws-sdk';
 import { Logger } from '../../common/logger';
 import { DaemonProcessState } from './daemon-process-state';
-import { S3CacheRatchet } from '../s3-cache-ratchet';
 import { StringRatchet } from '../../common/string-ratchet';
 import { DaemonProcessCreateOptions } from './daemon-process-create-options';
 import { DaemonUtil } from './daemon-util';
@@ -9,11 +8,13 @@ import { DaemonLike } from './daemon-like';
 import { JwtRatchetLike } from '../../common/jwt-ratchet-like';
 import { RequireRatchet } from '../../common/require-ratchet';
 import { DaemonProcessStatePublicToken } from './daemon-process-state-public-token';
+import {S3CacheRatchetLike} from "../s3-cache-ratchet-like";
+import {S3CacheRatchet} from "../s3-cache-ratchet";
 
 export class Daemon implements DaemonLike {
   public static DEFAULT_DEFAULT_GROUP: string = 'DEFAULT';
 
-  private cache: S3CacheRatchet;
+  private cache: S3CacheRatchetLike;
 
   constructor(
     private s3: AWS.S3,

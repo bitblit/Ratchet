@@ -1,9 +1,9 @@
 import { S3CacheToLocalDiskRatchet } from './s3-cache-to-local-disk-ratchet';
-import { S3CacheRatchet } from './s3-cache-ratchet';
 import { tmpdir } from 'os';
 import { JestRatchet } from '../jest';
+import {S3CacheRatchetLike} from "./s3-cache-ratchet-like";
 
-let mockS3CR: jest.Mocked<S3CacheRatchet>;
+let mockS3CR: jest.Mocked<S3CacheRatchetLike>;
 
 describe('#S3CacheToLocalDiskRatchet', () => {
   beforeEach(() => {

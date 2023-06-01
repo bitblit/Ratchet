@@ -1,5 +1,4 @@
 import AWS from 'aws-sdk';
-import { S3CacheRatchet } from '../s3-cache-ratchet';
 import { DaemonProcessState } from './daemon-process-state';
 import { DaemonUtil } from './daemon-util';
 import { Logger } from '../../common/logger';
@@ -11,8 +10,10 @@ import { Subject } from 'rxjs';
 import { PassThrough } from 'stream';
 import { CsvRatchet } from '../../node-csv';
 import { TestItem } from '../../node-csv/csv-ratchet.spec';
+import {S3CacheRatchetLike} from "../s3-cache-ratchet-like";
+import {S3CacheRatchet} from "../s3-cache-ratchet";
 
-let mockS3CR: jest.Mocked<S3CacheRatchet>;
+let mockS3CR: jest.Mocked<S3CacheRatchetLike>;
 
 describe('#DaemonUtil', function () {
   beforeEach(() => {
@@ -57,7 +58,7 @@ describe('#DaemonUtil', function () {
 
   xit('should test the daemon util streaming', async () => {
     const s3: AWS.S3 = new AWS.S3({ region: 'us-east-1' });
-    const cache: S3CacheRatchet = new S3CacheRatchet(s3, 'test-bucket');
+    const cache: S3CacheRatchetLike = new S3CacheRatchet(s3, 'test-bucket');
     const key: string = 's3-cache-ratchet.spec.ts';
 
     const newDaemonOptions: DaemonProcessCreateOptions = {

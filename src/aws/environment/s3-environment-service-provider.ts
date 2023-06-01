@@ -1,17 +1,18 @@
 import AWS from 'aws-sdk';
 import { ClientConfiguration } from 'aws-sdk/clients/s3';
 import { EnvironmentServiceProvider } from './environment-service-provider';
-import { S3CacheRatchet } from '../s3-cache-ratchet';
 import { RequireRatchet } from '../../common/require-ratchet';
 import { StopWatch } from '../../common/stop-watch';
 import { Logger } from '../../common/logger';
 import { StringRatchet } from '../../common';
+import {S3CacheRatchetLike} from "../s3-cache-ratchet-like";
+import {S3CacheRatchet} from "../s3-cache-ratchet";
 
 /**
  * Service for reading environmental variables from S3
  */
 export class S3EnvironmentServiceProvider<T> implements EnvironmentServiceProvider<T> {
-  private ratchet: S3CacheRatchet;
+  private ratchet: S3CacheRatchetLike;
 
   public constructor(private cfg: S3EnvironmentServiceProviderConfig) {
     RequireRatchet.notNullOrUndefined(cfg);

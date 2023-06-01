@@ -1,15 +1,16 @@
 import AWS from 'aws-sdk';
 import { S3StorageProvider } from './s3-storage-provider';
 import { SimpleCache } from './simple-cache';
-import { S3CacheRatchet } from '../s3-cache-ratchet';
 import { SimpleCacheObjectWrapper } from './simple-cache-object-wrapper';
 import { DynamoRatchet } from '../dynamo-ratchet';
 import { DynamoDbSimpleCacheOptions, DynamoDbStorageProvider } from './dynamo-db-storage-provider';
+import {S3CacheRatchetLike} from "../s3-cache-ratchet-like";
+import {S3CacheRatchet} from "../s3-cache-ratchet";
 
 describe('#simpleCache', function () {
   xit('should read/write/delete with an S3 handler', async () => {
     const s3: AWS.S3 = new AWS.S3({ region: 'us-east-1' });
-    const cache: S3CacheRatchet = new S3CacheRatchet(s3, 'test-bucket');
+    const cache: S3CacheRatchetLike = new S3CacheRatchet(s3, 'test-bucket');
     const s3StorageProvider: S3StorageProvider = new S3StorageProvider(cache, 'test-cache');
 
     const simpleCache: SimpleCache = new SimpleCache(s3StorageProvider, 2000000);

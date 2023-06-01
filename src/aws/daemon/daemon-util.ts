@@ -1,9 +1,10 @@
 import { Logger } from '../../common/logger';
 import { DaemonProcessState } from './daemon-process-state';
-import { S3CacheRatchet } from '../s3-cache-ratchet';
 import { DaemonProcessCreateOptions } from './daemon-process-create-options';
 import { HeadObjectOutput, PutObjectOutput, PutObjectRequest } from 'aws-sdk/clients/s3';
 import { Readable } from 'stream';
+import {DaemonStreamDataOptions} from "./daemon-stream-data-options";
+import {S3CacheRatchetLike} from "../s3-cache-ratchet-like";
 
 /**
  * Internal utilities which are here for the USE OF THE DAEMON OBJECT ONLY - if you are trying to use this
@@ -16,7 +17,7 @@ export class DaemonUtil {
   public static DAEMON_METADATA_KEY: string = 'daemon_meta'; // Must be lowercase for s3
 
   public static async start(
-    cache: S3CacheRatchet,
+    cache: S3CacheRatchetLike,
     id: string,
     s3Key: string,
     options: DaemonProcessCreateOptions
@@ -51,7 +52,7 @@ export class DaemonUtil {
   }
 
   public static async writeState(
-    cache: S3CacheRatchet,
+    cache: S3CacheRatchetLike,
     s3Key: string,
     newState: DaemonProcessState,
     contents: Buffer
@@ -83,15 +84,16 @@ export class DaemonUtil {
   }
 
   public static async streamDataAndFinish(
-    cache: S3CacheRatchet,
+    cache: S3CacheRatchetLike,
     s3Key: string,
     data: Readable,
-    targetFileName?: string
+    options?: DaemonStreamDataOptions
   ): Promise<DaemonProcessState> {
     Logger.debug('Streaming data to %s', s3Key);
     const inStat: DaemonProcessState = await DaemonUtil.updateMessage(cache, s3Key, 'Streaming data');
     inStat.completedEpochMS = new Date().getTime();
     inStat.lastUpdatedMessage = 'Complete';
+
 
     const s3meta: any = {};
     s3meta[DaemonUtil.DAEMON_METADATA_KEY] = JSON.stringify(inStat);
@@ -103,6 +105,7 @@ export class DaemonUtil {
       Metadata: s3meta,
       Body: data,
     };
+    const targetFileName: string = inStat?.targetFileName || options?.overrideTargetFileName;
     if (targetFileName) {
       params.ContentDisposition = 'attachment;filename="' + targetFileName + '"';
     }
@@ -113,7 +116,7 @@ export class DaemonUtil {
     return DaemonUtil.stat(cache, s3Key);
   }
 
-  public static async updateMessage(cache: S3CacheRatchet, s3Key: string, newMessage: string): Promise<DaemonProcessState> {
+  public static async updateMessage(cache: S3CacheRatchetLike, s3Key: string, newMessage: string): Promise<DaemonProcessState> {
     try {
       const inStat: DaemonProcessState = await DaemonUtil.stat(cache, s3Key);
       inStat.lastUpdatedMessage = newMessage;
@@ -124,7 +127,7 @@ export class DaemonUtil {
     }
   }
 
-  public static async stat(s3Cache: S3CacheRatchet, path: string): Promise<DaemonProcessState> {
+  public static async stat(s3Cache: S3CacheRatchetLike, path: string): Promise<DaemonProcessState> {
     try {
       Logger.debug('Daemon stat for path %s / %s', s3Cache.getDefaultBucket(), path);
       let stat: DaemonProcessState = null;
@@ -148,10 +151,10 @@ export class DaemonUtil {
     }
   }
 
-  public static async abort(s3Cache: S3CacheRatchet, path: string): Promise<DaemonProcessState> {
+  public static async abort(s3Cache: S3CacheRatchetLike, path: string): Promise<DaemonProcessState> {
     return DaemonUtil.error(s3Cache, path, 'Aborted');
   }
-  public static async error(s3Cache: S3CacheRatchet, path: string, error: string): Promise<DaemonProcessState> {
+  public static async error(s3Cache: S3CacheRatchetLike, path: string, error: string): Promise<DaemonProcessState> {
     try {
       const inStat: DaemonProcessState = await DaemonUtil.stat(s3Cache, path);
       inStat.error = error;
@@ -163,7 +166,7 @@ export class DaemonUtil {
     }
   }
 
-  public static async finalize(s3Cache: S3CacheRatchet, path: string, contents: Buffer): Promise<DaemonProcessState> {
+  public static async finalize(s3Cache: S3CacheRatchetLike, path: string, contents: Buffer): Promise<DaemonProcessState> {
     try {
       Logger.info('Finalizing daemon %s with %d bytes', path, contents.length);
       const inStat: DaemonProcessState = await DaemonUtil.stat(s3Cache, path);

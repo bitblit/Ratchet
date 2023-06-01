@@ -20,8 +20,10 @@ import {
 import { RequireRatchet } from '../common/require-ratchet';
 import { Readable } from 'stream';
 import { ErrorRatchet, StopWatch } from '../common';
+import {ExpandedFileChildren} from "./expanded-file-children";
+import {S3CacheRatchetLike} from "./s3-cache-ratchet-like";
 
-export class S3CacheRatchet {
+export class S3CacheRatchet implements S3CacheRatchetLike{
   constructor(private s3: AWS.S3, private defaultBucket: string = null) {
     RequireRatchet.notNullOrUndefined(this.s3, 's3');
   }
@@ -410,10 +412,4 @@ export class S3CacheRatchet {
     }
     return rval;
   }
-}
-
-export interface ExpandedFileChildren {
-  link: string;
-  name: string;
-  size: number;
 }
