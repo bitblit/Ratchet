@@ -82,7 +82,12 @@ export class DaemonUtil {
     }
   }
 
-  public static async streamDataAndFinish(cache: S3CacheRatchet, s3Key: string, data: Readable): Promise<DaemonProcessState> {
+  public static async streamDataAndFinish(
+    cache: S3CacheRatchet,
+    s3Key: string,
+    data: Readable,
+    targetFileName?: string
+  ): Promise<DaemonProcessState> {
     Logger.debug('Streaming data to %s', s3Key);
     const inStat: DaemonProcessState = await DaemonUtil.updateMessage(cache, s3Key, 'Streaming data');
     inStat.completedEpochMS = new Date().getTime();
@@ -98,6 +103,9 @@ export class DaemonUtil {
       Metadata: s3meta,
       Body: data,
     };
+    if (targetFileName) {
+      params.ContentDisposition = 'attachment;filename="' + targetFileName + '"';
+    }
 
     const written: PutObjectOutput = await cache.getS3().upload(params).promise();
     Logger.silly('Daemon wrote : %s', written);
