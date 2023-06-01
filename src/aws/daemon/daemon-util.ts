@@ -5,6 +5,7 @@ import { HeadObjectOutput, PutObjectOutput, PutObjectRequest } from 'aws-sdk/cli
 import { Readable } from 'stream';
 import {DaemonStreamDataOptions} from "./daemon-stream-data-options";
 import {S3CacheRatchetLike} from "../s3-cache-ratchet-like";
+import {StringRatchet} from "../../common";
 
 /**
  * Internal utilities which are here for the USE OF THE DAEMON OBJECT ONLY - if you are trying to use this
@@ -105,7 +106,7 @@ export class DaemonUtil {
       Metadata: s3meta,
       Body: data,
     };
-    const targetFileName: string = inStat?.targetFileName || options?.overrideTargetFileName;
+    const targetFileName: string = StringRatchet.trimToNull(options?.overrideTargetFileName) || StringRatchet.trimToNull(inStat?.targetFileName);
     if (targetFileName) {
       params.ContentDisposition = 'attachment;filename="' + targetFileName + '"';
     }
