@@ -4,8 +4,9 @@ import { S3ExpiringCodeProvider, S3ExpiringCodeProviderFileWrapper } from './s3-
 import { PutObjectCommandOutput, PutObjectOutput } from '@aws-sdk/client-s3';
 import { ExpiringCode } from './expiring-code.js';
 import { jest } from '@jest/globals';
+import { S3CacheRatchetLike } from '../s3/s3-cache-ratchet-like.js';
 
-let mockS3Ratchet: jest.Mocked<S3CacheRatchet>;
+let mockS3Ratchet: jest.Mocked<S3CacheRatchetLike>;
 const testCode: ExpiringCode = { code: '12345', context: 'ctx', expiresEpochMS: Date.now() + 100_000, tags: ['tag1'] };
 const testCode2: ExpiringCode = { code: '45678', context: 'ctx', expiresEpochMS: Date.now() + 100_000, tags: ['tag1'] };
 

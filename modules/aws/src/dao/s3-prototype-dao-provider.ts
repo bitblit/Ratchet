@@ -1,8 +1,8 @@
-import { S3CacheRatchet } from '../s3/s3-cache-ratchet.js';
 import { RequireRatchet } from '@bitblit/ratchet-common';
 import { PutObjectOutput } from '@aws-sdk/client-s3';
 import { PrototypeDaoProvider } from './prototype-dao-provider.js';
 import { PrototypeDaoDb } from './prototype-dao-db.js';
+import { S3CacheRatchetLike } from '../s3/s3-cache-ratchet-like.js';
 
 /* An implementation that puts all the values in a single JSON file in S3
   This won't scale well at all for any kind of serious load, but is the easiest
@@ -10,7 +10,7 @@ import { PrototypeDaoDb } from './prototype-dao-db.js';
   provisioning, etc
  */
 export class S3PrototypeDaoProvider<T> implements PrototypeDaoProvider<T> {
-  constructor(private s3CacheRatchet: S3CacheRatchet, private keyName: string) {
+  constructor(private s3CacheRatchet: S3CacheRatchetLike, private keyName: string) {
     RequireRatchet.notNullOrUndefined(s3CacheRatchet, 's3CacheRatchet');
     RequireRatchet.notNullUndefinedOrOnlyWhitespaceString(s3CacheRatchet.getDefaultBucket(), 's3CacheRatchet.defaultBucket');
     RequireRatchet.notNullUndefinedOrOnlyWhitespaceString(keyName, 'keyName');

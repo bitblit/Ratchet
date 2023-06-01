@@ -2,12 +2,13 @@ import { EnvironmentServiceProvider } from './environment-service-provider.js';
 import { S3CacheRatchet } from '../s3/s3-cache-ratchet.js';
 import { Logger, RequireRatchet, StopWatch, StringRatchet } from '@bitblit/ratchet-common';
 import { S3Client } from '@aws-sdk/client-s3';
+import { S3CacheRatchetLike } from '../s3/s3-cache-ratchet-like.js';
 
 /**
  * Service for reading environmental variables from S3
  */
 export class S3EnvironmentServiceProvider<T> implements EnvironmentServiceProvider<T> {
-  private ratchet: S3CacheRatchet;
+  private ratchet: S3CacheRatchetLike;
 
   public constructor(private cfg: S3EnvironmentServiceProviderConfig) {
     RequireRatchet.notNullOrUndefined(cfg);

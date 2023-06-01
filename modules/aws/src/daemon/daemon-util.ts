@@ -1,6 +1,5 @@
-import { Logger } from '@bitblit/ratchet-common';
+import { Logger, StringRatchet } from '@bitblit/ratchet-common';
 import { DaemonProcessState } from './daemon-process-state.js';
-import { S3CacheRatchet } from '../s3/s3-cache-ratchet.js';
 import { DaemonProcessCreateOptions } from './daemon-process-create-options.js';
 import {
   CompleteMultipartUploadCommandOutput,
@@ -11,6 +10,8 @@ import {
 } from '@aws-sdk/client-s3';
 import { Readable } from 'stream';
 import { Upload } from '@aws-sdk/lib-storage';
+import { S3CacheRatchetLike } from '../s3/s3-cache-ratchet-like.js';
+import { DaemonStreamDataOptions } from './daemon-stream-data-options.js';
 
 /**
  * Internal utilities which are here for the USE OF THE DAEMON OBJECT ONLY - if you are trying to use this
@@ -23,7 +24,7 @@ export class DaemonUtil {
   public static DAEMON_METADATA_KEY: string = 'daemon_meta'; // Must be lowercase for s3
 
   public static async start(
-    cache: S3CacheRatchet,
+    cache: S3CacheRatchetLike,
     id: string,
     s3Key: string,
     options: DaemonProcessCreateOptions
@@ -58,7 +59,7 @@ export class DaemonUtil {
   }
 
   public static async writeState(
-    cache: S3CacheRatchet,
+    cache: S3CacheRatchetLike,
     s3Key: string,
     newState: DaemonProcessState,
     contents: Buffer
@@ -89,7 +90,12 @@ export class DaemonUtil {
     }
   }
 
-  public static async streamDataAndFinish(cache: S3CacheRatchet, s3Key: string, data: Readable): Promise<DaemonProcessState> {
+  public static async streamDataAndFinish(
+    cache: S3CacheRatchetLike,
+    s3Key: string,
+    data: Readable,
+    options?: DaemonStreamDataOptions
+  ): Promise<DaemonProcessState> {
     Logger.debug('Streaming data to %s', s3Key);
     const inStat: DaemonProcessState = await DaemonUtil.updateMessage(cache, s3Key, 'Streaming data');
     inStat.completedEpochMS = new Date().getTime();
@@ -105,6 +111,11 @@ export class DaemonUtil {
       Metadata: s3meta,
       Body: data,
     };
+    const targetFileName: string =
+      StringRatchet.trimToNull(options?.overrideTargetFileName) || StringRatchet.trimToNull(inStat?.targetFileName);
+    if (targetFileName) {
+      params.ContentDisposition = 'attachment;filename="' + targetFileName + '"';
+    }
 
     const upload: Upload = new Upload({
       client: cache.getS3Client(),
@@ -125,7 +136,7 @@ export class DaemonUtil {
     return DaemonUtil.stat(cache, s3Key);
   }
 
-  public static async updateMessage(cache: S3CacheRatchet, s3Key: string, newMessage: string): Promise<DaemonProcessState> {
+  public static async updateMessage(cache: S3CacheRatchetLike, s3Key: string, newMessage: string): Promise<DaemonProcessState> {
     try {
       const inStat: DaemonProcessState = await DaemonUtil.stat(cache, s3Key);
       inStat.lastUpdatedMessage = newMessage;
@@ -136,7 +147,7 @@ export class DaemonUtil {
     }
   }
 
-  public static async stat(s3Cache: S3CacheRatchet, path: string): Promise<DaemonProcessState> {
+  public static async stat(s3Cache: S3CacheRatchetLike, path: string): Promise<DaemonProcessState> {
     try {
       Logger.debug('Daemon stat for path %s / %s', s3Cache.getDefaultBucket(), path);
       let stat: DaemonProcessState = null;
@@ -160,10 +171,10 @@ export class DaemonUtil {
     }
   }
 
-  public static async abort(s3Cache: S3CacheRatchet, path: string): Promise<DaemonProcessState> {
+  public static async abort(s3Cache: S3CacheRatchetLike, path: string): Promise<DaemonProcessState> {
     return DaemonUtil.error(s3Cache, path, 'Aborted');
   }
-  public static async error(s3Cache: S3CacheRatchet, path: string, error: string): Promise<DaemonProcessState> {
+  public static async error(s3Cache: S3CacheRatchetLike, path: string, error: string): Promise<DaemonProcessState> {
     try {
       const inStat: DaemonProcessState = await DaemonUtil.stat(s3Cache, path);
       inStat.error = error;
@@ -175,7 +186,7 @@ export class DaemonUtil {
     }
   }
 
-  public static async finalize(s3Cache: S3CacheRatchet, path: string, contents: Buffer): Promise<DaemonProcessState> {
+  public static async finalize(s3Cache: S3CacheRatchetLike, path: string, contents: Buffer): Promise<DaemonProcessState> {
     try {
       Logger.info('Finalizing daemon %s with %d bytes', path, contents.length);
       const inStat: DaemonProcessState = await DaemonUtil.stat(s3Cache, path);

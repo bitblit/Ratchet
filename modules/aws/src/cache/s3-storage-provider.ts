@@ -5,12 +5,12 @@
 
 import { SimpleCacheObjectWrapper } from './simple-cache-object-wrapper.js';
 import { SimpleCacheStorageProvider } from './simple-cache-storage-provider.js';
-import { S3CacheRatchet } from '../s3/s3-cache-ratchet.js';
 import { PutObjectOutput } from '@aws-sdk/client-s3';
 import { RequireRatchet, StringRatchet } from '@bitblit/ratchet-common';
+import { S3CacheRatchetLike } from '../s3/s3-cache-ratchet-like.js';
 
 export class S3StorageProvider implements SimpleCacheStorageProvider {
-  constructor(private s3CacheRatchet: S3CacheRatchet, private prefix: string) {
+  constructor(private s3CacheRatchet: S3CacheRatchetLike, private prefix: string) {
     RequireRatchet.notNullOrUndefined(this.s3CacheRatchet, 's3CacheRatchet');
     RequireRatchet.notNullOrUndefined(this.s3CacheRatchet.getDefaultBucket(), 's3CacheRatchet.defaultBucket');
   }

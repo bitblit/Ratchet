@@ -26,8 +26,10 @@ import { Logger, RequireRatchet, StopWatch, StreamRatchet, StringRatchet } from 
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { Upload } from '@aws-sdk/lib-storage';
 import { Readable } from 'stream';
+import { S3CacheRatchetLike } from './s3-cache-ratchet-like.js';
+import { ExpandedFileChildren } from './expanded-file-children.js';
 
-export class S3CacheRatchet {
+export class S3CacheRatchet implements S3CacheRatchetLike {
   constructor(private s3: S3Client, private defaultBucket: string = null) {
     RequireRatchet.notNullOrUndefined(this.s3, 's3');
   }
@@ -191,7 +193,7 @@ export class S3CacheRatchet {
   public async synchronize(
     srcPrefix: string,
     targetPrefix: string,
-    targetRatchet: S3CacheRatchet = this,
+    targetRatchet: S3CacheRatchetLike = this,
     recurseSubFolders: boolean = false
   ): Promise<string[]> {
     RequireRatchet.notNullOrUndefined(srcPrefix, 'srcPrefix');
@@ -418,10 +420,4 @@ export class S3CacheRatchet {
     }
     return rval;
   }
-}
-
-export interface ExpandedFileChildren {
-  link: string;
-  name: string;
-  size: number;
 }

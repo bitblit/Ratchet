@@ -1,5 +1,5 @@
 import { RatchetTemplateRenderer } from '@bitblit/ratchet-common';
-import { S3CacheRatchet } from '../s3/s3-cache-ratchet.js';
+import { S3CacheRatchetLike } from '../s3/s3-cache-ratchet-like.js';
 
 /**
  * Configuration options for generic mailer
@@ -18,7 +18,7 @@ export interface MailerConfig {
   // Typically used for testing dev/demo configs
   allowedDestinationEmails?: RegExp[];
   // If set, any outbound email is also archived to this bucket
-  archive?: S3CacheRatchet;
+  archive?: S3CacheRatchetLike;
   // If set, any outbound email is archived under this prefix using the above ratchet
   archivePrefix?: string;
   // If set, if the txt or html bodies are larger than this they will be auto-converted to attachments

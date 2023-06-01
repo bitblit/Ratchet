@@ -10,12 +10,13 @@ import { PassThrough } from 'stream';
 import { CsvRatchet } from '@bitblit/ratchet-node-only';
 import { S3Client } from '@aws-sdk/client-s3';
 import { jest } from '@jest/globals';
+import { S3CacheRatchetLike } from '../s3/s3-cache-ratchet-like.js';
 
-let mockS3CR: jest.Mocked<S3CacheRatchet>;
+let mockS3CR: jest.Mocked<S3CacheRatchetLike>;
 
 describe('#DaemonUtil', function () {
   beforeEach(() => {
-    mockS3CR = JestRatchet.mock<S3CacheRatchet>(jest.fn);
+    mockS3CR = JestRatchet.mock<S3CacheRatchetLike>(jest.fn);
   });
 
   it('should test the daemon util', async () => {
@@ -59,7 +60,7 @@ describe('#DaemonUtil', function () {
 
   xit('should test the daemon util streaming', async () => {
     const s3: S3Client = new S3Client({ region: 'us-east-1' });
-    const cache: S3CacheRatchet = new S3CacheRatchet(s3, 'test-bucket');
+    const cache: S3CacheRatchetLike = new S3CacheRatchet(s3, 'test-bucket');
     const key: string = 's3-cache-ratchet.spec.ts';
 
     const newDaemonOptions: DaemonProcessCreateOptions = {
