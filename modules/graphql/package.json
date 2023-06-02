@@ -63,11 +63,10 @@
   },
   "license": "Apache-2.0",
   "dependencies": {
-    "@apollo/client": "3.7.14",
+    "@apollo/client": "3.7.15",
     "@bitblit/ratchet-common": "0.0.0-snapshot",
     "graphql": "16.6.0"
   },
-  "peerDependencies": {
-  },
+  "peerDependencies": {},
   "devDependencies": {}
 }

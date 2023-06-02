@@ -67,7 +67,7 @@
   },
   "license": "Apache-2.0",
   "dependencies": {
-    "@aws-sdk/client-athena": "3.341.0",
+    "@aws-sdk/client-athena": "3.344.0",
     "@bitblit/ratchet-aws": "0.0.0-snapshot",
     "@bitblit/ratchet-common": "0.0.0-snapshot",
     "mailparser": "3.6.4",
