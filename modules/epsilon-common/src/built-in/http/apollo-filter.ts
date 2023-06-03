@@ -69,7 +69,12 @@ export class ApolloFilter {
     const aRequest: HTTPGraphQLRequest = {
       method: eventMethod,
       headers: headerMap,
-      search: eventMethod === 'GET' ? 'IMPLEMENT-ME' : null,
+      search:
+        eventMethod === 'GET' && event?.queryStringParameters
+          ? Object.keys(event.queryStringParameters)
+              .map((k) => encodeURIComponent(k) + '=' + encodeURIComponent(event.queryStringParameters[k]))
+              .join('&')
+          : null,
       body: body,
     };
 
@@ -102,8 +107,9 @@ export class ApolloFilter {
     const httpGraphQLResponse: HTTPGraphQLResponse = result as HTTPGraphQLResponse; // TODO: Use typeguard here instead
 
     const outHeaders: Record<string, string> = {};
-    for (const headersKey in httpGraphQLResponse.headers) {
-      outHeaders[headersKey] = httpGraphQLResponse.headers[headersKey];
+
+    for (const [headersKey, headersValue] of httpGraphQLResponse.headers.entries()) {
+      outHeaders[headersKey] = headersValue;
     }
 
     if (httpGraphQLResponse.body.kind === 'chunked') {
@@ -111,8 +117,10 @@ export class ApolloFilter {
       throw new EpsilonHttpError('Apollo returned chunked result').withHttpStatusCode(500).withRequestId(ContextUtil.currentRequestId());
     }
 
+    const bodyAsString: string = StringRatchet.trimToEmpty(httpGraphQLResponse?.body?.string);
+
     rval = {
-      body: Base64Ratchet.generateBase64VersionOfString(httpGraphQLResponse.body.string),
+      body: Base64Ratchet.generateBase64VersionOfString(bodyAsString),
       headers: outHeaders,
       multiValueHeaders: {}, // TODO: Need setting?
       isBase64Encoded: true,
@@ -121,7 +129,7 @@ export class ApolloFilter {
 
     // Finally, a double check to set the content type correctly if the browser page was shown
     // Since otherwise Apollo defaults it to application/json for some reason
-    if (StringRatchet.trimToEmpty(rval?.body).toUpperCase().includes('<!DOCTYPE HTML>')) {
+    if (eventMethod === 'GET' && rval.headers['content-type'] !== 'text/html' && bodyAsString.indexOf('<!DOCTYPE html>') >= 0) {
       Logger.info('Forcing content type to html for the sandbox page');
       rval.headers = rval.headers || {};
       rval.headers['content-type'] = 'text/html';
