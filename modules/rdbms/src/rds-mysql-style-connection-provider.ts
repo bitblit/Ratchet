@@ -99,10 +99,13 @@ export class RdsMysqlStyleConnectionProvider implements MysqlStyleConnectionProv
   }
 
   public async getConnection(name: string): Promise<Connection | undefined> {
+    Logger.silly('getConnection : %s', name);
     if (!this.dbPromise.has(name)) {
+      Logger.info('No dbPromise found for %s - creating new one', name);
       const dbConfig = await this.getDbConfig(name);
       const connection = this.createDatabaseConnection(dbConfig, this.additionalConfig, true);
       this.dbPromise.set(name, connection);
+      Logger.info('Added dbPromise for %s', name);
     }
     return this.dbPromise.get(name);
   }
@@ -139,7 +142,7 @@ export class RdsMysqlStyleConnectionProvider implements MysqlStyleConnectionProv
     clearCacheOnConnectionFailure: boolean,
     sshConfigPromise?: Promise<SshTunnelConfig>
   ): Promise<Connection | undefined> {
-    Logger.debug('In RdsMysqlStyleConnectionProvider:createDatabaseConnection : %s', dbCfg.label);
+    Logger.info('In RdsMysqlStyleConnectionProvider:createDatabaseConnection : %s', dbCfg.label);
 
     const cfgCopy = _.omit(_.clone(dbCfg), 'label', 'tunnelPort');
     // Verify the tunnel

@@ -291,7 +291,7 @@ export class NamedParameterMariaDbService {
         err.message.includes('closed state') ||
         err.message.includes('This socket has been ended by the other party') ||
         err.message.includes('ETIMEDOUT') ||
-        err.message.includes('NeonNoConnection') ||
+        err.message.includes('RatchetNoConnection') ||
         err.message.includes('ER_LOCK_WAIT_TIMEOUT')
       ) {
         const wait: number = Math.min(1000 * retryCount);
@@ -356,7 +356,7 @@ export class NamedParameterMariaDbService {
     const conn: Connection | undefined = await this.connectionProvider.getConnection(this.queryDefaults.databaseName);
     if (!conn) {
       // If we just couldn't connect to the DB
-      throw new Error('NeonNoConnection : getConnection returned null - likely failed to get connection from db');
+      throw new Error('RatchetNoConnection : getConnection returned null - likely failed to get connection from db');
     }
     return conn;
   }
