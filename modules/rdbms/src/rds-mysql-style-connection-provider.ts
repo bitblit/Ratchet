@@ -1,5 +1,5 @@
 import maria, { Connection, ConnectionOptions } from 'mysql2/promise';
-import { ErrorRatchet, Logger, RequireRatchet } from '@bitblit/ratchet-common';
+import { ErrorRatchet, Logger, RequireRatchet, StringRatchet } from '@bitblit/ratchet-common';
 import { SshTunnelService } from './ssh-tunnel-service.js';
 import { MysqlStyleConnectionProvider } from './model/mysql/mysql-style-connection-provider.js';
 import { ConnectionConfig } from './model/connection-config.js';
@@ -120,7 +120,8 @@ export class RdsMysqlStyleConnectionProvider implements MysqlStyleConnectionProv
   private async getDbConfig(name: string): Promise<DbConfig> {
     Logger.info('RdsMysqlStyleConnectionProvider:getDbConfig:Initiating promise for %s', name);
     const cfgs: ConnectionConfig = await this.configPromise;
-    const dbConfig = cfgs.dbList.find((s) => s.label === name.toLowerCase());
+    const finder: string = StringRatchet.trimToEmpty(name).toLowerCase();
+    const dbConfig = cfgs.dbList.find((s) => StringRatchet.trimToEmpty(s.label).toLowerCase() === finder);
     if (!dbConfig) {
       throw ErrorRatchet.fErr(
         'Cannot find any connection config named %s (Available are %j)',
