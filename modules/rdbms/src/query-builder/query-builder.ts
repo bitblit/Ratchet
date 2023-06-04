@@ -1,7 +1,4 @@
-import { ErrorRatchet } from '@bitblit/ratchet-common';
-import { Logger } from '@bitblit/ratchet-common';
-import { RequireRatchet } from '@bitblit/ratchet-common';
-import { StringRatchet } from '@bitblit/ratchet-common';
+import { ErrorRatchet, Logger, RequireRatchet, StringRatchet } from '@bitblit/ratchet-common';
 import _ from 'lodash';
 
 import { QueryBuilderResult } from './query-builder-result.js';

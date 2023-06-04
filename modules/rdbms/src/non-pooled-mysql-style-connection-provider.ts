@@ -1,7 +1,6 @@
 import { Connection } from 'mysql2/promise';
 import { MysqlStyleConnectionProvider } from './model/mysql/mysql-style-connection-provider.js';
-import { RequireRatchet } from '@bitblit/ratchet-common';
-import { Logger } from '@bitblit/ratchet-common';
+import { Logger, RequireRatchet } from '@bitblit/ratchet-common';
 
 export class NonPooledMysqlStyleConnectionProvider implements MysqlStyleConnectionProvider {
   constructor(private connection: Connection) {

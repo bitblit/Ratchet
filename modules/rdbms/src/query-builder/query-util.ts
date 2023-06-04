@@ -1,5 +1,4 @@
-import { StringRatchet } from '@bitblit/ratchet-common';
-import { Logger } from '@bitblit/ratchet-common';
+import { Logger, StringRatchet } from '@bitblit/ratchet-common';
 
 export class QueryUtil {
   private fields: string[] = [];

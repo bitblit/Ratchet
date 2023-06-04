@@ -1,12 +1,9 @@
 import { NamedParameterMariaDbService } from './named-parameter-maria-db-service.js';
 import { MysqlStyleConnectionProvider } from './model/mysql/mysql-style-connection-provider.js';
 import { ConnectionOptions } from 'mysql2/promise';
-import { ErrorRatchet } from '@bitblit/ratchet-common';
-import { Logger } from '@bitblit/ratchet-common';
-import { StringRatchet } from '@bitblit/ratchet-common';
+import { ErrorRatchet, Logger, StringRatchet } from '@bitblit/ratchet-common';
 import { QueryBuilder } from './query-builder/query-builder.js';
 import { NonPooledMysqlStyleConnectionProvider } from './non-pooled-mysql-style-connection-provider.js';
-import { RequireRatchet } from '@bitblit/ratchet-common';
 import { MysqlUpdateResults } from './model/mysql/mysql-update-results.js';
 import { QueryDefaults } from './model/query-defaults.js';
 import { QueryTextProvider } from './model/query-text-provider.js';
