@@ -69,7 +69,7 @@
     "@aws-sdk/client-cloudwatch": "3.345.0",
     "@aws-sdk/client-cloudwatch-logs": "3.345.0",
     "@aws-sdk/client-dynamodb": "3.345.0",
-    "@aws-sdk/client-ec2": "3.345.0",
+    "@aws-sdk/client-ec2": "3.346.0",
     "@aws-sdk/client-ec2-instance-connect": "3.345.0",
     "@aws-sdk/client-route-53": "3.345.0",
     "@aws-sdk/client-s3": "3.345.0",
@@ -89,7 +89,7 @@
   "devDependencies": {
     "@bitblit/ratchet-jest": "0.0.0-snapshot",
     "@bitblit/ratchet-node-only": "0.0.0-snapshot",
-    "@types/aws-lambda": "8.10.115",
+    "@types/aws-lambda": "8.10.116",
     "aws-sdk-client-mock": "2.1.1"
   }
 }

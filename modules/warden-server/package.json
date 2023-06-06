@@ -66,7 +66,7 @@
     "@bitblit/ratchet-warden-common": "0.0.0-snapshot",
     "@simplewebauthn/browser": "7.2.0",
     "@simplewebauthn/iso-webcrypto": "7.2.0",
-    "@simplewebauthn/server": "7.2.0",
+    "@simplewebauthn/server": "7.3.0",
     "@simplewebauthn/typescript-types": "7.0.0",
     "jwt-decode": "3.1.2"
   },

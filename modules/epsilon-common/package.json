@@ -91,32 +91,26 @@
     "swagger-model-validator": "3.0.21"
   },
   "resolutions": {
-    "ansi-regex": "^5.0.1",
+    "ansi-regex": "^6.0.1",
     "ajv": "^6.12.6",
-    "axios": "^1.2.3",
-    "browserslist": "^4.21.4",
+    "browserslist": "^4.21.7",
     "express": "^4.18.2",
-    "follow-redirects": "^1.15.2",
     "glob-parent": "^6.0.2",
-    "hosted-git-info": "^6.1.1",
-    "jose": "^4.11.2",
-    "json5": "^1.0.2",
+    "jose": "^4.14.4",
+    "json5": "^2.2.3",
     "lodash": "^4.17.21",
-    "minimist": "^1.2.7",
-    "nanoid": "^4.0.0",
-    "node-fetch": "^2.6.7",
+    "minimist": "^1.2.8",
+    "node-fetch": "^3.3.1",
     "nth-check": "^2.1.1",
     "object-path": "^0.11.8",
     "path-parse": "^1.0.7",
     "shelljs": "^0.8.5",
-    "sanitize-html": "^2.8.0",
-    "semver-regex": "^4.0.5",
+    "sanitize-html": "^2.10.0",
     "tmpl": "^1.0.5",
-    "ws": "^8.12.0",
     "y18n": "^5.0.8"
   },
   "peerDependencies": {
-    "@apollo/server": "^4.7.1",
+    "@apollo/server": "^4.7.2",
     "graphql": "^16.6.0"
   },
   "peerDependenciesMeta": {
@@ -128,9 +122,9 @@
     }
   },
   "devDependencies": {
-    "@apollo/server": "4.7.1",
+    "@apollo/server": "4.7.2",
     "@bitblit/ratchet-jest": "0.0.0-snapshot",
-    "@types/aws-lambda": "8.10.115",
+    "@types/aws-lambda": "8.10.116",
     "aws-sdk-client-mock": "2.1.1",
     "graphql": "16.6.0",
     "graphql-tag": "2.12.6"
