@@ -66,8 +66,12 @@
     "ts-enum-util": "4.0.2"
   },
   "peerDependencies": {
+    "ts-enum-util": "^4.0.2"
   },
   "peerDependenciesMeta": {
+    "ts-enum-util": {
+      "optional": true
+    }
   },
   "devDependencies": {
   }
