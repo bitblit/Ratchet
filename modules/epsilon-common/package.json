@@ -71,9 +71,9 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@aws-sdk/abort-controller": "3.347.0",
-    "@aws-sdk/client-s3": "3.347.0",
-    "@aws-sdk/client-sns": "3.347.0",
-    "@aws-sdk/client-sqs": "3.347.0",
+    "@aws-sdk/client-s3": "3.348.0",
+    "@aws-sdk/client-sns": "3.348.0",
+    "@aws-sdk/client-sqs": "3.348.0",
     "@aws-sdk/types": "3.347.0",
     "@aws-sdk/util-waiter": "3.347.0",
     "@bitblit/ratchet-aws": "0.0.0-snapshot",
@@ -125,7 +125,7 @@
     }
   },
   "devDependencies": {
-    "@apollo/server": "4.7.2",
+    "@apollo/server": "4.7.3",
     "@bitblit/ratchet-jest": "0.0.0-snapshot",
     "@types/aws-lambda": "8.10.116",
     "aws-sdk-client-mock": "2.1.1",
