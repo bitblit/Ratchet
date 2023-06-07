@@ -1,4 +1,5 @@
 import { Duration, Lazy, Size, Stack } from 'aws-cdk-lib';
+/*
 import {
   CfnComputeEnvironment,
   CfnComputeEnvironmentProps,
@@ -7,9 +8,11 @@ import {
   CfnJobQueue,
   CfnJobQueueProps,
 } from 'aws-cdk-lib/aws-batch';
+
+ */
 import { Construct } from 'constructs';
 import { DockerImageCode, DockerImageFunction, FunctionUrl, FunctionUrlAuthType, HttpMethod } from 'aws-cdk-lib/aws-lambda';
-import { CfnInstanceProfile, ManagedPolicy, PolicyDocument, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
+import { ManagedPolicy, PolicyDocument, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { Topic } from 'aws-cdk-lib/aws-sns';
 import { Queue } from 'aws-cdk-lib/aws-sqs';
 import { LambdaSubscription } from 'aws-cdk-lib/aws-sns-subscriptions';
@@ -21,6 +24,19 @@ import { StringRatchet } from '@bitblit/ratchet-common';
 import { EpsilonStackUtil } from './epsilon-stack-util.js';
 import { EpsilonApiStackProps } from './epsilon-api-stack-props.js';
 import { RatchetEpsilonDeploymentInfo } from '../../build/ratchet-epsilon-deployment-info.js';
+import {
+  EcsFargateContainerDefinition,
+  EcsFargateContainerDefinitionProps,
+  EcsJobDefinition,
+  EcsJobDefinitionProps,
+  FargateComputeEnvironment,
+  FargateComputeEnvironmentProps,
+  JobQueue,
+  JobQueueProps,
+} from '@aws-cdk/aws-batch-alpha';
+import { SecurityGroup, Subnet, SubnetSelection, Vpc } from 'aws-cdk-lib/aws-ec2';
+
+import { ContainerImage } from 'aws-cdk-lib/aws-ecs';
 
 export class EpsilonApiStack extends Stack {
   private webHandler: DockerImageFunction;
@@ -74,10 +90,13 @@ export class EpsilonApiStack extends Stack {
       },
     });
 
+    /*
     const ecsInstanceProfile = new CfnInstanceProfile(this, id + 'EcsInstanceProfile', {
       path: '/',
       roles: [ecsRole.roleName],
     });
+
+     */
 
     const jobRole = new Role(this, id + 'AwsBatchRole', {
       assumedBy: new ServicePrincipal('ecs-tasks.amazonaws.com'),
@@ -89,73 +108,83 @@ export class EpsilonApiStack extends Stack {
       },
     });
 
+    const subnetSelection: SubnetSelection = {
+      subnets: props.vpcSubnetIds.map((subnetId, index) => Subnet.fromSubnetId(scope, `VpcSubnet${index}`, `subnet-${subnetId}`)),
+    };
+
     // Created AWSServiceBatchRole
     // https://docs.aws.amazon.com/batch/latest/userguide/service_IAM_role.html
-    const compEnvProps: CfnComputeEnvironmentProps = {
+    const compEnvProps: FargateComputeEnvironmentProps = {
+      vpc: Vpc.fromLookup(scope, `Vpc`, { vpcId: props.vpcId }),
+      computeEnvironmentName: id + 'ComputeEnv',
+      enabled: true,
+      maxvCpus: 16,
       replaceComputeEnvironment: false,
-      computeResources: {
-        minvCpus: 0,
-        maxvCpus: 16,
-        instanceTypes: ['optimal'],
-        instanceRole: ecsInstanceProfile.attrArn,
-        ec2KeyPair: props.batchInstancesEc2KeyPairName,
-        type: 'EC2',
-        subnets: props.vpcSubnetIds.map((s) => 'subnet-' + s),
-        securityGroupIds: props.lambdaSecurityGroupIds.map((s) => 'sg-' + s),
-        allocationStrategy: 'BEST_FIT',
-      },
-      serviceRole: 'arn:aws:iam::' + props.env.account + ':role/AWSBatchServiceRole',
-      type: 'MANAGED',
-      state: 'ENABLED',
+      securityGroups: props.lambdaSecurityGroupIds.map((sgId, index) =>
+        SecurityGroup.fromSecurityGroupId(scope, `SecurityGroup${index}`, `sg-${sgId}`)
+      ),
+      serviceRole: Role.fromRoleArn(scope, `${id}ServiceRole`, 'arn:aws:iam::' + props.env.account + ':role/AWSBatchServiceRole'),
+      spot: false,
+      terminateOnUpdate: false,
+      updateTimeout: Duration.hours(4),
+      updateToLatestImageVersion: true,
+      vpcSubnets: subnetSelection,
     };
 
-    const compEnv: CfnComputeEnvironment = new CfnComputeEnvironment(this, id + 'ComputeEnv', compEnvProps);
+    const compEnv: FargateComputeEnvironment = new FargateComputeEnvironment(this, id + 'ComputeEnv', compEnvProps);
 
-    const batchJobQueueProps: CfnJobQueueProps = {
-      state: 'ENABLED',
-      priority: 1,
-      computeEnvironmentOrder: [
-        {
-          computeEnvironment: compEnv.attrComputeEnvironmentArn,
-          order: 1,
-        },
-      ],
-      // the properties below are optional
-      //jobQueueName: 'jobQueueName',
-      //schedulingPolicyArn: 'schedulingPolicyArn',
-      //state: 'state',
-      tags: {
-        tagsKey: id,
-      },
+    const batchJobQueueProps: JobQueueProps = {
+      computeEnvironments: [{ order: 1, computeEnvironment: compEnv }],
+      enabled: true,
+      jobQueueName: id + 'BatchJobQueue',
+      priority: 10,
+      schedulingPolicy: undefined, // Implement later?
     };
 
-    const batchJobQueue = new CfnJobQueue(this, id + 'BatchJobQueue', batchJobQueueProps);
+    const batchJobQueue = new JobQueue(this, id + 'BatchJobQueue', batchJobQueueProps);
 
-    const batchEnvVars: any[] = EpsilonStackUtil.toEnvironmentVariables([
+    const batchEnvVars: Record<string, any> = EpsilonStackUtil.toEnvironmentVariables([
       env,
       props.extraEnvironmentalVars || {},
       {
         EPSILON_RUNNING_IN_AWS_BATCH: true,
       },
     ]);
-    const jobProps: CfnJobDefinitionProps = {
-      type: 'container',
-      platformCapabilities: ['EC2'],
-      containerProperties: {
-        mountPoints: [],
-        volumes: [],
-        memory: 4294,
-        privileged: false,
-        jobRoleArn: jobRole.roleArn,
-        readonlyRootFilesystem: false,
-        vcpus: 1,
-        image: dockerImageAsset.imageUri,
-        command: ['Ref::taskName', 'Ref::taskData', 'Ref::traceId', 'Ref::traceDepth'], // Bootstrap to the Lambda handler
-        environment: batchEnvVars,
-      },
+
+    const containerDef: EcsFargateContainerDefinitionProps = {
+      cpu: 4,
+      image: ContainerImage.fromRegistry(dockerImageAsset.imageUri),
+      memory: Size.mebibytes(8192),
+      assignPublicIp: false,
+      command: ['Ref::taskName', 'Ref::taskData', 'Ref::traceId', 'Ref::traceDepth'], // Bootstrap to the Lambda handler
+      environment: batchEnvVars,
+      executionRole: undefined,
+      fargatePlatformVersion: undefined,
+      jobRole: Role.fromRoleArn(scope, `${id}JobExecutionRole`, jobRole.roleArn),
+      linuxParameters: undefined,
+      readonlyRootFilesystem: false,
+      secrets: undefined,
+      user: undefined,
+      volumes: [],
+      //mountPoints: [],
+      //privileged: false,
+      //jobRoleArn: jobRole.roleArn,
+      //vcpus: 1,
+      //imageConfig: {},
     };
 
-    const jobDef: CfnJobDefinition = new CfnJobDefinition(this, id + 'JobDefinition', jobProps);
+    const fargateContainerDefinitionDef = new EcsFargateContainerDefinition(scope, `${id}FargateContainerDefinition`, containerDef);
+
+    const jobProps: EcsJobDefinitionProps = {
+      jobDefinitionName: id + 'JobDefinition',
+      retryAttempts: 3,
+      retryStrategies: undefined,
+      schedulingPriority: undefined,
+      timeout: undefined,
+      container: fargateContainerDefinitionDef,
+    };
+
+    const jobDef: EcsJobDefinition = new EcsJobDefinition(this, id + 'JobDefinition', jobProps);
 
     const lambdaRole = new Role(this, 'customRole', {
       roleName: id + 'LambdaCustomRole',
@@ -169,8 +198,8 @@ export class EpsilonApiStack extends Stack {
     });
 
     // Add AWS batch vars to the environment
-    env['EPSILON_AWS_BATCH_JOB_DEFINITION_ARN'] = jobDef.ref;
-    env['EPSILON_AWS_BATCH_JOB_QUEUE_ARN'] = batchJobQueue.ref;
+    env['EPSILON_AWS_BATCH_JOB_DEFINITION_ARN'] = jobDef.jobDefinitionArn; //  .ref;
+    env['EPSILON_AWS_BATCH_JOB_QUEUE_ARN'] = batchJobQueue.jobQueueArn; //  .ref;
 
     this.webHandler = new DockerImageFunction(this, id + 'Web', {
       //reservedConcurrentExecutions: 1,

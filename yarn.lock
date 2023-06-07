@@ -191,6 +191,11 @@
   resolved "https://registry.yarnpkg.com/@aws-cdk/asset-node-proxy-agent-v5/-/asset-node-proxy-agent-v5-2.0.153.tgz#75b2725ec7d41fd4c82d5dab9fc2b59c96f990fa"
   integrity sha512-EL2XCW6C3szBPHI4XWQsb68pqc719nR+8sfsEhyjzBNn0idgZg2ViujI3/1/jWnJwHPnvMOKQcmr/bOKzCPAgA==
 
+"@aws-cdk/aws-batch-alpha@2.82.0-alpha.0":
+  version "2.82.0-alpha.0"
+  resolved "https://registry.yarnpkg.com/@aws-cdk/aws-batch-alpha/-/aws-batch-alpha-2.82.0-alpha.0.tgz#07c24ce66dd09b2cca5c8c552c3eb54d790dd4eb"
+  integrity sha512-UfmoWxqL/dIQe7YKvCCBa3az4Zj41u//C3zRPpKsatFuPPLumoTBgYR0uC47ERrYR4GbEn7U4e6zi2whwgatnQ==
+
 "@aws-crypto/crc32@3.0.0":
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/@aws-crypto/crc32/-/crc32-3.0.0.tgz#07300eca214409c33e3ff769cd5697b57fdd38fa"
