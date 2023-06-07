@@ -9,7 +9,7 @@ export class EpsilonStackUtil {
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   private constructor() {}
 
-  public static toEnvironmentVariables(input: Record<string, string>[]): { [key: string]: string } {
+  public static toEnvironmentVariables(input: Record<string, any>[]): { [key: string]: string } {
     const rval: { [key: string]: string } = {};
     input.forEach((inval) => {
       Object.keys(inval).forEach((k) => {
