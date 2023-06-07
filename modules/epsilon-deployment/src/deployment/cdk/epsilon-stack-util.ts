@@ -9,14 +9,11 @@ export class EpsilonStackUtil {
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   private constructor() {}
 
-  public static toEnvironmentVariables(input: Record<string, any>[]): any[] {
-    const rval: any[] = [];
+  public static toEnvironmentVariables(input: Record<string, string>[]): { [key: string]: string } {
+    const rval: { [key: string]: string } = {};
     input.forEach((inval) => {
       Object.keys(inval).forEach((k) => {
-        rval.push({
-          name: k,
-          value: StringRatchet.safeString(inval[k]),
-        });
+        rval[k] = StringRatchet.safeString(inval[k]);
       });
     });
 
