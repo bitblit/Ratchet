@@ -109,21 +109,21 @@ export class EpsilonApiStack extends Stack {
     });
 
     const subnetSelection: SubnetSelection = {
-      subnets: props.vpcSubnetIds.map((subnetId, index) => Subnet.fromSubnetId(scope, `VpcSubnet${index}`, `subnet-${subnetId}`)),
+      subnets: props.vpcSubnetIds.map((subnetId, index) => Subnet.fromSubnetId(this, `VpcSubnet${index}`, `subnet-${subnetId}`)),
     };
 
     // Created AWSServiceBatchRole
     // https://docs.aws.amazon.com/batch/latest/userguide/service_IAM_role.html
     const compEnvProps: FargateComputeEnvironmentProps = {
-      vpc: Vpc.fromLookup(scope, `Vpc`, { vpcId: props.vpcId }),
+      vpc: Vpc.fromLookup(this, `Vpc`, { vpcId: props.vpcId }),
       computeEnvironmentName: id + 'ComputeEnv',
       enabled: true,
       maxvCpus: 16,
       replaceComputeEnvironment: false,
       securityGroups: props.lambdaSecurityGroupIds.map((sgId, index) =>
-        SecurityGroup.fromSecurityGroupId(scope, `SecurityGroup${index}`, `sg-${sgId}`)
+        SecurityGroup.fromSecurityGroupId(this, `SecurityGroup${index}`, `sg-${sgId}`)
       ),
-      serviceRole: Role.fromRoleArn(scope, `${id}ServiceRole`, 'arn:aws:iam::' + props.env.account + ':role/AWSBatchServiceRole'),
+      serviceRole: Role.fromRoleArn(this, `${id}ServiceRole`, 'arn:aws:iam::' + props.env.account + ':role/AWSBatchServiceRole'),
       spot: false,
       terminateOnUpdate: false,
       updateTimeout: Duration.hours(4),
@@ -160,7 +160,7 @@ export class EpsilonApiStack extends Stack {
       environment: batchEnvVars,
       executionRole: undefined,
       fargatePlatformVersion: undefined,
-      jobRole: Role.fromRoleArn(scope, `${id}JobExecutionRole`, jobRole.roleArn),
+      jobRole: Role.fromRoleArn(this, `${id}JobExecutionRole`, jobRole.roleArn),
       linuxParameters: undefined,
       readonlyRootFilesystem: false,
       secrets: undefined,
@@ -173,7 +173,7 @@ export class EpsilonApiStack extends Stack {
       //imageConfig: {},
     };
 
-    const fargateContainerDefinitionDef = new EcsFargateContainerDefinition(scope, `${id}FargateContainerDefinition`, containerDef);
+    const fargateContainerDefinitionDef = new EcsFargateContainerDefinition(this, `${id}FargateContainerDefinition`, containerDef);
 
     const jobProps: EcsJobDefinitionProps = {
       jobDefinitionName: id + 'JobDefinition',
