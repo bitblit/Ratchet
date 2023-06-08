@@ -16,6 +16,11 @@ You may wish to read [the changelog](CHANGELOG.md)
 ## Usage
 
 ### Paginator
+
+https://cloudonaut.io/passwordless-database-authentication-for-aws-lambda/
+
+
+
 (To understand the terminology here you may want to read [this](https://nordicapis.com/understanding-5-types-of-web-api-pagination/))
 
 This library natively supports:

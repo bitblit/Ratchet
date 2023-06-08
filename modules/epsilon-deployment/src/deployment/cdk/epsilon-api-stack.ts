@@ -70,6 +70,7 @@ export class EpsilonApiStack extends Stack {
     const env: Record<string, string> = Object.assign({}, props.extraEnvironmentalVars || {}, epsilonEnv);
 
     // Then build the Batch compute stuff...
+    /*
     const ecsRole = new Role(this, id + 'AwsEcsRole', {
       assumedBy: new ServicePrincipal('ec2.amazonaws.com'),
       inlinePolicies: {
@@ -78,13 +79,7 @@ export class EpsilonApiStack extends Stack {
         }),
       },
     });
-
-    /*
-    const ecsInstanceProfile = new CfnInstanceProfile(this, id + 'EcsInstanceProfile', {
-      path: '/',
-      roles: [ecsRole.roleName],
-    });
-
+    
      */
 
     const jobRole = new Role(this, id + 'AwsBatchRole', {
@@ -147,19 +142,14 @@ export class EpsilonApiStack extends Stack {
       assignPublicIp: false,
       command: ['Ref::taskName', 'Ref::taskData', 'Ref::traceId', 'Ref::traceDepth'], // Bootstrap to the Lambda handler
       environment: batchEnvVars,
-      executionRole: ecsRole,
-      fargatePlatformVersion: undefined,
+      //executionRole: undefined,
+      //fargatePlatformVersion: undefined,
       jobRole: Role.fromRoleArn(this, `${id}JobExecutionRole`, jobRole.roleArn),
-      linuxParameters: undefined,
+      //linuxParameters: undefined,
       readonlyRootFilesystem: false,
-      secrets: undefined,
-      user: undefined,
+      //secrets: undefined,
+      //user: undefined,
       volumes: [],
-      //mountPoints: [],
-      //privileged: false,
-      //jobRoleArn: jobRole.roleArn,
-      //vcpus: 1,
-      //imageConfig: {},
     };
 
     const fargateContainerDefinitionDef = new EcsFargateContainerDefinition(this, `${id}FargateContainerDefinition`, containerDef);
