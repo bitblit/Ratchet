@@ -20,7 +20,6 @@ export class EpsilonStackUtil {
     return rval;
   }
 
-  // Fargate entries below are for : https://repost.aws/knowledge-center/ecs-unable-to-pull-secrets
   public static createDefaultPolicyStatementList(
     props: EpsilonApiStackProps,
     backgroundLambdaSqs: Queue,
@@ -53,24 +52,6 @@ export class EpsilonStackUtil {
         actions: ['batch:*'],
         resources: ['*'],
       }),
-      new PolicyStatement({
-        // Fargate
-        effect: Effect.ALLOW,
-        actions: ['ssm:GetParameters'],
-        resources: ['*'],
-      }),
-      new PolicyStatement({
-        // Fargate
-        effect: Effect.ALLOW,
-        actions: ['secretsmanager:GetSecretValue'],
-        resources: ['*'],
-      }),
-      new PolicyStatement({
-        // Fargate
-        effect: Effect.ALLOW,
-        actions: ['kms:Decrypt'],
-        resources: ['*'],
-      }),
     ]);
     return rval;
   }
@@ -93,9 +74,28 @@ export class EpsilonStackUtil {
     resources: ['*'],
   });
 
+  // Used by fargate to read containers, etc
+  public static readonly ALLOW_FARGATE_SECRET_READING: PolicyStatement[] = [
+    new PolicyStatement({
+      effect: Effect.ALLOW,
+      actions: ['ssm:GetParameters'],
+      resources: ['*'],
+    }),
+    new PolicyStatement({
+      effect: Effect.ALLOW,
+      actions: ['secretsmanager:GetSecretValue'],
+      resources: ['*'],
+    }),
+    new PolicyStatement({
+      effect: Effect.ALLOW,
+      actions: ['kms:Decrypt'],
+      resources: ['*'],
+    }),
+  ];
+
   public static readonly ECS_POLICY_STATEMENTS: PolicyStatement[] = [
     EpsilonStackUtil.ALLOW_ECS,
     EpsilonStackUtil.ALLOW_ECR,
     EpsilonStackUtil.ALLOW_RESTRICTED_LOGS,
-  ];
+  ].concat(EpsilonStackUtil.ALLOW_FARGATE_SECRET_READING);
 }
