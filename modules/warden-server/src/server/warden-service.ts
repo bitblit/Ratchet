@@ -74,6 +74,11 @@ export class WardenService {
     return this.opts.storageProvider.findEntryByContact(contact);
   }
 
+  // Passthru for very common use case
+  public findEntryById(userId: string): Promise<WardenEntry> {
+    return this.opts.storageProvider.findEntryById(userId);
+  }
+
   // A helper function for bridging across GraphQL as an embedded JSON command
   public async processCommandStringToString(cmdString: string, origin: string, loggedInUserId: string): Promise<string> {
     let rval: string = null;
