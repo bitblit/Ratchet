@@ -20,6 +20,7 @@ export class EpsilonStackUtil {
     return rval;
   }
 
+  // Fargate entries below are for : https://repost.aws/knowledge-center/ecs-unable-to-pull-secrets
   public static createDefaultPolicyStatementList(
     props: EpsilonApiStackProps,
     backgroundLambdaSqs: Queue,
@@ -50,6 +51,24 @@ export class EpsilonStackUtil {
       new PolicyStatement({
         effect: Effect.ALLOW,
         actions: ['batch:*'],
+        resources: ['*'],
+      }),
+      new PolicyStatement({
+        // Fargate
+        effect: Effect.ALLOW,
+        actions: ['ssm:GetParameters'],
+        resources: ['*'],
+      }),
+      new PolicyStatement({
+        // Fargate
+        effect: Effect.ALLOW,
+        actions: ['secretsmanager:GetSecretValue'],
+        resources: ['*'],
+      }),
+      new PolicyStatement({
+        // Fargate
+        effect: Effect.ALLOW,
+        actions: ['kms:Decrypt'],
         resources: ['*'],
       }),
     ]);

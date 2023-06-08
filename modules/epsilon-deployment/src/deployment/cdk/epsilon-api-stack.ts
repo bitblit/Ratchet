@@ -79,7 +79,7 @@ export class EpsilonApiStack extends Stack {
         }),
       },
     });
-    
+
      */
 
     const jobRole = new Role(this, id + 'AwsBatchRole', {
@@ -144,7 +144,7 @@ export class EpsilonApiStack extends Stack {
       environment: batchEnvVars,
       //executionRole: undefined,
       //fargatePlatformVersion: undefined,
-      jobRole: Role.fromRoleArn(this, `${id}JobExecutionRole`, jobRole.roleArn),
+      jobRole: Role.fromRoleArn(this, `${id}JobRole`, jobRole.roleArn),
       //linuxParameters: undefined,
       readonlyRootFilesystem: false,
       //secrets: undefined,
