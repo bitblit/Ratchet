@@ -1,15 +1,4 @@
 import { Duration, Lazy, Size, Stack } from 'aws-cdk-lib';
-/*
-import {
-  CfnComputeEnvironment,
-  CfnComputeEnvironmentProps,
-  CfnJobDefinition,
-  CfnJobDefinitionProps,
-  CfnJobQueue,
-  CfnJobQueueProps,
-} from 'aws-cdk-lib/aws-batch';
-
- */
 import { Construct } from 'constructs';
 import { DockerImageCode, DockerImageFunction, FunctionUrl, FunctionUrlAuthType, HttpMethod } from 'aws-cdk-lib/aws-lambda';
 import { ManagedPolicy, PolicyDocument, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
@@ -158,7 +147,7 @@ export class EpsilonApiStack extends Stack {
       assignPublicIp: false,
       command: ['Ref::taskName', 'Ref::taskData', 'Ref::traceId', 'Ref::traceDepth'], // Bootstrap to the Lambda handler
       environment: batchEnvVars,
-      executionRole: undefined,
+      executionRole: ecsRole,
       fargatePlatformVersion: undefined,
       jobRole: Role.fromRoleArn(this, `${id}JobExecutionRole`, jobRole.roleArn),
       linuxParameters: undefined,
