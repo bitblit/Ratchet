@@ -71,7 +71,7 @@ export class EpsilonApiStack extends Stack {
 
     // Then build the Batch compute stuff...
     // This is the role that ECS uses to pull containers, secrets, etc
-    const executionRole = new Role(this, id + 'ExecutionRole', {
+    const executionRole = new Role(this, id + 'BatchExecutionRole', {
       assumedBy: new ServicePrincipal('ecs-tasks.amazonaws.com'), //'ec2.amazonaws.com'),
       managedPolicies: [ManagedPolicy.fromAwsManagedPolicyName('service-role/AWSLambdaVPCAccessExecutionRole')],
       inlinePolicies: {
@@ -82,7 +82,7 @@ export class EpsilonApiStack extends Stack {
     });
 
     // This is the role used by the container to actually do business logic (your code uses this role)
-    const jobRole = new Role(this, id + 'AwsBatchRole', {
+    const jobRole = new Role(this, id + 'BatchJobRole', {
       assumedBy: new ServicePrincipal('ecs-tasks.amazonaws.com'),
       managedPolicies: [ManagedPolicy.fromAwsManagedPolicyName('service-role/AWSLambdaVPCAccessExecutionRole')],
       inlinePolicies: {
