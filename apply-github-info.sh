@@ -8,7 +8,7 @@ CURRENT_DATE=`date +"%Y-%m-%dT%H:%M:%S%z"` && find . -wholename "*/lib/index.mjs
 -e "s/LOCAL-HASH/$GITHUB_SHA/g" \
 -e "s/LOCAL-TAG/$GITHUB_REF_NAME/g" \
 -e "s/LOCAL-NOTES/No notes/g" \
--e "s/LOCAL-ACTOR/$GITHUB_ACTOR/g" \ {} \;
+-e "s/LOCAL-ACTOR/$GITHUB_ACTOR/g" {} \;
 #-e "s/LOCAL-REPOSITORY/$GITHUB_REPOSITORY/g" {} \;
 
 

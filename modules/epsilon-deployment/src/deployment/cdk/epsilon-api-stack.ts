@@ -144,7 +144,7 @@ export class EpsilonApiStack extends Stack {
       environment: batchEnvVars,
       executionRole: executionRole,
       //fargatePlatformVersion: undefined,
-      jobRole: Role.fromRoleArn(this, `${id}JobRole`, jobRole.roleArn),
+      jobRole: jobRole, //Role.fromRoleArn(this, `${id}JobRole`, jobRole.roleArn),
       //linuxParameters: undefined,
       readonlyRootFilesystem: false,
       //secrets: undefined,
