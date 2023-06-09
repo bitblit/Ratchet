@@ -139,7 +139,7 @@ export class EpsilonApiStack extends Stack {
       cpu: 4,
       image: ContainerImage.fromRegistry(dockerImageAsset.imageUri),
       memory: Size.mebibytes(8192),
-      assignPublicIp: false,
+      assignPublicIp: true, // Need this to talk to ECS to get the container
       command: ['Ref::taskName', 'Ref::taskData', 'Ref::traceId', 'Ref::traceDepth'], // Bootstrap to the Lambda handler
       environment: batchEnvVars,
       executionRole: executionRole,
