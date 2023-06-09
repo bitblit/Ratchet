@@ -1,4 +1,4 @@
-import { Bucket, BucketEncryption } from 'aws-cdk-lib/aws-s3';
+import { Bucket, BucketEncryption, IBucket } from 'aws-cdk-lib/aws-s3';
 import { Duration, Stack } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import path from 'path';
@@ -62,14 +62,10 @@ export class EpsilonWebsiteStack extends Stack {
                    */
     });
 
+    // Any extra buckets are assumed to have been created outside of Epsilon, so they are imported not created
     const extraBucketAndSource: BucketAndSourceConfiguration[] = (props.simpleAdditionalMappings || []).map((eb) => {
-      const nextBucket = new Bucket(this, eb.bucketName + 'DeployBucket', {
+      const nextBucket = Bucket.fromBucketAttributes(this, eb.bucketName + 'ImportedBucket', {
         bucketName: eb.bucketName,
-        //removalPolicy: RemovalPolicy.DESTROY,
-        //autoDeleteObjects: true,
-        versioned: false,
-        publicReadAccess: false,
-        encryption: BucketEncryption.S3_MANAGED,
       });
 
       const nextBS: BucketAndSourceConfiguration = {
@@ -213,6 +209,6 @@ export class EpsilonWebsiteStack extends Stack {
 }
 
 export interface BucketAndSourceConfiguration {
-  bucket: Bucket;
+  bucket: IBucket;
   sourceConfig: SourceConfiguration;
 }

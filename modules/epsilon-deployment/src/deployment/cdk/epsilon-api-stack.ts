@@ -112,7 +112,7 @@ export class EpsilonApiStack extends Stack {
       terminateOnUpdate: false,
       updateTimeout: Duration.hours(4),
       updateToLatestImageVersion: true,
-      vpcSubnets: subnetSelection,
+      //vpcSubnets: subnetSelection,
     };
 
     const compEnv: FargateComputeEnvironment = new FargateComputeEnvironment(this, id + 'ComputeEnv', compEnvProps);
