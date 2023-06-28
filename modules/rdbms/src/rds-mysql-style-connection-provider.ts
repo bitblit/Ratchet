@@ -19,13 +19,13 @@ export class RdsMysqlStyleConnectionProvider implements MysqlStyleConnectionProv
 
   private tunnels = new Map<string, SshTunnelContainer>();
   private dbPromise = new Map<string, Promise<Connection | undefined>>(); // Cache the promises to make it a single connection
-  private readonly configPromise: Promise<ConnectionConfig>;
+  private cacheConfigPromise: Promise<ConnectionConfig>;
   constructor(
-    private inConfigPromise: Promise<ConnectionConfig>,
+    private configPromiseProvider: () => Promise<ConnectionConfig>,
     private additionalConfig: ConnectionOptions = RdsMysqlStyleConnectionProvider.DEFAULT_CONNECTION_OPTIONS,
     private ssh?: SshTunnelService
   ) {
-    this.configPromise = this.prepareConnectionConfig(inConfigPromise); // Sets up tunnels, etc
+    this.cacheConfigPromise = this.createConnectionConfig(); // Sets up tunnels, etc
     Logger.info('Added shutdown handler to the process (Only once per instantiation)');
     this.addShutdownHandlerToProcess();
   }
@@ -49,6 +49,7 @@ export class RdsMysqlStyleConnectionProvider implements MysqlStyleConnectionProv
     // First, clear the connection caches so that subsequent connection attempts start fresh
     const oldDbHooks = this.dbPromise;
     const oldSshTunnels = this.tunnels;
+    this.cacheConfigPromise = null; // Re-read config in case the password expired, etc
     this.dbPromise = new Map();
     this.tunnels = new Map();
     // Resolve any leftover DB connections & end them
@@ -122,7 +123,7 @@ export class RdsMysqlStyleConnectionProvider implements MysqlStyleConnectionProv
 
   private async getDbConfig(name: string): Promise<DbConfig> {
     Logger.info('RdsMysqlStyleConnectionProvider:getDbConfig:Initiating promise for %s', name);
-    const cfgs: ConnectionConfig = await this.configPromise;
+    const cfgs: ConnectionConfig = await this.configPromise();
     const finder: string = StringRatchet.trimToEmpty(name).toLowerCase();
     const dbConfig = cfgs.dbList.find((s) => StringRatchet.trimToEmpty(s.label).toLowerCase() === finder);
     if (!dbConfig) {
@@ -185,8 +186,17 @@ export class RdsMysqlStyleConnectionProvider implements MysqlStyleConnectionProv
     return connection;
   }
 
-  private async prepareConnectionConfig(inputPromise: Promise<ConnectionConfig>): Promise<ConnectionConfig> {
-    RequireRatchet.notNullOrUndefined(inputPromise, 'input');
+  private configPromise(): Promise<ConnectionConfig> {
+    if (!this.cacheConfigPromise) {
+      this.cacheConfigPromise = this.createConnectionConfig();
+    }
+    return this.cacheConfigPromise;
+  }
+
+  private async createConnectionConfig(): Promise<ConnectionConfig> {
+    RequireRatchet.notNullOrUndefined(this.configPromiseProvider, 'input');
+    const inputPromise: Promise<ConnectionConfig> = this.configPromiseProvider();
+    Logger.info('Creating connection config');
     const cfg: ConnectionConfig = await inputPromise;
     RequireRatchet.true(cfg.dbList.length > 0, 'input.dbList');
 

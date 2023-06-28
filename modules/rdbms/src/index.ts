@@ -19,6 +19,7 @@ export * from './model/query-text-provider.js';
 export * from './model/sort-direction.js';
 export * from './model/ssh-config.js';
 export * from './model/transaction-isolation-level.js';
+export * from './model/mysql/mysql-db-config.js';
 export * from './model/mysql/mysql-master-status.js';
 export * from './model/mysql/mysql-results-wrapper.js';
 export * from './model/mysql/mysql-slave-status.js';
