@@ -578,6 +578,7 @@ export class DynamoRatchet implements DynamoRatchetLike {
         // Infinite retry - probably not smart
         Logger.debug('Exceeded write throughput for %j : (Waiting 2000 ms)', params);
         await PromiseRatchet.wait(2000);
+        rval = await this.simplePutOnlyIfFieldIsNullOrUndefined(tableName, value, fieldName);
       } else if (err && err['code'] && err['code'] === 'ConditionalCheckFailedException') {
         Logger.debug('Failed to write %j due to null field failure', value);
         rval = false;
