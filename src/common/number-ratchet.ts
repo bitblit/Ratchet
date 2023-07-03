@@ -72,7 +72,13 @@ export class NumberRatchet {
         rval = ifNotNumber;
       }
     } else {
-      rval = useDefaultForNullAndUndefined ? ifNotNumber : input;
+      if (useDefaultForNullAndUndefined === undefined) {
+        // Use backward-compatible behavior.
+        // Return null if input is either undefined or null.
+        rval = null;
+      } else {
+        rval = useDefaultForNullAndUndefined ? ifNotNumber : input;
+      }
     }
 
     return rval;
