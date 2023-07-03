@@ -114,6 +114,12 @@ For most of my non-super-heavy-load stuff I work in _us-east-1_. I do this both
 because I am lazy and because that is where AWS releases the new stuff first. Because of this, you will see that
 while my code allows you to override the region, I always set a biased default. If you don't like that... sorry?
 
+Since AWS version 3 has broken out all the services into separate libraries, there can be issues if you have
+libraries with different versions since they depends on different versions of the '@aws-sdk/types' library.  Therefor,
+Ratchet when upgraded ships with the most recent version of AWS libraries that ALL the dependant libraries support,
+so that we don't get weird matching issues.  See https://github.com/m-radzikowski/aws-sdk-client-mock/issues/10
+for background if you care.
+
 #### Athena
 
 AthenaRatchet is a special case because the datasets you use with Athena tend to be so large you'll often

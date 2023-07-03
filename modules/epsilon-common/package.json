@@ -71,9 +71,9 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@aws-sdk/abort-controller": "3.357.0",
-    "@aws-sdk/client-s3": "3.360.0",
-    "@aws-sdk/client-sns": "3.360.0",
-    "@aws-sdk/client-sqs": "3.360.0",
+    "@aws-sdk/client-s3": "3.357.0",
+    "@aws-sdk/client-sns": "3.357.0",
+    "@aws-sdk/client-sqs": "3.357.0",
     "@aws-sdk/types": "3.357.0",
     "@aws-sdk/util-waiter": "3.357.0",
     "@bitblit/ratchet-aws": "0.0.0-snapshot",
@@ -82,7 +82,7 @@
     "@bitblit/ratchet-node-only": "0.0.0-snapshot",
     "clear": "0.1.0",
     "commander": "11.0.0",
-    "cross-fetch": "3.1.6",
+    "cross-fetch": "3.1.8",
     "js-yaml": "4.1.0",
     "jsonwebtoken": "9.0.0",
     "jwks-rsa": "3.0.1",
@@ -128,7 +128,7 @@
     "@apollo/server": "4.7.5",
     "@bitblit/ratchet-jest": "0.0.0-snapshot",
     "@types/aws-lambda": "8.10.119",
-    "aws-sdk-client-mock": "2.2.0",
+    "aws-sdk-client-mock": "3.0.0",
     "graphql": "16.7.1",
     "graphql-tag": "2.12.6"
   }

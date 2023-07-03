@@ -93,6 +93,7 @@ export class S3CacheRatchet implements S3CacheRatchetLike {
 
   public async fetchCacheFileAsReadableStream(key: string, bucket: string = null): Promise<ReadableStream> {
     const out: GetObjectCommandOutput = await this.fetchCacheFileAsS3GetObjectCommandOutput(key, bucket);
+
     return out.Body.transformToWebStream();
   }
 
