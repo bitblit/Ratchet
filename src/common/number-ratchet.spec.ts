@@ -61,11 +61,14 @@ describe('#safeToNumber', function () {
     expect(result2).toEqual(undefined);
   });
 
-  it('should return the passed value for null/undefined if not set', function () {
+  it('should return null for an undefined input by default', function () {
+    const result: number | null = NumberRatchet.safeNumber(undefined, 0);
+    expect(result).toEqual(null);
+  });
+
+  it('should return null for a null input by default', function () {
     const result: number = NumberRatchet.safeNumber(null, 42);
     expect(result).toEqual(null);
-    const result2: number = NumberRatchet.safeNumber(undefined, 46);
-    expect(result2).toEqual(undefined);
   });
 });
 
