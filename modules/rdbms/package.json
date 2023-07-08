@@ -63,8 +63,5 @@
     "get-port": "7.0.0",
     "mysql2": "3.5.0",
     "tunnel-ssh": "5.1.1"
-  },
-  "peerDependencies": {},
-  "resolutions": {},
-  "devDependencies": {}
+  }
 }

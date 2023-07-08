@@ -3,7 +3,6 @@
   "version": "0.0.0-snapshot",
   "description": "Typescript library to simplify using simplewebauthn and secondary auth methods over GraphQL",
   "sideEffects": false,
-  "bin": {},
   "type": "module",
   "module": "./lib/index.mjs",
   "types": "./lib/index.d.ts",
@@ -63,7 +62,5 @@
     "@simplewebauthn/browser": "7.2.0",
     "@simplewebauthn/typescript-types": "7.0.0",
     "jwt-decode": "3.1.2"
-  },
-  "peerDependencies": {
   }
 }

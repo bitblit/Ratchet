@@ -68,9 +68,5 @@
     "js-yaml": "4.1.0",
     "rxjs": "7.8.1",
     "swagger-model-validator": "3.0.21"
-  },
-  "peerDependencies": {
-  },
-  "resolutions": {},
-  "devDependencies": {}
+  }
 }

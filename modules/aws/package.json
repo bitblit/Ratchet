@@ -112,12 +112,6 @@
     "@aws-sdk/abort-controller": {
       "optional": true
     },
-    "@aws-sdk/types": {
-      "optional": true
-    },
-    "@aws-sdk/util-waiter": {
-      "optional": true
-    },
     "@aws-sdk/client-athena": {
       "optional": true
     },
@@ -165,9 +159,14 @@
     },
     "@aws-sdk/smithy-client": {
       "optional": true
+    },
+    "@aws-sdk/types": {
+      "optional": true
+    },
+    "@aws-sdk/util-waiter": {
+      "optional": true
     }
   },
-  "resolutions": {},
   "devDependencies": {
     "@bitblit/ratchet-jest": "0.0.0-snapshot",
     "@bitblit/ratchet-node-only": "0.0.0-snapshot",

@@ -68,7 +68,5 @@
   },
   "peerDependencies": {
     "jest": "^29.5.0"
-  },
-  "resolutions": {},
-  "devDependencies": {}
+  }
 }

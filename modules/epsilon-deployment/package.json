@@ -68,12 +68,10 @@
     "aws-cdk-lib": "2.87.0",
     "constructs": "10.2.69"
   },
-  "resolutions": {},
   "peerDependencies": {
-    "@bitblit/ratchet-common": "0.0.0-snapshot",
     "@aws-cdk/aws-batch-alpha": "^2.87.0-alpha.0",
+    "@bitblit/ratchet-common": "0.0.0-snapshot",
     "aws-cdk-lib": "^2.87.0",
     "constructs": "^10.2.69"
-  },
-  "devDependencies": {}
+  }
 }

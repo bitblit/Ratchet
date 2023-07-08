@@ -72,7 +72,5 @@
     "ts-enum-util": {
       "optional": true
     }
-  },
-  "devDependencies": {
   }
 }
