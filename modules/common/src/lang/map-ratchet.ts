@@ -5,16 +5,26 @@
 import { KeyValue } from './key-value.js';
 import { Logger } from '../logger/logger.js';
 import { ErrorRatchet } from './error-ratchet.js';
-import { set } from 'lodash-es';
 
 export class MapRatchet {
   // Takes any map with keys that are nested and expands them
   // eg, x['a.b']=2 becomes x['a']={b:2}
-  // See lodash's set command for details on what this can do
-  public static expandNestedKeys<T>(src: any): T {
+  // Renamed because the pre-v4 version deferred to lodash and handled arrays correctly.
+  // This removes the lodash dependency, but isn't fully backward compatible
+  public static expandNestedKeysToObjects<T>(src: any, separator: string = '.'): T {
+    if (!separator || separator.length !== 1) {
+      throw new Error('Invalid separator (must be single character)');
+    }
     const rval: T = {} as T;
     Object.keys(src).forEach((k) => {
-      set(rval, k, src[k]);
+      const path: string[] = k.split(separator);
+      let target: any = rval;
+      while (path.length > 1) {
+        target[path[0]] = target[path[0]] || {};
+        target = target[path[0]];
+        path.splice(0, 1);
+      }
+      target[path[0]] = src[k];
     });
     return rval;
   }

@@ -3,8 +3,10 @@ import { MapRatchet } from './map-ratchet.js';
 
 describe('#toKeyValueList', function () {
   it('should expand a maps nested keys', function () {
-    const test: any = { 'a.b': 'c', 'c.d[0].e': 2 };
-    const out: any = MapRatchet.expandNestedKeys<any>(test);
+    const test: any = { 'a.b': 'c', 'c.d.e': 2, 'a.d': ['BLAH'] };
+    const out: any = MapRatchet.expandNestedKeysToObjects<any>(test);
+
+    console.info(JSON.stringify(out));
 
     expect(out).toBeTruthy();
     expect(out.a).toBeTruthy();
@@ -12,9 +14,11 @@ describe('#toKeyValueList', function () {
     expect(out.a.b).toEqual('c');
     expect(out.c).toBeTruthy();
     expect(out.c.d).toBeTruthy();
-    expect(out.c.d.length).toEqual(1);
-    expect(out.c.d[0].e).toBeTruthy();
-    expect(out.c.d[0].e).toEqual(2);
+    expect(out.c.d.e).toBeTruthy();
+    expect(out.c.d.e).toEqual(2);
+    expect(out.a.d).toBeTruthy();
+    expect(out.a.d.length).toEqual(1);
+    expect(out.a.d[0]).toEqual('BLAH');
   });
 
   it('should convert a map to a key-value list and back', function () {

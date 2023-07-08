@@ -61,18 +61,19 @@
   },
   "license": "Apache-2.0",
   "dependencies": {
-    "@aws-cdk/aws-batch-alpha": "2.86.0-alpha.0",
+    "@aws-cdk/aws-batch-alpha": "2.87.0-alpha.0",
     "@bitblit/ratchet-aws": "0.0.0-snapshot",
     "@bitblit/ratchet-common": "0.0.0-snapshot",
     "@bitblit/ratchet-epsilon-common": "0.0.0-snapshot",
-    "aws-cdk-lib": "2.86.0",
-    "constructs": "10.2.67"
+    "aws-cdk-lib": "2.87.0",
+    "constructs": "10.2.69"
   },
   "resolutions": {},
   "peerDependencies": {
     "@bitblit/ratchet-common": "0.0.0-snapshot",
-    "aws-cdk-lib": "^2.86.0",
-    "constructs": "^10.2.67"
+    "@aws-cdk/aws-batch-alpha": "^2.87.0-alpha.0",
+    "aws-cdk-lib": "^2.87.0",
+    "constructs": "^10.2.69"
   },
   "devDependencies": {}
 }
