@@ -1,8 +1,5 @@
 /*
     Functions for working with numbers
-
-    Functions to not write:
-    - to fixed precision (use lodash round instead)
 */
 
 import { Logger } from '../logger/logger.js';
