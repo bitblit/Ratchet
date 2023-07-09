@@ -38,7 +38,7 @@
   "config": {},
   "scripts": {
     "watch": "tsc-watch",
-    "clean": "shx rm -Rf lib",
+    "clean": "yarn run g:shx rm -Rf lib",
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest",
     "lint": "eslint src/**/*.ts",
     "lint-fix": "eslint --fix src/**/*.ts",

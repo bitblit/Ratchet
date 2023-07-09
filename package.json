@@ -7,7 +7,7 @@
     "packages": [
       "modules/*"
     ],
-    "nohoist": [
+    "_nohoist": [
       "**/json5",
       "**/json5/**",
       "**/ts-jest",
@@ -32,7 +32,13 @@
     "set-codependencies": "./set-codependencies.sh 4.0.$GITHUB_RUN_NUMBER",
     "set-codependencies-alpha": "./set-codependencies.sh 4.0.$GITHUB_RUN_NUMBER-alpha",
     "publish": "wsrun publish --new-version 4.0.$GITHUB_RUN_NUMBER --no-git-tag-version --non-interactive ",
-    "publish-alpha": "wsrun publish --new-version 4.0.$GITHUB_RUN_NUMBER-alpha --no-git-tag-version --non-interactive "
+    "publish-alpha": "wsrun publish --new-version 4.0.$GITHUB_RUN_NUMBER-alpha --no-git-tag-version --non-interactive ",
+    "g:shx": "shx",
+    "g:eslint": "eslint",
+    "g:cross-env": "cross-env",
+    "g:rollup": "rollup",
+    "g:barrelsby": "barrelsby",
+    "g:b2": "cd $INIT_CWD && barrelsby -q --delete -d src  && sed -i 's/\\x27;/.js\\x27;/' src/index.ts"
   },
   "repository": {
     "type": "git",

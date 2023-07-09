@@ -36,14 +36,14 @@
   "config": {},
   "scripts": {
     "watch": "tsc-watch",
-    "clean": "shx rm -Rf lib",
-    "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest",
+    "clean": "yarn run g:shx rm -Rf lib",
+    "test": "yarn run g:cross-env NODE_OPTIONS=--experimental-vm-modules jest",
     "docs": "typedoc",
-    "lint": "eslint src/**/*.ts",
-    "lint-fix": "eslint --fix src/**/*.ts",
-    "generate-barrels": "barrelsby -q --delete -d src -e .*\\.spec\\.ts && sed -i 's/\\x27;/.js\\x27;/' src/index.ts",
+    "lint": "yarn run g:eslint src/**/*.ts",
+    "lint-fix": "yarn run g:eslint --fix src/**/*.ts",
+    "generate-barrels": "yarn run g:barrelsby -q --delete -d src -e .*\\.spec\\.ts && sed -i 's/\\x27;/.js\\x27;/' src/index.ts",
     "_build": "yarn clean && yarn generate-barrels && tsc",
-    "build": "yarn clean && yarn generate-barrels && rollup -c rollup.config.js",
+    "build": "yarn clean && yarn generate-barrels && yarn run g:rollup -c rollup.config.js",
     "force-build": "tsc --build --force"
   },
   "repository": {

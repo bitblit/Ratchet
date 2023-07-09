@@ -37,7 +37,7 @@
   "config": {},
   "scripts": {
     "watch": "tsc-watch",
-    "clean": "shx rm -Rf lib",
+    "clean": "yarn run g:shx rm -Rf lib",
     "test": "jest",
     "docs": "typedoc",
     "lint": "eslint src/**/*.ts",
