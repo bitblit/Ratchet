@@ -30,7 +30,7 @@
     "test": "wsrun mod:test --detectOpenHandles",
     "apply-github-info": "./apply-github-info.sh",
     "set-codependencies": "echo $GITHUB_RUN_NUMBER && ./set-codependencies.sh 4.0.$GITHUB_RUN_NUMBER",
-    "set-codependencies-alpha": "echo $GITHUB_RUN_NUMBER && ./set-codependencies.sh 4.0.$GITHUB_RUN_NUMBER-alpha",
+    "set-codependencies-alpha": "echo $GITHUB_RUN_NUMBER && ./set-codependencies.sh 4.0.\"$GITHUB_RUN_NUMBER\"-alpha",
     "publish": "wsrun publish --new-version 4.0.$GITHUB_RUN_NUMBER --no-git-tag-version --non-interactive ",
     "publish-alpha": "wsrun publish --new-version 4.0.$GITHUB_RUN_NUMBER-alpha --no-git-tag-version --non-interactive ",
     "mod:generate-barrels": "cd $INIT_CWD && barrelsby -e \".*\\.spec\\.ts\" -q --delete -d src && sed -i 's/\\x27;/.js\\x27;/' src/index.ts",
