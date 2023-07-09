@@ -25,20 +25,24 @@
     "Bilal Shahid <bshahid@adomni.com>"
   ],
   "scripts": {
-    "clean": "wsrun clean",
-    "build": "wsrun --serial build",
-    "test": "wsrun test --detectOpenHandles",
+    "clean": "wsrun mod:clean",
+    "build": "wsrun --serial mod:build",
+    "test": "wsrun mod:test --detectOpenHandles",
     "apply-github-info": "./apply-github-info.sh",
     "set-codependencies": "./set-codependencies.sh 4.0.$GITHUB_RUN_NUMBER",
     "set-codependencies-alpha": "./set-codependencies.sh 4.0.$GITHUB_RUN_NUMBER-alpha",
     "publish": "wsrun publish --new-version 4.0.$GITHUB_RUN_NUMBER --no-git-tag-version --non-interactive ",
     "publish-alpha": "wsrun publish --new-version 4.0.$GITHUB_RUN_NUMBER-alpha --no-git-tag-version --non-interactive ",
-    "g:shx": "shx",
-    "g:eslint": "eslint",
-    "g:cross-env": "cross-env",
-    "g:rollup": "rollup",
-    "g:barrelsby": "barrelsby",
-    "g:b2": "cd $INIT_CWD && barrelsby -q --delete -d src  && sed -i 's/\\x27;/.js\\x27;/' src/index.ts"
+    "mod:generate-barrels": "cd $INIT_CWD && barrelsby -e \".*\\.spec\\.ts\" -q --delete -d src && sed -i 's/\\x27;/.js\\x27;/' src/index.ts",
+    "mod:build": "cd $INIT_CWD && yarn mod:clean && yarn mod:generate-barrels && cd $INIT_CWD && rollup -c rollup.config.js",
+    "mod:clean": "cd $INIT_CWD && shx rm -Rf lib",
+    "mod:docs": "cd $INIT_CWD && typedoc",
+    "mod:lint": "cd $INIT_CWD && eslint src/**/*.ts",
+    "mod:lint-fix": "cd $INIT_CWD && eslint --fix src/**/*.ts",
+    "mod:test": "cd $INIT_CWD && cross-env NODE_OPTIONS=--experimental-vm-modules jest",
+    "mod:watch": "cd $INIT_CWD && tsc-watch",
+    "mod:force-build": "cd $INIT_CWD && tsc --build --force"
+
   },
   "repository": {
     "type": "git",

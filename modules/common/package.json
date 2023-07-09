@@ -34,18 +34,7 @@
     "arrowParens": "always"
   },
   "config": {},
-  "scripts": {
-    "watch": "tsc-watch",
-    "clean": "yarn run g:shx rm -Rf lib",
-    "test": "yarn run g:cross-env NODE_OPTIONS=--experimental-vm-modules jest",
-    "docs": "typedoc",
-    "lint": "yarn run g:eslint src/**/*.ts",
-    "lint-fix": "yarn run g:eslint --fix src/**/*.ts",
-    "generate-barrels": "yarn run g:barrelsby -q --delete -d src -e .*\\.spec\\.ts && sed -i 's/\\x27;/.js\\x27;/' src/index.ts",
-    "_build": "yarn clean && yarn generate-barrels && tsc",
-    "build": "yarn clean && yarn generate-barrels && yarn run g:rollup -c rollup.config.js",
-    "force-build": "tsc --build --force"
-  },
+  "scripts": {},
   "repository": {
     "type": "git",
     "url": "https://github.com/bitblit/Ratchet"

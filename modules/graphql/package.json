@@ -36,15 +36,6 @@
   },
   "config": {},
   "scripts": {
-    "watch": "tsc-watch",
-    "clean": "yarn run g:shx rm -Rf lib",
-    "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest",
-    "docs": "typedoc",
-    "lint": "eslint src/**/*.ts",
-    "lint-fix": "eslint --fix src/**/*.ts",
-    "generate-barrels": "barrelsby -q --delete -d src -e .*\\.spec\\.ts && sed -i 's/\\x27;/.js\\x27;/' src/index.ts",
-    "build": "yarn clean && yarn generate-barrels && rollup -c rollup.config.js",
-    "force-build": "tsc --build --force"
   },
   "repository": {
     "type": "git",
