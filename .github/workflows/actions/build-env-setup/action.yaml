@@ -21,7 +21,7 @@ runs:
     - name: Setup NPM token
       shell: bash
       run: >
-        echo "npmAuthToken: \"${{ NPM_AUTH_TOKEN }}\"" >> ~/.yarnrc.yml
+        echo "npmAuthToken: \"${{ inputs.NPM_AUTH_TOKEN }}\"" >> ~/.yarnrc.yml
 
     - name: Check NPM token
       shell: bash
