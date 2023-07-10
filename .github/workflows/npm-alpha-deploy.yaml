@@ -18,6 +18,8 @@ jobs:
 
       - name: Configure environment
         uses: ./.github/workflows/actions/build-env-setup
+        with:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Clean
         run: yarn clean
