@@ -1,5 +1,9 @@
 name: 'Node Setup'
 description: 'Initial setup for node'
+inputs:
+  NPM_AUTH_TOKEN:
+    description: 'NPM_AUTH_TOKEN'
+    required: true
 
 runs:
   using: "composite"
@@ -17,7 +21,7 @@ runs:
     - name: Setup NPM token
       shell: bash
       run: >
-        echo "npmAuthToken: \"${{ NODE_AUTH_TOKEN }}\"" >> ~/.yarnrc.yml
+        echo "npmAuthToken: \"${{ NPM_AUTH_TOKEN }}\"" >> ~/.yarnrc.yml
 
     - name: Check NPM token
       shell: bash
