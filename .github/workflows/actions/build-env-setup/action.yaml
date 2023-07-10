@@ -15,7 +15,7 @@ runs:
         registry-url: 'https://registry.npmjs.org'
 
     - name: Setup NPM token
-      run:
+      run: >
         echo "npmAuthToken: \"$NPM_TOKEN\"" >> ~/.yarnrc.yml
 
     - name: Set Node Memory flags
