@@ -31,8 +31,8 @@
     "apply-github-info": "./apply-github-info.sh",
     "set-codependencies": "echo $GITHUB_RUN_NUMBER && ./set-codependencies.sh 4.0.$GITHUB_RUN_NUMBER",
     "set-codependencies-alpha": "echo $GITHUB_RUN_NUMBER && ./set-codependencies.sh 4.0.\"$GITHUB_RUN_NUMBER\"-alpha",
-    "publish": "wsrun publish --new-version 4.0.$GITHUB_RUN_NUMBER --no-git-tag-version --non-interactive ",
-    "publish-alpha": "wsrun publish --new-version 4.0.\"$GITHUB_RUN_NUMBER\"-alpha --no-git-tag-version --non-interactive ",
+    "publish": "wsrun mod:publish",
+    "publish-alpha": "wsrun mod:publish-alpha",
     "mod:generate-barrels": "cd $INIT_CWD && barrelsby -e \".*\\.spec\\.ts\" -q --delete -d src && sed -i 's/\\x27;/.js\\x27;/' src/index.ts",
     "mod:build": "cd $INIT_CWD && yarn mod:clean && yarn mod:generate-barrels && cd $INIT_CWD && rollup -c rollup.config.js",
     "mod:clean": "cd $INIT_CWD && shx rm -Rf lib",
@@ -41,8 +41,9 @@
     "mod:lint-fix": "cd $INIT_CWD && eslint --fix src/**/*.ts",
     "mod:test": "cd $INIT_CWD && cross-env NODE_OPTIONS=--experimental-vm-modules jest",
     "mod:watch": "cd $INIT_CWD && tsc-watch",
-    "mod:force-build": "cd $INIT_CWD && tsc --build --force"
-
+    "mod:force-build": "cd $INIT_CWD && tsc --build --force",
+    "mod:publish": "cd $INIT_CWD && yarn publish --new-version 4.0.$GITHUB_RUN_NUMBER --no-git-tag-version --non-interactive ",
+    "mod:publish-alpha": "cd $INIT_CWD && yarn publish --new-version 4.0.\"$GITHUB_RUN_NUMBER\"-alpha --no-git-tag-version --non-interactive "
   },
   "repository": {
     "type": "git",
