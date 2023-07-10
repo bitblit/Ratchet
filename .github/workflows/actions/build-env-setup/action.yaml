@@ -19,6 +19,10 @@ runs:
       run: >
         echo "npmAuthToken: \"$NPM_TOKEN\"" >> ~/.yarnrc.yml
 
+    - name: Check NPM token
+      shell: bash
+      run: cat  ~/.yarnrc.yml
+
     - name: Set Node Memory flags
       run: echo "NODE_OPTIONS=\"--max_old_space_size=8192\"" >> $GITHUB_ENV
       shell: bash
