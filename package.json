@@ -32,7 +32,7 @@
     "set-codependencies": "echo $GITHUB_RUN_NUMBER && ./set-codependencies.sh 4.0.$GITHUB_RUN_NUMBER",
     "set-codependencies-alpha": "echo $GITHUB_RUN_NUMBER && ./set-codependencies.sh 4.0.\"$GITHUB_RUN_NUMBER\"-alpha",
     "publish": "wsrun mod:publish",
-    "publish-alpha": "wsrun mod:publish-alpha",
+    "publish-alpha": "wsrun mod:publish",
     "mod:generate-barrels": "cd $INIT_CWD && barrelsby -e \".*\\.spec\\.ts\" -q --delete -d src && sed -i 's/\\x27;/.js\\x27;/' src/index.ts",
     "mod:build": "cd $INIT_CWD && yarn mod:clean && yarn mod:generate-barrels && cd $INIT_CWD && rollup -c rollup.config.js",
     "mod:clean": "cd $INIT_CWD && shx rm -Rf lib",
@@ -42,8 +42,8 @@
     "mod:test": "cd $INIT_CWD && cross-env NODE_OPTIONS=--experimental-vm-modules jest",
     "mod:watch": "cd $INIT_CWD && tsc-watch",
     "mod:force-build": "cd $INIT_CWD && tsc --build --force",
-    "mod:publish": "cd $INIT_CWD && yarn npm publish --new-version 4.0.$GITHUB_RUN_NUMBER --no-git-tag-version --non-interactive ",
-    "mod:publish-alpha": "cd $INIT_CWD && yarn npm publish --new-version 4.0.\"$GITHUB_RUN_NUMBER\"-alpha --no-git-tag-version --non-interactive "
+    "mod:publish": "cd $INIT_CWD && yarn npm publish",
+    "__mod:publish-alpha": "cd $INIT_CWD && yarn npm publish --new-version 4.0.\"$GITHUB_RUN_NUMBER\"-alpha --no-git-tag-version --non-interactive "
   },
   "repository": {
     "type": "git",
