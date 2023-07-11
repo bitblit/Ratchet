@@ -38,5 +38,5 @@ runs:
         java-version: "11"
 
     - name: Yarn install
-      run: yarn install --frozen-lockfile
+      run: yarn install
       shell: bash

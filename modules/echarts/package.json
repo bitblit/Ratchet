@@ -29,8 +29,6 @@
     "arrowParens": "always"
   },
   "config": {},
-  "scripts": {
-  },
   "license": "Apache-2.0",
   "dependencies": {
     "canvas": "2.11.2",

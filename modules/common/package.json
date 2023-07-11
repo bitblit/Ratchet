@@ -34,7 +34,6 @@
     "arrowParens": "always"
   },
   "config": {},
-  "scripts": {},
   "repository": {
     "type": "git",
     "url": "https://github.com/bitblit/Ratchet"
