@@ -42,7 +42,7 @@
     "mod:test": "cd $INIT_CWD && cross-env NODE_OPTIONS=--experimental-vm-modules jest",
     "mod:watch": "cd $INIT_CWD && tsc-watch",
     "mod:force-build": "cd $INIT_CWD && tsc --build --force",
-    "mod:publish": "cd $INIT_CWD && yarn npm publish",
+    "mod:publish": "cd $INIT_CWD && yarn npm publish --access public",
     "__mod:publish-alpha": "cd $INIT_CWD && yarn npm publish --new-version 4.0.\"$GITHUB_RUN_NUMBER\"-alpha --no-git-tag-version --non-interactive "
   },
   "repository": {
