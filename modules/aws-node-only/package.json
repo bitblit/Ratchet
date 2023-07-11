@@ -11,8 +11,8 @@
   "module": "./lib/index.mjs",
   "types": "./lib/index.d.ts",
   "files": [
-    "lib/*",
-    "bin/*"
+    "lib/**",
+    "bin/**"
   ],
   "exports": {
     ".": {
