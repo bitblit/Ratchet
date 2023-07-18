@@ -32,7 +32,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "canvas": "2.11.2",
-    "echarts": "5.4.2"
+    "echarts": "5.4.3"
   },
   "devDependencies": {
     "@bitblit/ratchet-common": "0.0.0-snapshot"
