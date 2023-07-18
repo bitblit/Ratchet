@@ -1,8 +1,16 @@
 import util from 'util';
-import { NumberRatchet } from '@bitblit/ratchet-common';
+import {NumberRatchet} from "../lang/number-ratchet.js";
 
-export class EpsilonHttpError<T = void> extends Error {
-  private static readonly EPSILON_HTTP_ERROR_FLAG_KEY: string = '__epsilonHttpErrorFlag';
+/**
+ * 2023-07-18 : I moved this class from Epsilon over to common because 1) It has no
+ * dependencies so it's a light lift and 2) unicorn showed me it is helpful to have
+ * it available on the client side.
+ *
+ * This class is meant to provide a more robust and standardized error class for
+ * throwing things across the http wire in restful apis.
+ */
+export class RestfulApiHttpError<T = void> extends Error {
+  private static readonly RATCHET_RESTFUL_API_HTTP_ERROR_FLAG_KEY: string = '__ratchetRestfulApiHttpErrorFlag';
   private _httpStatusCode: number = 500;
   private _errors: string[];
   private _detailErrorCode: number;
@@ -12,10 +20,10 @@ export class EpsilonHttpError<T = void> extends Error {
   private _wrappedError: Error;
 
   constructor(...errors: string[]) {
-    super(EpsilonHttpError.combineErrorStringsWithDefault(errors));
-    Object.setPrototypeOf(this, EpsilonHttpError.prototype);
+    super(RestfulApiHttpError.combineErrorStringsWithDefault(errors));
+    Object.setPrototypeOf(this, RestfulApiHttpError.prototype);
     this._errors = errors;
-    this[EpsilonHttpError.EPSILON_HTTP_ERROR_FLAG_KEY] = true; // Just used to tell if one has been wrapped
+    this[RestfulApiHttpError.RATCHET_RESTFUL_API_HTTP_ERROR_FLAG_KEY] = true; // Just used to tell if one has been wrapped
   }
 
   public static combineErrorStringsWithDefault(errors: string[], defMessage: string = 'Internal Server Error'): string {
@@ -27,42 +35,42 @@ export class EpsilonHttpError<T = void> extends Error {
     this.errors = [msg];
   }
 
-  public withFormattedErrorMessage(format: string, ...input: any[]): EpsilonHttpError<T> {
+  public withFormattedErrorMessage(format: string, ...input: any[]): RestfulApiHttpError<T> {
     this.setFormattedErrorMessage(format, ...input);
     return this;
   }
 
-  public withHttpStatusCode(httpStatusCode: number): EpsilonHttpError<T> {
+  public withHttpStatusCode(httpStatusCode: number): RestfulApiHttpError<T> {
     this.httpStatusCode = httpStatusCode; // Call setter
     return this;
   }
 
-  public withErrors(errors: string[]): EpsilonHttpError<T> {
+  public withErrors(errors: string[]): RestfulApiHttpError<T> {
     this.errors = errors; // Call setter
     return this;
   }
 
-  public withDetailErrorCode(detailErrorCode: number): EpsilonHttpError<T> {
+  public withDetailErrorCode(detailErrorCode: number): RestfulApiHttpError<T> {
     this._detailErrorCode = detailErrorCode; // Call setter
     return this;
   }
 
-  public withEndUserErrors(endUserErrors: string[]): EpsilonHttpError<T> {
+  public withEndUserErrors(endUserErrors: string[]): RestfulApiHttpError<T> {
     this._endUserErrors = endUserErrors; // Call setter
     return this;
   }
 
-  public withDetails(details: T): EpsilonHttpError<T> {
+  public withDetails(details: T): RestfulApiHttpError<T> {
     this._details = details; // Call setter
     return this;
   }
 
-  public withRequestId(requestId: string): EpsilonHttpError<T> {
+  public withRequestId(requestId: string): RestfulApiHttpError<T> {
     this._requestId = requestId; // Call setter
     return this;
   }
 
-  public withWrappedError(err: Error): EpsilonHttpError<T> {
+  public withWrappedError(err: Error): RestfulApiHttpError<T> {
     this._wrappedError = err; // Call setter
     return this;
   }
@@ -71,18 +79,18 @@ export class EpsilonHttpError<T = void> extends Error {
     return !!this._wrappedError;
   }
 
-  public static wrapError<T = void>(err: Error): EpsilonHttpError<T> {
-    let rval: EpsilonHttpError<T> = null;
-    if (EpsilonHttpError.objectIsEpsilonHttpError(err)) {
-      rval = err as EpsilonHttpError<T>;
+  public static wrapError<T = void>(err: Error): RestfulApiHttpError<T> {
+    let rval: RestfulApiHttpError<T> = null;
+    if (RestfulApiHttpError.objectIsRestfulApiHttpError(err)) {
+      rval = err as RestfulApiHttpError<T>;
     } else {
-      rval = new EpsilonHttpError<T>(err.message).withWrappedError(err).withHttpStatusCode(500);
+      rval = new RestfulApiHttpError<T>(err.message).withWrappedError(err).withHttpStatusCode(500);
     }
     return rval;
   }
 
-  public static objectIsEpsilonHttpError(obj: any): boolean {
-    return obj && obj['__epsilonHttpErrorFlag'] === true;
+  public static objectIsRestfulApiHttpError(obj: any): boolean {
+    return obj && obj[RestfulApiHttpError.RATCHET_RESTFUL_API_HTTP_ERROR_FLAG_KEY] === true;
   }
 
   get httpStatusCode(): number {
@@ -119,7 +127,7 @@ export class EpsilonHttpError<T = void> extends Error {
 
   set errors(value: string[]) {
     this._errors = value || ['Internal Server Error'];
-    this.message = EpsilonHttpError.combineErrorStringsWithDefault(this._errors);
+    this.message = RestfulApiHttpError.combineErrorStringsWithDefault(this._errors);
   }
 
   set detailErrorCode(value: number) {
@@ -144,8 +152,8 @@ export class EpsilonHttpError<T = void> extends Error {
 
   public static errorIsX0x(errIn: Error, xClass: number): boolean {
     let rval: boolean = false;
-    if (errIn && EpsilonHttpError.objectIsEpsilonHttpError(errIn)) {
-      const err: EpsilonHttpError = errIn as EpsilonHttpError;
+    if (errIn && RestfulApiHttpError.objectIsRestfulApiHttpError(errIn)) {
+      const err: RestfulApiHttpError = errIn as RestfulApiHttpError;
 
       const val: number = NumberRatchet.safeNumber(err.httpStatusCode);
       const bot: number = xClass * 100;
@@ -156,10 +164,10 @@ export class EpsilonHttpError<T = void> extends Error {
   }
 
   public static errorIs40x(err: Error): boolean {
-    return EpsilonHttpError.errorIsX0x(err, 4);
+    return RestfulApiHttpError.errorIsX0x(err, 4);
   }
 
   public static errorIs50x(err: Error): boolean {
-    return EpsilonHttpError.errorIsX0x(err, 5);
+    return RestfulApiHttpError.errorIsX0x(err, 5);
   }
 }

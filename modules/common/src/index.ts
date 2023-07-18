@@ -61,6 +61,7 @@ export * from './network/browser-local-ip-provider.js';
 export * from './network/fixed-local-ip-provider.js';
 export * from './network/local-ip-provider.js';
 export * from './network/network-ratchet.js';
+export * from './network/restful-api-http-error.js';
 export * from './stream/buffer-writable.js';
 export * from './stream/multi-stream.js';
 export * from './stream/stream-ratchet.js';

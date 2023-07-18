@@ -1,16 +1,13 @@
-import { StringRatchet } from '@bitblit/ratchet-common';
-import { Logger } from '@bitblit/ratchet-common';
-import { APIGatewayEvent, Context } from 'aws-lambda';
-import { NumberRatchet } from '@bitblit/ratchet-common';
-import { ExtendedAPIGatewayEvent } from '../../config/http/extended-api-gateway-event.js';
-import { BadRequestError } from '../../http/error/bad-request-error.js';
-import { EpsilonHttpError } from '../../http/error/epsilon-http-error.js';
-import { EpsilonRouter } from '../../http/route/epsilon-router.js';
-import { UnauthorizedError } from '../../http/error/unauthorized-error.js';
-import { NotFoundError } from '../../http/error/not-found-error.js';
-import { ForbiddenError } from '../../http/error/forbidden-error.js';
-import { NotImplemented } from '../../http/error/not-implemented.js';
-import { MisconfiguredError } from '../../http/error/misconfigured-error.js';
+import {Logger, NumberRatchet, StringRatchet,RestfulApiHttpError} from '@bitblit/ratchet-common';
+import {APIGatewayEvent, Context} from 'aws-lambda';
+import {ExtendedAPIGatewayEvent} from '../../config/http/extended-api-gateway-event.js';
+import {BadRequestError} from '../../http/error/bad-request-error.js';
+import {EpsilonRouter} from '../../http/route/epsilon-router.js';
+import {UnauthorizedError} from '../../http/error/unauthorized-error.js';
+import {NotFoundError} from '../../http/error/not-found-error.js';
+import {ForbiddenError} from '../../http/error/forbidden-error.js';
+import {NotImplemented} from '../../http/error/not-implemented.js';
+import {MisconfiguredError} from '../../http/error/misconfigured-error.js';
 
 export class BuiltInHandlers {
   public static async expectedHandledByFilter(evt: ExtendedAPIGatewayEvent, flag?: string): Promise<any> {
@@ -60,7 +57,7 @@ export class BuiltInHandlers {
         case 501:
           throw new NotImplemented('Not Implemented');
         default:
-          throw new EpsilonHttpError<any>()
+          throw new RestfulApiHttpError<any>()
             .withFormattedErrorMessage('Default error - %s', errNumber)
             .withHttpStatusCode(500)
             .withDetails({ src: errNumber })

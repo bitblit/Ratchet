@@ -1,14 +1,11 @@
-import { Logger } from '@bitblit/ratchet-common';
-import { StringRatchet } from '@bitblit/ratchet-common';
-import { MapRatchet } from '@bitblit/ratchet-common';
-import { EventUtil } from '../../http/event-util.js';
-import { BadRequestError } from '../../http/error/bad-request-error.js';
-import { FilterFunction } from '../../config/http/filter-function.js';
-import { ResponseUtil } from '../../http/response-util.js';
-import { EpsilonHttpError } from '../../http/error/epsilon-http-error.js';
-import { FilterChainContext } from '../../config/http/filter-chain-context.js';
-import { MisconfiguredError } from '../../http/error/misconfigured-error.js';
-import { APIGatewayProxyResult } from 'aws-lambda';
+import {Logger, MapRatchet, StringRatchet, RestfulApiHttpError} from '@bitblit/ratchet-common';
+import {EventUtil} from '../../http/event-util.js';
+import {BadRequestError} from '../../http/error/bad-request-error.js';
+import {FilterFunction} from '../../config/http/filter-function.js';
+import {ResponseUtil} from '../../http/response-util.js';
+import {FilterChainContext} from '../../config/http/filter-chain-context.js';
+import {MisconfiguredError} from '../../http/error/misconfigured-error.js';
+import {APIGatewayProxyResult} from 'aws-lambda';
 
 export class BuiltInFilters {
   public static readonly MAXIMUM_LAMBDA_BODY_SIZE_BYTES: number = 1024 * 1024 * 5 - 1024 * 100; // 5Mb - 100k buffer
@@ -127,7 +124,7 @@ export class BuiltInFilters {
       try {
         fCtx.event.parsedBody = EventUtil.jsonBodyToObject(fCtx.event);
       } catch (err) {
-        throw new EpsilonHttpError('Supplied body was not parsable as valid JSON').withHttpStatusCode(400);
+        throw new RestfulApiHttpError('Supplied body was not parsable as valid JSON').withHttpStatusCode(400);
       }
     }
     return true;
@@ -136,7 +133,7 @@ export class BuiltInFilters {
   public static async checkMaximumLambdaBodySize(fCtx: FilterChainContext): Promise<boolean> {
     if (fCtx.result?.body && fCtx.result.body.length > BuiltInFilters.MAXIMUM_LAMBDA_BODY_SIZE_BYTES) {
       const delta: number = fCtx.result.body.length - BuiltInFilters.MAXIMUM_LAMBDA_BODY_SIZE_BYTES;
-      throw new EpsilonHttpError(
+      throw new RestfulApiHttpError(
         'Response size is ' + fCtx.result.body.length + ' bytes, which is ' + delta + ' bytes too large for this handler'
       ).withHttpStatusCode(500);
     }
@@ -195,7 +192,7 @@ export class BuiltInFilters {
             errors
           );
           errors.unshift('Server sent object invalid according to spec');
-          throw new EpsilonHttpError().withErrors(errors).withHttpStatusCode(500).withDetails(fCtx.rawResult);
+          throw new RestfulApiHttpError().withErrors(errors).withHttpStatusCode(500).withDetails(fCtx.rawResult);
         }
       } else {
         Logger.debug('Applied no outbound validation because none set');
@@ -238,7 +235,7 @@ export class BuiltInFilters {
     if (fCtx?.result?.statusCode) {
       if (errCode === null || fCtx.result.statusCode === errCode) {
         Logger.warn('Securing outbound error info (was : %j)', fCtx.result.body);
-        fCtx.rawResult = new EpsilonHttpError(errorMessage).withHttpStatusCode(fCtx.result.statusCode);
+        fCtx.rawResult = new RestfulApiHttpError(errorMessage).withHttpStatusCode(fCtx.result.statusCode);
         const oldResult: APIGatewayProxyResult = fCtx.result;
         fCtx.result = ResponseUtil.errorResponse(fCtx.rawResult);
         // Need this to preserve any CORS headers, etc

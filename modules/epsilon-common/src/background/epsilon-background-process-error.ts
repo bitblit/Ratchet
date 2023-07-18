@@ -69,7 +69,7 @@ export class EpsilonBackgroundProcessError<T = void> extends Error {
   }
 
   public static objectIsEpsilonBackgroundProcessError(obj: any): boolean {
-    return obj && obj['__epsilonHttpErrorFlag'] === true;
+    return obj && obj[EpsilonBackgroundProcessError.EPSILON_BACKGROUND_PROCESS_ERROR_FLAG_KEY] === true;
   }
 
   set errors(value: string[]) {

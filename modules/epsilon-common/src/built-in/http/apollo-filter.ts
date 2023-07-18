@@ -1,10 +1,9 @@
-import { Base64Ratchet, Logger, PromiseRatchet, RequireRatchet, StringRatchet, TimeoutToken } from '@bitblit/ratchet-common';
+import { Base64Ratchet, Logger, PromiseRatchet, RequireRatchet, StringRatchet, TimeoutToken, RestfulApiHttpError } from '@bitblit/ratchet-common';
 import { APIGatewayEvent, Context, ProxyResult } from 'aws-lambda';
 import { RequestTimeoutError } from '../../http/error/request-timeout-error.js';
 import { FilterFunction } from '../../config/http/filter-function.js';
 import { FilterChainContext } from '../../config/http/filter-chain-context.js';
 import { ApolloServer, BaseContext, ContextFunction, HeaderMap, HTTPGraphQLRequest, HTTPGraphQLResponse } from '@apollo/server';
-import { EpsilonHttpError } from '../../http/error/epsilon-http-error.js';
 import { ContextUtil } from '../../util/context-util.js';
 import { EpsilonLambdaApolloOptions } from './apollo/epsilon-lambda-apollo-options.js';
 import { EpsilonLambdaApolloContextFunctionArgument } from './apollo/epsilon-lambda-apollo-context-function-argument.js';
@@ -114,7 +113,7 @@ export class ApolloFilter {
 
     if (httpGraphQLResponse.body.kind === 'chunked') {
       // This is legal according to https://www.apollographql.com/docs/apollo-server/integrations/building-integrations/
-      throw new EpsilonHttpError('Apollo returned chunked result').withHttpStatusCode(500).withRequestId(ContextUtil.currentRequestId());
+      throw new RestfulApiHttpError('Apollo returned chunked result').withHttpStatusCode(500).withRequestId(ContextUtil.currentRequestId());
     }
 
     const bodyAsString: string = StringRatchet.trimToEmpty(httpGraphQLResponse?.body?.string);

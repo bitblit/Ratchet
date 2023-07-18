@@ -106,7 +106,6 @@ export * from './http/auth/web-token-manipulator.js';
 export * from './http/error/bad-gateway.js';
 export * from './http/error/bad-request-error.js';
 export * from './http/error/conflict-error.js';
-export * from './http/error/epsilon-http-error.js';
 export * from './http/error/forbidden-error.js';
 export * from './http/error/gateway-timeout.js';
 export * from './http/error/method-not-allowed-error.js';
