@@ -98,7 +98,7 @@
     }
   },
   "devDependencies": {
-    "@apollo/server": "4.7.5",
+    "@apollo/server": "4.8.0",
     "@bitblit/ratchet-jest": "0.0.0-snapshot",
     "@types/aws-lambda": "8.10.119",
     "aws-sdk-client-mock": "3.0.0",
