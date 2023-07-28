@@ -1,9 +1,8 @@
-import { ExpiringCodeProvider } from './expiring-code-provider';
-import { DynamoRatchet } from '../dynamo-ratchet';
-import { ExpiringCode } from './expiring-code';
-import { DocumentClient } from 'aws-sdk/lib/dynamodb/document_client';
-import { DynamoTableRatchet } from '../dynamo-table-ratchet';
-import PutItemOutput = DocumentClient.PutItemOutput;
+import { ExpiringCodeProvider } from './expiring-code-provider.js';
+import { DynamoRatchet } from '../dynamodb/dynamo-ratchet.js';
+import { ExpiringCode } from './expiring-code.js';
+import { DynamoTableRatchet } from '../dynamodb/dynamo-table-ratchet.js';
+import { PutItemOutput } from '@aws-sdk/client-dynamodb';
 
 export class DynamoExpiringCodeProvider implements ExpiringCodeProvider {
   constructor(private tableName: string, private dynamoRatchet: DynamoRatchet) {}

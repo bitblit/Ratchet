@@ -1,29 +1,33 @@
-import AWS from 'aws-sdk';
-import { DaemonProcessState } from './daemon-process-state';
-import { DaemonUtil } from './daemon-util';
-import { Logger } from '../../common/logger';
-import fs, { ReadStream } from 'fs';
-import { DaemonProcessCreateOptions } from './daemon-process-create-options';
-import { JestRatchet } from '../../jest';
-import { LoggerLevelName, PromiseRatchet } from '../../common';
-import { Subject } from 'rxjs';
-import { PassThrough } from 'stream';
-import { CsvRatchet } from '../../node-csv';
-import { TestItem } from '../../node-csv/csv-ratchet.spec';
-import {S3CacheRatchetLike} from "../s3-cache-ratchet-like";
-import {S3CacheRatchet} from "../s3-cache-ratchet";
+import {S3CacheRatchet} from '../s3/s3-cache-ratchet.js';
+import {DaemonProcessState} from './daemon-process-state.js';
+import {DaemonUtil} from './daemon-util.js';
+import {Logger} from '../../common/logger.js';
+import {PromiseRatchet} from '../../common/promise-ratchet';
+import {LoggerLevelName} from '../../common/logger-support/logger-level-name.js';
+import {CsvRatchet} from '../../node-csv/csv-ratchet.js';
+import {JestRatchet} from '../../jest/jest-ratchet.js';
+import fs, {ReadStream} from 'fs';
+import {DaemonProcessCreateOptions} from './daemon-process-create-options.js';
+import {Subject} from 'rxjs';
+import {PassThrough} from 'stream';
+import {S3Client} from '@aws-sdk/client-s3';
+import {jest} from '@jest/globals';
+import {S3CacheRatchetLike} from '../s3/s3-cache-ratchet-like.js';
 
 let mockS3CR: jest.Mocked<S3CacheRatchetLike>;
 
 describe('#DaemonUtil', function () {
   beforeEach(() => {
-    mockS3CR = JestRatchet.mock();
+    mockS3CR = JestRatchet.mock<S3CacheRatchetLike>(jest.fn);
   });
 
   it('should test the daemon util', async () => {
     mockS3CR.getDefaultBucket.mockReturnValueOnce('TEST-BUCKET');
-    mockS3CR.fetchMetaForCacheFile.mockResolvedValue({ Metadata: { daemon_meta: '{"id":"testid", "completedEpochMS":123456}' } });
-    mockS3CR.preSignedDownloadUrlForCacheFile.mockReturnValueOnce('https://test-link');
+    mockS3CR.fetchMetaForCacheFile.mockResolvedValue({
+      Metadata: { daemon_meta: '{"id":"testid", "completedEpochMS":123456}' },
+      $metadata: null,
+    });
+    mockS3CR.preSignedDownloadUrlForCacheFile.mockResolvedValue('https://test-link');
 
     const t1: DaemonProcessState = await DaemonUtil.stat(mockS3CR, 'test1.csv');
     Logger.info('Got : %j', t1);
@@ -57,7 +61,7 @@ describe('#DaemonUtil', function () {
   });
 
   xit('should test the daemon util streaming', async () => {
-    const s3: AWS.S3 = new AWS.S3({ region: 'us-east-1' });
+    const s3: S3Client = new S3Client({ region: 'us-east-1' });
     const cache: S3CacheRatchetLike = new S3CacheRatchet(s3, 'test-bucket');
     const key: string = 's3-cache-ratchet.spec.ts';
 
@@ -85,7 +89,7 @@ describe('#DaemonUtil', function () {
     Logger.setLevel(LoggerLevelName.debug);
     const sub: Subject<TestItem> = new Subject<TestItem>();
     const out: PassThrough = new PassThrough();
-    const s3: AWS.S3 = new AWS.S3({ region: 'us-east-1' });
+    const s3: S3Client = new S3Client({ region: 'us-east-1' });
     const cache: S3CacheRatchet = new S3CacheRatchet(s3, 'test-bucket');
     const key: string = 'test.csv';
 
@@ -120,3 +124,8 @@ describe('#DaemonUtil', function () {
     Logger.debug('Have res : %d and val : \n%j', result, val);
   });
 });
+
+export interface TestItem {
+  a: number;
+  b: string;
+}

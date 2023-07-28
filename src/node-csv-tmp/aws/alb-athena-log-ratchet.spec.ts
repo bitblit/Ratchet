@@ -1,15 +1,21 @@
-import AWS from 'aws-sdk';
-import { AthenaRatchet } from './athena-ratchet';
-import { Logger } from '../../common/logger';
-import { AlbAthenaLogRatchet, AlbLogRecord, AlbLogRecordQuery } from './alb-athena-log-ratchet';
-import { TimeZoneRatchet } from '../../common/time-zone-ratchet';
-import { LoggerLevelName } from '../../common';
+import {AthenaRatchet} from './athena-ratchet.js';
+import {Logger} from '../../common/logger';
+
+import {AlbAthenaLogRatchet, AlbLogRecord, AlbLogRecordQuery} from './alb-athena-log-ratchet.js';
+import {S3Client} from '@aws-sdk/client-s3';
+import {AthenaClient} from '@aws-sdk/client-athena';
+import { LoggerLevelName } from '../../common/logger-support/logger-level-name.js';
+import { TimeZoneRatchet } from '../../common/time-zone-ratchet.js';
 
 describe('#AlbAthenaLogRatchet', function () {
+  it('Placeholder', async () => {
+    expect(2).toEqual(2);
+  });
+
   xit('should test a query', async () => {
     Logger.setLevel(LoggerLevelName.debug);
-    const athena: AWS.Athena = new AWS.Athena({ region: 'us-east-1' });
-    const s3: AWS.S3 = new AWS.S3({ region: 'us-east-1' });
+    const athena: AthenaClient = new AthenaClient({ region: 'us-east-1' });
+    const s3: S3Client = new S3Client({ region: 'us-east-1' });
 
     const outputDir: string = 's3://alb-log-bucket/temp';
     const athRatchet: AthenaRatchet = new AthenaRatchet(athena, s3, outputDir);

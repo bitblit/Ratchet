@@ -1,16 +1,17 @@
-import AWS from 'aws-sdk';
-import { S3StorageProvider } from './s3-storage-provider';
-import { SimpleCache } from './simple-cache';
-import { SimpleCacheObjectWrapper } from './simple-cache-object-wrapper';
-import { DynamoRatchet } from '../dynamo-ratchet';
-import { DynamoDbSimpleCacheOptions, DynamoDbStorageProvider } from './dynamo-db-storage-provider';
-import {S3CacheRatchetLike} from "../s3-cache-ratchet-like";
-import {S3CacheRatchet} from "../s3-cache-ratchet";
+import { S3StorageProvider } from './s3-storage-provider.js';
+import { SimpleCache } from './simple-cache.js';
+import { S3CacheRatchet } from '../s3/s3-cache-ratchet.js';
+import { SimpleCacheObjectWrapper } from './simple-cache-object-wrapper.js';
+import { DynamoRatchet } from '../dynamodb/dynamo-ratchet.js';
+import { DynamoDbSimpleCacheOptions, DynamoDbStorageProvider } from './dynamo-db-storage-provider.js';
+import { S3Client } from '@aws-sdk/client-s3';
+import { DynamoDBDocument } from '@aws-sdk/lib-dynamodb';
+import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 
 describe('#simpleCache', function () {
   xit('should read/write/delete with an S3 handler', async () => {
-    const s3: AWS.S3 = new AWS.S3({ region: 'us-east-1' });
-    const cache: S3CacheRatchetLike = new S3CacheRatchet(s3, 'test-bucket');
+    const s3: S3Client = new S3Client({ region: 'us-east-1' });
+    const cache: S3CacheRatchet = new S3CacheRatchet(s3, 'test-bucket');
     const s3StorageProvider: S3StorageProvider = new S3StorageProvider(cache, 'test-cache');
 
     const simpleCache: SimpleCache = new SimpleCache(s3StorageProvider, 2000000);
@@ -33,7 +34,7 @@ describe('#simpleCache', function () {
   }, 60_000);
 
   xit('should read/write/delete with an dynamo handler', async () => {
-    const dr: DynamoRatchet = new DynamoRatchet(new AWS.DynamoDB.DocumentClient({ region: 'us-east-1' }));
+    const dr: DynamoRatchet = new DynamoRatchet(DynamoDBDocument.from(new DynamoDBClient({ region: 'us-east-1' })));
     const opts: DynamoDbSimpleCacheOptions = DynamoDbStorageProvider.createDefaultOptions();
     opts.tableName = 'test-table';
     opts.useRangeKeys = false;
@@ -62,7 +63,7 @@ describe('#simpleCache', function () {
   }, 60_000);
 
   xit('should write a bunch', async () => {
-    const dr: DynamoRatchet = new DynamoRatchet(new AWS.DynamoDB.DocumentClient({ region: 'us-east-1' }));
+    const dr: DynamoRatchet = new DynamoRatchet(DynamoDBDocument.from(new DynamoDBClient({ region: 'us-east-1' })));
     const opts: DynamoDbSimpleCacheOptions = DynamoDbStorageProvider.createDefaultOptions();
     opts.tableName = 'test-table';
     opts.useRangeKeys = false;

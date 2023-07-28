@@ -1,13 +1,15 @@
+import fs, { WriteStream } from 'fs';
+import readline from 'readline';
+import { QueryCommandInput, ScanCommandInput } from '@aws-sdk/client-dynamodb';
+import { DynamoRatchet } from '../../aws/dynamodb/dynamo-ratchet';
+import { RequireRatchet } from '../../common/require-ratchet';
 import { StringRatchet } from '../../common/string-ratchet';
 import { Logger } from '../../common/logger';
 import { PromiseRatchet } from '../../common/promise-ratchet';
-import { RequireRatchet } from '../../common/require-ratchet';
-import fs, { WriteStream } from 'fs';
-import { DynamoRatchet } from '../../aws';
-import readline from 'readline';
-import { QueryInput, ScanInput } from 'aws-sdk/clients/dynamodb';
 
 export class DynamoExporter {
+  // Prevent instantiation
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   private constructor() {}
 
   public static async importJsonLFileToTable(dynamo: DynamoRatchet, tableName: string, filename: string): Promise<number> {
@@ -39,7 +41,7 @@ export class DynamoExporter {
     return rval;
   }
 
-  public static async exportScanToJsonLFile(dynamo: DynamoRatchet, scan: ScanInput, filename: string): Promise<number> {
+  public static async exportScanToJsonLFile(dynamo: DynamoRatchet, scan: ScanCommandInput, filename: string): Promise<number> {
     RequireRatchet.notNullOrUndefined(dynamo, 'dynamo');
     RequireRatchet.notNullOrUndefined(scan, 'scan');
     RequireRatchet.notNullOrUndefined(filename, 'filename');
@@ -55,7 +57,7 @@ export class DynamoExporter {
     return rval;
   }
 
-  public static async exportQueryToJsonLFile(dynamo: DynamoRatchet, qry: QueryInput, filename: string): Promise<number> {
+  public static async exportQueryToJsonLFile(dynamo: DynamoRatchet, qry: QueryCommandInput, filename: string): Promise<number> {
     RequireRatchet.notNullOrUndefined(dynamo, 'dynamo');
     RequireRatchet.notNullOrUndefined(qry, 'qry');
     RequireRatchet.notNullOrUndefined(filename, 'filename');
@@ -72,24 +74,24 @@ export class DynamoExporter {
     return rval;
   }
 
-  public static async exportScanToJsonLWriteStream(dynamo: DynamoRatchet, scan: ScanInput, target: WriteStream): Promise<number> {
+  public static async exportScanToJsonLWriteStream(dynamo: DynamoRatchet, scan: ScanCommandInput, target: WriteStream): Promise<number> {
     RequireRatchet.notNullOrUndefined(dynamo, 'dynamo');
     RequireRatchet.notNullOrUndefined(scan, 'scan');
     RequireRatchet.notNullOrUndefined(target, 'target');
 
     const rval: number = await dynamo.fullyExecuteProcessOverScan(scan, async (row) =>
-      DynamoExporter.writeItemToJsonLStream(row, target, false)
+        DynamoExporter.writeItemToJsonLStream(row, target, false)
     );
     return rval;
   }
 
-  public static async exportQueryToJsonLWriteStream(dynamo: DynamoRatchet, qry: QueryInput, target: WriteStream): Promise<number> {
+  public static async exportQueryToJsonLWriteStream(dynamo: DynamoRatchet, qry: QueryCommandInput, target: WriteStream): Promise<number> {
     RequireRatchet.notNullOrUndefined(dynamo, 'dynamo');
     RequireRatchet.notNullOrUndefined(qry, 'qry');
     RequireRatchet.notNullOrUndefined(target, 'target');
 
     const rval: number = await dynamo.fullyExecuteProcessOverQuery(qry, async (row) =>
-      DynamoExporter.writeItemToJsonLStream(row, target, false)
+        DynamoExporter.writeItemToJsonLStream(row, target, false)
     );
     return rval;
   }

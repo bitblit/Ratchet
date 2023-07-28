@@ -3,11 +3,12 @@
   approach.
 */
 
-import { SimpleCacheObjectWrapper } from './simple-cache-object-wrapper';
-import { SimpleCacheStorageProvider } from './simple-cache-storage-provider';
-import { RequireRatchet, StringRatchet } from '../../common';
-import { PutObjectOutput } from 'aws-sdk/clients/s3';
-import {S3CacheRatchetLike} from "../s3-cache-ratchet-like";
+import {SimpleCacheObjectWrapper} from './simple-cache-object-wrapper.js';
+import {SimpleCacheStorageProvider} from './simple-cache-storage-provider.js';
+import {PutObjectOutput} from '@aws-sdk/client-s3';
+import {RequireRatchet} from "../../common/require-ratchet";
+import {StringRatchet} from '../../common/string-ratchet.js';
+import {S3CacheRatchetLike} from '../s3/s3-cache-ratchet-like.js';
 
 export class S3StorageProvider implements SimpleCacheStorageProvider {
   constructor(private s3CacheRatchet: S3CacheRatchetLike, private prefix: string) {
@@ -25,7 +26,7 @@ export class S3StorageProvider implements SimpleCacheStorageProvider {
   }
 
   public async readFromCache<T>(cacheKey: string): Promise<SimpleCacheObjectWrapper<T>> {
-    const rval: SimpleCacheObjectWrapper<T> = await this.s3CacheRatchet.readCacheFileToObject<SimpleCacheObjectWrapper<T>>(
+    const rval: SimpleCacheObjectWrapper<T> = await this.s3CacheRatchet.fetchCacheFileAsObject<SimpleCacheObjectWrapper<T>>(
       this.keyToPath(cacheKey)
     );
     return rval;

@@ -1,11 +1,18 @@
-import { Logger } from '../../common/logger';
-import { DaemonProcessState } from './daemon-process-state';
-import { DaemonProcessCreateOptions } from './daemon-process-create-options';
-import { HeadObjectOutput, PutObjectOutput, PutObjectRequest } from 'aws-sdk/clients/s3';
-import { Readable } from 'stream';
-import {DaemonStreamDataOptions} from "./daemon-stream-data-options";
-import {S3CacheRatchetLike} from "../s3-cache-ratchet-like";
-import {StringRatchet} from "../../common";
+import {Logger} from '../../common/logger.js';
+import {StringRatchet} from '../../common/string-ratchet.js';
+import {DaemonProcessState} from './daemon-process-state.js';
+import {DaemonProcessCreateOptions} from './daemon-process-create-options.js';
+import {
+  CompleteMultipartUploadCommandOutput,
+  HeadObjectOutput,
+  PutObjectCommand,
+  PutObjectOutput,
+  PutObjectRequest,
+} from '@aws-sdk/client-s3';
+import {Readable} from 'stream';
+import {Upload} from '@aws-sdk/lib-storage';
+import {S3CacheRatchetLike} from '../s3/s3-cache-ratchet-like.js';
+import {DaemonStreamDataOptions} from './daemon-stream-data-options.js';
 
 /**
  * Internal utilities which are here for the USE OF THE DAEMON OBJECT ONLY - if you are trying to use this
@@ -68,13 +75,13 @@ export class DaemonUtil {
         Key: s3Key,
         ContentType: newState.contentType,
         Metadata: s3meta,
-        Body: contents,
+        Body: new Blob([contents]),
       };
       if (newState.targetFileName) {
         params.ContentDisposition = 'attachment;filename="' + newState.targetFileName + '"';
       }
 
-      const written: PutObjectOutput = await cache.getS3().putObject(params).promise();
+      const written: PutObjectOutput = await cache.getS3Client().send(new PutObjectCommand(params));
       Logger.silly('Daemon wrote : %s', written);
 
       return DaemonUtil.stat(cache, s3Key);
@@ -95,7 +102,6 @@ export class DaemonUtil {
     inStat.completedEpochMS = new Date().getTime();
     inStat.lastUpdatedMessage = 'Complete';
 
-
     const s3meta: any = {};
     s3meta[DaemonUtil.DAEMON_METADATA_KEY] = JSON.stringify(inStat);
 
@@ -106,12 +112,26 @@ export class DaemonUtil {
       Metadata: s3meta,
       Body: data,
     };
-    const targetFileName: string = StringRatchet.trimToNull(options?.overrideTargetFileName) || StringRatchet.trimToNull(inStat?.targetFileName);
+    const targetFileName: string =
+      StringRatchet.trimToNull(options?.overrideTargetFileName) || StringRatchet.trimToNull(inStat?.targetFileName);
     if (targetFileName) {
       params.ContentDisposition = 'attachment;filename="' + targetFileName + '"';
     }
 
-    const written: PutObjectOutput = await cache.getS3().upload(params).promise();
+    const upload: Upload = new Upload({
+      client: cache.getS3Client(),
+      params: params,
+      tags: [],
+      queueSize: 4,
+      partSize: 1024 * 1024 * 5,
+      leavePartsOnError: false,
+    });
+
+    upload.on('httpUploadProgress', (progress) => {
+      Logger.info('Uploading : %s', progress);
+    });
+    const written: CompleteMultipartUploadCommandOutput = await upload.done();
+
     Logger.silly('Daemon wrote : %s', written);
 
     return DaemonUtil.stat(cache, s3Key);
@@ -140,7 +160,7 @@ export class DaemonUtil {
         stat = JSON.parse(metaString) as DaemonProcessState;
 
         if (stat.completedEpochMS && !stat.error) {
-          stat.link = s3Cache.preSignedDownloadUrlForCacheFile(path);
+          stat.link = await s3Cache.preSignedDownloadUrlForCacheFile(path);
         }
       } else {
         Logger.warn('No metadata found! (Head was %j)', meta);

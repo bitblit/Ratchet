@@ -1,9 +1,6 @@
-import { ExpressionAttributeValueMap, PutItemOutput, QueryInput } from 'aws-sdk/clients/dynamodb';
-import { RuntimeParameterProvider } from './runtime-parameter-provider';
-import { StoredRuntimeParameter } from './stored-runtime-parameter';
-import { DynamoRatchet } from '../dynamo-ratchet';
-import { RequireRatchet } from '../../common/require-ratchet';
-import { Logger } from '../../common/logger';
+import {RuntimeParameterProvider} from './runtime-parameter-provider.js';
+import {StoredRuntimeParameter} from './stored-runtime-parameter.js';
+import {Logger} from '../../common/logger.js';
 
 /**
  * Very simple class, basically here just for unit testing although I suppose you could

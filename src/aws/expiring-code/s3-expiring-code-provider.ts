@@ -1,8 +1,9 @@
-import {ExpiringCodeProvider} from './expiring-code-provider';
-import {ExpiringCode} from './expiring-code';
-import {Logger, RequireRatchet} from '../../common';
-import {PutObjectOutput} from 'aws-sdk/clients/s3';
-import {S3CacheRatchetLike} from "../s3-cache-ratchet-like";
+import {ExpiringCodeProvider} from './expiring-code-provider.js';
+import {ExpiringCode} from './expiring-code.js';
+import {RequireRatchet} from "../../common/require-ratchet";
+import {Logger} from '../../common/logger.js';
+import {PutObjectOutput} from '@aws-sdk/client-s3';
+import {S3CacheRatchetLike} from '../s3/s3-cache-ratchet-like.js';
 
 /* An implementation that puts all the values in a single JSON file in S3
   This won't scale well at all for any kind of serious load, but is the easiest
@@ -17,7 +18,7 @@ export class S3ExpiringCodeProvider implements ExpiringCodeProvider {
   }
 
   public async fetchFile(): Promise<S3ExpiringCodeProviderFileWrapper> {
-    const rval: S3ExpiringCodeProviderFileWrapper = (await this.s3CacheRatchet.readCacheFileToObject<S3ExpiringCodeProviderFileWrapper>(
+    const rval: S3ExpiringCodeProviderFileWrapper = (await this.s3CacheRatchet.fetchCacheFileAsObject<S3ExpiringCodeProviderFileWrapper>(
       this.keyName
     )) || {
       data: [],

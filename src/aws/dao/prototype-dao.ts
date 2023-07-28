@@ -1,8 +1,10 @@
-import { MapRatchet, RequireRatchet, StringRatchet } from '../../common';
-import { PrototypeDaoProvider } from './prototype-dao-provider';
-import { PrototypeDaoDb } from './prototype-dao-db';
-import { PrototypeDaoConfig } from './prototype-dao-config';
-import { DateTime } from 'luxon';
+import {RequireRatchet} from "../../common/require-ratchet";
+import {StringRatchet} from '../../common/string-ratchet.js';
+import {MapRatchet} from "../../common/map-ratchet";
+import {PrototypeDaoProvider} from './prototype-dao-provider.js';
+import {PrototypeDaoDb} from './prototype-dao-db.js';
+import {PrototypeDaoConfig} from './prototype-dao-config.js';
+import {DateTime} from 'luxon';
 
 /*
   PrototypeDao makes it quick to stand up a simple data access object

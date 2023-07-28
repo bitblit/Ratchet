@@ -1,8 +1,9 @@
-import { JestRatchet } from '../../jest';
-import { S3ExpiringCodeProvider, S3ExpiringCodeProviderFileWrapper } from './s3-expiring-code-provider';
-import { PutObjectOutput } from 'aws-sdk/clients/s3';
-import { ExpiringCode } from './expiring-code';
-import {S3CacheRatchetLike} from "../s3-cache-ratchet-like";
+import {JestRatchet} from '../../jest/jest-ratchet.js';
+import {S3ExpiringCodeProvider, S3ExpiringCodeProviderFileWrapper} from './s3-expiring-code-provider.js';
+import {PutObjectCommandOutput, PutObjectOutput} from '@aws-sdk/client-s3';
+import {ExpiringCode} from './expiring-code.js';
+import {jest} from '@jest/globals';
+import {S3CacheRatchetLike} from '../s3/s3-cache-ratchet-like.js';
 
 let mockS3Ratchet: jest.Mocked<S3CacheRatchetLike>;
 const testCode: ExpiringCode = { code: '12345', context: 'ctx', expiresEpochMS: Date.now() + 100_000, tags: ['tag1'] };
@@ -10,7 +11,7 @@ const testCode2: ExpiringCode = { code: '45678', context: 'ctx', expiresEpochMS:
 
 describe('#S3ExpiringCodeProvider', () => {
   beforeEach(() => {
-    mockS3Ratchet = JestRatchet.mock();
+    mockS3Ratchet = JestRatchet.mock(jest.fn);
     mockS3Ratchet.getDefaultBucket.mockReturnValue('TEST-BUCKET');
   });
 
@@ -25,7 +26,7 @@ describe('#S3ExpiringCodeProvider', () => {
 
   it('Should update file', async () => {
     const val: S3ExpiringCodeProvider = new S3ExpiringCodeProvider(mockS3Ratchet, 'test.json');
-    mockS3Ratchet.writeObjectToCacheFile.mockResolvedValue({} as PutObjectOutput);
+    mockS3Ratchet.writeObjectToCacheFile.mockResolvedValue({} as unknown as PutObjectCommandOutput);
 
     const wrote: PutObjectOutput = await val.updateFile([testCode]);
 
@@ -33,7 +34,7 @@ describe('#S3ExpiringCodeProvider', () => {
   });
 
   it('Should check code', async () => {
-    mockS3Ratchet.readCacheFileToObject.mockResolvedValue({
+    mockS3Ratchet.fetchCacheFileAsObject.mockResolvedValue({
       data: [testCode],
       lastModifiedEpochMS: 1234,
     });
@@ -47,11 +48,11 @@ describe('#S3ExpiringCodeProvider', () => {
   });
 
   it('Should store code', async () => {
-    mockS3Ratchet.readCacheFileToObject.mockResolvedValue({
+    mockS3Ratchet.fetchCacheFileAsObject.mockResolvedValue({
       data: [testCode],
       lastModifiedEpochMS: 1234,
     });
-    mockS3Ratchet.writeObjectToCacheFile.mockResolvedValue({} as PutObjectOutput);
+    mockS3Ratchet.writeObjectToCacheFile.mockResolvedValue({} as unknown as PutObjectCommandOutput);
     const val: S3ExpiringCodeProvider = new S3ExpiringCodeProvider(mockS3Ratchet, 'test.json');
 
     const output: boolean = await val.storeCode(testCode2);

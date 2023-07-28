@@ -1,8 +1,8 @@
-import { RequireRatchet } from '../../common';
-import { PutObjectOutput } from 'aws-sdk/clients/s3';
-import { PrototypeDaoProvider } from './prototype-dao-provider';
-import { PrototypeDaoDb } from './prototype-dao-db';
-import {S3CacheRatchetLike} from "../s3-cache-ratchet-like";
+import {RequireRatchet} from "../../common/require-ratchet";
+import {PutObjectOutput} from '@aws-sdk/client-s3';
+import {PrototypeDaoProvider} from './prototype-dao-provider.js';
+import {PrototypeDaoDb} from './prototype-dao-db.js';
+import {S3CacheRatchetLike} from '../s3/s3-cache-ratchet-like.js';
 
 /* An implementation that puts all the values in a single JSON file in S3
   This won't scale well at all for any kind of serious load, but is the easiest
@@ -25,7 +25,7 @@ export class S3PrototypeDaoProvider<T> implements PrototypeDaoProvider<T> {
   }
 
   public async loadDatabase(): Promise<PrototypeDaoDb<T>> {
-    const rval: PrototypeDaoDb<T> = (await this.s3CacheRatchet.readCacheFileToObject<PrototypeDaoDb<any>>(this.keyName)) || {
+    const rval: PrototypeDaoDb<T> = (await this.s3CacheRatchet.fetchCacheFileAsObject<PrototypeDaoDb<any>>(this.keyName)) || {
       items: [],
       lastModifiedEpochMS: Date.now(),
     };

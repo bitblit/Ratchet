@@ -1,11 +1,13 @@
-import { DynamoRuntimeParameterProvider } from './dynmo-runtime-parameter-provider';
-import { DynamoRatchet } from '../dynamo-ratchet';
-import { StoredRuntimeParameter } from './stored-runtime-parameter';
-import { JestRatchet } from '../../jest/jest-ratchet';
-import { LoggerLevelName } from '../../common/logger-support/logger-level-name';
-import { Logger } from '../../common/logger';
-import { RuntimeParameterRatchet } from '../runtime-parameter-ratchet';
-import { PromiseRatchet } from '../../common/promise-ratchet';
+import {DynamoRuntimeParameterProvider} from './dynamo-runtime-parameter-provider.js';
+import {DynamoRatchet} from '../dynamodb/dynamo-ratchet.js';
+import {StoredRuntimeParameter} from './stored-runtime-parameter.js';
+import {RuntimeParameterRatchet} from './runtime-parameter-ratchet.js';
+import {PutItemCommandOutput} from '@aws-sdk/client-dynamodb';
+import {Logger} from '../../common/logger.js';
+import {PromiseRatchet} from '../../common/promise-ratchet';
+import {LoggerLevelName} from '../../common/logger-support/logger-level-name.js';
+import {JestRatchet} from '../../jest/jest-ratchet.js';
+import {jest} from '@jest/globals';
 
 let mockDynamoRatchet: jest.Mocked<DynamoRatchet>;
 const testEntry: StoredRuntimeParameter = { groupId: 'test', paramKey: 'test', paramValue: '15', ttlSeconds: 0.5 };
@@ -13,14 +15,14 @@ const testEntry2: StoredRuntimeParameter = { groupId: 'test', paramKey: 'test1',
 
 describe('#runtimeParameterRatchet', function () {
   beforeEach(() => {
-    mockDynamoRatchet = JestRatchet.mock();
+    mockDynamoRatchet = JestRatchet.mock(jest.fn);
   });
 
   it('fetch and cache a runtime parameter', async () => {
     Logger.setLevel(LoggerLevelName.silly);
     const tableName: string = 'default-table';
     mockDynamoRatchet.simpleGet.mockResolvedValue(testEntry);
-    mockDynamoRatchet.simplePut.mockResolvedValue({});
+    mockDynamoRatchet.simplePut.mockResolvedValue({} as PutItemCommandOutput);
     const drpp: DynamoRuntimeParameterProvider = new DynamoRuntimeParameterProvider(mockDynamoRatchet, tableName);
     const rpr: RuntimeParameterRatchet = new RuntimeParameterRatchet(drpp);
 

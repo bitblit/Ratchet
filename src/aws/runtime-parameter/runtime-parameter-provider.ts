@@ -3,7 +3,7 @@
  * object from _somewhere_
  * They do NOT handle local caching - the RuntimeParameterRatchet does that
  */
-import { StoredRuntimeParameter } from './stored-runtime-parameter';
+import { StoredRuntimeParameter } from './stored-runtime-parameter.js';
 
 export interface RuntimeParameterProvider {
   readParameter(groupId: string, paramKey: string): Promise<StoredRuntimeParameter>;

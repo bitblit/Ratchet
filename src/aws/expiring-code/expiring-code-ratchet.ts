@@ -1,7 +1,8 @@
-import { RequireRatchet, StringRatchet } from '../../common';
-import { ExpiringCodeProvider } from './expiring-code-provider';
-import { ExpiringCodeParams } from './expiring-code-params';
-import { ExpiringCode } from './expiring-code';
+import {ExpiringCodeProvider} from './expiring-code-provider.js';
+import {ExpiringCodeParams} from './expiring-code-params.js';
+import {ExpiringCode} from './expiring-code.js';
+import { RequireRatchet } from '../../common/require-ratchet.js';
+import { StringRatchet } from '../../common/string-ratchet.js';
 
 /**
  * Supports creating and checking single use codes

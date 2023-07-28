@@ -71,10 +71,29 @@
     "ts-enum-util": "4.0.2"
   },
   "peerDependencies": {
-    "@apollo/client": "3.7.8",
-    "@types/aws-lambda": "8.10.110",
-    "aws-sdk": "2.1316.0",
-    "graphql": "16.6.0"
+    "@apollo/client": "^3.7.17",
+    "@types/aws-lambda": "^8.10.119",
+    "@aws-sdk/abort-controller": "^3.370.0",
+    "@aws-sdk/client-athena": "^3.370.0",
+    "@aws-sdk/client-batch": "^3.370.0",
+    "@aws-sdk/client-cloudwatch": "^3.370.0",
+    "@aws-sdk/client-cloudwatch-logs": "^3.370.0",
+    "@aws-sdk/client-dynamodb": "^3.370.0",
+    "@aws-sdk/client-ec2": "^3.370.0",
+    "@aws-sdk/client-ec2-instance-connect": "^3.370.0",
+    "@aws-sdk/client-route-53": "^3.370.0",
+    "@aws-sdk/client-s3": "^3.370.0",
+    "@aws-sdk/client-ses": "^3.370.0",
+    "@aws-sdk/client-sns": "^3.370.0",
+    "@aws-sdk/client-ssm": "^3.370.0",
+    "@aws-sdk/lib-dynamodb": "^3.370.0",
+    "@aws-sdk/lib-storage": "^3.370.0",
+    "@aws-sdk/s3-request-presigner": "^3.370.0",
+    "@aws-sdk/smithy-client": "^3.370.0",
+    "@aws-sdk/types": "^3.370.0",
+    "@aws-sdk/util-waiter": "^3.370.0",
+    "graphql": "^16.7.1",
+    "unzipper": "^0.10.14"
   },
   "peerDependenciesMeta": {
     "@types/aws-lambda": {
@@ -83,17 +102,92 @@
     "@apollo/client": {
       "optional": true
     },
-    "aws-sdk": {
+    "@aws-sdk/abort-controller": {
+      "optional": true
+    },
+    "@aws-sdk/client-athena": {
+      "optional": true
+    },
+    "@aws-sdk/client-batch": {
+      "optional": true
+    },
+    "@aws-sdk/client-cloudwatch": {
+      "optional": true
+    },
+    "@aws-sdk/client-cloudwatch-logs": {
+      "optional": true
+    },
+    "@aws-sdk/client-dynamodb": {
+      "optional": true
+    },
+    "@aws-sdk/client-ec2": {
+      "optional": true
+    },
+    "@aws-sdk/client-ec2-instance-connect": {
+      "optional": true
+    },
+    "@aws-sdk/client-route-53": {
+      "optional": true
+    },
+    "@aws-sdk/client-s3": {
+      "optional": true
+    },
+    "@aws-sdk/client-ses": {
+      "optional": true
+    },
+    "@aws-sdk/client-sns": {
+      "optional": true
+    },
+    "@aws-sdk/client-ssm": {
+      "optional": true
+    },
+    "@aws-sdk/lib-dynamodb": {
+      "optional": true
+    },
+    "@aws-sdk/lib-storage": {
+      "optional": true
+    },
+    "@aws-sdk/s3-request-presigner": {
+      "optional": true
+    },
+    "@aws-sdk/smithy-client": {
+      "optional": true
+    },
+    "@aws-sdk/types": {
+      "optional": true
+    },
+    "@aws-sdk/util-waiter": {
       "optional": true
     },
     "graphql": {
+      "optional": true
+    },
+    "unzipper": {
       "optional": true
     }
   },
   "optionalDependencies": {
     "@apollo/client": "3.7.17",
     "@types/aws-lambda": "8.10.119",
-    "aws-sdk": "2.1409.0",
+    "@aws-sdk/abort-controller": "3.370.0",
+    "@aws-sdk/client-athena": "3.370.0",
+    "@aws-sdk/client-batch": "3.370.0",
+    "@aws-sdk/client-cloudwatch": "3.370.0",
+    "@aws-sdk/client-cloudwatch-logs": "3.370.0",
+    "@aws-sdk/client-dynamodb": "3.370.0",
+    "@aws-sdk/client-ec2": "3.370.0",
+    "@aws-sdk/client-ec2-instance-connect": "3.370.0",
+    "@aws-sdk/client-route-53": "3.370.0",
+    "@aws-sdk/client-s3": "3.370.0",
+    "@aws-sdk/client-ses": "3.370.0",
+    "@aws-sdk/client-sns": "3.370.0",
+    "@aws-sdk/client-ssm": "3.370.0",
+    "@aws-sdk/lib-dynamodb": "3.370.0",
+    "@aws-sdk/lib-storage": "3.370.0",
+    "@aws-sdk/s3-request-presigner": "3.370.0",
+    "@aws-sdk/smithy-client": "3.370.0",
+    "@aws-sdk/types": "3.370.0",
+    "@aws-sdk/util-waiter": "3.370.0",
     "cross-fetch": "4.0.0",
     "csv": "6.3.1",
     "graphql": "16.7.1",
@@ -107,6 +201,7 @@
     "rxjs": "7.8.1",
     "swagger-model-validator": "3.0.21",
     "tmp": "0.2.1",
+    "unzipper": "0.10.14",
     "walk": "2.3.15"
   },
   "resolutions": {
@@ -132,6 +227,7 @@
     "@types/yargs": "17.0.24",
     "@typescript-eslint/eslint-plugin": "6.2.0",
     "@typescript-eslint/parser": "6.2.0",
+    "aws-sdk-client-mock": "3.0.0",
     "barrelsby": "2.8.0",
     "eslint": "8.46.0",
     "eslint-config-prettier": "8.9.0",

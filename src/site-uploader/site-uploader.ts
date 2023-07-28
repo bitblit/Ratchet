@@ -1,16 +1,16 @@
 import fs from 'fs';
 import walk from 'walk';
-import AWS from 'aws-sdk';
-import { ClientConfiguration } from 'aws-sdk/clients/s3';
+import { S3Client } from '@aws-sdk/client-s3';
 import path from 'path';
 import mime from 'mime-types';
+import { Upload } from '@aws-sdk/lib-storage';
 import { Logger } from '../common/logger';
 
 export class SiteUploader {
   private srcDir: string;
   private bucketName: string;
   private config: any;
-  private readonly s3: AWS.S3 = new AWS.S3({ region: 'us-east-1' } as ClientConfiguration);
+  private readonly s3: S3Client = new S3Client({ region: 'us-east-1' });
 
   constructor(srcDir: string, bucketName: string, configFile: string) {
     this.srcDir = srcDir;
@@ -18,19 +18,22 @@ export class SiteUploader {
     this.config = JSON.parse(fs.readFileSync(configFile).toString('ascii'));
   }
 
-  public static createFromArgs(): SiteUploader {
-    if (process && process.argv && process.argv.length > 3 && process.argv[process.argv.length - 4].indexOf('site-uploader') > -1) {
-      const src = process.argv[2];
-      const bucket = process.argv[3];
-      const configFile = process.argv[4];
+  public static createFromArgs(args: string[]): SiteUploader {
+    if (args && args.length === 3) {
+      const src = args[0];
+      const bucket = args[1];
+      const configFile = args[2];
 
       return new SiteUploader(src, bucket, configFile);
     } else {
-      console.log(
-        'Usage : node site-uploader {srcDir} {bucket} {configFile} (Found ' + process.argv.length + ' arguments, need at least 4)'
-      );
+      console.log('Usage : node ratchet-site-uploader {srcDir} {bucket} {configFile} (Found ' + args + ' arguments, need 3)');
       return null;
     }
+  }
+
+  public static async runFromCliArgs(args: string[]): Promise<void> {
+    const inst: SiteUploader = SiteUploader.createFromArgs(args);
+    return inst.runPump();
   }
 
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
@@ -85,37 +88,48 @@ export class SiteUploader {
       const walker = walk.walk(this.srcDir, options);
 
       walker.on(
-        'file',
-        function (root, fileStats, next) {
-          Logger.info('Processing %j', fileStats.name);
-          const prefix: string = root == this.srcDir ? '' : root.substring(this.srcDir.length + 1) + '/';
+          'file',
+          function (root, fileStats, next) {
+            Logger.info('Processing %j', fileStats.name);
+            const prefix: string = root == this.srcDir ? '' : root.substring(this.srcDir.length + 1) + '/';
 
-          const proc: any = this.findMatch(prefix, fileStats.name, this.config);
-          const key: string = prefix + fileStats.name;
-          Logger.info('Uploading file : %s/%s to key %s with %j', root, fileStats.name, key, proc);
+            const proc: any = this.findMatch(prefix, fileStats.name, this.config);
+            const key: string = prefix + fileStats.name;
+            Logger.info('Uploading file : %s/%s to key %s with %j', root, fileStats.name, key, proc);
 
-          const params: any = proc && proc.putParams ? JSON.parse(JSON.stringify(proc.putParams)) : {};
+            const params: any = proc && proc.putParams ? JSON.parse(JSON.stringify(proc.putParams)) : {};
 
-          params.Bucket = this.bucketName;
-          params.Key = key;
-          params.Body = fs.readFileSync(path.join(root, fileStats.name));
+            params.Bucket = this.bucketName;
+            params.Key = key;
+            params.Body = fs.readFileSync(path.join(root, fileStats.name));
 
-          if (!params.ContentType) {
-            params.ContentType = this.findMime(fileStats.name, this.config);
-          }
+            if (!params.ContentType) {
+              params.ContentType = this.findMime(fileStats.name, this.config);
+            }
 
-          this.s3
-            .putObject(params)
-            .promise()
-            .then((result) => {
-              Logger.info('Finished upload of %s: %j', key, result);
-              next();
-            })
-            .catch((err) => {
-              Logger.warn('%s failed to upload : %s : Continuing', key, err);
-              next();
+            const upload: Upload = new Upload({
+              client: this.s3,
+              params: params,
+              tags: [],
+              queueSize: 4,
+              partSize: 1024 * 1024 * 5,
+              leavePartsOnError: false,
             });
-        }.bind(this)
+
+            upload.on('httpUploadProgress', (progress) => {
+              Logger.info('Uploading : %s', progress);
+            });
+            upload
+                .done()
+                .then((result) => {
+                  Logger.info('Finished upload of %s: %j', key, result);
+                  next();
+                })
+                .catch((err) => {
+                  Logger.warn('%s failed to upload : %s : Continuing', key, err);
+                  next();
+                });
+          }.bind(this)
       );
 
       walker.on('errors', function (root, nodeStatsArray, next) {

@@ -1,12 +1,11 @@
-import AWS from 'aws-sdk';
-import { ClientConfiguration } from 'aws-sdk/clients/s3';
-import { EnvironmentServiceProvider } from './environment-service-provider';
-import { RequireRatchet } from '../../common/require-ratchet';
-import { StopWatch } from '../../common/stop-watch';
-import { Logger } from '../../common/logger';
-import { StringRatchet } from '../../common';
-import {S3CacheRatchetLike} from "../s3-cache-ratchet-like";
-import {S3CacheRatchet} from "../s3-cache-ratchet";
+import {EnvironmentServiceProvider} from './environment-service-provider.js';
+import {S3CacheRatchet} from '../s3/s3-cache-ratchet.js';
+import {RequireRatchet} from "../../common/require-ratchet";
+import {Logger} from '../../common/logger.js';
+import {StringRatchet} from '../../common/string-ratchet.js';
+import {StopWatch} from '../../common/stop-watch.js';
+import {S3Client} from '@aws-sdk/client-s3';
+import {S3CacheRatchetLike} from '../s3/s3-cache-ratchet-like.js';
 
 /**
  * Service for reading environmental variables from S3
@@ -19,7 +18,7 @@ export class S3EnvironmentServiceProvider<T> implements EnvironmentServiceProvid
     RequireRatchet.notNullOrUndefined(cfg.bucketName);
     RequireRatchet.notNullOrUndefined(cfg.region);
     RequireRatchet.true(!!cfg.s3Override || !!cfg.region, 'You must set either region or S3Override');
-    const s3: AWS.S3 = cfg.s3Override || new AWS.S3({ region: cfg.region } as ClientConfiguration);
+    const s3: S3Client = cfg.s3Override || new S3Client({ region: cfg.region });
     this.ratchet = new S3CacheRatchet(s3, cfg.bucketName);
   }
 
@@ -27,14 +26,14 @@ export class S3EnvironmentServiceProvider<T> implements EnvironmentServiceProvid
     const readPath: string = StringRatchet.trimToEmpty(this.cfg.pathPrefix) + name + StringRatchet.trimToEmpty(this.cfg.pathSuffix);
     Logger.silly('S3EnvironmentServiceProvider:Request to read config from : %s / %s', this.cfg.bucketName, readPath);
     const sw: StopWatch = new StopWatch();
-    sw.start();
-    const rval: T = await this.ratchet.readCacheFileToObject<T>(readPath);
+    const rval: T = await this.ratchet.fetchCacheFileAsObject<T>(readPath);
+    sw.log();
     return rval;
   }
 }
 
 export interface S3EnvironmentServiceProviderConfig {
-  s3Override?: AWS.S3;
+  s3Override?: S3Client;
   bucketName: string;
   region?: string;
   pathPrefix?: string;

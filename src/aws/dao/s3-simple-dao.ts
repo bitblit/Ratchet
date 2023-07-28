@@ -2,11 +2,11 @@
     Wrap S3 with an ability to store and retrieve objects cached as json files
 */
 
-import { Logger } from '../../common/logger';
-import { SimpleDaoItem } from './simple-dao-item';
-import { DeleteObjectOutput, PutObjectOutput } from 'aws-sdk/clients/s3';
-import { StringRatchet } from '../../common/string-ratchet';
-import {S3CacheRatchetLike} from "../s3-cache-ratchet-like";
+import {Logger} from '../../common/logger.js';
+import {StringRatchet} from '../../common/string-ratchet.js';
+import {SimpleDaoItem} from './simple-dao-item.js';
+import {DeleteObjectOutput, PutObjectOutput} from '@aws-sdk/client-s3';
+import {S3CacheRatchetLike} from '../s3/s3-cache-ratchet-like.js';
 
 export class S3SimpleDao<T extends SimpleDaoItem> {
   constructor(private cache: S3CacheRatchetLike, private prefix?: string) {
@@ -47,7 +47,7 @@ export class S3SimpleDao<T extends SimpleDaoItem> {
   public async fetch(id: string, path?: string): Promise<T> {
     const fullPath: string = this.buildFullPath(id, path);
     Logger.debug('Fetching : %s', fullPath);
-    const rval: T = (await this.cache.readCacheFileToObject(fullPath)) as T;
+    const rval: T = (await this.cache.fetchCacheFileAsObject(fullPath)) as T;
     // Force-set id and path
     rval.id = id;
     rval.path = path;

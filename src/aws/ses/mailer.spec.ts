@@ -1,28 +1,28 @@
-import AWS from 'aws-sdk';
-import { ReadyToSendEmail } from './ready-to-send-email';
-import { SendEmailResponse, SendRawEmailResponse } from 'aws-sdk/clients/ses';
-import { Mailer } from './mailer';
-import { EmailAttachment } from './email-attachment';
-import { StringRatchet } from '../../common/string-ratchet';
-import { Base64Ratchet } from '../../common/base64-ratchet';
-import fs from 'fs';
-import { MailerConfig } from './mailer-config';
-import { JestRatchet } from '../../jest';
+import {ReadyToSendEmail} from './ready-to-send-email.js';
+import {SendEmailResponse, SendRawEmailCommand, SendRawEmailCommandOutput, SESClient} from '@aws-sdk/client-ses';
+import {Mailer} from './mailer.js';
+import {EmailAttachment} from './email-attachment.js';
+import {StringRatchet} from '../../common/string-ratchet.js';
+import {Base64Ratchet} from '../../common/base64-ratchet.js';
+import {MailerConfig} from './mailer-config.js';
+import {mockClient} from 'aws-sdk-client-mock';
 
-let mockSES: jest.Mocked<AWS.SES>;
+let mockSES;
 const smallImageBase64: string =
   'iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII';
 
 describe('#mailer', function () {
+  mockSES = mockClient(SESClient);
+
   beforeEach(() => {
-    mockSES = JestRatchet.mock();
+    mockSES.reset();
   });
 
   it('should send email', async () => {
     const config: MailerConfig = {
       defaultSendingAddress: 'test1@test.com',
       autoBccAddresses: [], //['test2@test.com','test2@test.com'],
-      archive: null, //new S3CacheRatchet(new AWS.S3(), 'outbound-email-archive'),
+      archive: null, //new S3CacheRatchet(new S3(), 'outbound-email-archive'),
       archivePrefix: null, //'test'
     };
     const svc: Mailer = new Mailer(mockSES, config);
@@ -48,9 +48,7 @@ describe('#mailer', function () {
       attachments: [attach1, attach2],
     };
 
-    mockSES.sendRawEmail.mockReturnValue({
-      promise: async () => Promise.resolve({} as SendRawEmailResponse),
-    } as never);
+    mockSES.on(SendRawEmailCommand).resolves({} as SendRawEmailCommandOutput);
 
     const result: SendEmailResponse = await svc.sendEmail(rts);
 
@@ -73,9 +71,7 @@ describe('#mailer', function () {
       destinationAddresses: ['jflint@adomni.com'],
     };
 
-    mockSES.sendRawEmail.mockReturnValue({
-      promise: async () => Promise.resolve({} as SendRawEmailResponse),
-    } as never);
+    mockSES.on(SendRawEmailCommand).resolves({} as SendRawEmailCommandOutput);
 
     const result: SendEmailResponse = await svc.sendEmail(rts);
     expect(result).toBeTruthy();
@@ -85,7 +81,7 @@ describe('#mailer', function () {
     const config: MailerConfig = {
       allowedDestinationEmails: [/.*test\.com/, /.*.test2\.com/],
     };
-    const svc: Mailer = new Mailer({} as AWS.SES, config);
+    const svc: Mailer = new Mailer({} as SESClient, config);
 
     const out1: string[] = ['a@test.com', 'b@fail.com'];
     const res1: string[] = svc.filterEmailsToValid(out1);
@@ -102,7 +98,7 @@ describe('#mailer', function () {
     const config: MailerConfig = {
       defaultSendingAddress: 'test@test.com',
       autoBccAddresses: [], //['test2@test.com','test2@test.com'],
-      archive: null, //new S3CacheRatchet(new AWS.S3(), 'outbound-email-archive'),
+      archive: null, //new S3CacheRatchet(new S3(), 'outbound-email-archive'),
       archivePrefix: null, //'test'
       maxMessageBodySizeInBytes: 500,
       maxAttachmentSizeInBase64Bytes: 1000,
@@ -126,9 +122,7 @@ describe('#mailer', function () {
       attachments: [bigAttach],
     };
 
-    mockSES.sendRawEmail.mockReturnValue({
-      promise: async () => Promise.resolve({} as SendRawEmailResponse),
-    } as never);
+    mockSES.on(SendRawEmailCommand).resolves({} as SendRawEmailCommandOutput);
 
     const result: SendEmailResponse = await svc.sendEmail(rts);
 

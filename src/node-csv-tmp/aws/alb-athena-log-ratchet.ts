@@ -1,11 +1,15 @@
 import { readFileSync, ReadStream } from 'fs';
 import path from 'path';
-import { AthenaRatchet } from './athena-ratchet';
-import { Logger } from '../../common/logger';
+import { AthenaRatchet } from './athena-ratchet.js';
+import { S3Client } from '@aws-sdk/client-s3';
 import { RequireRatchet } from '../../common/require-ratchet';
 import { StringRatchet } from '../../common/string-ratchet';
-import { S3Ratchet } from '../../aws/s3-ratchet';
+import { Logger } from '../../common/logger';
 import { CsvRatchet } from '../../node-csv/csv-ratchet';
+import { PromiseRatchet } from '../../common/promise-ratchet';
+import { StopWatch } from '../../common/stop-watch';
+import { S3Ratchet } from '../../aws/s3/s3-ratchet.js';
+import {EsmRatchet} from "../../common/esm-ratchet";
 
 // A class to simplify reading an Athena table based on ALB Logs
 // NOTE: This class only runs on Node since it depends on fs and path
@@ -16,10 +20,10 @@ export class AlbAthenaLogRatchet {
   }
 
   public async updatePartitions(
-    rootPath: string,
-    s3: AWS.S3,
-    startTimeEpochMS: number = new Date().getTime() - 1000 * 60 * 60 * 24,
-    endTimeEpochMS: number = new Date().getTime()
+      rootPath: string,
+      s3: S3Client,
+      startTimeEpochMS: number = new Date().getTime() - 1000 * 60 * 60 * 24,
+      endTimeEpochMS: number = new Date().getTime()
   ): Promise<string[]> {
     RequireRatchet.true(S3Ratchet.checkS3UrlForValidity(rootPath), 'root path not valid');
     RequireRatchet.notNullOrUndefined(s3, 's3');
@@ -34,7 +38,7 @@ export class AlbAthenaLogRatchet {
       Logger.info('d:%s', dateUtcVal);
       const dateParts: string[] = dateUtcVal.split('-');
       clauses.push(
-        "PARTITION (date_utc_partition='" +
+          "PARTITION (date_utc_partition='" +
           dateUtcVal +
           "') LOCATION '" +
           rootPath +
@@ -70,7 +74,9 @@ export class AlbAthenaLogRatchet {
       }
     }
 
-    let tableCreateQry: string = readFileSync(path.join(__dirname, '../static/albAthenaTableCreate.txt')).toString();
+    let tableCreateQry: string = readFileSync(
+        path.join(EsmRatchet.fetchDirName(import.meta.url), '../static/albAthenaTableCreate.txt')
+    ).toString();
     tableCreateQry = tableCreateQry.split('{{TABLE NAME}}').join(this.athenaTableName);
     tableCreateQry = tableCreateQry.split('{{ALB_LOG_ROOT}}').join(rootPath);
     Logger.info('Creating table with %s', tableCreateQry);
@@ -122,6 +128,54 @@ export class AlbAthenaLogRatchet {
     const result: string = await this.athena.runQueryToFile(qrySt, null, outputFileName);
     return result;
   }
+
+  public static readonly CREATE_TABLE_STATEMENT: string =
+      'CREATE EXTERNAL TABLE IF NOT EXISTS `{{TABLE NAME}}`(\n' +
+      "  `type` string COMMENT '',\n" +
+      "  `time` string COMMENT '',\n" +
+      "  `elb` string COMMENT '',\n" +
+      "  `client_ip` string COMMENT '',\n" +
+      "  `client_port` int COMMENT '',\n" +
+      "  `target_ip` string COMMENT '',\n" +
+      "  `target_port` int COMMENT '',\n" +
+      "  `request_processing_time` double COMMENT '',\n" +
+      "  `target_processing_time` double COMMENT '',\n" +
+      "  `response_processing_time` double COMMENT '',\n" +
+      "  `elb_status_code` string COMMENT '',\n" +
+      "  `target_status_code` string COMMENT '',\n" +
+      "  `received_bytes` bigint COMMENT '',\n" +
+      "  `sent_bytes` bigint COMMENT '',\n" +
+      "  `request_verb` string COMMENT '',\n" +
+      "  `request_url` string COMMENT '',\n" +
+      "  `request_proto` string COMMENT '',\n" +
+      "  `user_agent` string COMMENT '',\n" +
+      "  `ssl_cipher` string COMMENT '',\n" +
+      "  `ssl_protocol` string COMMENT '',\n" +
+      "  `target_group_arn` string COMMENT '',\n" +
+      "  `trace_id` string COMMENT '',\n" +
+      "  `domain_name` string COMMENT '',\n" +
+      "  `chosen_cert_arn` string COMMENT '',\n" +
+      "  `matched_rule_priority` string COMMENT '',\n" +
+      "  `request_creation_time` string COMMENT '',\n" +
+      "  `actions_executed` string COMMENT '',\n" +
+      "  `redirect_url` string COMMENT '',\n" +
+      "  `lambda_error_reason` string COMMENT '',\n" +
+      "  `target_port_list` string COMMENT '',\n" +
+      "  `target_status_code_list` string COMMENT '',\n" +
+      "  `new_field` string COMMENT '')\n" +
+      'PARTITIONED BY (\n' +
+      '  `date_utc_partition` string\n' +
+      ')\n' +
+      'ROW FORMAT SERDE\n' +
+      "  'org.apache.hadoop.hive.serde2.RegexSerDe'\n" +
+      'WITH SERDEPROPERTIES (\n' +
+      '  \'input.regex\'=\'([^ ]*) ([^ ]*) ([^ ]*) ([^ ]*):([0-9]*) ([^ ]*)[:-]([0-9]*) ([-.0-9]*) ([-.0-9]*) ([-.0-9]*) (|[-0-9]*) (-|[-0-9]*) ([-0-9]*) ([-0-9]*) \\"([^ ]*) ([^ ]*) (- |[^ ]*)\\" \\"([^\\"]*)\\" ([A-Z0-9-]+) ([A-Za-z0-9.-]*) ([^ ]*) \\"([^\\"]*)\\" \\"([^\\"]*)\\" \\"([^\\"]*)\\" ([-.0-9]*) ([^ ]*) \\"([^\\"]*)\\" \\"([^\\"]*)\\" \\"([^ ]*)\\" \\"([^s]+)\\" \\"([^s]+)\\"(.*)\')\n' +
+      'STORED AS INPUTFORMAT\n' +
+      "  'org.apache.hadoop.mapred.TextInputFormat'\n" +
+      'OUTPUTFORMAT\n' +
+      "  'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'\n" +
+      'LOCATION\n' +
+      "  '{{ALB_LOG_ROOT}}'\n";
 }
 
 export interface AlbLogRecordQuery {

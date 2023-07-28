@@ -1,23 +1,21 @@
-import AWS, { AWSError } from 'aws-sdk';
-import { Logger } from '../../common/logger';
-import { GetParameterResult } from 'aws-sdk/clients/ssm';
-import { PromiseResult } from 'aws-sdk/lib/request';
-import { PromiseRatchet } from '../../common/promise-ratchet';
-import { RequireRatchet } from '../../common/require-ratchet';
-import { ErrorRatchet } from '../../common/error-ratchet';
-import { EnvironmentServiceProvider } from './environment-service-provider';
-import { StringRatchet } from '../../common/string-ratchet';
+import {RequireRatchet} from "../../common/require-ratchet";
+import {ErrorRatchet} from '../../common/error-ratchet.js';
+import {Logger} from '../../common/logger.js';
+import {StringRatchet} from '../../common/string-ratchet.js';
+import {PromiseRatchet} from '../../common/promise-ratchet';
+import {GetParameterCommand, GetParameterCommandOutput, SSMClient} from '@aws-sdk/client-ssm';
+import {EnvironmentServiceProvider} from './environment-service-provider.js';
 
 /**
  * Service for reading environmental variables
  * Also hides the decryption detail from higher up services
  */
 export class SsmEnvironmentServiceProvider<T> implements EnvironmentServiceProvider<T> {
-  private ssm: AWS.SSM;
+  private ssm: SSMClient;
   public constructor(private region = 'us-east-1', private ssmEncrypted = true) {
     RequireRatchet.notNullOrUndefined(region);
     RequireRatchet.notNullOrUndefined(ssmEncrypted);
-    this.ssm = new AWS.SSM({ apiVersion: '2014-11-06', region: this.region });
+    this.ssm = new SSMClient({ region: this.region });
   }
 
   public async fetchConfig(name: string): Promise<T> {
@@ -30,7 +28,7 @@ export class SsmEnvironmentServiceProvider<T> implements EnvironmentServiceProvi
     let rval: T = null;
     let toParse: string = null;
     try {
-      const value: PromiseResult<GetParameterResult, AWSError> = await this.ssm.getParameter(params).promise();
+      const value: GetParameterCommandOutput = await this.ssm.send(new GetParameterCommand(params));
       toParse = StringRatchet.trimToNull(value?.Parameter?.Value);
     } catch (err) {
       const errCode: string = err['code'] || '';

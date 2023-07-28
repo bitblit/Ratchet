@@ -1,5 +1,5 @@
-import { ExpiringCodeRatchet } from './expiring-code-ratchet';
-import { ExpiringCode } from './expiring-code';
+import { ExpiringCodeRatchet } from './expiring-code-ratchet.js';
+import { ExpiringCode } from './expiring-code.js';
 
 describe('#ExpiringCodeRatchet', () => {
   it('Should generate valid codes', async () => {

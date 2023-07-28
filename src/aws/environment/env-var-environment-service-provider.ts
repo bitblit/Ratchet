@@ -1,9 +1,8 @@
-import { Logger } from '../../common/logger';
-import { RequireRatchet } from '../../common/require-ratchet';
-import { ErrorRatchet } from '../../common/error-ratchet';
-import { EnvironmentServiceProvider } from './environment-service-provider';
-import { StringRatchet } from '../../common/string-ratchet';
-import { NodeRatchet } from '../../node-only/common/node-ratchet';
+import {RequireRatchet} from "../../common/require-ratchet";
+import {ErrorRatchet} from '../../common/error-ratchet.js';
+import {Logger} from '../../common/logger.js';
+import {StringRatchet} from '../../common/string-ratchet.js';
+import {EnvironmentServiceProvider} from './environment-service-provider.js';
 
 /**
  * Service for reading environmental variables
@@ -18,7 +17,8 @@ export class EnvVarEnvironmentServiceProvider<T> implements EnvironmentServicePr
     Logger.silly('EnvVarEnvironmentServiceProvider fetch for %s', this.envVarName);
 
     let rval: T = null;
-    const toParse: string = StringRatchet.trimToNull(NodeRatchet.fetchProcessEnvVar(this.envVarName));
+    const src: Record<string, any> = process ? process.env : global ? global : {};
+    const toParse: string = StringRatchet.trimToNull(src[this.envVarName]);
 
     // If we reach here with a string result, try to parse it
     if (toParse) {

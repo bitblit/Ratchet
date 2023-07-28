@@ -1,4 +1,4 @@
-import { ExpiringCode } from './expiring-code';
+import { ExpiringCode } from './expiring-code.js';
 
 export interface ExpiringCodeProvider {
   storeCode(code: ExpiringCode): Promise<boolean>;
