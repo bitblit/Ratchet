@@ -4,9 +4,9 @@
     content to be passed through webpack safely
  */
 
-import { Logger } from '../../common/logger';
 import fs from 'fs';
-import { CliRatchet } from './cli-ratchet';
+import { Logger } from '../../common/logger';
+import { CliRatchet } from '../cli/cli-ratchet';
 
 export class FilesToStaticClass {
   public static async process(fileNames: string[], outClassName: string, outFileName: string = null): Promise<string> {
@@ -27,7 +27,7 @@ export class FilesToStaticClass {
     rval += '* Moves it into code so that it can survive a trip through WebPack \n';
     rval += '*/ \n\n';
     rval += 'export class ' + outClassName + ' { \n';
-    rval += '  public static readonly VALUES:any = { \n';
+    rval += '  public static readonly VALUES:Record<string, string> = { \n';
 
     for (let i = 0; i < fileNames.length; i++) {
       let contents = 'NOT-FOUND';

@@ -1,8 +1,8 @@
 import {RequireRatchet} from "../../common/require-ratchet";
-import {Logger} from '../../common/logger.js';
-import {CachedStoredRuntimeParameter} from './cached-stored-runtime-parameter.js';
-import {RuntimeParameterProvider} from './runtime-parameter-provider.js';
-import {StoredRuntimeParameter} from './stored-runtime-parameter.js';
+import {Logger} from '../../common/logger';
+import {CachedStoredRuntimeParameter} from './cached-stored-runtime-parameter';
+import {RuntimeParameterProvider} from './runtime-parameter-provider';
+import {StoredRuntimeParameter} from './stored-runtime-parameter';
 
 export class RuntimeParameterRatchet {
   private cache: Map<string, CachedStoredRuntimeParameter> = new Map<string, CachedStoredRuntimeParameter>();

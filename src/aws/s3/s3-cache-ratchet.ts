@@ -22,15 +22,15 @@ import {
   S3Client,
 } from '@aws-sdk/client-s3';
 import {RequireRatchet} from "../../common/require-ratchet";
-import {Logger} from '../../common/logger.js';
-import {StringRatchet} from '../../common/string-ratchet.js';
-import {StopWatch} from '../../common/stop-watch.js';
+import {Logger} from '../../common/logger';
+import {StringRatchet} from '../../common/string-ratchet';
+import {StopWatch} from '../../common/stop-watch';
 import {StreamRatchet} from '../../common/stream-ratchet';
 import {getSignedUrl} from '@aws-sdk/s3-request-presigner';
 import {Upload} from '@aws-sdk/lib-storage';
 import {Readable} from 'stream';
-import {S3CacheRatchetLike} from './s3-cache-ratchet-like.js';
-import {ExpandedFileChildren} from './expanded-file-children.js';
+import {S3CacheRatchetLike} from './s3-cache-ratchet-like';
+import {ExpandedFileChildren} from './expanded-file-children';
 
 export class S3CacheRatchet implements S3CacheRatchetLike {
   constructor(private s3: S3Client, private defaultBucket: string = null) {

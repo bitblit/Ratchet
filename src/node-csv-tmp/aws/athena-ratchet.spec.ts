@@ -1,4 +1,4 @@
-import {AthenaRatchet} from './athena-ratchet.js';
+import {AthenaRatchet} from './athena-ratchet';
 import {Logger} from '../../common/logger';
 import {
   AthenaClient,

@@ -1,4 +1,4 @@
-import { ParsedEmailProcessor } from './parsed-email-processor.js';
+import { ParsedEmailProcessor } from './parsed-email-processor';
 import { ParsedMail } from 'mailparser';
 
 export class SampleEmailProcessor implements ParsedEmailProcessor<string> {

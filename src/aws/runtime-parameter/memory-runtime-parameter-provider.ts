@@ -1,6 +1,6 @@
-import {RuntimeParameterProvider} from './runtime-parameter-provider.js';
-import {StoredRuntimeParameter} from './stored-runtime-parameter.js';
-import {Logger} from '../../common/logger.js';
+import {RuntimeParameterProvider} from './runtime-parameter-provider';
+import {StoredRuntimeParameter} from './stored-runtime-parameter';
+import {Logger} from '../../common/logger';
 
 /**
  * Very simple class, basically here just for unit testing although I suppose you could

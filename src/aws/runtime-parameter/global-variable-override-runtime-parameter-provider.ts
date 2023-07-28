@@ -1,8 +1,8 @@
-import {RuntimeParameterProvider} from './runtime-parameter-provider.js';
-import {StoredRuntimeParameter} from './stored-runtime-parameter.js';
+import {RuntimeParameterProvider} from './runtime-parameter-provider';
+import {StoredRuntimeParameter} from './stored-runtime-parameter';
 import {RequireRatchet} from "../../common/require-ratchet";
-import {ErrorRatchet} from '../../common/error-ratchet.js';
-import {StringRatchet} from '../../common/string-ratchet.js';
+import {ErrorRatchet} from '../../common/error-ratchet';
+import {StringRatchet} from '../../common/string-ratchet';
 
 /**
  * Provides parameters for a runtime parameter from an global (ie, process.env or global.xx) variable, where the key follows

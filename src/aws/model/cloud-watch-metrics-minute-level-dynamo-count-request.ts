@@ -3,7 +3,7 @@
 */
 
 import {KeyValue} from '../../common/key-value';
-import {DynamoRatchet} from '../dynamodb/dynamo-ratchet.js';
+import {DynamoRatchet} from '../dynamodb/dynamo-ratchet';
 import {QueryInput, ScanCommandInput} from '@aws-sdk/client-dynamodb';
 
 export interface CloudWatchMetricsMinuteLevelDynamoCountRequest {

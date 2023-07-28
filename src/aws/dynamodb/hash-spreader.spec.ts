@@ -1,4 +1,4 @@
-import { HashSpreader } from './hash-spreader.js';
+import { HashSpreader } from './hash-spreader';
 
 describe('#hashSpreader', function () {
   it('should enumerate spread', async () => {

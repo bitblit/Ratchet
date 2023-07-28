@@ -1,6 +1,6 @@
-import { ReadyToSendEmail } from './ready-to-send-email.js';
+import { ReadyToSendEmail } from './ready-to-send-email';
 import { SendRawEmailResponse } from '@aws-sdk/client-ses';
-import { ResolvedReadyToSendEmail } from './resolved-ready-to-send-email.js';
+import { ResolvedReadyToSendEmail } from './resolved-ready-to-send-email';
 
 /**
  * Generic Mail Sender for AWS.

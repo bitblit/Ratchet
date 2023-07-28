@@ -1,7 +1,7 @@
-import {Logger} from '../../common/logger.js';
-import {StringRatchet} from '../../common/string-ratchet.js';
-import {DaemonProcessState} from './daemon-process-state.js';
-import {DaemonProcessCreateOptions} from './daemon-process-create-options.js';
+import {Logger} from '../../common/logger';
+import {StringRatchet} from '../../common/string-ratchet';
+import {DaemonProcessState} from './daemon-process-state';
+import {DaemonProcessCreateOptions} from './daemon-process-create-options';
 import {
   CompleteMultipartUploadCommandOutput,
   HeadObjectOutput,
@@ -11,8 +11,8 @@ import {
 } from '@aws-sdk/client-s3';
 import {Readable} from 'stream';
 import {Upload} from '@aws-sdk/lib-storage';
-import {S3CacheRatchetLike} from '../s3/s3-cache-ratchet-like.js';
-import {DaemonStreamDataOptions} from './daemon-stream-data-options.js';
+import {S3CacheRatchetLike} from '../s3/s3-cache-ratchet-like';
+import {DaemonStreamDataOptions} from './daemon-stream-data-options';
 
 /**
  * Internal utilities which are here for the USE OF THE DAEMON OBJECT ONLY - if you are trying to use this

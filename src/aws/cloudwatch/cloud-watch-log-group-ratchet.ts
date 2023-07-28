@@ -9,8 +9,8 @@ import {
   FilterLogEventsCommandOutput,
   LogStream,
 } from '@aws-sdk/client-cloudwatch-logs';
-import {Logger} from '../../common/logger.js';
-import {StopWatch} from '../../common/stop-watch.js';
+import {Logger} from '../../common/logger';
+import {StopWatch} from '../../common/stop-watch';
 
 export class CloudWatchLogGroupRatchet {
   constructor(private logGroup: string, private awsCWLogs: CloudWatchLogsClient = new CloudWatchLogsClient({ region: 'us-east-1' })) {}

@@ -1,8 +1,8 @@
-import { DynamoCountResult } from '../model/dynamo-count-result.js';
+import { DynamoCountResult } from '../model/dynamo-count-result';
 import { DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
 import { DeleteItemCommandOutput, PutItemOutput } from '@aws-sdk/client-dynamodb';
-import { DocQueryCommandInput } from '../model/dynamo/doc-query-command-input.js';
-import { DocScanCommandInput } from '../model/dynamo/doc-scan-command-input.js';
+import { DocQueryCommandInput } from '../model/dynamo/doc-query-command-input';
+import { DocScanCommandInput } from '../model/dynamo/doc-scan-command-input';
 
 export interface DynamoRatchetLike {
   getDDB(): DynamoDBDocumentClient;

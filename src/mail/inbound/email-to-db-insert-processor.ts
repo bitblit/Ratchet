@@ -1,11 +1,11 @@
-import { ParsedEmailProcessor } from './parsed-email-processor.js';
+import { ParsedEmailProcessor } from './parsed-email-processor';
 import { ParsedMail } from 'mailparser';
 import unzipper from 'unzipper';
 import { DateTime } from 'luxon';
-import { RequireRatchet } from '../../common/require-ratchet.js';
+import { RequireRatchet } from '../../common/require-ratchet';
 import {Logger} from "../../common/logger";
-import { MultiStream } from '../../common/multi-stream.js';
-import { CsvRatchet } from '../../node-csv/csv-ratchet.js';
+import { MultiStream } from '../../common/multi-stream';
+import { CsvRatchet } from '../../node-csv/csv-ratchet';
 export class EmailToDbInsertProcessor implements ParsedEmailProcessor<EmailToDbStatement[]> {
   public canProcess(mail: ParsedMail): boolean {
     return true;

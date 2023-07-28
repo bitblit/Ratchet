@@ -6,8 +6,8 @@
  * spots is also hard (although I have an idea for implementing that later...)
  */
 import {RequireRatchet} from "../../common/require-ratchet";
-import {ErrorRatchet} from '../../common/error-ratchet.js';
-import {StringRatchet} from '../../common/string-ratchet.js';
+import {ErrorRatchet} from '../../common/error-ratchet';
+import {StringRatchet} from '../../common/string-ratchet';
 
 export class HashSpreader {
   private _allSlots: string[];

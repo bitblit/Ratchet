@@ -1,5 +1,5 @@
 import { S3Client } from '@aws-sdk/client-s3';
-import { S3Ratchet } from './s3-ratchet.js';
+import { S3Ratchet } from './s3-ratchet';
 import { mockClient } from 'aws-sdk-client-mock';
 
 let mockS3;

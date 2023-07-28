@@ -19,10 +19,10 @@ import {
   ResourceNotFoundException,
 } from '@aws-sdk/client-dynamodb';
 import {RequireRatchet} from "../../common/require-ratchet";
-import {ErrorRatchet} from '../../common/error-ratchet.js';
-import {Logger} from '../../common/logger.js';
+import {ErrorRatchet} from '../../common/error-ratchet';
+import {Logger} from '../../common/logger';
 import {PromiseRatchet} from '../../common/promise-ratchet';
-import {LocalSecondaryIndex} from '@aws-sdk/client-dynamodb/dist-types/models/models_0.js';
+import {LocalSecondaryIndex} from '@aws-sdk/client-dynamodb/dist-types/models/models_0';
 
 export class DynamoTableRatchet {
   constructor(private awsDDB: DynamoDBClient) {

@@ -1,5 +1,5 @@
-import { DaemonProcessState } from './daemon-process-state.js';
-import { DaemonProcessCreateOptions } from './daemon-process-create-options.js';
+import { DaemonProcessState } from './daemon-process-state';
+import { DaemonProcessCreateOptions } from './daemon-process-create-options';
 
 /*
     Classes implementing this interface provide the ability to monitor and update long-running

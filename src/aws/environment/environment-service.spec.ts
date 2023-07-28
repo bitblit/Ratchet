@@ -1,6 +1,6 @@
-import {EnvironmentService} from './environment-service.js';
-import {Logger} from '../../common/logger.js';
-import {FixedEnvironmentServiceProvider} from './fixed-environment-service-provider.js';
+import {EnvironmentService} from './environment-service';
+import {Logger} from '../../common/logger';
+import {FixedEnvironmentServiceProvider} from './fixed-environment-service-provider';
 
 const fixed: FixedEnvironmentServiceProvider<any> = FixedEnvironmentServiceProvider.fromRecord<any>({ a: 'b', c: 5 });
 

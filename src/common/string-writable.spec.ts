@@ -1,4 +1,4 @@
-import { StringWritable } from './string-writable.js';
+import { StringWritable } from './string-writable';
 
 describe('#StringWritable', function () {
   it('should write cumulatively to a string', async () => {

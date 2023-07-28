@@ -1,7 +1,7 @@
-import {DynamoDbSyncLock} from './dynamo-db-sync-lock.js';
-import {DynamoRatchet} from '../dynamodb/dynamo-ratchet.js';
-import {Logger} from '../../common/logger.js';
-import {JestRatchet} from '../../jest/jest-ratchet.js';
+import {DynamoDbSyncLock} from './dynamo-db-sync-lock';
+import {DynamoRatchet} from '../dynamodb/dynamo-ratchet';
+import {Logger} from '../../common/logger';
+import {JestRatchet} from '../../jest/jest-ratchet';
 import {jest} from '@jest/globals';
 
 let mockDR: jest.Mocked<DynamoRatchet>;

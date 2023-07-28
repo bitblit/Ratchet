@@ -15,7 +15,7 @@ import {
   SendSSHPublicKeyCommandInput,
   SendSSHPublicKeyCommandOutput,
 } from '@aws-sdk/client-ec2-instance-connect';
-import {Logger} from '../../common/logger.js';
+import {Logger} from '../../common/logger';
 import {PromiseRatchet} from '../../common/promise-ratchet';
 import {DurationRatchet} from '../../common/duration-ratchet';
 

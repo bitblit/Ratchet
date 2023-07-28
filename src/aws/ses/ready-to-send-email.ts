@@ -1,7 +1,7 @@
 /**
  * @interface ReadyToSendEmail
  */
-import { EmailAttachment } from './email-attachment.js';
+import { EmailAttachment } from './email-attachment';
 
 export interface ReadyToSendEmail {
   /**

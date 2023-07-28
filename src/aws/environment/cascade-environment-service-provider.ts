@@ -1,6 +1,6 @@
 import {RequireRatchet} from "../../common/require-ratchet";
-import {Logger} from '../../common/logger.js';
-import {EnvironmentServiceProvider} from './environment-service-provider.js';
+import {Logger} from '../../common/logger';
+import {EnvironmentServiceProvider} from './environment-service-provider';
 
 /**
  * Reads a series of providers, returning the first non-null, non-error

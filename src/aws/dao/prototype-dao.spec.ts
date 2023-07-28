@@ -1,6 +1,6 @@
-import { PrototypeDao } from './prototype-dao.js';
-import { S3PrototypeDaoProvider } from './s3-prototype-dao-provider.js';
-import { S3CacheRatchet } from '../s3/s3-cache-ratchet.js';
+import { PrototypeDao } from './prototype-dao';
+import { S3PrototypeDaoProvider } from './s3-prototype-dao-provider';
+import { S3CacheRatchet } from '../s3/s3-cache-ratchet';
 import { S3Client } from '@aws-sdk/client-s3';
 
 describe('#PrototypeDao', () => {

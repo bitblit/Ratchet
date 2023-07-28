@@ -1,8 +1,8 @@
-import { InboundEmailRatchet } from './inbound-email-ratchet.js';
+import { InboundEmailRatchet } from './inbound-email-ratchet';
 import { jest } from '@jest/globals';
-import { SampleEmailProcessor } from './sample-email-processor.js';
-import { S3CacheRatchet } from '../../aws/s3/s3-cache-ratchet.js';
-import { JestRatchet } from '../../jest/jest-ratchet.js';
+import { SampleEmailProcessor } from './sample-email-processor';
+import { S3CacheRatchet } from '../../aws/s3/s3-cache-ratchet';
+import { JestRatchet } from '../../jest/jest-ratchet';
 
 let mockS3CR: jest.Mocked<S3CacheRatchet>;
 

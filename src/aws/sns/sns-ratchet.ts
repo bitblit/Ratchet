@@ -1,5 +1,5 @@
 import {RequireRatchet} from "../../common/require-ratchet";
-import {Logger} from '../../common/logger.js';
+import {Logger} from '../../common/logger';
 import {PublishCommand, PublishCommandInput, PublishCommandOutput, SNSClient} from '@aws-sdk/client-sns';
 
 export class SnsRatchet {

@@ -1,9 +1,9 @@
-import {RuntimeParameterRatchet} from './runtime-parameter-ratchet.js';
-import {Logger} from '../../common/logger.js';
+import {RuntimeParameterRatchet} from './runtime-parameter-ratchet';
+import {Logger} from '../../common/logger';
 import {PromiseRatchet} from '../../common/promise-ratchet';
-import {LoggerLevelName} from '../../common/logger-support/logger-level-name.js';
-import {StoredRuntimeParameter} from './stored-runtime-parameter.js';
-import {MemoryRuntimeParameterProvider} from './memory-runtime-parameter-provider.js';
+import {LoggerLevelName} from '../../common/logger-support/logger-level-name';
+import {StoredRuntimeParameter} from './stored-runtime-parameter';
+import {MemoryRuntimeParameterProvider} from './memory-runtime-parameter-provider';
 
 const testEntry: StoredRuntimeParameter = { groupId: 'test', paramKey: 'test', paramValue: '15', ttlSeconds: 0.5 };
 const testEntry2: StoredRuntimeParameter = { groupId: 'test', paramKey: 'test1', paramValue: '20', ttlSeconds: 0.5 };

@@ -1,6 +1,6 @@
 import { readFileSync, ReadStream } from 'fs';
 import path from 'path';
-import { AthenaRatchet } from './athena-ratchet.js';
+import { AthenaRatchet } from './athena-ratchet';
 import { S3Client } from '@aws-sdk/client-s3';
 import { RequireRatchet } from '../../common/require-ratchet';
 import { StringRatchet } from '../../common/string-ratchet';
@@ -8,7 +8,7 @@ import { Logger } from '../../common/logger';
 import { CsvRatchet } from '../../node-csv/csv-ratchet';
 import { PromiseRatchet } from '../../common/promise-ratchet';
 import { StopWatch } from '../../common/stop-watch';
-import { S3Ratchet } from '../../aws/s3/s3-ratchet.js';
+import { S3Ratchet } from '../../aws/s3/s3-ratchet';
 import {EsmRatchet} from "../../common/esm-ratchet";
 
 // A class to simplify reading an Athena table based on ALB Logs
@@ -75,7 +75,7 @@ export class AlbAthenaLogRatchet {
     }
 
     let tableCreateQry: string = readFileSync(
-        path.join(EsmRatchet.fetchDirName(import.meta.url), '../static/albAthenaTableCreate.txt')
+        path.join(__dirname, '../static/albAthenaTableCreate.txt')
     ).toString();
     tableCreateQry = tableCreateQry.split('{{TABLE NAME}}').join(this.athenaTableName);
     tableCreateQry = tableCreateQry.split('{{ALB_LOG_ROOT}}').join(rootPath);

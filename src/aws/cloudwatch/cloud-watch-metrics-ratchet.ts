@@ -8,13 +8,13 @@ import {
   PutMetricDataCommandInput,
   PutMetricDataCommandOutput
 } from '@aws-sdk/client-cloudwatch';
-import {Logger} from '../../common/logger.js';
+import {Logger} from '../../common/logger';
 import {KeyValue} from '../../common/key-value';
-import {CloudWatchMetricsUnit} from '../model/cloud-watch-metrics-unit.js';
-import {DynamoCountResult} from '../model/dynamo-count-result.js';
+import {CloudWatchMetricsUnit} from '../model/cloud-watch-metrics-unit';
+import {DynamoCountResult} from '../model/dynamo-count-result';
 import {
   CloudWatchMetricsMinuteLevelDynamoCountRequest
-} from '../model/cloud-watch-metrics-minute-level-dynamo-count-request.js';
+} from '../model/cloud-watch-metrics-minute-level-dynamo-count-request';
 import {DateTime} from 'luxon';
 
 export class CloudWatchMetricsRatchet {

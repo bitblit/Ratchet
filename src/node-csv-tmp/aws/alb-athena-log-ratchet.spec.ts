@@ -1,11 +1,11 @@
-import {AthenaRatchet} from './athena-ratchet.js';
+import {AthenaRatchet} from './athena-ratchet';
 import {Logger} from '../../common/logger';
 
-import {AlbAthenaLogRatchet, AlbLogRecord, AlbLogRecordQuery} from './alb-athena-log-ratchet.js';
+import {AlbAthenaLogRatchet, AlbLogRecord, AlbLogRecordQuery} from './alb-athena-log-ratchet';
 import {S3Client} from '@aws-sdk/client-s3';
 import {AthenaClient} from '@aws-sdk/client-athena';
-import { LoggerLevelName } from '../../common/logger-support/logger-level-name.js';
-import { TimeZoneRatchet } from '../../common/time-zone-ratchet.js';
+import { LoggerLevelName } from '../../common/logger-support/logger-level-name';
+import { TimeZoneRatchet } from '../../common/time-zone-ratchet';
 
 describe('#AlbAthenaLogRatchet', function () {
   it('Placeholder', async () => {

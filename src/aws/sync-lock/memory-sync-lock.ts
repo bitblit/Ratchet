@@ -1,5 +1,5 @@
-import {StringRatchet} from '../../common/string-ratchet.js';
-import {SyncLockProvider} from './sync-lock-provider.js';
+import {StringRatchet} from '../../common/string-ratchet';
+import {SyncLockProvider} from './sync-lock-provider';
 
 /**
  * Simple in-memory implementation of the SyncLockProvider interface

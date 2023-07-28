@@ -1,9 +1,9 @@
 import path from 'path';
 import { FilesToStaticClass } from './files-to-static-class';
 //import { fileURLToPath, URL } from 'url';
-//import { Logger } from '../../common/logger.js';
+//import { Logger } from '../../common/logger';
 
-const testDirname: string = __dirname; // ESM : fileURLToPath(new URL('.', import.meta.url));
+const testDirname: string = __dirname;
 
 describe('#filesToStaticClass', function () {
   it('should convert files to a static class', async () => {

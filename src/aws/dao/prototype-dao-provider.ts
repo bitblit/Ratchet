@@ -1,4 +1,4 @@
-import { PrototypeDaoDb } from './prototype-dao-db.js';
+import { PrototypeDaoDb } from './prototype-dao-db';
 
 export interface PrototypeDaoProvider<T> {
   storeDatabase(db: PrototypeDaoDb<T>): Promise<boolean>;

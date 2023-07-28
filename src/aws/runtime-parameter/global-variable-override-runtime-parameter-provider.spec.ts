@@ -1,11 +1,11 @@
-import {DynamoRuntimeParameterProvider} from './dynamo-runtime-parameter-provider.js';
-import {DynamoRatchet} from '../dynamodb/dynamo-ratchet.js';
-import {StoredRuntimeParameter} from './stored-runtime-parameter.js';
-import {Logger} from '../../common/logger.js';
-import {LoggerLevelName} from '../../common/logger-support/logger-level-name.js';
-import {JestRatchet} from '../../jest/jest-ratchet.js';
-import {RuntimeParameterRatchet} from './runtime-parameter-ratchet.js';
-import {GlobalVariableOverrideRuntimeParameterProvider} from './global-variable-override-runtime-parameter-provider.js';
+import {DynamoRuntimeParameterProvider} from './dynamo-runtime-parameter-provider';
+import {DynamoRatchet} from '../dynamodb/dynamo-ratchet';
+import {StoredRuntimeParameter} from './stored-runtime-parameter';
+import {Logger} from '../../common/logger';
+import {LoggerLevelName} from '../../common/logger-support/logger-level-name';
+import {JestRatchet} from '../../jest/jest-ratchet';
+import {RuntimeParameterRatchet} from './runtime-parameter-ratchet';
+import {GlobalVariableOverrideRuntimeParameterProvider} from './global-variable-override-runtime-parameter-provider';
 import {jest} from '@jest/globals';
 
 let mockDynamoRatchet: jest.Mocked<DynamoRatchet>;

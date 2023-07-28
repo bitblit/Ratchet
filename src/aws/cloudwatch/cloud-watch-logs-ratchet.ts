@@ -19,8 +19,8 @@ import {
   StopQueryCommandOutput,
 } from '@aws-sdk/client-cloudwatch-logs';
 import {RequireRatchet} from "../../common/require-ratchet";
-import {Logger} from '../../common/logger.js';
-import {StringRatchet} from '../../common/string-ratchet.js';
+import {Logger} from '../../common/logger';
+import {StringRatchet} from '../../common/string-ratchet';
 import {PromiseRatchet} from '../../common/promise-ratchet';
 
 export class CloudWatchLogsRatchet {

@@ -13,12 +13,12 @@ import {
   ScanCommand,
 } from '@aws-sdk/lib-dynamodb';
 import {RequireRatchet} from "../../common/require-ratchet";
-import {ErrorRatchet} from '../../common/error-ratchet.js';
-import {Logger} from '../../common/logger.js';
+import {ErrorRatchet} from '../../common/error-ratchet';
+import {Logger} from '../../common/logger';
 import {PromiseRatchet} from '../../common/promise-ratchet';
 
-import {DynamoCountResult} from '../model/dynamo-count-result.js';
-import {DynamoRatchetLike} from './dynamo-ratchet-like.js';
+import {DynamoCountResult} from '../model/dynamo-count-result';
+import {DynamoRatchetLike} from './dynamo-ratchet-like';
 import {
   AttributeValue,
   BatchGetItemCommandInput,
@@ -38,10 +38,10 @@ import {
   UpdateItemCommand,
   UpdateItemCommandOutput,
 } from '@aws-sdk/client-dynamodb';
-import {DocUpdateItemCommandInput} from '../model/dynamo/doc-update-item-command-input.js';
-import {DocScanCommandInput} from '../model/dynamo/doc-scan-command-input.js';
-import {DocQueryCommandInput} from '../model/dynamo/doc-query-command-input.js';
-import {DocPutItemCommandInput} from '../model/dynamo/doc-put-item-command-input.js';
+import {DocUpdateItemCommandInput} from '../model/dynamo/doc-update-item-command-input';
+import {DocScanCommandInput} from '../model/dynamo/doc-scan-command-input';
+import {DocQueryCommandInput} from '../model/dynamo/doc-query-command-input';
+import {DocPutItemCommandInput} from '../model/dynamo/doc-put-item-command-input';
 import { DurationRatchet } from '../../common/duration-ratchet';
 import { NumberRatchet } from '../../common/number-ratchet';
 

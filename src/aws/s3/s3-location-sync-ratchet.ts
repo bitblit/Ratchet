@@ -10,7 +10,7 @@ import {
   S3Client,
 } from '@aws-sdk/client-s3';
 import {RequireRatchet} from "../../common/require-ratchet";
-import {Logger} from '../../common/logger.js';
+import {Logger} from '../../common/logger';
 import {PromiseRatchet} from '../../common/promise-ratchet';
 import {Upload} from '@aws-sdk/lib-storage';
 

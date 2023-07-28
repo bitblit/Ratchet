@@ -48,7 +48,7 @@ export * from './2d/point-2d';
 export * from './2d/poly-line-2d';
 export * from './2d/ratchet-2d';
 export * from './build/build-information';
-export * from './build/ratchet-common-info';
+export * from './build/ratchet-classic-info';
 export * from './logger-support/classic-single-line-log-message-formatter';
 export * from './logger-support/log-message-builder';
 export * from './logger-support/log-message-format-type';

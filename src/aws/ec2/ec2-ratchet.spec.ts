@@ -1,8 +1,8 @@
 import fs from 'fs';
 import path from 'path';
 import os from 'os';
-import {Logger} from '../../common/logger.js';
-import {Ec2Ratchet} from './ec2-ratchet.js';
+import {Logger} from '../../common/logger';
+import {Ec2Ratchet} from './ec2-ratchet';
 import {SendSSHPublicKeyResponse} from '@aws-sdk/client-ec2-instance-connect';
 import {Instance} from '@aws-sdk/client-ec2';
 

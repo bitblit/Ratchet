@@ -1,9 +1,9 @@
 import {RequireRatchet} from "../../common/require-ratchet";
-import {ErrorRatchet} from '../../common/error-ratchet.js';
-import {Logger} from '../../common/logger.js';
+import {ErrorRatchet} from '../../common/error-ratchet';
+import {Logger} from '../../common/logger';
 import {PromiseRatchet} from '../../common/promise-ratchet';
-import {EnvironmentServiceProvider} from './environment-service-provider.js';
-import {EnvironmentServiceConfig} from './environment-service-config.js';
+import {EnvironmentServiceProvider} from './environment-service-provider';
+import {EnvironmentServiceConfig} from './environment-service-config';
 
 /**
  * Wraps up a EnvironmentServiceProvider and provides caching and retry-on-failure logic

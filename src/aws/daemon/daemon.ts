@@ -1,15 +1,15 @@
 import {RequireRatchet} from "../../common/require-ratchet";
-import {Logger} from '../../common/logger.js';
-import {StringRatchet} from '../../common/string-ratchet.js';
+import {Logger} from '../../common/logger';
+import {StringRatchet} from '../../common/string-ratchet';
 
-import {DaemonProcessState} from './daemon-process-state.js';
-import {S3CacheRatchet} from '../s3/s3-cache-ratchet.js';
-import {DaemonProcessCreateOptions} from './daemon-process-create-options.js';
-import {DaemonUtil} from './daemon-util.js';
-import {DaemonLike} from './daemon-like.js';
-import {DaemonProcessStatePublicToken} from './daemon-process-state-public-token.js';
+import {DaemonProcessState} from './daemon-process-state';
+import {S3CacheRatchet} from '../s3/s3-cache-ratchet';
+import {DaemonProcessCreateOptions} from './daemon-process-create-options';
+import {DaemonUtil} from './daemon-util';
+import {DaemonLike} from './daemon-like';
+import {DaemonProcessStatePublicToken} from './daemon-process-state-public-token';
 import {S3Client} from '@aws-sdk/client-s3';
-import {S3CacheRatchetLike} from '../s3/s3-cache-ratchet-like.js';
+import {S3CacheRatchetLike} from '../s3/s3-cache-ratchet-like';
 import {JwtRatchetLike} from "../../common/jwt-ratchet-like";
 
 export class Daemon implements DaemonLike {

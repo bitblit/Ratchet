@@ -1,5 +1,5 @@
-import {Logger} from '../../common/logger.js';
-import {CloudWatchLogsRatchet} from './cloud-watch-logs-ratchet.js';
+import {Logger} from '../../common/logger';
+import {CloudWatchLogsRatchet} from './cloud-watch-logs-ratchet';
 import {
   CloudWatchLogsClient,
   DeleteLogGroupCommand,
