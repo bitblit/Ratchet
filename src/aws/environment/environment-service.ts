@@ -1,9 +1,9 @@
-import {RequireRatchet} from "../../common/require-ratchet";
-import {ErrorRatchet} from '../../common/error-ratchet';
-import {Logger} from '../../common/logger';
-import {PromiseRatchet} from '../../common/promise-ratchet';
-import {EnvironmentServiceProvider} from './environment-service-provider';
-import {EnvironmentServiceConfig} from './environment-service-config';
+import { RequireRatchet } from '../../common/require-ratchet';
+import { ErrorRatchet } from '../../common/error-ratchet';
+import { Logger } from '../../common/logger';
+import { PromiseRatchet } from '../../common/promise-ratchet';
+import { EnvironmentServiceProvider } from './environment-service-provider';
+import { EnvironmentServiceConfig } from './environment-service-config';
 
 /**
  * Wraps up a EnvironmentServiceProvider and provides caching and retry-on-failure logic
@@ -21,7 +21,7 @@ export class EnvironmentService<T> {
 
   constructor(
     private provider: EnvironmentServiceProvider<T>,
-    private cfg: EnvironmentServiceConfig = EnvironmentService.defaultEnvironmentServiceConfig()
+    private cfg: EnvironmentServiceConfig = EnvironmentService.defaultEnvironmentServiceConfig(),
   ) {
     RequireRatchet.notNullOrUndefined(provider);
     RequireRatchet.notNullOrUndefined(cfg);
@@ -55,7 +55,7 @@ export class EnvironmentService<T> {
           this.cfg.maxRetries,
           waitMS,
           err,
-          err
+          err,
         );
         await PromiseRatchet.wait(waitMS);
       }

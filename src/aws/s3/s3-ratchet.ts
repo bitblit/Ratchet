@@ -1,4 +1,4 @@
-import {RequireRatchet} from "../../common/require-ratchet";
+import { RequireRatchet } from '../../common/require-ratchet';
 
 export class S3Ratchet {
   // Returns whether the URL passed is s3 valid (not whether it exists or not)

@@ -1,18 +1,18 @@
-import {S3CacheRatchet} from '../s3/s3-cache-ratchet';
-import {DaemonProcessState} from './daemon-process-state';
-import {DaemonUtil} from './daemon-util';
-import {Logger} from '../../common/logger';
-import {PromiseRatchet} from '../../common/promise-ratchet';
-import {LoggerLevelName} from '../../common/logger-support/logger-level-name';
-import {CsvRatchet} from '../../node-csv/csv-ratchet';
-import {JestRatchet} from '../../jest/jest-ratchet';
-import fs, {ReadStream} from 'fs';
-import {DaemonProcessCreateOptions} from './daemon-process-create-options';
-import {Subject} from 'rxjs';
-import {PassThrough} from 'stream';
-import {S3Client} from '@aws-sdk/client-s3';
-import {jest} from '@jest/globals';
-import {S3CacheRatchetLike} from '../s3/s3-cache-ratchet-like';
+import { S3CacheRatchet } from '../s3/s3-cache-ratchet';
+import { DaemonProcessState } from './daemon-process-state';
+import { DaemonUtil } from './daemon-util';
+import { Logger } from '../../common/logger';
+import { PromiseRatchet } from '../../common/promise-ratchet';
+import { LoggerLevelName } from '../../common/logger-support/logger-level-name';
+import { CsvRatchet } from '../../node-csv/csv-ratchet';
+import { JestRatchet } from '../../jest/jest-ratchet';
+import fs, { ReadStream } from 'fs';
+import { DaemonProcessCreateOptions } from './daemon-process-create-options';
+import { Subject } from 'rxjs';
+import { PassThrough } from 'stream';
+import { S3Client } from '@aws-sdk/client-s3';
+import { jest } from '@jest/globals';
+import { S3CacheRatchetLike } from '../s3/s3-cache-ratchet-like';
 
 let mockS3CR: jest.Mocked<S3CacheRatchetLike>;
 

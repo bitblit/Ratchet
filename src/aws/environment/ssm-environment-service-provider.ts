@@ -1,10 +1,10 @@
-import {RequireRatchet} from "../../common/require-ratchet";
-import {ErrorRatchet} from '../../common/error-ratchet';
-import {Logger} from '../../common/logger';
-import {StringRatchet} from '../../common/string-ratchet';
-import {PromiseRatchet} from '../../common/promise-ratchet';
-import {GetParameterCommand, GetParameterCommandOutput, SSMClient} from '@aws-sdk/client-ssm';
-import {EnvironmentServiceProvider} from './environment-service-provider';
+import { RequireRatchet } from '../../common/require-ratchet';
+import { ErrorRatchet } from '../../common/error-ratchet';
+import { Logger } from '../../common/logger';
+import { StringRatchet } from '../../common/string-ratchet';
+import { PromiseRatchet } from '../../common/promise-ratchet';
+import { GetParameterCommand, GetParameterCommandOutput, SSMClient } from '@aws-sdk/client-ssm';
+import { EnvironmentServiceProvider } from './environment-service-provider';
 
 /**
  * Service for reading environmental variables
@@ -12,7 +12,10 @@ import {EnvironmentServiceProvider} from './environment-service-provider';
  */
 export class SsmEnvironmentServiceProvider<T> implements EnvironmentServiceProvider<T> {
   private ssm: SSMClient;
-  public constructor(private region = 'us-east-1', private ssmEncrypted = true) {
+  public constructor(
+    private region = 'us-east-1',
+    private ssmEncrypted = true,
+  ) {
     RequireRatchet.notNullOrUndefined(region);
     RequireRatchet.notNullOrUndefined(ssmEncrypted);
     this.ssm = new SSMClient({ region: this.region });

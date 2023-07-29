@@ -15,9 +15,9 @@ import {
   SendSSHPublicKeyCommandInput,
   SendSSHPublicKeyCommandOutput,
 } from '@aws-sdk/client-ec2-instance-connect';
-import {Logger} from '../../common/logger';
-import {PromiseRatchet} from '../../common/promise-ratchet';
-import {DurationRatchet} from '../../common/duration-ratchet';
+import { Logger } from '../../common/logger';
+import { PromiseRatchet } from '../../common/promise-ratchet';
+import { DurationRatchet } from '../../common/duration-ratchet';
 
 /**
  * Service to simplify interacting with EC2 instances
@@ -34,7 +34,10 @@ export class Ec2Ratchet {
   private ec2: EC2Client;
   private ec2InstanceConnect: EC2InstanceConnectClient;
 
-  constructor(private region: string = 'us-east-1', private availabilityZone: string = 'us-east-1a') {
+  constructor(
+    private region: string = 'us-east-1',
+    private availabilityZone: string = 'us-east-1a',
+  ) {
     this.ec2 = new EC2Client({ region: region });
     this.ec2InstanceConnect = new EC2InstanceConnectClient({ region: region });
   }
@@ -66,7 +69,7 @@ export class Ec2Ratchet {
           Logger.debug(
             'Instance status is %j - waiting for 5 seconds (up to %s)',
             status.State,
-            DurationRatchet.formatMsDuration(maxWaitForShutdownMS)
+            DurationRatchet.formatMsDuration(maxWaitForShutdownMS),
           );
           await PromiseRatchet.wait(5000);
           status = await this.describeInstance(instanceId);
@@ -100,7 +103,7 @@ export class Ec2Ratchet {
           Logger.debug(
             'Instance status is %j - waiting for 5 seconds (up to %s)',
             status.State,
-            DurationRatchet.formatMsDuration(maxWaitForStartupMS)
+            DurationRatchet.formatMsDuration(maxWaitForStartupMS),
           );
           await PromiseRatchet.wait(5000);
           status = await this.describeInstance(instanceId);
@@ -150,7 +153,7 @@ export class Ec2Ratchet {
   public async sendPublicKeyToEc2Instance(
     instanceId: string,
     publicKeyString: string,
-    instanceOsUser?: string
+    instanceOsUser?: string,
   ): Promise<SendSSHPublicKeyCommandOutput> {
     const userName: string = instanceOsUser || 'ec2-user';
     const req: SendSSHPublicKeyCommandInput = {

@@ -1,10 +1,10 @@
-import {RequireRatchet} from "../../common/require-ratchet";
-import {StringRatchet} from '../../common/string-ratchet';
-import {MapRatchet} from "../../common/map-ratchet";
-import {PrototypeDaoProvider} from './prototype-dao-provider';
-import {PrototypeDaoDb} from './prototype-dao-db';
-import {PrototypeDaoConfig} from './prototype-dao-config';
-import {DateTime} from 'luxon';
+import { RequireRatchet } from '../../common/require-ratchet';
+import { StringRatchet } from '../../common/string-ratchet';
+import { MapRatchet } from '../../common/map-ratchet';
+import { PrototypeDaoProvider } from './prototype-dao-provider';
+import { PrototypeDaoDb } from './prototype-dao-db';
+import { PrototypeDaoConfig } from './prototype-dao-config';
+import { DateTime } from 'luxon';
 
 /*
   PrototypeDao makes it quick to stand up a simple data access object
@@ -29,7 +29,10 @@ export class PrototypeDao<T> {
     };
   }
 
-  constructor(private provider: PrototypeDaoProvider<T>, private cfg: PrototypeDaoConfig = PrototypeDao.defaultDaoConfig()) {
+  constructor(
+    private provider: PrototypeDaoProvider<T>,
+    private cfg: PrototypeDaoConfig = PrototypeDao.defaultDaoConfig(),
+  ) {
     RequireRatchet.notNullOrUndefined(provider, 'provider');
     RequireRatchet.notNullOrUndefined(cfg, 'cfg');
     RequireRatchet.notNullOrUndefined(cfg.guidCreateFunction, 'cfg.guidCreateFunction');

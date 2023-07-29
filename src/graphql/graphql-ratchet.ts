@@ -28,7 +28,7 @@ export class GraphqlRatchet {
     private queryProvider: GraphqlRatchetQueryProvider,
     private endpointProvider: GraphqlRatchetEndpointProvider,
     private jwtTokenProvider: GraphqlRatchetJwtTokenProvider,
-    private errorHandler: GraphqlRatchetErrorHandler = new DefaultGraphqlRatchetErrorHandler()
+    private errorHandler: GraphqlRatchetErrorHandler = new DefaultGraphqlRatchetErrorHandler(),
   ) {
     RequireRatchet.notNullOrUndefined(queryProvider, 'queryProvider');
     RequireRatchet.notNullOrUndefined(endpointProvider, 'endpointProvider');

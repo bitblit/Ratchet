@@ -105,7 +105,7 @@ export class PromiseRatchet {
     intervalMS: number,
     maxCycles: number,
     label = 'waitFor',
-    count = 0
+    count = 0,
   ): Promise<boolean> {
     if (expectedValue == null || intervalMS < 50 || maxCycles < 1 || count < 0 || typeof testFunction != 'function') {
       Logger.warn('%s: Invalid configuration for waitFor - exiting immediately', label);
@@ -115,7 +115,7 @@ export class PromiseRatchet {
         expectedValue,
         intervalMS,
         maxCycles,
-        typeof testFunction
+        typeof testFunction,
       );
 
       return false;
@@ -151,7 +151,7 @@ export class PromiseRatchet {
     params: any[][],
     context: any, // eslint-disable-line @typescript-eslint/explicit-module-boundary-types
     maxConcurrent = 1,
-    logLevel = LoggerLevelName.debug
+    logLevel = LoggerLevelName.debug,
   ): Promise<T[]> {
     const sw: StopWatch = new StopWatch();
     let rval: T[] = [];
@@ -182,7 +182,7 @@ export class PromiseRatchet {
     params: any[],
     context: any, // eslint-disable-line @typescript-eslint/explicit-module-boundary-types
     maxConcurrent = 1,
-    logLevel = LoggerLevelName.debug
+    logLevel = LoggerLevelName.debug,
   ): Promise<T[]> {
     const wrappedParams: any[][] = ArrayRatchet.wrapElementsInArray(params);
     return PromiseRatchet.runBoundedParallel<T>(promiseFn, wrappedParams, context, maxConcurrent, logLevel);

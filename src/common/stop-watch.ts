@@ -89,11 +89,11 @@ export class StopWatch {
           const expectedTotalMS: number = elapsedMS / pctComplete;
           const remainMS: number = expectedTotalMS - elapsedMS;
           rval +=
-              'running for ' +
-              DurationRatchet.formatMsDuration(elapsedMS, !shortForm) +
-              ' approx ' +
-              DurationRatchet.formatMsDuration(remainMS, !shortForm) +
-              ' remaining';
+            'running for ' +
+            DurationRatchet.formatMsDuration(elapsedMS, !shortForm) +
+            ' approx ' +
+            DurationRatchet.formatMsDuration(remainMS, !shortForm) +
+            ' remaining';
         }
       }
     }

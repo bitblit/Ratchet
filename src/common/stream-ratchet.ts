@@ -37,7 +37,7 @@ export class StreamRatchet {
       {
         highWaterMark: 3,
         size: () => 1,
-      }
+      },
     );
     await stream.pipeTo(writer);
     return Buffer.concat(out);
@@ -73,7 +73,7 @@ export class StreamRatchet {
       },
       {
         highWaterMark: input ? input.length : null,
-      }
+      },
     );
     return rval;
   }

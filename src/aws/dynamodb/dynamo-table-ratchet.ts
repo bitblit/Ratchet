@@ -18,11 +18,11 @@ import {
   ProvisionedThroughput,
   ResourceNotFoundException,
 } from '@aws-sdk/client-dynamodb';
-import {RequireRatchet} from "../../common/require-ratchet";
-import {ErrorRatchet} from '../../common/error-ratchet';
-import {Logger} from '../../common/logger';
-import {PromiseRatchet} from '../../common/promise-ratchet';
-import {LocalSecondaryIndex} from '@aws-sdk/client-dynamodb/dist-types/models/models_0';
+import { RequireRatchet } from '../../common/require-ratchet';
+import { ErrorRatchet } from '../../common/error-ratchet';
+import { Logger } from '../../common/logger';
+import { PromiseRatchet } from '../../common/promise-ratchet';
+import { LocalSecondaryIndex } from '@aws-sdk/client-dynamodb/dist-types/models/models_0';
 
 export class DynamoTableRatchet {
   constructor(private awsDDB: DynamoDBClient) {
@@ -50,7 +50,7 @@ export class DynamoTableRatchet {
   public async createTable(
     input: CreateTableCommandInput,
     waitForReady = true,
-    replaceIfExists = false
+    replaceIfExists = false,
   ): Promise<CreateTableCommandOutput> {
     RequireRatchet.notNullOrUndefined(input);
     RequireRatchet.notNullOrUndefined(input.TableName);
@@ -139,7 +139,7 @@ export class DynamoTableRatchet {
     srcTableName: string,
     dstTableName: string,
     overrides?: CreateTableCommandInput,
-    copyData?: boolean
+    copyData?: boolean,
   ): Promise<CreateTableCommandOutput> {
     RequireRatchet.notNullUndefinedOrOnlyWhitespaceString(srcTableName, 'srcTableName');
     RequireRatchet.notNullUndefinedOrOnlyWhitespaceString(dstTableName, 'dstTableName');

@@ -5,7 +5,10 @@ import { DynamoTableRatchet } from '../dynamodb/dynamo-table-ratchet';
 import { PutItemOutput } from '@aws-sdk/client-dynamodb';
 
 export class DynamoExpiringCodeProvider implements ExpiringCodeProvider {
-  constructor(private tableName: string, private dynamoRatchet: DynamoRatchet) {}
+  constructor(
+    private tableName: string,
+    private dynamoRatchet: DynamoRatchet,
+  ) {}
 
   public async checkCode(code: string, context: string, deleteOnMatch?: boolean): Promise<boolean> {
     const keys: any = { code: code, context: context };

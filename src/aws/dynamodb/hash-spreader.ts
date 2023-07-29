@@ -5,9 +5,9 @@
  * If you need to, you can easily increase the buckets number later, but may NOT decrease it.  Increasing
  * spots is also hard (although I have an idea for implementing that later...)
  */
-import {RequireRatchet} from "../../common/require-ratchet";
-import {ErrorRatchet} from '../../common/error-ratchet';
-import {StringRatchet} from '../../common/string-ratchet';
+import { RequireRatchet } from '../../common/require-ratchet';
+import { ErrorRatchet } from '../../common/error-ratchet';
+import { StringRatchet } from '../../common/string-ratchet';
 
 export class HashSpreader {
   private _allSlots: string[];
@@ -23,7 +23,7 @@ export class HashSpreader {
     private spots: number = 3,
     private buckets: number = 16,
     private separator: string = '_',
-    private alphabet: string = '0123456789ABCDEF'
+    private alphabet: string = '0123456789ABCDEF',
   ) {
     RequireRatchet.true(spots > 0, 'Spots must be larger than 0');
     RequireRatchet.true(buckets > 1, 'Buckets must be larger than 1');
@@ -72,7 +72,7 @@ export class HashSpreader {
       ErrorRatchet.throwFormattedErr(
         'Cannot extract bucket, not created by this spreader (missing %s at location %d)',
         this.separator,
-        loc
+        loc,
       );
     }
     return input.substring(loc);

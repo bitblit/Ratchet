@@ -10,7 +10,7 @@ export class GoogleRecaptchaRatchet {
   public static async verifyRecaptchaToken(
     keySecret: string,
     token: string,
-    fetchFn: (input: RequestInfo | URL, init?: RequestInit) => Promise<Response> = fetch
+    fetchFn: (input: RequestInfo | URL, init?: RequestInit) => Promise<Response> = fetch,
   ): Promise<boolean> {
     Logger.debug('Verifying recaptcha token : %s', token);
     let rval: boolean = null;

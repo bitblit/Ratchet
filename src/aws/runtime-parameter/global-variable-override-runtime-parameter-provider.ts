@@ -1,8 +1,8 @@
-import {RuntimeParameterProvider} from './runtime-parameter-provider';
-import {StoredRuntimeParameter} from './stored-runtime-parameter';
-import {RequireRatchet} from "../../common/require-ratchet";
-import {ErrorRatchet} from '../../common/error-ratchet';
-import {StringRatchet} from '../../common/string-ratchet';
+import { RuntimeParameterProvider } from './runtime-parameter-provider';
+import { StoredRuntimeParameter } from './stored-runtime-parameter';
+import { RequireRatchet } from '../../common/require-ratchet';
+import { ErrorRatchet } from '../../common/error-ratchet';
+import { StringRatchet } from '../../common/string-ratchet';
 
 /**
  * Provides parameters for a runtime parameter from an global (ie, process.env or global.xx) variable, where the key follows
@@ -19,7 +19,10 @@ export class GlobalVariableOverrideRuntimeParameterProvider implements RuntimePa
     suffix: '',
   };
 
-  constructor(private wrapped: RuntimeParameterProvider, opts?: GlobalVariableOverrideRuntimeParameterProviderOptions) {
+  constructor(
+    private wrapped: RuntimeParameterProvider,
+    opts?: GlobalVariableOverrideRuntimeParameterProviderOptions,
+  ) {
     // They can be empty but they cannot be null
     RequireRatchet.notNullOrUndefined(this.wrapped, 'wrapped');
     RequireRatchet.notNullOrUndefined(global?.process?.env, '"process" not found - this only runs in Node, not the browser');
@@ -48,7 +51,7 @@ export class GlobalVariableOverrideRuntimeParameterProvider implements RuntimePa
       ErrorRatchet.throwFormattedErr(
         'Cannot parse ENV override (%s / %s) as JSON - did you forget the quotes on a string?',
         groupId,
-        paramKey
+        paramKey,
       );
     }
     const rval: StoredRuntimeParameter = asString

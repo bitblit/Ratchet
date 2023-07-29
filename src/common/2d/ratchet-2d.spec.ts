@@ -71,8 +71,8 @@ describe('#ratchet2d', function () {
           { x: 10, y: 10 },
           { x: 100, y: 10 },
         ],
-        plane
-      )
+        plane,
+      ),
     ).toEqual(false);
     expect(
       Ratchet2d.planeContainsPoints(
@@ -80,8 +80,8 @@ describe('#ratchet2d', function () {
           { x: 10, y: 10 },
           { x: 11, y: 10 },
         ],
-        plane
-      )
+        plane,
+      ),
     ).toEqual(true);
 
     expect(
@@ -90,8 +90,8 @@ describe('#ratchet2d', function () {
           p1: { x: 10, y: 10 },
           p2: { x: 100, y: 10 },
         },
-        plane
-      )
+        plane,
+      ),
     ).toEqual(false);
     expect(
       Ratchet2d.planeContainsLine(
@@ -99,8 +99,8 @@ describe('#ratchet2d', function () {
           p1: { x: 10, y: 10 },
           p2: { x: 11, y: 10 },
         },
-        plane
-      )
+        plane,
+      ),
     ).toEqual(true);
   });
 

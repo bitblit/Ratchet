@@ -1,12 +1,15 @@
 import { BrowserLocalIpProvider } from './browser-local-ip-provider';
 import { NetworkRatchet } from './network-ratchet';
-import { PromiseRatchet } from './promise-ratchet';
+import { PromiseRatchet } from '../promise-ratchet';
+import { jest } from '@jest/globals';
 
 jest.mock('./network-ratchet');
 
 describe('#browserLocalIpProvider', function () {
   it('should pull a local ip and return it', async () => {
-    const mockStaticFn = jest.fn().mockResolvedValue('192.168.1.1');
+    const mockStaticFn = jest.fn(() => Promise.resolve('192.168.1.1'));
+
+    //const mockStaticFn = jest.fn().mockResolvedValue('192.168.1.1');
     NetworkRatchet.findLocalIp = mockStaticFn;
 
     const up: BrowserLocalIpProvider = new BrowserLocalIpProvider();

@@ -8,7 +8,7 @@ describe('#applyCiEnvVariablesToFiles', function () {
     try {
       const result: number = await ApplyCiEnvVariablesToFiles.process(
         ['test1.txt'],
-        CiEnvVariableConfigUtil.createDefaultCircleCiVariableConfig()
+        CiEnvVariableConfigUtil.createDefaultCircleCiVariableConfig(),
       );
       this.bail();
     } catch (err) {

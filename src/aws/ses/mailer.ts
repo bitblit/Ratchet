@@ -1,21 +1,15 @@
-import {ReadyToSendEmail} from './ready-to-send-email';
-import {RequireRatchet} from "../../common/require-ratchet";
-import {ErrorRatchet} from '../../common/error-ratchet';
-import {Logger} from '../../common/logger';
-import {StringRatchet} from '../../common/string-ratchet';
-import {Base64Ratchet} from '../../common/base64-ratchet';
-import {
-  SendRawEmailCommand,
-  SendRawEmailCommandOutput,
-  SendRawEmailRequest,
-  SendRawEmailResponse,
-  SESClient
-} from '@aws-sdk/client-ses';
-import {MailerConfig} from './mailer-config';
-import {ResolvedReadyToSendEmail} from './resolved-ready-to-send-email';
-import {EmailAttachment} from './email-attachment';
-import {DateTime} from 'luxon';
-import {MailerLike} from './mailer-like';
+import { ReadyToSendEmail } from './ready-to-send-email';
+import { RequireRatchet } from '../../common/require-ratchet';
+import { ErrorRatchet } from '../../common/error-ratchet';
+import { Logger } from '../../common/logger';
+import { StringRatchet } from '../../common/string-ratchet';
+import { Base64Ratchet } from '../../common/base64-ratchet';
+import { SendRawEmailCommand, SendRawEmailCommandOutput, SendRawEmailRequest, SendRawEmailResponse, SESClient } from '@aws-sdk/client-ses';
+import { MailerConfig } from './mailer-config';
+import { ResolvedReadyToSendEmail } from './resolved-ready-to-send-email';
+import { EmailAttachment } from './email-attachment';
+import { DateTime } from 'luxon';
+import { MailerLike } from './mailer-like';
 
 /**
  * Generic Mail Sender for AWS.
@@ -27,7 +21,10 @@ import {MailerLike} from './mailer-like';
 export class Mailer implements MailerLike {
   public static readonly EMAIL: RegExp = new RegExp('.+@.+\\.[a-z]+');
 
-  constructor(private ses: SESClient, private config: MailerConfig = {} as MailerConfig) {
+  constructor(
+    private ses: SESClient,
+    private config: MailerConfig = {} as MailerConfig,
+  ) {
     RequireRatchet.notNullOrUndefined(this.ses);
     if (!!config.archive && !config.archive.getDefaultBucket()) {
       throw new Error('If archive specified, must set a default bucket');
@@ -44,7 +41,7 @@ export class Mailer implements MailerLike {
     htmlTemplateName: string,
     txtTemplateName: string = null,
     layoutName: string = null,
-    partialNames: string[] = null
+    partialNames: string[] = null,
   ): Promise<ReadyToSendEmail> {
     RequireRatchet.notNullOrUndefined(htmlTemplateName);
     if (!this.config.templateRenderer) {
@@ -61,7 +58,7 @@ export class Mailer implements MailerLike {
     htmlTemplateName: string,
     txtTemplateName: string = null,
     layoutName: string = null,
-    partialNames: string[] = null
+    partialNames: string[] = null,
   ): Promise<SendRawEmailResponse> {
     const newVal: ReadyToSendEmail = await this.fillEmailBody(rts, context, htmlTemplateName, txtTemplateName, layoutName, partialNames);
     const rval: SendRawEmailResponse = await this.sendEmail(newVal);
@@ -161,7 +158,7 @@ export class Mailer implements MailerLike {
                   ' was removed since it was ' +
                   a.base64Data.length +
                   ' bytes but max allowed is ' +
-                  this.config.maxAttachmentSizeInBase64Bytes
+                  this.config.maxAttachmentSizeInBase64Bytes,
               ),
             });
           }

@@ -1,5 +1,5 @@
-import {StringRatchet} from '../../common/string-ratchet';
-import {SyncLockProvider} from './sync-lock-provider';
+import { StringRatchet } from '../../common/string-ratchet';
+import { SyncLockProvider } from './sync-lock-provider';
 
 /**
  * Simple in-memory implementation of the SyncLockProvider interface

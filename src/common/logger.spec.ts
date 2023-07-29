@@ -147,7 +147,7 @@ describe('#testPreProcessor', function () {
 
     const output: string = Logger.getLogger(StringRatchet.createRandomHexString(4), { preProcessors: [preProc] }).info(
       'This is a test %s',
-      'bob'
+      'bob',
     );
     expect(output).toEqual('[info] Preprocess bob');
   });
@@ -156,7 +156,7 @@ describe('#testPreProcessor', function () {
 describe('#testBuilder', function () {
   it('should use a builder', function () {
     const output: string = Logger.getLogger(StringRatchet.createRandomHexString(4)).recordMessageBuilder(
-      new LogMessageBuilder(LoggerLevelName.warn, 'This is a test %s').subVars(['bob'])
+      new LogMessageBuilder(LoggerLevelName.warn, 'This is a test %s').subVars(['bob']),
     );
     expect(output).toEqual('[warn] This is a test bob');
   });

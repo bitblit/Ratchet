@@ -18,10 +18,10 @@ import {
   StopQueryCommand,
   StopQueryCommandOutput,
 } from '@aws-sdk/client-cloudwatch-logs';
-import {RequireRatchet} from "../../common/require-ratchet";
-import {Logger} from '../../common/logger';
-import {StringRatchet} from '../../common/string-ratchet';
-import {PromiseRatchet} from '../../common/promise-ratchet';
+import { RequireRatchet } from '../../common/require-ratchet';
+import { Logger } from '../../common/logger';
+import { StringRatchet } from '../../common/string-ratchet';
+import { PromiseRatchet } from '../../common/promise-ratchet';
 
 export class CloudWatchLogsRatchet {
   private static readonly MAX_DELETE_RETRIES = 5;
@@ -38,7 +38,7 @@ export class CloudWatchLogsRatchet {
   public async removeEmptyOrOldLogStreams(
     logGroupName: string,
     maxToRemove = 1000,
-    oldestEventEpochMS: number = null
+    oldestEventEpochMS: number = null,
   ): Promise<LogStream[]> {
     Logger.info('Removing empty streams from %s, oldest event epoch MS : %d', logGroupName, oldestEventEpochMS);
     const streamSearchParams: any = {
@@ -105,7 +105,7 @@ export class CloudWatchLogsRatchet {
             oldWait,
             waitPer,
             retry,
-            CloudWatchLogsRatchet.MAX_DELETE_RETRIES
+            CloudWatchLogsRatchet.MAX_DELETE_RETRIES,
           );
         }
       }

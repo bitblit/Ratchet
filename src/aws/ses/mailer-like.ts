@@ -16,7 +16,7 @@ export interface MailerLike {
     htmlTemplateName: string,
     txtTemplateName?: string,
     layoutName?: string,
-    partialNames?: string[]
+    partialNames?: string[],
   ): Promise<ReadyToSendEmail>;
 
   fillEmailBodyAndSend(
@@ -25,7 +25,7 @@ export interface MailerLike {
     htmlTemplateName: string,
     txtTemplateName?: string,
     layoutName?: string,
-    partialNames?: string[]
+    partialNames?: string[],
   ): Promise<SendRawEmailResponse>;
 
   filterEmailsToValid(emails: string[]): string[];

@@ -21,7 +21,7 @@ export class PublishCiReleaseToSlack {
 
     if (!buildNum || !userName || !projectName) {
       throw new Error(
-        'CIRCLE_BUILD_NUM, CIRCLE_USERNAME, CIRCLE_PROJECT_REPONAME env vars not set - apparently not in a CircleCI environment'
+        'CIRCLE_BUILD_NUM, CIRCLE_USERNAME, CIRCLE_PROJECT_REPONAME env vars not set - apparently not in a CircleCI environment',
       );
     }
 

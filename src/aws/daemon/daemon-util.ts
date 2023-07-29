@@ -1,7 +1,7 @@
-import {Logger} from '../../common/logger';
-import {StringRatchet} from '../../common/string-ratchet';
-import {DaemonProcessState} from './daemon-process-state';
-import {DaemonProcessCreateOptions} from './daemon-process-create-options';
+import { Logger } from '../../common/logger';
+import { StringRatchet } from '../../common/string-ratchet';
+import { DaemonProcessState } from './daemon-process-state';
+import { DaemonProcessCreateOptions } from './daemon-process-create-options';
 import {
   CompleteMultipartUploadCommandOutput,
   HeadObjectOutput,
@@ -9,10 +9,10 @@ import {
   PutObjectOutput,
   PutObjectRequest,
 } from '@aws-sdk/client-s3';
-import {Readable} from 'stream';
-import {Upload} from '@aws-sdk/lib-storage';
-import {S3CacheRatchetLike} from '../s3/s3-cache-ratchet-like';
-import {DaemonStreamDataOptions} from './daemon-stream-data-options';
+import { Readable } from 'stream';
+import { Upload } from '@aws-sdk/lib-storage';
+import { S3CacheRatchetLike } from '../s3/s3-cache-ratchet-like';
+import { DaemonStreamDataOptions } from './daemon-stream-data-options';
 
 /**
  * Internal utilities which are here for the USE OF THE DAEMON OBJECT ONLY - if you are trying to use this
@@ -28,7 +28,7 @@ export class DaemonUtil {
     cache: S3CacheRatchetLike,
     id: string,
     s3Key: string,
-    options: DaemonProcessCreateOptions
+    options: DaemonProcessCreateOptions,
   ): Promise<DaemonProcessState> {
     try {
       options.meta = options.meta || {};
@@ -63,7 +63,7 @@ export class DaemonUtil {
     cache: S3CacheRatchetLike,
     s3Key: string,
     newState: DaemonProcessState,
-    contents: Buffer
+    contents: Buffer,
   ): Promise<DaemonProcessState> {
     try {
       const s3meta: any = {};
@@ -95,7 +95,7 @@ export class DaemonUtil {
     cache: S3CacheRatchetLike,
     s3Key: string,
     data: Readable,
-    options?: DaemonStreamDataOptions
+    options?: DaemonStreamDataOptions,
   ): Promise<DaemonProcessState> {
     Logger.debug('Streaming data to %s', s3Key);
     const inStat: DaemonProcessState = await DaemonUtil.updateMessage(cache, s3Key, 'Streaming data');

@@ -9,10 +9,10 @@ import {
   PutObjectCommandInput,
   S3Client,
 } from '@aws-sdk/client-s3';
-import {RequireRatchet} from "../../common/require-ratchet";
-import {Logger} from '../../common/logger';
-import {PromiseRatchet} from '../../common/promise-ratchet';
-import {Upload} from '@aws-sdk/lib-storage';
+import { RequireRatchet } from '../../common/require-ratchet';
+import { Logger } from '../../common/logger';
+import { PromiseRatchet } from '../../common/promise-ratchet';
+import { Upload } from '@aws-sdk/lib-storage';
 
 export interface S3LocationSyncRatchetConfig {
   srcS3: S3Client;
@@ -108,7 +108,7 @@ export class S3LocationSyncRatchet {
         Logger.warn(
           `Can't ${express ? 'express' : 'slow'} copy
                   [${[this.config.srcBucket, key].join('/')} ---> ${[this.config.dstBucket, dstKey].join('/')}]: %j`,
-          err
+          err,
         );
         retries++;
       }
@@ -200,7 +200,7 @@ export class S3LocationSyncRatchet {
       },
       Object.keys(srcObjs),
       this,
-      this.config.maxNumThreads
+      this.config.maxNumThreads,
     );
     return rval;
   }

@@ -17,7 +17,7 @@ export interface DynamoRatchetLike {
     qry: DocQueryCommandInput,
     proc: (val: T) => Promise<void>,
     delayMS?: number,
-    softLimit?: number
+    softLimit?: number,
   ): Promise<number>;
 
   fullyExecuteScanCount(scan: DocScanCommandInput, delayMS?: number): Promise<DynamoCountResult>;
@@ -26,7 +26,7 @@ export interface DynamoRatchetLike {
     scan: DocScanCommandInput,
     proc: (val: T) => Promise<void>,
     delayMS?: number,
-    softLimit?: number
+    softLimit?: number,
   ): Promise<number>;
 
   writeAllInBatches<T>(tableName: string, elements: T[], batchSize: number): Promise<number>;
@@ -45,7 +45,7 @@ export interface DynamoRatchetLike {
     keyNames: string[],
     adjustFunction: (val: T) => T,
     maxAdjusts?: number,
-    autoRetryCount?: number
+    autoRetryCount?: number,
   ): Promise<T>;
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   simpleGet<T>(tableName: string, keys: any, autoRetryCount?: number): Promise<T>;
@@ -55,7 +55,7 @@ export interface DynamoRatchetLike {
     keys: any,
     counterAttributeName: string,
     deleteOnZero: boolean,
-    autoRetryCount?: number
+    autoRetryCount?: number,
   ): Promise<T>;
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   simpleDelete(tableName: string, keys: any): Promise<DeleteItemCommandOutput>;

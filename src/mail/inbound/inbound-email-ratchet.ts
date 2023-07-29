@@ -8,7 +8,10 @@ import { ParsedEmailProcessor } from './parsed-email-processor';
  * Service for handling inbound emails
  */
 export class InboundEmailRatchet {
-  constructor(private cache: S3CacheRatchet, private processors: ParsedEmailProcessor<any>[]) {
+  constructor(
+    private cache: S3CacheRatchet,
+    private processors: ParsedEmailProcessor<any>[],
+  ) {
     RequireRatchet.notNullOrUndefined(this.cache, 'cache');
     RequireRatchet.notNullOrUndefined(this.cache.getDefaultBucket(), 'cache.defaultBucket');
   }
@@ -35,7 +38,7 @@ export class InboundEmailRatchet {
       'Found mail from "%s" subject "%s" with %d attachments',
       message?.from?.text,
       message?.subject,
-      message?.attachments?.length
+      message?.attachments?.length,
     );
 
     let procd: boolean = false;

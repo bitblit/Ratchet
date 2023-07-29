@@ -1,16 +1,16 @@
-import {RequireRatchet} from "../../common/require-ratchet";
-import {Logger} from '../../common/logger';
-import {StringRatchet} from '../../common/string-ratchet';
+import { RequireRatchet } from '../../common/require-ratchet';
+import { Logger } from '../../common/logger';
+import { StringRatchet } from '../../common/string-ratchet';
 
-import {DaemonProcessState} from './daemon-process-state';
-import {S3CacheRatchet} from '../s3/s3-cache-ratchet';
-import {DaemonProcessCreateOptions} from './daemon-process-create-options';
-import {DaemonUtil} from './daemon-util';
-import {DaemonLike} from './daemon-like';
-import {DaemonProcessStatePublicToken} from './daemon-process-state-public-token';
-import {S3Client} from '@aws-sdk/client-s3';
-import {S3CacheRatchetLike} from '../s3/s3-cache-ratchet-like';
-import {JwtRatchetLike} from "../../common/jwt-ratchet-like";
+import { DaemonProcessState } from './daemon-process-state';
+import { S3CacheRatchet } from '../s3/s3-cache-ratchet';
+import { DaemonProcessCreateOptions } from './daemon-process-create-options';
+import { DaemonUtil } from './daemon-util';
+import { DaemonLike } from './daemon-like';
+import { DaemonProcessStatePublicToken } from './daemon-process-state-public-token';
+import { S3Client } from '@aws-sdk/client-s3';
+import { S3CacheRatchetLike } from '../s3/s3-cache-ratchet-like';
+import { JwtRatchetLike } from '../../common/jwt-ratchet-like';
 
 export class Daemon implements DaemonLike {
   public static DEFAULT_DEFAULT_GROUP: string = 'DEFAULT';
@@ -22,7 +22,7 @@ export class Daemon implements DaemonLike {
     private bucket: string,
     private prefix: string = '',
     private _defaultGroup: string = Daemon.DEFAULT_DEFAULT_GROUP,
-    private jwtRatchet?: JwtRatchetLike
+    private jwtRatchet?: JwtRatchetLike,
   ) {
     this.cache = new S3CacheRatchet(this.s3, this.bucket);
   }

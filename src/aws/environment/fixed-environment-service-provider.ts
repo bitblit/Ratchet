@@ -1,6 +1,6 @@
-import {RequireRatchet} from "../../common/require-ratchet";
-import {Logger} from '../../common/logger';
-import {EnvironmentServiceProvider} from './environment-service-provider';
+import { RequireRatchet } from '../../common/require-ratchet';
+import { Logger } from '../../common/logger';
+import { EnvironmentServiceProvider } from './environment-service-provider';
 
 /**
  * Forces in a single object as the environment

@@ -22,7 +22,10 @@ export class LoggerInstance {
   private _handlerFunctionMap: Map<LoggerLevelName, (...any) => void>;
   private _options: LoggerOptions;
 
-  constructor(private loggerInstanceName: string = 'default', inOptions: LoggerOptions) {
+  constructor(
+    private loggerInstanceName: string = 'default',
+    inOptions: LoggerOptions,
+  ) {
     this.options = inOptions; // MUST use the setter here
   }
 

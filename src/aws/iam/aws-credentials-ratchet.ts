@@ -1,5 +1,5 @@
-import {ErrorRatchet} from '../../common/error-ratchet';
-import {StringRatchet} from '../../common/string-ratchet';
+import { ErrorRatchet } from '../../common/error-ratchet';
+import { StringRatchet } from '../../common/string-ratchet';
 
 /**
  * Ratchet for manipulating credentials

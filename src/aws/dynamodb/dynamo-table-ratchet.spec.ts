@@ -1,8 +1,8 @@
-import {Logger} from '../../common/logger';
-import {DescribeTableCommandOutput, DynamoDBClient} from '@aws-sdk/client-dynamodb';
+import { Logger } from '../../common/logger';
+import { DescribeTableCommandOutput, DynamoDBClient } from '@aws-sdk/client-dynamodb';
 
-import {mockClient} from 'aws-sdk-client-mock';
-import {DynamoTableRatchet} from './dynamo-table-ratchet';
+import { mockClient } from 'aws-sdk-client-mock';
+import { DynamoTableRatchet } from './dynamo-table-ratchet';
 
 let mockDynamo;
 

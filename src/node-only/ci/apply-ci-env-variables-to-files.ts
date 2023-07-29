@@ -13,7 +13,7 @@ export class ApplyCiEnvVariablesToFiles {
     branchFinder = 'LOCAL-BRANCH',
     hashFinder = 'LOCAL-HASH',
     tagFinder = 'LOCAL-TAG',
-    timeFinder = 'LOCAL-TIME'
+    timeFinder = 'LOCAL-TIME',
   ): Promise<number> {
     RequireRatchet.notNullOrUndefined(cfg, 'cfg');
     RequireRatchet.notNullOrUndefined(cfg.buildNumberVar, 'cfg.buildNumberVar');
@@ -40,7 +40,7 @@ export class ApplyCiEnvVariablesToFiles {
       branch,
       tag,
       sha1,
-      localTime
+      localTime,
     );
 
     let foundCount = 0;

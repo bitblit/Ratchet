@@ -1,9 +1,9 @@
-import {CloudWatchMetricsRatchet} from './cloud-watch-metrics-ratchet';
-import {KeyValue} from '../../common/key-value';
+import { CloudWatchMetricsRatchet } from './cloud-watch-metrics-ratchet';
+import { KeyValue } from '../../common/key-value';
 
-import {CloudWatchMetricsUnit} from '../model/cloud-watch-metrics-unit';
-import {CloudWatchClient, PutMetricDataCommand} from '@aws-sdk/client-cloudwatch';
-import {mockClient} from 'aws-sdk-client-mock';
+import { CloudWatchMetricsUnit } from '../model/cloud-watch-metrics-unit';
+import { CloudWatchClient, PutMetricDataCommand } from '@aws-sdk/client-cloudwatch';
+import { mockClient } from 'aws-sdk-client-mock';
 
 let mockCW;
 
@@ -30,7 +30,7 @@ describe('#cloudWatchMetricsRatchet', function () {
       CloudWatchMetricsUnit.Count,
       2,
       new Date(),
-      false
+      false,
     );
 
     expect(res).toBeTruthy();

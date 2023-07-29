@@ -1,11 +1,11 @@
-import {EnvironmentServiceProvider} from './environment-service-provider';
-import {S3CacheRatchet} from '../s3/s3-cache-ratchet';
-import {RequireRatchet} from "../../common/require-ratchet";
-import {Logger} from '../../common/logger';
-import {StringRatchet} from '../../common/string-ratchet';
-import {StopWatch} from '../../common/stop-watch';
-import {S3Client} from '@aws-sdk/client-s3';
-import {S3CacheRatchetLike} from '../s3/s3-cache-ratchet-like';
+import { EnvironmentServiceProvider } from './environment-service-provider';
+import { S3CacheRatchet } from '../s3/s3-cache-ratchet';
+import { RequireRatchet } from '../../common/require-ratchet';
+import { Logger } from '../../common/logger';
+import { StringRatchet } from '../../common/string-ratchet';
+import { StopWatch } from '../../common/stop-watch';
+import { S3Client } from '@aws-sdk/client-s3';
+import { S3CacheRatchetLike } from '../s3/s3-cache-ratchet-like';
 
 /**
  * Service for reading environmental variables from S3

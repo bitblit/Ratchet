@@ -3,7 +3,7 @@ import { GoogleRecaptchaRatchet } from './google-recaptcha-ratchet';
 const fakeFetch = jest.fn((input, init) =>
   Promise.resolve({
     json: () => Promise.resolve({ success: true }),
-  } as Response)
+  } as Response),
 );
 
 const fakeFailFetch = jest.fn((input, init) => Promise.reject('Failed to read'));

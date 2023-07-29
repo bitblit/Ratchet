@@ -30,7 +30,7 @@ export class TimeZoneRatchet {
   // Returns midnight in the current timezone in epoch seconds
   public startOfTodayEpochSeconds(): number {
     const startOfToday = this.toEpochSeconds(
-      DateTime.local().setZone(this.timezone).set({ hour: 0, minute: 0, second: 0, millisecond: 0 })
+      DateTime.local().setZone(this.timezone).set({ hour: 0, minute: 0, second: 0, millisecond: 0 }),
     );
     return startOfToday;
   }

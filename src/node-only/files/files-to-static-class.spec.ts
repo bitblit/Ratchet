@@ -9,7 +9,7 @@ describe('#filesToStaticClass', function () {
   it('should convert files to a static class', async () => {
     const out: string = await FilesToStaticClass.process(
       [path.join(testDirname, 'files-to-static-class.ts'), path.join(testDirname, 'cli-ratchet.ts')],
-      'Test'
+      'Test',
     );
     //Logger.info('xx: %s', out);
     expect(out).not.toBeNull();

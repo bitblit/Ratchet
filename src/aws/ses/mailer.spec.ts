@@ -1,11 +1,11 @@
-import {ReadyToSendEmail} from './ready-to-send-email';
-import {SendEmailResponse, SendRawEmailCommand, SendRawEmailCommandOutput, SESClient} from '@aws-sdk/client-ses';
-import {Mailer} from './mailer';
-import {EmailAttachment} from './email-attachment';
-import {StringRatchet} from '../../common/string-ratchet';
-import {Base64Ratchet} from '../../common/base64-ratchet';
-import {MailerConfig} from './mailer-config';
-import {mockClient} from 'aws-sdk-client-mock';
+import { ReadyToSendEmail } from './ready-to-send-email';
+import { SendEmailResponse, SendRawEmailCommand, SendRawEmailCommandOutput, SESClient } from '@aws-sdk/client-ses';
+import { Mailer } from './mailer';
+import { EmailAttachment } from './email-attachment';
+import { StringRatchet } from '../../common/string-ratchet';
+import { Base64Ratchet } from '../../common/base64-ratchet';
+import { MailerConfig } from './mailer-config';
+import { mockClient } from 'aws-sdk-client-mock';
 
 let mockSES;
 const smallImageBase64: string =

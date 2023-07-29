@@ -24,7 +24,11 @@ import { PromiseRatchet } from '../../common/promise-ratchet';
 import { StopWatch } from '../../common/stop-watch';
 
 export class AthenaRatchet {
-  constructor(private athena: AthenaClient, private s3: S3Client, private outputLocation: string) {
+  constructor(
+    private athena: AthenaClient,
+    private s3: S3Client,
+    private outputLocation: string,
+  ) {
     RequireRatchet.notNullOrUndefined(athena);
     RequireRatchet.notNullOrUndefined(s3);
     RequireRatchet.notNullOrUndefined(outputLocation);
@@ -110,11 +114,11 @@ export class AthenaRatchet {
     const getFileOut: GetObjectCommandOutput = await this.s3.send(new GetObjectCommand(req));
 
     const rval: T[] = await CsvRatchet.stringParse<T>(
-        getFileOut.Body.toString(),
-        (p) => {
-          return p;
-        },
-        { columns: true, skip_empty_lines: true }
+      getFileOut.Body.toString(),
+      (p) => {
+        return p;
+      },
+      { columns: true, skip_empty_lines: true },
     );
 
     return rval;

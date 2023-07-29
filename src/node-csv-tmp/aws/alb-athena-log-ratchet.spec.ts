@@ -1,9 +1,9 @@
-import {AthenaRatchet} from './athena-ratchet';
-import {Logger} from '../../common/logger';
+import { AthenaRatchet } from './athena-ratchet';
+import { Logger } from '../../common/logger';
 
-import {AlbAthenaLogRatchet, AlbLogRecord, AlbLogRecordQuery} from './alb-athena-log-ratchet';
-import {S3Client} from '@aws-sdk/client-s3';
-import {AthenaClient} from '@aws-sdk/client-athena';
+import { AlbAthenaLogRatchet, AlbLogRecord, AlbLogRecordQuery } from './alb-athena-log-ratchet';
+import { S3Client } from '@aws-sdk/client-s3';
+import { AthenaClient } from '@aws-sdk/client-athena';
 import { LoggerLevelName } from '../../common/logger-support/logger-level-name';
 import { TimeZoneRatchet } from '../../common/time-zone-ratchet';
 

@@ -1,4 +1,4 @@
-import {BuildInformation} from "../../common/build/build-information";
+import { BuildInformation } from '../../common/build/build-information';
 import { CliRatchet } from './cli-ratchet';
 
 export abstract class AbstractRatchetCliHandler {

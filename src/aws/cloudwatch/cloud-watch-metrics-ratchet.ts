@@ -2,20 +2,13 @@
     Service for interacting with cloudwatch
 */
 
-import {
-  CloudWatchClient,
-  PutMetricDataCommand,
-  PutMetricDataCommandInput,
-  PutMetricDataCommandOutput
-} from '@aws-sdk/client-cloudwatch';
-import {Logger} from '../../common/logger';
-import {KeyValue} from '../../common/key-value';
-import {CloudWatchMetricsUnit} from '../model/cloud-watch-metrics-unit';
-import {DynamoCountResult} from '../model/dynamo-count-result';
-import {
-  CloudWatchMetricsMinuteLevelDynamoCountRequest
-} from '../model/cloud-watch-metrics-minute-level-dynamo-count-request';
-import {DateTime} from 'luxon';
+import { CloudWatchClient, PutMetricDataCommand, PutMetricDataCommandInput, PutMetricDataCommandOutput } from '@aws-sdk/client-cloudwatch';
+import { Logger } from '../../common/logger';
+import { KeyValue } from '../../common/key-value';
+import { CloudWatchMetricsUnit } from '../model/cloud-watch-metrics-unit';
+import { DynamoCountResult } from '../model/dynamo-count-result';
+import { CloudWatchMetricsMinuteLevelDynamoCountRequest } from '../model/cloud-watch-metrics-minute-level-dynamo-count-request';
+import { DateTime } from 'luxon';
 
 export class CloudWatchMetricsRatchet {
   private cw: CloudWatchClient;
@@ -35,7 +28,7 @@ export class CloudWatchMetricsRatchet {
     unit: CloudWatchMetricsUnit = CloudWatchMetricsUnit.None,
     value: number,
     timestampDate: Date = new Date(),
-    highResolution = false
+    highResolution = false,
   ): Promise<any> {
     const cwDims: any[] = [];
     if (!!dims && dims.length > 0) {
@@ -91,7 +84,7 @@ export class CloudWatchMetricsRatchet {
       CloudWatchMetricsUnit.Count,
       cnt.count,
       parseDate,
-      false
+      false,
     );
     Logger.debug('Metrics response: %j', metricRes);
 

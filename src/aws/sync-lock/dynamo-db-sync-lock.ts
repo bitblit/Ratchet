@@ -1,13 +1,16 @@
-import {RequireRatchet} from "../../common/require-ratchet";
-import {Logger} from '../../common/logger';
-import {StringRatchet} from '../../common/string-ratchet';
-import {DynamoRatchet} from '../dynamodb/dynamo-ratchet';
-import {DeleteItemOutput, PutItemCommand, PutItemCommandOutput} from '@aws-sdk/client-dynamodb';
-import {DocScanCommandInput} from '../model/dynamo/doc-scan-command-input';
-import {SyncLockProvider} from './sync-lock-provider';
+import { RequireRatchet } from '../../common/require-ratchet';
+import { Logger } from '../../common/logger';
+import { StringRatchet } from '../../common/string-ratchet';
+import { DynamoRatchet } from '../dynamodb/dynamo-ratchet';
+import { DeleteItemOutput, PutItemCommand, PutItemCommandOutput } from '@aws-sdk/client-dynamodb';
+import { DocScanCommandInput } from '../model/dynamo/doc-scan-command-input';
+import { SyncLockProvider } from './sync-lock-provider';
 
 export class DynamoDbSyncLock implements SyncLockProvider {
-  constructor(private ratchet: DynamoRatchet, private tableName: string) {
+  constructor(
+    private ratchet: DynamoRatchet,
+    private tableName: string,
+  ) {
     RequireRatchet.notNullOrUndefined(ratchet, 'ratchet');
     RequireRatchet.notNullOrUndefined(StringRatchet.trimToNull(this.tableName), 'tableName');
   }

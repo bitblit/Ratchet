@@ -1,7 +1,7 @@
 import { SubmitJobCommandInput, SubmitJobCommandOutput } from '@aws-sdk/client-batch';
 import { DateTime } from 'luxon';
 import { AwsBatchRatchet } from './aws-batch-ratchet';
-import {RequireRatchet} from "../../common/require-ratchet";
+import { RequireRatchet } from '../../common/require-ratchet';
 import { ErrorRatchet } from '../../common/error-ratchet';
 import { Logger } from '../../common/logger';
 import { StringRatchet } from '../../common/string-ratchet';
@@ -11,7 +11,10 @@ import { StringRatchet } from '../../common/string-ratchet';
  * (Primarily used by Epsilon)
  */
 export class AwsBatchBackgroundProcessor {
-  constructor(private batchRatchet: AwsBatchRatchet, private validTaskNames?: string[]) {
+  constructor(
+    private batchRatchet: AwsBatchRatchet,
+    private validTaskNames?: string[],
+  ) {
     RequireRatchet.notNullOrUndefined(this.batchRatchet, 'batchRatchet');
     RequireRatchet.notNullOrUndefined(this.batchRatchet.batchClient, 'batchRatchet.batchClient');
     RequireRatchet.notNullOrUndefined(this.batchRatchet.defaultJobDefinition, 'batchRatchet.defaultJobDefinition');
@@ -21,7 +24,7 @@ export class AwsBatchBackgroundProcessor {
   public async scheduleBackgroundTask(
     taskName: string,
     data: Record<string, any> = {},
-    meta: Record<string, any> = {}
+    meta: Record<string, any> = {},
   ): Promise<SubmitJobCommandOutput> {
     if (
       this.validTaskNames &&
@@ -59,7 +62,7 @@ export class AwsBatchBackgroundProcessor {
         this.batchRatchet.defaultQueueName,
         jobName,
         data,
-        err
+        err,
       );
     }
 

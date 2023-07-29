@@ -1,9 +1,12 @@
-import {RequireRatchet} from "../../common/require-ratchet";
-import {Logger} from '../../common/logger';
-import {PublishCommand, PublishCommandInput, PublishCommandOutput, SNSClient} from '@aws-sdk/client-sns';
+import { RequireRatchet } from '../../common/require-ratchet';
+import { Logger } from '../../common/logger';
+import { PublishCommand, PublishCommandInput, PublishCommandOutput, SNSClient } from '@aws-sdk/client-sns';
 
 export class SnsRatchet {
-  constructor(private sns: SNSClient = new SNSClient({ region: 'us-east-1' }), private topicArn: string) {
+  constructor(
+    private sns: SNSClient = new SNSClient({ region: 'us-east-1' }),
+    private topicArn: string,
+  ) {
     RequireRatchet.notNullOrUndefined(this.sns, 'sns');
     RequireRatchet.notNullOrUndefined(this.topicArn, 'topicArn');
   }

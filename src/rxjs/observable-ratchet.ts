@@ -10,7 +10,7 @@ export class ObservableRatchet {
   public static timeout<T>(
     srcObservable: Observable<T | TimeoutToken>,
     title: string,
-    timeoutMillis: number
+    timeoutMillis: number,
   ): Observable<T | TimeoutToken> {
     const rval: Observable<unknown> = race(srcObservable, this.createTimeoutObservable(title, timeoutMillis));
     return rval as Observable<T | TimeoutToken>;

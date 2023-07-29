@@ -1,5 +1,5 @@
 import { NetworkRatchet } from './network-ratchet';
-import { ParsedUrl } from './parsed-url';
+import { ParsedUrl } from '../parsed-url';
 
 describe('#parseUrl', function () {
   it('should parse the url and return correct values', function () {

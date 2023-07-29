@@ -1,5 +1,5 @@
-import {AthenaRatchet} from './athena-ratchet';
-import {Logger} from '../../common/logger';
+import { AthenaRatchet } from './athena-ratchet';
+import { Logger } from '../../common/logger';
 import {
   AthenaClient,
   GetQueryExecutionCommand,
@@ -7,8 +7,8 @@ import {
   StartQueryExecutionCommand,
   StartQueryExecutionOutput,
 } from '@aws-sdk/client-athena';
-import {S3Client} from '@aws-sdk/client-s3';
-import {mockClient} from 'aws-sdk-client-mock';
+import { S3Client } from '@aws-sdk/client-s3';
+import { mockClient } from 'aws-sdk-client-mock';
 
 let mockAthena;
 let mockS3;

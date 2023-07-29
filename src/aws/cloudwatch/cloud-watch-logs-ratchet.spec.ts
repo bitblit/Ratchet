@@ -1,5 +1,5 @@
-import {Logger} from '../../common/logger';
-import {CloudWatchLogsRatchet} from './cloud-watch-logs-ratchet';
+import { Logger } from '../../common/logger';
+import { CloudWatchLogsRatchet } from './cloud-watch-logs-ratchet';
 import {
   CloudWatchLogsClient,
   DeleteLogGroupCommand,
@@ -13,7 +13,7 @@ import {
   StartQueryCommand,
   StartQueryCommandInput,
 } from '@aws-sdk/client-cloudwatch-logs';
-import {mockClient} from 'aws-sdk-client-mock';
+import { mockClient } from 'aws-sdk-client-mock';
 
 let mockCW;
 

@@ -1,4 +1,4 @@
-import {BuildInformation} from "../../common/build/build-information";
+import { BuildInformation } from '../../common/build/build-information';
 
 export class RatchetAwsInfo {
   // Empty constructor prevents instantiation
