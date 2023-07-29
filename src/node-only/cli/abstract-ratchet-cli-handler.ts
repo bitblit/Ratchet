@@ -5,9 +5,9 @@ export abstract class AbstractRatchetCliHandler {
   abstract fetchHandlerMap(): Record<string, any>;
   abstract fetchVersionInfo(): BuildInformation;
 
-  public async findAndExecuteHandler(): Promise<void> {
+  public async findAndExecuteHandler(useSubstringMatch: boolean = false): Promise<void> {
     let handler: any = null;
-    if (CliRatchet.argsAfterCommand(['version'])) {
+    if (CliRatchet.argsAfterCommand(['version'], useSubstringMatch)) {
       console.log('Version : ' + JSON.stringify(this.fetchVersionInfo()));
     } else {
       const handlerMap: Record<string, any> = this.fetchHandlerMap();
