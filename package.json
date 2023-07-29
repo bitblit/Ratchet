@@ -5,7 +5,7 @@
   "note-on-side-effects": "Technically the entries in 'bin' below might be side effects, but they are called explicitly",
   "sideEffects": false,
   "bin": {
-    "ratchet-cli": "./cli.js"
+    "ratchet-cli": "./ratchet-cli.js"
   },
   "main": "./index.js",
   "typings": "./index.d.ts",
@@ -29,7 +29,7 @@
   },
   "config": {},
   "scripts": {
-    "prepare-to-publish": "yarn build && cp package.json README.md CHANGELOG.md License.txt bin/cli.js dist && yarn run apply-ci-vars && yarn remove-compiled-tests",
+    "prepare-to-publish": "yarn build && cp package.json README.md CHANGELOG.md License.txt dist && yarn run apply-ci-vars && yarn remove-compiled-tests",
     "copy-static-files": "shx cp -R src/static dist",
     "build": "yarn run clean && yarn run generate-barrels && yarn run compile && yarn copy-static-files",
     "compile": "tsc",
@@ -42,7 +42,7 @@
     "docs": "typedoc",
     "lint": "eslint src/**/*.ts",
     "lint-fix": "eslint --fix src/**/*.ts",
-    "generate-barrels": "barrelsby -q --delete -d src -l below -e .*\\.spec\\.ts"
+    "generate-barrels": "barrelsby -q --delete -d src -l below -e .*\\.spec\\.ts -e ratchet-cli.*"
   },
   "repository": {
     "type": "git",
