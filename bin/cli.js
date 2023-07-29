@@ -1,7 +1,7 @@
 #!/usr/bin/env node
-const all = require("../dist/index.js");
+const RatchetCliHandler = require("node-only/cli/ratchet-cli-handler.js");
 
-const RatchetCliHandler = all.RatchetCliHandler;
+//const RatchetCliHandler = all.RatchetCliHandler;
 const handler = new RatchetCliHandler();
 handler.findAndExecuteHandler().then(out=>{
   console.log('Normal exit: ',out);
