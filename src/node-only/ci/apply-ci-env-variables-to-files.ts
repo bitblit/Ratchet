@@ -1,47 +1,35 @@
 import fs from 'fs';
+import { ErrorRatchet } from '../../common/error-ratchet';
 import { Logger } from '../../common/logger';
-import { CiEnvVariableConfig } from './ci-env-variable-config';
-import { ErrorRatchet, RequireRatchet, StringRatchet } from '../../common';
-import { CiEnvVariableConfigUtil } from './ci-env-variable-config-util';
-import { NodeRatchet } from '../common/node-ratchet';
+import { RequireRatchet } from '../../common/require-ratchet';
+import { StringRatchet } from '../../common/string-ratchet';
+import {CiRunInformation} from "./ci-run-information";
+import {CiRunInformationUtil} from "./ci-run-information-util";
 
 export class ApplyCiEnvVariablesToFiles {
   public static async process(
-    fileNames: string[],
-    cfg: CiEnvVariableConfig,
-    buildFinder = 'LOCAL-SNAPSHOT',
-    branchFinder = 'LOCAL-BRANCH',
-    hashFinder = 'LOCAL-HASH',
-    tagFinder = 'LOCAL-TAG',
-    timeFinder = 'LOCAL-TIME',
+      fileNames: string[],
+      cfg: CiRunInformation,
+      buildFinder = 'LOCAL-SNAPSHOT',
+      branchFinder = 'LOCAL-BRANCH',
+      hashFinder = 'LOCAL-HASH',
+      tagFinder = 'LOCAL-TAG',
+      timeFinder = 'LOCAL-TIME'
   ): Promise<number> {
     RequireRatchet.notNullOrUndefined(cfg, 'cfg');
-    RequireRatchet.notNullOrUndefined(cfg.buildNumberVar, 'cfg.buildNumberVar');
+    RequireRatchet.notNullOrUndefined(cfg.buildNumber, 'cfg.buildNumber');
+    RequireRatchet.notNullOrUndefined(cfg.localTime, 'cfg.localTime');
     if (!fileNames) {
       throw new Error('fileNames must be defined');
     }
     if (fileNames.length === 0) {
       Logger.warn('Warning - no files supplied to process');
     }
-    const buildNum: string = NodeRatchet.fetchProcessEnvVar(cfg.buildNumberVar);
-    const branch: string = cfg.branchVar ? NodeRatchet.fetchProcessEnvVar(cfg.branchVar) : null || cfg.branchDefault;
-    const tag: string = cfg.tagVar ? NodeRatchet.fetchProcessEnvVar(cfg.tagVar) : null || cfg.tagDefault;
-    const sha1: string = cfg.hashVar ? NodeRatchet.fetchProcessEnvVar(cfg.hashVar) : null || cfg.hashDefault;
-    const localTime: string = cfg.localTimeVar ? NodeRatchet.fetchProcessEnvVar(cfg.localTimeVar) : null || cfg.localTimeDefault;
-
-    if (!buildNum) {
-      ErrorRatchet.throwFormattedErr('%s env var not set - apparently not in a CI environment', cfg.buildNumberVar);
+    if (!cfg.buildNumber) {
+      ErrorRatchet.throwFormattedErr('%s env var not set - apparently not in a CI environment', cfg.buildNumber);
     }
 
-    Logger.info(
-      'Processing files %j with build %s, branch %s, tag %s, sha %s, time: %s',
-      fileNames,
-      buildNum,
-      branch,
-      tag,
-      sha1,
-      localTime,
-    );
+    Logger.info('Processing files %j with run info %j', cfg);
 
     let foundCount = 0;
     fileNames.forEach((f) => {
@@ -50,11 +38,11 @@ export class ApplyCiEnvVariablesToFiles {
       } else {
         try {
           let contents: string = fs.readFileSync(f).toString();
-          contents = contents.split(buildFinder).join(buildNum);
-          contents = contents.split(branchFinder).join(branch);
-          contents = contents.split(hashFinder).join(sha1);
-          contents = contents.split(tagFinder).join(tag);
-          contents = contents.split(timeFinder).join(localTime);
+          contents = contents.split(buildFinder).join(cfg.buildNumber);
+          contents = contents.split(branchFinder).join(cfg.branch || '');
+          contents = contents.split(hashFinder).join(cfg.commitHash || '');
+          contents = contents.split(tagFinder).join(cfg.tag || '');
+          contents = contents.split(timeFinder).join(cfg.localTime || '');
           fs.writeFileSync(f, contents);
           foundCount++;
         } catch (err) {
@@ -74,20 +62,21 @@ export class ApplyCiEnvVariablesToFiles {
     return rval;
   }
 
-  public static extractVariableConfig(): CiEnvVariableConfig {
-    let rval: CiEnvVariableConfig = null;
-    if (process && process.argv && process.argv.length > 2) {
-      const name: string = StringRatchet.trimToEmpty(process.argv[2]).toLowerCase();
-      switch (name) {
-        case 'circleci':
-          rval = CiEnvVariableConfigUtil.createDefaultCircleCiVariableConfig();
-          break;
-        case 'github':
-          rval = CiEnvVariableConfigUtil.createDefaultGithubActionsVariableConfig();
-          break;
-        default:
-          ErrorRatchet.throwFormattedErr('Unrecognized env var config type : %s', name);
-      }
+  public static extractVariableConfig(inName: string): CiRunInformation {
+    let rval: CiRunInformation = null;
+    const name: string = StringRatchet.trimToEmpty(inName).toLowerCase();
+    switch (name) {
+      case 'circleci':
+        rval = CiRunInformationUtil.createDefaultCircleCiRunInformation();
+        break;
+      case 'github':
+        rval = CiRunInformationUtil.createDefaultGithubActionsRunInformation();
+        break;
+      case 'test':
+        rval = CiRunInformationUtil.createTestingCiRunInformation();
+        break;
+      default:
+        ErrorRatchet.throwFormattedErr('Unrecognized env var config type : %s', name);
     }
     Logger.info('Using variable config : %j', rval);
 
@@ -99,11 +88,10 @@ export class ApplyCiEnvVariablesToFiles {
    TODO: should use switches to allow setting the various non-filename params
    **/
   public static async runFromCliArgs(args: string[]): Promise<number> {
-    const filenames: string[] = ApplyCiEnvVariablesToFiles.extractFileNames();
-    if (filenames.length > 0) {
-      return ApplyCiEnvVariablesToFiles.process(filenames, ApplyCiEnvVariablesToFiles.extractVariableConfig());
+    if (args.length > 1) {
+      return ApplyCiEnvVariablesToFiles.process(args.slice(1), ApplyCiEnvVariablesToFiles.extractVariableConfig(args[0]));
     } else {
-      Logger.infoP('Usage : ratchet-apply-ci-env-variables-to-files {file1} {file2} ...');
+      Logger.infoP('Usage : apply-ci-env-variables-to-files {file1} {file2} ...');
       return -1;
     }
   }

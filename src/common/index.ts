@@ -17,6 +17,7 @@ export * from './esm-ratchet';
 export * from './expired-jwt-handling';
 export * from './expiring-object';
 export * from './geolocation-ratchet';
+export * from './global-ratchet';
 export * from './jwt-ratchet-like';
 export * from './jwt-ratchet';
 export * from './jwt-token-base';

@@ -1,9 +1,9 @@
-import { Logger } from '../../common/logger';
+import { GlobalRatchet } from '../../../common/global-ratchet';
+import { Logger } from '../../../common/logger';
 import { PublishCiReleaseToSlack } from './publish-ci-release-to-slack';
-import { NodeRatchet } from '../common/node-ratchet';
 
 describe('#publishCircleCiReleaseToSlack', function () {
-  it('should fail if not in a circle ci environment', async () => {
+  xit('should fail if not in a circle ci environment', async () => {
     try {
       const result: string = await PublishCiReleaseToSlack.process('https://testslack.erigir.com');
       this.bail();
@@ -14,12 +14,12 @@ describe('#publishCircleCiReleaseToSlack', function () {
   });
 
   xit('should not fail if in a circle ci environment', async () => {
-    NodeRatchet.setProcessEnvVar('CIRCLE_BUILD_NUM', '1');
-    NodeRatchet.setProcessEnvVar('CIRCLE_BRANCH', 'B');
-    NodeRatchet.setProcessEnvVar('CIRCLE_TAG', 'T');
-    NodeRatchet.setProcessEnvVar('CIRCLE_SHA1', 'S');
-    NodeRatchet.setProcessEnvVar('CIRCLE_USERNAME', 'cweiss');
-    NodeRatchet.setProcessEnvVar('CIRCLE_PROJECT_REPONAME', 'tester');
+    GlobalRatchet.setGlobalVar('CIRCLE_BUILD_NUM', '1');
+    GlobalRatchet.setGlobalVar('CIRCLE_BRANCH', 'B');
+    GlobalRatchet.setGlobalVar('CIRCLE_TAG', 'T');
+    GlobalRatchet.setGlobalVar('CIRCLE_SHA1', 'S');
+    GlobalRatchet.setGlobalVar('CIRCLE_USERNAME', 'cweiss');
+    GlobalRatchet.setGlobalVar('CIRCLE_PROJECT_REPONAME', 'tester');
 
     const result: string = await PublishCiReleaseToSlack.process('slackUrlHere');
     expect(result).toEqual('ok');

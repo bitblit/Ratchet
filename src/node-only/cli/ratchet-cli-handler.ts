@@ -1,5 +1,5 @@
 import { ApplyCiEnvVariablesToFiles } from '../ci/apply-ci-env-variables-to-files';
-import { PublishCiReleaseToSlack } from '../ci/publish-ci-release-to-slack';
+import { PublishCiReleaseToSlack } from '../third-party/slack/publish-ci-release-to-slack';
 import { AbstractRatchetCliHandler } from './abstract-ratchet-cli-handler';
 import { StartInstanceAndSsh } from '../aws/start-instance-and-ssh';
 import { SiteUploader } from '../../site-uploader';
