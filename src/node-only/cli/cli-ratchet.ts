@@ -2,7 +2,7 @@ export class CliRatchet {
   public static isCalledFromCLI(filenames: string[], useSubstringMatch: boolean = false): boolean {
     let rval: boolean = false;
     for (let i = 0; filenames && i < filenames.length && !rval; i++) {
-      rval = CliRatchet.indexOfCommandArgument(filenames[i],useSubstringMatch) > -1;
+      rval = CliRatchet.indexOfCommandArgument(filenames[i],useSubstringMatch) !== null;
     }
     return rval;
   }
