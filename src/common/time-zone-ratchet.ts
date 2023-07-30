@@ -7,19 +7,20 @@ import { DateTime } from 'luxon';
 
 export class TimeZoneRatchet {
   public static PACIFIC = new TimeZoneRatchet('America/Los_Angeles');
-  private timezone: string;
 
-  constructor(timezone: string) {
-    if (!timezone) {
-      throw 'Timezone cannot be null';
+  constructor(private timezoneIanaName: string) {
+    if (!timezoneIanaName || timezoneIanaName.trim().length===0) {
+      throw 'Timezone cannot be null or empty';
     }
-    // TODO : should check if valid here
-    this.timezone = timezone;
+  }
+
+  public get ianaName(): string {
+    return this.timezoneIanaName;
   }
 
   // Returns 0-23
   public currentHour(): number {
-    const rval = DateTime.local().setZone(this.timezone).hour;
+    const rval = DateTime.local().setZone(this.timezoneIanaName).hour;
     return rval;
   }
 
@@ -30,7 +31,7 @@ export class TimeZoneRatchet {
   // Returns midnight in the current timezone in epoch seconds
   public startOfTodayEpochSeconds(): number {
     const startOfToday = this.toEpochSeconds(
-      DateTime.local().setZone(this.timezone).set({ hour: 0, minute: 0, second: 0, millisecond: 0 }),
+      DateTime.local().setZone(this.timezoneIanaName).set({ hour: 0, minute: 0, second: 0, millisecond: 0 }),
     );
     return startOfToday;
   }
@@ -48,25 +49,25 @@ export class TimeZoneRatchet {
 
   // Returns the start of the current hour in epoch seconds
   public startOfCurrentHourEpochSeconds(): number {
-    const rval = this.toEpochSeconds(DateTime.local().setZone(this.timezone).set({ minute: 0, second: 0, millisecond: 0 }));
+    const rval = this.toEpochSeconds(DateTime.local().setZone(this.timezoneIanaName).set({ minute: 0, second: 0, millisecond: 0 }));
     return rval;
   }
 
   // Returns the start of the current minute in epoch seconds
   public startOfCurrentMinuteEpochSeconds(): number {
-    const rval = this.toEpochSeconds(DateTime.local().setZone(this.timezone).set({ second: 0, millisecond: 0 }));
+    const rval = this.toEpochSeconds(DateTime.local().setZone(this.timezoneIanaName).set({ second: 0, millisecond: 0 }));
     return rval;
   }
 
   // Returns the start of the current second in epoch seconds
   public startOfCurrentSecondEpochSeconds(): number {
-    const rval = this.toEpochSeconds(DateTime.local().setZone(this.timezone).set({ millisecond: 0 }));
+    const rval = this.toEpochSeconds(DateTime.local().setZone(this.timezoneIanaName).set({ millisecond: 0 }));
     return rval;
   }
 
   // Returns midnight in the current timezone in epoch ms
   public startOfTodayEpochMS(): number {
-    const startOfToday = DateTime.local().setZone(this.timezone).set({ hour: 0, minute: 0, second: 0, millisecond: 0 }).toMillis();
+    const startOfToday = DateTime.local().setZone(this.timezoneIanaName).set({ hour: 0, minute: 0, second: 0, millisecond: 0 }).toMillis();
     return startOfToday;
   }
 
