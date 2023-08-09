@@ -24,7 +24,7 @@ describe('#toKeyValueList', function () {
   it('should convert a map to a key-value list and back', function () {
     const test: any = { key1: 'value1', key2: 'value2' };
 
-    const kvl: KeyValue[] = MapRatchet.toKeyValueList(test);
+    const kvl: KeyValue<any>[] = MapRatchet.toKeyValueList(test);
     expect(kvl.length).toEqual(2);
 
     const back: any = MapRatchet.fromKeyValueList(kvl);

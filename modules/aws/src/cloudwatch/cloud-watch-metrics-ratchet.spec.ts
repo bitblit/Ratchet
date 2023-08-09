@@ -18,8 +18,8 @@ describe('#cloudWatchMetricsRatchet', function () {
     mockCW.on(PutMetricDataCommand).resolves({ ok: true } as never);
 
     const cw: CloudWatchMetricsRatchet = new CloudWatchMetricsRatchet(mockCW);
-    const dims: KeyValue[] = [
-      { key: 'server', value: 'prod' } as KeyValue,
+    const dims: KeyValue<any>[] = [
+      { key: 'server', value: 'prod' } as KeyValue<any>,
       { key: 'stage', value: 'v0' },
       { key: 'version', value: '20190529-01' },
     ];
@@ -30,7 +30,7 @@ describe('#cloudWatchMetricsRatchet', function () {
       CloudWatchMetricsUnit.Count,
       2,
       new Date(),
-      false
+      false,
     );
 
     expect(res).toBeTruthy();

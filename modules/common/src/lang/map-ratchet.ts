@@ -104,20 +104,20 @@ export class MapRatchet {
   }
 
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-  public static toKeyValueList(value: any): KeyValue[] {
-    const returnArray: KeyValue[] = [];
+  public static toKeyValueList(value: Record<string, any>): KeyValue<any>[] {
+    const returnArray: KeyValue<any>[] = [];
 
     for (const k of Object.keys(value)) {
       returnArray.push({
         key: k,
         value: value[k],
-      } as KeyValue);
+      } as KeyValue<any>);
     }
 
     return returnArray;
   }
 
-  public static fromKeyValueList(list: KeyValue[]): any {
+  public static fromKeyValueList<T>(list: KeyValue<T>[]): Record<string, T> {
     const rval: any = {};
     list.forEach((a) => (rval[a.key] = a.value));
     return rval;

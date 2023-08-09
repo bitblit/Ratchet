@@ -33,7 +33,6 @@ import { ErrorRatchet } from '@bitblit/ratchet-common';
 import { RequireRatchet } from '@bitblit/ratchet-common';
 import { ExpiredJwtHandling } from '@bitblit/ratchet-common';
 import { Base64Ratchet } from '@bitblit/ratchet-common';
-import { KeyValue } from '@bitblit/ratchet-common';
 
 import { WardenDefaultUserDecorationProvider } from './provider/warden-default-user-decoration-provider.js';
 import { WardenNoOpEventProcessingProvider } from './provider/warden-no-op-event-processing-provider.js';

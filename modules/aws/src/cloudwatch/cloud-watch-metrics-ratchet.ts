@@ -23,11 +23,11 @@ export class CloudWatchMetricsRatchet {
   public async writeSingleMetric(
     namespace: string,
     metric: string,
-    dims: KeyValue[],
+    dims: KeyValue<any>[],
     unit: CloudWatchMetricsUnit = CloudWatchMetricsUnit.None,
     value: number,
     timestampDate: Date = new Date(),
-    highResolution = false
+    highResolution = false,
   ): Promise<any> {
     const cwDims: any[] = [];
     if (!!dims && dims.length > 0) {
@@ -83,7 +83,7 @@ export class CloudWatchMetricsRatchet {
       CloudWatchMetricsUnit.Count,
       cnt.count,
       parseDate,
-      false
+      false,
     );
     Logger.debug('Metrics response: %j', metricRes);
 

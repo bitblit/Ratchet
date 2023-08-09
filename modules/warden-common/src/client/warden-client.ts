@@ -4,7 +4,7 @@ import { WardenContact } from '../common/model/warden-contact.js';
 import { WardenCommandExchangeProvider } from './provider/warden-command-exchange-provider.js';
 import { WardenCommandResponse } from '../common/command/warden-command-response.js';
 
-import { KeyValue, Logger } from '@bitblit/ratchet-common';
+import { Logger } from '@bitblit/ratchet-common';
 import { StringRatchet } from '@bitblit/ratchet-common';
 import { ErrorRatchet } from '@bitblit/ratchet-common';
 import { RequireRatchet } from '@bitblit/ratchet-common';
