@@ -7,15 +7,11 @@ import {
   CompleteMultipartUploadCommandOutput,
   CopyObjectCommandOutput,
   DeleteObjectCommandOutput,
-  GetObjectCommand,
-  GetObjectCommandInput,
   GetObjectCommandOutput,
   HeadObjectCommandOutput,
-  NoSuchKey,
   PutObjectCommandInput,
   S3Client,
 } from '@aws-sdk/client-s3';
-import { Logger } from '@bitblit/ratchet-common';
 
 export interface S3CacheRatchetLike {
   getDefaultBucket(): string;
@@ -36,21 +32,21 @@ export interface S3CacheRatchetLike {
     key: string,
     dataObject: any, // eslint-disable-line @typescript-eslint/explicit-module-boundary-types
     template?: PutObjectCommandInput,
-    bucket?: string
+    bucket?: string,
   ): Promise<CompleteMultipartUploadCommandOutput>;
 
   writeStringToCacheFile(
     key: string,
     dataString: string,
     template?: PutObjectCommandInput,
-    bucket?: string
+    bucket?: string,
   ): Promise<CompleteMultipartUploadCommandOutput>;
 
   writeStreamToCacheFile(
     key: string,
     data: ReadableStream | Readable,
     template?: PutObjectCommandInput,
-    bucket?: string
+    bucket?: string,
   ): Promise<CompleteMultipartUploadCommandOutput>;
 
   synchronize(srcPrefix: string, targetPrefix: string, targetRatchet?: S3CacheRatchetLike, recurseSubFolders?: boolean): Promise<string[]>;

@@ -2,8 +2,7 @@
     Simple strongly typed key-value
 */
 
-export class KeyValue {
+export class KeyValue<T> {
   key: string;
-
-  value: any;
+  value: T;
 }

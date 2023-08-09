@@ -4,6 +4,7 @@ import { WardenEntrySummary } from '../model/warden-entry-summary.js';
 
 export interface WardenCommandResponse {
   createAccount?: string;
+  sendMagicLink?: boolean;
   generateWebAuthnAuthenticationChallengeForUserId?: WebAuthnObjectWrapper;
   generateWebAuthnRegistrationChallengeForLoggedInUser?: WebAuthnObjectWrapper;
   removeWebAuthnRegistration?: WardenEntrySummary;

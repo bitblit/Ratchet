@@ -4,7 +4,7 @@ import { WardenContact } from '../common/model/warden-contact.js';
 import { WardenCommandExchangeProvider } from './provider/warden-command-exchange-provider.js';
 import { WardenCommandResponse } from '../common/command/warden-command-response.js';
 
-import { Logger } from '@bitblit/ratchet-common';
+import { KeyValue, Logger } from '@bitblit/ratchet-common';
 import { StringRatchet } from '@bitblit/ratchet-common';
 import { ErrorRatchet } from '@bitblit/ratchet-common';
 import { RequireRatchet } from '@bitblit/ratchet-common';
@@ -19,7 +19,10 @@ import { WardenClientCurrentLoggedInJwtTokenProvider } from './provider/warden-c
 import { WardenEntrySummary } from '../common/model/warden-entry-summary.js';
 
 export class WardenClient {
-  constructor(private commandSender: WardenCommandExchangeProvider, private jwtProvider: WardenClientCurrentLoggedInJwtTokenProvider) {
+  constructor(
+    private commandSender: WardenCommandExchangeProvider,
+    private jwtProvider: WardenClientCurrentLoggedInJwtTokenProvider,
+  ) {
     RequireRatchet.notNullOrUndefined(commandSender, 'commandSender');
     RequireRatchet.notNullOrUndefined(jwtProvider, 'jwtProvider');
   }
@@ -47,6 +50,20 @@ export class WardenClient {
     const rval: WardenCommandResponse = await this.exchangeCommand(cmd);
 
     return rval.createAccount;
+  }
+
+  public async sendMagicLink(contact: WardenContact, landingUrl: string, templateName?: string, meta?: KeyValue[]): Promise<boolean> {
+    const cmd: WardenCommand = {
+      sendMagicLink: {
+        contact: contact,
+        landingUrl: landingUrl,
+        templateName: templateName,
+        meta: meta,
+      },
+    };
+    const rval: WardenCommandResponse = await this.exchangeCommand(cmd);
+
+    return rval.sendMagicLink;
   }
 
   public async generateWebAuthnAuthenticationChallengeForUserId(userId: string): Promise<PublicKeyCredentialRequestOptionsJSON> {

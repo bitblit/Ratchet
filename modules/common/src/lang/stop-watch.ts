@@ -100,6 +100,28 @@ export class StopWatch {
     return rval;
   }
 
+  public expectedRemainingMS(pctComplete: number, name?: string): number {
+    let rval: number = null;
+    if (!pctComplete || pctComplete <= 0) {
+      // return null, no such thing
+    } else if (pctComplete > 1) {
+      // return null, no such thing for percent larger than one
+    } else {
+      const cleanName: string = StringRatchet.trimToNull(name);
+      const start: number = name ? this.starts.get(cleanName) : this.createTime;
+      const end: number = name ? this.ends.get(cleanName) : Date.now();
+      if (!!start && !!end) {
+        rval = end - start; // already completed
+      } else if (!!start) {
+        const now: number = Date.now();
+        const elapsedMS: number = now - start;
+        const expectedTotalMS: number = elapsedMS / pctComplete;
+        rval = expectedTotalMS - elapsedMS;
+      }
+    }
+    return rval;
+  }
+
   public elapsedMS(name?: string): number {
     let rval: number = null;
     const cleanName: string = StringRatchet.trimToNull(name);
