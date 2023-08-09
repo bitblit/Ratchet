@@ -5,7 +5,7 @@ import { SendRawEmailResponse } from '@aws-sdk/client-ses';
 import { MailerLike } from '@bitblit/ratchet-aws';
 import { ReadyToSendEmail } from '@bitblit/ratchet-aws';
 
-import { Logger } from '@bitblit/ratchet-common';
+import { ErrorRatchet, Logger } from '@bitblit/ratchet-common';
 import { WardenContact } from '@bitblit/ratchet-warden-common';
 import { WardenContactType } from '@bitblit/ratchet-warden-common';
 import { WardenCustomerMessageType } from '@bitblit/ratchet-warden-common';
@@ -16,32 +16,46 @@ export class WardenMailerMessageSendingProvider implements WardenMessageSendingP
       emailBaseLayoutName: undefined,
       expiringTokenHtmlTemplateName: 'expiring-token-request-email',
       expiringTokenTxtTemplateName: undefined,
+      magicLinkHtmlTemplateName: 'magic-token-request-email',
+      magicLinkTxtTemplateName: undefined,
     };
     return rval;
   }
 
   constructor(
     private mailer: MailerLike,
-    private options: WardenMailerMessageSendingProviderOptions = WardenMailerMessageSendingProvider.defaultOptions()
+    private options: WardenMailerMessageSendingProviderOptions = WardenMailerMessageSendingProvider.defaultOptions(),
   ) {}
 
   public async formatMessage(
     contact: WardenContact,
     messageType: WardenCustomerMessageType,
-    context: Record<string, any>
+    context: Record<string, any>,
   ): Promise<ReadyToSendEmail> {
     const rts: ReadyToSendEmail = {
       destinationAddresses: [contact.value],
       subject: 'Your login token',
     };
 
-    await this.mailer.fillEmailBody(
-      rts,
-      context,
-      this.options.expiringTokenHtmlTemplateName,
-      this.options.expiringTokenTxtTemplateName,
-      this.options.emailBaseLayoutName
-    );
+    if (messageType === WardenCustomerMessageType.ExpiringCode) {
+      await this.mailer.fillEmailBody(
+        rts,
+        context,
+        this.options.expiringTokenHtmlTemplateName,
+        this.options.expiringTokenTxtTemplateName,
+        this.options.emailBaseLayoutName,
+      );
+    } else if (messageType === WardenCustomerMessageType.MagicLink) {
+      await this.mailer.fillEmailBody(
+        rts,
+        context,
+        this.options.magicLinkHtmlTemplateName,
+        this.options.magicLinkTxtTemplateName,
+        this.options.emailBaseLayoutName,
+      );
+    } else {
+      throw ErrorRatchet.fErr('No such message type : %s', messageType);
+    }
 
     return rts;
   }

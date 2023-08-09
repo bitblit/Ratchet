@@ -52,12 +52,11 @@ export class WardenClient {
     return rval.createAccount;
   }
 
-  public async sendMagicLink(contact: WardenContact, landingUrl: string, templateName?: string, meta?: KeyValue[]): Promise<boolean> {
+  public async sendMagicLink(contact: WardenContact, landingUrl: string, meta?: Record<string, string>): Promise<boolean> {
     const cmd: WardenCommand = {
       sendMagicLink: {
         contact: contact,
         landingUrl: landingUrl,
-        templateName: templateName,
         meta: meta,
       },
     };

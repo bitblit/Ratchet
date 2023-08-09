@@ -126,12 +126,7 @@ export class WardenService {
         };
       } else if (cmd.sendMagicLink) {
         rval = {
-          sendMagicLink: await this.sendMagicLink(
-            cmd.sendMagicLink.contact,
-            cmd.sendMagicLink.landingUrl,
-            cmd.sendMagicLink.templateName,
-            cmd.sendMagicLink.meta,
-          ),
+          sendMagicLink: await this.sendMagicLink(cmd.sendMagicLink.contact, cmd.sendMagicLink.landingUrl, cmd.sendMagicLink.meta),
         };
       } else if (cmd.generateWebAuthnRegistrationChallengeForLoggedInUser) {
         if (!StringRatchet.trimToNull(loggedInUserId)) {
@@ -234,18 +229,56 @@ export class WardenService {
     return rval;
   }
 
-  public async sendMagicLink(contact: WardenContact, landingUrl: string, templateName?: string, meta?: KeyValue[]): Promise<boolean> {
-    const cmd: WardenCommand = {
-      sendMagicLink: {
-        contact: contact,
-        landingUrl: landingUrl,
-        templateName: templateName,
-        meta: meta,
-      },
-    };
-    const rval: WardenCommandResponse = await this.exchangeCommand(cmd);
+  public urlIsOnAllowedOrigin(url: string): boolean {
+    let rval: boolean = false;
+    if (url) {
+      const u: URL = new URL(url);
+      for (let i = 0; i < this.opts.allowedOrigins.length && !rval; i++) {
+        const test: URL = new URL(this.opts.allowedOrigins[i]);
+        rval = test.origin === u.origin && test.protocol === u.protocol && test.port === u.port;
+      }
+    }
+    return rval;
+  }
 
-    return rval.sendMagicLink;
+  public async sendMagicLink(contact: WardenContact, landingUrl: string, meta?: Record<string, string>): Promise<boolean> {
+    let rval: boolean = false;
+    RequireRatchet.notNullOrUndefined(contact, 'contact');
+    RequireRatchet.notNullUndefinedOrOnlyWhitespaceString(landingUrl, 'landingUrl');
+    RequireRatchet.true(this.urlIsOnAllowedOrigin(landingUrl), 'landingUrl is not on an allowed origin for redirect');
+
+    if (contact?.type && StringRatchet.trimToNull(contact?.value)) {
+      const prov: WardenMessageSendingProvider<any> = this.senderForContact(contact);
+      if (prov) {
+        const token: ExpiringCode = await this.expiringCodeRatchet.createNewCode({
+          context: contact.value,
+          length: 36,
+          alphabet: StringRatchet.UPPER_CASE_LETTERS,
+          timeToLiveSeconds: 300,
+          tags: ['MagicLink'],
+        });
+
+        const encodedMeta: string = Base64Ratchet.objectToBase64Json(meta || {});
+
+        let landingUrlFilled: string = landingUrl;
+        landingUrlFilled = landingUrlFilled.split('{CODE}').join(token.code);
+        landingUrlFilled = landingUrlFilled.split('{META}').join(encodedMeta);
+
+        const context: Record<string, string> = Object.assign({}, meta || {}, {
+          landingUrl: landingUrlFilled,
+          code: token.code,
+          relyingPartyName: this.opts.relyingPartyName,
+        });
+
+        const msg: any = await prov.formatMessage(contact, WardenCustomerMessageType.MagicLink, context);
+        rval = await prov.sendMessage(contact, msg);
+      } else {
+        ErrorRatchet.throwFormattedErr('No provider found for contact type %s', contact.type);
+      }
+    } else {
+      ErrorRatchet.throwFormattedErr('Cannot send - invalid contact %j', contact);
+    }
+    return rval;
   }
 
   // Creates a new account, returns the userId for that account upon success

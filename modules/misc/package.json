@@ -52,7 +52,7 @@
   },
   "license": "Apache-2.0",
   "dependencies": {
-    "handlebars": "4.7.7",
+    "handlebars": "4.7.8",
     "handlebars-layouts": "3.1.4",
     "js-yaml": "4.1.0",
     "rxjs": "7.8.1",

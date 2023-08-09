@@ -6,7 +6,43 @@ import { RequireRatchet } from './require-ratchet.js';
 
 export class StringRatchet {
   // % isn't technically reserved, but it is still a pain in the butt
-  public static RFC_3986_RESERVED = ['!', '*', "'", '(', ')', ';', ':', '@', '&', '=', '+', '$', ',', '/', '?', '#', '[', ']', '%'];
+  public static readonly RFC_3986_RESERVED = [
+    '!',
+    '*',
+    "'",
+    '(',
+    ')',
+    ';',
+    ':',
+    '@',
+    '&',
+    '=',
+    '+',
+    '$',
+    ',',
+    '/',
+    '?',
+    '#',
+    '[',
+    ']',
+    '%',
+  ];
+
+  public static readonly DIGITS: string = '0123456789';
+  public static readonly HEXITS: string = StringRatchet.DIGITS + 'ABCDEF';
+  public static readonly UPPER_CASE_LATIN: string = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  public static readonly LOWER_CASE_LATIN: string = 'abcdefghijklmnopqrstuvwxyz';
+  public static readonly CASE_INSENSITIVE_LATIN: string = StringRatchet.UPPER_CASE_LATIN + StringRatchet.LOWER_CASE_LATIN;
+
+  public static stringIsInGivenAlphabet(input: string, alphabet: string): boolean {
+    let rval: boolean = false;
+    if (input && alphabet) {
+      for (let i = 0; i < input.length && !rval; i++) {
+        rval = alphabet.includes(input.charAt(i));
+      }
+    }
+    return rval;
+  }
 
   public static stringToUint8Array(val: string): Uint8Array {
     return val ? new TextEncoder().encode(val) : null;

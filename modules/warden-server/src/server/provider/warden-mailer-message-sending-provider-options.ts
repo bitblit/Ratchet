@@ -4,4 +4,6 @@ export interface WardenMailerMessageSendingProviderOptions {
   emailBaseLayoutName?: string;
   expiringTokenHtmlTemplateName: string;
   expiringTokenTxtTemplateName: string;
+  magicLinkHtmlTemplateName: string;
+  magicLinkTxtTemplateName: string;
 }

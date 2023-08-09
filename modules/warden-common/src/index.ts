@@ -21,6 +21,7 @@ export * from './client/provider/warden-user-service-event-processing-provider.j
 export * from './client/provider/warden-user-service-options.js';
 export * from './common/command/create-account.js';
 export * from './common/command/remove-web-authn-registration.js';
+export * from './common/command/send-magic-link.js';
 export * from './common/command/warden-command-response.js';
 export * from './common/command/warden-command.js';
 export * from './common/command/web-authn-object-wrapper.js';
