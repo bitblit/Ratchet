@@ -267,7 +267,7 @@ export class WardenService {
         const token: ExpiringCode = await this.expiringCodeRatchet.createNewCode({
           context: contact.value,
           length: 36,
-          alphabet: StringRatchet.UPPER_CASE_LETTERS,
+          alphabet: StringRatchet.UPPER_CASE_LATIN,
           timeToLiveSeconds: 300,
           tags: ['MagicLink'],
         });
