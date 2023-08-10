@@ -17,6 +17,7 @@ import { WardenLoginResults } from '../common/model/warden-login-results.js';
 import { WardenLoginRequest } from '../common/model/warden-login-request.js';
 import { WardenClientCurrentLoggedInJwtTokenProvider } from './provider/warden-client-current-logged-in-jwt-token-provider.js';
 import { WardenEntrySummary } from '../common/model/warden-entry-summary.js';
+import { WardenContactType } from '../common/model/warden-contact-type.js';
 
 export class WardenClient {
   constructor(
@@ -50,6 +51,25 @@ export class WardenClient {
     const rval: WardenCommandResponse = await this.exchangeCommand(cmd);
 
     return rval.createAccount;
+  }
+
+  public async sendMagicLinkByUserId(
+    userId: string,
+    landingUrl: string,
+    contactType?: WardenContactType,
+    meta?: Record<string, string>,
+  ): Promise<boolean> {
+    const cmd: WardenCommand = {
+      sendMagicLink: {
+        userId: userId,
+        contactType: contactType,
+        landingUrl: landingUrl,
+        meta: meta,
+      },
+    };
+    const rval: WardenCommandResponse = await this.exchangeCommand(cmd);
+
+    return rval.sendMagicLink;
   }
 
   public async sendMagicLink(contact: WardenContact, landingUrl: string, meta?: Record<string, string>): Promise<boolean> {
