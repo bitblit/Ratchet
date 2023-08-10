@@ -52,5 +52,8 @@
     "get-port": "7.0.0",
     "mysql2": "3.6.0",
     "tunnel-ssh": "5.1.1"
+  },
+  "peerDependencies": {
+    "@bitblit/ratchet-common": "0.0.0-snapshot"
   }
 }

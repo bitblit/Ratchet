@@ -55,5 +55,8 @@
     "@apollo/client": "3.8.0",
     "@bitblit/ratchet-common": "0.0.0-snapshot",
     "graphql": "16.7.1"
+  },
+  "peerDependencies": {
+    "@bitblit/ratchet-common": "0.0.0-snapshot"
   }
 }

@@ -2426,6 +2426,10 @@ __metadata:
     "@bitblit/ratchet-common": 0.0.0-snapshot
     canvas: 2.11.2
     echarts: 5.4.3
+  peerDependencies:
+    "@bitblit/ratchet-common": 0.0.0-snapshot
+    canvas: ^2.11.2
+    echarts: ^5.4.3
   languageName: unknown
   linkType: soft
 
@@ -2499,6 +2503,8 @@ __metadata:
     "@apollo/client": 3.8.0
     "@bitblit/ratchet-common": 0.0.0-snapshot
     graphql: 16.7.1
+  peerDependencies:
+    "@bitblit/ratchet-common": 0.0.0-snapshot
   languageName: unknown
   linkType: soft
 
@@ -2506,8 +2512,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@bitblit/ratchet-jest@workspace:modules/jest"
   dependencies:
+    "@bitblit/ratchet-common": 0.0.0-snapshot
     jest: 29.6.2
   peerDependencies:
+    "@bitblit/ratchet-common": 0.0.0-snapshot
     jest: ^29.5.0
   languageName: unknown
   linkType: soft
@@ -2516,11 +2524,14 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@bitblit/ratchet-misc@workspace:modules/misc"
   dependencies:
+    "@bitblit/ratchet-common": 0.0.0-snapshot
     handlebars: 4.7.8
     handlebars-layouts: 3.1.4
     js-yaml: 4.1.0
     rxjs: 7.8.1
     swagger-model-validator: 3.0.21
+  peerDependencies:
+    "@bitblit/ratchet-common": 0.0.0-snapshot
   languageName: unknown
   linkType: soft
 
