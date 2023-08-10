@@ -87,11 +87,11 @@
   },
   "peerDependencies": {
     "@apollo/server": "^4.7.5",
-    "graphql": "^16.7.1",
     "@bitblit/ratchet-aws": "0.0.0-snapshot",
     "@bitblit/ratchet-common": "0.0.0-snapshot",
     "@bitblit/ratchet-misc": "0.0.0-snapshot",
-    "@bitblit/ratchet-node-only": "0.0.0-snapshot"
+    "@bitblit/ratchet-node-only": "0.0.0-snapshot",
+    "graphql": "^16.7.1"
   },
   "peerDependenciesMeta": {
     "@apollo/server": {

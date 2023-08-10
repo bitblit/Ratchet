@@ -2467,6 +2467,10 @@ __metadata:
     swagger-model-validator: 3.0.21
   peerDependencies:
     "@apollo/server": ^4.7.5
+    "@bitblit/ratchet-aws": 0.0.0-snapshot
+    "@bitblit/ratchet-common": 0.0.0-snapshot
+    "@bitblit/ratchet-misc": 0.0.0-snapshot
+    "@bitblit/ratchet-node-only": 0.0.0-snapshot
     graphql: ^16.7.1
   peerDependenciesMeta:
     "@apollo/server":
@@ -2560,6 +2564,8 @@ __metadata:
     get-port: 7.0.0
     mysql2: 3.6.0
     tunnel-ssh: 5.1.1
+  peerDependencies:
+    "@bitblit/ratchet-common": 0.0.0-snapshot
   languageName: unknown
   linkType: soft
 
