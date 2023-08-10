@@ -124,8 +124,23 @@ export class WardenService {
           ),
         };
       } else if (cmd.sendMagicLink) {
+        let contact: WardenContact = cmd.sendMagicLink.contact;
+        if (!contact && cmd?.sendMagicLink?.userId) {
+          const entry: WardenEntry = await this.findEntryById(cmd.sendMagicLink.userId);
+          if (entry) {
+            if (cmd.sendMagicLink.contactType) {
+              // Use the one specified, otherwise just first one
+              contact = (entry.contactMethods || []).find((cm) => cm.type === cmd.sendMagicLink.contactType);
+            } else {
+              contact = (entry.contactMethods || []).length > 0 ? entry.contactMethods[0] : null;
+            }
+          }
+        }
+        if (!contact) {
+          throw ErrorRatchet.fErr('Could not find contract entry either directly or by lookup');
+        }
         rval = {
-          sendMagicLink: await this.sendMagicLink(cmd.sendMagicLink.contact, cmd.sendMagicLink.landingUrl, cmd.sendMagicLink.meta),
+          sendMagicLink: await this.sendMagicLink(contact, cmd.sendMagicLink.landingUrl, cmd.sendMagicLink.meta),
         };
       } else if (cmd.generateWebAuthnRegistrationChallengeForLoggedInUser) {
         if (!StringRatchet.trimToNull(loggedInUserId)) {
