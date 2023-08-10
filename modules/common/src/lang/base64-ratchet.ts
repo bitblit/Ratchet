@@ -53,20 +53,4 @@ export class Base64Ratchet {
   public static base64StringToString(input: string, encoding: BufferEncoding = 'utf8'): string {
     return Buffer.from(input, 'base64').toString(encoding);
   }
-
-  public static objectToBase64Json(input: any): string {
-    let rval: string = null;
-    if (input) {
-      rval = Base64Ratchet.generateBase64VersionOfString(JSON.stringify(input));
-    }
-    return rval;
-  }
-
-  public static base64JsonToObject<T>(input: string, encoding: BufferEncoding = 'utf8'): T {
-    let rval: T = null;
-    if (input) {
-      rval = JSON.parse(Base64Ratchet.base64StringToString(input));
-    }
-    return rval;
-  }
 }

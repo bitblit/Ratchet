@@ -255,7 +255,7 @@ export class WardenService {
     return rval;
   }
 
-  public async sendMagicLink(contact: WardenContact, landingUrl: string, meta?: Record<string, string>): Promise<boolean> {
+  public async sendMagicLink(contact: WardenContact, landingUrl: string, metaIn?: Record<string, string>): Promise<boolean> {
     let rval: boolean = false;
     RequireRatchet.notNullOrUndefined(contact, 'contact');
     RequireRatchet.notNullUndefinedOrOnlyWhitespaceString(landingUrl, 'landingUrl');
@@ -272,7 +272,8 @@ export class WardenService {
           tags: ['MagicLink'],
         });
 
-        const encodedMeta: string = Base64Ratchet.objectToBase64Json(meta || {});
+        const meta: Record<string, any> = Object.assign({}, metaIn || {}, { contact: contact });
+        const encodedMeta: string = Base64Ratchet.safeObjectToBase64JSON(meta || {});
 
         let landingUrlFilled: string = landingUrl;
         landingUrlFilled = landingUrlFilled.split('{CODE}').join(token.code);
