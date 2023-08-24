@@ -48,8 +48,8 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@bitblit/ratchet-common": "0.0.0-snapshot",
-    "@simplewebauthn/browser": "7.4.0",
-    "@simplewebauthn/typescript-types": "7.4.0",
+    "@simplewebauthn/browser": "8.0.2",
+    "@simplewebauthn/typescript-types": "8.0.0",
     "jwt-decode": "3.1.2"
   }
 }

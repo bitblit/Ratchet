@@ -53,10 +53,10 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@bitblit/ratchet-common": "0.0.0-snapshot",
-    "jest": "29.6.2"
+    "jest": "29.6.4"
   },
   "peerDependencies": {
     "@bitblit/ratchet-common": "0.0.0-snapshot",
-    "jest": "^29.5.0"
+    "jest": "^29.6.4"
   }
 }
