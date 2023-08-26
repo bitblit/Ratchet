@@ -515,7 +515,7 @@ export class WardenService {
       return next;
     });
 
-    const options: PublicKeyCredentialRequestOptionsJSON = generateAuthenticationOptions({
+    const options: PublicKeyCredentialRequestOptionsJSON = await generateAuthenticationOptions({
       // Require users to use a previously-registered authenticator
       allowCredentials: out,
       userVerification: 'preferred',
