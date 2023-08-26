@@ -392,7 +392,7 @@ export class WardenService {
     const rpID: string = asUrl.hostname;
 
     const entry: WardenEntry = await this.opts.storageProvider.findEntryById(userId);
-    const options = generateRegistrationOptions({
+    const options = await generateRegistrationOptions({
       rpName: this.opts.relyingPartyName,
       rpID: rpID,
       userID: entry.userId,
