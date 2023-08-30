@@ -49,6 +49,16 @@ export class StopWatch {
     Logger.logByLevel(logLevel, this.dumpExpected(pctComplete, name, shortForm));
   }
 
+  public dumpAll(separator: string = ', ', shortForm?: boolean): string {
+    const outs: string[] = Object.keys(this.starts).map((s) => this.dump(s, shortForm));
+    let rval: string = 'Overall: ' + this.dump(null, shortForm);
+    if (outs.length > 0) {
+      rval += separator;
+      rval += outs.join(separator);
+    }
+    return rval;
+  }
+
   public dump(name?: string, shortForm?: boolean): string {
     let rval: string = this.label + ' ';
     const cleanName: string = StringRatchet.trimToNull(name);
