@@ -8,4 +8,5 @@ export interface SendMagicLink {
   contact?: WardenContact;
   landingUrl: string;
   meta?: Record<string, string>;
+  ttlSeconds?: number;
 }

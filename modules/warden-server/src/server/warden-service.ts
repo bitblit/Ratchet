@@ -140,7 +140,12 @@ export class WardenService {
           throw ErrorRatchet.fErr('Could not find contract entry either directly or by lookup');
         }
         rval = {
-          sendMagicLink: await this.sendMagicLink(contact, cmd.sendMagicLink.landingUrl, cmd.sendMagicLink.meta),
+          sendMagicLink: await this.sendMagicLink(
+            contact,
+            cmd.sendMagicLink.landingUrl,
+            cmd.sendMagicLink.meta,
+            cmd.sendMagicLink.ttlSeconds,
+          ),
         };
       } else if (cmd.generateWebAuthnRegistrationChallengeForLoggedInUser) {
         if (!StringRatchet.trimToNull(loggedInUserId)) {
@@ -255,7 +260,12 @@ export class WardenService {
     return rval;
   }
 
-  public async sendMagicLink(contact: WardenContact, landingUrl: string, metaIn?: Record<string, string>): Promise<boolean> {
+  public async sendMagicLink(
+    contact: WardenContact,
+    landingUrl: string,
+    metaIn?: Record<string, string>,
+    ttlSeconds: number = 300,
+  ): Promise<boolean> {
     let rval: boolean = false;
     RequireRatchet.notNullOrUndefined(contact, 'contact');
     RequireRatchet.notNullUndefinedOrOnlyWhitespaceString(landingUrl, 'landingUrl');
@@ -268,7 +278,7 @@ export class WardenService {
           context: contact.value,
           length: 36,
           alphabet: StringRatchet.UPPER_CASE_LATIN,
-          timeToLiveSeconds: 300,
+          timeToLiveSeconds: ttlSeconds,
           tags: ['MagicLink'],
         });
 
