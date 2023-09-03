@@ -9,7 +9,7 @@ export class TimeZoneRatchet {
   public static PACIFIC = new TimeZoneRatchet('America/Los_Angeles');
 
   constructor(private timezoneIanaName: string) {
-    if (!timezoneIanaName || timezoneIanaName.trim().length===0) {
+    if (!timezoneIanaName || timezoneIanaName.trim().length === 0) {
       throw 'Timezone cannot be null or empty';
     }
   }

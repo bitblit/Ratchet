@@ -16,11 +16,11 @@ export class StartInstanceAndSsh {
   private ec2Ratchet: Ec2Ratchet;
 
   constructor(
-      instanceId: string,
-      publicKeyFile: string = path.join(os.homedir(), '.ssh', 'id_rsa.pub'),
-      instanceOsUser: string = 'ec2-user',
-      region: string = 'us-east-1',
-      availabilityZone: string = 'us-east-1a'
+    instanceId: string,
+    publicKeyFile: string = path.join(os.homedir(), '.ssh', 'id_rsa.pub'),
+    instanceOsUser: string = 'ec2-user',
+    region: string = 'us-east-1',
+    availabilityZone: string = 'us-east-1a',
   ) {
     this.instanceId = instanceId;
     this.publicKeyFile = publicKeyFile;
@@ -65,9 +65,9 @@ export class StartInstanceAndSsh {
         Logger.info('Uploading public key...');
         const publicKeyText: string = fs.readFileSync(this.publicKeyFile).toString();
         const publicKeyResponse: SendSSHPublicKeyResponse = await this.ec2Ratchet.sendPublicKeyToEc2Instance(
-            this.instanceId,
-            publicKeyText,
-            this.instanceOsUser
+          this.instanceId,
+          publicKeyText,
+          this.instanceOsUser,
         );
         Logger.info('Key response : %j', publicKeyResponse);
 

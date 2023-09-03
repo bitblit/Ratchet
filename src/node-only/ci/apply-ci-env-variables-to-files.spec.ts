@@ -7,8 +7,8 @@ describe('#applyCiEnvVariablesToFiles', function () {
   xit('should fail if not in a ci environment', async () => {
     try {
       const result: number = await ApplyCiEnvVariablesToFiles.process(
-          ['test1.txt'],
-          CiRunInformationUtil.createDefaultCircleCiRunInformation()
+        ['test1.txt'],
+        CiRunInformationUtil.createDefaultCircleCiRunInformation(),
       );
       this.bail();
     } catch (err) {

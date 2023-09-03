@@ -3,6 +3,7 @@
  */
 
 export * from './aws/dynamo-exporter';
+export * from './aws/s3-cache-to-local-disk-ratchet';
 export * from './aws/start-instance-and-ssh';
 export * from './ci/apply-ci-env-variables-to-files';
 export * from './ci/ci-run-information-util';

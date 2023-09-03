@@ -3,18 +3,18 @@ import { ErrorRatchet } from '../../common/error-ratchet';
 import { Logger } from '../../common/logger';
 import { RequireRatchet } from '../../common/require-ratchet';
 import { StringRatchet } from '../../common/string-ratchet';
-import {CiRunInformation} from "./ci-run-information";
-import {CiRunInformationUtil} from "./ci-run-information-util";
+import { CiRunInformation } from './ci-run-information';
+import { CiRunInformationUtil } from './ci-run-information-util';
 
 export class ApplyCiEnvVariablesToFiles {
   public static async process(
-      fileNames: string[],
-      cfg: CiRunInformation,
-      buildFinder = 'LOCAL-SNAPSHOT',
-      branchFinder = 'LOCAL-BRANCH',
-      hashFinder = 'LOCAL-HASH',
-      tagFinder = 'LOCAL-TAG',
-      timeFinder = 'LOCAL-TIME'
+    fileNames: string[],
+    cfg: CiRunInformation,
+    buildFinder = 'LOCAL-SNAPSHOT',
+    branchFinder = 'LOCAL-BRANCH',
+    hashFinder = 'LOCAL-HASH',
+    tagFinder = 'LOCAL-TAG',
+    timeFinder = 'LOCAL-TIME',
   ): Promise<number> {
     RequireRatchet.notNullOrUndefined(cfg, 'cfg');
     RequireRatchet.notNullOrUndefined(cfg.buildNumber, 'cfg.buildNumber');

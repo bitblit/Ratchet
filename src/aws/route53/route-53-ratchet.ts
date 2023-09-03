@@ -7,7 +7,7 @@ import {
   Route53Client,
   waitUntilResourceRecordSetsChanged,
 } from '@aws-sdk/client-route-53';
-import { WaiterResult, WaiterState } from '@aws-sdk/util-waiter';
+import { WaiterResult, WaiterState } from '@smithy/util-waiter';
 
 export class Route53Ratchet {
   constructor(

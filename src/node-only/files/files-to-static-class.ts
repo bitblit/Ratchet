@@ -67,10 +67,10 @@ export class FilesToStaticClass {
       const files: string[] = process.argv.slice(idx + 3);
 
       Logger.info(
-          'Running FilesToStaticClass from command line arguments Target: %s TargetClass: %s InFiles: %j',
-          outFileName,
-          outClassName,
-          files
+        'Running FilesToStaticClass from command line arguments Target: %s TargetClass: %s InFiles: %j',
+        outFileName,
+        outClassName,
+        files,
       );
 
       return FilesToStaticClass.process(files, outClassName, outFileName);

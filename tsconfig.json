@@ -17,7 +17,6 @@
     "skipLibCheck": true,
     "noImplicitReturns": true,
     "preserveConstEnums": true,
-    "suppressImplicitAnyIndexErrors": true,
     "forceConsistentCasingInFileNames": true,
     "lib": ["es2015", "es6", "dom"]
   },
