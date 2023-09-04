@@ -1,5 +1,6 @@
 import { Writable } from 'stream';
 
+// Both Buffer and Writeable are node-only
 export class BufferWritable extends Writable {
   private _val: any[] = [];
 

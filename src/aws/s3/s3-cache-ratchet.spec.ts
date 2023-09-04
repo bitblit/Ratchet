@@ -14,7 +14,7 @@ import { Logger } from '../../common/logger';
 import { StringRatchet } from '../../common/string-ratchet';
 import { mockClient } from 'aws-sdk-client-mock';
 import { jest } from '@jest/globals';
-import { StreamRatchet } from '../../common/stream-ratchet';
+import { WebStreamRatchet } from '../../common/web-stream-ratchet';
 
 jest.mock('@aws-sdk/s3-request-presigner', () => ({
   getSignedUrl: jest.fn(() => Promise.resolve('https://test.link/test.jpg')),
@@ -70,7 +70,7 @@ describe('#fileExists', function () {
     mockS3.on(UploadPartCommand).resolves({ ETag: '1' });
 
     const cache: S3CacheRatchet = new S3CacheRatchet(mockS3, 'test-bucket');
-    const stream: ReadableStream = StreamRatchet.stringToWebReadableStream(StringRatchet.createRandomHexString(1024 * 1024 * 6));
+    const stream: ReadableStream = WebStreamRatchet.stringToWebReadableStream(StringRatchet.createRandomHexString(1024 * 1024 * 6));
 
     const out: PutObjectCommandOutput = await cache.writeStreamToCacheFile('s3-cache-ratchet.spec.ts', stream, {
       ContentType: 'text/typescript',

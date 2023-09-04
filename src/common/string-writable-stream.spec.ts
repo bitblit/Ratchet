@@ -1,8 +1,8 @@
-import { StringWritable } from './string-writable';
+import { StringWritableStream } from './string-writable-stream';
 
-describe('#StringWritable', function () {
+describe('#StringWritableStream', function () {
   it('should write cumulatively to a string', async () => {
-    const sr: StringWritable = new StringWritable();
+    const sr: StringWritableStream = new StringWritableStream();
     const callback = () => {
       // Ignore me
     };

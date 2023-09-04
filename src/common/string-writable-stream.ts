@@ -1,6 +1,5 @@
-import { Writable } from 'stream';
-
-export class StringWritable extends Writable {
+// Here since WritableStream is part of the Web API
+export class StringWritableStream extends WritableStream {
   private _val: string = '';
 
   constructor() {

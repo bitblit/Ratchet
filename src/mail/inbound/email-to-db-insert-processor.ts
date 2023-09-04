@@ -4,7 +4,7 @@ import unzipper from 'unzipper';
 import { DateTime } from 'luxon';
 import { RequireRatchet } from '../../common/require-ratchet';
 import { Logger } from '../../common/logger';
-import { MultiStream } from '../../common/multi-stream';
+import { MultiStream } from '../../node-only/common/multi-stream';
 import { CsvRatchet } from '../../node-csv/csv-ratchet';
 export class EmailToDbInsertProcessor implements ParsedEmailProcessor<EmailToDbStatement[]> {
   public canProcess(mail: ParsedMail): boolean {

@@ -155,7 +155,7 @@ package without knowing why it is alpha you'll get exactly what you deserve.
 - Ec2 ratchet
 - Barrel files MapRatchet expander
 - Max sizes to mailer config
-- StringWritable
+- StringWritableStream
 - Streaming CSV writer
 - Ability to stream to a Daemon target
 ### Changed

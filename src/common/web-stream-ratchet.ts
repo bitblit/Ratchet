@@ -1,29 +1,24 @@
-import { Readable } from 'stream';
 import { ErrorRatchet } from './error-ratchet';
 import { StringRatchet } from './string-ratchet';
+import {Uint8ArrayRatchet} from "./uint-8-array-ratchet";
 
-export class StreamRatchet {
+/**
+ * This class is specifically for dealing with web streams, NOT
+ * node streams (ie, ReadableStream and WriteableStream, NOT
+ * Readable and Writeable, and CERTAINLY not the FS based streams)
+ */
+export class WebStreamRatchet {
   // Empty constructor prevents instantiation
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   private constructor() {}
 
-  public static readableToBufferSync(stream: Readable): Buffer {
-    const bufs = [];
-    let next: any = stream.read();
-    while (next) {
-      bufs.push(next);
-      next = stream.read();
-    }
-    return Buffer.concat(bufs);
-  }
-
-  public static async webReadableStreamToBuffer(stream: ReadableStream): Promise<Buffer> {
+  public static async webReadableStreamToUint8Array(stream: ReadableStream): Promise<Uint8Array> {
     const out: Uint8Array[] = [];
     const writer: WritableStream = new WritableStream(
       {
         async write(chunk, controller): Promise<any> {
           if (typeof chunk === 'string') {
-            StringRatchet.stringToUint8Array(chunk);
+            out.push(StringRatchet.stringToUint8Array(chunk));
           } else {
             out.push(chunk);
           }
@@ -40,20 +35,11 @@ export class StreamRatchet {
       },
     );
     await stream.pipeTo(writer);
-    return Buffer.concat(out);
+    return Uint8ArrayRatchet.mergeArrays(out);
   }
   public static async webReadableStreamToString(stream: ReadableStream): Promise<string> {
-    const buf: Buffer = await StreamRatchet.webReadableStreamToBuffer(stream);
-    return buf.toString();
-  }
-
-  public static stringToReadable(input: string): Readable {
-    return new Readable({
-      read() {
-        this.push(input);
-        this.push(null);
-      },
-    });
+    const buf: Uint8Array = await WebStreamRatchet.webReadableStreamToUint8Array(stream);
+    return new TextDecoder().decode(buf);
   }
 
   public static stringToWebReadableStream(input: string): ReadableStream {
@@ -76,11 +62,5 @@ export class StreamRatchet {
       },
     );
     return rval;
-  }
-
-  public static anyToStringReadable(input: any): Readable {
-    return input === null || input === undefined
-      ? StreamRatchet.stringToReadable(null)
-      : StreamRatchet.stringToReadable(StringRatchet.safeString(input));
   }
 }

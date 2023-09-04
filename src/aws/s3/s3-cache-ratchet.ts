@@ -25,7 +25,7 @@ import { RequireRatchet } from '../../common/require-ratchet';
 import { Logger } from '../../common/logger';
 import { StringRatchet } from '../../common/string-ratchet';
 import { StopWatch } from '../../common/stop-watch';
-import { StreamRatchet } from '../../common/stream-ratchet';
+import { WebStreamRatchet } from '../../common/web-stream-ratchet';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { Upload } from '@aws-sdk/lib-storage';
 import { Readable } from 'stream';
@@ -164,7 +164,7 @@ export class S3CacheRatchet implements S3CacheRatchetLike {
     template?: PutObjectCommandInput,
     bucket?: string,
   ): Promise<CompleteMultipartUploadCommandOutput> {
-    const stream: ReadableStream = StreamRatchet.stringToWebReadableStream(dataString);
+    const stream: ReadableStream = WebStreamRatchet.stringToWebReadableStream(dataString);
     return this.writeStreamToCacheFile(key, stream, template, bucket);
   }
 

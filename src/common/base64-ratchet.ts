@@ -5,6 +5,9 @@
 import { Logger } from './logger';
 
 export class Base64Ratchet {
+  private static UTF8_ENCODER: TextEncoder = new TextEncoder();
+  private static UTF8_DECODER: TextDecoder = new TextDecoder('utf-8');
+
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   public static safeObjectToBase64JSON(input: any): any {
     return !!input ? Base64Ratchet.generateBase64VersionOfString(JSON.stringify(input)) : null;
@@ -38,19 +41,20 @@ export class Base64Ratchet {
   }
 
   public static generateBase64VersionOfString(input: string): string {
-    return Base64Ratchet.generateBase64VersionOfBuffer(Buffer.from(input));
+    return Base64Ratchet.generateBase64VersionOfUint8Array(Base64Ratchet.UTF8_ENCODER.encode(input));
   }
 
-  public static generateBase64VersionOfBuffer(input: Buffer): string {
-    // Yeah, I know.  But it keeps you from having to remember how it works
-    return input.toString('base64');
+  public static generateBase64VersionOfUint8Array(input: Uint8Array): string {
+    // Using btoa even though its deprecated because its supported both in Node and Web
+    return btoa(Base64Ratchet.UTF8_DECODER.decode(input));
   }
 
-  public static base64StringToBuffer(input: string): Buffer {
-    return Buffer.from(input, 'base64');
+  public static base64StringToUint8Array(b64encoded: string): Uint8Array {
+    return new Uint8Array(atob(b64encoded).split("").map(function(c) {
+      return c.charCodeAt(0); }));
   }
 
-  public static base64StringToString(input: string, encoding: BufferEncoding = 'utf8'): string {
-    return Buffer.from(input, 'base64').toString(encoding);
+  public static base64StringToString(input: string, encoding: string = 'utf8'): string {
+    return new TextDecoder(encoding).decode(Base64Ratchet.base64StringToUint8Array(input));
   }
 }
