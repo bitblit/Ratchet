@@ -1,4 +1,4 @@
-import { WebStreamRatchet } from './web-stream-ratchet';
+import { WebStreamRatchet } from './web-stream-ratchet.js';
 
 describe('#WebStreamRatchet', function () {
   it('should roundtrip from string to stream and back', async () => {
@@ -8,5 +8,4 @@ describe('#WebStreamRatchet', function () {
 
     expect(input).toEqual(out);
   });
-
 });

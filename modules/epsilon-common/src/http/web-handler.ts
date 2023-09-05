@@ -1,18 +1,18 @@
-import {EpsilonRouter} from './route/epsilon-router.js';
-import {APIGatewayEvent, Context, ProxyResult} from 'aws-lambda';
-import {Logger, RequireRatchet, StringRatchet,RestfulApiHttpError} from '@bitblit/ratchet-common';
+import { EpsilonRouter } from './route/epsilon-router.js';
+import { APIGatewayEvent, Context, ProxyResult } from 'aws-lambda';
+import { Logger, RequireRatchet, StringRatchet, RestfulApiHttpError } from '@bitblit/ratchet-common';
 import Route from 'route-parser';
-import {RouteMapping} from './route/route-mapping.js';
-import {ResponseUtil} from './response-util.js';
-import {ExtendedAPIGatewayEvent} from '../config/http/extended-api-gateway-event.js';
-import {BuiltInFilters} from '../built-in/http/built-in-filters.js';
-import {HttpProcessingConfig} from '../config/http/http-processing-config.js';
-import {FilterFunction} from '../config/http/filter-function.js';
-import {RunHandlerAsFilter} from '../built-in/http/run-handler-as-filter.js';
-import {FilterChainContext} from '../config/http/filter-chain-context.js';
-import {ContextUtil} from '../util/context-util.js';
-import {EpsilonLambdaEventHandler} from '../config/epsilon-lambda-event-handler.js';
-import {LambdaEventDetector} from '@bitblit/ratchet-aws';
+import { RouteMapping } from './route/route-mapping.js';
+import { ResponseUtil } from './response-util.js';
+import { ExtendedAPIGatewayEvent } from '../config/http/extended-api-gateway-event.js';
+import { BuiltInFilters } from '../built-in/http/built-in-filters.js';
+import { HttpProcessingConfig } from '../config/http/http-processing-config.js';
+import { FilterFunction } from '../config/http/filter-function.js';
+import { RunHandlerAsFilter } from '../built-in/http/run-handler-as-filter.js';
+import { FilterChainContext } from '../config/http/filter-chain-context.js';
+import { ContextUtil } from '../util/context-util.js';
+import { EpsilonLambdaEventHandler } from '../config/epsilon-lambda-event-handler.js';
+import { LambdaEventDetector } from '@bitblit/ratchet-aws';
 
 /**
  * This class functions as the adapter from a default lambda function to the handlers exposed via Epsilon
@@ -43,7 +43,7 @@ export class WebHandler implements EpsilonLambdaEventHandler<APIGatewayEvent> {
     const asExtended: ExtendedAPIGatewayEvent = Object.assign(
       {},
       { parsedBody: null, authorization: null, convertedFromV2Event: false },
-      event
+      event,
     );
     const rval: ProxyResult = await this.openApiLambdaHandler(asExtended, context);
     ContextUtil.addTraceToProxyResult(rval);
@@ -120,7 +120,7 @@ export class WebHandler implements EpsilonLambdaEventHandler<APIGatewayEvent> {
         'Failed to find handler for %s (cleaned path was %s, strip prefixes were %j)',
         event.path,
         cleanPath,
-        this.routerConfig.config.prefixesToStripBeforeRouteMatch
+        this.routerConfig.config.prefixesToStripBeforeRouteMatch,
       );
     }
     return rval;
