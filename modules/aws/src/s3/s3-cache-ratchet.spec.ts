@@ -10,7 +10,7 @@ import {
   UploadPartCommand,
 } from '@aws-sdk/client-s3';
 import { S3CacheRatchet } from './s3-cache-ratchet.js';
-import { Logger, StreamRatchet, StringRatchet } from '@bitblit/ratchet-common';
+import { Logger, WebStreamRatchet, StringRatchet } from '@bitblit/ratchet-common';
 import { mockClient } from 'aws-sdk-client-mock';
 import { jest } from '@jest/globals';
 
@@ -68,7 +68,7 @@ describe('#fileExists', function () {
     mockS3.on(UploadPartCommand).resolves({ ETag: '1' });
 
     const cache: S3CacheRatchet = new S3CacheRatchet(mockS3, 'test-bucket');
-    const stream: ReadableStream = StreamRatchet.stringToWebReadableStream(StringRatchet.createRandomHexString(1024 * 1024 * 6));
+    const stream: ReadableStream = WebStreamRatchet.stringToWebReadableStream(StringRatchet.createRandomHexString(1024 * 1024 * 6));
 
     const out: PutObjectCommandOutput = await cache.writeStreamToCacheFile('s3-cache-ratchet.spec.ts', stream, {
       ContentType: 'text/typescript',

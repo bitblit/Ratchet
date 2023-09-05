@@ -7,10 +7,13 @@ import {
   Route53Client,
   waitUntilResourceRecordSetsChanged,
 } from '@aws-sdk/client-route-53';
-import { WaiterResult, WaiterState } from '@aws-sdk/util-waiter';
+import { WaiterResult, WaiterState } from '@smithy/util-waiter';
 
 export class Route53Ratchet {
-  constructor(private route53: Route53Client, private hostedZoneId: string) {
+  constructor(
+    private route53: Route53Client,
+    private hostedZoneId: string,
+  ) {
     if (!this.route53) {
       throw 'route53 may not be null';
     }
@@ -24,7 +27,7 @@ export class Route53Ratchet {
     domainName: string,
     target: string,
     hostedZoneId: string = this.hostedZoneId,
-    ttlSeconds = 600
+    ttlSeconds = 600,
   ): Promise<boolean> {
     Logger.info('Updating %s to point to %s', domainName, target);
 
