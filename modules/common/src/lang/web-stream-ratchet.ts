@@ -1,6 +1,6 @@
-import { ErrorRatchet } from './error-ratchet';
-import { StringRatchet } from './string-ratchet';
-import {Uint8ArrayRatchet} from "./uint-8-array-ratchet";
+import { ErrorRatchet } from './error-ratchet.js';
+import { StringRatchet } from './string-ratchet.js';
+import { Uint8ArrayRatchet } from './uint-8-array-ratchet.js';
 
 /**
  * This class is specifically for dealing with web streams, NOT
