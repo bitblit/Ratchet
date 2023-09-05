@@ -412,7 +412,7 @@ export class WardenService {
       attestationType: 'none',
       // Prevent users from re-registering existing authenticators
       excludeCredentials: entry.webAuthnAuthenticators.map((authenticator) => ({
-        id: Base64Ratchet.base64StringToBuffer(authenticator.credentialPublicKeyBase64),
+        id: Base64Ratchet.base64StringToUint8Array(authenticator.credentialPublicKeyBase64),
         type: 'public-key',
         // Optional
         transports: authenticator.transports as unknown as AuthenticatorTransportFuture[],
@@ -634,8 +634,8 @@ export class WardenService {
 
     const authenticator: AuthenticatorDevice = {
       counter: auth.counter,
-      credentialID: Base64Ratchet.base64StringToBuffer(auth.credentialIdBase64),
-      credentialPublicKey: Base64Ratchet.base64StringToBuffer(auth.credentialPublicKeyBase64),
+      credentialID: Base64Ratchet.base64StringToUint8Array(auth.credentialIdBase64),
+      credentialPublicKey: Base64Ratchet.base64StringToUint8Array(auth.credentialPublicKeyBase64),
     };
 
     const vrOpts: VerifyAuthenticationResponseOpts = {
