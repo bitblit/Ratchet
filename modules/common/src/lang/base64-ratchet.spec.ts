@@ -1,8 +1,8 @@
 import { Base64Ratchet } from './base64-ratchet.js';
 
 describe('#base64', function () {
-  it('should parse a buffer from base64', function () {
-    const result: Buffer = Base64Ratchet.base64StringToBuffer('dGVzdHVzZXI6dGVzdHBhc3M=');
+  it('should parse a Uint8Array from base64', function () {
+    const result: Uint8Array = Base64Ratchet.base64StringToUint8Array('dGVzdHVzZXI6dGVzdHBhc3M=');
     expect(result).toBeTruthy();
     expect(result.length).toEqual(17);
   });
