@@ -1,4 +1,4 @@
-import { S3CacheToLocalDiskRatchet } from './s3-cache-to-local-disk-ratchet.js';
+import { S3CacheToLocalDiskRatchet } from './s3-cache-to-local-disk-ratchet';
 import { S3CacheRatchetLike } from '@bitblit/ratchet-aws';
 import { tmpdir } from 'os';
 import { JestRatchet } from '@bitblit/ratchet-jest';

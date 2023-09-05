@@ -19,8 +19,7 @@ import {
   ResourceNotFoundException,
 } from '@aws-sdk/client-dynamodb';
 import { ErrorRatchet, Logger, PromiseRatchet, RequireRatchet } from '@bitblit/ratchet-common';
-import { LocalSecondaryIndex, Tag } from '@aws-sdk/client-dynamodb/dist-types/models/models_0.js';
-import * as punycode from 'punycode';
+import { LocalSecondaryIndex } from '@aws-sdk/client-dynamodb/dist-types/models/models_0.js';
 
 export class DynamoTableRatchet {
   constructor(private awsDDB: DynamoDBClient) {
@@ -48,7 +47,7 @@ export class DynamoTableRatchet {
   public async createTable(
     input: CreateTableCommandInput,
     waitForReady = true,
-    replaceIfExists = false
+    replaceIfExists = false,
   ): Promise<CreateTableCommandOutput> {
     RequireRatchet.notNullOrUndefined(input);
     RequireRatchet.notNullOrUndefined(input.TableName);
@@ -137,7 +136,7 @@ export class DynamoTableRatchet {
     srcTableName: string,
     dstTableName: string,
     overrides?: CreateTableCommandInput,
-    copyData?: boolean
+    copyData?: boolean,
   ): Promise<CreateTableCommandOutput> {
     RequireRatchet.notNullUndefinedOrOnlyWhitespaceString(srcTableName, 'srcTableName');
     RequireRatchet.notNullUndefinedOrOnlyWhitespaceString(dstTableName, 'dstTableName');
