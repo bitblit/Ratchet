@@ -2,7 +2,7 @@
   "compilerOptions": {
     "declaration": true,
     "importHelpers": true,
-    "module": "esnext",
+    "module": "NodeNext",
     "noEmitHelpers": true,
     "target": "esnext",
     "strict": true,
@@ -15,7 +15,7 @@
       "es2022",
       "dom"
     ],
-    "moduleResolution": "node16",
+    "moduleResolution": "NodeNext",
     "noFallthroughCasesInSwitch": true,
     "preserveConstEnums": true,
     "removeComments": true,

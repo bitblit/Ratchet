@@ -71,7 +71,7 @@ export class WardenUtils {
 
   public static teamRoleToRoleString(tr: WardenTeamRole): string {
     let rval: string = null;
-    if (tr?.role && tr.team) {
+    if (tr?.role && tr?.team) {
       rval = tr.team + '_/_' + tr.role;
     }
     return rval;
