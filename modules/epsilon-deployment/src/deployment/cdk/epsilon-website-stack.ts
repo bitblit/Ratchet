@@ -116,37 +116,40 @@ export class EpsilonWebsiteStack extends Stack {
     };
 
     //const parseUrl: URL = new URL(fnUrl.url);
-    const apiSource: SourceConfiguration = {
-      customOriginSource: {
-        domainName: props.apiDomainName,
-        originProtocolPolicy: OriginProtocolPolicy.HTTPS_ONLY,
-      },
-      //originPath: '/',
-      behaviors: [
-        {
-          compress: true,
-          forwardedValues: {
-            queryString: true,
-            cookies: {
-              forward: 'whitelist',
-              whitelistedNames: ['idToken'],
-            },
-            headers: ['Accept', 'Referer', 'Authorization', 'Content-Type'],
-          },
-          pathPattern: 'graphql',
-          defaultTtl: Duration.seconds(0),
-          maxTtl: Duration.seconds(0),
-          minTtl: Duration.seconds(0),
-          allowedMethods: CloudFrontAllowedMethods.ALL,
-          cachedMethods: CloudFrontAllowedCachedMethods.GET_HEAD,
+    const apiSources: SourceConfiguration[] = (props.apiMappings || []).map((s) => {
+      const next: SourceConfiguration = {
+        customOriginSource: {
+          domainName: s.apiDomainName,
+          originProtocolPolicy: OriginProtocolPolicy.HTTPS_ONLY,
         },
-      ],
-    };
+        //originPath: '/',
+        behaviors: [
+          {
+            compress: true,
+            forwardedValues: {
+              queryString: true,
+              cookies: {
+                forward: 'whitelist',
+                whitelistedNames: ['idToken'],
+              },
+              headers: ['Accept', 'Referer', 'Authorization', 'Content-Type'],
+            },
+            pathPattern: s.pathPattern, //'graphql'
+            defaultTtl: Duration.seconds(0),
+            maxTtl: Duration.seconds(0),
+            minTtl: Duration.seconds(0),
+            allowedMethods: CloudFrontAllowedMethods.ALL,
+            cachedMethods: CloudFrontAllowedCachedMethods.GET_HEAD,
+          },
+        ],
+      };
+      return next;
+    });
 
     const distributionProps: CloudFrontWebDistributionProps = {
       httpVersion: HttpVersion.HTTP2,
       defaultRootObject: 'index.html',
-      originConfigs: [assetSource, apiSource, ...extraBucketAndSource.map((s) => s.sourceConfig)],
+      originConfigs: [assetSource, ...apiSources, ...extraBucketAndSource.map((s) => s.sourceConfig)],
       errorConfigurations: [
         {
           errorCode: 404,
