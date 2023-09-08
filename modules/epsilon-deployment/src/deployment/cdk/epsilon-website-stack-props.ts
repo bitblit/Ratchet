@@ -6,8 +6,7 @@ export interface EpsilonWebsiteStackProps extends StackProps {
   targetBucketName: string;
   cloudFrontHttpsCertificateArn: string;
   cloudFrontDomainNames: string[];
-  apiMappings: EpsilonLambdaToCloudfrontPathMapping[];
-  apiDomainName: string;
+  apiMappings: EpsilonLambdaToCloudfrontPathMapping;
   pathsToAssets: string[];
   route53Handling: EpsilonWebsiteStackPropsRoute53Handling;
   simpleAdditionalMappings?: SimpleAdditionalS3WebsiteMapping[];
