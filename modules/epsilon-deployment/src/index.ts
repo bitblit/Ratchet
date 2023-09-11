@@ -3,6 +3,7 @@
  */
 
 export * from './build/ratchet-epsilon-deployment-info.js';
+export * from './deployment/cdk/epsilon-api-stack-feature.js';
 export * from './deployment/cdk/epsilon-api-stack-props.js';
 export * from './deployment/cdk/epsilon-api-stack.js';
 export * from './deployment/cdk/epsilon-lambda-to-cloudfront-path-mapping.js';
