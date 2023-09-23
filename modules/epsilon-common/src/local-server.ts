@@ -1,5 +1,5 @@
 import { APIGatewayEvent, APIGatewayEventRequestContext, Context, ProxyResult } from 'aws-lambda';
-import { Logger } from '@bitblit/ratchet-common';
+import { Logger, WebStreamRatchet } from '@bitblit/ratchet-common';
 import http, { IncomingMessage, Server, ServerResponse } from 'http';
 import https from 'https';
 import { StringRatchet } from '@bitblit/ratchet-common';
@@ -12,6 +12,7 @@ import { JwtTokenBase } from '@bitblit/ratchet-common';
 import { LocalServerCert } from './local-server-cert.js';
 import { SampleServerComponents } from './sample/sample-server-components.js';
 import { LocalWebTokenManipulator } from './http/auth/local-web-token-manipulator.js';
+import { NodeStreamRatchet } from '@bitblit/ratchet-node-only';
 
 /**
  * A simplistic server for testing your lambdas locally
@@ -20,20 +21,24 @@ export class LocalServer {
   private server: Server;
   private aborted: boolean = false;
 
-  constructor(private globalHandler: EpsilonGlobalHandler, private port: number = 8888, https: boolean = false) {}
+  constructor(
+    private globalHandler: EpsilonGlobalHandler,
+    private port: number = 8888,
+    private https: boolean = false,
+  ) {}
 
   async runServer(): Promise<boolean> {
     return new Promise<boolean>((res, rej) => {
       try {
         Logger.info('Starting Epsilon server on port %d', this.port);
 
-        if (https) {
+        if (this.https) {
           const options = {
             key: LocalServerCert.CLIENT_KEY_PEM,
             cert: LocalServerCert.CLIENT_CERT_PEM,
           };
           Logger.info(
-            'Starting https server - THIS SERVER IS NOT SECURE!  The KEYS are in the code!  Testing Server Only - Use at your own risk!'
+            'Starting https server - THIS SERVER IS NOT SECURE!  The KEYS are in the code!  Testing Server Only - Use at your own risk!',
           );
           this.server = https.createServer(options, this.requestHandler.bind(this)).listen(this.port);
         } else {
@@ -69,7 +74,7 @@ export class LocalServer {
       return true;
     } else {
       const result: ProxyResult = await this.globalHandler.lambdaHandler(evt, context);
-      const written: boolean = await LocalServer.writeProxyResultToServerResponse(result, response);
+      const written: boolean = await LocalServer.writeProxyResultToServerResponse(result, response, logEventLevel);
       return written;
     }
   }
@@ -146,18 +151,19 @@ export class LocalServer {
         httpMethod: request.method.toLowerCase(),
         apiId: '1234567890',
         protocol: 'HTTP/1.1',
-      } as APIGatewayEventRequestContext,
-    } as APIGatewayEvent;
+        authorizer: null,
+      },
+    };
 
     return rval;
   }
 
-  public static async writeProxyResultToServerResponse(proxyResult: ProxyResult, response: ServerResponse): Promise<boolean> {
-    const isGraphQLSchemaResponse: boolean = !!proxyResult && !!proxyResult.body && proxyResult.body.indexOf('{"data":{"__schema"') > -1;
-
-    if (!isGraphQLSchemaResponse) {
-      Logger.debug('Result: %j', proxyResult);
-    }
+  public static async writeProxyResultToServerResponse(
+    proxyResult: ProxyResult,
+    response: ServerResponse,
+    logLevel: LoggerLevelName,
+  ): Promise<boolean> {
+    Logger.logByLevel(logLevel, 'Result: %j', proxyResult);
 
     response.statusCode = proxyResult.statusCode;
     if (proxyResult.headers) {
@@ -179,7 +185,7 @@ export class LocalServer {
   public static async runSampleBatchOnlyServerFromCliArgs(args: string[]): Promise<void> {
     Logger.setLevel(LoggerLevelName.debug);
     const handler: EpsilonGlobalHandler = await SampleServerComponents.createSampleBatchOnlyEpsilonGlobalHandler(
-      'SampleBatchOnlyLocalServer-' + Date.now()
+      'SampleBatchOnlyLocalServer-' + Date.now(),
     );
     const testServer: LocalServer = new LocalServer(handler);
     const res: boolean = await testServer.runServer();
@@ -190,7 +196,7 @@ export class LocalServer {
     Logger.setLevel(LoggerLevelName.debug);
     const localTokenHandler: LocalWebTokenManipulator<JwtTokenBase> = new LocalWebTokenManipulator<JwtTokenBase>(
       ['abcd1234'],
-      'sample-server'
+      'sample-server',
     );
     const token: string = await localTokenHandler.createJWTStringAsync('asdf', {}, ['USER'], 3600);
 

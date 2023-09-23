@@ -1,6 +1,6 @@
 // CAW: 2022-08-24 : You must import from @apollo/client/core instead of @apollo/client if you don't wanna drag in React...
 // They are gonna fix this in v4 :https://github.com/apollographql/apollo-client/issues/8190
-import { ApolloClient, ApolloClientOptions, gql, InMemoryCache } from '@apollo/client/core';
+import { ApolloClient, ApolloClientOptions, gql, InMemoryCache, QueryOptions } from '@apollo/client/core';
 import { ApolloQueryResult } from '@apollo/client/core/types.js';
 import { HttpLink } from '@apollo/client/link/http/HttpLink.js';
 import { ApolloLink } from '@apollo/client/link/core/ApolloLink.js';
@@ -31,7 +31,7 @@ export class GraphqlRatchet {
     private queryProvider: GraphqlRatchetQueryProvider,
     private endpointProvider: GraphqlRatchetEndpointProvider,
     private jwtTokenProvider: GraphqlRatchetJwtTokenProvider,
-    private errorHandler: GraphqlRatchetErrorHandler = new DefaultGraphqlRatchetErrorHandler()
+    private errorHandler: GraphqlRatchetErrorHandler = new DefaultGraphqlRatchetErrorHandler(),
   ) {
     RequireRatchet.notNullOrUndefined(queryProvider, 'queryProvider');
     RequireRatchet.notNullOrUndefined(endpointProvider, 'endpointProvider');

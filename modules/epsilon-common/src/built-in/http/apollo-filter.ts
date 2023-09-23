@@ -1,4 +1,12 @@
-import { Base64Ratchet, Logger, PromiseRatchet, RequireRatchet, StringRatchet, TimeoutToken, RestfulApiHttpError } from '@bitblit/ratchet-common';
+import {
+  Base64Ratchet,
+  Logger,
+  PromiseRatchet,
+  RequireRatchet,
+  StringRatchet,
+  TimeoutToken,
+  RestfulApiHttpError,
+} from '@bitblit/ratchet-common';
 import { APIGatewayEvent, Context, ProxyResult } from 'aws-lambda';
 import { RequestTimeoutError } from '../../http/error/request-timeout-error.js';
 import { FilterFunction } from '../../config/http/filter-function.js';
@@ -16,7 +24,7 @@ export class ApolloFilter {
     fCtx: FilterChainContext,
     apolloPathRegex: RegExp,
     apolloServer: ApolloServer<T>,
-    options?: EpsilonLambdaApolloOptions<T>
+    options?: EpsilonLambdaApolloOptions<T>,
   ): Promise<boolean> {
     let rval: boolean = false;
 
@@ -47,7 +55,7 @@ export class ApolloFilter {
     event: APIGatewayEvent,
     context: Context,
     apolloServer: ApolloServer<T>,
-    options?: EpsilonLambdaApolloOptions<T>
+    options?: EpsilonLambdaApolloOptions<T>,
   ): Promise<ProxyResult> {
     Logger.silly('Processing event with apollo: %j', event);
     let rval: ProxyResult = null;
@@ -134,6 +142,10 @@ export class ApolloFilter {
       rval.headers['content-type'] = 'text/html';
     }
 
+    if (options.debugOutputCallback) {
+      await options.debugOutputCallback(rval);
+    }
+
     return rval;
   }
 
@@ -141,7 +153,7 @@ export class ApolloFilter {
     filters: FilterFunction[],
     apolloPathRegex: RegExp,
     apolloServer: ApolloServer,
-    options?: EpsilonLambdaApolloOptions<BaseContext>
+    options?: EpsilonLambdaApolloOptions<BaseContext>,
   ): void {
     if (filters) {
       filters.push((fCtx) => ApolloFilter.handlePathWithApollo(fCtx, apolloPathRegex, apolloServer, options));
