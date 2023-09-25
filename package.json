@@ -71,7 +71,8 @@
     "luxon": "3.4.1"
   },
   "resolutions": {
-    "semver": "^7.5.2"
+    "semver": "^7.5.2",
+    "@smithy/types": "^2.3.3"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "25.0.4",
