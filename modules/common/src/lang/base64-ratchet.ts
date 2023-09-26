@@ -3,8 +3,10 @@
 */
 
 import { Logger } from '../logger/logger.js';
-import { Base64 } from 'js-base64';
+import { decode, encode } from 'uint8-to-base64';
 
+// We use uint8 arrays in here because the default javascript handling of base64 encoding/decoding is
+// broken for anything that isn't a normal ascii string
 export class Base64Ratchet {
   private static UTF8_ENCODER: TextEncoder = new TextEncoder();
   private static UTF8_DECODER: TextDecoder = new TextDecoder('utf-8');
@@ -18,7 +20,7 @@ export class Base64Ratchet {
     let rval: any = {};
     try {
       if (input) {
-        rval = JSON.parse(Base64Ratchet.base64StringToString(input));
+        rval = JSON.parse(Base64Ratchet.base64StringToString(input, 'utf-8'));
       }
     } catch (err) {
       Logger.warn('Error parsing b64/json : %s as json, got %s', input, err, err);
@@ -47,17 +49,17 @@ export class Base64Ratchet {
 
   public static generateBase64VersionOfUint8Array(input: Uint8Array): string {
     // Using btoa even though its deprecated because its supported both in Node and Web
-    return Base64.btoa(Base64Ratchet.UTF8_DECODER.decode(input));
+    return encode(input);
   }
 
   public static base64StringToUint8Array(b64encoded: string): Uint8Array {
-    return new Uint8Array(
-      Base64.atob(b64encoded)
-        .split('')
-        .map(function (c) {
-          return c.charCodeAt(0);
-        }),
-    );
+    try {
+      const uint8: Uint8Array = decode(b64encoded);
+      return uint8;
+    } catch (err) {
+      Logger.error('Failed to decode base64: %s', b64encoded);
+      throw err;
+    }
   }
 
   public static base64StringToString(input: string, encoding: string = 'utf8'): string {

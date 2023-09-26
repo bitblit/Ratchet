@@ -2201,10 +2201,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@bitblit/ratchet-common@workspace:modules/common"
   dependencies:
-    js-base64: 3.7.5
     ts-enum-util: 4.0.2
+    uint8-to-base64: 0.2.0
   peerDependencies:
-    js-base64: ^3.7.5
     ts-enum-util: ^4.0.2
   peerDependenciesMeta:
     ts-enum-util:
@@ -9430,13 +9429,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"js-base64@npm:3.7.5":
-  version: 3.7.5
-  resolution: "js-base64@npm:3.7.5"
-  checksum: 67a78c8b1c47b73f1c6fba1957e9fe6fd9dc78ac93ac46cc2e43472dcb9cf150d126fb0e593192e88e0497354fa634d17d255add7cc6ee3c7b4d29870faa8e18
-  languageName: node
-  linkType: hard
-
 "js-tokens@npm:^3.0.0 || ^4.0.0, js-tokens@npm:^4.0.0":
   version: 4.0.0
   resolution: "js-tokens@npm:4.0.0"
@@ -13182,6 +13174,13 @@ __metadata:
   bin:
     uglifyjs: bin/uglifyjs
   checksum: 7b3897df38b6fc7d7d9f4dcd658599d81aa2b1fb0d074829dd4e5290f7318dbca1f4af2f45acb833b95b1fe0ed4698662ab61b87e94328eb4c0a0d3435baf924
+  languageName: node
+  linkType: hard
+
+"uint8-to-base64@npm:0.2.0":
+  version: 0.2.0
+  resolution: "uint8-to-base64@npm:0.2.0"
+  checksum: 0005558e30ec6838543157ab83b8d0e1e76ab4caa2b7dc71e6af41ac711d16efa8a83a6cd1a070165dd0bfdb281808f51e658e4860f589c97279441029c6e6c9
   languageName: node
   linkType: hard
 

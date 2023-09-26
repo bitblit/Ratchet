@@ -29,4 +29,12 @@ describe('#base64', function () {
     expect(result.a).toEqual(testOb.a);
     expect(result.b).toEqual(testOb.b);
   });
+
+  it('should work on special characters', function () {
+    const src: string = '✓ à la mode';
+    const b64: string = Base64Ratchet.generateBase64VersionOfString(src);
+    const back: string = Base64Ratchet.base64StringToString(b64);
+    expect(b64).toEqual('4pyTIMOgIGxhIG1vZGU=');
+    expect(back).toEqual(src);
+  });
 });
