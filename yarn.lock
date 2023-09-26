@@ -2205,8 +2205,11 @@ __metadata:
     uint8-to-base64: 0.2.0
   peerDependencies:
     ts-enum-util: ^4.0.2
+    uint8-to-base64: ^0.2.0
   peerDependenciesMeta:
     ts-enum-util:
+      optional: true
+    uint8-to-base64:
       optional: true
   languageName: unknown
   linkType: soft
