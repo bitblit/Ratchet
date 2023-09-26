@@ -2201,6 +2201,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@bitblit/ratchet-common@workspace:modules/common"
   dependencies:
+    js-base64: 3.7.5
     ts-enum-util: 4.0.2
   peerDependencies:
     ts-enum-util: ^4.0.2
@@ -9425,6 +9426,13 @@ __metadata:
   version: 4.14.6
   resolution: "jose@npm:4.14.6"
   checksum: eae81a234e7bf1446b1bd80722b3462b014e3835b155c3a7799c1c5043163a53a0dc28d347004151b031e6b7b863403aabf8814d9cc217ce21f8c2f3ebd4b335
+  languageName: node
+  linkType: hard
+
+"js-base64@npm:3.7.5":
+  version: 3.7.5
+  resolution: "js-base64@npm:3.7.5"
+  checksum: 67a78c8b1c47b73f1c6fba1957e9fe6fd9dc78ac93ac46cc2e43472dcb9cf150d126fb0e593192e88e0497354fa634d17d255add7cc6ee3c7b4d29870faa8e18
   languageName: node
   linkType: hard
 

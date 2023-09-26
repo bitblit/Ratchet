@@ -3,6 +3,7 @@
 */
 
 import { Logger } from '../logger/logger.js';
+import { Base64 } from 'js-base64';
 
 export class Base64Ratchet {
   private static UTF8_ENCODER: TextEncoder = new TextEncoder();
@@ -46,12 +47,12 @@ export class Base64Ratchet {
 
   public static generateBase64VersionOfUint8Array(input: Uint8Array): string {
     // Using btoa even though its deprecated because its supported both in Node and Web
-    return btoa(Base64Ratchet.UTF8_DECODER.decode(input));
+    return Base64.btoa(Base64Ratchet.UTF8_DECODER.decode(input));
   }
 
   public static base64StringToUint8Array(b64encoded: string): Uint8Array {
     return new Uint8Array(
-      atob(b64encoded)
+      Base64.atob(b64encoded)
         .split('')
         .map(function (c) {
           return c.charCodeAt(0);
