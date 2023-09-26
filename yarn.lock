@@ -2204,6 +2204,7 @@ __metadata:
     js-base64: 3.7.5
     ts-enum-util: 4.0.2
   peerDependencies:
+    js-base64: ^3.7.5
     ts-enum-util: ^4.0.2
   peerDependenciesMeta:
     ts-enum-util:
@@ -2286,7 +2287,7 @@ __metadata:
     aws-cdk-lib: 2.97.0
     constructs: 10.2.70
   peerDependencies:
-    "@aws-cdk/aws-batch-alpha": ^2.94.0-alpha.0
+    "@aws-cdk/aws-batch-alpha": ^2.95.1-alpha.0
     "@bitblit/ratchet-common": 0.0.0-snapshot
     aws-cdk-lib: ^2.94.0
     constructs: ^10.2.70
