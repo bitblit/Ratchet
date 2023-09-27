@@ -467,10 +467,8 @@ export class WardenService {
           counter: verification.registrationInfo.counter,
           credentialBackedUp: verification.registrationInfo.credentialBackedUp,
           credentialDeviceType: verification.registrationInfo.credentialDeviceType,
-          credentialIdBase64: data.id, //Base64Ratchet.generateBase64VersionOfBuffer(verification.registrationInfo.credentialID),
-          credentialPublicKeyBase64: Base64Ratchet.generateBase64VersionOfUint8Array(
-            Buffer.from(verification.registrationInfo.credentialPublicKey),
-          ),
+          credentialIdBase64: Base64Ratchet.generateBase64VersionOfUint8Array(verification.registrationInfo.credentialID),
+          credentialPublicKeyBase64: Base64Ratchet.generateBase64VersionOfUint8Array(verification.registrationInfo.credentialPublicKey),
           //transports: TBD
         };
 
@@ -517,7 +515,7 @@ export class WardenService {
 
     const out: any[] = userAuthenticators.map((authenticator) => {
       const next: any = {
-        id: Buffer.from(authenticator.credentialIdBase64, 'base64'),
+        id: Base64Ratchet.base64StringToUint8Array(authenticator.credentialIdBase64),
         type: 'public-key',
         // Optional
         transports: authenticator.transports,
@@ -629,7 +627,8 @@ export class WardenService {
     const auth: WardenWebAuthnEntry = (user.webAuthnAuthenticators || []).find((s) => s.credentialIdBase64 === data.id);
 
     if (!auth) {
-      throw new Error(`Could not find authenticator ${data.id} for user ${user.userId}`);
+      const allIds: string[] = (user.webAuthnAuthenticators || []).map((s) => s.credentialIdBase64);
+      throw ErrorRatchet.fErr('Could not find authenticator %s for user %s (avail were : %j)', data.id, user.userId, allIds);
     }
 
     const authenticator: AuthenticatorDevice = {
