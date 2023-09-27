@@ -163,6 +163,12 @@ export class Base64Ratchet {
     return code;
   }
 
+  public static uint8ArrayToBase64UrlString(bytes: Uint8Array): string {
+    let tmp: string = Base64Ratchet.uint8ArrayToBase64String(bytes);
+    tmp = tmp.split('+').join('-').split('/').join('_').split('=').join('');
+    return tmp;
+  }
+
   public static uint8ArrayToBase64String(bytes: Uint8Array): string {
     let result: string = '';
     let i: number;
@@ -214,11 +220,28 @@ export class Base64Ratchet {
     return result.subarray(0, result.length - missingOctets);
   }
 
+  public static base64UrlStringToBytes(str: string): Uint8Array {
+    let dec: string = str.split('-').join('+').split('_').join('/');
+    while (dec.length % 4 !== 0) {
+      dec += '=';
+    }
+    Logger.info('pre: %s post %s', str, dec);
+    return Base64Ratchet.base64StringToBytes(dec);
+  }
+
   public static encodeStringToBase64String(str: string, encoder = new TextEncoder()): string {
     return Base64Ratchet.uint8ArrayToBase64String(encoder.encode(str));
   }
 
+  public static encodeStringToBase64UrlString(str: string, encoder = new TextEncoder()): string {
+    return Base64Ratchet.uint8ArrayToBase64UrlString(encoder.encode(str));
+  }
+
   public static decodeBase64StringToString(str: string, decoder = new TextDecoder()): string {
     return decoder.decode(Base64Ratchet.base64StringToBytes(str));
+  }
+
+  public static decodeBase64UrlStringToString(str: string, decoder = new TextDecoder()): string {
+    return decoder.decode(Base64Ratchet.base64UrlStringToBytes(str));
   }
 }

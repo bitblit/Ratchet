@@ -38,10 +38,10 @@ describe('#base64', function () {
     expect(back).toEqual(src);
   });
 
-  xit('should work on arbitrary data', function () {
+  it('should work on arbitrary data', function () {
     const srcB64: string = '7zo_JDdubAcOMnLtkoth_rLRc6Zj5RKRpNGv_nTVYY4';
-    const back: Uint8Array = Base64Ratchet.base64StringToUint8Array(srcB64);
+    const back: Uint8Array = Base64Ratchet.base64UrlStringToBytes(srcB64);
     expect(back).toBeTruthy();
-    expect(back.length).toEqual(77);
+    expect(back.length).toEqual(32);
   });
 });

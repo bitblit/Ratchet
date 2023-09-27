@@ -38,6 +38,9 @@
     "type": "git",
     "url": "https://github.com/bitblit/Ratchet"
   },
+  "scripts": {
+    "t": "yarn mod:test"
+  },
   "keywords": [
     "wrench",
     "utility"

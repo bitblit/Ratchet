@@ -282,4 +282,12 @@ export class StringRatchet {
     });
     return reduced;
   }
+
+  public static replaceAll(value: string, src: string, dst: string): string {
+    let rval: string = value;
+    if (rval?.length && src?.length && dst?.length) {
+      rval = rval.split(src).join(dst);
+    }
+    return rval;
+  }
 }
