@@ -467,7 +467,7 @@ export class WardenService {
           counter: verification.registrationInfo.counter,
           credentialBackedUp: verification.registrationInfo.credentialBackedUp,
           credentialDeviceType: verification.registrationInfo.credentialDeviceType,
-          credentialIdBase64: Base64Ratchet.generateBase64VersionOfString(data.id), //Base64Ratchet.generateBase64VersionOfBuffer(verification.registrationInfo.credentialID),
+          credentialIdBase64: data.id, //Base64Ratchet.generateBase64VersionOfBuffer(verification.registrationInfo.credentialID),
           credentialPublicKeyBase64: Base64Ratchet.generateBase64VersionOfUint8Array(
             Buffer.from(verification.registrationInfo.credentialPublicKey),
           ),
