@@ -412,7 +412,7 @@ export class WardenService {
       attestationType: 'none',
       // Prevent users from re-registering existing authenticators
       excludeCredentials: entry.webAuthnAuthenticators.map((authenticator) => ({
-        id: Base64Ratchet.base64StringToUint8Array(authenticator.credentialPublicKeyBase64),
+        id: Base64Ratchet.base64StringToUint8Array(authenticator.credentialIdBase64),
         type: 'public-key',
         // Optional
         transports: authenticator.transports as unknown as AuthenticatorTransportFuture[],
@@ -432,6 +432,8 @@ export class WardenService {
   ): Promise<WardenStoreRegistrationResponse> {
     Logger.info('Store authn data : %j', data);
     let rval: WardenStoreRegistrationResponse = null;
+    // Re-encode since there are different Base64 encoders
+    const testDataId: string = Base64Ratchet.uint8ArrayToBase64String(Base64Ratchet.base64StringToBytes(data.id));
     try {
       if (!origin || !this.opts.allowedOrigins.includes(origin)) {
         throw new Error('Invalid origin : ' + origin);
@@ -457,7 +459,7 @@ export class WardenService {
 
       rval = {
         updatedEntry: null,
-        registrationResponseId: data.id,
+        registrationResponseId: testDataId,
         result: verification.verified ? WardenStoreRegistrationResponseType.Verified : WardenStoreRegistrationResponseType.Failed,
       };
 
@@ -484,7 +486,7 @@ export class WardenService {
       }
     } catch (err) {
       rval = {
-        registrationResponseId: data.id,
+        registrationResponseId: testDataId,
         result: WardenStoreRegistrationResponseType.Error,
         error: ErrorRatchet.safeStringifyErr(err),
       };
@@ -620,15 +622,22 @@ export class WardenService {
     const asUrl: URL = new URL(origin);
     const rpID: string = asUrl.hostname;
     const expectedChallenge: string = await this.opts.storageProvider.fetchCurrentUserChallenge(user.userId, rpID);
+    // Re-encode since there are different Base64 encoders
+    const testDataId: string = Base64Ratchet.uint8ArrayToBase64String(Base64Ratchet.base64StringToBytes(data.id));
 
     // (Pseudocode} Retrieve an authenticator from the DB that
     // should match the `id` in the returned credential
-    //const b64id: string = Base64Ratchet.base64StringToString(data.id);
-    const auth: WardenWebAuthnEntry = (user.webAuthnAuthenticators || []).find((s) => s.credentialIdBase64 === data.id);
+    const auth: WardenWebAuthnEntry = (user.webAuthnAuthenticators || []).find((s) => s.credentialIdBase64 === testDataId);
 
     if (!auth) {
       const allIds: string[] = (user.webAuthnAuthenticators || []).map((s) => s.credentialIdBase64);
-      throw ErrorRatchet.fErr('Could not find authenticator %s for user %s (avail were : %j)', data.id, user.userId, allIds);
+      throw ErrorRatchet.fErr(
+        'Could not find authenticator %s (%s) for user %s (avail were : %j)',
+        data.id,
+        testDataId,
+        user.userId,
+        allIds,
+      );
     }
 
     const authenticator: AuthenticatorDevice = {
