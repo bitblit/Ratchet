@@ -37,4 +37,11 @@ describe('#base64', function () {
     expect(b64).toEqual('4pyTIMOgIGxhIG1vZGU=');
     expect(back).toEqual(src);
   });
+
+  it('should work on arbitrary data', function () {
+    const srcB64: string = 'pQECAyYgASFYIGBiv6V4Hh2B2O94CInweq7vIWSI5p9PlHK8OSywFqhtIlgg5X2hCKtSUktNcD7LV4X7grpoJ2MxgudcxARE8eKPrus=';
+    const back: Uint8Array = Base64Ratchet.base64StringToUint8Array(srcB64);
+    expect(back).toBeTruthy();
+    expect(back.length).toEqual(77);
+  });
 });

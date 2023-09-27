@@ -51,12 +51,10 @@
   },
   "license": "Apache-2.0",
   "dependencies": {
-    "ts-enum-util": "4.0.2",
-    "uint8-to-base64": "0.2.0"
+    "ts-enum-util": "4.0.2"
   },
   "peerDependencies": {
-    "ts-enum-util": "^4.0.2",
-    "uint8-to-base64": "^0.2.0"
+    "ts-enum-util": "^4.0.2"
   },
   "peerDependenciesMeta": {
     "ts-enum-util": {
