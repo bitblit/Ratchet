@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es6",
+    "target": "esnext",
     "module": "commonjs",
     "declaration": true,
     "sourceMap": true,
@@ -18,7 +18,7 @@
     "noImplicitReturns": true,
     "preserveConstEnums": true,
     "forceConsistentCasingInFileNames": true,
-    "lib": ["es2015", "es6", "dom"]
+    "lib": ["esnext", "dom"]
   },
   "typedocOptions": {
     "entryPointStrategy": "expand",
@@ -26,7 +26,7 @@
     "out": "artifacts/typedocs"
   },
   "include": ["src/**/*.ts"],
-  "exclude": ["node_modules", "build", "webpack"],
+  "exclude": ["node_modules", "build"],
   "types": ["typePatches"],
   "CAW_NOTES": "Set noImplicitAny, noImplicitThis and noUnusedLocals back to true at some point"
 }

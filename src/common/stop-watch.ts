@@ -9,12 +9,43 @@ import { Logger } from './logger';
 */
 
 export class StopWatch {
+  get createTime(): number {
+    return this._createTime;
+  }
   private starts: Map<string, number> = new Map<string, number>();
   private ends: Map<string, number> = new Map<string, number>();
 
-  private createTime: number = Date.now();
+  private _createTime: number = Date.now();
+  private _label: string = StringRatchet.createRandomHexString(4);
+  private _labelIncludedInOutput: boolean = false;
 
-  constructor(private label: string = StringRatchet.createRandomHexString(4)) {}
+  constructor() {}
+
+  public withLabel(val: string): StopWatch {
+    this._label = StringRatchet.trimToNull(val);
+    return this;
+  }
+
+  public withLabelIncludedInOutput(val: boolean): StopWatch {
+    this._labelIncludedInOutput = val;
+    return this;
+  }
+
+  get label(): string {
+    return this._label;
+  }
+
+  set label(value: string) {
+    this._label = value;
+  }
+
+  get labelIncludedInOutput(): boolean {
+    return this._labelIncludedInOutput;
+  }
+
+  set labelIncludedInOutput(value: boolean) {
+    this._labelIncludedInOutput = value;
+  }
 
   public start(name: string): number {
     RequireRatchet.notNullUndefinedOrOnlyWhitespaceString(name, 'name');
@@ -50,12 +81,12 @@ export class StopWatch {
   }
 
   public dump(name?: string, shortForm?: boolean): string {
-    let rval: string = this.label + ' ';
+    let rval: string = this._labelIncludedInOutput ? this._label + ' ' : '';
     const cleanName: string = StringRatchet.trimToNull(name);
     if (cleanName && !this.hasTimer(cleanName)) {
       rval += 'No such timer : ' + cleanName;
     } else {
-      const start: number = name ? this.starts.get(cleanName) : this.createTime;
+      const start: number = name ? this.starts.get(cleanName) : this._createTime;
       const end: number = name ? this.ends.get(cleanName) : Date.now();
       rval += (cleanName || 'Default') + ' ';
       if (!!start && !!end) {
@@ -68,7 +99,7 @@ export class StopWatch {
   }
 
   public dumpExpected(pctComplete: number, name?: string, shortForm?: boolean): string {
-    let rval: string = this.label + ' ';
+    let rval: string = this._labelIncludedInOutput ? this._label + ' ' : '';
     const cleanName: string = StringRatchet.trimToNull(name);
     if (cleanName && !this.hasTimer(cleanName)) {
       rval += 'No such timer : ' + cleanName;
@@ -79,7 +110,7 @@ export class StopWatch {
         rval += 'Cannot generate output for percent > 1';
       } else {
         rval += (cleanName || 'Default') + ' ';
-        const start: number = name ? this.starts.get(cleanName) : this.createTime;
+        const start: number = name ? this.starts.get(cleanName) : this._createTime;
         const end: number = name ? this.ends.get(cleanName) : Date.now();
         if (!!start && !!end) {
           rval += 'completed in ' + DurationRatchet.formatMsDuration(end - start, !shortForm);
@@ -108,7 +139,7 @@ export class StopWatch {
       // return null, no such thing for percent larger than one
     } else {
       const cleanName: string = StringRatchet.trimToNull(name);
-      const start: number = name ? this.starts.get(cleanName) : this.createTime;
+      const start: number = name ? this.starts.get(cleanName) : this._createTime;
       const end: number = name ? this.ends.get(cleanName) : Date.now();
       if (!!start && !!end) {
         rval = end - start; // already completed
@@ -128,7 +159,7 @@ export class StopWatch {
     if (cleanName && !this.hasTimer(cleanName)) {
       rval = null;
     } else {
-      const start: number = name ? this.starts.get(cleanName) : this.createTime;
+      const start: number = name ? this.starts.get(cleanName) : this._createTime;
       const end: number = name ? this.ends.get(cleanName) : Date.now();
       if (!!start && !!end) {
         rval = end - start;
