@@ -80,6 +80,20 @@ export class StopWatch {
     Logger.logByLevel(logLevel, this.dumpExpected(pctComplete, name, shortForm));
   }
 
+  public timerNames(): string[] {
+    return Array.from(this.starts.keys());
+  }
+
+  public dumpAll(separator: string = ', ', shortForm?: boolean): string {
+    const outs: string[] = this.timerNames().map((s) => this.dump(s, shortForm));
+    let rval: string = 'Overall: ' + this.dump(null, shortForm);
+    if (outs.length > 0) {
+      rval += separator;
+      rval += outs.join(separator);
+    }
+    return rval;
+  }
+
   public dump(name?: string, shortForm?: boolean): string {
     let rval: string = this._labelIncludedInOutput ? this._label + ' ' : '';
     const cleanName: string = StringRatchet.trimToNull(name);
