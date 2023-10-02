@@ -61,7 +61,7 @@
   },
   "license": "Apache-2.0",
   "dependencies": {
-    "browserslist": "4.22.0",
+    "browserslist": "4.22.1",
     "lodash": "4.17.21",
     "luxon": "3.4.3",
     "ts-enum-util": "4.0.2"
@@ -221,9 +221,9 @@
     "@types/jest": "29.5.5",
     "@types/luxon": "3.3.2",
     "@types/node": "16.11.58",
-    "@types/yargs": "17.0.25",
-    "@typescript-eslint/eslint-plugin": "6.7.3",
-    "@typescript-eslint/parser": "6.7.3",
+    "@types/yargs": "17.0.26",
+    "@typescript-eslint/eslint-plugin": "6.7.4",
+    "@typescript-eslint/parser": "6.7.4",
     "aws-sdk-client-mock": "3.0.0",
     "barrelsby": "2.8.1",
     "eslint": "8.50.0",

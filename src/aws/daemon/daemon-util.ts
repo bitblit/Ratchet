@@ -5,7 +5,7 @@ import { DaemonProcessCreateOptions } from './daemon-process-create-options';
 import {
   CompleteMultipartUploadCommandOutput,
   HeadObjectOutput,
-  PutObjectCommand,
+  PutObjectCommand, PutObjectCommandInput,
   PutObjectOutput,
   PutObjectRequest,
 } from '@aws-sdk/client-s3';
@@ -63,19 +63,19 @@ export class DaemonUtil {
     cache: S3CacheRatchetLike,
     s3Key: string,
     newState: DaemonProcessState,
-    contents: Buffer,
+    contents: Uint8Array, // This was Buffer before, moving to Uint8array to be node/browser ok.  Need a streaming version
   ): Promise<DaemonProcessState> {
     try {
       const s3meta: any = {};
       newState.lastUpdatedEpochMS = new Date().getTime();
       s3meta[DaemonUtil.DAEMON_METADATA_KEY] = JSON.stringify(newState);
 
-      const params: PutObjectRequest = {
+      const params: PutObjectCommandInput = {
         Bucket: cache.getDefaultBucket(),
         Key: s3Key,
         ContentType: newState.contentType,
         Metadata: s3meta,
-        Body: new Blob([contents]),
+        Body: contents,
       };
       if (newState.targetFileName) {
         params.ContentDisposition = 'attachment;filename="' + newState.targetFileName + '"';
