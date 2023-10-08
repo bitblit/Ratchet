@@ -4,6 +4,8 @@ on:
   push:
     tags:
       - "release-*"
+env:
+  NODE_OPTIONS: --max_old_space_size=8192
 
 jobs:
   build-and-deploy-production-library:

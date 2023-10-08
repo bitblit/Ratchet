@@ -27,10 +27,6 @@ runs:
       shell: bash
       run: cat  ~/.yarnrc.yml
 
-    - name: Set Node Memory flags
-      run: echo "NODE_OPTIONS=\"--max_old_space_size=8192\"" >> $GITHUB_ENV
-      shell: bash
-
     - name: Setup Java
       uses: actions/setup-java@v3
       with:

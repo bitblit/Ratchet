@@ -5,6 +5,7 @@ import {
   CompleteMultipartUploadCommandOutput,
   HeadObjectOutput,
   PutObjectCommand,
+  PutObjectCommandInput,
   PutObjectOutput,
   PutObjectRequest,
 } from '@aws-sdk/client-s3';
@@ -27,7 +28,7 @@ export class DaemonUtil {
     cache: S3CacheRatchetLike,
     id: string,
     s3Key: string,
-    options: DaemonProcessCreateOptions
+    options: DaemonProcessCreateOptions,
   ): Promise<DaemonProcessState> {
     try {
       options.meta = options.meta || {};
@@ -62,19 +63,19 @@ export class DaemonUtil {
     cache: S3CacheRatchetLike,
     s3Key: string,
     newState: DaemonProcessState,
-    contents: Buffer
+    contents: Uint8Array, // This was Buffer before, moving to Uint8array to be node/browser ok.  Need a streaming version
   ): Promise<DaemonProcessState> {
     try {
       const s3meta: any = {};
       newState.lastUpdatedEpochMS = new Date().getTime();
       s3meta[DaemonUtil.DAEMON_METADATA_KEY] = JSON.stringify(newState);
 
-      const params: PutObjectRequest = {
+      const params: PutObjectCommandInput = {
         Bucket: cache.getDefaultBucket(),
         Key: s3Key,
         ContentType: newState.contentType,
         Metadata: s3meta,
-        Body: new Blob([contents]),
+        Body: contents,
       };
       if (newState.targetFileName) {
         params.ContentDisposition = 'attachment;filename="' + newState.targetFileName + '"';
@@ -94,7 +95,7 @@ export class DaemonUtil {
     cache: S3CacheRatchetLike,
     s3Key: string,
     data: Readable,
-    options?: DaemonStreamDataOptions
+    options?: DaemonStreamDataOptions,
   ): Promise<DaemonProcessState> {
     Logger.debug('Streaming data to %s', s3Key);
     const inStat: DaemonProcessState = await DaemonUtil.updateMessage(cache, s3Key, 'Streaming data');
