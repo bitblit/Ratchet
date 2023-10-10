@@ -54,12 +54,12 @@
   },
   "license": "Apache-2.0",
   "dependencies": {
-    "ts-enum-util": "4.0.2",
-    "jsonwebtoken": "9.0.2"
+    "jsonwebtoken": "9.0.2",
+    "ts-enum-util": "4.0.2"
   },
   "peerDependencies": {
-    "ts-enum-util": "^4.0.2",
-    "jsonwebtoken": "^9.0.2"
+    "jsonwebtoken": "^9.0.2",
+    "ts-enum-util": "^4.0.2"
   },
   "peerDependenciesMeta": {
     "ts-enum-util": {

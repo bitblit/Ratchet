@@ -2201,8 +2201,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@bitblit/ratchet-common@workspace:modules/common"
   dependencies:
+    jsonwebtoken: 9.0.2
     ts-enum-util: 4.0.2
   peerDependencies:
+    jsonwebtoken: ^9.0.2
     ts-enum-util: ^4.0.2
   peerDependenciesMeta:
     ts-enum-util:
@@ -2251,7 +2253,6 @@ __metadata:
     graphql: 16.8.1
     graphql-tag: 2.12.6
     js-yaml: 4.1.0
-    jsonwebtoken: 9.0.2
     jwks-rsa: 3.0.1
     luxon: 3.4.3
     reflect-metadata: 0.1.13
