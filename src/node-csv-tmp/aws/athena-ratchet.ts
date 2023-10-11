@@ -108,8 +108,10 @@ export class AthenaRatchet {
     };
     const getFileOut: GetObjectCommandOutput = await this.s3.send(new GetObjectCommand(req));
 
+    const bodyAsString: string = await getFileOut.Body.transformToString();
+
     const rval: T[] = await CsvRatchet.stringParse<T>(
-      getFileOut.Body.toString(),
+      bodyAsString,
       (p) => {
         return p;
       },
