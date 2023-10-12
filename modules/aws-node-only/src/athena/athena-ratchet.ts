@@ -24,7 +24,11 @@ import { RequireRatchet } from '@bitblit/ratchet-common';
 import { Readable } from 'stream';
 
 export class AthenaRatchet {
-  constructor(private athena: AthenaClient, private s3: S3Client, private outputLocation: string) {
+  constructor(
+    private athena: AthenaClient,
+    private s3: S3Client,
+    private outputLocation: string,
+  ) {
     RequireRatchet.notNullOrUndefined(athena);
     RequireRatchet.notNullOrUndefined(s3);
     RequireRatchet.notNullOrUndefined(outputLocation);
@@ -109,12 +113,14 @@ export class AthenaRatchet {
     };
     const getFileOut: GetObjectCommandOutput = await this.s3.send(new GetObjectCommand(req));
 
+    const bodyAsString: string = await getFileOut.Body.transformToString();
+
     const rval: T[] = await CsvRatchet.stringParse<T>(
-      getFileOut.Body.toString(),
+      bodyAsString,
       (p) => {
         return p;
       },
-      { columns: true, skip_empty_lines: true }
+      { columns: true, skip_empty_lines: true },
     );
 
     return rval;
