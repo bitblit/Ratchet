@@ -1,4 +1,4 @@
-export enum CloudWatchMetricsUnit {
+export const enum CloudWatchMetricsUnit {
   Seconds = 'Seconds',
   Microseconds = 'Microseconds',
   Milliseconds = 'Milliseconds',
