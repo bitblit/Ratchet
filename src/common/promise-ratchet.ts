@@ -182,7 +182,7 @@ export class PromiseRatchet {
     params: any[],
     context: any, // eslint-disable-line @typescript-eslint/explicit-module-boundary-types
     maxConcurrent = 1,
-    logLevel = LoggerLevelName.debug,
+    logLevel: LoggerLevelName = LoggerLevelName.debug,
   ): Promise<T[]> {
     const wrappedParams: any[][] = ArrayRatchet.wrapElementsInArray(params);
     return PromiseRatchet.runBoundedParallel<T>(promiseFn, wrappedParams, context, maxConcurrent, logLevel);
