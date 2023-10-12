@@ -171,7 +171,7 @@ some issues with type overloading in the AWS library itself.
 - Ec2 ratchet
 - Barrel files MapRatchet expander
 - Max sizes to mailer config
-- StringWritable
+- StringWritableStream
 - Streaming CSV writer
 - Ability to stream to a Daemon target
 ### Changed

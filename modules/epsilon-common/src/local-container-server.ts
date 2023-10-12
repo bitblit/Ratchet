@@ -57,7 +57,7 @@ export class LocalContainerServer {
         const postResp: Response = await fetch(url, { method: 'POST', body: JSON.stringify(evt) });
         const respBody: any = await postResp.json();
         const result: ProxyResult = respBody;
-        const written: boolean = await LocalServer.writeProxyResultToServerResponse(result, response);
+        const written: boolean = await LocalServer.writeProxyResultToServerResponse(result, response, LoggerLevel.debug);
         return written;
       } catch (err) {
         Logger.error('Failed: %s', err);

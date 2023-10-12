@@ -1,4 +1,5 @@
 import { EnumRatchet } from './enum-ratchet.js';
+import { LoggerLevelName } from '../logger/logger-level-name.js';
 
 describe('#enumRatchet', function () {
   it('should list keys', async () => {
@@ -26,6 +27,13 @@ describe('#enumRatchet', function () {
     const vals: TestEnum[] = EnumRatchet.parseCsvToEnumArray<TestEnum>(TestEnum, 'a, b');
     expect(vals).toBeTruthy();
     expect(vals.length).toEqual(2);
+  });
+
+  it('should work with psuedo-enums like ratchet uses', async () => {
+    const keys: string[] = EnumRatchet.listEnumKeys(LoggerLevelName);
+    expect(keys.length).toEqual(6);
+    expect(keys.includes('info')).toBeTruthy();
+    expect(keys.includes('xxx')).toBeFalsy();
   });
 });
 
