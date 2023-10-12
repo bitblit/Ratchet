@@ -150,8 +150,8 @@ export class PromiseRatchet {
     promiseFn: Function, // eslint-disable-line @typescript-eslint/ban-types
     params: any[][],
     context: any, // eslint-disable-line @typescript-eslint/explicit-module-boundary-types
-    maxConcurrent = 1,
-    logLevel = LoggerLevelName.debug,
+    maxConcurrent: number = 1,
+    logLevel: LoggerLevelName = LoggerLevelName.debug,
   ): Promise<T[]> {
     const sw: StopWatch = new StopWatch();
     let rval: T[] = [];
@@ -181,7 +181,7 @@ export class PromiseRatchet {
     promiseFn: Function, // eslint-disable-line @typescript-eslint/ban-types
     params: any[],
     context: any, // eslint-disable-line @typescript-eslint/explicit-module-boundary-types
-    maxConcurrent = 1,
+    maxConcurrent: number = 1,
     logLevel: LoggerLevelName = LoggerLevelName.debug,
   ): Promise<T[]> {
     const wrappedParams: any[][] = ArrayRatchet.wrapElementsInArray(params);
