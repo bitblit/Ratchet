@@ -55,6 +55,6 @@
   },
   "peerDependencies": {
     "@bitblit/ratchet-common": "0.0.0-snapshot",
-    "mysql2": "^3.6.0"
+    "mysql2": "^3.6.1"
   }
 }

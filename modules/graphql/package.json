@@ -57,6 +57,7 @@
     "graphql": "16.8.1"
   },
   "peerDependencies": {
-    "@bitblit/ratchet-common": "0.0.0-snapshot"
+    "@bitblit/ratchet-common": "0.0.0-snapshot",
+    "graphql": "^16.8.1"
   }
 }
