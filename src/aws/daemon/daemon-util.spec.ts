@@ -13,6 +13,8 @@ import { PassThrough } from 'stream';
 import { S3Client } from '@aws-sdk/client-s3';
 import { jest } from '@jest/globals';
 import { S3CacheRatchetLike } from '../s3/s3-cache-ratchet-like';
+import { AwsCredentialsRatchet } from '../iam/aws-credentials-ratchet';
+import { Uint8ArrayRatchet } from '../../common';
 
 let mockS3CR: jest.Mocked<S3CacheRatchetLike>;
 
@@ -60,25 +62,56 @@ describe('#DaemonUtil', function () {
          */
   });
 
-  xit('should test the daemon util streaming', async () => {
+  xit('should test the daemon util buffered', async () => {
+    AwsCredentialsRatchet.applySetProfileEnvironmentalVariable('test-credential');
     const s3: S3Client = new S3Client({ region: 'us-east-1' });
-    const cache: S3CacheRatchetLike = new S3CacheRatchet(s3, 'test-bucket');
-    const key: string = 's3-cache-ratchet.spec.ts';
+    const cache: S3CacheRatchetLike = new S3CacheRatchet(s3, 'test-lambda-work');
+    const key: string = 'daemon-util-spec-ts.json';
+
+    const newDaemonOptions: DaemonProcessCreateOptions = {
+      title: 'test',
+      contentType: 'application/json',
+      group: 'NA',
+      meta: {},
+      targetFileName: key,
+    };
+
+    const t2: DaemonProcessState = await DaemonUtil.start(cache, key, key, newDaemonOptions);
+
+    const t1: DaemonProcessState = await DaemonUtil.stat(cache, key);
+    Logger.info('Got : %j', t1);
+
+    expect(t1).toBeTruthy();
+    expect(t1.meta).toBeTruthy();
+
+    const arr: Uint8Array = Uint8ArrayRatchet.utf8StringToUint8Array(JSON.stringify({ a: 'b', c: 2 }));
+    const t3: DaemonProcessState = await DaemonUtil.finalize(cache, key, arr);
+    expect(t3).toBeTruthy();
+    expect(t3.meta).toBeTruthy();
+
+    Logger.info('Got objects : %j', t3);
+  });
+
+  xit('should test the daemon util streaming', async () => {
+    AwsCredentialsRatchet.applySetProfileEnvironmentalVariable('test-credential');
+    const s3: S3Client = new S3Client({ region: 'us-east-1' });
+    const cache: S3CacheRatchetLike = new S3CacheRatchet(s3, 'test-lambda-work');
+    const key: string = 'daemon-util.spec.ts';
 
     const newDaemonOptions: DaemonProcessCreateOptions = {
       title: 'test',
       contentType: 'text/plain',
       group: 'NA',
       meta: {},
-      targetFileName: 's3-cache-ratchet.spec.ts',
+      targetFileName: 'daemon-util.spec.ts',
     };
 
-    const t2: DaemonProcessState = await DaemonUtil.start(cache, key, 's3-cache-ratchet.spec.ts', newDaemonOptions);
+    const t2: DaemonProcessState = await DaemonUtil.start(cache, key, 'daemon-util.spec.ts', newDaemonOptions);
 
     const t1: DaemonProcessState = await DaemonUtil.stat(cache, key);
     Logger.info('Got : %j', t1);
 
-    const stream: ReadStream = fs.createReadStream('test/aws/s3-cache-ratchet.spec.ts');
+    const stream: ReadStream = fs.createReadStream('src/aws/daemon/daemon-util.spec.ts');
     const result: DaemonProcessState = await DaemonUtil.streamDataAndFinish(cache, key, stream);
 
     expect(result).toBeTruthy();

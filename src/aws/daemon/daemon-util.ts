@@ -5,7 +5,8 @@ import { DaemonProcessCreateOptions } from './daemon-process-create-options';
 import {
   CompleteMultipartUploadCommandOutput,
   HeadObjectOutput,
-  PutObjectCommand, PutObjectCommandInput,
+  PutObjectCommand,
+  PutObjectCommandInput,
   PutObjectOutput,
   PutObjectRequest,
 } from '@aws-sdk/client-s3';
@@ -187,7 +188,7 @@ export class DaemonUtil {
     }
   }
 
-  public static async finalize(s3Cache: S3CacheRatchetLike, path: string, contents: Buffer): Promise<DaemonProcessState> {
+  public static async finalize(s3Cache: S3CacheRatchetLike, path: string, contents: Uint8Array): Promise<DaemonProcessState> {
     try {
       Logger.info('Finalizing daemon %s with %d bytes', path, contents.length);
       const inStat: DaemonProcessState = await DaemonUtil.stat(s3Cache, path);
