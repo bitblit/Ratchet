@@ -2,12 +2,14 @@ import { RequireRatchet } from '../../common/require-ratchet';
 import { Logger } from '../../common/logger';
 import { StringRatchet } from '../../common/string-ratchet';
 import { DynamoRatchet } from '../dynamodb/dynamo-ratchet';
-import { DeleteCommandOutput, PutCommand, PutCommandOutput } from '@aws-sdk/lib-dynamodb';
-import { DocScanCommandInput } from '../model/dynamo/doc-scan-command-input';
+import { DeleteCommandOutput, PutCommand, PutCommandOutput, ScanCommandInput } from '@aws-sdk/lib-dynamodb';
 import { SyncLockProvider } from './sync-lock-provider';
 
 export class DynamoDbSyncLock implements SyncLockProvider {
-  constructor(private ratchet: DynamoRatchet, private tableName: string) {
+  constructor(
+    private ratchet: DynamoRatchet,
+    private tableName: string,
+  ) {
     RequireRatchet.notNullOrUndefined(ratchet, 'ratchet');
     RequireRatchet.notNullOrUndefined(StringRatchet.trimToNull(this.tableName), 'tableName');
   }
@@ -55,7 +57,7 @@ export class DynamoDbSyncLock implements SyncLockProvider {
 
   public async clearExpiredSyncLocks(): Promise<number> {
     const nowSeconds: number = Math.floor(new Date().getTime() / 1000);
-    const scan: DocScanCommandInput = {
+    const scan: ScanCommandInput = {
       TableName: this.tableName,
       FilterExpression: 'expires < :now',
       ExpressionAttributeValues: {

@@ -1,13 +1,15 @@
-import { PutCommandOutput } from '@aws-sdk/lib-dynamodb';
+import { PutCommandOutput, QueryCommandInput } from '@aws-sdk/lib-dynamodb';
 import { RuntimeParameterProvider } from './runtime-parameter-provider';
 import { StoredRuntimeParameter } from './stored-runtime-parameter';
 import { DynamoRatchet } from '../dynamodb/dynamo-ratchet';
 import { RequireRatchet } from '../../common/require-ratchet';
 import { Logger } from '../../common/logger';
-import { DocQueryCommandInput } from '../model/dynamo/doc-query-command-input';
 
 export class DynamoRuntimeParameterProvider implements RuntimeParameterProvider {
-  constructor(private dynamo: DynamoRatchet, private tableName: string) {
+  constructor(
+    private dynamo: DynamoRatchet,
+    private tableName: string,
+  ) {
     RequireRatchet.notNullOrUndefined(this.dynamo);
     RequireRatchet.notNullOrUndefined(this.tableName);
   }
@@ -23,7 +25,7 @@ export class DynamoRuntimeParameterProvider implements RuntimeParameterProvider 
   }
 
   public async readAllParametersForGroup(groupId: string): Promise<StoredRuntimeParameter[]> {
-    const qry: DocQueryCommandInput = {
+    const qry: QueryCommandInput = {
       TableName: this.tableName,
       KeyConditionExpression: 'groupId = :groupId',
       ExpressionAttributeValues: {

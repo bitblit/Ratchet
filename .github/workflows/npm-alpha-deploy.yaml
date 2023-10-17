@@ -5,6 +5,9 @@ on:
     tags:
       - "alpha-*"
 
+env:
+  NODE_OPTIONS: --max_old_space_size=8192
+
 jobs:
   build-and-deploy-alpha-library:
     runs-on: ubuntu-latest
