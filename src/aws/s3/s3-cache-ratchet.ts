@@ -33,10 +33,7 @@ import { S3CacheRatchetLike } from './s3-cache-ratchet-like';
 import { ExpandedFileChildren } from './expanded-file-children';
 
 export class S3CacheRatchet implements S3CacheRatchetLike {
-  constructor(
-    private s3: S3Client,
-    private defaultBucket: string = null,
-  ) {
+  constructor(private s3: S3Client, private defaultBucket: string = null) {
     RequireRatchet.notNullOrUndefined(this.s3, 's3');
   }
 
@@ -151,7 +148,7 @@ export class S3CacheRatchet implements S3CacheRatchetLike {
     key: string,
     dataObject: any, // eslint-disable-line @typescript-eslint/explicit-module-boundary-types
     template?: PutObjectCommandInput,
-    bucket?: string,
+    bucket?: string
   ): Promise<CompleteMultipartUploadCommandOutput> {
     const json = JSON.stringify(dataObject);
     return this.writeStringToCacheFile(key, json, template, bucket);
@@ -162,7 +159,7 @@ export class S3CacheRatchet implements S3CacheRatchetLike {
     key: string,
     dataString: string,
     template?: PutObjectCommandInput,
-    bucket?: string,
+    bucket?: string
   ): Promise<CompleteMultipartUploadCommandOutput> {
     const stream: ReadableStream = WebStreamRatchet.stringToWebReadableStream(dataString);
     return this.writeStreamToCacheFile(key, stream, template, bucket);
@@ -172,7 +169,7 @@ export class S3CacheRatchet implements S3CacheRatchetLike {
     key: string,
     data: ReadableStream | Readable,
     template?: PutObjectCommandInput,
-    bucket?: string,
+    bucket?: string
   ): Promise<CompleteMultipartUploadCommandOutput> {
     const params: PutObjectCommandInput = Object.assign({}, template || {}, {
       Bucket: this.bucketVal(bucket),
@@ -201,7 +198,7 @@ export class S3CacheRatchet implements S3CacheRatchetLike {
     srcPrefix: string,
     targetPrefix: string,
     targetRatchet: S3CacheRatchetLike = this,
-    recurseSubFolders: boolean = false,
+    recurseSubFolders: boolean = false
   ): Promise<string[]> {
     RequireRatchet.notNullOrUndefined(srcPrefix, 'srcPrefix');
     RequireRatchet.notNullOrUndefined(targetPrefix, 'targetPrefix');
@@ -222,7 +219,7 @@ export class S3CacheRatchet implements S3CacheRatchetLike {
             srcPrefix + sourceFile,
             targetPrefix + sourceFile,
             targetRatchet,
-            recurseSubFolders,
+            recurseSubFolders
           );
           Logger.info('Got %d back from %s', subs.length, sourceFile);
           rval = rval.concat(subs);
@@ -247,7 +244,7 @@ export class S3CacheRatchet implements S3CacheRatchetLike {
               targetPrefix + sourceFile,
               srcStream,
               srcMeta as unknown as PutObjectCommandInput, // Carry forward any metadata
-              undefined,
+              undefined
             );
             Logger.silly('Write result : %j', written);
             rval.push(sourceFile);
@@ -270,7 +267,7 @@ export class S3CacheRatchet implements S3CacheRatchetLike {
         new HeadObjectCommand({
           Bucket: this.bucketVal(bucket),
           Key: key,
-        }),
+        })
       );
     } catch (err) {
       if (err && err['statusCode'] == 404) {
@@ -307,7 +304,7 @@ export class S3CacheRatchet implements S3CacheRatchetLike {
     srcKey: string,
     dstKey: string,
     srcBucket: string = null,
-    dstBucket: string = null,
+    dstBucket: string = null
   ): Promise<CopyObjectCommandOutput> {
     const params: CopyObjectCommandInput = {
       CopySource: '/' + this.bucketVal(srcBucket) + '/' + srcKey,
@@ -343,7 +340,7 @@ export class S3CacheRatchet implements S3CacheRatchetLike {
     prefix: string,
     expandFiles = false,
     bucket: string = null,
-    maxToReturn: number = null,
+    maxToReturn: number = null
   ): Promise<string[]> {
     const returnValue: any[] = [];
 
@@ -384,7 +381,7 @@ export class S3CacheRatchet implements S3CacheRatchetLike {
                 returnValue.push(cp['Key'].substring(prefixLength));
               }
             }
-          }),
+          })
         );
       }
       params.Marker = response.NextMarker;

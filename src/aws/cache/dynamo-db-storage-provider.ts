@@ -7,15 +7,12 @@ import { SimpleCacheObjectWrapper } from './simple-cache-object-wrapper';
 import { SimpleCacheStorageProvider } from './simple-cache-storage-provider';
 import { RequireRatchet } from '../../common/require-ratchet';
 import { DynamoRatchet } from '../dynamodb/dynamo-ratchet';
-import { PutItemCommandOutput, ScanCommandInput } from '@aws-sdk/client-dynamodb';
+import { PutCommandOutput, ScanCommandInput } from '@aws-sdk/lib-dynamodb';
 import { DocQueryCommandInput } from '../model/dynamo/doc-query-command-input';
 
 export class DynamoDbStorageProvider implements SimpleCacheStorageProvider {
   // If hash key is provided, then the cache key is the range, otherwise the cache key is the hash
-  constructor(
-    private dynamo: DynamoRatchet,
-    private opts: DynamoDbSimpleCacheOptions,
-  ) {
+  constructor(private dynamo: DynamoRatchet, private opts: DynamoDbSimpleCacheOptions) {
     RequireRatchet.notNullOrUndefined(this.dynamo, 'dynamo');
     RequireRatchet.notNullOrUndefined(this.opts, 'opts');
     RequireRatchet.notNullOrUndefined(this.opts.tableName, 'opts.tableName');
@@ -86,7 +83,7 @@ export class DynamoDbStorageProvider implements SimpleCacheStorageProvider {
     if (this.opts.dynamoExpiresColumnName && value.expiresEpochMS) {
       toSave[this.opts.dynamoExpiresColumnName] = Math.floor(value.expiresEpochMS / 1000);
     }
-    const wrote: PutItemCommandOutput = await this.dynamo.simplePut(this.opts.tableName, toSave);
+    const wrote: PutCommandOutput = await this.dynamo.simplePut(this.opts.tableName, toSave);
     return !!wrote;
   }
 
