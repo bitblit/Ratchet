@@ -1,4 +1,4 @@
-import { PutItemOutput } from '@aws-sdk/client-dynamodb';
+import { PutCommandOutput } from '@aws-sdk/lib-dynamodb';
 import { RuntimeParameterProvider } from './runtime-parameter-provider';
 import { StoredRuntimeParameter } from './stored-runtime-parameter';
 import { DynamoRatchet } from '../dynamodb/dynamo-ratchet';
@@ -7,10 +7,7 @@ import { Logger } from '../../common/logger';
 import { DocQueryCommandInput } from '../model/dynamo/doc-query-command-input';
 
 export class DynamoRuntimeParameterProvider implements RuntimeParameterProvider {
-  constructor(
-    private dynamo: DynamoRatchet,
-    private tableName: string,
-  ) {
+  constructor(private dynamo: DynamoRatchet, private tableName: string) {
     RequireRatchet.notNullOrUndefined(this.dynamo);
     RequireRatchet.notNullOrUndefined(this.tableName);
   }
@@ -40,7 +37,7 @@ export class DynamoRuntimeParameterProvider implements RuntimeParameterProvider 
 
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   public async writeParameter(toStore: StoredRuntimeParameter): Promise<boolean> {
-    const rval: PutItemOutput = await this.dynamo.simplePut(this.tableName, toStore);
+    const rval: PutCommandOutput = await this.dynamo.simplePut(this.tableName, toStore);
     return !!rval;
   }
 }

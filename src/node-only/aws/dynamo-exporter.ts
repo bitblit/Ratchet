@@ -1,6 +1,6 @@
 import fs, { WriteStream } from 'fs';
 import readline from 'readline';
-import { QueryCommandInput, ScanCommandInput } from '@aws-sdk/client-dynamodb';
+import { QueryCommandInput, ScanCommandInput } from '@aws-sdk/lib-dynamodb';
 import { DynamoRatchet } from '../../aws/dynamodb/dynamo-ratchet';
 import { RequireRatchet } from '../../common/require-ratchet';
 import { StringRatchet } from '../../common/string-ratchet';
@@ -80,7 +80,7 @@ export class DynamoExporter {
     RequireRatchet.notNullOrUndefined(target, 'target');
 
     const rval: number = await dynamo.fullyExecuteProcessOverScan(scan, async (row) =>
-      DynamoExporter.writeItemToJsonLStream(row, target, false),
+      DynamoExporter.writeItemToJsonLStream(row, target, false)
     );
     return rval;
   }
@@ -91,7 +91,7 @@ export class DynamoExporter {
     RequireRatchet.notNullOrUndefined(target, 'target');
 
     const rval: number = await dynamo.fullyExecuteProcessOverQuery(qry, async (row) =>
-      DynamoExporter.writeItemToJsonLStream(row, target, false),
+      DynamoExporter.writeItemToJsonLStream(row, target, false)
     );
     return rval;
   }

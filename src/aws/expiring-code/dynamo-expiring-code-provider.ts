@@ -2,13 +2,10 @@ import { ExpiringCodeProvider } from './expiring-code-provider';
 import { DynamoRatchet } from '../dynamodb/dynamo-ratchet';
 import { ExpiringCode } from './expiring-code';
 import { DynamoTableRatchet } from '../dynamodb/dynamo-table-ratchet';
-import { PutItemOutput } from '@aws-sdk/client-dynamodb';
+import { PutCommandOutput } from '@aws-sdk/lib-dynamodb';
 
 export class DynamoExpiringCodeProvider implements ExpiringCodeProvider {
-  constructor(
-    private tableName: string,
-    private dynamoRatchet: DynamoRatchet,
-  ) {}
+  constructor(private tableName: string, private dynamoRatchet: DynamoRatchet) {}
 
   public async checkCode(code: string, context: string, deleteOnMatch?: boolean): Promise<boolean> {
     const keys: any = { code: code, context: context };
@@ -21,7 +18,7 @@ export class DynamoExpiringCodeProvider implements ExpiringCodeProvider {
   }
 
   public async storeCode(code: ExpiringCode): Promise<boolean> {
-    const output: PutItemOutput = await this.dynamoRatchet.simplePut(this.tableName, code);
+    const output: PutCommandOutput = await this.dynamoRatchet.simplePut(this.tableName, code);
     return output && output.ConsumedCapacity.CapacityUnits > 0;
   }
 

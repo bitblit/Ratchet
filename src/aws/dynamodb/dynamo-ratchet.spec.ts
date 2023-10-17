@@ -2,7 +2,7 @@ import { DynamoRatchet } from './dynamo-ratchet';
 import { Logger } from '../../common/logger';
 import { LoggerLevelName } from '../../common/logger-support/logger-level-name';
 import { DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
-import { PutItemCommandOutput, ScanCommandInput } from '@aws-sdk/client-dynamodb';
+import { PutCommandOutput, ScanCommandInput } from '@aws-sdk/lib-dynamodb';
 import { DocQueryCommandInput } from '../model/dynamo/doc-query-command-input';
 
 import { mockClient } from 'aws-sdk-client-mock';
@@ -145,7 +145,7 @@ describe('#dynamoRatchet', function () {
     };
 
     for (let i = 0; i < 5; i++) {
-      const rval: PutItemCommandOutput = await dr.simplePutWithCollisionAvoidance(
+      const rval: PutCommandOutput = await dr.simplePutWithCollisionAvoidance(
         'cwtest',
         val,
         ['k1', 'k2'],
@@ -154,7 +154,7 @@ describe('#dynamoRatchet', function () {
           return v;
         },
         null,
-        3,
+        3
       );
       Logger.info('output was : %j', rval);
     }

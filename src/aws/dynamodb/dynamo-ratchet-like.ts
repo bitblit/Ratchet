@@ -1,6 +1,6 @@
 import { DynamoCountResult } from '../model/dynamo-count-result';
 import { DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
-import { DeleteItemCommandOutput, PutItemOutput } from '@aws-sdk/client-dynamodb';
+import { DeleteCommandOutput, PutCommandOutput } from '@aws-sdk/lib-dynamodb';
 import { DocQueryCommandInput } from '../model/dynamo/doc-query-command-input';
 import { DocScanCommandInput } from '../model/dynamo/doc-scan-command-input';
 
@@ -17,7 +17,7 @@ export interface DynamoRatchetLike {
     qry: DocQueryCommandInput,
     proc: (val: T) => Promise<void>,
     delayMS?: number,
-    softLimit?: number,
+    softLimit?: number
   ): Promise<number>;
 
   fullyExecuteScanCount(scan: DocScanCommandInput, delayMS?: number): Promise<DynamoCountResult>;
@@ -26,7 +26,7 @@ export interface DynamoRatchetLike {
     scan: DocScanCommandInput,
     proc: (val: T) => Promise<void>,
     delayMS?: number,
-    softLimit?: number,
+    softLimit?: number
   ): Promise<number>;
 
   writeAllInBatches<T>(tableName: string, elements: T[], batchSize: number): Promise<number>;
@@ -34,7 +34,7 @@ export interface DynamoRatchetLike {
   fetchAllInBatches<T>(tableName: string, inKeys: any[], batchSize: number): Promise<T[]>;
   deleteAllInBatches(tableName: string, keys: any[], batchSize: number): Promise<number>;
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-  simplePut(tableName: string, value: any, autoRetryCount?: number): Promise<PutItemOutput>;
+  simplePut(tableName: string, value: any, autoRetryCount?: number): Promise<PutCommandOutput>;
   simplePutOnlyIfFieldIsNullOrUndefined(tableName: string, value: any, fieldName: string): Promise<boolean>;
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   // This works like simplePut, but if a collision is detected it adjusts the object and tries writing again
@@ -45,7 +45,7 @@ export interface DynamoRatchetLike {
     keyNames: string[],
     adjustFunction: (val: T) => T,
     maxAdjusts?: number,
-    autoRetryCount?: number,
+    autoRetryCount?: number
   ): Promise<T>;
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   simpleGet<T>(tableName: string, keys: any, autoRetryCount?: number): Promise<T>;
@@ -55,10 +55,10 @@ export interface DynamoRatchetLike {
     keys: any,
     counterAttributeName: string,
     deleteOnZero: boolean,
-    autoRetryCount?: number,
+    autoRetryCount?: number
   ): Promise<T>;
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-  simpleDelete(tableName: string, keys: any): Promise<DeleteItemCommandOutput>;
+  simpleDelete(tableName: string, keys: any): Promise<DeleteCommandOutput>;
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   atomicCounter(tableName: string, keys: any, counterFieldName: string, increment?: number): Promise<number>;
 }
