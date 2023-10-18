@@ -2,35 +2,55 @@ import { DateTime } from 'luxon';
 import fetch from 'cross-fetch';
 import util from 'util';
 import { GitCommitData, GitRatchet } from '../git/git-ratchet';
-import { GlobalRatchet } from '../../../common/global-ratchet';
 import { Logger } from '../../../common/logger';
+import { CiRunInformation } from '../../ci/ci-run-information';
+import { CiRunInformationUtil } from '../../ci/ci-run-information-util';
+import { ErrorRatchet } from '../../../common/error-ratchet';
+import { StringRatchet } from '../../../common/string-ratchet';
 
 export class PublishCiReleaseToSlack {
   public static async process(slackHookUrl: string, timezone = 'America/Los_Angeles'): Promise<string> {
     if (!slackHookUrl) {
       throw new Error('slackHookUrl must be defined');
     }
-    const buildNum: string = GlobalRatchet.fetchGlobalVar('CIRCLE_BUILD_NUM');
-    const userName: string = GlobalRatchet.fetchGlobalVar('CIRCLE_USERNAME');
-    const projectName: string = GlobalRatchet.fetchGlobalVar('CIRCLE_PROJECT_REPONAME');
-    const branch: string = GlobalRatchet.fetchGlobalVar('CIRCLE_BRANCH') || '';
-    const tag: string = GlobalRatchet.fetchGlobalVar('CIRCLE_TAG') || '';
-    const sha1: string = GlobalRatchet.fetchGlobalVar('CIRCLE_SHA1') || '';
+
+    const github: CiRunInformation = CiRunInformationUtil.createDefaultGithubActionsRunInformation();
+    const circle: CiRunInformation = CiRunInformationUtil.createDefaultCircleCiRunInformation();
+    const testing: CiRunInformation = CiRunInformationUtil.createTestingCiRunInformation();
+
+    const buildNum: string = github.buildNumber || circle.buildNumber || testing.buildNumber;
+    const userName: string = github.userName || circle.userName || testing.userName;
+    const projectName: string = github.projectName || circle.projectName || testing.projectName;
+    const branch: string = github.branch || circle.branch || testing.branch || '';
+    const tag: string = github.tag || circle.tag || testing.tag || '';
+    const commitHash: string = github.commitHash || circle.commitHash || testing.commitHash || '';
     const localTime: string = DateTime.local().setZone(timezone).toFormat('MMMM Do yyyy, h:mm:ss a z');
     const gitData: GitCommitData = await GitRatchet.getLastCommitSwallowException();
 
     if (!buildNum || !userName || !projectName) {
-      throw new Error(
-        'CIRCLE_BUILD_NUM, CIRCLE_USERNAME, CIRCLE_PROJECT_REPONAME env vars not set - apparently not in a CircleCI environment',
+      throw ErrorRatchet.fErr(
+        'Missing at least one of build number, username, or repo name environmental variables : Github : %j CircleCi: %j Testing: %j',
+        github,
+        circle,
+        testing,
       );
     }
-
-    Logger.info('Sending slack notification %j with build %s, branch %s, tag %s, sha %s, time: %s', buildNum, branch, tag, sha1, localTime);
 
     let message: string = util.format('%s performed release %s on %s at %s', userName, tag + ' ' + branch, projectName, localTime);
     if (!!gitData && !!gitData.subject) {
       message += '\n\n' + gitData.subject;
     }
+
+    Logger.info(
+      'Sending slack notification "%s" with build %s, branch %s, tag %s, sha %s, time: %s, url: %s',
+      message,
+      buildNum,
+      branch,
+      tag,
+      commitHash,
+      localTime,
+      StringRatchet.obscure(slackHookUrl, 2),
+    );
 
     const response: Response = await fetch(slackHookUrl, {
       method: 'POST', // *GET, POST, PUT, DELETE, etc.
@@ -48,21 +68,13 @@ export class PublishCiReleaseToSlack {
     return bodyOut;
   }
 
-  public static extractHookUrl(): string {
-    let rval: string = null;
-    if (process && process.argv && process.argv.length > 2) {
-      rval = process.argv[2];
-    }
-    return rval;
-  }
-
   /**
    And, in case you are running this command line...
    TODO: should use switches to allow setting the various non-filename params
    **/
   public static async runFromCliArgs(args: string[]): Promise<string> {
     Logger.info('Running PublishCiReleaseToSlack from command line arguments');
-    const hook: string = PublishCiReleaseToSlack.extractHookUrl();
+    const hook: string = args?.length ? args[0] : null;
     if (!!hook) {
       return PublishCiReleaseToSlack.process(hook);
     } else {
