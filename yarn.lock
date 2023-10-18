@@ -2277,7 +2277,6 @@ __metadata:
     aws-cdk-lib: 2.101.1
     constructs: 10.3.0
   peerDependencies:
-    "@aws-cdk/aws-batch-alpha": ^2.95.1-alpha.0
     "@bitblit/ratchet-common": 0.0.0-snapshot
     aws-cdk-lib: ^2.101.1
     constructs: ^10.3.0
