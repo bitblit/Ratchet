@@ -1,8 +1,6 @@
 import { DynamoCountResult } from '../model/dynamo-count-result.js';
 import { DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
-import { DeleteItemCommandOutput, PutItemOutput } from '@aws-sdk/client-dynamodb';
-import { DocQueryCommandInput } from '../model/dynamo/doc-query-command-input.js';
-import { DocScanCommandInput } from '../model/dynamo/doc-scan-command-input.js';
+import { DeleteCommandOutput, PutCommandOutput, QueryCommandInput, ScanCommandInput } from '@aws-sdk/lib-dynamodb';
 
 export interface DynamoRatchetLike {
   getDDB(): DynamoDBDocumentClient;
@@ -11,30 +9,30 @@ export interface DynamoRatchetLike {
   // Throughput exception is encountered (up to a limit) but lets other errors get thrown.
   // Drop-in replacement to make sure that things do not fail just because of throughput issues
   throughputSafeScanOrQuery<T, R>(proc: (T) => Promise<R>, input: T, maxTries?: number, inCurrentTry?: number): Promise<R>;
-  fullyExecuteQueryCount(qry: DocQueryCommandInput, delayMS?: number): Promise<DynamoCountResult>;
-  fullyExecuteQuery<T>(qry: DocQueryCommandInput, delayMS?: number, softLimit?: number): Promise<T[]>;
+  fullyExecuteQueryCount(qry: QueryCommandInput, delayMS?: number): Promise<DynamoCountResult>;
+  fullyExecuteQuery<T>(qry: QueryCommandInput, delayMS?: number, softLimit?: number): Promise<T[]>;
   fullyExecuteProcessOverQuery<T>(
-    qry: DocQueryCommandInput,
+    qry: QueryCommandInput,
     proc: (val: T) => Promise<void>,
     delayMS?: number,
-    softLimit?: number
+    softLimit?: number,
   ): Promise<number>;
 
-  fullyExecuteScanCount(scan: DocScanCommandInput, delayMS?: number): Promise<DynamoCountResult>;
-  fullyExecuteScan<T>(scan: DocScanCommandInput, delayMS?: number, softLimit?: number): Promise<T[]>;
+  fullyExecuteScanCount(scan: ScanCommandInput, delayMS?: number): Promise<DynamoCountResult>;
+  fullyExecuteScan<T>(scan: ScanCommandInput, delayMS?: number, softLimit?: number): Promise<T[]>;
   fullyExecuteProcessOverScan<T>(
-    scan: DocScanCommandInput,
+    scan: ScanCommandInput,
     proc: (val: T) => Promise<void>,
     delayMS?: number,
-    softLimit?: number
+    softLimit?: number,
   ): Promise<number>;
 
   writeAllInBatches<T>(tableName: string, elements: T[], batchSize: number): Promise<number>;
-  fetchFullObjectsMatchingKeysOnlyIndexQuery<T>(qry: DocQueryCommandInput, keyNames: string[], batchSize?: number): Promise<T[]>;
+  fetchFullObjectsMatchingKeysOnlyIndexQuery<T>(qry: QueryCommandInput, keyNames: string[], batchSize?: number): Promise<T[]>;
   fetchAllInBatches<T>(tableName: string, inKeys: any[], batchSize: number): Promise<T[]>;
   deleteAllInBatches(tableName: string, keys: any[], batchSize: number): Promise<number>;
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-  simplePut(tableName: string, value: any, autoRetryCount?: number): Promise<PutItemOutput>;
+  simplePut(tableName: string, value: any, autoRetryCount?: number): Promise<PutCommandOutput>;
   simplePutOnlyIfFieldIsNullOrUndefined(tableName: string, value: any, fieldName: string): Promise<boolean>;
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   // This works like simplePut, but if a collision is detected it adjusts the object and tries writing again
@@ -45,7 +43,7 @@ export interface DynamoRatchetLike {
     keyNames: string[],
     adjustFunction: (val: T) => T,
     maxAdjusts?: number,
-    autoRetryCount?: number
+    autoRetryCount?: number,
   ): Promise<T>;
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   simpleGet<T>(tableName: string, keys: any, autoRetryCount?: number): Promise<T>;
@@ -55,10 +53,10 @@ export interface DynamoRatchetLike {
     keys: any,
     counterAttributeName: string,
     deleteOnZero: boolean,
-    autoRetryCount?: number
+    autoRetryCount?: number,
   ): Promise<T>;
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-  simpleDelete(tableName: string, keys: any): Promise<DeleteItemCommandOutput>;
+  simpleDelete(tableName: string, keys: any): Promise<DeleteCommandOutput>;
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   atomicCounter(tableName: string, keys: any, counterFieldName: string, increment?: number): Promise<number>;
 }

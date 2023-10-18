@@ -1,11 +1,13 @@
 import { Logger, RequireRatchet, StringRatchet } from '@bitblit/ratchet-common';
 import { DynamoRatchet } from '../dynamodb/dynamo-ratchet.js';
-import { DeleteItemOutput, PutItemCommand, PutItemCommandOutput } from '@aws-sdk/client-dynamodb';
-import { DocScanCommandInput } from '../model/dynamo/doc-scan-command-input.js';
+import { DeleteCommandOutput, PutCommand, PutCommandOutput, ScanCommandInput } from '@aws-sdk/lib-dynamodb';
 import { SyncLockProvider } from './sync-lock-provider.js';
 
 export class DynamoDbSyncLock implements SyncLockProvider {
-  constructor(private ratchet: DynamoRatchet, private tableName: string) {
+  constructor(
+    private ratchet: DynamoRatchet,
+    private tableName: string,
+  ) {
     RequireRatchet.notNullOrUndefined(ratchet, 'ratchet');
     RequireRatchet.notNullOrUndefined(StringRatchet.trimToNull(this.tableName), 'tableName');
   }
@@ -28,7 +30,7 @@ export class DynamoDbSyncLock implements SyncLockProvider {
       };
 
       try {
-        const pio: PutItemCommandOutput = await this.ratchet.getDDB().send(new PutItemCommand(params));
+        const pio: PutCommandOutput = await this.ratchet.getDDB().send(new PutCommand(params));
         rval = true;
       } catch (err) {
         if (String(err).indexOf('ConditionalCheckFailedException') > -1) {
@@ -43,7 +45,7 @@ export class DynamoDbSyncLock implements SyncLockProvider {
   public async releaseLock(lockKey: string): Promise<void> {
     if (StringRatchet.trimToNull(lockKey)) {
       try {
-        const dio: DeleteItemOutput = await this.ratchet.simpleDelete(this.tableName, { lockingKey: lockKey });
+        const dio: DeleteCommandOutput = await this.ratchet.simpleDelete(this.tableName, { lockingKey: lockKey });
         Logger.silly('Released lock %s : %s', lockKey, dio);
       } catch (err) {
         Logger.warn('Failed to release lock key : %s : %s', lockKey, err, err);
@@ -53,7 +55,7 @@ export class DynamoDbSyncLock implements SyncLockProvider {
 
   public async clearExpiredSyncLocks(): Promise<number> {
     const nowSeconds: number = Math.floor(new Date().getTime() / 1000);
-    const scan: DocScanCommandInput = {
+    const scan: ScanCommandInput = {
       TableName: this.tableName,
       FilterExpression: 'expires < :now',
       ExpressionAttributeValues: {

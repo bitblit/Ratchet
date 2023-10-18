@@ -5,7 +5,7 @@ import { RequireRatchet } from '@bitblit/ratchet-common';
 import fs, { WriteStream } from 'fs';
 import { DynamoRatchet } from '@bitblit/ratchet-aws';
 import readline from 'readline';
-import { QueryCommandInput, ScanCommandInput } from '@aws-sdk/client-dynamodb';
+import { QueryCommandInput, ScanCommandInput } from '@aws-sdk/lib-dynamodb';
 
 export class DynamoExporter {
   // Prevent instantiation
@@ -80,7 +80,7 @@ export class DynamoExporter {
     RequireRatchet.notNullOrUndefined(target, 'target');
 
     const rval: number = await dynamo.fullyExecuteProcessOverScan(scan, async (row) =>
-      DynamoExporter.writeItemToJsonLStream(row, target, false)
+      DynamoExporter.writeItemToJsonLStream(row, target, false),
     );
     return rval;
   }
@@ -91,7 +91,7 @@ export class DynamoExporter {
     RequireRatchet.notNullOrUndefined(target, 'target');
 
     const rval: number = await dynamo.fullyExecuteProcessOverQuery(qry, async (row) =>
-      DynamoExporter.writeItemToJsonLStream(row, target, false)
+      DynamoExporter.writeItemToJsonLStream(row, target, false),
     );
     return rval;
   }

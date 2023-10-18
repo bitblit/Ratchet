@@ -1,8 +1,7 @@
 import { DynamoRatchet } from './dynamo-ratchet.js';
 import { Logger, LoggerLevelName } from '@bitblit/ratchet-common';
 import { DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
-import { PutItemCommandOutput, ScanCommandInput } from '@aws-sdk/client-dynamodb';
-import { DocQueryCommandInput } from '../model/dynamo/doc-query-command-input.js';
+import { PutCommandOutput, ScanCommandInput, QueryCommandInput } from '@aws-sdk/lib-dynamodb';
 
 import { mockClient } from 'aws-sdk-client-mock';
 
@@ -57,7 +56,7 @@ describe('#dynamoRatchet', function () {
     const tableName: string = 'some-table';
     const limit: number = 200;
 
-    const qry: DocQueryCommandInput = {
+    const qry: QueryCommandInput = {
       TableName: tableName,
       IndexName: 'purchaseId-notBeforeEpochMS-index',
       KeyConditionExpression: 'purchaseId = :purchaseId',
@@ -88,7 +87,7 @@ describe('#dynamoRatchet', function () {
     const nowSec: number = Math.floor(now / 1000);
     const curHash: string = 'someHash';
 
-    const qry: DocQueryCommandInput = {
+    const qry: QueryCommandInput = {
       TableName: 'some-table',
       KeyConditionExpression: 'hashVal = :hashVal',
       ExpressionAttributeValues: {
@@ -144,7 +143,7 @@ describe('#dynamoRatchet', function () {
     };
 
     for (let i = 0; i < 5; i++) {
-      const rval: PutItemCommandOutput = await dr.simplePutWithCollisionAvoidance(
+      const rval: PutCommandOutput = await dr.simplePutWithCollisionAvoidance(
         'cwtest',
         val,
         ['k1', 'k2'],
@@ -153,7 +152,7 @@ describe('#dynamoRatchet', function () {
           return v;
         },
         null,
-        3
+        3,
       );
       Logger.info('output was : %j', rval);
     }
@@ -173,7 +172,7 @@ describe('#dynamoRatchet', function () {
 
     Logger.setLevel(LoggerLevelName.debug);
 
-    const input: DocQueryCommandInput = {
+    const input: QueryCommandInput = {
       TableName: 'some-table',
       KeyConditionExpression: 'groupId = :g',
       ExpressionAttributeValues: {
@@ -190,7 +189,7 @@ describe('#dynamoRatchet', function () {
 
     Logger.setLevel(LoggerLevelName.debug);
 
-    const input: DocQueryCommandInput = {
+    const input: QueryCommandInput = {
       TableName: 'some-table',
       KeyConditionExpression: 'groupId = :g',
       ExpressionAttributeValues: {

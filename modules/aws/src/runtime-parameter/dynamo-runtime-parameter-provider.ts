@@ -1,12 +1,14 @@
-import { PutItemOutput } from '@aws-sdk/client-dynamodb';
+import { PutCommandOutput, QueryCommandInput } from '@aws-sdk/lib-dynamodb';
 import { RuntimeParameterProvider } from './runtime-parameter-provider.js';
 import { StoredRuntimeParameter } from './stored-runtime-parameter.js';
 import { DynamoRatchet } from '../dynamodb/dynamo-ratchet.js';
 import { Logger, RequireRatchet } from '@bitblit/ratchet-common';
-import { DocQueryCommandInput } from '../model/dynamo/doc-query-command-input.js';
 
 export class DynamoRuntimeParameterProvider implements RuntimeParameterProvider {
-  constructor(private dynamo: DynamoRatchet, private tableName: string) {
+  constructor(
+    private dynamo: DynamoRatchet,
+    private tableName: string,
+  ) {
     RequireRatchet.notNullOrUndefined(this.dynamo);
     RequireRatchet.notNullOrUndefined(this.tableName);
   }
@@ -22,7 +24,7 @@ export class DynamoRuntimeParameterProvider implements RuntimeParameterProvider 
   }
 
   public async readAllParametersForGroup(groupId: string): Promise<StoredRuntimeParameter[]> {
-    const qry: DocQueryCommandInput = {
+    const qry: QueryCommandInput = {
       TableName: this.tableName,
       KeyConditionExpression: 'groupId = :groupId',
       ExpressionAttributeValues: {
@@ -36,7 +38,7 @@ export class DynamoRuntimeParameterProvider implements RuntimeParameterProvider 
 
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   public async writeParameter(toStore: StoredRuntimeParameter): Promise<boolean> {
-    const rval: PutItemOutput = await this.dynamo.simplePut(this.tableName, toStore);
+    const rval: PutCommandOutput = await this.dynamo.simplePut(this.tableName, toStore);
     return !!rval;
   }
 }

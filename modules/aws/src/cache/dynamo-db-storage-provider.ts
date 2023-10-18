@@ -7,12 +7,14 @@ import { SimpleCacheObjectWrapper } from './simple-cache-object-wrapper.js';
 import { SimpleCacheStorageProvider } from './simple-cache-storage-provider.js';
 import { RequireRatchet } from '@bitblit/ratchet-common';
 import { DynamoRatchet } from '../dynamodb/dynamo-ratchet.js';
-import { PutItemCommandOutput, ScanCommandInput } from '@aws-sdk/client-dynamodb';
-import { DocQueryCommandInput } from '../model/dynamo/doc-query-command-input.js';
+import { PutCommandOutput, ScanCommandInput, QueryCommandInput } from '@aws-sdk/lib-dynamodb';
 
 export class DynamoDbStorageProvider implements SimpleCacheStorageProvider {
   // If hash key is provided, then the cache key is the range, otherwise the cache key is the hash
-  constructor(private dynamo: DynamoRatchet, private opts: DynamoDbSimpleCacheOptions) {
+  constructor(
+    private dynamo: DynamoRatchet,
+    private opts: DynamoDbSimpleCacheOptions,
+  ) {
     RequireRatchet.notNullOrUndefined(this.dynamo, 'dynamo');
     RequireRatchet.notNullOrUndefined(this.opts, 'opts');
     RequireRatchet.notNullOrUndefined(this.opts.tableName, 'opts.tableName');
@@ -83,7 +85,7 @@ export class DynamoDbStorageProvider implements SimpleCacheStorageProvider {
     if (this.opts.dynamoExpiresColumnName && value.expiresEpochMS) {
       toSave[this.opts.dynamoExpiresColumnName] = Math.floor(value.expiresEpochMS / 1000);
     }
-    const wrote: PutItemCommandOutput = await this.dynamo.simplePut(this.opts.tableName, toSave);
+    const wrote: PutCommandOutput = await this.dynamo.simplePut(this.opts.tableName, toSave);
     return !!wrote;
   }
 
@@ -102,7 +104,7 @@ export class DynamoDbStorageProvider implements SimpleCacheStorageProvider {
   public async readAll(): Promise<SimpleCacheObjectWrapper<any>[]> {
     let rval: SimpleCacheObjectWrapper<any>[] = null;
     if (this.opts.useRangeKeys) {
-      const qry: DocQueryCommandInput = {
+      const qry: QueryCommandInput = {
         TableName: this.opts.tableName,
         KeyConditionExpression: '#cacheKey = :cacheKey',
         ExpressionAttributeNames: {

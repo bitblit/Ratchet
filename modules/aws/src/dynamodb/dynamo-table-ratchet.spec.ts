@@ -3,7 +3,6 @@ import { DescribeTableCommandOutput, DynamoDBClient } from '@aws-sdk/client-dyna
 
 import { mockClient } from 'aws-sdk-client-mock';
 import { DynamoTableRatchet } from './dynamo-table-ratchet.js';
-import { AwsCredentialsRatchet } from '../iam/aws-credentials-ratchet.js';
 
 let mockDynamo;
 
