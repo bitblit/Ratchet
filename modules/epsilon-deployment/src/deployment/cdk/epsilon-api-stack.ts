@@ -22,7 +22,7 @@ import {
   FargateComputeEnvironmentProps,
   JobQueue,
   JobQueueProps,
-} from '@aws-cdk/aws-batch-alpha';
+} from 'aws-cdk-lib/aws-batch';
 import { SecurityGroup, Vpc } from 'aws-cdk-lib/aws-ec2';
 
 import { ContainerImage } from 'aws-cdk-lib/aws-ecs';
