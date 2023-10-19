@@ -36,6 +36,7 @@ export * from './lang/number-ratchet.js';
 export * from './lang/parsed-url.js';
 export * from './lang/promise-ratchet.js';
 export * from './lang/require-ratchet.js';
+export * from './lang/sort-ratchet.js';
 export * from './lang/stop-watch.js';
 export * from './lang/string-ratchet.js';
 export * from './lang/time-zone-ratchet.js';

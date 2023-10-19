@@ -5,7 +5,7 @@
 export class RequireRatchet {
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   public static isNullOrUndefined(ob: any): boolean {
-    return ob === null || ob === undefined;
+    return Object.is(ob, null) || Object.is(ob, undefined);
   }
 
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
