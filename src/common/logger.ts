@@ -7,6 +7,7 @@ import { LoggerLevelName } from './logger-support/logger-level-name';
 import { LoggerRingBuffer } from './logger-support/logger-ring-buffer';
 import { LogMessageBuilder } from './logger-support/log-message-builder';
 import { LoggerOutputFunction } from './logger-support/logger-output-function';
+import { GlobalRatchet } from './global-ratchet';
 
 /**
  * Class to simplify logging across both browsers and node (especially lambda)
@@ -19,7 +20,8 @@ import { LoggerOutputFunction } from './logger-support/logger-output-function';
  */
 
 export class Logger {
-  private static LOGGER_INSTANCES: Map<string, LoggerInstance> = new Map<string, LoggerInstance>();
+  private static LOGGER_INSTANCE_MAP_GLOBAL_KEY: string = 'RatchetGlobalLoggerMap';
+  //private static LOGGER_INSTANCES: Map<string, LoggerInstance> = new Map<string, LoggerInstance>();
   private static DEFAULT_OPTIONS: LoggerOptions = {
     initialLevel: LoggerLevelName.info,
     formatType: LogMessageFormatType.ClassicSingleLine,
@@ -42,6 +44,17 @@ export class Logger {
     return rval;
   }
 
+  private static loggerInstances(): Map<string, LoggerInstance> {
+    let rval: Map<string, LoggerInstance> = GlobalRatchet.fetchGlobalVar<Map<string, LoggerInstance>>(
+      Logger.LOGGER_INSTANCE_MAP_GLOBAL_KEY,
+    );
+    if (!rval) {
+      rval = new Map<string, LoggerInstance>();
+      GlobalRatchet.setGlobalVar(Logger.LOGGER_INSTANCE_MAP_GLOBAL_KEY, rval);
+    }
+    return rval;
+  }
+
   public static changeDefaultOptions(input: LoggerOptions, retroactive?: boolean): void {
     if (!input || !input.initialLevel || !input.formatType) {
       throw new Error('Default options must be non-null, and provide initial level and format type');
@@ -49,16 +62,16 @@ export class Logger {
     Logger.DEFAULT_OPTIONS = Object.assign({}, input);
 
     if (retroactive) {
-      Array.from(Logger.LOGGER_INSTANCES.values()).forEach((li) => (li.options = input));
+      Array.from(Logger.loggerInstances().values()).forEach((li) => (li.options = input));
     }
   }
 
   public static getLogger(loggerName: string = 'default', inOptions?: LoggerOptions): LoggerInstance {
-    let inst: LoggerInstance = Logger.LOGGER_INSTANCES.get(loggerName);
+    let inst: LoggerInstance = Logger.loggerInstances().get(loggerName);
     if (!inst) {
       const options: LoggerOptions = Logger.applyDefaultsToOptions(inOptions);
       inst = new LoggerInstance(loggerName, options);
-      Logger.LOGGER_INSTANCES.set(loggerName, inst);
+      Logger.loggerInstances().set(loggerName, inst);
     }
     return inst;
   }

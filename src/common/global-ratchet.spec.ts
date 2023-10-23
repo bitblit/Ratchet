@@ -5,7 +5,7 @@ describe('#globalRatchet', function () {
   it('fetch and set global variables', async () => {
     const tester: string = StringRatchet.createType4Guid();
     const tester2: string = StringRatchet.createType4Guid();
-    process.env['GLOBALTEST'] = tester;
+    process['GLOBALTEST'] = tester;
 
     const value: string = GlobalRatchet.fetchGlobalVar('GLOBALTEST');
     expect(value).toEqual(tester);
