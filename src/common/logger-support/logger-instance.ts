@@ -14,6 +14,7 @@ import { StringRatchet } from '../string-ratchet';
 import { LoggerMeta } from './logger-meta';
 
 export class LoggerInstance {
+  private _guid: number = Math.floor(Math.random() * 1_000_000);
   private _loggerMeta: LoggerMeta;
 
   private _ringBuffer: LoggerRingBuffer;
@@ -51,7 +52,7 @@ export class LoggerInstance {
   }
 
   public dumpOptionsIntoLog(): void {
-    this.info('Options: %j', this.options);
+    this.info('Guid: %s Options: %j', this._guid, this.options);
     if (this?.options?.preProcessors?.length) {
       const labels: string[] = this.options.preProcessors.map((p) => StringRatchet.trimToNull(p.label()) || 'Unlabelled');
       this.info('Preprocessors: %j', labels);
@@ -69,6 +70,10 @@ export class LoggerInstance {
 
   public updateTracePrefix(newValue: string): void {
     this._options.trace = newValue;
+  }
+
+  public get guid(): number {
+    return this._guid;
   }
 
   public get options(): LoggerOptions {
