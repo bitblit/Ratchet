@@ -19,7 +19,7 @@ import { LoggerOutputFunction } from './logger-support/logger-output-function';
  */
 
 export class Logger {
-  private static LOGGER_INSTANCE_MAP_GLOBAL_KEY: string = 'RatchetGlobalLoggerMap';
+  private static LOGGER_INSTANCE_MAP_GLOBAL_KEY: string = 'RATCHET_GLOBAL_LOGGER_MAP_V01';
   private static GLOBAL_PROVIDER: Record<string, any> = process || global || window;
   //private static LOGGER_INSTANCES: Map<string, LoggerInstance> = new Map<string, LoggerInstance>();
   private static DEFAULT_OPTIONS: LoggerOptions = {
