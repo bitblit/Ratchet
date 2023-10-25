@@ -159,7 +159,7 @@
   "devDependencies": {
     "@bitblit/ratchet-jest": "0.0.0-snapshot",
     "@bitblit/ratchet-node-only": "0.0.0-snapshot",
-    "@types/aws-lambda": "8.10.124",
+    "@types/aws-lambda": "8.10.125",
     "aws-sdk-client-mock": "3.0.0"
   }
 }
