@@ -14,6 +14,7 @@ import { StringRatchet } from '../lang/string-ratchet.js';
 import { LoggerMeta } from './logger-meta.js';
 
 export class LoggerInstance {
+  private _guid: number = Math.floor(Math.random() * 1_000_000);
   private _loggerMeta: LoggerMeta;
 
   private _ringBuffer: LoggerRingBuffer;
@@ -22,7 +23,10 @@ export class LoggerInstance {
   private _handlerFunctionMap: Map<LoggerLevelName, (...any) => void>;
   private _options: LoggerOptions;
 
-  constructor(private loggerInstanceName: string = 'default', inOptions: LoggerOptions) {
+  constructor(
+    private loggerInstanceName: string = 'default',
+    inOptions: LoggerOptions,
+  ) {
     this.options = inOptions; // MUST use the setter here
   }
 
@@ -48,11 +52,15 @@ export class LoggerInstance {
   }
 
   public dumpOptionsIntoLog(): void {
-    this.info('Options: %j', this.options);
+    this.info('Guid: %s Options: %j', this._guid, this.options);
     if (this?.options?.preProcessors?.length) {
       const labels: string[] = this.options.preProcessors.map((p) => StringRatchet.trimToNull(p.label()) || 'Unlabelled');
       this.info('Preprocessors: %j', labels);
     }
+  }
+
+  public get guid(): number {
+    return this._guid;
   }
 
   // This will always clear the buffer
