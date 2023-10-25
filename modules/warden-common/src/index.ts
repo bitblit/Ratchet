@@ -19,6 +19,7 @@ export * from './client/provider/warden-logged-in-user-wrapper.js';
 export * from './client/provider/warden-recent-login-descriptor.js';
 export * from './client/provider/warden-user-service-event-processing-provider.js';
 export * from './client/provider/warden-user-service-options.js';
+export * from './common/command/add-web-authn-registration-to-logged-in-user.js';
 export * from './common/command/create-account.js';
 export * from './common/command/remove-web-authn-registration.js';
 export * from './common/command/send-magic-link.js';

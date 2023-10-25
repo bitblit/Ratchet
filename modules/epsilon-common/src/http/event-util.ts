@@ -103,7 +103,7 @@ export class EventUtil {
   public static calcLogLevelViaEventOrEnvParam(
     curLevel: LoggerLevelName,
     event: APIGatewayEvent,
-    rConfig: EpsilonLoggerConfig
+    rConfig: EpsilonLoggerConfig,
   ): LoggerLevelName {
     let rval: LoggerLevelName = curLevel;
     if (rConfig?.envParamLogLevelName && process.env[rConfig.envParamLogLevelName]) {
@@ -217,8 +217,13 @@ export class EventUtil {
     if (!!event) {
       if (!!event.httpMethod && 'post' === event.httpMethod.toLowerCase()) {
         if (!!event.path && event.path.endsWith('/graphql')) {
-          const body: any = EventUtil.jsonBodyToObject(event);
-          rval = !!body && !!body['operationName'] && body['operationName'] === 'IntrospectionQuery';
+          try {
+            const body: any = EventUtil.jsonBodyToObject(event);
+            rval = !!body && !!body['operationName'] && body['operationName'] === 'IntrospectionQuery';
+          } catch (err) {
+            Logger.error('Failed to parse body - treating as non-graphql : %s : %s', event?.body, err, err);
+            rval = false;
+          }
         }
       }
     }

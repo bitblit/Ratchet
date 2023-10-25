@@ -1,6 +1,4 @@
-import { Logger } from '@bitblit/ratchet-common';
-import { StringRatchet } from '@bitblit/ratchet-common';
-import { JwtRatchet } from '@bitblit/ratchet-common';
+import { JwtRatchet, Logger, StringRatchet } from '@bitblit/ratchet-common';
 import { Subscription, timer } from 'rxjs';
 import { WardenUserServiceOptions } from './provider/warden-user-service-options.js';
 import { WardenLoggedInUserWrapper } from './provider/warden-logged-in-user-wrapper.js';
@@ -16,7 +14,7 @@ import {
   RegistrationResponseJSON,
 } from '@simplewebauthn/typescript-types';
 import { WardenEntrySummary } from '../common/model/warden-entry-summary.js';
-import { startRegistration, startAuthentication } from '@simplewebauthn/browser';
+import { startAuthentication, startRegistration } from '@simplewebauthn/browser';
 
 /**
  * A service that handles logging in, saving the current user, watching
@@ -277,9 +275,35 @@ export class WardenUserService<T> {
       await this.options.wardenClient.generateWebAuthnRegistrationChallengeForLoggedInUser();
 
     const creds: RegistrationResponseJSON = await startRegistration(input);
-    const output: WardenEntrySummary = await this.options.wardenClient.addWebAuthnRegistrationToLoggedInUser(creds);
+
+    const deviceLabel: string = StringRatchet.trimToEmpty(
+      this.options?.deviceLabelGenerator ? this.options.deviceLabelGenerator() : this.defaultDeviceLabelGenerator(),
+    );
+
+    const output: WardenEntrySummary = await this.options.wardenClient.addWebAuthnRegistrationToLoggedInUser(
+      this.options.applicationName,
+      deviceLabel,
+      creds,
+    );
     this.updateRecentLoginsFromWardenEntrySummary(output);
     return output;
+  }
+
+  private defaultDeviceLabelGenerator(): string {
+    let rval: string = '';
+    if (navigator) {
+      if (navigator['userAgentData'] && navigator['userAgentData']['brands'] && navigator['userAgentData']['brands'][1]) {
+        rval = navigator['userAgentData']['brands'][1];
+      } else {
+        rval = navigator.userAgent;
+      }
+      if (navigator.platform) {
+        rval += ' on ' + navigator.platform;
+      }
+    } else {
+      rval = 'Unknown device';
+    }
+    return rval;
   }
 
   public async executeWebAuthnLoginToWardenLoginResults(userId: string): Promise<WardenLoginResults> {
@@ -287,9 +311,8 @@ export class WardenUserService<T> {
     try {
       // Add it to the list
       //this.localStorageService.addCommonEmailAddress(emailAddress);
-      const input: PublicKeyCredentialRequestOptionsJSON = await this.options.wardenClient.generateWebAuthnAuthenticationChallengeForUserId(
-        userId
-      );
+      const input: PublicKeyCredentialRequestOptionsJSON =
+        await this.options.wardenClient.generateWebAuthnAuthenticationChallengeForUserId(userId);
       Logger.info('Got login challenge : %s', input);
       const creds: AuthenticationResponseJSON = await startAuthentication(input);
       Logger.info('Got creds: %j', creds);

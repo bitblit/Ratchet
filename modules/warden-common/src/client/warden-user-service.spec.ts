@@ -18,6 +18,7 @@ describe('#wardenUserService', function () {
       loginCheckTimerPingSeconds: 60,
       autoLoginHandlingThresholdSeconds: 60,
       allowAutoRefresh: true,
+      applicationName: 'TEST-APP',
     };
 
     const wus: WardenUserService<any> = new WardenUserService<any>(wuso);

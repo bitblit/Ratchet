@@ -4,10 +4,7 @@ import { WardenContact } from '../common/model/warden-contact.js';
 import { WardenCommandExchangeProvider } from './provider/warden-command-exchange-provider.js';
 import { WardenCommandResponse } from '../common/command/warden-command-response.js';
 
-import { Logger } from '@bitblit/ratchet-common';
-import { StringRatchet } from '@bitblit/ratchet-common';
-import { ErrorRatchet } from '@bitblit/ratchet-common';
-import { RequireRatchet } from '@bitblit/ratchet-common';
+import { ErrorRatchet, Logger, RequireRatchet, StringRatchet } from '@bitblit/ratchet-common';
 import {
   PublicKeyCredentialCreationOptionsJSON,
   PublicKeyCredentialRequestOptionsJSON,
@@ -18,6 +15,7 @@ import { WardenLoginRequest } from '../common/model/warden-login-request.js';
 import { WardenClientCurrentLoggedInJwtTokenProvider } from './provider/warden-client-current-logged-in-jwt-token-provider.js';
 import { WardenEntrySummary } from '../common/model/warden-entry-summary.js';
 import { WardenContactType } from '../common/model/warden-contact-type.js';
+import { AddWebAuthnRegistrationToLoggedInUser } from '../common/command/add-web-authn-registration-to-logged-in-user';
 
 export class WardenClient {
   constructor(
@@ -147,11 +145,21 @@ export class WardenClient {
     return rval.addContactToLoggedInUser;
   }
 
-  public async addWebAuthnRegistrationToLoggedInUser(data: RegistrationResponseJSON): Promise<WardenEntrySummary> {
-    const cmd: WardenCommand = {
-      addWebAuthnRegistrationToLoggedInUser: {
+  public async addWebAuthnRegistrationToLoggedInUser(
+    applicationName: string,
+    deviceLabel: string,
+    data: RegistrationResponseJSON,
+  ): Promise<WardenEntrySummary> {
+    const inCmd: AddWebAuthnRegistrationToLoggedInUser = {
+      webAuthn: {
         dataAsJson: JSON.stringify(data),
       },
+      applicationName: applicationName,
+      deviceLabel: deviceLabel,
+    };
+
+    const cmd: WardenCommand = {
+      addWebAuthnRegistrationToLoggedInUser: inCmd,
     };
     const rval: WardenCommandResponse = await this.exchangeCommand(cmd);
     return rval.addWebAuthnRegistrationToLoggedInUser;

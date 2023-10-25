@@ -167,8 +167,14 @@ export class WardenService {
         if (!StringRatchet.trimToNull(loggedInUserId)) {
           ErrorRatchet.throwFormattedErr('This requires a logged in user');
         }
-        const data: RegistrationResponseJSON = JSON.parse(cmd.addWebAuthnRegistrationToLoggedInUser.dataAsJson);
-        const out: WardenStoreRegistrationResponse = await this.storeAuthnRegistration(loggedInUserId, origin, data);
+        const data: RegistrationResponseJSON = JSON.parse(cmd.addWebAuthnRegistrationToLoggedInUser.webAuthn.dataAsJson);
+        const out: WardenStoreRegistrationResponse = await this.storeAuthnRegistration(
+          loggedInUserId,
+          origin,
+          cmd.addWebAuthnRegistrationToLoggedInUser.applicationName,
+          cmd.addWebAuthnRegistrationToLoggedInUser.deviceLabel,
+          data,
+        );
         if (out.updatedEntry) {
           rval = { addWebAuthnRegistrationToLoggedInUser: WardenUtils.stripWardenEntryToSummary(out.updatedEntry) };
         } else if (out.error) {
@@ -428,6 +434,8 @@ export class WardenService {
   public async storeAuthnRegistration(
     userId: string,
     origin: string,
+    applicationName: string,
+    deviceLabel: string,
     data: RegistrationResponseJSON,
   ): Promise<WardenStoreRegistrationResponse> {
     Logger.info('Store authn data : %j', data);
@@ -464,6 +472,9 @@ export class WardenService {
       if (rval.result === WardenStoreRegistrationResponseType.Verified) {
         Logger.info('Storing registration');
         const newAuth: WardenWebAuthnEntry = {
+          origin: origin,
+          applicationName: applicationName || 'Unknown Application',
+          deviceLabel: deviceLabel || 'Unknown Device',
           counter: verification.registrationInfo.counter,
           credentialBackedUp: verification.registrationInfo.credentialBackedUp,
           credentialDeviceType: verification.registrationInfo.credentialDeviceType,
