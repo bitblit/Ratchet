@@ -19,7 +19,9 @@ import { LoggerOutputFunction } from './logger-output-function.js';
  */
 
 export class Logger {
-  private static LOGGER_INSTANCES: Map<string, LoggerInstance> = new Map<string, LoggerInstance>();
+  private static LOGGER_INSTANCE_MAP_GLOBAL_KEY: string = 'RATCHET_GLOBAL_LOGGER_MAP_V01';
+  private static GLOBAL_PROVIDER: Record<string, any> = process || global || window;
+  //private static LOGGER_INSTANCES: Map<string, LoggerInstance> = new Map<string, LoggerInstance>();
   private static DEFAULT_OPTIONS: LoggerOptions = {
     initialLevel: LoggerLevelName.info,
     formatType: LogMessageFormatType.ClassicSingleLine,
@@ -42,6 +44,18 @@ export class Logger {
     return rval;
   }
 
+  private static loggerInstances(): Map<string, LoggerInstance> {
+    if (!Logger.GLOBAL_PROVIDER) {
+      throw new Error('Cannot create logger - could not find a global provider');
+    }
+    let rval: Map<string, LoggerInstance> = Logger.GLOBAL_PROVIDER[Logger.LOGGER_INSTANCE_MAP_GLOBAL_KEY];
+    if (!rval) {
+      rval = new Map<string, LoggerInstance>();
+      Logger.GLOBAL_PROVIDER[Logger.LOGGER_INSTANCE_MAP_GLOBAL_KEY] = rval;
+    }
+    return rval;
+  }
+
   public static changeDefaultOptions(input: LoggerOptions, retroactive?: boolean): void {
     if (!input || !input.initialLevel || !input.formatType) {
       throw new Error('Default options must be non-null, and provide initial level and format type');
@@ -49,16 +63,16 @@ export class Logger {
     Logger.DEFAULT_OPTIONS = Object.assign({}, input);
 
     if (retroactive) {
-      Array.from(Logger.LOGGER_INSTANCES.values()).forEach((li) => (li.options = input));
+      Array.from(Logger.loggerInstances().values()).forEach((li) => (li.options = input));
     }
   }
 
   public static getLogger(loggerName: string = 'default', inOptions?: LoggerOptions): LoggerInstance {
-    let inst: LoggerInstance = Logger.LOGGER_INSTANCES.get(loggerName);
+    let inst: LoggerInstance = Logger.loggerInstances().get(loggerName);
     if (!inst) {
       const options: LoggerOptions = Logger.applyDefaultsToOptions(inOptions);
       inst = new LoggerInstance(loggerName, options);
-      Logger.LOGGER_INSTANCES.set(loggerName, inst);
+      Logger.loggerInstances().set(loggerName, inst);
     }
     return inst;
   }
