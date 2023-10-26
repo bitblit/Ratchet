@@ -2,6 +2,7 @@ import { Logger, RequireRatchet, StringRatchet } from '@bitblit/ratchet-common';
 import { DynamoRatchet } from '../dynamodb/dynamo-ratchet.js';
 import { DeleteCommandOutput, PutCommand, PutCommandOutput, ScanCommandInput } from '@aws-sdk/lib-dynamodb';
 import { SyncLockProvider } from './sync-lock-provider.js';
+import { ConditionalCheckFailedException, ReturnConsumedCapacity } from '@aws-sdk/client-dynamodb';
 
 export class DynamoDbSyncLock implements SyncLockProvider {
   constructor(
@@ -24,7 +25,7 @@ export class DynamoDbSyncLock implements SyncLockProvider {
 
       const params = {
         Item: row,
-        ReturnConsumedCapacity: 'TOTAL',
+        ReturnConsumedCapacity: ReturnConsumedCapacity.TOTAL,
         TableName: this.tableName,
         ConditionExpression: 'attribute_not_exists(lockingKey)',
       };
@@ -33,7 +34,7 @@ export class DynamoDbSyncLock implements SyncLockProvider {
         const pio: PutCommandOutput = await this.ratchet.getDDB().send(new PutCommand(params));
         rval = true;
       } catch (err) {
-        if (String(err).indexOf('ConditionalCheckFailedException') > -1) {
+        if (err instanceof ConditionalCheckFailedException) {
           Logger.silly('Unable to acquire lock on %s', lockKey);
         }
       }

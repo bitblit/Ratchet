@@ -2,9 +2,14 @@
     Service for interacting with cloudwatch
 */
 
-import { CloudWatchClient, PutMetricDataCommand, PutMetricDataCommandInput, PutMetricDataCommandOutput } from '@aws-sdk/client-cloudwatch';
+import {
+  CloudWatchClient,
+  PutMetricDataCommand,
+  PutMetricDataCommandInput,
+  PutMetricDataCommandOutput,
+  StandardUnit,
+} from '@aws-sdk/client-cloudwatch';
 import { KeyValue, Logger } from '@bitblit/ratchet-common';
-import { CloudWatchMetricsUnit } from '../model/cloud-watch-metrics-unit.js';
 import { DynamoCountResult } from '../model/dynamo-count-result.js';
 import { CloudWatchMetricsMinuteLevelDynamoCountRequest } from '../model/cloud-watch-metrics-minute-level-dynamo-count-request.js';
 import { DateTime } from 'luxon';
@@ -24,7 +29,7 @@ export class CloudWatchMetricsRatchet {
     namespace: string,
     metric: string,
     dims: KeyValue<any>[],
-    unit: CloudWatchMetricsUnit = CloudWatchMetricsUnit.None,
+    unit: StandardUnit = StandardUnit.None,
     value: number,
     timestampDate: Date = new Date(),
     highResolution = false,
@@ -43,7 +48,7 @@ export class CloudWatchMetricsRatchet {
         {
           MetricName: metric,
           Dimensions: cwDims,
-          Unit: String(unit),
+          Unit: unit,
           Value: value,
           Timestamp: timestampDate,
           StorageResolution: storageResolution,
@@ -80,7 +85,7 @@ export class CloudWatchMetricsRatchet {
       req.namespace,
       req.metric,
       req.dims,
-      CloudWatchMetricsUnit.Count,
+      StandardUnit.Count,
       cnt.count,
       parseDate,
       false,

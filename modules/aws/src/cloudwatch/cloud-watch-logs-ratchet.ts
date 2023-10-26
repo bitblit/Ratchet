@@ -12,6 +12,7 @@ import {
   GetQueryResultsCommandOutput,
   LogGroup,
   LogStream,
+  OrderBy,
   StartQueryCommand,
   StartQueryCommandInput,
   StartQueryCommandOutput,
@@ -35,12 +36,12 @@ export class CloudWatchLogsRatchet {
   public async removeEmptyOrOldLogStreams(
     logGroupName: string,
     maxToRemove = 1000,
-    oldestEventEpochMS: number = null
+    oldestEventEpochMS: number = null,
   ): Promise<LogStream[]> {
     Logger.info('Removing empty streams from %s, oldest event epoch MS : %d', logGroupName, oldestEventEpochMS);
     const streamSearchParams: any = {
       logGroupName: logGroupName,
-      orderBy: 'LastEventTime',
+      orderBy: OrderBy.LastEventTime,
     };
 
     const oldestEventTester: number = oldestEventEpochMS || 1;
@@ -102,7 +103,7 @@ export class CloudWatchLogsRatchet {
             oldWait,
             waitPer,
             retry,
-            CloudWatchLogsRatchet.MAX_DELETE_RETRIES
+            CloudWatchLogsRatchet.MAX_DELETE_RETRIES,
           );
         }
       }
@@ -127,7 +128,7 @@ export class CloudWatchLogsRatchet {
     try {
       const streamSearchParams = {
         logGroupName: logGroupName,
-        orderBy: 'LastEventTime',
+        orderBy: OrderBy.LastEventTime,
       };
 
       let totalStreams = 0;

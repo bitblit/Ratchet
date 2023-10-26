@@ -51,7 +51,6 @@ export * from './iam/aws-credentials-ratchet.js';
 export * from './lambda/lambda-event-detector.js';
 export * from './lambda/lambda-event-type-guards.js';
 export * from './model/cloud-watch-metrics-minute-level-dynamo-count-request.js';
-export * from './model/cloud-watch-metrics-unit.js';
 export * from './model/dynamo-count-result.js';
 export * from './route53/route-53-ratchet.js';
 export * from './runtime-parameter/cached-stored-runtime-parameter.js';

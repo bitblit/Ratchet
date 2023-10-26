@@ -1,8 +1,7 @@
 import { CloudWatchMetricsRatchet } from './cloud-watch-metrics-ratchet.js';
 import { KeyValue } from '@bitblit/ratchet-common';
 
-import { CloudWatchMetricsUnit } from '../model/cloud-watch-metrics-unit.js';
-import { CloudWatchClient, PutMetricDataCommand } from '@aws-sdk/client-cloudwatch';
+import { CloudWatchClient, PutMetricDataCommand, StandardUnit } from '@aws-sdk/client-cloudwatch';
 import { mockClient } from 'aws-sdk-client-mock';
 
 let mockCW;
@@ -23,15 +22,7 @@ describe('#cloudWatchMetricsRatchet', function () {
       { key: 'stage', value: 'v0' },
       { key: 'version', value: '20190529-01' },
     ];
-    const res: any = await cw.writeSingleMetric(
-      'Ratchet/TestMetric01',
-      'MyMetric01',
-      dims,
-      CloudWatchMetricsUnit.Count,
-      2,
-      new Date(),
-      false,
-    );
+    const res: any = await cw.writeSingleMetric('Ratchet/TestMetric01', 'MyMetric01', dims, StandardUnit.Count, 2, new Date(), false);
 
     expect(res).toBeTruthy();
   });
