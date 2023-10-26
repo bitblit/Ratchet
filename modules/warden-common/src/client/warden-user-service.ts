@@ -292,8 +292,14 @@ export class WardenUserService<T> {
   private defaultDeviceLabelGenerator(): string {
     let rval: string = '';
     if (navigator) {
-      if (navigator['userAgentData'] && navigator['userAgentData']['brands'] && navigator['userAgentData']['brands'][1]) {
-        rval = navigator['userAgentData']['brands'][1];
+      // Chromium based browsers have something useful in this field (2023-10-26)
+      if (
+        navigator['userAgentData'] &&
+        navigator['userAgentData']['brands'] &&
+        navigator['userAgentData']['brands'][1] &&
+        navigator['userAgentData']['brands'][1]['brand']
+      ) {
+        rval = navigator['userAgentData']['brands'][1]['brand'];
       } else {
         rval = navigator.userAgent;
       }

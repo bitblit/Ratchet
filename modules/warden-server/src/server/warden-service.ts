@@ -242,7 +242,7 @@ export class WardenService {
         };
 
         const newToken: string = await this.opts.jwtRatchet.createTokenString(wardenToken, decoration.userTokenExpirationSeconds);
-        // CAW : We dont use refresh token because we want any user changes to show up in the new token
+        // CAW : We do not use refresh token because we want any user changes to show up in the new token
         //const newToken: string = await this.opts.jwtRatchet.refreshJWTString(cmd.refreshJwtToken, false, expirationSeconds);
         rval = {
           refreshJwtToken: newToken,

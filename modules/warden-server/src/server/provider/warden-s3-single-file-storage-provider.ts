@@ -17,7 +17,10 @@ websites, or getting a demo hacked out quickly
  */
 export class WardenS3SingleFileStorageProvider implements WardenStorageProvider {
   private ratchet: S3CacheRatchet;
-  constructor(private s3: S3Client, private options: WardenS3SingleFileStorageProviderOptions) {
+  constructor(
+    private s3: S3Client,
+    private options: WardenS3SingleFileStorageProviderOptions,
+  ) {
     this.ratchet = new S3CacheRatchet(this.s3, this.options.bucket);
   }
 
@@ -48,7 +51,7 @@ export class WardenS3SingleFileStorageProvider implements WardenStorageProvider 
   public async fetchCurrentUserChallenge(userId: string, relyingPartyId: string): Promise<string> {
     const data: WardenS3SingleFileStorageProviderDataFile = await this.fetchDataFile();
     const entry: WardenS3SingleFileStorageProviderChallengeRecord = (data.challenges || []).find(
-      (d) => d.userId === userId && d.relyingPartyId === relyingPartyId
+      (d) => d.userId === userId && d.relyingPartyId === relyingPartyId,
     );
     if (!entry) {
       ErrorRatchet.throwFormattedErr('fetchCurrentUserChallenge: Could not find user %s', userId);

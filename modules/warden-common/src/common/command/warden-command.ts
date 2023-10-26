@@ -1,6 +1,5 @@
 import { CreateAccount } from './create-account.js';
 import { WardenContact } from '../model/warden-contact.js';
-import { WebAuthnObjectWrapper } from './web-authn-object-wrapper.js';
 import { RemoveWebAuthnRegistration } from './remove-web-authn-registration.js';
 import { WardenLoginRequest } from '../model/warden-login-request.js';
 import { SendMagicLink } from './send-magic-link.js';
