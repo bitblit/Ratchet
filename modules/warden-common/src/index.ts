@@ -38,6 +38,7 @@ export * from './common/model/warden-store-registration-response-type.js';
 export * from './common/model/warden-store-registration-response.js';
 export * from './common/model/warden-team-role.js';
 export * from './common/model/warden-user-decoration.js';
+export * from './common/model/warden-web-authn-entry-summary.js';
 export * from './common/model/warden-web-authn-entry.js';
 export * from './common/model/warden-web-authn-transport-future-type.js';
 export * from './common/util/warden-utils.js';

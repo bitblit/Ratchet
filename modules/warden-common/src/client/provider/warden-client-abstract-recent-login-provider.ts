@@ -31,7 +31,7 @@ export abstract class WardenClientAbstractRecentLoginProvider implements WardenC
       this.saveRecentLogin({
         userId: userId,
         contactMethods: [contact],
-        webAuthnAuthenticatorIds: [],
+        webAuthnAuthenticatorSummaries: [],
         userLabel: label,
       });
     } else {

@@ -7,6 +7,8 @@ import { WardenEntrySummary } from '../model/warden-entry-summary.js';
 import { WardenEntry } from '../model/warden-entry.js';
 import { WardenLoginRequest } from '../model/warden-login-request.js';
 import { WardenTeamRole } from '../model/warden-team-role.js';
+import { WardenWebAuthnEntry } from '../model/warden-web-authn-entry';
+import { WardenWebAuthnEntrySummary } from '../model/warden-web-authn-entry-summary';
 
 export class WardenUtils {
   // Prevent instantiation
@@ -118,7 +120,19 @@ export class WardenUtils {
           userId: we.userId,
           userLabel: we.userLabel,
           contactMethods: we.contactMethods,
-          webAuthnAuthenticatorIds: (we.webAuthnAuthenticators || []).map((s) => s.credentialIdBase64),
+          webAuthnAuthenticatorSummaries: (we.webAuthnAuthenticators || []).map((s) => WardenUtils.stripWardenWebAuthnEntryToSummary(s)),
+        }
+      : null;
+    return rval;
+  }
+
+  public static stripWardenWebAuthnEntryToSummary(we: WardenWebAuthnEntry): WardenWebAuthnEntrySummary {
+    const rval: WardenWebAuthnEntrySummary = we
+      ? {
+          origin: we.origin,
+          applicationName: we.applicationName,
+          deviceLabel: we.deviceLabel,
+          credentialIdBase64: we.credentialIdBase64,
         }
       : null;
     return rval;
