@@ -39,6 +39,7 @@ import { DynamoCountResult } from '../model/dynamo-count-result';
 import { DynamoRatchetLike } from './dynamo-ratchet-like';
 import { DurationRatchet } from '../../common/duration-ratchet';
 import { NumberRatchet } from '../../common/number-ratchet';
+import { ConditionalCheckFailedException, ProvisionedThroughputExceededException } from '@aws-sdk/client-dynamodb';
 
 export class DynamoRatchet implements DynamoRatchetLike {
   constructor(private awsDDB: DynamoDBDocumentClient) {
@@ -598,7 +599,7 @@ export class DynamoRatchet implements DynamoRatchetLike {
         Logger.debug('Exceeded write throughput for %j : (Waiting 2000 ms)', params);
         await PromiseRatchet.wait(2000);
         rval = await this.simplePutOnlyIfFieldIsNullOrUndefined(tableName, value, fieldName);
-      } else if (err && err['code'] && err['code'] === 'ConditionalCheckFailedException') {
+      } else if (err && err instanceof ConditionalCheckFailedException) {
         Logger.debug('Failed to write %j due to null field failure');
         rval = false;
       } else {
@@ -656,7 +657,7 @@ export class DynamoRatchet implements DynamoRatchetLike {
           const wait: number = Math.pow(2, currentTry) * 1000;
           Logger.debug('Exceeded write throughput for %j : Try %d of %d (Waiting %d ms)', params, currentTry, autoRetryCount, wait);
           await PromiseRatchet.wait(wait);
-        } else if (err && err['code'] && err['code'] === 'ConditionalCheckFailedException') {
+        } else if (err && err instanceof ConditionalCheckFailedException) {
           let newValue: T = Object.assign({}, params.Item) as T;
           Logger.info('Failed to write %j due to collision - adjusting and retrying', newValue);
           newValue = adjustFunction(newValue);
@@ -714,7 +715,7 @@ export class DynamoRatchet implements DynamoRatchetLike {
   }
 
   public static objectIsErrorWithProvisionedThroughputExceededExceptionCode(err: Record<string, any>): boolean {
-    return !!err && !!err['code'] && err['code'] === 'ProvisionedThroughputExceededException';
+    return !!err && err instanceof ProvisionedThroughputExceededException;
   }
 
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
@@ -753,7 +754,7 @@ export class DynamoRatchet implements DynamoRatchetLike {
           Logger.debug('Exceeded update throughput for %j : Try %d of %d (Waiting %d ms)', params, currentTry, autoRetryCount, wait);
           await PromiseRatchet.wait(wait);
           currentTry++;
-        } else if (!!err && !!err['code'] && err['code'] === 'ConditionalCheckFailedException') {
+        } else if (!!err && err instanceof ConditionalCheckFailedException) {
           Logger.info('Cannot fetch requested row (%j) - the update check failed', keys);
           updateFailed = true;
         } else {
