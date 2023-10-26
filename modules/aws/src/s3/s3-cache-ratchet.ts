@@ -17,6 +17,7 @@ import {
   ListObjectsV2CommandInput,
   ListObjectsV2CommandOutput,
   NoSuchKey,
+  NotFound,
   PutObjectCommandInput,
   PutObjectCommandOutput,
   S3Client,
@@ -133,7 +134,7 @@ export class S3CacheRatchet implements S3CacheRatchetLike {
     try {
       rval = await this.s3.send(new DeleteObjectCommand(params));
     } catch (err) {
-      if (err && err['statusCode'] == 404) {
+      if (err && err instanceof NotFound) {
         Logger.info('Swallowing 404 deleting missing object %s %s', bucket, key);
         rval = null;
       } else {
@@ -270,7 +271,7 @@ export class S3CacheRatchet implements S3CacheRatchetLike {
         }),
       );
     } catch (err) {
-      if (err && err['statusCode'] == 404) {
+      if (err && err instanceof NotFound) {
         Logger.info('Cache file %s %s not found returning null', this.bucketVal(bucket), key);
         rval = null;
       } else {
@@ -291,7 +292,7 @@ export class S3CacheRatchet implements S3CacheRatchetLike {
         return null;
       }
     } catch (err) {
-      if (err && err['statusCode'] == 404) {
+      if (err && err instanceof NotFound) {
         Logger.warn('Cache file %s %s not found returning null', this.bucketVal(bucket), key);
         return null;
       } else {
