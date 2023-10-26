@@ -37,7 +37,7 @@ export class SsmEnvironmentServiceProvider<T> implements EnvironmentServiceProvi
       if (err instanceof ParameterNotFound) {
         const errMsg: string = Logger.warn('AWS could not find parameter %s - are you using the right AWS key?', name);
         throw new Error(errMsg);
-      } else if (ErrorRatchet.safeStringifyErr(err).toLowerCase().indexOf('throttl') > -1) {
+      } else if ((ErrorRatchet.safeStringifyErr(err) || '').toLowerCase().indexOf('throttl') > -1) {
         // CAW 2023-10-26 : Ok, so in AWS Sdk v3 there is no ThrottlingException for SSM (although there
         // are for other services like Route53...) so maybe they just don't throw this any more but that
         // seems unlikely so I'm putting this in just as belt-and-suspenders... if they really never throttle
