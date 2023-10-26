@@ -2320,11 +2320,11 @@ __metadata:
     "@bitblit/ratchet-aws": 0.0.0-snapshot
     "@bitblit/ratchet-common": 0.0.0-snapshot
     "@bitblit/ratchet-epsilon-common": 0.0.0-snapshot
-    aws-cdk-lib: 2.102.0
+    aws-cdk-lib: 2.103.0
     constructs: 10.3.0
   peerDependencies:
     "@bitblit/ratchet-common": 0.0.0-snapshot
-    aws-cdk-lib: ^2.102.1
+    aws-cdk-lib: ^2.102.0
     constructs: ^10.3.0
   languageName: unknown
   linkType: soft
@@ -2410,12 +2410,12 @@ __metadata:
   resolution: "@bitblit/ratchet-warden-common@workspace:modules/warden-common"
   dependencies:
     "@bitblit/ratchet-common": 0.0.0-snapshot
-    "@simplewebauthn/browser": 8.3.1
-    "@simplewebauthn/typescript-types": 8.0.0
+    "@simplewebauthn/browser": 8.3.3
+    "@simplewebauthn/typescript-types": 8.3.3
     jwt-decode: 3.1.2
   peerDependencies:
     "@bitblit/ratchet-common": ^0.0.0-snapshot
-    "@simplewebauthn/browser": ^8.3.1
+    "@simplewebauthn/browser": ^8.3.3
     "@simplewebauthn/typescript-types": ^8.0.0
   languageName: unknown
   linkType: soft
@@ -2429,14 +2429,14 @@ __metadata:
     "@bitblit/ratchet-aws": 0.0.0-snapshot
     "@bitblit/ratchet-common": 0.0.0-snapshot
     "@bitblit/ratchet-warden-common": 0.0.0-snapshot
-    "@simplewebauthn/browser": 8.3.1
-    "@simplewebauthn/server": 8.3.2
-    "@simplewebauthn/typescript-types": 8.0.0
+    "@simplewebauthn/browser": 8.3.3
+    "@simplewebauthn/server": 8.3.3
+    "@simplewebauthn/typescript-types": 8.3.3
     jwt-decode: 3.1.2
   peerDependencies:
-    "@simplewebauthn/browser": ^8.3.1
-    "@simplewebauthn/server": ^8.3.2
-    "@simplewebauthn/typescript-types": ^8.0.0
+    "@simplewebauthn/browser": ^8.3.3
+    "@simplewebauthn/server": ^8.3.3
+    "@simplewebauthn/typescript-types": ^8.3.3
   languageName: unknown
   linkType: soft
 
@@ -2451,7 +2451,7 @@ __metadata:
     "@rollup/plugin-typescript": 11.1.5
     "@types/jest": 29.5.6
     "@types/luxon": 3.3.3
-    "@types/node": 18.18.0
+    "@types/node": 18.18.7
     "@typescript-eslint/eslint-plugin": 6.9.0
     "@typescript-eslint/parser": 6.9.0
     barrelsby: 2.8.1
@@ -3532,18 +3532,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@simplewebauthn/browser@npm:8.3.1":
-  version: 8.3.1
-  resolution: "@simplewebauthn/browser@npm:8.3.1"
+"@simplewebauthn/browser@npm:8.3.3":
+  version: 8.3.3
+  resolution: "@simplewebauthn/browser@npm:8.3.3"
   dependencies:
-    "@simplewebauthn/typescript-types": ^8.0.0
-  checksum: 1c3ce9e23b2ec93ee102589ac8a548d417caf15acc17d60c87049a22faccaaf25b689ac8c878c7445096f6a06ff1359d84e3da95b01a5200c240af3d2ea378ca
+    "@simplewebauthn/typescript-types": ^8.3.3
+  checksum: 8b0c09249f5f8d9d84dd2e02f0e938cf6774342d9eb75159849650cc0a967ef1b65db38295d35f99f8c2d048c954ff8f5029ac342c5ea24a268ccb9b05079c86
   languageName: node
   linkType: hard
 
-"@simplewebauthn/server@npm:8.3.2":
-  version: 8.3.2
-  resolution: "@simplewebauthn/server@npm:8.3.2"
+"@simplewebauthn/server@npm:8.3.3":
+  version: 8.3.3
+  resolution: "@simplewebauthn/server@npm:8.3.3"
   dependencies:
     "@hexagon/base64": ^1.1.27
     "@peculiar/asn1-android": ^2.3.6
@@ -3551,17 +3551,17 @@ __metadata:
     "@peculiar/asn1-rsa": ^2.3.6
     "@peculiar/asn1-schema": ^2.3.6
     "@peculiar/asn1-x509": ^2.3.6
-    "@simplewebauthn/typescript-types": ^8.0.0
+    "@simplewebauthn/typescript-types": ^8.3.3
     cbor-x: ^1.5.2
     cross-fetch: ^4.0.0
-  checksum: fe01a90a85b356f9c66d6458f4b4214ed6ba091f5c2ccd5c3298e7f00b2012e3db70c22c0f16475381bdf1620304e10ac6225323d14d80388c90b178c711896e
+  checksum: cb80767877b008c6e495b6612e1e5188c0238e311874ede2d24ee521d5e2bf28440b341f59fc2bb29bbf24dc30f3e10fd61c0d8a5939953103847fadef3fbd31
   languageName: node
   linkType: hard
 
-"@simplewebauthn/typescript-types@npm:8.0.0, @simplewebauthn/typescript-types@npm:^8.0.0":
-  version: 8.0.0
-  resolution: "@simplewebauthn/typescript-types@npm:8.0.0"
-  checksum: 59b4ac9804170edbee50703428f5adcada70211117c8f458c805a4b6d4772b9ec678664dd3f00e400aee2e392c9da8e5a8c38448fb0c3d792aba535a3329bfe7
+"@simplewebauthn/typescript-types@npm:8.3.3, @simplewebauthn/typescript-types@npm:^8.3.3":
+  version: 8.3.3
+  resolution: "@simplewebauthn/typescript-types@npm:8.3.3"
+  checksum: 560df590a62b77e2aaeb236366ac4c9f6ece85526abd54e688aa47318ea5af42bb37f3335847155dd27b6786f1fa3465c5fba00715c227e29934c277e088662d
   languageName: node
   linkType: hard
 
@@ -4640,10 +4640,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:18.18.0":
-  version: 18.18.0
-  resolution: "@types/node@npm:18.18.0"
-  checksum: 61bcffa28eb713e7a4c66fd369df603369c3f834a783faeced95fe3e78903faa25f1a704d49e054f41d71b7915eeb066d10a37cc699421fcf5dd267f96ad5808
+"@types/node@npm:18.18.7":
+  version: 18.18.7
+  resolution: "@types/node@npm:18.18.7"
+  dependencies:
+    undici-types: ~5.26.4
+  checksum: 972f8b214f961b6c8d99f84aab8bfadc656bb71fc7ad4a543ad3405286c95f27385ee0c3844f88d612f3cf225cd4d49ce8a7d9aea05a2aba9b2524ac525040aa
   languageName: node
   linkType: hard
 
@@ -5322,9 +5324,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"aws-cdk-lib@npm:2.102.0":
-  version: 2.102.0
-  resolution: "aws-cdk-lib@npm:2.102.0"
+"aws-cdk-lib@npm:2.103.0":
+  version: 2.103.0
+  resolution: "aws-cdk-lib@npm:2.103.0"
   dependencies:
     "@aws-cdk/asset-awscli-v1": ^2.2.200
     "@aws-cdk/asset-kubectl-v20": ^2.1.2
@@ -5341,7 +5343,7 @@ __metadata:
     yaml: 1.10.2
   peerDependencies:
     constructs: ^10.0.0
-  checksum: 1666b1c9980ee8be76cf32a30d37ecd464ffba3a8edaf5ba7b71f58a96b084f91470dc65dca65415e13e7800d420756663824fe15e0fe3f43417621c772e20b2
+  checksum: fc3d9a4537339df92461014ba48073e73b2ec14ddafa10527845ce662297959e27b57a7f10a68613d761ac104af32b181133b78deaa174b625d424f7bf6def02
   languageName: node
   linkType: hard
 
@@ -13307,6 +13309,13 @@ __metadata:
     has-symbols: ^1.0.3
     which-boxed-primitive: ^1.0.2
   checksum: b7a1cf5862b5e4b5deb091672ffa579aa274f648410009c81cca63fed3b62b610c4f3b773f912ce545bb4e31edc3138975b5bc777fc6e4817dca51affb6380e9
+  languageName: node
+  linkType: hard
+
+"undici-types@npm:~5.26.4":
+  version: 5.26.5
+  resolution: "undici-types@npm:5.26.5"
+  checksum: 3192ef6f3fd5df652f2dc1cd782b49d6ff14dc98e5dced492aa8a8c65425227da5da6aafe22523c67f035a272c599bb89cfe803c1db6311e44bed3042fc25487
   languageName: node
   linkType: hard
 
