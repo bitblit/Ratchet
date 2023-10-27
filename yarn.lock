@@ -2349,7 +2349,7 @@ __metadata:
     constructs: 10.3.0
   peerDependencies:
     "@bitblit/ratchet-common": 0.0.0-snapshot
-    aws-cdk-lib: ^2.102.0
+    aws-cdk-lib: ^2.103.0
     constructs: ^10.3.0
   languageName: unknown
   linkType: soft
