@@ -52,7 +52,7 @@ export class ModelValidator {
           this.allModels[modelName],
           this.allModels,
           emptyAllowed,
-          extraPropertiesAllowed
+          extraPropertiesAllowed,
         );
 
         if (validation.errorCount > 0) {

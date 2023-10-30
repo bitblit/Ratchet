@@ -17,16 +17,7 @@ runs:
         cache: "yarn"
         node-version: "18"
         registry-url: 'https://registry.npmjs.org'
-
-    - name: Setup NPM token
-      shell: bash
-      run: >
-        echo "npmAuthToken: \"${{ inputs.NPM_AUTH_TOKEN }}\"" >> ~/.yarnrc.yml
-
-    - name: Check NPM token
-      shell: bash
-      run: cat  ~/.yarnrc.yml
-
+    
     - name: Setup Java
       uses: actions/setup-java@v3
       with:

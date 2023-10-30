@@ -11,10 +11,6 @@
     "downlevelIteration": true,
     "esModuleInterop": true,
     "incremental": false,
-    "lib": [
-      "es2022",
-      "dom"
-    ],
     "moduleResolution": "bundler",
     "noFallthroughCasesInSwitch": true,
     "preserveConstEnums": true,
@@ -30,15 +26,16 @@
     "forceConsistentCasingInFileNames": true,
     "paths": {
       "@bitblit/ratchet-*": ["modules/"]
-    }
+    },
+    "lib": ["esnext", "dom"]
   },
   "include": ["modules/"],
   "exclude": ["node_modules/", "src/**/*.spec.ts"],
-
   "typedocOptions": {
     "entryPointStrategy": "expand",
     "entryPoints": ["src"],
     "out": "artifacts/typedocs"
   },
+  "types": ["typePatches"],
   "CAW_NOTES": "Set noImplicitAny, noImplicitThis and noUnusedLocals back to true at some point"
 }

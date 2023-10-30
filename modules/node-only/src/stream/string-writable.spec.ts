@@ -1,6 +1,6 @@
 import { StringWritable } from './string-writable.js';
 
-describe('#StringWritable', function () {
+describe('#StringWritableStream', function () {
   it('should write cumulatively to a string', async () => {
     const sr: StringWritable = new StringWritable();
     const callback = () => {

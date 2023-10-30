@@ -13,7 +13,11 @@ export class TwilioRatchet {
   // CAW: Switch to api.ashburn to us just us-east-1 ?
   public static readonly TWILLIO_BASE_API_URL: string = 'https://api.twilio.com/2010-04-01';
 
-  constructor(private accountSid: string, private authToken: string, private outBoundNumber: string) {
+  constructor(
+    private accountSid: string,
+    private authToken: string,
+    private outBoundNumber: string,
+  ) {
     RequireRatchet.notNullOrUndefined(accountSid, 'accountSid');
     RequireRatchet.notNullOrUndefined(authToken, 'authToken');
     RequireRatchet.notNullOrUndefined(outBoundNumber, 'outBoundNumber');
@@ -26,7 +30,7 @@ export class TwilioRatchet {
     authToken: string,
     outBoundNumber: string,
     recipientPhoneNumbers: string[],
-    message: string
+    message: string,
   ): Promise<any[]> {
     const ratchet: TwilioRatchet = new TwilioRatchet(accountSid, authToken, outBoundNumber);
     const rval: any[] = await ratchet.sendMessage(recipientPhoneNumbers, message);

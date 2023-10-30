@@ -124,7 +124,7 @@ export class Ratchet2d {
       !!pt &&
       BooleanRatchet.allTrue(
         pt.map((p) => Ratchet2d.validPoint(p)),
-        false
+        false,
       )
     );
   }

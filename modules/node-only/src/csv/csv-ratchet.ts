@@ -31,7 +31,7 @@ export class CsvRatchet {
   public static async stringParse<T>(
     input: string,
     pf: ParseFunction<T>,
-    opts: ParseOptions = CsvRatchet.defaultParseOptions()
+    opts: ParseOptions = CsvRatchet.defaultParseOptions(),
   ): Promise<T[]> {
     return CsvRatchet.streamParse<T>(Readable.from(input), pf, opts);
   }
@@ -39,7 +39,7 @@ export class CsvRatchet {
   public static async streamParse<T>(
     readStream: Readable,
     pf: ParseFunction<T>,
-    opts: ParseOptions = CsvRatchet.defaultParseOptions()
+    opts: ParseOptions = CsvRatchet.defaultParseOptions(),
   ): Promise<T[]> {
     return new Promise((res, rej) => {
       const rval: T[] = [];
@@ -193,7 +193,7 @@ export class CsvRatchet {
         () => {
           Logger.debug('Finished');
           stringifier.end();
-        }
+        },
       );
     });
     return genProm;

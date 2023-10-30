@@ -106,7 +106,7 @@ export class S3LocationSyncRatchet {
         Logger.warn(
           `Can't ${express ? 'express' : 'slow'} copy
                   [${[this.config.srcBucket, key].join('/')} ---> ${[this.config.dstBucket, dstKey].join('/')}]: %j`,
-          err
+          err,
         );
         retries++;
       }
@@ -198,7 +198,7 @@ export class S3LocationSyncRatchet {
       },
       Object.keys(srcObjs),
       this,
-      this.config.maxNumThreads
+      this.config.maxNumThreads,
     );
     return rval;
   }

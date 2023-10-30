@@ -15,7 +15,7 @@ export class S3CacheToLocalDiskRatchet {
   constructor(
     private s3: S3CacheRatchetLike,
     private tmpFolder: string,
-    private cacheTimeoutSeconds: number = S3CacheToLocalDiskRatchet.DEFAULT_CACHE_TIMEOUT_SEC
+    private cacheTimeoutSeconds: number = S3CacheToLocalDiskRatchet.DEFAULT_CACHE_TIMEOUT_SEC,
   ) {
     RequireRatchet.notNullOrUndefined(s3, 's3');
     RequireRatchet.notNullOrUndefined(StringRatchet.trimToNull(tmpFolder));

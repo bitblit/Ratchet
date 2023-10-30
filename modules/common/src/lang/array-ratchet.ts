@@ -62,7 +62,7 @@ export class ArrayRatchet {
     input: T[],
     fieldDotPath: string,
     minInclusive: number,
-    maxExclusive: number
+    maxExclusive: number,
   ): T[] {
     if (!input || input.length === 0) {
       return input;

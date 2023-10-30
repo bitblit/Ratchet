@@ -44,7 +44,7 @@ export class DurationRatchet {
     endEpochMS: number,
     timezone: string,
     outputFormat: string,
-    stepUnit: DurationLike
+    stepUnit: DurationLike,
   ): string[] {
     let curDate: DateTime = DateTime.fromMillis(startEpochMS).setZone(timezone);
     const endDate: DateTime = DateTime.fromMillis(endEpochMS);

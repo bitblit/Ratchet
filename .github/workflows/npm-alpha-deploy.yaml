@@ -7,6 +7,9 @@ on:
 env:
   NODE_OPTIONS: --max_old_space_size=8192
 
+env:
+  NODE_OPTIONS: --max_old_space_size=8192
+
 jobs:
   build-and-deploy-alpha-library:
     runs-on: ubuntu-latest
@@ -36,6 +39,11 @@ jobs:
         run: |
           yarn test
         shell: bash
+
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v3
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
       - name: Apply Github Info
         run: yarn apply-github-info

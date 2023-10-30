@@ -25,7 +25,7 @@ export class JwtRatchet implements JwtRatchetLike {
     private _decryptKeysPromise?: Promise<string[]>,
     private _jtiGenerator: () => string = StringRatchet.createType4Guid,
     private _decryptOnlyKeyUseLogLevel: LoggerLevelName = LoggerLevelName.info,
-    private _parseFailureLogLevel: LoggerLevelName = LoggerLevelName.debug
+    private _parseFailureLogLevel: LoggerLevelName = LoggerLevelName.debug,
   ) {
     RequireRatchet.notNullOrUndefined(_encryptionKeyPromise, 'encryptionKeyPromise');
   }
@@ -57,7 +57,7 @@ export class JwtRatchet implements JwtRatchetLike {
   public static async invalidSafeDecode<T>(
     payloadString: string,
     decryptKey: string,
-    logLevel: LoggerLevelName = LoggerLevelName.silly
+    logLevel: LoggerLevelName = LoggerLevelName.silly,
   ): Promise<T> {
     let rval: T = null;
     try {
@@ -93,7 +93,7 @@ export class JwtRatchet implements JwtRatchetLike {
 
   public async decodeToken<T extends JwtTokenBase>(
     payloadString: string,
-    expiredHandling: ExpiredJwtHandling = ExpiredJwtHandling.RETURN_NULL
+    expiredHandling: ExpiredJwtHandling = ExpiredJwtHandling.RETURN_NULL,
   ): Promise<T> {
     const encKeys: string[] = await this.encryptionKeyArray();
     let decKeys: string[] = Object.assign([], encKeys);

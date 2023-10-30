@@ -106,7 +106,7 @@ export class BuiltInTransforms {
   public static concatenateToNewField(
     newFieldName: string,
     oldFieldNamesInOrder: string[],
-    abortIfFieldMissing: boolean = true
+    abortIfFieldMissing: boolean = true,
   ): TransformRule {
     return {
       transform(value: any, isKey: boolean, context: any): any {

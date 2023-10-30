@@ -17,7 +17,7 @@ export class TransactionRatchet {
   public static async execute<T>(
     steps: TransactionStep<T>[],
     initialContext: T,
-    inConfiguration?: TransactionConfiguration<T>
+    inConfiguration?: TransactionConfiguration<T>,
   ): Promise<TransactionResult<T>> {
     RequireRatchet.notNullOrUndefined(steps, 'steps');
     RequireRatchet.notNullOrUndefined(initialContext, 'initialContext');

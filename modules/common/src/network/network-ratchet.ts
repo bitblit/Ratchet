@@ -47,7 +47,7 @@ export class NetworkRatchet {
                 function (e) {
                   Logger.warn('Offer failed : %s', e);
                   resolve(NetworkRatchet.updateLocalIP('FIND_UNSUPPORTED'));
-                }
+                },
               );
             } else {
               Logger.warn('IP Address find not supported on this device');

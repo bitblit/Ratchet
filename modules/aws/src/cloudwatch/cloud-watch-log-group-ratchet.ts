@@ -12,7 +12,10 @@ import {
 import { Logger, StopWatch } from '@bitblit/ratchet-common';
 
 export class CloudWatchLogGroupRatchet {
-  constructor(private logGroup: string, private awsCWLogs: CloudWatchLogsClient = new CloudWatchLogsClient({ region: 'us-east-1' })) {}
+  constructor(
+    private logGroup: string,
+    private awsCWLogs: CloudWatchLogsClient = new CloudWatchLogsClient({ region: 'us-east-1' }),
+  ) {}
 
   public get cloudWatchLogsClient(): CloudWatchLogsClient {
     return this.awsCWLogs;
@@ -58,7 +61,7 @@ export class CloudWatchLogGroupRatchet {
     startTimestamp: number = null,
     endTimestamp: number = null,
     sortEvents = true,
-    maxEvents: number = null
+    maxEvents: number = null,
   ): Promise<FilteredLogEvent[]> {
     const sw: StopWatch = new StopWatch();
     const params: FilterLogEventsCommandInput = {

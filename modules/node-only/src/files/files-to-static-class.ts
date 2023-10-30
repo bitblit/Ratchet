@@ -70,7 +70,7 @@ export class FilesToStaticClass {
         'Running FilesToStaticClass from command line arguments Target: %s TargetClass: %s InFiles: %j',
         outFileName,
         outClassName,
-        files
+        files,
       );
 
       return FilesToStaticClass.process(files, outClassName, outFileName);

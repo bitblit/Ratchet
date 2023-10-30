@@ -9,7 +9,10 @@ import { SimpleCacheReadOptions } from './simple-cache-read-options.js';
 
 export class SimpleCache {
   // Default 1 minute expiration
-  constructor(private provider: SimpleCacheStorageProvider, private defaultTimeToLiveMS: number = 1_000 * 60) {}
+  constructor(
+    private provider: SimpleCacheStorageProvider,
+    private defaultTimeToLiveMS: number = 1_000 * 60,
+  ) {}
 
   public createDefaultReadOptions(): SimpleCacheReadOptions {
     return {
@@ -22,7 +25,7 @@ export class SimpleCache {
   public async fetchWrapper<T>(
     cacheKey: string,
     producer: () => Promise<T>,
-    opts: SimpleCacheReadOptions = this.createDefaultReadOptions()
+    opts: SimpleCacheReadOptions = this.createDefaultReadOptions(),
   ): Promise<SimpleCacheObjectWrapper<T>> {
     Logger.silly('Fetching %s', cacheKey);
     const now: number = new Date().getTime();
