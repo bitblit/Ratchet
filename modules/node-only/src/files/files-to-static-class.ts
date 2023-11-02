@@ -78,7 +78,7 @@ export class FilesToStaticClass {
    TODO: should use switches to allow setting the various non-filename params
    **/
   public static async runFromCliArgs(args: string[]): Promise<string> {
-    if (args.length < 4) {
+    if (args.length < 3) {
       Logger.infoP('Usage: ratchet-files-to-static-class {outFileName} {outClassName} {file0} ... {fileN}');
       return null;
     } else {
