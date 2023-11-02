@@ -16,7 +16,6 @@ export class StringRecordQueryProvider implements GraphqlRatchetQueryProvider {
         Object.keys(inFiles).forEach((k) => {
           this.files[k.toLowerCase()] = inFiles[k];
         });
-        this.files = {};
       }
     }
   }
