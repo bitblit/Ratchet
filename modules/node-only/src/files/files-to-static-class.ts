@@ -38,7 +38,7 @@ export class FilesToStaticClass {
     for (let i = 0; i < fileNames.length; i++) {
       // Remove both forward and back slashes...
       let trimmed: string = fileNames[i].substring(fileNames[i].lastIndexOf('/') + 1);
-      trimmed = fileNames[i].substring(fileNames[i].lastIndexOf('\\') + 1);
+      trimmed = trimmed.substring(trimmed.lastIndexOf('\\') + 1);
       const contents: string = fs.readFileSync(fileNames[i]).toString();
       rval += i > 0 ? ',' : '';
       rval += '"' + trimmed + '":' + JSON.stringify(contents) + '\n';
