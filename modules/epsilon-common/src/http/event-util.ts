@@ -89,8 +89,8 @@ export class EventUtil {
       const contentType = MapRatchet.extractValueFromMapIgnoreCase(event.headers, 'Content-Type') || 'application/octet-stream';
       rval = event.body;
 
-      if (event.isBase64Encoded) {
-        rval = Buffer.from(rval, 'base64');
+      if (evt.isBase64Encoded) {
+        rval = Base64Ratchet.base64StringToString(rval); //Buffer.from(rval, 'base64');
       }
       if (contentType.startsWith('application/json')) {
         // to handle cases where the charset is specified
