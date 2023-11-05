@@ -13,7 +13,7 @@ export class WardenTwilioVerifySingleUseCodeProvider implements WardenSingleUseC
   private async twilioVerifyRatchet(): Promise<TwilioVerifyRatchet> {
     if (!this._cacheTwilioVerifyRatchet) {
       const opts: WardenTwilioVerifySingleUseCodeProviderOptions = await this.optsPromise;
-      this._cacheTwilioVerifyRatchet = new TwilioVerifyRatchet(opts.accountSID, opts.authToken, opts.serviceSid);
+      this._cacheTwilioVerifyRatchet = new TwilioVerifyRatchet(opts.accountSID, opts.authToken, opts.verifyServiceSID);
     }
     return this._cacheTwilioVerifyRatchet;
   }
