@@ -277,14 +277,14 @@ export class WardenService {
     metaIn?: Record<string, string>,
     ttlSeconds?: number,
   ): Promise<boolean> {
-    const rval: boolean = false;
+    let rval: boolean = false;
     RequireRatchet.notNullOrUndefined(contact, 'contact');
     RequireRatchet.notNullUndefinedOrOnlyWhitespaceString(landingUrl, 'landingUrl');
     RequireRatchet.true(this.urlIsOnAllowedOrigin(landingUrl), 'landingUrl is not on an allowed origin for redirect');
 
     if (contact?.type && StringRatchet.trimToNull(contact?.value)) {
       const prov: WardenSingleUseCodeProvider = this.singleUseCodeProvider(contact, true);
-      await prov.createCodeAndSendMagicLink(contact, relyingPartyName, landingUrl, metaIn, ttlSeconds);
+      rval = await prov.createCodeAndSendMagicLink(contact, relyingPartyName, landingUrl, metaIn, ttlSeconds);
     } else {
       ErrorRatchet.throwFormattedErr('Cannot send - invalid contact %j', contact);
     }
@@ -523,10 +523,10 @@ export class WardenService {
 
   // Send a single use token to this contact
   public async sendExpiringValidationToken(request: WardenContact): Promise<boolean> {
-    const rval: boolean = false;
+    let rval: boolean = false;
     if (request?.type && StringRatchet.trimToNull(request?.value)) {
       const prov: WardenSingleUseCodeProvider = this.singleUseCodeProvider(request, false);
-      await prov.createAndSendNewCode(request, this.opts.relyingPartyName);
+      rval = await prov.createAndSendNewCode(request, this.opts.relyingPartyName);
     } else {
       ErrorRatchet.throwFormattedErr('Cannot send - invalid request %j', request);
     }
