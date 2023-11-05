@@ -1,6 +1,6 @@
 //    Service for interacting with positions for a given user
 
-export interface WardenMailerMessageSendingProviderOptions {
+export interface WardenMailerAndExpiringCodeRatchetSingleUseCodeProviderOptions {
   emailBaseLayoutName?: string;
   expiringTokenHtmlTemplateName: string;
   expiringTokenTxtTemplateName: string;

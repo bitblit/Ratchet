@@ -17,53 +17,42 @@ import {
   RegistrationResponseJSON,
 } from '@simplewebauthn/typescript-types';
 import { WardenServiceOptions } from './warden-service-options.js';
-import { WardenEntry } from '@bitblit/ratchet-warden-common';
-import { WardenStoreRegistrationResponse } from '@bitblit/ratchet-warden-common';
-import { WardenUserDecoration } from '@bitblit/ratchet-warden-common';
-import { WardenUtils } from '@bitblit/ratchet-warden-common';
-import { WardenJwtToken } from '@bitblit/ratchet-warden-common';
+import {
+  WardenCommand,
+  WardenCommandResponse,
+  WardenContact,
+  WardenEntry,
+  WardenJwtToken,
+  WardenLoginRequest,
+  WardenLoginResults,
+  WardenStoreRegistrationResponse,
+  WardenStoreRegistrationResponseType,
+  WardenUserDecoration,
+  WardenUtils,
+  WardenWebAuthnEntry,
+} from '@bitblit/ratchet-warden-common';
 
-import { WardenMessageSendingProvider } from './provider/warden-message-sending-provider.js';
-import { ExpiringCode } from '@bitblit/ratchet-aws';
-import { ExpiringCodeRatchet } from '@bitblit/ratchet-aws';
-
-import { Logger } from '@bitblit/ratchet-common';
-import { StringRatchet } from '@bitblit/ratchet-common';
-import { ErrorRatchet } from '@bitblit/ratchet-common';
-import { RequireRatchet } from '@bitblit/ratchet-common';
-import { ExpiredJwtHandling } from '@bitblit/ratchet-common';
-import { Base64Ratchet } from '@bitblit/ratchet-common';
+import { Base64Ratchet, ErrorRatchet, ExpiredJwtHandling, Logger, RequireRatchet, StringRatchet } from '@bitblit/ratchet-common';
 
 import { WardenDefaultUserDecorationProvider } from './provider/warden-default-user-decoration-provider.js';
 import { WardenNoOpEventProcessingProvider } from './provider/warden-no-op-event-processing-provider.js';
-import { WardenContact } from '@bitblit/ratchet-warden-common';
-import { WardenCommand } from '@bitblit/ratchet-warden-common';
-import { WardenCommandResponse } from '@bitblit/ratchet-warden-common';
-import { WardenLoginRequest } from '@bitblit/ratchet-warden-common';
-import { WardenLoginResults } from '@bitblit/ratchet-warden-common';
-import { WardenStoreRegistrationResponseType } from '@bitblit/ratchet-warden-common';
-import { WardenWebAuthnEntry } from '@bitblit/ratchet-warden-common';
-import { WardenCustomerMessageType } from '@bitblit/ratchet-warden-common';
+import { WardenSingleUseCodeProvider } from './provider/warden-single-use-code-provider';
 
 export class WardenService {
   private opts: WardenServiceOptions;
-  private expiringCodeRatchet: ExpiringCodeRatchet;
 
   constructor(private inOptions: WardenServiceOptions) {
     RequireRatchet.notNullOrUndefined(inOptions, 'options');
     RequireRatchet.notNullOrUndefined(inOptions.relyingPartyName, 'options.relyingPartyName');
     RequireRatchet.notNullUndefinedOrEmptyArray(inOptions.allowedOrigins, 'options.allowedOrigins');
     RequireRatchet.notNullOrUndefined(inOptions.storageProvider, 'options.storageProvider');
-    RequireRatchet.notNullUndefinedOrEmptyArray(inOptions.messageSendingProviders, 'options.messageSendingProviders');
-    RequireRatchet.notNullOrUndefined(inOptions.expiringCodeProvider, 'options.expiringCodeProvider');
     RequireRatchet.notNullOrUndefined(inOptions.jwtRatchet, 'options.jwtRatchet');
+    RequireRatchet.notNullUndefinedOrEmptyArray(inOptions.singleUseCodeProviders, 'options.singleUseCodeProviders');
 
     this.opts = Object.assign(
       { userTokenDataProvider: new WardenDefaultUserDecorationProvider(), eventProcessor: new WardenNoOpEventProcessingProvider() },
       inOptions,
     );
-
-    this.expiringCodeRatchet = new ExpiringCodeRatchet(this.opts.expiringCodeProvider);
   }
 
   public get options(): WardenServiceOptions {
@@ -142,6 +131,7 @@ export class WardenService {
         rval = {
           sendMagicLink: await this.sendMagicLink(
             contact,
+            this.opts.relyingPartyName,
             cmd.sendMagicLink.landingUrl,
             cmd.sendMagicLink.meta,
             cmd.sendMagicLink.ttlSeconds,
@@ -266,46 +256,35 @@ export class WardenService {
     return rval;
   }
 
+  public singleUseCodeProvider(
+    contact: WardenContact,
+    requireMagicLinkSupport: boolean,
+    returnNullIfNoProviders?: boolean,
+  ): WardenSingleUseCodeProvider {
+    const rval: WardenSingleUseCodeProvider = this.opts.singleUseCodeProviders.find(
+      (s) => s.handlesContactType(contact.type) && (!requireMagicLinkSupport || s.createCodeAndSendMagicLink),
+    );
+    if (!rval && !returnNullIfNoProviders) {
+      throw ErrorRatchet.fErr('Cannot find a single use code provider for contact type : %s', contact.type);
+    }
+    return rval;
+  }
+
   public async sendMagicLink(
     contact: WardenContact,
+    relyingPartyName: string,
     landingUrl: string,
     metaIn?: Record<string, string>,
-    ttlSeconds: number = 300,
+    ttlSeconds?: number,
   ): Promise<boolean> {
-    let rval: boolean = false;
+    const rval: boolean = false;
     RequireRatchet.notNullOrUndefined(contact, 'contact');
     RequireRatchet.notNullUndefinedOrOnlyWhitespaceString(landingUrl, 'landingUrl');
     RequireRatchet.true(this.urlIsOnAllowedOrigin(landingUrl), 'landingUrl is not on an allowed origin for redirect');
 
     if (contact?.type && StringRatchet.trimToNull(contact?.value)) {
-      const prov: WardenMessageSendingProvider<any> = this.senderForContact(contact);
-      if (prov) {
-        const token: ExpiringCode = await this.expiringCodeRatchet.createNewCode({
-          context: contact.value,
-          length: 36,
-          alphabet: StringRatchet.UPPER_CASE_LATIN,
-          timeToLiveSeconds: ttlSeconds,
-          tags: ['MagicLink'],
-        });
-
-        const meta: Record<string, any> = Object.assign({}, metaIn || {}, { contact: contact });
-        const encodedMeta: string = Base64Ratchet.safeObjectToBase64JSON(meta || {});
-
-        let landingUrlFilled: string = landingUrl;
-        landingUrlFilled = landingUrlFilled.split('{CODE}').join(token.code);
-        landingUrlFilled = landingUrlFilled.split('{META}').join(encodedMeta);
-
-        const context: Record<string, string> = Object.assign({}, meta || {}, {
-          landingUrl: landingUrlFilled,
-          code: token.code,
-          relyingPartyName: this.opts.relyingPartyName,
-        });
-
-        const msg: any = await prov.formatMessage(contact, WardenCustomerMessageType.MagicLink, context);
-        rval = await prov.sendMessage(contact, msg);
-      } else {
-        ErrorRatchet.throwFormattedErr('No provider found for contact type %s', contact.type);
-      }
+      const prov: WardenSingleUseCodeProvider = this.singleUseCodeProvider(contact, true);
+      await prov.createCodeAndSendMagicLink(contact, relyingPartyName, landingUrl, metaIn, ttlSeconds);
     } else {
       ErrorRatchet.throwFormattedErr('Cannot send - invalid contact %j', contact);
     }
@@ -321,10 +300,6 @@ export class WardenService {
         ErrorRatchet.throwFormattedErr('Cannot create - account already exists for %j', contact);
       }
 
-      const prov: WardenMessageSendingProvider<any> = this.senderForContact(contact);
-      if (!prov) {
-        ErrorRatchet.throwFormattedErr('Cannot create - no sending provider for type %s', contact.type);
-      }
       const guid: string = StringRatchet.createType4Guid();
       const now: number = Date.now();
       const newUser: WardenEntry = {
@@ -546,36 +521,12 @@ export class WardenService {
     return options;
   }
 
-  // For a given contact type, find the sender that can be used to send messages to it
-  public senderForContact(contact: WardenContact): WardenMessageSendingProvider<any> {
-    let rval: WardenMessageSendingProvider<any> = null;
-    if (contact?.type) {
-      rval = (this.opts.messageSendingProviders || []).find((p) => p.handlesContactType(contact.type));
-    }
-    return rval;
-  }
-
   // Send a single use token to this contact
   public async sendExpiringValidationToken(request: WardenContact): Promise<boolean> {
-    let rval: boolean = false;
+    const rval: boolean = false;
     if (request?.type && StringRatchet.trimToNull(request?.value)) {
-      const prov: WardenMessageSendingProvider<any> = this.senderForContact(request);
-      if (prov) {
-        const token: ExpiringCode = await this.expiringCodeRatchet.createNewCode({
-          context: request.value,
-          length: 6,
-          alphabet: '0123456789',
-          timeToLiveSeconds: 300,
-          tags: ['Login'],
-        });
-        const msg: any = await prov.formatMessage(request, WardenCustomerMessageType.ExpiringCode, {
-          code: token.code,
-          relyingPartyName: this.opts.relyingPartyName,
-        });
-        rval = await prov.sendMessage(request, msg);
-      } else {
-        ErrorRatchet.throwFormattedErr('No provider found for contact type %s', request.type);
-      }
+      const prov: WardenSingleUseCodeProvider = this.singleUseCodeProvider(request, false);
+      await prov.createAndSendNewCode(request, this.opts.relyingPartyName);
     } else {
       ErrorRatchet.throwFormattedErr('Cannot send - invalid request %j', request);
     }
@@ -611,11 +562,8 @@ export class WardenService {
     if (request.webAuthn) {
       rval = await this.loginWithWebAuthnRequest(user, origin, request.webAuthn);
     } else if (StringRatchet.trimToNull(request.expiringToken)) {
-      const lookup: boolean = await this.expiringCodeRatchet.checkCode(
-        StringRatchet.trimToEmpty(request.expiringToken),
-        StringRatchet.trimToEmpty(request.contact.value),
-        true,
-      );
+      const prov: WardenSingleUseCodeProvider = this.singleUseCodeProvider(request.contact, false);
+      const lookup: boolean = await prov.checkCode(request.contact.value, request.expiringToken);
       if (lookup) {
         rval = true;
       } else {

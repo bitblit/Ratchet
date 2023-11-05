@@ -68,6 +68,7 @@ export * from './network/restful-api-http-error.js';
 export * from './template/ratchet-template-renderer.js';
 export * from './third-party/google/google-recaptcha-ratchet.js';
 export * from './third-party/twilio/twilio-ratchet.js';
+export * from './third-party/twilio/twilio-verify-ratchet.js';
 export * from './transform/built-in-transforms.js';
 export * from './transform/transform-ratchet.js';
 export * from './transform/transform-rule.js';

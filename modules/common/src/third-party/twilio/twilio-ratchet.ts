@@ -47,9 +47,6 @@ export class TwilioRatchet {
     RequireRatchet.notNullOrUndefined(recipientPhoneNumbers, 'recipientPhoneNumbers');
     RequireRatchet.notNullOrUndefined(StringRatchet.trimToNull(message), 'message');
     RequireRatchet.true(recipientPhoneNumbers.length > 0, 'recipientPhoneNumbers non-empty');
-    recipientPhoneNumbers.forEach((p) => {
-      RequireRatchet.true(TwilioRatchet.isValidE164Number(p), p + ' is not valid');
-    });
 
     if (!!recipientPhoneNumbers && recipientPhoneNumbers.length > 0 && !!StringRatchet.trimToNull(message)) {
       Logger.info('Sending %s to %j', message, recipientPhoneNumbers);
