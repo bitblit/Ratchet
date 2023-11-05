@@ -82,12 +82,12 @@ export class EventUtil {
     const prefix: string = event.requestContext.path.substring(0, event.requestContext.path.indexOf('/', 1));
     return protocol + '://' + event.requestContext['domainName'] + prefix;
   }
-
-  public static jsonBodyToObject(event: APIGatewayEvent): any {
+  vt;
+  public static jsonBodyToObject(evt: APIGatewayEvent): any {
     let rval: any = null;
-    if (event.body) {
-      const contentType = MapRatchet.extractValueFromMapIgnoreCase(event.headers, 'Content-Type') || 'application/octet-stream';
-      rval = event.body;
+    if (evt.body) {
+      const contentType = MapRatchet.extractValueFromMapIgnoreCase(evt.headers, 'Content-Type') || 'application/octet-stream';
+      rval = evt.body;
 
       if (evt.isBase64Encoded) {
         rval = Base64Ratchet.base64StringToString(rval); //Buffer.from(rval, 'base64');
