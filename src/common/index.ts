@@ -36,6 +36,7 @@ export * from './time-zone-ratchet';
 export * from './timeout-token';
 export * from './transform-ratchet';
 export * from './twilio-ratchet';
+export * from './twilio-verify-ratchet';
 export * from './uint-8-array-ratchet';
 export * from './web-stream-ratchet';
 export * from './2d/line-2d';

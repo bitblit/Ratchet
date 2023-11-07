@@ -4,21 +4,27 @@
     content to be passed through webpack safely
  */
 
-import fs from 'fs';
+import fs, { Stats } from 'fs';
 import { Logger } from '../../common/logger';
 import { CliRatchet } from '../cli/cli-ratchet';
+import { RequireRatchet } from '../../common';
+import path from 'path';
 
 export class FilesToStaticClass {
-  public static async process(fileNames: string[], outClassName: string, outFileName: string = null): Promise<string> {
-    if (!fileNames) {
+  public static async process(inFileNames: string[], outClassName: string, outFileName: string = null): Promise<string> {
+    if (!inFileNames) {
       throw new Error('fileNames must be defined');
     }
     if (!outClassName) {
       throw new Error('outClassName must be defined');
     }
-    if (fileNames.length === 0) {
+    if (inFileNames.length === 0) {
       Logger.warn('Warning - no files supplied to process');
     }
+
+    // Preprocess to remove non-existent files and convert folders to files
+    const fileNames: string[] = [];
+    inFileNames.forEach((f) => FilesToStaticClass.processFilename(f, fileNames));
 
     Logger.info('Generating class %s from files %j (output file: %s)', outClassName, fileNames, outFileName);
 
@@ -29,16 +35,14 @@ export class FilesToStaticClass {
     rval += 'export class ' + outClassName + ' { \n';
     rval += '  public static readonly VALUES:Record<string, string> = { \n';
 
+    // If we reached here we can assume all the files exist and are files
     for (let i = 0; i < fileNames.length; i++) {
-      let contents = 'NOT-FOUND';
-      if (fs.existsSync(fileNames[i])) {
-        const trimmed: string = fileNames[i].substring(fileNames[i].lastIndexOf('/') + 1);
-        contents = fs.readFileSync(fileNames[i]).toString();
-        rval += i > 0 ? ',' : '';
-        rval += '"' + trimmed + '":' + JSON.stringify(contents) + '\n';
-      } else {
-        Logger.warn('Could not find file %s', fileNames[i]);
-      }
+      // Remove both forward and back slashes...
+      let trimmed: string = fileNames[i].substring(fileNames[i].lastIndexOf('/') + 1);
+      trimmed = trimmed.substring(trimmed.lastIndexOf('\\') + 1);
+      const contents: string = fs.readFileSync(fileNames[i]).toString();
+      rval += i > 0 ? ',' : '';
+      rval += '"' + trimmed + '":' + JSON.stringify(contents) + '\n';
     }
 
     rval += '}; \n';
@@ -52,12 +56,30 @@ export class FilesToStaticClass {
     return rval;
   }
 
+  private static processFilename(fileName: string, targetArrayInPlace: string[]): void {
+    RequireRatchet.notNullOrUndefined(targetArrayInPlace, 'targetArrayInPlace');
+    if (fs.existsSync(fileName)) {
+      const stats: Stats = fs.statSync(fileName);
+      if (stats.isDirectory()) {
+        const contFiles: string[] = fs.readdirSync(fileName);
+        Logger.info('Found %d files in %s to process', contFiles.length, fileName);
+        contFiles.forEach((f) => FilesToStaticClass.processFilename(path.join(fileName, f), targetArrayInPlace));
+      } else if (stats.isFile()) {
+        targetArrayInPlace.push(fileName);
+      } else {
+        Logger.error('Skipping - neither file nor directory : %s', fileName);
+      }
+    } else {
+      Logger.warn('Could not find file %s', fileName);
+    }
+  }
+
   /**
    And, in case you are running this command line...
    TODO: should use switches to allow setting the various non-filename params
    **/
   public static async runFromCliArgs(args: string[]): Promise<string> {
-    if (args.length < 4) {
+    if (args.length < 3) {
       Logger.infoP('Usage: ratchet-files-to-static-class {outFileName} {outClassName} {file0} ... {fileN}');
       return null;
     } else {
