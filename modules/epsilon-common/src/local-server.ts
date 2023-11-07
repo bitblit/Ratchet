@@ -15,7 +15,6 @@ import { LocalWebTokenManipulator } from './http/auth/local-web-token-manipulato
  */
 export class LocalServer {
   private server: Server;
-  private aborted: boolean = false;
 
   constructor(
     private globalHandler: EpsilonGlobalHandler,
@@ -45,7 +44,7 @@ export class LocalServer {
         // Also listen for SIGINT
         process.on('SIGINT', () => {
           Logger.info('Caught SIGINT - shutting down test server...');
-          this.aborted = true;
+          this.server.close();
           res(true);
         });
       } catch (err) {
@@ -66,7 +65,7 @@ export class LocalServer {
     const logEventLevel: LoggerLevelName = EventUtil.eventIsAGraphQLIntrospection(evt) ? LoggerLevelName.silly : LoggerLevelName.info;
 
     if (evt.path == '/epsilon-poison-pill') {
-      this.aborted = true;
+      this.server.close();
       return true;
     } else {
       const result: ProxyResult = await this.globalHandler.lambdaHandler(evt, context);
