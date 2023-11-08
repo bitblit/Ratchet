@@ -98,7 +98,7 @@ export class S3LocationSyncRatchet {
           });
 
           upload.on('httpUploadProgress', (progress) => {
-            Logger.info('Uploading : %s', progress);
+            Logger.debug('Uploading : %s', progress);
           });
           await upload.done();
         }

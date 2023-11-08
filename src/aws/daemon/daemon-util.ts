@@ -129,7 +129,7 @@ export class DaemonUtil {
     });
 
     upload.on('httpUploadProgress', (progress) => {
-      Logger.info('Uploading : %s', progress);
+      Logger.debug('Uploading : %s', progress);
     });
     const written: CompleteMultipartUploadCommandOutput = await upload.done();
 
