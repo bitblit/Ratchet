@@ -128,13 +128,15 @@ export class WardenService {
         if (!contact) {
           throw ErrorRatchet.fErr('Could not find contract entry either directly or by lookup');
         }
+        const ttlSeconds: number = cmd?.sendMagicLink?.ttlSeconds || 300;
+
         rval = {
           sendMagicLink: await this.sendMagicLink(
             contact,
             this.opts.relyingPartyName,
             cmd.sendMagicLink.landingUrl,
             cmd.sendMagicLink.meta,
-            cmd.sendMagicLink.ttlSeconds,
+            ttlSeconds,
           ),
         };
       } else if (cmd.generateWebAuthnRegistrationChallengeForLoggedInUser) {

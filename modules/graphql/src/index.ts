@@ -10,3 +10,4 @@ export * from './graphql/provider/graphql-ratchet-error-handler.js';
 export * from './graphql/provider/graphql-ratchet-jwt-token-provider.js';
 export * from './graphql/provider/graphql-ratchet-query-provider.js';
 export * from './graphql/provider/local-fetch-query-provider.js';
+export * from './graphql/provider/string-record-query-provider.js';

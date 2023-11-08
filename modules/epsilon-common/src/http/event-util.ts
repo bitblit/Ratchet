@@ -82,7 +82,7 @@ export class EventUtil {
     const prefix: string = event.requestContext.path.substring(0, event.requestContext.path.indexOf('/', 1));
     return protocol + '://' + event.requestContext['domainName'] + prefix;
   }
-  vt;
+
   public static jsonBodyToObject(evt: APIGatewayEvent): any {
     let rval: any = null;
     if (evt.body) {
