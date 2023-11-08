@@ -81,6 +81,8 @@ export class WardenMailerAndExpiringCodeRatchetSingleUseCodeProvider implements 
       relyingPartyName: relyingPartyName,
     });
 
+    Logger.info('Sending magic link, inputs are : %j', context);
+
     const msg: any = await this.formatMessage(contact, WardenCustomerMessageType.MagicLink, context);
     rval = await this.sendMessage(msg);
     return rval;
