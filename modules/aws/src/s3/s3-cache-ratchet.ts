@@ -25,7 +25,7 @@ import {
 import { Logger, RequireRatchet, StopWatch, WebStreamRatchet, StringRatchet } from '@bitblit/ratchet-common';
 
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
-import { Upload } from '@aws-sdk/lib-storage';
+import { Upload, Progress } from '@aws-sdk/lib-storage';
 import { Readable } from 'stream';
 import { S3CacheRatchetLike } from './s3-cache-ratchet-like.js';
 import { ExpandedFileChildren } from './expanded-file-children.js';
@@ -171,6 +171,9 @@ export class S3CacheRatchet implements S3CacheRatchetLike {
     data: ReadableStream | Readable,
     template?: PutObjectCommandInput,
     bucket?: string,
+    progressFn: (progress: Progress) => void = (progress) => {
+      Logger.debug('Uploading : %s', progress);
+    },
   ): Promise<CompleteMultipartUploadCommandOutput> {
     const params: PutObjectCommandInput = Object.assign({}, template || {}, {
       Bucket: this.bucketVal(bucket),
@@ -187,9 +190,9 @@ export class S3CacheRatchet implements S3CacheRatchetLike {
       leavePartsOnError: false,
     });
 
-    upload.on('httpUploadProgress', (progress) => {
-      Logger.info('Uploading : %s', progress);
-    });
+    if (progressFn) {
+      upload.on('httpUploadProgress', progressFn);
+    }
     const result: CompleteMultipartUploadCommandOutput = await upload.done();
 
     return result;

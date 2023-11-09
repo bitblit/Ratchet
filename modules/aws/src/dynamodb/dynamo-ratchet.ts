@@ -382,7 +382,7 @@ export class DynamoRatchet implements DynamoRatchetLike {
           !!batchResults.UnprocessedItems[tableName] &&
           batchResults.UnprocessedItems[tableName].length > 0
         ) {
-          Logger.error('After 6 tries there were still %d unprocessed items');
+          Logger.error('After 6 tries there were still %d unprocessed items', batchResults.UnprocessedItems[tableName].length);
           rval += curBatch.length - batchResults.UnprocessedItems[tableName].length;
           Logger.warn('FIX Unprocessed : %j', batchResults.UnprocessedItems);
         } else {
@@ -526,7 +526,7 @@ export class DynamoRatchet implements DynamoRatchetLike {
           !!batchResults.UnprocessedItems[tableName] &&
           batchResults.UnprocessedItems[tableName].length > 0
         ) {
-          Logger.error('After 6 tries there were still %d unprocessed items');
+          Logger.error('After 6 tries there were still %d unprocessed items', batchResults.UnprocessedItems[tableName].length);
           rval += curBatch.length - batchResults.UnprocessedItems[tableName].length;
           Logger.warn('FIX Unprocessed : %j', batchResults.UnprocessedItems);
         } else {
