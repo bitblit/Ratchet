@@ -128,9 +128,9 @@ export class DaemonUtil {
       leavePartsOnError: false,
     });
 
-    upload.on('httpUploadProgress', (progress) => {
-      Logger.debug('Uploading : %s', progress);
-    });
+    if (options?.progressFn) {
+      upload.on('httpUploadProgress', options.progressFn);
+    }
     const written: CompleteMultipartUploadCommandOutput = await upload.done();
 
     Logger.silly('Daemon wrote : %s', written);
