@@ -188,7 +188,7 @@ export class S3CacheRatchet implements S3CacheRatchetLike {
     });
 
     upload.on('httpUploadProgress', (progress) => {
-      Logger.info('Uploading : %s', progress);
+      Logger.debug('Uploading : %s', progress);
     });
     const result: CompleteMultipartUploadCommandOutput = await upload.done();
 

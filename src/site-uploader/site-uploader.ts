@@ -117,7 +117,7 @@ export class SiteUploader {
           });
 
           upload.on('httpUploadProgress', (progress) => {
-            Logger.info('Uploading : %s', progress);
+            Logger.debug('Uploading : %s', progress);
           });
           upload
             .done()
