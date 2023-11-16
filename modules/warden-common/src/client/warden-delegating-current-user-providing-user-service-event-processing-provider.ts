@@ -18,7 +18,7 @@ export class WardenDelegatingCurrentUserProvidingUserServiceEventProcessingProvi
 {
   private _currentUserSubject: BehaviorSubject<WardenLoggedInUserWrapper<T>> = new BehaviorSubject<WardenLoggedInUserWrapper<T>>(null);
 
-  constructor(private wrapped?: WardenUserServiceEventProcessingProvider<T>) {}
+  constructor(private wrapped?: Partial<WardenUserServiceEventProcessingProvider<T>>) {}
 
   public fetchCurrentLoggedInJwtToken(): string {
     return this?._currentUserSubject?.getValue()?.jwtToken;
@@ -35,26 +35,26 @@ export class WardenDelegatingCurrentUserProvidingUserServiceEventProcessingProvi
   }
 
   public onAutomaticTokenRefresh(refreshUser: WardenLoggedInUserWrapper<T>): void {
-    if (this.wrapped) {
+    if (this?.wrapped?.onAutomaticTokenRefresh) {
       this.wrapped.onAutomaticTokenRefresh(refreshUser);
     }
   }
 
   public onLoginFailure(reason: string): void {
-    if (this.wrapped) {
+    if (this?.wrapped?.onLoginFailure) {
       this.wrapped.onLoginFailure(reason);
     }
   }
 
   public onLogout(): void {
-    if (this.wrapped) {
+    if (this?.wrapped?.onLogout) {
       this.wrapped.onLogout();
     }
     this.currentUserSubject.next(null);
   }
 
   public onSuccessfulLogin(newUser: WardenLoggedInUserWrapper<T>): void {
-    if (this.wrapped) {
+    if (this?.wrapped?.onSuccessfulLogin) {
       this.wrapped.onSuccessfulLogin(newUser);
     }
     this.currentUserSubject.next(newUser);
