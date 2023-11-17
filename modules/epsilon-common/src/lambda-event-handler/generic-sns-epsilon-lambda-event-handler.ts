@@ -5,6 +5,7 @@ import { Logger } from '@bitblit/ratchet-common';
 import { AwsUtil } from '../util/aws-util.js';
 import { EpsilonInstance } from '../epsilon-instance.js';
 import { LambdaEventDetector } from '@bitblit/ratchet-aws';
+import { NoHandlersFoundError } from '../config/no-handlers-found-error';
 
 export class GenericSnsEpsilonLambdaEventHandler implements EpsilonLambdaEventHandler<SNSEvent> {
   constructor(private _epsilon: EpsilonInstance) {}
@@ -23,12 +24,13 @@ export class GenericSnsEpsilonLambdaEventHandler implements EpsilonLambdaEventHa
       const finder: string = evt.Records[0].Sns.TopicArn;
       const handler: GenericAwsEventHandlerFunction<SNSEvent> = AwsUtil.findInMap<GenericAwsEventHandlerFunction<SNSEvent>>(
         finder,
-        this._epsilon.config.sns.handlers
+        this._epsilon.config.sns.handlers,
       );
       if (handler) {
         rval = await handler(evt);
       } else {
         Logger.info('Found no SNS handler for : %s', finder);
+        throw new NoHandlersFoundError();
       }
     }
     return rval;

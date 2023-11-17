@@ -9,6 +9,10 @@ export class LambdaEventDetector {
     return event && event.Records && event.Records.length > 0 && event.Records[0].EventSource == 'aws:sns';
   }
 
+  public static isValidSqsEvent(event: any): boolean {
+    return event && event.Records && event.Records.length > 0 && event.Records[0].eventSource == 'aws:sqs';
+  }
+
   public static isValidDynamoDBEvent(event: any): boolean {
     return event && event.Records && event.Records.length > 0 && event.Records[0].eventSource == 'aws:dynamodb';
   }
