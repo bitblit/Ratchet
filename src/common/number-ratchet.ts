@@ -60,7 +60,8 @@ export class NumberRatchet {
         if (input.trim().length === 0) {
           rval = ifNotNumber;
         } else {
-          rval = Number.parseFloat(input);
+          const inputWithNoCommas = input.replace(/,/g, '')
+          rval = Number.parseFloat(inputWithNoCommas);
         }
       } else {
         Logger.warn('Value is of type %s, returning default', type);

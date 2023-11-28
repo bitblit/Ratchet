@@ -32,6 +32,11 @@ describe('#safeToNumber', function () {
     expect(result).toEqual(55);
   });
 
+  it('should convert "574,528" to 574528', function () {
+    const result: number = NumberRatchet.safeNumber('574,528');
+    expect(result).toEqual(574528);
+  });
+
   it('should leave 66 alone', function () {
     const result: number = NumberRatchet.safeNumber(66);
     expect(result).toEqual(66);
