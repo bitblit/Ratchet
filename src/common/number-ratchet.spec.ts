@@ -37,6 +37,11 @@ describe('#safeToNumber', function () {
     expect(result).toEqual(574528);
   });
 
+  it('should convert "574.528,88" to 574528.88 like european', function () {
+    const result: number = NumberRatchet.safeNumberOpt('574.528,88', { preParseCharacterMapping: { '.': '', ',': '.' } });
+    expect(result).toEqual(574528.88);
+  });
+
   it('should leave 66 alone', function () {
     const result: number = NumberRatchet.safeNumber(66);
     expect(result).toEqual(66);

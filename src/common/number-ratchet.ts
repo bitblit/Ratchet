@@ -10,6 +10,12 @@ import { RequireRatchet } from './require-ratchet';
 
 export class NumberRatchet {
   private static MAX_LEADING_ZEROS_FORMAT_LENGTH = 1000; // Because really, why?
+  public static readonly DEFAULT_SAFE_NUMBER_OPTIONS: SafeNumberOptions = {
+    ifNotNumber: null,
+    returnValueForNull: null,
+    returnValueForUndefined: null,
+    preParseCharacterMapping: { ',': '' },
+  };
 
   public static toFixedDecimalNumber(input: number | string, placesAfterPoint: number): number {
     const v: number = NumberRatchet.safeNumber(input);
@@ -51,34 +57,52 @@ export class NumberRatchet {
   // numbers and others don't!
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   public static safeNumber(input: any, ifNotNumber: number = null, useDefaultForNullAndUndefined?: boolean): number {
+    const opts: Partial<SafeNumberOptions> = {
+      ifNotNumber: ifNotNumber,
+      returnValueForNull: useDefaultForNullAndUndefined ? ifNotNumber : null,
+      returnValueForUndefined: useDefaultForNullAndUndefined ? ifNotNumber : undefined,
+    };
+    if (useDefaultForNullAndUndefined === undefined) {
+      opts.returnValueForUndefined = null; // For backwards compatibility - used to return null for both null and undefined
+    }
+
+    return NumberRatchet.safeNumberOpt(input, opts);
+  }
+
+  public static safeNumberOpt(input: any, optionPart?: Partial<SafeNumberOptions>): number {
     let rval: number = undefined;
-    if (input !== null && input !== undefined) {
+    const opts: SafeNumberOptions = Object.assign({}, NumberRatchet.DEFAULT_SAFE_NUMBER_OPTIONS, optionPart || {});
+    if (input === null) {
+      rval = opts.returnValueForNull;
+    } else if (input === undefined) {
+      rval = opts.returnValueForUndefined;
+    } else {
       const type: string = typeof input;
       if (type == 'number') {
         rval = input;
       } else if (type == 'string') {
-        if (input.trim().length === 0) {
-          rval = ifNotNumber;
+        let test: string = input.trim();
+        if (test.length === 0) {
+          rval = opts.ifNotNumber;
         } else {
-          const inputWithNoCommas = input.replace(/,/g, '')
-          rval = Number.parseFloat(inputWithNoCommas);
+          if (opts.preParseCharacterMapping && Object.keys(opts.preParseCharacterMapping).length > 0) {
+            let t2: string = '';
+            for (let i = 0; i < test.length; i++) {
+              const cr: string = test.charAt(i);
+              t2 += opts.preParseCharacterMapping[cr] === undefined ? cr : opts.preParseCharacterMapping[cr];
+            }
+            test = t2;
+          }
+          rval = Number.parseFloat(test);
         }
       } else {
         Logger.warn('Value is of type %s, returning default', type);
-        rval = ifNotNumber;
+        rval = opts.ifNotNumber;
       }
 
       if (isNaN(rval)) {
         Logger.debug('Parsed string to NaN - using NaN value from param');
-        rval = ifNotNumber;
-      }
-    } else {
-      if (useDefaultForNullAndUndefined === undefined) {
-        // Use backward-compatible behavior.
-        // Return null if input is either undefined or null.
-        rval = null;
-      } else {
-        rval = useDefaultForNullAndUndefined ? ifNotNumber : input;
+        rval = opts.ifNotNumber;
       }
     }
 
@@ -204,4 +228,11 @@ export interface SinglesAndRanges {
 export interface NumberRange {
   min: number;
   max: number;
+}
+
+export interface SafeNumberOptions {
+  ifNotNumber: number; // Value to return if the passed value was not a number
+  returnValueForNull: number;
+  returnValueForUndefined: number;
+  preParseCharacterMapping: Record<string, string>; // Replaces any characters on the left side with the right - used to remove the thousand separators and convert for euro currencies
 }
