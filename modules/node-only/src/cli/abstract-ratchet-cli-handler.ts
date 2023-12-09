@@ -5,10 +5,12 @@ export abstract class AbstractRatchetCliHandler {
   abstract fetchHandlerMap(): Record<string, any>;
   abstract fetchVersionInfo(): BuildInformation;
 
-  public async findAndExecuteHandler(): Promise<void> {
+  public async findAndExecuteHandler(useSubstringMatch: boolean = false): Promise<void> {
     let handler: any = null;
-    if (CliRatchet.argsAfterCommand(['version'])) {
+    const versionArgs: string[] = CliRatchet.argsAfterCommand(['version'], useSubstringMatch);
+    if (versionArgs) {
       console.log('Version : ' + JSON.stringify(this.fetchVersionInfo()));
+      console.log('Process: ' + JSON.stringify(process?.argv) + ' VersionArgs: ' + JSON.stringify(versionArgs));
     } else {
       const handlerMap: Record<string, any> = this.fetchHandlerMap();
       const keys: string[] = Object.keys(handlerMap);
