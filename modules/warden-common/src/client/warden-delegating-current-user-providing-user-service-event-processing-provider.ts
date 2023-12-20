@@ -2,6 +2,8 @@ import { WardenUserServiceEventProcessingProvider } from './provider/warden-user
 import { WardenLoggedInUserWrapper } from './provider/warden-logged-in-user-wrapper.js';
 import { BehaviorSubject } from 'rxjs';
 import { WardenClientCurrentLoggedInJwtTokenProvider } from './provider/warden-client-current-logged-in-jwt-token-provider.js';
+import { WardenUtils } from '../common/util/warden-utils';
+import { Logger } from '@bitblit/ratchet-common';
 
 /**
  * This class maintains a BehaviorSubject of the current user for things that want to be
@@ -12,16 +14,28 @@ import { WardenClientCurrentLoggedInJwtTokenProvider } from './provider/warden-c
  * dependency to just depend on this)
  *
  * Delegates so that you still can also register other behavior, and just tack this onto it
+ *
+ * By default this will never serve expired credentials - if a call is made, and the credentials found are
+ * expired, they will be cleared and null will be returned
  */
 export class WardenDelegatingCurrentUserProvidingUserServiceEventProcessingProvider<T>
   implements WardenUserServiceEventProcessingProvider<T>, WardenClientCurrentLoggedInJwtTokenProvider
 {
   private _currentUserSubject: BehaviorSubject<WardenLoggedInUserWrapper<T>> = new BehaviorSubject<WardenLoggedInUserWrapper<T>>(null);
 
-  constructor(private wrapped?: Partial<WardenUserServiceEventProcessingProvider<T>>) {}
+  constructor(
+    private wrapped?: Partial<WardenUserServiceEventProcessingProvider<T>>,
+    private serveExpiredCredentials: boolean = false,
+  ) {}
 
   public fetchCurrentLoggedInJwtToken(): string {
-    return this?._currentUserSubject?.getValue()?.jwtToken;
+    let val: WardenLoggedInUserWrapper<T> = this?._currentUserSubject?.getValue();
+    if (!this.serveExpiredCredentials && val && WardenUtils.wrapperIsExpired(val)) {
+      Logger.info('Current wrapper in the subject is expired - autostripping');
+      this.currentUserSubject.next(null);
+      val = null;
+    }
+    return val?.jwtToken;
   }
 
   public get currentUserSubject(): BehaviorSubject<WardenLoggedInUserWrapper<T>> {

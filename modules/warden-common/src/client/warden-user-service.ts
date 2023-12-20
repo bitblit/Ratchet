@@ -15,6 +15,7 @@ import {
 } from '@simplewebauthn/typescript-types';
 import { WardenEntrySummary } from '../common/model/warden-entry-summary.js';
 import { startAuthentication, startRegistration } from '@simplewebauthn/browser';
+import { WardenUtils } from '../common/util/warden-utils';
 
 /**
  * A service that handles logging in, saving the current user, watching
@@ -31,7 +32,7 @@ export class WardenUserService<T> {
     Logger.info('Initializing user service');
     // Immediately read from storage if there is something there
     const stored: WardenLoggedInUserWrapper<T> = this.options.loggedInUserProvider.fetchLoggedInUserWrapper();
-    if (WardenUserService.wrapperIsExpired(stored)) {
+    if (WardenUtils.wrapperIsExpired(stored)) {
       // Not treating this as a logout since it basically never logged in, just clearing it
       Logger.info('Stored token is expired, removing it');
       this.options.loggedInUserProvider.logOutUser();
@@ -109,15 +110,10 @@ export class WardenUserService<T> {
     this.options.eventProcessor.onLogout();
   }
 
-  public static wrapperIsExpired(value: WardenLoggedInUserWrapper<any>): boolean {
-    const rval: boolean = value?.userObject?.exp && value.expirationEpochSeconds < Date.now() / 1000;
-    return rval;
-  }
-
   public fetchLoggedInUserWrapper(): WardenLoggedInUserWrapper<T> {
     let tmp: WardenLoggedInUserWrapper<T> = this.options.loggedInUserProvider.fetchLoggedInUserWrapper();
     if (tmp) {
-      if (WardenUserService.wrapperIsExpired(tmp)) {
+      if (WardenUtils.wrapperIsExpired(tmp)) {
         // This is belt-and-suspenders for when the window was not open - during normal operation either
         // auto-logout thread or auto-refresh thread would have handled this
         Logger.info('Token is expired - auto logout triggered');

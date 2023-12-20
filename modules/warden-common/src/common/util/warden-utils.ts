@@ -9,6 +9,7 @@ import { WardenLoginRequest } from '../model/warden-login-request.js';
 import { WardenTeamRole } from '../model/warden-team-role.js';
 import { WardenWebAuthnEntry } from '../model/warden-web-authn-entry';
 import { WardenWebAuthnEntrySummary } from '../model/warden-web-authn-entry-summary';
+import { WardenLoggedInUserWrapper } from '../../client/provider/warden-logged-in-user-wrapper';
 
 export class WardenUtils {
   // Prevent instantiation
@@ -135,6 +136,11 @@ export class WardenUtils {
           credentialIdBase64: we.credentialIdBase64,
         }
       : null;
+    return rval;
+  }
+
+  public static wrapperIsExpired(value: WardenLoggedInUserWrapper<any>): boolean {
+    const rval: boolean = value?.userObject?.exp && value.expirationEpochSeconds < Date.now() / 1000;
     return rval;
   }
 }
