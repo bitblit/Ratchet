@@ -79,7 +79,7 @@
     "js-yaml": "4.1.0",
     "jwks-rsa": "3.1.0",
     "luxon": "3.4.4",
-    "reflect-metadata": "0.1.14",
+    "reflect-metadata": "0.2.1",
     "route-parser": "0.0.5",
     "rxjs": "7.8.1",
     "strip-js": "1.2.0",
