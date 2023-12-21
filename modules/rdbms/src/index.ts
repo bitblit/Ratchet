@@ -30,4 +30,5 @@ export * from './model/ssh/ssh-tunnel-container.js';
 export * from './query-builder/query-builder-result.js';
 export * from './query-builder/query-builder.js';
 export * from './query-builder/query-util.js';
+export * from './util/aws-rds-cert-2023.js';
 export * from './util/relational-database-utils.js';
