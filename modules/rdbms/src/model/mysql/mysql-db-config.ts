@@ -1,6 +1,6 @@
 import { DbConfig } from '../db-config.js';
 
 export interface MysqlDbConfig extends DbConfig {
-  ssl?: string;
+  ssl?: string | Record<string, any>;
   decimalNumbers?: boolean;
 }
