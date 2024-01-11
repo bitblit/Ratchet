@@ -186,3 +186,15 @@ describe('#trimStringPropertiesInPlace', function () {
     expect(emptyResult['e']).toEqual('');
   });
 });
+
+describe('#createShortUid', function () {
+  it('should return a short uid', function () {
+    for (let i = 0; i < 20; i++) {
+      console.log(StringRatchet.createShortUid());
+    }
+
+    const result: string = StringRatchet.createShortUid();
+    expect(result).toBeTruthy();
+    expect(result.length).toBeGreaterThan(0);
+  });
+});

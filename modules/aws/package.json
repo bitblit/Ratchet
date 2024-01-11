@@ -62,6 +62,7 @@
     "@aws-sdk/client-dynamodb": "3.468.0",
     "@aws-sdk/client-ec2": "3.468.0",
     "@aws-sdk/client-ec2-instance-connect": "3.468.0",
+    "@aws-sdk/client-ecr": "3.468.0",
     "@aws-sdk/client-route-53": "3.468.0",
     "@aws-sdk/client-s3": "3.468.0",
     "@aws-sdk/client-ses": "3.468.0",
@@ -83,6 +84,7 @@
     "@aws-sdk/client-dynamodb": "^3.468.0",
     "@aws-sdk/client-ec2": "^3.468.0",
     "@aws-sdk/client-ec2-instance-connect": "^3.468.0",
+    "@aws-sdk/client-ecr": "^3.468.0",
     "@aws-sdk/client-route-53": "^3.468.0",
     "@aws-sdk/client-s3": "^3.468.0",
     "@aws-sdk/client-ses": "^3.468.0",
@@ -117,6 +119,9 @@
       "optional": true
     },
     "@aws-sdk/client-ec2-instance-connect": {
+      "optional": true
+    },
+    "@aws-sdk/client-ecr": {
       "optional": true
     },
     "@aws-sdk/client-route-53": {
