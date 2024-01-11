@@ -50,13 +50,13 @@
   "dependencies": {
     "@bitblit/ratchet-common": "0.0.0-snapshot",
     "get-port": "7.0.0",
-    "mysql2": "3.6.5",
+    "mysql2": "3.7.0",
     "tunnel-ssh": "5.1.1"
   },
   "peerDependencies": {
     "@bitblit/ratchet-common": "0.0.0-snapshot",
     "get-port": "^7.0.0",
-    "mysql2": "^3.6.5",
+    "mysql2": "^3.7.0",
     "tunnel-ssh": "^5.1.1"
   }
 }

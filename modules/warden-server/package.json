@@ -53,12 +53,12 @@
     "@bitblit/ratchet-common": "0.0.0-snapshot",
     "@bitblit/ratchet-warden-common": "0.0.0-snapshot",
     "@simplewebauthn/browser": "8.3.4",
-    "@simplewebauthn/server": "8.3.5",
+    "@simplewebauthn/server": "8.3.6",
     "jwt-decode": "4.0.0"
   },
   "peerDependencies": {
     "@simplewebauthn/browser": "^8.3.4",
-    "@simplewebauthn/server": "^8.3.5",
+    "@simplewebauthn/server": "^8.3.6",
     "@simplewebauthn/typescript-types": "^8.3.4"
   },
   "devDependencies": {
