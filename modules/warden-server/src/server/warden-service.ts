@@ -118,8 +118,6 @@ export class WardenService {
           ),
         };
       } else if (cmd.sendMagicLink) {
-        // First run all allowance checks on the link
-        await this.opts.sendMagicLinkCommandValidator.allowMagicLinkCommand(cmd.sendMagicLink, origin, loggedInUserId);
         if (cmd?.sendMagicLink?.contactLookup && cmd?.sendMagicLink?.contact) {
           throw ErrorRatchet.fErr('You may not specify both contact and contactLookup');
         }
@@ -144,6 +142,13 @@ export class WardenService {
         if (!cmd.sendMagicLink.contact) {
           throw ErrorRatchet.fErr('Could not find contract entry either directly or by lookup');
         }
+        // Now run all allowance checks on the link
+        const loggedInUser: WardenEntry = StringRatchet.trimToNull(loggedInUserId)
+          ? await this.opts.storageProvider.findEntryById(loggedInUserId)
+          : null;
+
+        await this.opts.sendMagicLinkCommandValidator.allowMagicLinkCommand(cmd.sendMagicLink, origin, loggedInUser);
+
         const ttlSeconds: number = cmd?.sendMagicLink?.ttlSeconds || 300;
 
         rval = {
