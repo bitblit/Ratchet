@@ -1,10 +1,11 @@
 import { WardenContact } from '../model/warden-contact.js';
-import { WardenContactType } from '../model/warden-contact-type.js';
+import { WardenContactLookup } from './warden-contact-lookup.js';
 
-// You must set either contact or userId/contactType, but not both
+// You must set either contact or contactLookup, but not both
 export interface SendMagicLink {
-  userId?: string;
-  contactType?: WardenContactType;
+  overrideDestinationContact?: WardenContact; // If this is set, then the link will be a login for the userId/contact below, but sent to this address
+
+  contactLookup?: WardenContactLookup;
   contact?: WardenContact;
   landingUrl: string;
   meta?: Record<string, string>;

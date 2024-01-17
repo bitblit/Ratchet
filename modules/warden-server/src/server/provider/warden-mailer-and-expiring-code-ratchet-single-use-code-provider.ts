@@ -53,22 +53,23 @@ export class WardenMailerAndExpiringCodeRatchetSingleUseCodeProvider implements 
     return rval;
   }
   public async createCodeAndSendMagicLink?(
-    contact: WardenContact,
+    loginContact: WardenContact,
     relyingPartyName: string,
     landingUrl: string,
     metaIn?: Record<string, string>,
     ttlSeconds?: number,
+    destinationContact?: WardenContact,
   ): Promise<boolean> {
     let rval: boolean = null;
     const token: ExpiringCode = await this.expiringCodeRatchet.createNewCode({
-      context: contact.value,
+      context: loginContact.value,
       length: 36,
       alphabet: StringRatchet.UPPER_CASE_LATIN,
       timeToLiveSeconds: ttlSeconds,
       tags: ['MagicLink'],
     });
 
-    const meta: Record<string, any> = Object.assign({}, metaIn || {}, { contact: contact });
+    const meta: Record<string, any> = Object.assign({}, metaIn || {}, { contact: loginContact });
     const encodedMeta: string = Base64Ratchet.safeObjectToBase64JSON(meta || {});
 
     let landingUrlFilled: string = landingUrl;
@@ -83,7 +84,7 @@ export class WardenMailerAndExpiringCodeRatchetSingleUseCodeProvider implements 
 
     Logger.info('Sending magic link, inputs are : %j', context);
 
-    const msg: any = await this.formatMessage(contact, WardenCustomerMessageType.MagicLink, context);
+    const msg: any = await this.formatMessage(loginContact, WardenCustomerMessageType.MagicLink, context, destinationContact);
     rval = await this.sendMessage(msg);
     return rval;
   }
@@ -92,9 +93,10 @@ export class WardenMailerAndExpiringCodeRatchetSingleUseCodeProvider implements 
     contact: WardenContact,
     messageType: WardenCustomerMessageType,
     context: Record<string, any>,
+    destinationContact?: WardenContact,
   ): Promise<ReadyToSendEmail> {
     const rts: ReadyToSendEmail = {
-      destinationAddresses: [contact.value],
+      destinationAddresses: [destinationContact?.value || contact.value],
       subject: 'Your login token',
     };
 

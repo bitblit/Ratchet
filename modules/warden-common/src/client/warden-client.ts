@@ -16,6 +16,7 @@ import { WardenClientCurrentLoggedInJwtTokenProvider } from './provider/warden-c
 import { WardenEntrySummary } from '../common/model/warden-entry-summary.js';
 import { WardenContactType } from '../common/model/warden-contact-type.js';
 import { AddWebAuthnRegistrationToLoggedInUser } from '../common/command/add-web-authn-registration-to-logged-in-user';
+import { SendMagicLink } from '../common/command/send-magic-link';
 
 export class WardenClient {
   constructor(
@@ -51,36 +52,43 @@ export class WardenClient {
     return rval.createAccount;
   }
 
+  public async sendMagicLinkRaw(smlCmd: SendMagicLink): Promise<boolean> {
+    if (smlCmd) {
+      const cmd: WardenCommand = {
+        sendMagicLink: smlCmd,
+      };
+      const rval: WardenCommandResponse = await this.exchangeCommand(cmd);
+      return rval.sendMagicLink;
+    } else {
+      Logger.warn('Skipping magic link command - none supplied');
+      return false;
+    }
+  }
+
   public async sendMagicLinkByUserId(
     userId: string,
     landingUrl: string,
     contactType?: WardenContactType,
     meta?: Record<string, string>,
   ): Promise<boolean> {
-    const cmd: WardenCommand = {
-      sendMagicLink: {
+    const cmd: SendMagicLink = {
+      contactLookup: {
         userId: userId,
         contactType: contactType,
-        landingUrl: landingUrl,
-        meta: meta,
       },
+      landingUrl: landingUrl,
+      meta: meta,
     };
-    const rval: WardenCommandResponse = await this.exchangeCommand(cmd);
-
-    return rval.sendMagicLink;
+    return this.sendMagicLinkRaw(cmd);
   }
 
   public async sendMagicLink(contact: WardenContact, landingUrl: string, meta?: Record<string, string>): Promise<boolean> {
-    const cmd: WardenCommand = {
-      sendMagicLink: {
-        contact: contact,
-        landingUrl: landingUrl,
-        meta: meta,
-      },
+    const cmd: SendMagicLink = {
+      contact: contact,
+      landingUrl: landingUrl,
+      meta: meta,
     };
-    const rval: WardenCommandResponse = await this.exchangeCommand(cmd);
-
-    return rval.sendMagicLink;
+    return this.sendMagicLinkRaw(cmd);
   }
 
   public async generateWebAuthnAuthenticationChallengeForUserId(userId: string): Promise<PublicKeyCredentialRequestOptionsJSON> {

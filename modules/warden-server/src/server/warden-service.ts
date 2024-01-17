@@ -37,6 +37,7 @@ import { Base64Ratchet, ErrorRatchet, ExpiredJwtHandling, Logger, RequireRatchet
 import { WardenDefaultUserDecorationProvider } from './provider/warden-default-user-decoration-provider.js';
 import { WardenNoOpEventProcessingProvider } from './provider/warden-no-op-event-processing-provider.js';
 import { WardenSingleUseCodeProvider } from './provider/warden-single-use-code-provider';
+import { WardenDefaultSendMagicLinkCommandValidator } from './provider/warden-default-send-magic-link-command-validator';
 
 export class WardenService {
   private opts: WardenServiceOptions;
@@ -50,7 +51,11 @@ export class WardenService {
     RequireRatchet.notNullUndefinedOrEmptyArray(inOptions.singleUseCodeProviders, 'options.singleUseCodeProviders');
 
     this.opts = Object.assign(
-      { userTokenDataProvider: new WardenDefaultUserDecorationProvider(), eventProcessor: new WardenNoOpEventProcessingProvider() },
+      {
+        userTokenDataProvider: new WardenDefaultUserDecorationProvider(),
+        eventProcessor: new WardenNoOpEventProcessingProvider(),
+        sendMagicLinkCommandValidator: new WardenDefaultSendMagicLinkCommandValidator(),
+      },
       inOptions,
     );
   }
@@ -113,26 +118,38 @@ export class WardenService {
           ),
         };
       } else if (cmd.sendMagicLink) {
-        let contact: WardenContact = cmd.sendMagicLink.contact;
-        if (!contact && cmd?.sendMagicLink?.userId) {
-          const entry: WardenEntry = await this.findEntryById(cmd.sendMagicLink.userId);
+        // First run all allowance checks on the link
+        await this.opts.sendMagicLinkCommandValidator.allowMagicLinkCommand(cmd.sendMagicLink, origin, loggedInUserId);
+        if (cmd?.sendMagicLink?.contactLookup && cmd?.sendMagicLink?.contact) {
+          throw ErrorRatchet.fErr('You may not specify both contact and contactLookup');
+        }
+        if (!cmd?.sendMagicLink?.contactLookup && !cmd?.sendMagicLink?.contact) {
+          throw ErrorRatchet.fErr('You must not specify either contact and contactLookup');
+        }
+        if (cmd.sendMagicLink.contactLookup) {
+          const entry: WardenEntry = await this.findEntryById(cmd.sendMagicLink.contactLookup.userId);
           if (entry) {
-            if (cmd.sendMagicLink.contactType) {
+            if (cmd.sendMagicLink.contactLookup.contactType) {
               // Use the one specified, otherwise just first one
-              contact = (entry.contactMethods || []).find((cm) => cm.type === cmd.sendMagicLink.contactType);
+              cmd.sendMagicLink.contact = (entry.contactMethods || []).find(
+                (cm) => cm.type === cmd.sendMagicLink.contactLookup.contactType,
+              );
             } else {
-              contact = (entry.contactMethods || []).length > 0 ? entry.contactMethods[0] : null;
+              cmd.sendMagicLink.contact = (entry.contactMethods || []).length > 0 ? entry.contactMethods[0] : null;
             }
           }
+          cmd.sendMagicLink.contactLookup = null;
         }
-        if (!contact) {
+
+        if (!cmd.sendMagicLink.contact) {
           throw ErrorRatchet.fErr('Could not find contract entry either directly or by lookup');
         }
         const ttlSeconds: number = cmd?.sendMagicLink?.ttlSeconds || 300;
 
         rval = {
           sendMagicLink: await this.sendMagicLink(
-            contact,
+            cmd.sendMagicLink.contact,
+            cmd.sendMagicLink.overrideDestinationContact,
             this.opts.relyingPartyName,
             cmd.sendMagicLink.landingUrl,
             cmd.sendMagicLink.meta,
@@ -274,6 +291,7 @@ export class WardenService {
 
   public async sendMagicLink(
     contact: WardenContact,
+    overrideDestinationContact: WardenContact,
     relyingPartyName: string,
     landingUrl: string,
     metaIn?: Record<string, string>,
