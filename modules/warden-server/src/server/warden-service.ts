@@ -309,7 +309,7 @@ export class WardenService {
 
     if (contact?.type && StringRatchet.trimToNull(contact?.value)) {
       const prov: WardenSingleUseCodeProvider = this.singleUseCodeProvider(contact, true);
-      rval = await prov.createCodeAndSendMagicLink(contact, relyingPartyName, landingUrl, metaIn, ttlSeconds);
+      rval = await prov.createCodeAndSendMagicLink(contact, relyingPartyName, landingUrl, metaIn, ttlSeconds, overrideDestinationContact);
     } else {
       ErrorRatchet.throwFormattedErr('Cannot send - invalid contact %j', contact);
     }
