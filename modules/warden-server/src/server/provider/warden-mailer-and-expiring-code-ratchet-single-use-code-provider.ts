@@ -82,9 +82,7 @@ export class WardenMailerAndExpiringCodeRatchetSingleUseCodeProvider implements 
       relyingPartyName: relyingPartyName,
     });
 
-    Logger.info('Sending magic link, inputs are : %j', context);
-
-    const msg: any = await this.formatMessage(loginContact, WardenCustomerMessageType.MagicLink, context, destinationContact);
+    const msg: ReadyToSendEmail = await this.formatMessage(loginContact, WardenCustomerMessageType.MagicLink, context, destinationContact);
     rval = await this.sendMessage(msg);
     return rval;
   }
@@ -99,6 +97,8 @@ export class WardenMailerAndExpiringCodeRatchetSingleUseCodeProvider implements 
       destinationAddresses: [destinationContact?.value || contact.value],
       subject: 'Your login token',
     };
+
+    Logger.info('Formatting Message for magic link, rts: %j, messageType: %s, context: %j', rts, messageType, context);
 
     if (messageType === WardenCustomerMessageType.ExpiringCode) {
       await this.mailer.fillEmailBody(
