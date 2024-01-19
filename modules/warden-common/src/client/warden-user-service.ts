@@ -258,9 +258,17 @@ export class WardenUserService<T> {
     return rval;
   }
 
-  public async executeValidationTokenBasedLogin(contact: WardenContact, token: string): Promise<WardenLoggedInUserWrapper<T>> {
+  public async executeValidationTokenBasedLogin(
+    contact: WardenContact,
+    token: string,
+    createUserIfMissing?: boolean,
+  ): Promise<WardenLoggedInUserWrapper<T>> {
     Logger.info('Warden: executeValidationTokenBasedLogin : %j : %s ', contact, token);
-    const resp: WardenLoginResults = await this.options.wardenClient.performLoginCmd({ contact: contact, expiringToken: token });
+    const resp: WardenLoginResults = await this.options.wardenClient.performLoginCmd({
+      contact: contact,
+      expiringToken: token,
+      createUserIfMissing: createUserIfMissing,
+    });
     const rval: WardenLoggedInUserWrapper<T> = await this.processWardenLoginResults(resp);
     this.updateRecentLoginsFromLoggedInUserWrapper(rval);
     return rval;
