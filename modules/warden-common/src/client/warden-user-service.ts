@@ -197,7 +197,7 @@ export class WardenUserService<T> {
       Logger.info('Could not refresh - no token available');
     } else {
       const newToken: string = await this.options.wardenClient.refreshJwtToken(currentWrapper.jwtToken);
-      rval = await this.updateLoggedInUserFromTokenString(newToken);
+      rval = this.updateLoggedInUserFromTokenString(newToken);
     }
     return rval;
   }
@@ -213,7 +213,7 @@ export class WardenUserService<T> {
       Logger.info('Warden: response : %j ', resp);
       if (resp.jwtToken) {
         Logger.info('Applying login');
-        rval = await this.updateLoggedInUserFromTokenString(resp.jwtToken);
+        rval = this.updateLoggedInUserFromTokenString(resp.jwtToken);
       } else if (resp.error) {
         this.options.eventProcessor.onLoginFailure(resp.error);
       } else {
@@ -263,7 +263,7 @@ export class WardenUserService<T> {
     token: string,
     createUserIfMissing?: boolean,
   ): Promise<WardenLoggedInUserWrapper<T>> {
-    Logger.info('Warden: executeValidationTokenBasedLogin : %j : %s ', contact, token);
+    Logger.info('Warden: executeValidationTokenBasedLogin : %j : %s : %s', contact, token, createUserIfMissing);
     const resp: WardenLoginResults = await this.options.wardenClient.performLoginCmd({
       contact: contact,
       expiringToken: token,

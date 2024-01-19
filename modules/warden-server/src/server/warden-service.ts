@@ -581,8 +581,10 @@ export class WardenService {
       ? await this.opts.storageProvider.findEntryById(request?.userId)
       : await this.opts.storageProvider.findEntryByContact(request.contact);
     if (!user) {
+      Logger.info('User not found, and createUserIfMissing=%s / %j', request.createUserIfMissing, request.contact);
       if (request.createUserIfMissing && request.contact) {
         const newVal: string = await this.createAccount(request.contact);
+        Logger.info('Finished create, new id is %s', newVal);
         user = await this.opts.storageProvider.findEntryById(newVal);
       }
       // If STILL no user...
