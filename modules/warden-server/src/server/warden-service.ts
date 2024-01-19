@@ -577,11 +577,18 @@ export class WardenService {
       'WebAuthn and ExpiringToken may not BOTH be set',
     );
 
-    const user: WardenEntry = StringRatchet.trimToNull(request?.userId)
+    let user: WardenEntry = StringRatchet.trimToNull(request?.userId)
       ? await this.opts.storageProvider.findEntryById(request?.userId)
       : await this.opts.storageProvider.findEntryByContact(request.contact);
     if (!user) {
-      ErrorRatchet.throwFormattedErr('No user found for %j / %s', request?.contact, request?.userId);
+      if (request.createUserIfMissing && request.contact) {
+        const newVal: string = await this.createAccount(request.contact);
+        user = await this.opts.storageProvider.findEntryById(newVal);
+      }
+      // If STILL no user...
+      if (!user) {
+        ErrorRatchet.throwFormattedErr('No user found for %j / %s', request?.contact, request?.userId);
+      }
     }
 
     if (request.webAuthn) {

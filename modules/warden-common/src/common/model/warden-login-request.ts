@@ -7,4 +7,5 @@ export interface WardenLoginRequest {
   webAuthn?: AuthenticationResponseJSON;
   expiringToken?: string;
   jwtTokenToRefresh?: string;
+  createUserIfMissing?: boolean;
 }
