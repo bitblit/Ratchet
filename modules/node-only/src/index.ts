@@ -11,6 +11,7 @@ export * from './cli/cli-ratchet.js';
 export * from './cli/ratchet-cli-handler.js';
 export * from './csv/csv-ratchet.js';
 export * from './files/files-to-static-class.js';
+export * from './files/unique-file-rename.js';
 export * from './stream/buffer-writable.js';
 export * from './stream/multi-stream.js';
 export * from './stream/node-stream-ratchet.js';

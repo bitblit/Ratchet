@@ -2495,12 +2495,12 @@ __metadata:
   dependencies:
     "@bitblit/ratchet-common": 0.0.0-snapshot
     get-port: 7.0.0
-    mysql2: 3.7.0
+    mysql2: 3.9.0
     tunnel-ssh: 5.1.2
   peerDependencies:
     "@bitblit/ratchet-common": 0.0.0-snapshot
     get-port: ^7.0.0
-    mysql2: ^3.7.0
+    mysql2: ^3.9.0
     tunnel-ssh: ^5.1.1
   languageName: unknown
   linkType: soft
@@ -10662,9 +10662,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mysql2@npm:3.7.0":
-  version: 3.7.0
-  resolution: "mysql2@npm:3.7.0"
+"mysql2@npm:3.9.0":
+  version: 3.9.0
+  resolution: "mysql2@npm:3.9.0"
   dependencies:
     denque: ^2.1.0
     generate-function: ^2.3.1
@@ -10674,7 +10674,7 @@ __metadata:
     named-placeholders: ^1.1.3
     seq-queue: ^0.0.5
     sqlstring: ^2.3.2
-  checksum: a9f3d4ef6333fe69c91a8c070a6c7426f5d895599cf387776dfd8fc02a20ed7800df05b11cdd0f6b061c5ac3e4904b86dd81f65e48413a2e90a12a03cbe0edfd
+  checksum: 71ae2f7c4d1fdf1193a34f5b57c665e65782aed4cae353df2565a4054edbc55e6143e558a48627090041025f30209e0552e02a52a2fa49cc95d00e5b4f734972
   languageName: node
   linkType: hard
 
