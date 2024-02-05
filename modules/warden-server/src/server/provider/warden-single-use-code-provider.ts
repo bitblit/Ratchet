@@ -1,4 +1,4 @@
-import { WardenContact, WardenContactType } from '@bitblit/ratchet-warden-common';
+import { WardenContact, WardenContactType, WardenCustomTemplateDescriptor } from '@bitblit/ratchet-warden-common';
 
 /**
  * Classes implementing WardenSingleUseCodeProvider are able to
@@ -19,5 +19,6 @@ export interface WardenSingleUseCodeProvider {
     metaIn?: Record<string, string>,
     ttlSeconds?: number,
     destinationContact?: WardenContact,
+    customTemplate?: WardenCustomTemplateDescriptor,
   ): Promise<boolean>;
 }

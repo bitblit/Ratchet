@@ -26,6 +26,7 @@ export * from './common/command/send-magic-link.js';
 export * from './common/command/warden-command-response.js';
 export * from './common/command/warden-command.js';
 export * from './common/command/warden-contact-lookup.js';
+export * from './common/command/warden-custom-template-descriptor.js';
 export * from './common/command/web-authn-object-wrapper.js';
 export * from './common/model/warden-contact-type.js';
 export * from './common/model/warden-contact.js';

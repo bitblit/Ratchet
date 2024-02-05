@@ -1,4 +1,9 @@
-import { WardenContact, WardenContactType, WardenCustomerMessageType } from '@bitblit/ratchet-warden-common';
+import {
+  WardenContact,
+  WardenContactType,
+  WardenCustomerMessageType,
+  WardenCustomTemplateDescriptor,
+} from '@bitblit/ratchet-warden-common';
 import { WardenSingleUseCodeProvider } from './warden-single-use-code-provider';
 import { ExpiringCode, ExpiringCodeRatchet, Mailer, ReadyToSendEmail } from '@bitblit/ratchet-aws';
 import { Base64Ratchet, ErrorRatchet, Logger, StringRatchet } from '@bitblit/ratchet-common';
@@ -59,6 +64,7 @@ export class WardenMailerAndExpiringCodeRatchetSingleUseCodeProvider implements 
     metaIn?: Record<string, string>,
     ttlSeconds?: number,
     destinationContact?: WardenContact,
+    customTemplate?: WardenCustomTemplateDescriptor,
   ): Promise<boolean> {
     let rval: boolean = null;
     const token: ExpiringCode = await this.expiringCodeRatchet.createNewCode({
@@ -82,7 +88,13 @@ export class WardenMailerAndExpiringCodeRatchetSingleUseCodeProvider implements 
       relyingPartyName: relyingPartyName,
     });
 
-    const msg: ReadyToSendEmail = await this.formatMessage(loginContact, WardenCustomerMessageType.MagicLink, context, destinationContact);
+    const msg: ReadyToSendEmail = await this.formatMessage(
+      loginContact,
+      WardenCustomerMessageType.MagicLink,
+      context,
+      destinationContact,
+      customTemplate,
+    );
     rval = await this.sendMessage(msg);
     return rval;
   }
@@ -92,6 +104,7 @@ export class WardenMailerAndExpiringCodeRatchetSingleUseCodeProvider implements 
     messageType: WardenCustomerMessageType,
     context: Record<string, any>,
     destinationContact?: WardenContact,
+    customTemplate?: WardenCustomTemplateDescriptor,
   ): Promise<ReadyToSendEmail> {
     const rts: ReadyToSendEmail = {
       destinationAddresses: [destinationContact?.value || contact.value],
@@ -115,6 +128,17 @@ export class WardenMailerAndExpiringCodeRatchetSingleUseCodeProvider implements 
         this.mailerOptions.magicLinkHtmlTemplateName,
         this.mailerOptions.magicLinkTxtTemplateName,
         this.mailerOptions.emailBaseLayoutName,
+      );
+    } else if (messageType === WardenCustomerMessageType.Custom) {
+      if (!customTemplate) {
+        throw ErrorRatchet.fErr('Cannot send custom message if customTemplate not set');
+      }
+      await this.mailer.fillEmailBody(
+        rts,
+        context,
+        customTemplate.htmlVersion,
+        customTemplate.textVersion,
+        customTemplate.baseLayout === 'DEFAULT' ? this.mailerOptions.emailBaseLayoutName : customTemplate.baseLayout,
       );
     } else {
       throw ErrorRatchet.fErr('No such message type : %s', messageType);

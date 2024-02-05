@@ -21,6 +21,7 @@ import {
   WardenCommand,
   WardenCommandResponse,
   WardenContact,
+  WardenCustomTemplateDescriptor,
   WardenEntry,
   WardenJwtToken,
   WardenLoginRequest,
@@ -159,6 +160,7 @@ export class WardenService {
             cmd.sendMagicLink.landingUrl,
             cmd.sendMagicLink.meta,
             ttlSeconds,
+            cmd.sendMagicLink.customTemplate,
           ),
         };
       } else if (cmd.generateWebAuthnRegistrationChallengeForLoggedInUser) {
@@ -301,6 +303,7 @@ export class WardenService {
     landingUrl: string,
     metaIn?: Record<string, string>,
     ttlSeconds?: number,
+    customTemplate?: WardenCustomTemplateDescriptor,
   ): Promise<boolean> {
     let rval: boolean = false;
     RequireRatchet.notNullOrUndefined(contact, 'contact');
@@ -309,7 +312,15 @@ export class WardenService {
 
     if (contact?.type && StringRatchet.trimToNull(contact?.value)) {
       const prov: WardenSingleUseCodeProvider = this.singleUseCodeProvider(contact, true);
-      rval = await prov.createCodeAndSendMagicLink(contact, relyingPartyName, landingUrl, metaIn, ttlSeconds, overrideDestinationContact);
+      rval = await prov.createCodeAndSendMagicLink(
+        contact,
+        relyingPartyName,
+        landingUrl,
+        metaIn,
+        ttlSeconds,
+        overrideDestinationContact,
+        customTemplate,
+      );
     } else {
       ErrorRatchet.throwFormattedErr('Cannot send - invalid contact %j', contact);
     }
