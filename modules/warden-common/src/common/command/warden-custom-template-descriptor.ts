@@ -1,5 +1,5 @@
 export interface WardenCustomTemplateDescriptor {
-  textVersion: string;
+  textVersion?: string;
   htmlVersion?: string;
   baseLayout?: string;
   meta?: Record<string, string>;

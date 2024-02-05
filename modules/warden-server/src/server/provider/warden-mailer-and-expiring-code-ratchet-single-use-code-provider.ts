@@ -88,13 +88,8 @@ export class WardenMailerAndExpiringCodeRatchetSingleUseCodeProvider implements 
       relyingPartyName: relyingPartyName,
     });
 
-    const msg: ReadyToSendEmail = await this.formatMessage(
-      loginContact,
-      WardenCustomerMessageType.MagicLink,
-      context,
-      destinationContact,
-      customTemplate,
-    );
+    const msgType: WardenCustomerMessageType = customTemplate ? WardenCustomerMessageType.Custom : WardenCustomerMessageType.MagicLink;
+    const msg: ReadyToSendEmail = await this.formatMessage(loginContact, msgType, context, destinationContact, customTemplate);
     rval = await this.sendMessage(msg);
     return rval;
   }
@@ -133,6 +128,7 @@ export class WardenMailerAndExpiringCodeRatchetSingleUseCodeProvider implements 
       if (!customTemplate) {
         throw ErrorRatchet.fErr('Cannot send custom message if customTemplate not set');
       }
+      Logger.info('Sending custom template : %j', customTemplate);
       await this.mailer.fillEmailBody(
         rts,
         context,
