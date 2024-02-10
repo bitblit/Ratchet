@@ -60,6 +60,29 @@ export class StringRatchet {
     return rval;
   }
 
+  public static breakIntoBlocks(input: string, blockSize: number, separator: string): string {
+    let out: string = '';
+    while (input.length > blockSize) {
+      out = separator + input.substring(input.length - blockSize) + out;
+      input = input.substring(0, input.length - blockSize);
+    }
+
+    if (input.length > 0) {
+      out = input + out;
+    } else {
+      out = out.substring(1); // strip the leading separator
+    }
+    return out;
+  }
+
+  public static createShortUid(blockSize: number = 0, uniquesPerSecond: number = 1000, radix: number = 36): string {
+    const currentEpoch: number = Math.floor(Date.now() / 1000);
+    const asDecimal: number = parseInt(String(Math.floor(Math.random() * uniquesPerSecond)) + String(currentEpoch));
+    const asHex: string = asDecimal.toString(radix);
+    const out: string = blockSize > 0 ? StringRatchet.breakIntoBlocks(asHex, blockSize, '-') : asHex;
+    return out;
+  }
+
   public static createType4Guid(): string {
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
       const r = (Math.random() * 16) | 0,

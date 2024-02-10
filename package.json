@@ -194,7 +194,7 @@
     "js-yaml": "4.1.0",
     "json-loader": "0.5.7",
     "jsonwebtoken": "9.0.2",
-    "mailparser": "3.6.5",
+    "mailparser": "3.6.7",
     "mime-types": "2.1.35",
     "rxjs": "7.8.1",
     "swagger-model-validator": "3.0.21",
