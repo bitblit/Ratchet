@@ -10,7 +10,7 @@ import {
 } from '@aws-sdk/client-ecr';
 import _ from 'lodash';
 import { EcrRepositoryPruneConfig } from './ecr-repository-prune-config';
-import { Logger, RequireRatchet } from '@bitblit/ratchet-common';
+import { ErrorRatchet, Logger, RequireRatchet } from '@bitblit/ratchet-common';
 
 export class EcrRatchet {
   private static readonly ECR_REPOSITORIES_TO_PRUNE_ENV_KEY: string = 'NEON_ECR_REPOSITORIES_TO_PRUNE';
@@ -43,6 +43,8 @@ export class EcrRatchet {
   }
 
   private async handlePruningForRegistry(registryId: string, cfg: EcrRepositoryPruneConfig): Promise<ImageIdentifier[]> {
+    throw ErrorRatchet.fErr('Not implemented yet generically');
+    /*
     let rval: ImageIdentifier[] = [];
     const minAgeInDays: number = RequireRatchet.isNullOrUndefined(cfg.minimumAgeInDays) ? 60 : cfg.minimumAgeInDays;
     const minimumImageCount: number = RequireRatchet.isNullOrUndefined(cfg.minimumImageCount) ? 600 : cfg.minimumImageCount;
@@ -114,5 +116,7 @@ export class EcrRatchet {
       Logger.info(`Finished deleting all chunks for ${repositoryName}`);
     }
     return rval;
+
+     */
   }
 }

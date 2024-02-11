@@ -168,7 +168,7 @@ export class S3CacheRatchet implements S3CacheRatchetLike {
 
   public async writeStreamToCacheFile(
     key: string,
-    data: ReadableStream | Readable,
+    data: ReadableStream | Readable, // 'StreamingBlobPayloadInputTypes'
     template?: PutObjectCommandInput,
     bucket?: string,
     progressFn: (progress: Progress) => void = (progress) => {

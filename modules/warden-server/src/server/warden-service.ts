@@ -15,7 +15,7 @@ import {
   PublicKeyCredentialCreationOptionsJSON,
   PublicKeyCredentialRequestOptionsJSON,
   RegistrationResponseJSON,
-} from '@simplewebauthn/typescript-types';
+} from '@simplewebauthn/types';
 import { WardenServiceOptions } from './warden-service-options.js';
 import {
   WardenCommand,

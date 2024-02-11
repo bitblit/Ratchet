@@ -52,16 +52,16 @@
     "@bitblit/ratchet-aws": "0.0.0-snapshot",
     "@bitblit/ratchet-common": "0.0.0-snapshot",
     "@bitblit/ratchet-warden-common": "0.0.0-snapshot",
-    "@simplewebauthn/browser": "8.3.4",
-    "@simplewebauthn/server": "8.3.6",
+    "@simplewebauthn/browser": "9.0.1",
+    "@simplewebauthn/server": "9.0.2",
     "jwt-decode": "4.0.0"
   },
   "peerDependencies": {
-    "@simplewebauthn/browser": "^8.3.4",
-    "@simplewebauthn/server": "^8.3.6",
-    "@simplewebauthn/typescript-types": "^8.3.4"
+    "@simplewebauthn/browser": "^9.0.1",
+    "@simplewebauthn/server": "^9.0.2",
+    "@simplewebauthn/types": "^9.0.1"
   },
   "devDependencies": {
-    "@simplewebauthn/typescript-types": "8.3.4"
+    "@simplewebauthn/types": "9.0.1"
   }
 }
