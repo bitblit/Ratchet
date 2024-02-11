@@ -52,7 +52,7 @@
   },
   "license": "Apache-2.0",
   "dependencies": {
-    "@apollo/client": "3.8.9",
+    "@apollo/client": "3.9.4",
     "@bitblit/ratchet-common": "0.0.0-snapshot",
     "graphql": "16.8.1"
   },
