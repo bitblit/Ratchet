@@ -24,6 +24,7 @@ import {
 } from '@aws-sdk/client-s3';
 import { Logger, RequireRatchet, StopWatch, WebStreamRatchet, StringRatchet } from '@bitblit/ratchet-common';
 
+import { StreamingBlobPayloadInputTypes } from '@smithy/types';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { Upload, Progress } from '@aws-sdk/lib-storage';
 import { Readable } from 'stream';
@@ -168,7 +169,7 @@ export class S3CacheRatchet implements S3CacheRatchetLike {
 
   public async writeStreamToCacheFile(
     key: string,
-    data: ReadableStream | Readable, // 'StreamingBlobPayloadInputTypes'
+    data: ReadableStream | Readable, //StreamingBlobPayloadInputTypes
     template?: PutObjectCommandInput,
     bucket?: string,
     progressFn: (progress: Progress) => void = (progress) => {
@@ -178,7 +179,7 @@ export class S3CacheRatchet implements S3CacheRatchetLike {
     const params: PutObjectCommandInput = Object.assign({}, template || {}, {
       Bucket: this.bucketVal(bucket),
       Key: key,
-      Body: data,
+      Body: data as StreamingBlobPayloadInputTypes,
     });
 
     const upload: Upload = new Upload({
