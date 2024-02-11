@@ -27,6 +27,7 @@ export * from './background/epsilon-background-process-error.js';
 export * from './background/internal-background-entry.js';
 export * from './background/s3-background-transaction-logger.js';
 export * from './background/manager/abstract-background-manager.js';
+export * from './background/manager/aws-large-payload-s3-sqs-sns-background-manager.js';
 export * from './background/manager/aws-sqs-sns-background-manager.js';
 export * from './background/manager/background-manager-like.js';
 export * from './background/manager/single-thread-local-background-manager.js';

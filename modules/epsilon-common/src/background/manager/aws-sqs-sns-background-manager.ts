@@ -31,7 +31,11 @@ import { PublishCommand, PublishCommandOutput, SNSClient } from '@aws-sdk/client
  * define the type and validation.
  */
 export class AwsSqsSnsBackgroundManager extends AbstractBackgroundManager {
-  constructor(private _awsConfig: BackgroundAwsConfig, private _sqs: SQSClient, private _sns: SNSClient) {
+  constructor(
+    private _awsConfig: BackgroundAwsConfig,
+    private _sqs: SQSClient,
+    private _sns: SNSClient,
+  ) {
     super();
     const cfgErrors: string[] = BackgroundValidator.validateAwsConfig(_awsConfig);
     if (cfgErrors.length) {
@@ -57,7 +61,7 @@ export class AwsSqsSnsBackgroundManager extends AbstractBackgroundManager {
 
   public async addEntryToQueue<T>(entry: BackgroundEntry<T>, fireStartMessage?: boolean): Promise<string> {
     try {
-      const wrapped: InternalBackgroundEntry<T> = this.wrapEntryForInternal(entry);
+      const wrapped: InternalBackgroundEntry<T> = await this.wrapEntryForInternal(entry);
       const rval: string = wrapped.guid;
       // Guard against bad entries up front
       const params = {
@@ -84,10 +88,9 @@ export class AwsSqsSnsBackgroundManager extends AbstractBackgroundManager {
   }
 
   public async fireImmediateProcessRequest<T>(entry: BackgroundEntry<T>): Promise<string> {
-    let rval: string = null;
-    const wrapped: InternalBackgroundEntry<T> = this.wrapEntryForInternal(entry);
-    rval = wrapped.guid;
     try {
+      const wrapped: InternalBackgroundEntry<T> = await this.wrapEntryForInternal(entry);
+      const rval: string = wrapped.guid;
       // Guard against bad entries up front
       Logger.info('Fire immediately (remote) : %j ', entry);
       const toWrite: any = {
@@ -97,10 +100,11 @@ export class AwsSqsSnsBackgroundManager extends AbstractBackgroundManager {
       const msg: string = JSON.stringify(toWrite);
       const snsId: string = await this.writeMessageToSnsTopic(msg);
       Logger.debug('Background guid %s Wrote message : %s to SNS : %s', rval, msg, snsId);
+      return rval;
     } catch (err) {
       Logger.error('Failed to fireImmediateProcessRequest : %s', err, err);
+      throw new Error('Failed to fireImmediateProcessRequest : : ' + err['code'] + ' : ' + err['name']);
     }
-    return rval;
   }
 
   public async fireStartProcessingRequest(): Promise<string> {

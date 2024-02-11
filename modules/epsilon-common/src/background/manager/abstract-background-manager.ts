@@ -31,11 +31,11 @@ export abstract class AbstractBackgroundManager implements BackgroundManagerLike
     return rval;
   }
 
-  public wrapEntryForInternal<T>(
+  public async wrapEntryForInternal<T>(
     entry: BackgroundEntry<T>,
     overrideTraceId?: string,
-    overrideTraceDepth?: number
-  ): InternalBackgroundEntry<T> {
+    overrideTraceDepth?: number,
+  ): Promise<InternalBackgroundEntry<T>> {
     const rval: InternalBackgroundEntry<T> = Object.assign({}, entry, {
       createdEpochMS: new Date().getTime(),
       guid: AbstractBackgroundManager.generateBackgroundGuid(),

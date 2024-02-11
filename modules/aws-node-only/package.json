@@ -64,7 +64,7 @@
     "@smithy/abort-controller": "2.0.15",
     "@smithy/smithy-client": "2.1.15",
     "@smithy/util-waiter": "2.0.15",
-    "mailparser": "3.6.6",
+    "mailparser": "3.6.7",
     "mime-types": "2.1.35",
     "tmp": "0.2.1",
     "unzipper": "0.10.14",

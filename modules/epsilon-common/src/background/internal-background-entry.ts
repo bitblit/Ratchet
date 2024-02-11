@@ -5,4 +5,6 @@ export interface InternalBackgroundEntry<T> extends BackgroundEntry<T> {
   createdEpochMS: number;
   traceId: string;
   traceDepth: number;
+
+  meta?: Record<string, string>;
 }
