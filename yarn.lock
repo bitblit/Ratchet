@@ -2477,6 +2477,33 @@ __metadata:
     swagger-model-validator: 3.0.21
   peerDependencies:
     "@bitblit/ratchet-common": 0.0.0-snapshot
+    handlebars: ^4.7.8
+    handlebars-layouts: ^3.1.4
+    js-yaml: ^4.1.0
+    rxjs: ^7.8.1
+    swagger-model-validator: ^3.0.21
+  dependenciesMeta:
+    handlebars:
+      optional: true
+    handlebars-layouts:
+      optional: true
+    js-yaml:
+      optional: true
+    rxjs:
+      optional: true
+    swagger-model-validator:
+      optional: true
+  peerDependenciesMeta:
+    handlebars:
+      optional: true
+    handlebars-layouts:
+      optional: true
+    js-yaml:
+      optional: true
+    rxjs:
+      optional: true
+    swagger-model-validator:
+      optional: true
   languageName: unknown
   linkType: soft
 
