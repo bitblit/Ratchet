@@ -5,8 +5,8 @@ import {
   WardenCustomTemplateDescriptor,
 } from '@bitblit/ratchet-warden-common';
 import { WardenSingleUseCodeProvider } from './warden-single-use-code-provider';
-import { ExpiringCode, ExpiringCodeRatchet, SesMailSendingProvider, ReadyToSendEmail } from '@bitblit/ratchet-aws';
-import { Base64Ratchet, ErrorRatchet, Logger, StringRatchet } from '@bitblit/ratchet-common';
+import { ExpiringCode, ExpiringCodeRatchet, SesMailSendingProvider } from '@bitblit/ratchet-aws';
+import { Base64Ratchet, ErrorRatchet, Logger, Mailer, StringRatchet } from '@bitblit/ratchet-common';
 import { WardenMailerAndExpiringCodeRatchetSingleUseCodeProviderOptions } from './warden-mailer-and-expiring-code-ratchet-single-user-provider-options.js';
 import { SendRawEmailResponse } from '@aws-sdk/client-ses';
 
@@ -29,7 +29,7 @@ export class WardenMailerAndExpiringCodeRatchetSingleUseCodeProvider implements 
   }
 
   constructor(
-    private mailer: SesMailSendingProvider,
+    private mailer: Mailer<any, any>,
     private expiringCodeRatchet: ExpiringCodeRatchet,
     private mailerOptions: WardenMailerAndExpiringCodeRatchetSingleUseCodeProviderOptions = WardenMailerAndExpiringCodeRatchetSingleUseCodeProvider.defaultOptions(),
   ) {}
