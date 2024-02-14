@@ -200,12 +200,12 @@ some issues with type overloading in the AWS library itself.
 
 ## [0.7.x] - 2020-05-04
 ### Changed
-- Breaking change to Mailer (switch to config object, add allowedDestinationEmails handling)
+- Breaking change to SesMailSendingProvider (switch to config object, add allowedDestinationEmails handling)
 - Removed Gulp for security reasons.
 
 ## [0.6.x] - 2020-04-22
 ### Changed
--Breaking change to Mailer (adding Handlebars layouts)
+-Breaking change to SesMailSendingProvider (adding Handlebars layouts)
 
 ## [0.5.x] - 2019-10-19
 ### Changed

@@ -1,30 +1,27 @@
 import { ReadyToSendEmail } from './ready-to-send-email.js';
-import { SendEmailResponse, SendRawEmailCommand, SendRawEmailCommandOutput, SESClient } from '@aws-sdk/client-ses';
 import { Mailer } from './mailer.js';
 import { EmailAttachment } from './email-attachment.js';
-import { Base64Ratchet, StringRatchet } from '@bitblit/ratchet-common';
 import { MailerConfig } from './mailer-config.js';
-import { mockClient } from 'aws-sdk-client-mock';
+import { StringRatchet } from '../lang/string-ratchet.js';
+import { Base64Ratchet } from '../lang/base64-ratchet.js';
+import { TestMailSendingProvider } from './test-mail-sending-provider';
+import { SendEmailResult } from './send-email-result';
 
 let mockSES;
 const smallImageBase64: string =
   'iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII';
 
 describe('#mailer', function () {
-  mockSES = mockClient(SESClient);
-
-  beforeEach(() => {
-    mockSES.reset();
-  });
+  const testProvider: TestMailSendingProvider = new TestMailSendingProvider();
+  beforeEach(() => {});
 
   it('should send email', async () => {
-    const config: MailerConfig = {
+    const config: MailerConfig<string, string> = {
+      provider: testProvider,
       defaultSendingAddress: 'test1@test.com',
       autoBccAddresses: [], //['test2@test.com','test2@test.com'],
-      archive: null, //new S3CacheRatchet(new S3(), 'outbound-email-archive'),
-      archivePrefix: null, //'test'
     };
-    const svc: Mailer = new Mailer(mockSES, config);
+    const svc: Mailer<string, string> = new Mailer<string, string>(config);
 
     const attach1: EmailAttachment = {
       filename: 'test.txt',
@@ -47,21 +44,18 @@ describe('#mailer', function () {
       attachments: [attach1, attach2],
     };
 
-    mockSES.on(SendRawEmailCommand).resolves({} as SendRawEmailCommandOutput);
-
-    const result: SendEmailResponse = await svc.sendEmail(rts);
+    const result: SendEmailResult<string, string> = await svc.sendEmail(rts);
 
     expect(result).toBeTruthy();
   });
 
   it('should allow for unicode in email subject', async () => {
-    const config: MailerConfig = {
+    const config: MailerConfig<string, string> = {
+      provider: testProvider,
       defaultSendingAddress: 'jflint@adomni.com',
       autoBccAddresses: [],
-      archive: null,
-      archivePrefix: null,
     };
-    const svc: Mailer = new Mailer(mockSES, config);
+    const svc: Mailer<string, string> = new Mailer<string, string>(config);
     const rts: ReadyToSendEmail = {
       txtMessage: 'test txt',
       htmlMessage: '<h1>Test html</h1><p>Test paragraph</p>',
@@ -70,17 +64,16 @@ describe('#mailer', function () {
       destinationAddresses: ['jflint@adomni.com'],
     };
 
-    mockSES.on(SendRawEmailCommand).resolves({} as SendRawEmailCommandOutput);
-
-    const result: SendEmailResponse = await svc.sendEmail(rts);
+    const result: SendEmailResult<string, string> = await svc.sendEmail(rts);
     expect(result).toBeTruthy();
   });
 
   it('should filter outbound', async () => {
-    const config: MailerConfig = {
+    const config: MailerConfig<string, string> = {
+      provider: testProvider,
       allowedDestinationEmails: [/.*test\.com/, /.*.test2\.com/],
     };
-    const svc: Mailer = new Mailer({} as SESClient, config);
+    const svc: Mailer<string, string> = new Mailer<string, string>(config);
 
     const out1: string[] = ['a@test.com', 'b@fail.com'];
     const res1: string[] = svc.filterEmailsToValid(out1);
@@ -94,15 +87,14 @@ describe('#mailer', function () {
   });
 
   it('should fix a huge text/html body', async () => {
-    const config: MailerConfig = {
+    const config: MailerConfig<string, string> = {
+      provider: testProvider,
       defaultSendingAddress: 'test@test.com',
       autoBccAddresses: [], //['test2@test.com','test2@test.com'],
-      archive: null, //new S3CacheRatchet(new S3(), 'outbound-email-archive'),
-      archivePrefix: null, //'test'
       maxMessageBodySizeInBytes: 500,
       maxAttachmentSizeInBase64Bytes: 1000,
     };
-    const svc: Mailer = new Mailer(mockSES, config);
+    const svc: Mailer<string, string> = new Mailer<string, string>(config);
 
     const bigBody: string = StringRatchet.createRandomHexString(300);
 
@@ -121,9 +113,7 @@ describe('#mailer', function () {
       attachments: [bigAttach],
     };
 
-    mockSES.on(SendRawEmailCommand).resolves({} as SendRawEmailCommandOutput);
-
-    const result: SendEmailResponse = await svc.sendEmail(rts);
+    const result: SendEmailResult<string, string> = await svc.sendEmail(rts);
 
     expect(result).toBeTruthy();
   });

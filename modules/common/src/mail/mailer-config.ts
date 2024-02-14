@@ -1,10 +1,12 @@
-import { RatchetTemplateRenderer } from '@bitblit/ratchet-common';
-import { S3CacheRatchetLike } from '../s3/s3-cache-ratchet-like.js';
+import { MailSendingProvider } from './mail-sending-provider.js';
+import { RatchetTemplateRenderer } from '../template/ratchet-template-renderer.js';
 
 /**
  * Configuration options for generic mailer
  */
-export interface MailerConfig {
+export interface MailerConfig<T, R> {
+  // The thing that actually sends the email
+  provider: MailSendingProvider<T, R>;
   // If no sending email is set, and this is, then it is used
   defaultSendingAddress?: string;
   // These addresses get added as BCC to any outbound email
@@ -17,10 +19,6 @@ export interface MailerConfig {
   // If set, any outbound email address will be checked against this list and removed if it does not match
   // Typically used for testing dev/demo configs
   allowedDestinationEmails?: RegExp[];
-  // If set, any outbound email is also archived to this bucket
-  archive?: S3CacheRatchetLike;
-  // If set, any outbound email is archived under this prefix using the above ratchet
-  archivePrefix?: string;
   // If set, if the txt or html bodies are larger than this they will be auto-converted to attachments
   // For SES, this should be 10485760 or less as of 2021-01-27
   maxMessageBodySizeInBytes?: number;

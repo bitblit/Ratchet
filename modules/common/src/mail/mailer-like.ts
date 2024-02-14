@@ -1,6 +1,6 @@
 import { ReadyToSendEmail } from './ready-to-send-email.js';
-import { SendRawEmailResponse } from '@aws-sdk/client-ses';
 import { ResolvedReadyToSendEmail } from './resolved-ready-to-send-email.js';
+import { SendEmailResult } from './send-email-result';
 
 /**
  * Generic Mail Sender for AWS.
@@ -9,14 +9,14 @@ import { ResolvedReadyToSendEmail } from './resolved-ready-to-send-email.js';
  * ses: AWS SES handler, properly configured
  * defaultSendingAddress:
  */
-export interface MailerLike {
+export interface MailerLike<T, R> {
   fillEmailBody(
     rts: ReadyToSendEmail,
     context: any,
     htmlTemplateName: string,
     txtTemplateName?: string,
     layoutName?: string,
-    partialNames?: string[]
+    partialNames?: string[],
   ): Promise<ReadyToSendEmail>;
 
   fillEmailBodyAndSend(
@@ -25,8 +25,8 @@ export interface MailerLike {
     htmlTemplateName: string,
     txtTemplateName?: string,
     layoutName?: string,
-    partialNames?: string[]
-  ): Promise<SendRawEmailResponse>;
+    partialNames?: string[],
+  ): Promise<SendEmailResult<T, R>>;
 
   filterEmailsToValid(emails: string[]): string[];
 
@@ -34,5 +34,5 @@ export interface MailerLike {
 
   applyLimitsToAttachmentSizesIfAnyInPlace(rts: ResolvedReadyToSendEmail): void;
 
-  sendEmail(inRts: ReadyToSendEmail): Promise<SendRawEmailResponse>;
+  sendEmail(inRts: ReadyToSendEmail): Promise<SendEmailResult<T, R>>;
 }
