@@ -6,7 +6,8 @@ import { Logger } from '@bitblit/ratchet-common';
 describe('#waitForNonNullOnSubject', function () {
   it('should resolve after 1 second', async () => {
     const sub: BehaviorSubject<number> = new BehaviorSubject<number>(null);
-    const testFn: any = PromiseRatchet.wait(1000).then((r) => {
+    //const testFn: any =
+    PromiseRatchet.wait(1000).then((r) => {
       sub.next(5);
     });
 

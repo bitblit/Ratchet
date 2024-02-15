@@ -89,11 +89,11 @@ export class HandlebarsRatchet {
     return Math.min(...args.slice(0, -1));
   }
 
-  public static and(...args): boolean {
+  public static and(...args: any[]): boolean {
     return Array.prototype.every.call(args, Boolean);
   }
 
-  public static or(...args): boolean {
+  public static or(...args: any[]): boolean {
     return Array.prototype.slice.call(args, 0, -1).some(Boolean);
   }
 
@@ -115,7 +115,7 @@ export class HandlebarsRatchet {
    * are someone who has spent your whole life working in a university system and never having to make a payroll
    * @param args
    */
-  public static reversePolishNotation(...args): string {
+  public static reversePolishNotation(...args: any[]): string {
     let rval: string = null;
 
     try {
@@ -130,9 +130,9 @@ export class HandlebarsRatchet {
         const a = args[i];
         if (fns[a]) {
           if (stack.length > 1) {
-            const op2 = stack.pop();
-            const op1 = stack.pop();
-            const res = fns[a](op1, op2, {}); // Add back in the last-place placeholder for any ...any f
+            const op2: any = stack.pop();
+            const op1: any = stack.pop();
+            const res: any = fns[a](op1, op2, {}); // Add back in the last-place placeholder for any ...any f
             stack.push(res);
           } else {
             ErrorRatchet.throwFormattedErr('Cannot execute operation %s - not enough args', a);
