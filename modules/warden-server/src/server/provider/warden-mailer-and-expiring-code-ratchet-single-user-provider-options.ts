@@ -3,7 +3,8 @@
 export interface WardenMailerAndExpiringCodeRatchetSingleUseCodeProviderOptions {
   emailBaseLayoutName?: string;
   expiringTokenHtmlTemplateName: string;
-  expiringTokenTxtTemplateName: string;
+  expiringTokenTxtTemplateName?: string;
   magicLinkHtmlTemplateName: string;
-  magicLinkTxtTemplateName: string;
+  magicLinkTxtTemplateName?: string;
+  magicLinkSubjectLine?: string;
 }
