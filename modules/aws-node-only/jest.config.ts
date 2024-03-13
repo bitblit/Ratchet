@@ -1,15 +1,10 @@
-// Ripped from https://kulshekhar.github.io/ts-jest/docs/next/guides/esm-support/
 import type { JestConfigWithTsJest } from 'ts-jest';
 
-const config: JestConfigWithTsJest = {
-  extensionsToTreatAsEsm: ['.ts'],
-  passWithNoTests: true,
-  //preset: 'ts-jest',
-  testEnvironment: 'node',
+const jestConfig: JestConfigWithTsJest = {
+  // [...]
+  preset: 'ts-jest/presets/default-esm', // or other ESM presets
   collectCoverage: true,
   coverageDirectory: 'artifacts/coverage',
-  roots: ['src'],
-  testMatch: ['**/__tests__/**/*.ts?(x)', '**/?(*.)+(spec|test).ts?(x)'],
   maxConcurrency: 10,
   /*
     This is recommended to catch files you are not testing at all, but will
@@ -29,7 +24,7 @@ const config: JestConfigWithTsJest = {
   transform: {
     // '^.+\\.[tj]sx?$' to process js/ts with `ts-jest`
     // '^.+\\.m?[tj]sx?$' to process js/ts/mjs/mts with `ts-jest`
-    '^.+\\.m?[tj]sx?$': [
+    '^.+\\.tsx?$': [
       'ts-jest',
       {
         useESM: true,
@@ -38,4 +33,4 @@ const config: JestConfigWithTsJest = {
   },
 };
 
-export default config;
+export default jestConfig;
