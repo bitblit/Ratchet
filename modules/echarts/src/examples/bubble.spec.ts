@@ -1,7 +1,6 @@
 import { EChartsOption } from 'echarts';
 import { EChartRatchet } from '../common/echart-ratchet.js';
-
-import echarts from 'echarts';
+import * as echarts from 'echarts';
 
 const data = [
   [
