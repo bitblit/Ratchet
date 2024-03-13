@@ -33,11 +33,11 @@
   "dependencies": {
     "@bitblit/ratchet-common": "0.0.0-snapshot",
     "canvas": "2.11.2",
-    "echarts": "5.4.3"
+    "echarts": "5.5.0"
   },
   "peerDependencies": {
     "@bitblit/ratchet-common": "0.0.0-snapshot",
     "canvas": "^2.11.2",
-    "echarts": "^5.4.3"
+    "echarts": "^5.5.0"
   }
 }
