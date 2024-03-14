@@ -80,7 +80,7 @@
     "@rollup/plugin-typescript": "11.1.6",
     "@types/jest": "29.5.12",
     "@types/luxon": "3.4.2",
-    "@types/node": "18.19.23",
+    "@types/node": "18.19.24",
     "@typescript-eslint/eslint-plugin": "7.2.0",
     "@typescript-eslint/parser": "7.2.0",
     "barrelsby": "2.8.1",
