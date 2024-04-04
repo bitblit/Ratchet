@@ -5,6 +5,8 @@ export class ServiceUnavailable<T = void> extends RestfulApiHttpError<T> {
 
   constructor(...errors: string[]) {
     super(...errors);
+    Object.setPrototypeOf(this, ServiceUnavailable.prototype);
+
     this.withHttpStatusCode(ServiceUnavailable.HTTP_CODE);
   }
 }

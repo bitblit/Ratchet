@@ -7,7 +7,9 @@ export class TimeoutToken {
   constructor(
     private title: string,
     private timeoutMS: number,
-  ) {}
+  ) {
+    Object.setPrototypeOf(this, TimeoutToken.prototype);
+  }
 
   public writeToLog(logLevel: LoggerLevelName = LoggerLevelName.warn): void {
     Logger.logByLevel(logLevel, 'Timed out after %d ms waiting for results of %s', this.timeoutMS, this.title);

@@ -5,6 +5,8 @@ export class MisconfiguredError<T = void> extends RestfulApiHttpError<T> {
 
   constructor(...errors: string[]) {
     super(...errors);
+    Object.setPrototypeOf(this, MisconfiguredError.prototype);
+
     this.withHttpStatusCode(MisconfiguredError.HTTP_CODE);
   }
 }

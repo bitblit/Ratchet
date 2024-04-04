@@ -5,6 +5,8 @@ export class NotImplemented<T = void> extends RestfulApiHttpError<T> {
 
   constructor(...errors: string[]) {
     super(...errors);
+    Object.setPrototypeOf(this, NotImplemented.prototype);
+
     this.withHttpStatusCode(NotImplemented.HTTP_CODE);
   }
 }

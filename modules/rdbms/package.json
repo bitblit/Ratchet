@@ -49,14 +49,14 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@bitblit/ratchet-common": "0.0.0-snapshot",
-    "get-port": "7.0.0",
-    "mysql2": "3.9.2",
+    "get-port": "7.1.0",
+    "mysql2": "3.9.3",
     "tunnel-ssh": "5.1.2"
   },
   "peerDependencies": {
     "@bitblit/ratchet-common": "0.0.0-snapshot",
-    "get-port": "^7.0.0",
-    "mysql2": "^3.9.1",
+    "get-port": "^7.1.0",
+    "mysql2": "^3.9.3",
     "tunnel-ssh": "^5.1.2"
   }
 }
