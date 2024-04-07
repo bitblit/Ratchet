@@ -23,9 +23,9 @@ describe('#ecrUnusedImageCleaner', function () {
 
    */
 
-  it('should run the cleaner', async () => {
+  xit('should run the cleaner', async () => {
     Logger.info('Testing cleaner');
-    AwsCredentialsRatchet.applySetProfileEnvironmentalVariable('pluma');
+    AwsCredentialsRatchet.applySetProfileEnvironmentalVariable('your-profile-here');
     const cleaner: EcrUnusedImageCleaner = new EcrUnusedImageCleaner(new ECRClient({ region: 'us-east-1' }));
     const output: EcrUnusedImageCleanerOutput = await cleaner.performCleaning({
       dryRun: false,
