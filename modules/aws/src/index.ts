@@ -35,6 +35,8 @@ export * from './dynamodb/hash-spreader.js';
 export * from './ec2/ec2-ratchet.js';
 export * from './ecr/ecr-ratchet.js';
 export * from './ecr/ecr-repository-prune-config.js';
+export * from './ecr/ecr-unused-image-cleaner.js';
+export * from './ecr/ecr-unused-image-cleaner-options';
 export * from './environment/cascade-environment-service-provider.js';
 export * from './environment/env-var-environment-service-provider.js';
 export * from './environment/environment-service-config.js';

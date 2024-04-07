@@ -782,6 +782,59 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@aws-sdk/client-lambda@npm:3.533.0":
+  version: 3.533.0
+  resolution: "@aws-sdk/client-lambda@npm:3.533.0"
+  dependencies:
+    "@aws-crypto/sha256-browser": 3.0.0
+    "@aws-crypto/sha256-js": 3.0.0
+    "@aws-sdk/client-sts": 3.533.0
+    "@aws-sdk/core": 3.533.0
+    "@aws-sdk/credential-provider-node": 3.533.0
+    "@aws-sdk/middleware-host-header": 3.533.0
+    "@aws-sdk/middleware-logger": 3.533.0
+    "@aws-sdk/middleware-recursion-detection": 3.533.0
+    "@aws-sdk/middleware-user-agent": 3.533.0
+    "@aws-sdk/region-config-resolver": 3.533.0
+    "@aws-sdk/types": 3.533.0
+    "@aws-sdk/util-endpoints": 3.533.0
+    "@aws-sdk/util-user-agent-browser": 3.533.0
+    "@aws-sdk/util-user-agent-node": 3.533.0
+    "@smithy/config-resolver": ^2.1.5
+    "@smithy/core": ^1.3.8
+    "@smithy/eventstream-serde-browser": ^2.1.4
+    "@smithy/eventstream-serde-config-resolver": ^2.1.4
+    "@smithy/eventstream-serde-node": ^2.1.4
+    "@smithy/fetch-http-handler": ^2.4.5
+    "@smithy/hash-node": ^2.1.4
+    "@smithy/invalid-dependency": ^2.1.4
+    "@smithy/middleware-content-length": ^2.1.4
+    "@smithy/middleware-endpoint": ^2.4.6
+    "@smithy/middleware-retry": ^2.1.7
+    "@smithy/middleware-serde": ^2.2.1
+    "@smithy/middleware-stack": ^2.1.4
+    "@smithy/node-config-provider": ^2.2.5
+    "@smithy/node-http-handler": ^2.4.3
+    "@smithy/protocol-http": ^3.2.2
+    "@smithy/smithy-client": ^2.4.5
+    "@smithy/types": ^2.11.0
+    "@smithy/url-parser": ^2.1.4
+    "@smithy/util-base64": ^2.2.1
+    "@smithy/util-body-length-browser": ^2.1.1
+    "@smithy/util-body-length-node": ^2.2.2
+    "@smithy/util-defaults-mode-browser": ^2.1.7
+    "@smithy/util-defaults-mode-node": ^2.2.7
+    "@smithy/util-endpoints": ^1.1.5
+    "@smithy/util-middleware": ^2.1.4
+    "@smithy/util-retry": ^2.1.4
+    "@smithy/util-stream": ^2.1.5
+    "@smithy/util-utf8": ^2.2.0
+    "@smithy/util-waiter": ^2.1.4
+    tslib: ^2.5.0
+  checksum: cd561c3cad433f50b562ce4807e5d7b4642f81e616023d6ce50cb13b049569f90307cc3953778a4f815b19e12e1627f3244bcd1b33cb2bb266df5a3ad1de12c3
+  languageName: node
+  linkType: hard
+
 "@aws-sdk/client-route-53@npm:3.533.0":
   version: 3.533.0
   resolution: "@aws-sdk/client-route-53@npm:3.533.0"
@@ -2224,6 +2277,7 @@ __metadata:
     "@aws-sdk/client-ec2": 3.533.0
     "@aws-sdk/client-ec2-instance-connect": 3.533.0
     "@aws-sdk/client-ecr": 3.533.0
+    "@aws-sdk/client-lambda": 3.533.0
     "@aws-sdk/client-route-53": 3.533.0
     "@aws-sdk/client-s3": 3.533.0
     "@aws-sdk/client-ses": 3.533.0
@@ -2250,6 +2304,7 @@ __metadata:
     "@aws-sdk/client-ec2": ^3.533.0
     "@aws-sdk/client-ec2-instance-connect": ^3.533.0
     "@aws-sdk/client-ecr": ^3.533.0
+    "@aws-sdk/client-lambda": ^3.533.0
     "@aws-sdk/client-route-53": ^3.533.0
     "@aws-sdk/client-s3": ^3.533.0
     "@aws-sdk/client-ses": ^3.533.0
@@ -2279,6 +2334,8 @@ __metadata:
     "@aws-sdk/client-ec2-instance-connect":
       optional: true
     "@aws-sdk/client-ecr":
+      optional: true
+    "@aws-sdk/client-lambda":
       optional: true
     "@aws-sdk/client-route-53":
       optional: true
