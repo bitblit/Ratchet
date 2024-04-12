@@ -104,7 +104,7 @@
   },
   "devDependencies": {
     "@apollo/server": "4.10.2",
-    "@types/aws-lambda": "8.10.136",
+    "@types/aws-lambda": "8.10.137",
     "aws-sdk-client-mock": "3.1.0",
     "graphql": "16.8.1",
     "graphql-tag": "2.12.6"
