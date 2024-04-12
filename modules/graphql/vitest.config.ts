@@ -7,6 +7,12 @@ export default defineConfig({
     coverage: {
       reportsDirectory: 'artifacts/coverage',
       provider: 'istanbul', // or 'v8'
+      thresholds: {
+        lines: 0,
+        functions: 0,
+        branches: 0,
+        statements: 0,
+      },
     },
   },
 });
