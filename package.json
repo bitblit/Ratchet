@@ -25,7 +25,7 @@
   "scripts": {
     "clean": "wsrun mod:clean",
     "build": "wsrun --serial mod:build",
-    "test": "wsrun mod:test --detectOpenHandles",
+    "test": "wsrun mod:test",
     "apply-github-info": "./apply-github-info.sh",
     "set-codependencies": "echo $GITHUB_RUN_NUMBER && ./set-codependencies.sh 4.0.$GITHUB_RUN_NUMBER",
     "set-codependencies-alpha": "echo $GITHUB_RUN_NUMBER && ./set-codependencies.sh 4.0.\"$GITHUB_RUN_NUMBER\"-alpha",
