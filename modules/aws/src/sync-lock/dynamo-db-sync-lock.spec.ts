@@ -1,17 +1,18 @@
 import { DynamoDbSyncLock } from './dynamo-db-sync-lock.js';
 import { DynamoRatchet } from '../dynamodb/dynamo-ratchet.js';
 import { Logger } from '@bitblit/ratchet-common';
-import { JestRatchet } from '@bitblit/ratchet-jest';
-import { jest } from '@jest/globals';
 
-let mockDR: jest.Mocked<DynamoRatchet>;
+import { beforeEach, describe, expect, test } from 'vitest';
+import { mock, MockProxy } from 'vitest-mock-extended';
+
+let mockDR: MockProxy<DynamoRatchet>;
 
 describe('#syncLockService', () => {
   beforeEach(() => {
-    mockDR = JestRatchet.mock(jest.fn);
+    mockDR = mock<DynamoRatchet>();
   });
 
-  xit('should test sync locks', async () => {
+  test.skip('should test sync locks', async () => {
     const svc: DynamoDbSyncLock = new DynamoDbSyncLock(mockDR, 'test-table');
 
     const lockTestValue: string = 'SYNC_LOCK_TEST';
@@ -26,7 +27,7 @@ describe('#syncLockService', () => {
     await svc.releaseLock(lockTestValue);
   });
 
-  it('should clear expired sync locks', async () => {
+  test('should clear expired sync locks', async () => {
     mockDR.fullyExecuteScan.mockResolvedValue([{ lockingKey: 'aa' }, { lockingKey: 'ab' }]);
     mockDR.deleteAllInBatches.mockResolvedValue(2);
 

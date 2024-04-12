@@ -5,9 +5,10 @@ import { Logger } from '@bitblit/ratchet-common';
 import { Ec2Ratchet } from './ec2-ratchet.js';
 import { SendSSHPublicKeyResponse } from '@aws-sdk/client-ec2-instance-connect';
 import { Instance } from '@aws-sdk/client-ec2';
+import { expect, test, describe, vi, beforeEach } from 'vitest';
 
 describe('#EC2Ratchet', function () {
-  xit('should send a public key', async () => {
+  test.skip('should send a public key', async () => {
     const ratchet: Ec2Ratchet = new Ec2Ratchet();
     const instId: string = 'i-replace_me';
     const pubKey: string = fs.readFileSync(path.join(os.homedir(), '.ssh/id_rsa.pub')).toString();
@@ -18,7 +19,7 @@ describe('#EC2Ratchet', function () {
     expect(res).toBeTruthy();
   });
 
-  xit('should list instances', async () => {
+  test.skip('should list instances', async () => {
     const ratchet: Ec2Ratchet = new Ec2Ratchet();
 
     const res: Instance[] = await ratchet.listAllInstances();
@@ -28,7 +29,7 @@ describe('#EC2Ratchet', function () {
     expect(res.length).toBeGreaterThan(1);
   });
 
-  xit('should start and stop an instance', async () => {
+  test.skip('should start and stop an instance', async () => {
     const ratchet: Ec2Ratchet = new Ec2Ratchet();
 
     const instId: string = 'i-replace_me';

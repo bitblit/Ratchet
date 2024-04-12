@@ -1,5 +1,6 @@
 import { TransformRatchet } from './transform-ratchet.js';
 import { BuiltInTransforms } from './built-in-transforms.js';
+import { expect, test, describe } from 'vitest';
 
 describe('#formatBytes', function () {
   const srcData = {
@@ -27,7 +28,7 @@ describe('#formatBytes', function () {
     },
   };
 
-  it('should convert camel to snakecase', function () {
+  test('should convert camel to snakecase', function () {
     const result = TransformRatchet.transform(srcData, [BuiltInTransforms.keysOnly(BuiltInTransforms.camelToSnakeCase())]);
     expect(result['dateKey1']).toBeUndefined();
     expect(result['intKey1']).toBeUndefined();
@@ -43,38 +44,38 @@ describe('#formatBytes', function () {
     expect(result['sub_key']).toBeTruthy();
   });
 
-  it('should duplicate key1 into key3', function () {
+  test('should duplicate key1 into key3', function () {
     const result = TransformRatchet.transform(srcData, [BuiltInTransforms.makeDuplicateField('key1', 'key3')]);
     expect(result.key1).toEqual('value1');
     expect(result.key3).toEqual('value1');
   });
 
-  it('should create a new field named key3', function () {
+  test('should create a new field named key3', function () {
     const result = TransformRatchet.transform(srcData, [BuiltInTransforms.addField('key3', 'value3')]);
     expect(result.key1).toEqual('value1');
     expect(result.key3).toEqual('value3');
   });
 
-  it('should reformat the date in dateField1 to MM-dd-yyyy', function () {
+  test('should reformat the date in dateField1 to MM-dd-yyyy', function () {
     const result = TransformRatchet.transform(srcData, [BuiltInTransforms.reformatDateFields(['dateKey1'], 'yyyy-MM-dd', 'MM/dd/yyyy')]);
     expect(result.dateKey1).toEqual('02/01/1995');
   });
 
-  it('should convert numbers to booleans', function () {
+  test('should convert numbers to booleans', function () {
     const result = TransformRatchet.transform(srcData, [BuiltInTransforms.numberToBool(['intKey1', 'intKey2'])]);
     expect(result.key1).toEqual('value1');
     expect(result.intKey1).toEqual(false);
     expect(result.intKey2).toEqual(true);
   });
 
-  it('should convert booleans to number', function () {
+  test('should convert booleans to number', function () {
     const result = TransformRatchet.transform(srcData, [BuiltInTransforms.boolToNumber(['boolKey1', 'boolKey2'])]);
     expect(result.key1).toEqual('value1');
     expect(result.boolKey1).toEqual(1);
     expect(result.boolKey2).toEqual(0);
   });
 
-  it('should concatenate key1 and key2 into key3', function () {
+  test('should concatenate key1 and key2 into key3', function () {
     const result = TransformRatchet.transform(srcData, [BuiltInTransforms.concatenateToNewField('key3', ['key1', 'key2'])]);
     expect(result.key1).toBeUndefined();
     expect(result.key2).toBeUndefined();
@@ -84,12 +85,12 @@ describe('#formatBytes', function () {
     expect(result.subKey.key3).toEqual('subValue1subValue2');
   });
 
-  it('should strip a key correctly', function () {
+  test('should strip a key correctly', function () {
     const result = TransformRatchet.transform(srcData, [BuiltInTransforms.stripStringTransform('key1')]);
     expect(result.key1).toBeUndefined();
   });
 
-  it('should rename a key correctly', function () {
+  test('should rename a key correctly', function () {
     const result = TransformRatchet.transform(srcData, [BuiltInTransforms.stringReplaceTransform('key1', 'newKey1')]);
     expect(result.key1).toBeUndefined();
     expect(result.newKey1).toEqual('value1');
@@ -97,7 +98,7 @@ describe('#formatBytes', function () {
     expect(result.subKey.newKey1).toEqual('subValue1');
   });
 
-  it('should retain only key1 and key2', function () {
+  test('should retain only key1 and key2', function () {
     const result = TransformRatchet.transform(srcData, [BuiltInTransforms.keysOnly(BuiltInTransforms.retainAll(['key1', 'key2']))]);
     expect(result.key1).toBeTruthy();
     expect(result.key2).toBeTruthy();
@@ -106,7 +107,7 @@ describe('#formatBytes', function () {
     expect(result.subKey).toBeUndefined();
   });
 
-  it('should remove only key1 and key2', function () {
+  test('should remove only key1 and key2', function () {
     const result = TransformRatchet.transform(srcData, [BuiltInTransforms.keysOnly(BuiltInTransforms.removeAll(['key1', 'key2']))]);
     expect(result.key1).toBeUndefined();
     expect(result.key2).toBeUndefined();
@@ -115,7 +116,7 @@ describe('#formatBytes', function () {
     expect(result.subKey).toBeTruthy();
   });
 
-  it('should convert snake to camelcase', function () {
+  test('should convert snake to camelcase', function () {
     const result = TransformRatchet.transform(srcUnderData, [BuiltInTransforms.keysOnly(BuiltInTransforms.snakeToCamelCase())]);
     expect(result['new_key_1']).toBeUndefined();
     expect(result['sub_key']).toBeUndefined();
@@ -124,7 +125,7 @@ describe('#formatBytes', function () {
     expect(result.subKey.newKey2).toBeTruthy();
   });
 
-  it('should convert strings to numbers', function () {
+  test('should convert strings to numbers', function () {
     const result = TransformRatchet.transform(srcData, [BuiltInTransforms.valuesOnly(BuiltInTransforms.stringToNumber())]);
     expect(result['convertToNumber']).toEqual(1);
     expect(result['convertToNumberAlso']).toEqual(20);

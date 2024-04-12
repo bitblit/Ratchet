@@ -35,7 +35,7 @@ export class QueryUtil {
   public static renderQueryStringForPasteIntoTool(
     query: string,
     inFields: object | null,
-    transform: (x: unknown) => string = QueryUtil.sqlInjectionUnsafeParamRenderer
+    transform: (x: unknown) => string = QueryUtil.sqlInjectionUnsafeParamRenderer,
   ): string | null {
     const fields = inFields ?? {};
     // This is not safe from sql injection at all so it really should only be used for

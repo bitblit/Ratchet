@@ -1,4 +1,5 @@
 import { ArrayRatchet, MatchReport } from './array-ratchet.js';
+import { expect, test, describe } from 'vitest';
 
 const sortedArr: any[] = [
   {
@@ -36,7 +37,7 @@ const sortedArr: any[] = [
 ];
 
 describe('#extractSubarrayFromSortedByNumberField', function () {
-  it('should extract the subarray', function () {
+  test('should extract the subarray', function () {
     const subArr1: any[] = ArrayRatchet.extractSubarrayFromSortedByNumberField(sortedArr, 'v', 5, 14);
     expect(subArr1.length).toEqual(2);
 
@@ -49,7 +50,7 @@ describe('#extractSubarrayFromSortedByNumberField', function () {
 });
 
 describe('#compareTwoArrays', function () {
-  it('should create a match report', function () {
+  test('should create a match report', function () {
     const arr1: string[] = ['a', 'b', 'c'];
     const arr2: string[] = ['a', 'e', 'i', 'o', 'u'];
 
@@ -63,7 +64,7 @@ describe('#compareTwoArrays', function () {
 });
 
 describe('#findSplit', function () {
-  it('should find the split', function () {
+  test('should find the split', function () {
     // All values past the split point should be larger than the target
     const split10: number = ArrayRatchet.findSplit(sortedArr, 'v', 10);
     const split4: number = ArrayRatchet.findSplit(sortedArr, 'v', 4);

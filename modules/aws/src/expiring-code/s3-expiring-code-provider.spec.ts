@@ -1,22 +1,23 @@
-import { JestRatchet } from '@bitblit/ratchet-jest';
 import { S3CacheRatchet } from '../s3/s3-cache-ratchet.js';
 import { S3ExpiringCodeProvider, S3ExpiringCodeProviderFileWrapper } from './s3-expiring-code-provider.js';
 import { PutObjectCommandOutput, PutObjectOutput } from '@aws-sdk/client-s3';
 import { ExpiringCode } from './expiring-code.js';
-import { jest } from '@jest/globals';
+import { expect, test, describe, vi, beforeEach } from 'vitest';
+import { mock, MockProxy } from 'vitest-mock-extended';
+
 import { S3CacheRatchetLike } from '../s3/s3-cache-ratchet-like.js';
 
-let mockS3Ratchet: jest.Mocked<S3CacheRatchetLike>;
+let mockS3Ratchet: MockProxy<S3CacheRatchetLike>;
 const testCode: ExpiringCode = { code: '12345', context: 'ctx', expiresEpochMS: Date.now() + 100_000, tags: ['tag1'] };
 const testCode2: ExpiringCode = { code: '45678', context: 'ctx', expiresEpochMS: Date.now() + 100_000, tags: ['tag1'] };
 
 describe('#S3ExpiringCodeProvider', () => {
   beforeEach(() => {
-    mockS3Ratchet = JestRatchet.mock(jest.fn);
+    mockS3Ratchet = mock<S3CacheRatchetLike>();
     mockS3Ratchet.getDefaultBucket.mockReturnValue('TEST-BUCKET');
   });
 
-  it('Should fetch file', async () => {
+  test('Should fetch file', async () => {
     const val: S3ExpiringCodeProvider = new S3ExpiringCodeProvider(mockS3Ratchet, 'test.json');
     const output: S3ExpiringCodeProviderFileWrapper = await val.fetchFile();
 
@@ -25,7 +26,7 @@ describe('#S3ExpiringCodeProvider', () => {
     expect(output.lastModifiedEpochMS).not.toBeFalsy();
   });
 
-  it('Should update file', async () => {
+  test('Should update file', async () => {
     const val: S3ExpiringCodeProvider = new S3ExpiringCodeProvider(mockS3Ratchet, 'test.json');
     mockS3Ratchet.writeObjectToCacheFile.mockResolvedValue({} as unknown as PutObjectCommandOutput);
 
@@ -34,7 +35,7 @@ describe('#S3ExpiringCodeProvider', () => {
     expect(wrote).not.toBeFalsy();
   });
 
-  it('Should check code', async () => {
+  test('Should check code', async () => {
     mockS3Ratchet.fetchCacheFileAsObject.mockResolvedValue({
       data: [testCode],
       lastModifiedEpochMS: 1234,
@@ -48,7 +49,7 @@ describe('#S3ExpiringCodeProvider', () => {
     expect(testInvalidCode).toBeFalsy();
   });
 
-  it('Should store code', async () => {
+  test('Should store code', async () => {
     mockS3Ratchet.fetchCacheFileAsObject.mockResolvedValue({
       data: [testCode],
       lastModifiedEpochMS: 1234,

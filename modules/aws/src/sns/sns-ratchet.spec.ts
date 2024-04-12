@@ -1,6 +1,7 @@
 import { PublishCommand, PublishCommandOutput, SNSClient } from '@aws-sdk/client-sns';
 import { SnsRatchet } from './sns-ratchet.js';
 import { mockClient } from 'aws-sdk-client-mock';
+import { expect, test, describe, vi, beforeEach } from 'vitest';
 
 let mockSNS;
 
@@ -10,7 +11,7 @@ describe('#SNSRatchet', function () {
     mockSNS.reset();
   });
 
-  it('should send a message', async () => {
+  test('should send a message', async () => {
     //mockSNS.publish.resolves({} as PublishCommandOutput as never);
     mockSNS.on(PublishCommand).resolves({} as PublishCommandOutput);
 

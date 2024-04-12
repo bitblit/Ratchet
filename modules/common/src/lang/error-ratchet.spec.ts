@@ -1,7 +1,8 @@
 import { ErrorRatchet } from './error-ratchet.js';
+import { expect, test, describe } from 'vitest';
 
 describe('#errorRatchet', function () {
-  it('should cast to error', async () => {
+  test('should cast to error', async () => {
     const e1: Error = new Error('test1');
     const e2: string = 'test2';
 
@@ -15,7 +16,7 @@ describe('#errorRatchet', function () {
     expect(e2p instanceof Error).toBeTruthy();
   });
 
-  it('should correctly stringify', async () => {
+  test('should correctly stringify', async () => {
     const flag: string = 'test1';
     const e1: Error = new Error(flag);
     const out: string = ErrorRatchet.safeStringifyErr(e1);

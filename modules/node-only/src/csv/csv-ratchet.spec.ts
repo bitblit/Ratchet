@@ -3,9 +3,11 @@ import { CsvRatchet } from './csv-ratchet.js';
 import { Logger } from '@bitblit/ratchet-common';
 import { PromiseRatchet } from '@bitblit/ratchet-common';
 import { StringWritable } from '../stream/string-writable.js';
+import { expect, test, describe, vi, beforeEach } from 'vitest';
+import { mock, MockProxy } from 'vitest-mock-extended';
 
 describe('#streamObjectsToCsv', function () {
-  it('should parse a string', async () => {
+  test('should parse a string', async () => {
     const testString: string = 'a,b\n1,2\n3,4\n';
     const out: TestItem[] = await CsvRatchet.stringParse<TestItem>(testString, CsvRatchet.defaultParseFunction<TestItem>);
 
@@ -16,7 +18,7 @@ describe('#streamObjectsToCsv', function () {
     expect(out[1].a).toEqual('3');
   });
 
-  it('should generate csv data', async () => {
+  test('should generate csv data', async () => {
     const output: TestItem[] = [
       { a: 1, b: '2' },
       { a: 3, b: '4' },
@@ -27,7 +29,7 @@ describe('#streamObjectsToCsv', function () {
     expect(testString.length).toBeGreaterThan(10);
   });
 
-  it('should stream objects to a csv', async () => {
+  test('should stream objects to a csv', async () => {
     // Logger.setLevel(LoggerLevelName.debug);
     const sub: Subject<TestItem> = new Subject<TestItem>();
     const out: StringWritable = new StringWritable();

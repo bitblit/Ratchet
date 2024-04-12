@@ -1,9 +1,11 @@
 import { Logger } from '@bitblit/ratchet-common';
 import { GlobalRatchet } from '@bitblit/ratchet-common';
 import { PublishCiReleaseToSlack } from './publish-ci-release-to-slack.js';
+import { expect, test, describe, vi, beforeEach } from 'vitest';
+import { mock, MockProxy } from 'vitest-mock-extended';
 
 describe('#publishCircleCiReleaseToSlack', function () {
-  xit('should fail if not in a circle ci environment', async () => {
+  test.skip('should fail if not in a circle ci environment', async () => {
     try {
       const result: string = await PublishCiReleaseToSlack.process('https://testslack.erigir.com');
       this.bail();
@@ -13,7 +15,7 @@ describe('#publishCircleCiReleaseToSlack', function () {
     }
   });
 
-  xit('should not fail if in a circle ci environment', async () => {
+  test.skip('should not fail if in a circle ci environment', async () => {
     GlobalRatchet.setGlobalVar('CIRCLE_BUILD_NUM', '1');
     GlobalRatchet.setGlobalVar('CIRCLE_BRANCH', 'B');
     GlobalRatchet.setGlobalVar('CIRCLE_TAG', 'T');

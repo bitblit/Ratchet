@@ -1,14 +1,15 @@
 import { EnumRatchet } from './enum-ratchet.js';
 import { LoggerLevelName } from '../logger/logger-level-name.js';
+import { expect, test, describe } from 'vitest';
 
 describe('#enumRatchet', function () {
-  it('should list keys', async () => {
+  test('should list keys', async () => {
     const keys: string[] = EnumRatchet.listEnumKeys(TestEnum);
     expect(keys).toBeTruthy();
     expect(keys.length).toBeGreaterThan(1);
   });
 
-  it('should find key case insensitive', async () => {
+  test('should find key case insensitive', async () => {
     const t1: TestEnum = EnumRatchet.keyToEnum<TestEnum>(TestEnum, 'a');
     const t2: TestEnum = EnumRatchet.keyToEnum<TestEnum>(TestEnum, 'b');
     const t3: TestEnum = EnumRatchet.keyToEnum<TestEnum>(TestEnum, 'A', true);
@@ -23,13 +24,13 @@ describe('#enumRatchet', function () {
     expect(t4 === fixed).toBeTruthy();
   });
 
-  it('should parse a csv of enums', async () => {
+  test('should parse a csv of enums', async () => {
     const vals: TestEnum[] = EnumRatchet.parseCsvToEnumArray<TestEnum>(TestEnum, 'a, b');
     expect(vals).toBeTruthy();
     expect(vals.length).toEqual(2);
   });
 
-  it('should work with psuedo-enums like ratchet uses', async () => {
+  test('should work with psuedo-enums like ratchet uses', async () => {
     const keys: string[] = EnumRatchet.listEnumKeys(LoggerLevelName);
     expect(keys.length).toEqual(6);
     expect(keys.includes('info')).toBeTruthy();

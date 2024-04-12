@@ -6,13 +6,15 @@ import { TimeZoneRatchet } from '@bitblit/ratchet-common';
 import { AlbAthenaLogRatchet, AlbLogRecord, AlbLogRecordQuery } from './alb-athena-log-ratchet.js';
 import { S3Client } from '@aws-sdk/client-s3';
 import { AthenaClient } from '@aws-sdk/client-athena';
+import { expect, test, describe, vi, beforeEach } from 'vitest';
+import { mock, MockProxy } from 'vitest-mock-extended';
 
 describe('#AlbAthenaLogRatchet', function () {
-  it('Placeholder', async () => {
+  test('Placeholder', async () => {
     expect(2).toEqual(2);
   });
 
-  xit('should test a query', async () => {
+  test.skip('should test a query', async () => {
     Logger.setLevel(LoggerLevelName.debug);
     const athena: AthenaClient = new AthenaClient({ region: 'us-east-1' });
     const s3: S3Client = new S3Client({ region: 'us-east-1' });

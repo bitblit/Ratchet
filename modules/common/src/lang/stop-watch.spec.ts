@@ -1,8 +1,9 @@
 import { StopWatch } from './stop-watch.js';
 import { PromiseRatchet } from './promise-ratchet.js';
+import { expect, test, describe } from 'vitest';
 
 describe('#elapsedMS', function () {
-  it('should calculate elapsed MS correctly', async () => {
+  test('should calculate elapsed MS correctly', async () => {
     const sw: StopWatch = new StopWatch();
     await PromiseRatchet.wait(500);
     const elapsed: number = sw.elapsedMS();
@@ -10,7 +11,7 @@ describe('#elapsedMS', function () {
     expect(elapsed).toBeLessThan(600);
   });
 
-  it('should dump all', async () => {
+  test('should dump all', async () => {
     const sw: StopWatch = new StopWatch();
     sw.start('a1');
     await PromiseRatchet.wait(50);

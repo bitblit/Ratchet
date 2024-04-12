@@ -8,6 +8,8 @@ import { NoOpProcessor } from '../../built-in/background/no-op-processor.js';
 import { BackgroundAwsConfig } from '../../config/background/background-aws-config.js';
 import { SNSClient } from '@aws-sdk/client-sns';
 import { mockClient } from 'aws-sdk-client-mock';
+import { expect, test, describe, vi, beforeEach } from 'vitest';
+import { mock, MockProxy } from 'vitest-mock-extended';
 
 let mockSqs;
 let mockSns;
@@ -44,7 +46,7 @@ describe('#createEntry', function () {
     backgroundMgr = new AwsSqsSnsBackgroundManager(backgroundAwsConfig, mockSqs, mockSns);
   });
 
-  it('Should return queue attributes', async () => {
+  test('Should return queue attributes', async () => {
     mockSqs.on(GetQueueAttributesCommand).resolves({
       Attributes: {
         ApproximateNumberOfMessages: 1,
@@ -59,7 +61,7 @@ describe('#createEntry', function () {
     expect(msgCount).toEqual(1);
   });
 
-  it('Should round-trip guids with prefix no slash', async () => {
+  test('Should round-trip guids with prefix no slash', async () => {
     const prefix: string = 'test';
     const guid: string = AwsSqsSnsBackgroundManager.generateBackgroundGuid();
     expect(guid).toBeTruthy();
@@ -68,7 +70,7 @@ describe('#createEntry', function () {
     expect(outGuid).toEqual(guid);
   });
 
-  it('Should round-trip guids with prefix with slash', async () => {
+  test('Should round-trip guids with prefix with slash', async () => {
     const prefix: string = 'test/';
     const guid: string = AwsSqsSnsBackgroundManager.generateBackgroundGuid();
     expect(guid).toBeTruthy();
@@ -77,7 +79,7 @@ describe('#createEntry', function () {
     expect(outGuid).toEqual(guid);
   });
 
-  it('Should round-trip guids with no prefix', async () => {
+  test('Should round-trip guids with no prefix', async () => {
     const prefix: string = null;
     const guid: string = AwsSqsSnsBackgroundManager.generateBackgroundGuid();
     expect(guid).toBeTruthy();

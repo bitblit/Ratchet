@@ -6,9 +6,11 @@ import { RunHandlerAsFilter } from './run-handler-as-filter.js';
 import { ExtendedAPIGatewayEvent } from '../../config/http/extended-api-gateway-event.js';
 import { RouteAndParse } from '../../http/web-handler.js';
 import { RouterUtil } from '../../http/route/router-util.js';
+import { expect, test, describe, vi, beforeEach } from 'vitest';
+import { mock, MockProxy } from 'vitest-mock-extended';
 
 describe('#routerUtilApplyOpenApiDoc', function () {
-  it('should find the most specific route and the least specific', async () => {
+  test('should find the most specific route and the least specific', async () => {
     const inst: EpsilonGlobalHandler = await SampleServerComponents.createSampleEpsilonGlobalHandler('jest-most specific route');
 
     expect(inst.epsilon.modelValidator).toBeTruthy();
@@ -43,7 +45,7 @@ describe('#routerUtilApplyOpenApiDoc', function () {
     Logger.info('done');
   });
 
-  it('should reformat a path to match the other library', function () {
+  test('should reformat a path to match the other library', function () {
     const inString: string = '/meta/item/{itemId}';
     const outString: string = RouterUtil.openApiPathToRouteParserPath(inString);
     expect(outString).toEqual('/meta/item/:itemId');

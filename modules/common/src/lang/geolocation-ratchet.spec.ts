@@ -3,14 +3,15 @@ import fs from 'fs';
 import { NumberRatchet } from './number-ratchet.js';
 import path from 'path';
 import { EsmRatchet } from './esm-ratchet.js';
+import { expect, test, describe } from 'vitest';
 
 describe('#geolocationRatchet', function () {
-  it('should canonicalize', function () {
+  test('should canonicalize', function () {
     expect(GeolocationRatchet.combineBounds([])).toBeNull();
     expect(GeolocationRatchet.combineBounds(null)).toBeNull();
   });
 
-  it('should canonicalize', function () {
+  test('should canonicalize', function () {
     const bounds: RatchetLocationBounds = {
       origin: {
         lat: 4,
@@ -30,7 +31,7 @@ describe('#geolocationRatchet', function () {
   });
 
   /*
-          it('should generate the right distance', function() {
+          test('should generate the right distance', function() {
               const whLat: number = 38.8976805;
               const whLng: number = -77.0387238;
 
@@ -43,7 +44,7 @@ describe('#geolocationRatchet', function () {
               expect(result).toEqual(.6506);
           });
 
-          it('should generate the right offset', function() {
+          test('should generate the right offset', function() {
               const lat: number = 37.26383;
               const miles: number = 1;
 
@@ -59,7 +60,7 @@ describe('#geolocationRatchet', function () {
           });
 
 
-          it('should generate the right offset', function() {
+          test('should generate the right offset', function() {
               const lat: number = 37.26383;
               const miles: number = 1;
 
@@ -75,7 +76,7 @@ describe('#geolocationRatchet', function () {
           });
 
 
-          it('should cluster', function() {
+          test('should cluster', function() {
               const locations: RatchetGeoLocation[] = fs.readFileSync('test/data/sample_geo_locations.csv').toString()
                   .split('\n').map(line => {
                       const vals: string[] = line.split(',');
@@ -103,7 +104,7 @@ describe('#geolocationRatchet', function () {
 
 
 
-          it('should build a bounds map', function() {
+          test('should build a bounds map', function() {
               const locations: RatchetGeoLocation[] = fs.readFileSync('test/data/sample_geo_locations.csv').toString()
                   .split('\n').map(line => {
                       const vals: string[] = line.split(',');
@@ -125,7 +126,7 @@ describe('#geolocationRatchet', function () {
           });
        */
 
-  it('should calc point in bounds', function () {
+  test('should calc point in bounds', function () {
     const input: string = fs
       .readFileSync(path.join(EsmRatchet.fetchDirName(import.meta.url), '../../../../test-data/sample_geo_locations.csv'))
       .toString();

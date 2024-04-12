@@ -1,8 +1,9 @@
 import { JwtRatchet } from './jwt-ratchet.js';
 import { ExpiredJwtHandling } from './expired-jwt-handling.js';
+import { expect, test, describe } from 'vitest';
 
 describe('#jwtRatchet', function () {
-  it('should test expiration flag for a token with millisecond expiration', async () => {
+  test('should test expiration flag for a token with millisecond expiration', async () => {
     const jwt: JwtRatchet = new JwtRatchet(Promise.resolve('test1234'), Promise.resolve([]));
 
     const token1: string = await jwt.createTokenString({ test: 1, exp: Date.now() - 100 }, null);
@@ -12,7 +13,7 @@ describe('#jwtRatchet', function () {
     expect(JwtRatchet.hasExpiredFlag(output)).toBeTruthy();
   });
 
-  it('should test expiration calculation for a token', async () => {
+  test('should test expiration calculation for a token', async () => {
     const jwt: JwtRatchet = new JwtRatchet(Promise.resolve('test1234'), Promise.resolve([]));
 
     const token1: string = await jwt.createTokenString({ test: 1 }, 120);
@@ -23,7 +24,7 @@ describe('#jwtRatchet', function () {
     expect(output).toBeGreaterThan(115);
   });
 
-  it('should test round-trip for a token', async () => {
+  test('should test round-trip for a token', async () => {
     const jwt: JwtRatchet = new JwtRatchet(Promise.resolve('test1234'), Promise.resolve([]));
 
     const token1: string = await jwt.createTokenString({ test: 1 }, 120);
@@ -33,7 +34,7 @@ describe('#jwtRatchet', function () {
     expect(output['test']).toEqual(1);
   });
 
-  it('should test round-trip for a token with array enc keys', async () => {
+  test('should test round-trip for a token with array enc keys', async () => {
     const jwt: JwtRatchet = new JwtRatchet(Promise.resolve(['test1234', 'test5678']), Promise.resolve([]));
 
     const token1: string = await jwt.createTokenString({ test: 1 }, 120);
@@ -51,7 +52,7 @@ describe('#jwtRatchet', function () {
     expect(output3['test']).toEqual(1);
   });
 
-  it('should decode with a decode key', async () => {
+  test('should decode with a decode key', async () => {
     const jwtOld: JwtRatchet = new JwtRatchet(Promise.resolve('oldKey'), Promise.resolve([]));
     const jwtNew: JwtRatchet = new JwtRatchet(Promise.resolve('newKey'), Promise.resolve(['oldKey']));
 

@@ -1,5 +1,5 @@
 import { WardenStorageProvider } from './provider/warden-storage-provider.js';
-import { JestRatchet } from '@bitblit/ratchet-jest';
+
 import { WardenService } from './warden-service.js';
 import { WardenServiceOptions } from './warden-service-options.js';
 import {
@@ -11,22 +11,24 @@ import {
   WardenLoginResults,
 } from '@bitblit/ratchet-warden-common';
 import { JwtRatchet } from '@bitblit/ratchet-common';
-import { jest } from '@jest/globals';
+
 import { WardenUserDecorationProvider } from './provider/warden-user-decoration-provider.js';
 import { WardenSingleUseCodeProvider } from './provider/warden-single-use-code-provider';
+import { expect, test, describe, vi, beforeEach } from 'vitest';
+import { mock, MockProxy } from 'vitest-mock-extended';
 
-//let mockJwtRatchet: jest.Mocked<JwtRatchetLike>;
-let mockWardenStorageProvider: jest.Mocked<WardenStorageProvider>;
-let mockWardenSingleUseCodeProvider: jest.Mocked<WardenSingleUseCodeProvider>;
-let mockUserDecorationProvider: jest.Mocked<WardenUserDecorationProvider<any>>;
+//let mockJwtRatchet: MockProxy<JwtRatchetLike>;
+let mockWardenStorageProvider: MockProxy<WardenStorageProvider>;
+let mockWardenSingleUseCodeProvider: MockProxy<WardenSingleUseCodeProvider>;
+let mockUserDecorationProvider: MockProxy<WardenUserDecorationProvider<any>>;
 let opts: WardenServiceOptions;
 
 describe('#WardenService', () => {
   beforeEach(() => {
-    //mockJwtRatchet = JestRatchet.mock(jest.fn);
-    mockWardenStorageProvider = JestRatchet.mock(jest.fn);
-    mockWardenSingleUseCodeProvider = JestRatchet.mock(jest.fn);
-    mockUserDecorationProvider = JestRatchet.mock(jest.fn);
+    //mockJwtRatchet = mock<JwtRatchetLike>();;
+    mockWardenStorageProvider = mock<WardenStorageProvider>();
+    mockWardenSingleUseCodeProvider = mock<WardenSingleUseCodeProvider>();
+    mockUserDecorationProvider = mock<WardenUserDecorationProvider<string>>();
 
     opts = {
       // Human-readable title for your website
@@ -41,7 +43,7 @@ describe('#WardenService', () => {
     };
   });
 
-  it('Should login', async () => {
+  test('Should login', async () => {
     const svc: WardenService = new WardenService(opts);
 
     const loginReq: WardenLoginRequest = {
@@ -83,7 +85,7 @@ describe('#WardenService', () => {
   });
 
   // Need to implement
-  it('Should create and account', async () => {
+  test('Should create and account', async () => {
     const svc: WardenService = new WardenService(opts);
 
     mockWardenStorageProvider.findEntryByContact.mockResolvedValue(null);

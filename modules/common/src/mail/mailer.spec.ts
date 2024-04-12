@@ -6,6 +6,7 @@ import { StringRatchet } from '../lang/string-ratchet.js';
 import { Base64Ratchet } from '../lang/base64-ratchet.js';
 import { TestMailSendingProvider } from './test-mail-sending-provider';
 import { SendEmailResult } from './send-email-result';
+import { expect, test, describe, beforeEach } from 'vitest';
 
 let mockSES;
 const smallImageBase64: string =
@@ -15,7 +16,7 @@ describe('#mailer', function () {
   const testProvider: TestMailSendingProvider = new TestMailSendingProvider();
   beforeEach(() => {});
 
-  it('should send email', async () => {
+  test('should send email', async () => {
     const config: MailerConfig<string, string> = {
       provider: testProvider,
       defaultSendingAddress: 'test1@test.com',
@@ -49,7 +50,7 @@ describe('#mailer', function () {
     expect(result).toBeTruthy();
   });
 
-  it('should allow for unicode in email subject', async () => {
+  test('should allow for unicode in email subject', async () => {
     const config: MailerConfig<string, string> = {
       provider: testProvider,
       defaultSendingAddress: 'jflint@adomni.com',
@@ -68,7 +69,7 @@ describe('#mailer', function () {
     expect(result).toBeTruthy();
   });
 
-  it('should filter outbound', async () => {
+  test('should filter outbound', async () => {
     const config: MailerConfig<string, string> = {
       provider: testProvider,
       allowedDestinationEmails: [/.*test\.com/, /.*.test2\.com/],
@@ -86,7 +87,7 @@ describe('#mailer', function () {
     expect(res2.length).toEqual(0);
   });
 
-  it('should fix a huge text/html body', async () => {
+  test('should fix a huge text/html body', async () => {
     const config: MailerConfig<string, string> = {
       provider: testProvider,
       defaultSendingAddress: 'test@test.com',

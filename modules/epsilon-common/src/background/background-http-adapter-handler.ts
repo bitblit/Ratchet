@@ -26,7 +26,7 @@ export class BackgroundHttpAdapterHandler {
     private backgroundConfig: BackgroundConfig,
     private modelValidator: ModelValidator,
     private backgroundManager: BackgroundManagerLike,
-    private maxWaitInMsForBackgroundJobToStart: number = 10_000
+    private maxWaitInMsForBackgroundJobToStart: number = 10_000,
   ) {}
 
   public get httpMetaEndpoint(): string {
@@ -61,7 +61,7 @@ export class BackgroundHttpAdapterHandler {
             Logger.debug(
               'No log found yet, waiting 500 ms and retrying (%s of %d waited so far)',
               sw.dump(),
-              this.maxWaitInMsForBackgroundJobToStart
+              this.maxWaitInMsForBackgroundJobToStart,
             );
             await PromiseRatchet.wait(500);
           }
@@ -127,7 +127,7 @@ export class BackgroundHttpAdapterHandler {
     }
 
     const foundProc: BackgroundProcessor<any> = this.backgroundConfig.processors.find(
-      (s) => s.typeName.toLowerCase() === entry.type.toLowerCase()
+      (s) => s.typeName.toLowerCase() === entry.type.toLowerCase(),
     );
     const immediate: boolean = BooleanRatchet.parseBool(evt.queryStringParameters['immediate']);
     const startProcessor: boolean = BooleanRatchet.parseBool(evt.queryStringParameters['startProcessor']);

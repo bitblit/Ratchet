@@ -203,7 +203,7 @@ export class QueryBuilder {
     if (quotedNamedParams.length > 0) {
       Logger.warn(
         'The resulting query contains quoted named params check this this is intended. Instances found: %s',
-        quotedNamedParams.join(', ')
+        quotedNamedParams.join(', '),
       );
     }
   }
@@ -264,7 +264,7 @@ export class QueryBuilder {
       const endIndex = this.query.indexOf(endSymbol, startIndex);
       if (endIndex == -1) {
         throw new Error(
-          `Invalid query when finding end symbol matching ${endSymbol} in ${this.query} check that you have closed all your tags correctly.`
+          `Invalid query when finding end symbol matching ${endSymbol} in ${this.query} check that you have closed all your tags correctly.`,
         );
       }
 
@@ -307,7 +307,7 @@ export class QueryBuilder {
 
           if (endParamTagIndex == -1) {
             throw new Error(
-              `Invalid query when finding end symbol matching :: check that you have closed all your tags correctly. Query: ${this.query} `
+              `Invalid query when finding end symbol matching :: check that you have closed all your tags correctly. Query: ${this.query} `,
             );
           }
 
@@ -336,7 +336,7 @@ export class QueryBuilder {
       const endIndex = this.query.indexOf(endSymbol, startIndex);
       if (endIndex == -1) {
         throw new Error(
-          `Invalid query when finding end symbol matching ${endSymbol} in ${this.query} check that you have closed all your tags correctly.`
+          `Invalid query when finding end symbol matching ${endSymbol} in ${this.query} check that you have closed all your tags correctly.`,
         );
       }
 
@@ -408,7 +408,7 @@ export class QueryBuilder {
       const endIndex = this.query.indexOf(endSymbol, startIndex);
       if (endIndex == -1) {
         throw new Error(
-          `Invalid query when finding end symbol matching ${endSymbol} in ${this.query} check that you have closed all your tags correctly.`
+          `Invalid query when finding end symbol matching ${endSymbol} in ${this.query} check that you have closed all your tags correctly.`,
         );
       }
 
@@ -418,7 +418,7 @@ export class QueryBuilder {
       const endTagIndex = this.query.indexOf(endTag);
       if (endTagIndex == -1) {
         throw new Error(
-          `Invalid query when finding conditional end tag matching ${endTag} in ${this.query} check that your query contains an exact match of this tag.`
+          `Invalid query when finding conditional end tag matching ${endTag} in ${this.query} check that your query contains an exact match of this tag.`,
         );
       }
 

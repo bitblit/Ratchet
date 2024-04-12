@@ -1,5 +1,6 @@
 import { LastSuccessProvider } from './last-success-provider.js';
 import { CompositeLastSuccessProvider } from './composite-last-success-provider.js';
+import { expect, test, describe } from 'vitest';
 
 describe('#lastSuccess', function () {
   const last5: LastSuccessProvider = {
@@ -18,12 +19,12 @@ describe('#lastSuccess', function () {
     },
   } as LastSuccessProvider;
 
-  it('should return 4 as last (min)', function () {
+  test('should return 4 as last (min)', function () {
     const result: number = new CompositeLastSuccessProvider([last5, last4, lastNull], false).lastSuccess();
     expect(result).toEqual(4);
   });
 
-  it('should return 5 as last (max)', function () {
+  test('should return 5 as last (max)', function () {
     const result: number = new CompositeLastSuccessProvider([last5, last4, lastNull], true).lastSuccess();
     expect(result).toEqual(5);
   });

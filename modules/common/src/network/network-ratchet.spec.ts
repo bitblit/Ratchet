@@ -1,8 +1,9 @@
 import { NetworkRatchet } from './network-ratchet.js';
 import { ParsedUrl } from '../lang/parsed-url.js';
+import { expect, test, describe } from 'vitest';
 
 describe('#parseUrl', function () {
-  it('should parse the url and return correct values', function () {
+  test('should parse the url and return correct values', function () {
     const result: ParsedUrl = NetworkRatchet.parseUrl('http://example.com:3000/pathname/?search=test#hash');
 
     expect(result.protocol).toEqual('http:');

@@ -2,9 +2,11 @@ import { BehaviorSubject } from 'rxjs';
 import { RxjsRatchet } from './rxjs-ratchet.js';
 import { PromiseRatchet } from '@bitblit/ratchet-common';
 import { Logger } from '@bitblit/ratchet-common';
+import { expect, test, describe, vi, beforeEach } from 'vitest';
+import { mock, MockProxy } from 'vitest-mock-extended';
 
 describe('#waitForNonNullOnSubject', function () {
-  it('should resolve after 1 second', async () => {
+  test('should resolve after 1 second', async () => {
     const sub: BehaviorSubject<number> = new BehaviorSubject<number>(null);
     //const testFn: any =
     PromiseRatchet.wait(1000).then((r) => {

@@ -1,6 +1,8 @@
 import { EChartsOption } from 'echarts';
 import { EChartRatchet } from '../common/echart-ratchet.js';
 import { LabelOption } from 'echarts/types/src/util/types.js';
+import { expect, test, describe, vi, beforeEach } from 'vitest';
+import { mock, MockProxy } from 'vitest-mock-extended';
 
 const labelRight: LabelOption = {
   position: 'right',
@@ -63,7 +65,7 @@ const options: EChartsOption = {
 };
 
 describe('#simpleBarChart', function () {
-  it('should generate the chart', async () => {
+  test('should generate the chart', async () => {
     const data: Buffer = await EChartRatchet.renderChartToPngFile('test.png', options, {
       width: 1000,
       height: 500,

@@ -3,6 +3,7 @@ import { KeyValue } from '@bitblit/ratchet-common';
 
 import { CloudWatchClient, PutMetricDataCommand, StandardUnit } from '@aws-sdk/client-cloudwatch';
 import { mockClient } from 'aws-sdk-client-mock';
+import { expect, test, describe, vi, beforeEach } from 'vitest';
 
 let mockCW;
 
@@ -13,7 +14,7 @@ describe('#cloudWatchMetricsRatchet', function () {
     mockCW.reset();
   });
 
-  it('should log a cloudwatch metric', async () => {
+  test('should log a cloudwatch metric', async () => {
     mockCW.on(PutMetricDataCommand).resolves({ ok: true } as never);
 
     const cw: CloudWatchMetricsRatchet = new CloudWatchMetricsRatchet(mockCW);

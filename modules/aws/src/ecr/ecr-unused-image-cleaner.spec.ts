@@ -7,6 +7,7 @@ import { LambdaClient } from '@aws-sdk/client-lambda';
 import { AwsBatchUsedImageFinder } from './used-image-finders/aws-batch-used-image-finder';
 import { BatchClient } from '@aws-sdk/client-batch';
 import { EcrUnusedImageCleanerOutput } from './ecr-unused-image-cleaner-output';
+import { expect, test, describe, vi, beforeEach } from 'vitest';
 
 //import { mockClient } from 'aws-sdk-client-mock';
 //import { ECRClient } from "@aws-sdk/client-ecr";
@@ -23,7 +24,7 @@ describe('#ecrUnusedImageCleaner', function () {
 
    */
 
-  xit('should run the cleaner', async () => {
+  test.skip('should run the cleaner', async () => {
     Logger.info('Testing cleaner');
     AwsCredentialsRatchet.applySetProfileEnvironmentalVariable('your-profile-here');
     const cleaner: EcrUnusedImageCleaner = new EcrUnusedImageCleaner(new ECRClient({ region: 'us-east-1' }));

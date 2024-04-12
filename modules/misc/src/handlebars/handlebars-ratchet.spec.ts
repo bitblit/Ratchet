@@ -1,8 +1,10 @@
 import handlebars from 'handlebars';
 import { HandlebarsRatchet } from './handlebars-ratchet.js';
+import { expect, test, describe, vi, beforeEach } from 'vitest';
+import { mock, MockProxy } from 'vitest-mock-extended';
 
 describe('#handlebarsService', () => {
-  it('should test equal', async () => {
+  test('should test equal', async () => {
     handlebars.registerHelper('eq', HandlebarsRatchet.equal);
     const out1: string = handlebars.compile('{{eq 1 2}}')({});
     expect(out1).toEqual('false');
@@ -12,7 +14,7 @@ describe('#handlebarsService', () => {
     expect(out3).toEqual('true');
   });
 
-  it('should test notequal', async () => {
+  test('should test notequal', async () => {
     handlebars.registerHelper('ne', HandlebarsRatchet.notEqual);
     const out1: string = handlebars.compile('{{ne 1 2}}')({});
     expect(out1).toEqual('true');
@@ -22,7 +24,7 @@ describe('#handlebarsService', () => {
     expect(out3).toEqual('false');
   });
 
-  it('should test less-than/less-than-equal', async () => {
+  test('should test less-than/less-than-equal', async () => {
     handlebars.registerHelper('lt', HandlebarsRatchet.lessThan);
     handlebars.registerHelper('lte', HandlebarsRatchet.lessThanEqual);
     const out1: string = handlebars.compile('{{lt 1 2}}')({});
@@ -35,7 +37,7 @@ describe('#handlebarsService', () => {
     expect(out4).toEqual('false');
   });
 
-  it('should test greater-than/greater-than-equal', async () => {
+  test('should test greater-than/greater-than-equal', async () => {
     handlebars.registerHelper('gt', HandlebarsRatchet.greaterThan);
     handlebars.registerHelper('gte', HandlebarsRatchet.greaterThanEqual);
     const out1: string = handlebars.compile('{{gt 2 1}}')({});
@@ -48,7 +50,7 @@ describe('#handlebarsService', () => {
     expect(out4).toEqual('false');
   });
 
-  it('should test and/or', async () => {
+  test('should test and/or', async () => {
     handlebars.registerHelper('and', HandlebarsRatchet.and);
     handlebars.registerHelper('or', HandlebarsRatchet.or);
     const out1: string = handlebars.compile('{{and true true}}')({});
@@ -70,7 +72,7 @@ describe('#handlebarsService', () => {
     expect(out8).toEqual('true');
   });
 
-  it('should test formatBytes', async () => {
+  test('should test formatBytes', async () => {
     handlebars.registerHelper('formatBytes', HandlebarsRatchet.formatBytes);
     const out1: string = handlebars.compile('{{formatBytes 10}}')({});
     expect(out1).toEqual('10 Bytes');
@@ -82,7 +84,7 @@ describe('#handlebarsService', () => {
     expect(out4).toEqual('3.07 GB');
   });
 
-  it('should test mat', async () => {
+  test('should test mat', async () => {
     HandlebarsRatchet.registerAll(handlebars);
     const add: string = handlebars.compile('{{add 2 1}}')({});
     expect(add).toEqual('3');
@@ -104,7 +106,7 @@ describe('#handlebarsService', () => {
     expect(minNum).toEqual('1');
   });
 
-  it('should test rpn', async () => {
+  test('should test rpn', async () => {
     handlebars.registerHelper('rpn', HandlebarsRatchet.reversePolishNotation);
     const out1: string = handlebars.compile('{{rpn 5 10 "maxNum" 10 "add" 3 "sub"}}')({});
     expect(out1).toEqual('17');

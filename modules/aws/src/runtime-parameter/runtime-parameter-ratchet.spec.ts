@@ -2,12 +2,13 @@ import { RuntimeParameterRatchet } from './runtime-parameter-ratchet.js';
 import { Logger, LoggerLevelName, PromiseRatchet } from '@bitblit/ratchet-common';
 import { StoredRuntimeParameter } from './stored-runtime-parameter.js';
 import { MemoryRuntimeParameterProvider } from './memory-runtime-parameter-provider.js';
+import { expect, test, describe, vi, beforeEach } from 'vitest';
 
 const testEntry: StoredRuntimeParameter = { groupId: 'test', paramKey: 'test', paramValue: '15', ttlSeconds: 0.5 };
 const testEntry2: StoredRuntimeParameter = { groupId: 'test', paramKey: 'test1', paramValue: '20', ttlSeconds: 0.5 };
 
 describe('#runtimeParameterRatchet', function () {
-  it('fetch and cache a runtime parameter', async () => {
+  test('fetch and cache a runtime parameter', async () => {
     Logger.setLevel(LoggerLevelName.silly);
     const mp: MemoryRuntimeParameterProvider = new MemoryRuntimeParameterProvider();
     const rpr: RuntimeParameterRatchet = new RuntimeParameterRatchet(mp);
@@ -34,7 +35,7 @@ describe('#runtimeParameterRatchet', function () {
     expect(cacheDefault).toEqual(27);
   }, 30_000);
 
-  it('reads underlying entries', async () => {
+  test('reads underlying entries', async () => {
     Logger.setLevel(LoggerLevelName.silly);
     const mrpp: MemoryRuntimeParameterProvider = new MemoryRuntimeParameterProvider();
     await mrpp.writeParameter(testEntry);

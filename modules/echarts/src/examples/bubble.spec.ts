@@ -1,6 +1,8 @@
 import { EChartsOption } from 'echarts';
 import { EChartRatchet } from '../common/echart-ratchet.js';
 import * as echarts from 'echarts';
+import { expect, test, describe, vi, beforeEach } from 'vitest';
+import { mock, MockProxy } from 'vitest-mock-extended';
 
 const data = [
   [
@@ -158,7 +160,7 @@ const options: EChartsOption = {
 };
 
 describe('#bubbleChart', function () {
-  it('should generate the chart', async () => {
+  test('should generate the chart', async () => {
     const data: Buffer = await EChartRatchet.renderChart(options, {
       width: 1000,
       height: 500,

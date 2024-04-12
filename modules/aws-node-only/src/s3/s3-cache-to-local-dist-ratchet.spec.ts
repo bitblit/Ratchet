@@ -1,17 +1,17 @@
 import { S3CacheToLocalDiskRatchet } from './s3-cache-to-local-disk-ratchet';
 import { S3CacheRatchetLike } from '@bitblit/ratchet-aws';
 import { tmpdir } from 'os';
-import { JestRatchet } from '@bitblit/ratchet-jest';
-import { jest } from '@jest/globals';
+import { beforeEach, describe, expect, test } from 'vitest';
+import { mock, MockProxy } from 'vitest-mock-extended';
 
-let mockS3CR: jest.Mocked<S3CacheRatchetLike>;
+let mockS3CR: MockProxy<S3CacheRatchetLike>;
 
 describe('#S3CacheToLocalDiskRatchet', () => {
   beforeEach(() => {
-    mockS3CR = JestRatchet.mock(jest.fn);
+    mockS3CR = mock<S3CacheRatchetLike>();
   });
 
-  it('should download file and store in tmp', async () => {
+  test('should download file and store in tmp', async () => {
     mockS3CR.fetchCacheFileAsBuffer.mockResolvedValue(Buffer.from(JSON.stringify({ a: 'b' })));
 
     const pth: string = 'test-path';

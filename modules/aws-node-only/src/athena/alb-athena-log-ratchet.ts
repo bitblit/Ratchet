@@ -12,7 +12,10 @@ import { S3Ratchet } from '@bitblit/ratchet-aws';
 // A class to simplify reading an Athena table based on ALB Logs
 // NOTE: This class only runs on Node since it depends on fs and path
 export class AlbAthenaLogRatchet {
-  constructor(private athena: AthenaRatchet, private athenaTableName: string) {
+  constructor(
+    private athena: AthenaRatchet,
+    private athenaTableName: string,
+  ) {
     RequireRatchet.notNullOrUndefined(athena, 'athena');
     RequireRatchet.notNullOrUndefined(StringRatchet.trimToNull(athenaTableName), 'athenaTableName');
   }
@@ -21,7 +24,7 @@ export class AlbAthenaLogRatchet {
     rootPath: string,
     s3: S3Client,
     startTimeEpochMS: number = new Date().getTime() - 1000 * 60 * 60 * 24,
-    endTimeEpochMS: number = new Date().getTime()
+    endTimeEpochMS: number = new Date().getTime(),
   ): Promise<string[]> {
     RequireRatchet.true(S3Ratchet.checkS3UrlForValidity(rootPath), 'root path not valid');
     RequireRatchet.notNullOrUndefined(s3, 's3');
@@ -46,7 +49,7 @@ export class AlbAthenaLogRatchet {
           dateParts[1] +
           '/' +
           dateParts[2] +
-          "'"
+          "'",
       );
       current += 1000 * 60 * 60 * 24;
     }
@@ -73,7 +76,7 @@ export class AlbAthenaLogRatchet {
     }
 
     let tableCreateQry: string = readFileSync(
-      path.join(EsmRatchet.fetchDirName(import.meta.url), '../static/albAthenaTableCreate.txt')
+      path.join(EsmRatchet.fetchDirName(import.meta.url), '../static/albAthenaTableCreate.txt'),
     ).toString();
     tableCreateQry = tableCreateQry.split('{{TABLE NAME}}').join(this.athenaTableName);
     tableCreateQry = tableCreateQry.split('{{ALB_LOG_ROOT}}').join(rootPath);

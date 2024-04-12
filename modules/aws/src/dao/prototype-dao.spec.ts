@@ -2,11 +2,12 @@ import { PrototypeDao } from './prototype-dao.js';
 import { S3PrototypeDaoProvider } from './s3-prototype-dao-provider.js';
 import { S3CacheRatchet } from '../s3/s3-cache-ratchet.js';
 import { S3Client } from '@aws-sdk/client-s3';
+import { expect, test, describe, vi, beforeEach } from 'vitest';
 
 describe('#PrototypeDao', () => {
-  xit('Should save/load files', async () => {
+  test.skip('Should save/load files', async () => {
     const svc: PrototypeDao<TestPrototypeItem> = new PrototypeDao<TestPrototypeItem>(
-      new S3PrototypeDaoProvider(new S3CacheRatchet(new S3Client({}), 'some-bucket'), 'test-data.json')
+      new S3PrototypeDaoProvider(new S3CacheRatchet(new S3Client({}), 'some-bucket'), 'test-data.json'),
     );
     await svc.resetDatabase();
 

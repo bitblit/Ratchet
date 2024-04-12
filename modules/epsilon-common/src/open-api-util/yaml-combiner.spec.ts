@@ -2,9 +2,11 @@ import { Logger } from '@bitblit/ratchet-common';
 import path from 'path';
 import { YamlCombiner } from './yaml-combiner.js';
 import { EsmRatchet } from '@bitblit/ratchet-common';
+import { expect, test, describe, vi, beforeEach } from 'vitest';
+import { mock, MockProxy } from 'vitest-mock-extended';
 
 describe('#yamlCombiner', function () {
-  it('should combine yamls', async () => {
+  test('should combine yamls', async () => {
     const files: string[] = [
       path.join(EsmRatchet.fetchDirName(import.meta.url), '../../../../test-data/epsilon/sample-yaml/test1.yaml'),
       path.join(EsmRatchet.fetchDirName(import.meta.url), '../../../../test-data/epsilon/sample-yaml/test2.yaml'),

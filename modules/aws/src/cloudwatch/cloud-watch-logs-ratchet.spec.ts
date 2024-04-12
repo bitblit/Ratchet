@@ -14,6 +14,7 @@ import {
   StartQueryCommandInput,
 } from '@aws-sdk/client-cloudwatch-logs';
 import { mockClient } from 'aws-sdk-client-mock';
+import { expect, test, describe, vi, beforeEach } from 'vitest';
 
 let mockCW;
 
@@ -24,7 +25,7 @@ describe('#cloudWatchLogsRatchet', function () {
     mockCW.reset();
   });
 
-  it('should find the stream with the oldest timestamp in a group', async () => {
+  test('should find the stream with the oldest timestamp in a group', async () => {
     mockCW.on(DescribeLogStreamsCommand).resolves({
       logStreams: [
         { logStreamName: '1', firstEventTimestamp: 100 },
@@ -38,7 +39,7 @@ describe('#cloudWatchLogsRatchet', function () {
     expect(res.logStreamName).toEqual('1');
   });
 
-  it('should find the oldest timestamp in group', async () => {
+  test('should find the oldest timestamp in group', async () => {
     mockCW.on(DescribeLogStreamsCommand).resolves({
       logStreams: [
         { logStreamName: '1', firstEventTimestamp: 100 },
@@ -51,7 +52,7 @@ describe('#cloudWatchLogsRatchet', function () {
     expect(res).toEqual(100);
   });
 
-  it('should remove log groups', async () => {
+  test('should remove log groups', async () => {
     mockCW.on(DeleteLogGroupCommand).resolves(null);
 
     const cw: CloudWatchLogsRatchet = new CloudWatchLogsRatchet(mockCW);
@@ -59,7 +60,7 @@ describe('#cloudWatchLogsRatchet', function () {
     expect(res.length).toEqual(2);
   });
 
-  it('should remove log groups with prefix', async () => {
+  test('should remove log groups with prefix', async () => {
     mockCW.on(DescribeLogGroupsCommand).resolves({
       logGroups: [{ logGroupName: 'pre1' }, { logGroupName: 'pre2' }],
     } as never);
@@ -71,7 +72,7 @@ describe('#cloudWatchLogsRatchet', function () {
     expect(res.length).toEqual(2);
   });
 
-  it('should remove empty or old log streams', async () => {
+  test('should remove empty or old log streams', async () => {
     mockCW.on(DescribeLogStreamsCommand).resolves({
       logStreams: [{ logStreamName: '1' }, { logStreamName: '2' }],
     } as never);
@@ -84,7 +85,7 @@ describe('#cloudWatchLogsRatchet', function () {
     expect(res.length).toEqual(2);
   });
 
-  it('should find all matching groups', async () => {
+  test('should find all matching groups', async () => {
     mockCW.on(DescribeLogGroupsCommand).resolves({ logGroups: [{ logGroupName: '1' }, { logGroupName: '2' }] } as never);
 
     const cw: CloudWatchLogsRatchet = new CloudWatchLogsRatchet(mockCW);
@@ -95,7 +96,7 @@ describe('#cloudWatchLogsRatchet', function () {
     expect(res.length).toEqual(2);
   });
 
-  it('should execute an insights query', async () => {
+  test('should execute an insights query', async () => {
     mockCW.on(StartQueryCommand).resolves({ queryId: 'test' });
 
     mockCW.on(GetQueryResultsCommand).resolves({});

@@ -1,8 +1,9 @@
 import { GlobalRatchet } from './global-ratchet.js';
 import { StringRatchet } from './string-ratchet.js';
+import { expect, test, describe } from 'vitest';
 
 describe('#globalRatchet', function () {
-  it('fetch and set global variables', async () => {
+  test('fetch and set global variables', async () => {
     const tester: string = StringRatchet.createType4Guid();
     const tester2: string = StringRatchet.createType4Guid();
     process.env['GLOBALTEST'] = tester;

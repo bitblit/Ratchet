@@ -1,17 +1,18 @@
 import { InboundEmailRatchet } from './inbound-email-ratchet.js';
 import { S3CacheRatchet } from '@bitblit/ratchet-aws';
-import { JestRatchet } from '@bitblit/ratchet-jest';
-import { jest } from '@jest/globals';
-import { SampleEmailProcessor } from './sample-email-processor.js';
 
-let mockS3CR: jest.Mocked<S3CacheRatchet>;
+import { SampleEmailProcessor } from './sample-email-processor.js';
+import { expect, test, describe, vi, beforeEach } from 'vitest';
+import { mock, MockProxy } from 'vitest-mock-extended';
+
+let mockS3CR: MockProxy<S3CacheRatchet>;
 
 describe('#inboundEmailService', () => {
   beforeEach(() => {
-    mockS3CR = JestRatchet.mock(jest.fn);
+    mockS3CR = mock<S3CacheRatchet>();
   });
 
-  it('should process an email from S3', async () => {
+  test('should process an email from S3', async () => {
     mockS3CR.getDefaultBucket.mockReturnValueOnce('TEST-BUCKET');
     mockS3CR.fileExists.mockResolvedValueOnce(true);
     mockS3CR.fetchCacheFileAsString.mockResolvedValue('TEST');

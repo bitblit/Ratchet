@@ -2,6 +2,7 @@ import { DynamoRatchet } from './dynamo-ratchet.js';
 import { Logger, LoggerLevelName } from '@bitblit/ratchet-common';
 import { DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
 import { PutCommandOutput, ScanCommandInput, QueryCommandInput } from '@aws-sdk/lib-dynamodb';
+import { expect, test, describe, vi, beforeEach } from 'vitest';
 
 import { mockClient } from 'aws-sdk-client-mock';
 
@@ -14,7 +15,7 @@ describe('#dynamoRatchet', function () {
     mockDynamo.reset();
   });
 
-  xit('should handle ProvisionedThroughputExceeded exceptions', async () => {
+  test.skip('should handle ProvisionedThroughputExceeded exceptions', async () => {
     const dr: DynamoRatchet = new DynamoRatchet(mockDynamo);
     let row: number = 0;
     const scan: ScanCommandInput = {
@@ -33,7 +34,7 @@ describe('#dynamoRatchet', function () {
     Logger.info('Count was : %d', cnt);
   }, 300_000_000);
 
-  xit('should only write if a field is null', async () => {
+  test.skip('should only write if a field is null', async () => {
     const dr: DynamoRatchet = new DynamoRatchet(mockDynamo);
     const tableName: string = 'some-table';
 
@@ -51,7 +52,7 @@ describe('#dynamoRatchet', function () {
     expect(val2).toBeFalsy();
   });
 
-  xit('should fetch items from a key-only index query', async () => {
+  test.skip('should fetch items from a key-only index query', async () => {
     const dr: DynamoRatchet = new DynamoRatchet(mockDynamo);
     const tableName: string = 'some-table';
     const limit: number = 200;
@@ -72,7 +73,7 @@ describe('#dynamoRatchet', function () {
     expect(res).toBeTruthy();
   });
 
-  xit('should increment the counter and return the new value', async () => {
+  test.skip('should increment the counter and return the new value', async () => {
     const dr: DynamoRatchet = new DynamoRatchet(mockDynamo);
     const tableName: string = 'xxx';
     const res: number = await dr.atomicCounter(tableName, { groupId: 'global', unitId: 'sequence' }, 'lastValue', 1);
@@ -80,7 +81,7 @@ describe('#dynamoRatchet', function () {
     expect(res).toBeTruthy();
   });
 
-  xit('should stop after the soft limit', async () => {
+  test.skip('should stop after the soft limit', async () => {
     const dr: DynamoRatchet = new DynamoRatchet(mockDynamo);
 
     const now: number = new Date().getTime();
@@ -101,7 +102,7 @@ describe('#dynamoRatchet', function () {
     expect(res).toBeTruthy();
   }, 300_000);
 
-  xit('should run an insert / read test for slowdown', async () => {
+  test.skip('should run an insert / read test for slowdown', async () => {
     const dr: DynamoRatchet = new DynamoRatchet(mockDynamo);
 
     Logger.setLevel(LoggerLevelName.debug);
@@ -132,7 +133,7 @@ describe('#dynamoRatchet', function () {
     Logger.info('Read : %d : %j', new Date().getTime(), readOut);
   });
 
-  xit('should run a collision test', async () => {
+  test.skip('should run a collision test', async () => {
     const dr: DynamoRatchet = new DynamoRatchet(mockDynamo);
 
     Logger.setLevel(LoggerLevelName.debug);
@@ -158,7 +159,7 @@ describe('#dynamoRatchet', function () {
     }
   });
 
-  xit('should do a simple get with counter decrement', async () => {
+  test.skip('should do a simple get with counter decrement', async () => {
     const dr: DynamoRatchet = new DynamoRatchet(mockDynamo);
 
     Logger.setLevel(LoggerLevelName.debug);
@@ -167,7 +168,7 @@ describe('#dynamoRatchet', function () {
     Logger.info('Got : %j', v);
   });
 
-  xit('should do a full query', async () => {
+  test.skip('should do a full query', async () => {
     const dr: DynamoRatchet = new DynamoRatchet(mockDynamo);
 
     Logger.setLevel(LoggerLevelName.debug);
@@ -184,7 +185,7 @@ describe('#dynamoRatchet', function () {
     Logger.info('Got : %j', res);
   });
 
-  xit('should do a process over full query', async () => {
+  test.skip('should do a process over full query', async () => {
     const dr: DynamoRatchet = new DynamoRatchet(mockDynamo);
 
     Logger.setLevel(LoggerLevelName.debug);

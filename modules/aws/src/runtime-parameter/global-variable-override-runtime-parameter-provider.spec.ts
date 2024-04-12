@@ -1,22 +1,24 @@
 import { DynamoRuntimeParameterProvider } from './dynamo-runtime-parameter-provider.js';
 import { DynamoRatchet } from '../dynamodb/dynamo-ratchet.js';
 import { StoredRuntimeParameter } from './stored-runtime-parameter.js';
-import { JestRatchet } from '@bitblit/ratchet-jest';
+
 import { Logger, LoggerLevelName } from '@bitblit/ratchet-common';
 import { RuntimeParameterRatchet } from './runtime-parameter-ratchet.js';
 import { GlobalVariableOverrideRuntimeParameterProvider } from './global-variable-override-runtime-parameter-provider.js';
-import { jest } from '@jest/globals';
+import { expect, test, describe, vi, beforeEach } from 'vitest';
+import { mock, MockProxy } from 'vitest-mock-extended';
+import { S3CacheRatchetLike } from '../s3/s3-cache-ratchet-like';
 
-let mockDynamoRatchet: jest.Mocked<DynamoRatchet>;
+let mockDynamoRatchet: MockProxy<DynamoRatchet>;
 const testEntry: StoredRuntimeParameter = { groupId: 'test', paramKey: 'test', paramValue: '15', ttlSeconds: 0.5 };
 const testEntry2: StoredRuntimeParameter = { groupId: 'test', paramKey: 'test1', paramValue: '"not-overridden"', ttlSeconds: 0.5 };
 
 describe('#globalVariableOverrideRuntimeParameterProvider', function () {
   beforeEach(() => {
-    mockDynamoRatchet = JestRatchet.mock(jest.fn);
+    mockDynamoRatchet = mock<DynamoRatchet>();
   });
 
-  it('reads underlying entries', async () => {
+  test('reads underlying entries', async () => {
     Logger.setLevel(LoggerLevelName.silly);
     //mockDynamoRatchet.fullyExecuteQuery.resolves([testEntry, testEntry2]);
     mockDynamoRatchet.simpleGet.mockResolvedValue(testEntry2);

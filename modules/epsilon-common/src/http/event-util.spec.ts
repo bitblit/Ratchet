@@ -4,9 +4,11 @@ import { BasicAuthToken } from './auth/basic-auth-token.js';
 import fs from 'fs';
 import path from 'path';
 import { EsmRatchet } from '@bitblit/ratchet-common';
+import { expect, test, describe, vi, beforeEach } from 'vitest';
+import { mock, MockProxy } from 'vitest-mock-extended';
 
 describe('#eventUtil', function () {
-  it('should extract pieces', function () {
+  test('should extract pieces', function () {
     const evt: APIGatewayEvent = {
       httpMethod: 'GET',
       path: '/cw/meta/server',
@@ -47,7 +49,7 @@ describe('#eventUtil', function () {
     expect(EventUtil.extractHostHeader(evt)).toEqual('api.test.com');
   });
 
-  it('should fix still encoded query params', function () {
+  test('should fix still encoded query params', function () {
     const evt: APIGatewayEvent = {
       httpMethod: 'GET',
       path: '/cw/meta/server',
@@ -98,7 +100,7 @@ describe('#eventUtil', function () {
     expect(evt.queryStringParameters['c']).toBeTruthy();
   });
 
-  it('should extract basic auth from headers', function () {
+  test('should extract basic auth from headers', function () {
     const evt: APIGatewayEvent = {
       httpMethod: 'GET',
       path: '/cw/meta/server',
@@ -148,13 +150,13 @@ describe('#eventUtil', function () {
     expect(basic.password).toEqual('testpass');
   });
 
-  it('should add a token to an event, along with downstream stuff', function () {
+  test('should add a token to an event, along with downstream stuff', function () {
     const evt: APIGatewayEvent = JSON.parse(
       fs
         .readFileSync(
-          path.join(EsmRatchet.fetchDirName(import.meta.url), '../../../../test-data/epsilon/sample-json/sample-request-1.json')
+          path.join(EsmRatchet.fetchDirName(import.meta.url), '../../../../test-data/epsilon/sample-json/sample-request-1.json'),
         )
-        .toString()
+        .toString(),
     );
     const jwtToken: string =
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1ODg1MzY3NzU4ODcsImlzcyI6Im5lb24uYWRvbW5pLmNvbSIsInN1YiI6ImJpdGJsaXRAZ21haWwuY29tIiwiaWF0IjoxNTg4NTMzMTc1ODg3LCJ1c2VyIjp7ImlkIjo2LCJmaXJzdE5hbWUiOiJDaHJpcyIsImxhc3ROYW1lIjoiV2Vpc3MiLCJjb21wYW55IjoiQWRvbW5pIiwiZW1haWwiOiJiaXRibGl0QGdtYWlsLmNvbSIsImN1c3RvbWVyVHlwZSI6IkFETUlOIn0sImFjdGluZ1VzZXJJZCI6NiwiZ2xvYmFsIjp0cnVlLCJhZG1pbiI6eyJpZCI6NiwiZmlyc3ROYW1lIjoiQ2hyaXMiLCJsYXN0TmFtZSI6IldlaXNzIiwiY29tcGFueSI6IkFkb21uaSIsImVtYWlsIjoiYml0YmxpdEBnbWFpbC5jb20iLCJjdXN0b21lclR5cGUiOiJBRE1JTiJ9LCJzdWJVc2VycyI6W119.mwRSek5GwkvxpN44UTp49W6_9U_ARsFXThAyiqaF-eQ';
@@ -164,20 +166,20 @@ describe('#eventUtil', function () {
     expect(roundTripTokenString).toEqual(jwtToken);
   });
 
-  it('should check if an event is a graphql introspection', function () {
+  test('should check if an event is a graphql introspection', function () {
     const evt1: APIGatewayEvent = JSON.parse(
       fs
         .readFileSync(
-          path.join(EsmRatchet.fetchDirName(import.meta.url), '../../../../test-data/epsilon/sample-json/sample-request-1.json')
+          path.join(EsmRatchet.fetchDirName(import.meta.url), '../../../../test-data/epsilon/sample-json/sample-request-1.json'),
         )
-        .toString()
+        .toString(),
     );
     const evt2: APIGatewayEvent = JSON.parse(
       fs
         .readFileSync(
-          path.join(EsmRatchet.fetchDirName(import.meta.url), '../../../../test-data/epsilon/sample-json/sample-gql-introspection.json')
+          path.join(EsmRatchet.fetchDirName(import.meta.url), '../../../../test-data/epsilon/sample-json/sample-gql-introspection.json'),
         )
-        .toString()
+        .toString(),
     );
 
     const res1: boolean = EventUtil.eventIsAGraphQLIntrospection(evt1);

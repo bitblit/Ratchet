@@ -9,6 +9,8 @@ import {
 } from '@aws-sdk/client-athena';
 import { S3Client } from '@aws-sdk/client-s3';
 import { mockClient } from 'aws-sdk-client-mock';
+import { expect, test, describe, vi, beforeEach } from 'vitest';
+import { mock, MockProxy } from 'vitest-mock-extended';
 
 let mockAthena;
 let mockS3;
@@ -22,7 +24,7 @@ describe('#AthenaRatchet', function () {
     mockS3.reset();
   });
 
-  xit('should test a query', async () => {
+  test.skip('should test a query', async () => {
     const outputDir: string = 's3://your-bucket/your-prefix';
     const qry: string = 'select * from test limit 20000';
 

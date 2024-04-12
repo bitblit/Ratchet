@@ -1,9 +1,10 @@
 import { ExpiringObject } from './expiring-object.js';
 import { PromiseRatchet } from './promise-ratchet.js';
 import { LoggerLevelName } from '../logger/logger-level-name.js';
+import { expect, test, describe } from 'vitest';
 
 describe('#expiringObject', function () {
-  it('should default the object', async () => {
+  test('should default the object', async () => {
     const expObject: ExpiringObject<number> = new ExpiringObject<number>({
       initialValue: 7,
       timeToLiveMS: 50_000,
@@ -13,7 +14,7 @@ describe('#expiringObject', function () {
     expect(val).toEqual(7);
   });
 
-  it('should expire the object', async () => {
+  test('should expire the object', async () => {
     const expObject: ExpiringObject<number> = new ExpiringObject<number>({
       initialValue: 7,
       timeToLiveMS: 100,
@@ -26,7 +27,7 @@ describe('#expiringObject', function () {
     expect(val2).toBeNull();
   });
 
-  it('should regen the object', async () => {
+  test('should regen the object', async () => {
     const expObject: ExpiringObject<number> = new ExpiringObject<number>({
       initialValue: 7,
       timeToLiveMS: 100,
@@ -40,7 +41,7 @@ describe('#expiringObject', function () {
     expect(val2).toEqual(8);
   });
 
-  it('should return time remaining', async () => {
+  test('should return time remaining', async () => {
     const expObject: ExpiringObject<number> = new ExpiringObject<number>({
       initialValue: 7,
       timeToLiveMS: 10_000,

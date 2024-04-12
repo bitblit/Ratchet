@@ -1,9 +1,10 @@
 import { TimeZoneRatchet } from './time-zone-ratchet.js';
+import { expect, test, describe } from 'vitest';
 
 const tz: TimeZoneRatchet = TimeZoneRatchet.PACIFIC;
 
 describe('#currentHour', function () {
-  it('should return 0- 23', function () {
+  test('should return 0- 23', function () {
     const result: number = tz.currentHour();
     expect(result).toBeGreaterThanOrEqual(0);
     expect(result).toBeLessThanOrEqual(23);
@@ -11,7 +12,7 @@ describe('#currentHour', function () {
 });
 
 describe('#startOfTodayEpochSeconds', function () {
-  it('should never be more than now or more than 86400 seconds in the past', function () {
+  test('should never be more than now or more than 86400 seconds in the past', function () {
     const now: number = Math.floor(new Date().getTime() / 1000);
     const start: number = tz.startOfTodayEpochSeconds();
     const result: number = now - start;
@@ -21,7 +22,7 @@ describe('#startOfTodayEpochSeconds', function () {
 });
 
 describe('#dailySlotCount', function () {
-  it('should return 86400', function () {
+  test('should return 86400', function () {
     const result: number = tz.dailySlotCount(1000);
     expect(result).toEqual(86400);
   });
@@ -29,7 +30,7 @@ describe('#dailySlotCount', function () {
 
 describe('#currentTimeSlotIdx', function () {
   // CAW 2020-11-01 : This actually fails on the day of spring forward/fall back because of the extra hour!
-  xit('should return same as current hour', function () {
+  test.skip('should return same as current hour', function () {
     const curHour: number = tz.currentHour();
     const hourSlot: number = 1000 * 60 * 60;
     const curSlot: number = tz.currentTimeSlotIdx(hourSlot);
@@ -40,7 +41,7 @@ describe('#currentTimeSlotIdx', function () {
 
 describe('#matchingTimeSlotIdx', function () {
   // CAW 2020-11-01 : This actually fails on the day of spring forward/fall back because of the extra hour!
-  xit('should return same as current hour', function () {
+  test.skip('should return same as current hour', function () {
     const curHour: number = tz.currentHour();
     const hourSlot: number = 1000 * 60 * 60;
     const matchSlot: number = tz.matchingTimeSlotIdx(new Date().getTime(), hourSlot);

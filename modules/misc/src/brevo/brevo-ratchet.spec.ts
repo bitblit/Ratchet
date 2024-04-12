@@ -3,9 +3,11 @@ import { BrevoRatchet } from './brevo-ratchet.js';
 import { Mailer, ReadyToSendEmail } from '@bitblit/ratchet-common';
 import { BrevoMailSendingProvider } from './brevo-mail-sending-provider';
 import { CreateSmtpEmail } from './openapi-generated/models';
+import { expect, test, describe, vi, beforeEach } from 'vitest';
+import { mock, MockProxy } from 'vitest-mock-extended';
 
 describe('#brevoRatchet', () => {
-  xit('should fetch account info', async () => {
+  test.skip('should fetch account info', async () => {
     const keys: Promise<BrevoKeys> = Promise.resolve({
       smtpServer: 'test',
       smtpPort: 0,

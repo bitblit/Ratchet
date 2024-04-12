@@ -7,9 +7,10 @@ import { StringRatchet } from '../lang/string-ratchet.js';
 import { LogMessageBuilder } from './log-message-builder.js';
 import { LogMessageFormatType } from './log-message-format-type.js';
 import { LoggerOutputFunction } from './logger-output-function.js';
+import { expect, test, describe } from 'vitest';
 
 describe('#setLevel', function () {
-  it('should change the level to debug then info then debug', function () {
+  test('should change the level to debug then info then debug', function () {
     Logger.dumpConfigurationIntoLog();
     //console.log("Start Level : "+Logger.getLevel());
     expect(Logger.getLevel()).toEqual(LoggerLevelName.info);
@@ -28,7 +29,7 @@ describe('#setLevel', function () {
 });
 
 describe('#takeSnapshot', function () {
-  it('should advance the pointer correctly after a snapshot', function () {
+  test('should advance the pointer correctly after a snapshot', function () {
     Logger.changeRingBufferSize(5);
     expect(Logger.getRingBuffer().currentIndex).toEqual(0);
 
@@ -56,7 +57,7 @@ describe('#takeSnapshot', function () {
 });
 
 describe('#testTracePrefix', function () {
-  it('should apply a trace prefix correctly', function () {
+  test('should apply a trace prefix correctly', function () {
     Logger.updateTracePrefix('::TRACE::');
     Logger.changeRingBufferSize(3);
     Logger.info('m1');
@@ -82,7 +83,7 @@ describe('#testTracePrefix', function () {
 });
 
 describe('#testLastMessage', function () {
-  it('should return the last message', function () {
+  test('should return the last message', function () {
     Logger.info('m1');
     Logger.info('m2');
 
@@ -94,7 +95,7 @@ describe('#testLastMessage', function () {
 });
 
 describe('#testPassThruFunctions', function () {
-  it('should pass through values', function () {
+  test('should pass through values', function () {
     Logger.setLevel(LoggerLevelName.debug);
 
     Logger.error('Test %s', 'tVal');
@@ -122,7 +123,7 @@ describe('#testPassThruFunctions', function () {
 });
 
 describe('#testFormatter', function () {
-  it('should format values', function () {
+  test('should format values', function () {
     const msg: LogMessage = {
       lvl: LoggerLevelName.info,
       timestamp: Date.now(),
@@ -137,7 +138,7 @@ describe('#testFormatter', function () {
 });
 
 describe('#testPreProcessor', function () {
-  it('should perform a preprocess', function () {
+  test('should perform a preprocess', function () {
     const preProc: LogMessageProcessor = {
       process(msg: LogMessage): LogMessage {
         msg.messageSource = 'Preprocess';
@@ -154,7 +155,7 @@ describe('#testPreProcessor', function () {
 });
 
 describe('#testBuilder', function () {
-  it('should use a builder', function () {
+  test('should use a builder', function () {
     const output: string = Logger.getLogger(StringRatchet.createRandomHexString(4)).recordMessageBuilder(
       new LogMessageBuilder(LoggerLevelName.warn, 'This is a test %s').subVars(['bob']),
     );
@@ -163,7 +164,7 @@ describe('#testBuilder', function () {
 });
 
 describe('#testStructured', function () {
-  it('should use a structured logger', function () {
+  test('should use a structured logger', function () {
     const output: string = Logger.getLogger(StringRatchet.createRandomHexString(4), {
       formatType: LogMessageFormatType.StructuredJson,
       outputFunction: LoggerOutputFunction.StdOut,

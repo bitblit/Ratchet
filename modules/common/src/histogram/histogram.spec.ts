@@ -1,7 +1,8 @@
 import { Histogram } from './histogram.js';
+import { expect, test, describe } from 'vitest';
 
 describe('#histogram', function () {
-  it('should count the values correctly', function () {
+  test('should count the values correctly', function () {
     const histogram: Histogram<string> = new Histogram<string>();
 
     histogram.update('a');

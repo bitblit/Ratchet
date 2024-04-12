@@ -1,7 +1,8 @@
 import { WebStreamRatchet } from './web-stream-ratchet.js';
+import { expect, test, describe } from 'vitest';
 
 describe('#WebStreamRatchet', function () {
-  it('should roundtrip from string to stream and back', async () => {
+  test('should roundtrip from string to stream and back', async () => {
     const input: string = 'test';
     const r: ReadableStream = WebStreamRatchet.stringToWebReadableStream('test');
     const out: string = await WebStreamRatchet.webReadableStreamToString(r);

@@ -1,7 +1,8 @@
 import { TimeoutToken } from './timeout-token.js';
+import { expect, test, describe } from 'vitest';
 
 describe('#timeoutToken', function () {
-  it('should return the correct value for isTimeoutToken', function () {
+  test('should return the correct value for isTimeoutToken', function () {
     const tt: TimeoutToken = new TimeoutToken('title', 20000);
     const ntt: any = { a: 'b' };
 

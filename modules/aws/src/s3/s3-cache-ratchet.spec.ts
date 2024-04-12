@@ -12,11 +12,16 @@ import {
 import { S3CacheRatchet } from './s3-cache-ratchet.js';
 import { Logger, WebStreamRatchet, StringRatchet } from '@bitblit/ratchet-common';
 import { mockClient } from 'aws-sdk-client-mock';
-import { jest } from '@jest/globals';
+import { expect, test, describe, vi, beforeEach } from 'vitest';
+import { mock, MockProxy } from 'vitest-mock-extended';
 
-jest.mock('@aws-sdk/s3-request-presigner', () => ({
-  getSignedUrl: jest.fn(() => Promise.resolve('https://test.link/test.jpg')),
-}));
+vi.mock('@aws-sdk/s3-request-presigner', async (importOriginal) => {
+  const mod = await importOriginal<typeof import('@aws-sdk/s3-request-presigner')>();
+  return {
+    ...mod,
+    getSignedUrl: vi.fn(() => Promise.resolve('https://test.link/test.jpg')),
+  };
+});
 
 let mockS3 = null;
 let mockS3OtherAccount = null;
@@ -31,7 +36,7 @@ describe('#fileExists', function () {
     mockS3OtherAccount.reset();
   });
 
-  it('should return false for files that do not exist', async () => {
+  test('should return false for files that do not exist', async () => {
     mockS3.on(HeadObjectCommand).rejects({ statusCode: 404, $metadata: null });
     const cache: S3CacheRatchet = new S3CacheRatchet(mockS3, 'test-bucket');
     const out: boolean = await cache.fileExists('test-missing-file');
@@ -40,7 +45,7 @@ describe('#fileExists', function () {
   });
 
   // TODO: CAW 2023-02-28 : Make me work after the stub gets fixed for this
-  xit('should create a expiring link', async () => {
+  test.skip('should create a expiring link', async () => {
     //mockS3.getSignedUrl.mockReturnValue('https://test.link/test.jpg');
 
     const cache: S3CacheRatchet = new S3CacheRatchet(mockS3, 'test-bucket');
@@ -49,7 +54,7 @@ describe('#fileExists', function () {
     expect(out).toEqual('https://test.link/test.jpg');
   });
 
-  it('should copy an object', async () => {
+  test('should copy an object', async () => {
     mockS3.on(CopyObjectCommand).resolves({});
     const cache: S3CacheRatchet = new S3CacheRatchet(mockS3, 'test-bucket');
     const out: boolean = await cache.quietCopyFile('test.png', 'test2.png');
@@ -58,7 +63,7 @@ describe('#fileExists', function () {
   });
 
   // TODO: CAW 2023-02-28 : Make me work after the stub gets fixed for this
-  xit('should copy a file to s3', async () => {
+  test.skip('should copy a file to s3', async () => {
     //mockS3['config'] = {};
     //mockS3.reset();
     // This mocks for uploading small files
@@ -78,7 +83,7 @@ describe('#fileExists', function () {
     expect(out).toBeTruthy();
   });
 
-  it('should pull a file as a string', async () => {
+  test('should pull a file as a string', async () => {
     // Need to re-call this multiple times to get the stream reset
     async function createNew(): Promise<any> {
       return {
@@ -115,7 +120,7 @@ describe('#fileExists', function () {
 
   //---
 
-  xit('should sync 2 folders', async () => {
+  test.skip('should sync 2 folders', async () => {
     const cache1: S3CacheRatchet = new S3CacheRatchet(mockS3, 'test1');
     const cache2: S3CacheRatchet = new S3CacheRatchet(mockS3, 'test2');
     const out: string[] = await cache1.synchronize('src/', 'dst/', cache2);
@@ -123,7 +128,7 @@ describe('#fileExists', function () {
     expect(out).not.toBeNull();
   }, 60_000);
 
-  xit('should list direct children past 1000', async () => {
+  test.skip('should list direct children past 1000', async () => {
     const s3: S3Client = new S3Client({ region: 'us-east-1' });
     const cache: S3CacheRatchet = new S3CacheRatchet(s3, 'test-bucket');
     const out: string[] = await cache.directChildrenOfPrefix('test/aws/test-path-with-lots-of-childen/');
@@ -134,7 +139,7 @@ describe('#fileExists', function () {
     expect(out).toBeTruthy();
   });
 
-  xit('should sync cross-account', async () => {
+  test.skip('should sync cross-account', async () => {
     const cache1: S3CacheRatchet = new S3CacheRatchet(mockS3, 'bucket1');
     const cache2: S3CacheRatchet = new S3CacheRatchet(mockS3OtherAccount, 'bucket2');
 

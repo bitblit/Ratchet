@@ -1,11 +1,12 @@
 import { EnvironmentService } from './environment-service.js';
 import { Logger } from '@bitblit/ratchet-common';
 import { FixedEnvironmentServiceProvider } from './fixed-environment-service-provider.js';
+import { expect, test, describe, vi, beforeEach } from 'vitest';
 
 const fixed: FixedEnvironmentServiceProvider<any> = FixedEnvironmentServiceProvider.fromRecord<any>({ a: 'b', c: 5 });
 
 describe('#environmentService', function () {
-  it('should throw exception on missing environment values', async () => {
+  test('should throw exception on missing environment values', async () => {
     try {
       const es: EnvironmentService<any> = new EnvironmentService(fixed);
       const vals: any = await es.getConfig('i_do_not_exist');
@@ -16,13 +17,13 @@ describe('#environmentService', function () {
     }
   });
 
-  it('should find a valid value', async () => {
+  test('should find a valid value', async () => {
     const es: EnvironmentService<any> = new EnvironmentService(fixed);
     const vals: any = await es.getConfig('c');
     expect(vals).toBeTruthy();
   });
   /*
-  xit('should load config from s3', async () => {
+  test.skip('should load config from s3', async () => {
     Logger.setLevel(LoggerLevelName.silly);
     const bucket: string = 'xxx';
     const path: string = 'yyy';

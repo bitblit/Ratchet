@@ -2,6 +2,7 @@ import { PromiseRatchet } from './promise-ratchet.js';
 import { Logger } from '../logger/logger.js';
 import { TimeoutToken } from './timeout-token.js';
 import { LoggerLevelName } from '../logger/logger-level-name.js';
+import { expect, test, describe } from 'vitest';
 
 const fnFalse = (ignored) => {
   return false;
@@ -17,7 +18,7 @@ const waitAndPrint = async (t1: number, t2: string) => {
 };
 
 describe('#promiseRatchet', function () {
-  it('should timeout eventually', async () => {
+  test('should timeout eventually', async () => {
     try {
       Logger.setLevel(LoggerLevelName.silly);
       const result: boolean | TimeoutToken = await PromiseRatchet.waitFor(fnFalse, true, 100, 2);
@@ -28,13 +29,13 @@ describe('#promiseRatchet', function () {
     }
   });
 
-  it('should succeed on 3rd try', async () => {
+  test('should succeed on 3rd try', async () => {
     const promise: Promise<boolean> = PromiseRatchet.waitFor(fnOn3, true, 100, 4);
     const result: boolean | TimeoutToken = await promise;
     expect(result).toEqual(true);
   });
 
-  it('should run 10 elements, 2 at a time', async () => {
+  test('should run 10 elements, 2 at a time', async () => {
     Logger.setLevel(LoggerLevelName.debug);
     const elements: any[][] = [
       [100, 'Test1'],
@@ -56,7 +57,7 @@ describe('#promiseRatchet', function () {
     expect(results.length).toEqual(10);
   }, 30000);
 
-  it('should run 10 waits, 2 at a time', async () => {
+  test('should run 10 waits, 2 at a time', async () => {
     Logger.setLevel(LoggerLevelName.debug);
     const elements: number[] = [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000];
 
@@ -67,7 +68,7 @@ describe('#promiseRatchet', function () {
     expect(results.length).toEqual(10);
   });
 
-  xit('should run an async function as a for/each', async () => {
+  test.skip('should run an async function as a for/each', async () => {
     Logger.setLevel(LoggerLevelName.debug);
     const elements: number[] = [1001, 1002, 2000];
     const pfn: Function = async (v) => {

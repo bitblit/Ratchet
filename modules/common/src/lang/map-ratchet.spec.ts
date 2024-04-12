@@ -1,8 +1,9 @@
 import { KeyValue } from './key-value.js';
 import { MapRatchet } from './map-ratchet.js';
+import { expect, test, describe } from 'vitest';
 
 describe('#toKeyValueList', function () {
-  it('should expand a maps nested keys', function () {
+  test('should expand a maps nested keys', function () {
     const test: any = { 'a.b': 'c', 'c.d.e': 2, 'a.d': ['BLAH'] };
     const out: any = MapRatchet.expandNestedKeysToObjects<any>(test);
 
@@ -21,7 +22,7 @@ describe('#toKeyValueList', function () {
     expect(out.a.d[0]).toEqual('BLAH');
   });
 
-  it('should convert a map to a key-value list and back', function () {
+  test('should convert a map to a key-value list and back', function () {
     const test: any = { key1: 'value1', key2: 'value2' };
 
     const kvl: KeyValue<any>[] = MapRatchet.toKeyValueList(test);
@@ -33,7 +34,7 @@ describe('#toKeyValueList', function () {
     expect(back['key2']).toEqual('value2');
   });
 
-  it('should remove null and empty strings but not 0', function () {
+  test('should remove null and empty strings but not 0', function () {
     const test: any = {
       key1: '',
       key2: null,
@@ -56,7 +57,7 @@ describe('#toKeyValueList', function () {
     expect(clean['key5']['key7']).toEqual('also_fine');
   });
 
-  it('should extract values ignoring case', function () {
+  test('should extract values ignoring case', function () {
     const test: any = {
       'this-Test': 'a',
       test22: 'b',
@@ -66,7 +67,7 @@ describe('#toKeyValueList', function () {
     expect(MapRatchet.extractValueFromMapIgnoreCase(test, 'tEst22')).toEqual('b');
   });
 
-  it('should group values', function () {
+  test('should group values', function () {
     const test: any[] = [
       {
         id: 1,
@@ -92,7 +93,7 @@ describe('#toKeyValueList', function () {
     expect(grouped.has('c')).toBeFalsy();
   });
 
-  it('should fetch a value with a case-insensitive key', function () {
+  test('should fetch a value with a case-insensitive key', function () {
     const testOb: any = {
       test1: 'a',
       Test2: 'b',

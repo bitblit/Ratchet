@@ -3,10 +3,12 @@ import { Logger } from '@bitblit/ratchet-common';
 import { EpsilonGlobalHandler } from '../epsilon-global-handler.js';
 import { SampleServerComponents } from '../sample/sample-server-components.js';
 import { LoggerLevelName } from '@bitblit/ratchet-common';
+import { expect, test, describe, vi, beforeEach } from 'vitest';
+import { mock, MockProxy } from 'vitest-mock-extended';
 
 describe('#errorToProxyResult', function () {
   /*
-    it('should set the default status code to 500', function() {
+    test('should set the default status code to 500', function() {
 
         let err:Error = new BadRequestError('this is a test','a1','a2');
         let res:ProxyResult = ResponseUtil.errorToProxyResult(err);
@@ -14,7 +16,7 @@ describe('#errorToProxyResult', function () {
         expect(res.statusCode).toEqual(400);
     });
 
-    it('should parse a request body correctly', function() {
+    test('should parse a request body correctly', function() {
 
         let evt:APIGatewayEvent = {
             httpMethod:'post',
@@ -39,7 +41,7 @@ describe('#errorToProxyResult', function () {
 
     });
 
-    it('should parse a request body correctly part 2', function() {
+    test('should parse a request body correctly part 2', function() {
 
         let evt:APIGatewayEvent = {
             httpMethod:'post',
@@ -64,7 +66,7 @@ describe('#errorToProxyResult', function () {
     });
     */
 
-  it('should gzip responses correctly', async () => {
+  test('should gzip responses correctly', async () => {
     const inst: EpsilonGlobalHandler = await SampleServerComponents.createSampleEpsilonGlobalHandler('jest-gzip');
 
     expect(inst.epsilon.modelValidator).toBeTruthy();

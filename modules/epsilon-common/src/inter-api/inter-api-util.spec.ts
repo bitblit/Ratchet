@@ -1,11 +1,12 @@
 import { SNSEvent } from 'aws-lambda';
 import { InterApiUtil } from './inter-api-util.js';
 import { InterApiConfig } from '../config/inter-api/inter-api-config.js';
-import { JestRatchet } from '@bitblit/ratchet-jest';
+
 import { BackgroundManagerLike } from '../background/manager/background-manager-like.js';
 import { SNSClient } from '@aws-sdk/client-sns';
 import { SQSClient } from '@aws-sdk/client-sqs';
-import { jest } from '@jest/globals';
+import { expect, test, describe, vi, beforeEach } from 'vitest';
+import { mock, MockProxy } from 'vitest-mock-extended';
 
 describe('#interApiUtil', function () {
   let mockSns;
@@ -38,12 +39,12 @@ describe('#interApiUtil', function () {
   };
 
   beforeEach(() => {
-    mockSns = JestRatchet.mock<SNSClient>(jest.fn);
-    mockSqs = JestRatchet.mock<SQSClient>(jest.fn);
-    mockBgMgr = JestRatchet.mock<BackgroundManagerLike>(jest.fn); //new AwsSqsSnsBackgroundManager({} as BackgroundAwsConfig, mockSqs, mockSns);
+    mockSns = mock<SNSClient>();
+    mockSqs = mock<SQSClient>();
+    mockBgMgr = mock<BackgroundManagerLike>(); //new AwsSqsSnsBackgroundManager({} as BackgroundAwsConfig, mockSqs, mockSns);
   });
 
-  it('should translate processes', async () => {
+  test('should translate processes', async () => {
     mockBgMgr.createEntry.mockResolvedValue({ t: 1 });
     mockBgMgr.addEntriesToQueue.mockResolvedValue(['a]']);
 
@@ -69,7 +70,7 @@ describe('#interApiUtil', function () {
     expect(output.length).toEqual(1);
   });
 
-  it('should verify that an event is an inter-api even', async () => {
+  test('should verify that an event is an inter-api even', async () => {
     const res: boolean = InterApiUtil.isInterApiSnsEvent(evt);
     expect(res).toBeTruthy();
   }, 500);

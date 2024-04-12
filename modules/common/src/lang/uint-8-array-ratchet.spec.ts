@@ -1,7 +1,8 @@
 import { Uint8ArrayRatchet } from './uint-8-array-ratchet';
+import { expect, test, describe } from 'vitest';
 
 describe('#Uint8Array', function () {
-  it('should combine uint8 arrays', function () {
+  test('should combine uint8 arrays', function () {
     const arrayOne: Uint8Array = new Uint8Array([2, 4, 8]);
     const arrayTwo: Uint8Array = new Uint8Array([16, 32, 64]);
     const result: Uint8Array = Uint8ArrayRatchet.mergeArrays([arrayOne, arrayTwo]);
@@ -11,7 +12,7 @@ describe('#Uint8Array', function () {
     expect(result[5]).toEqual(64);
   });
 
-  it('should compare arrays', function () {
+  test('should compare arrays', function () {
     const arrayOne: Uint8Array = new Uint8Array([2, 4, 8]);
     const arrayOneX: Uint8Array = new Uint8Array([2, 4, 8]);
     const arrayTwo: Uint8Array = new Uint8Array([16, 32, 64]);

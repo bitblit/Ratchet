@@ -1,22 +1,24 @@
 import { DynamoRuntimeParameterProvider } from './dynamo-runtime-parameter-provider.js';
 import { DynamoRatchet } from '../dynamodb/dynamo-ratchet.js';
 import { StoredRuntimeParameter } from './stored-runtime-parameter.js';
-import { JestRatchet } from '@bitblit/ratchet-jest';
+
 import { RuntimeParameterRatchet } from './runtime-parameter-ratchet.js';
 import { PutCommandOutput } from '@aws-sdk/lib-dynamodb';
 import { Logger, LoggerLevelName, PromiseRatchet } from '@bitblit/ratchet-common';
-import { jest } from '@jest/globals';
+import { expect, test, describe, vi, beforeEach } from 'vitest';
+import { mock, MockProxy } from 'vitest-mock-extended';
+import { S3CacheRatchetLike } from '../s3/s3-cache-ratchet-like';
 
-let mockDynamoRatchet: jest.Mocked<DynamoRatchet>;
+let mockDynamoRatchet: MockProxy<DynamoRatchet>;
 const testEntry: StoredRuntimeParameter = { groupId: 'test', paramKey: 'test', paramValue: '15', ttlSeconds: 0.5 };
 const testEntry2: StoredRuntimeParameter = { groupId: 'test', paramKey: 'test1', paramValue: '20', ttlSeconds: 0.5 };
 
 describe('#runtimeParameterRatchet', function () {
   beforeEach(() => {
-    mockDynamoRatchet = JestRatchet.mock(jest.fn);
+    mockDynamoRatchet = mock<DynamoRatchet>();
   });
 
-  it('fetch and cache a runtime parameter', async () => {
+  test('fetch and cache a runtime parameter', async () => {
     Logger.setLevel(LoggerLevelName.silly);
     const tableName: string = 'default-table';
     mockDynamoRatchet.simpleGet.mockResolvedValue(testEntry);
@@ -47,7 +49,7 @@ describe('#runtimeParameterRatchet', function () {
     expect(cacheDefault).toEqual(27);
   }, 30_000);
 
-  it('reads underlying entries', async () => {
+  test('reads underlying entries', async () => {
     Logger.setLevel(LoggerLevelName.silly);
     const tableName: string = 'default-table';
     mockDynamoRatchet.fullyExecuteQuery.mockResolvedValue([testEntry, testEntry2]);

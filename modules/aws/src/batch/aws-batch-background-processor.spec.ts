@@ -1,17 +1,17 @@
 import { AwsBatchRatchet } from './aws-batch-ratchet.js';
 import { SubmitJobCommandOutput } from '@aws-sdk/client-batch';
-import { JestRatchet } from '@bitblit/ratchet-jest';
 import { AwsBatchBackgroundProcessor } from './aws-batch-background-processor.js';
-import { jest } from '@jest/globals';
+import { expect, test, describe, beforeEach } from 'vitest';
+import { mock, MockProxy } from 'vitest-mock-extended';
 
-let mockBatchRatchet: jest.Mocked<AwsBatchRatchet>;
+let mockBatchRatchet: MockProxy<AwsBatchRatchet>;
 
 describe('#AwsBatchBackgroundProcessor', () => {
   beforeEach(() => {
-    mockBatchRatchet = JestRatchet.mock(jest.fn);
+    mockBatchRatchet = mock<AwsBatchRatchet>();
   });
 
-  it('Should schedule background task', async () => {
+  test('Should schedule background task', async () => {
     //mockBatchRatchet.defaultQueueName = 'a';
     mockBatchRatchet.scheduleJob.mockResolvedValue({ jobId: 'newID', jobName: 'name', $metadata: null });
     const svc: AwsBatchBackgroundProcessor = new AwsBatchBackgroundProcessor(mockBatchRatchet, null);

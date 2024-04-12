@@ -3,9 +3,11 @@ import fs from 'fs';
 import path from 'path';
 import { Logger } from '@bitblit/ratchet-common';
 import { EsmRatchet } from '@bitblit/ratchet-common';
+import { expect, test, describe, vi, beforeEach } from 'vitest';
+import { mock, MockProxy } from 'vitest-mock-extended';
 
 describe('#modelValidator', function () {
-  it('should list an error', function () {
+  test('should list an error', function () {
     const yamlString: string = fs
       .readFileSync(path.join(EsmRatchet.fetchDirName(import.meta.url), '../../../../test-data/sample-objects.spec.yaml'))
       .toString();

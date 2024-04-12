@@ -3,6 +3,7 @@ import { DescribeTableCommandOutput, DynamoDBClient } from '@aws-sdk/client-dyna
 
 import { mockClient } from 'aws-sdk-client-mock';
 import { DynamoTableRatchet } from './dynamo-table-ratchet.js';
+import { expect, test, describe, vi, beforeEach } from 'vitest';
 
 let mockDynamo;
 
@@ -13,7 +14,7 @@ describe('#dynamoTableRatchet', function () {
     mockDynamo.reset();
   });
 
-  xit('should copy a table', async () => {
+  test.skip('should copy a table', async () => {
     const dr: DynamoTableRatchet = new DynamoTableRatchet(mockDynamo);
     //const tn: string[] = await dr.listAllTables();
     const result: DescribeTableCommandOutput = await dr.copyTable('src-dev', 'dst-dev');

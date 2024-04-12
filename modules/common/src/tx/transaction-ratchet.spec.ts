@@ -3,6 +3,7 @@ import { TransactionRatchet } from './transaction-ratchet.js';
 import { TransactionResult } from './transaction-result.js';
 import { TransactionFinalState } from './transaction-final-state.js';
 import { LoggerLevelName } from '../logger/logger-level-name.js';
+import { expect, test, describe } from 'vitest';
 
 interface TestTransactionContext {
   runningTotal: number;
@@ -28,7 +29,7 @@ class TestTransactionStep implements TransactionStep<TestTransactionContext> {
 }
 
 describe('#TransactionRatchet.execute', function () {
-  it('should return the right value when it executes successfully', async () => {
+  test('should return the right value when it executes successfully', async () => {
     const steps: TestTransactionStep[] = [new TestTransactionStep(), new TestTransactionStep(), new TestTransactionStep()];
     const ctx: TestTransactionContext = { runningTotal: 0 };
     const result: TransactionResult<TestTransactionContext> = await TransactionRatchet.execute(steps, ctx);
@@ -38,7 +39,7 @@ describe('#TransactionRatchet.execute', function () {
     expect(result.finalContext.runningTotal).toEqual(3);
   });
 
-  it('should return the right value when it rolls back successfully fail step 2', async () => {
+  test('should return the right value when it rolls back successfully fail step 2', async () => {
     const steps: TestTransactionStep[] = [new TestTransactionStep(), new TestTransactionStep(), new TestTransactionStep()];
     const ctx: TestTransactionContext = { runningTotal: 0, failStep: 2 };
     const result: TransactionResult<TestTransactionContext> = await TransactionRatchet.execute(steps, ctx);
@@ -49,7 +50,7 @@ describe('#TransactionRatchet.execute', function () {
     expect(result.finalContext.runningTotal).toEqual(0);
   });
 
-  it('should return the right value when it rolls back successfully fail step 1', async () => {
+  test('should return the right value when it rolls back successfully fail step 1', async () => {
     const steps: TestTransactionStep[] = [new TestTransactionStep(), new TestTransactionStep(), new TestTransactionStep()];
     const ctx: TestTransactionContext = { runningTotal: 0, failStep: 2 };
     const result: TransactionResult<TestTransactionContext> = await TransactionRatchet.execute(steps, ctx);
@@ -60,7 +61,7 @@ describe('#TransactionRatchet.execute', function () {
     expect(result.finalContext.runningTotal).toEqual(0);
   });
 
-  it('should return the right value the rollback fails', async () => {
+  test('should return the right value the rollback fails', async () => {
     const steps: TestTransactionStep[] = [new TestTransactionStep(), new TestTransactionStep(), new TestTransactionStep()];
     const ctx: TestTransactionContext = { runningTotal: 0, failStep: 2, failRollbackStep: 1 };
     const result: TransactionResult<TestTransactionContext> = await TransactionRatchet.execute(steps, ctx);
@@ -73,7 +74,7 @@ describe('#TransactionRatchet.execute', function () {
     expect(result.rollbackError).not.toBeUndefined();
   });
 
-  it('should run the post-error handler when a failure happens', async () => {
+  test('should run the post-error handler when a failure happens', async () => {
     const steps: TestTransactionStep[] = [new TestTransactionStep(), new TestTransactionStep(), new TestTransactionStep()];
     const ctx: TestTransactionContext = { runningTotal: 0, failStep: 2 };
     const result: TransactionResult<TestTransactionContext> = await TransactionRatchet.execute(steps, ctx, {
@@ -88,7 +89,7 @@ describe('#TransactionRatchet.execute', function () {
     expect(result.finalContext.postTxTracker).toEqual(1);
   });
 
-  it('should run both post-error handler when a failure happens in both error and rollback', async () => {
+  test('should run both post-error handler when a failure happens in both error and rollback', async () => {
     const steps: TestTransactionStep[] = [new TestTransactionStep(), new TestTransactionStep(), new TestTransactionStep()];
     const ctx: TestTransactionContext = { runningTotal: 0, failStep: 2, failRollbackStep: 1 };
     const result: TransactionResult<TestTransactionContext> = await TransactionRatchet.execute(steps, ctx, {
@@ -106,7 +107,7 @@ describe('#TransactionRatchet.execute', function () {
     expect(result.finalContext.postTxTracker).toEqual(2);
   });
 
-  it('should still return if a post-tx executor fails', async () => {
+  test('should still return if a post-tx executor fails', async () => {
     const steps: TestTransactionStep[] = [new TestTransactionStep(), new TestTransactionStep(), new TestTransactionStep()];
     const ctx: TestTransactionContext = { runningTotal: 0, failStep: 2, failRollbackStep: 1 };
     const result: TransactionResult<TestTransactionContext> = await TransactionRatchet.execute(steps, ctx, {
@@ -125,7 +126,7 @@ describe('#TransactionRatchet.execute', function () {
     expect(result.finalContext.postTxTracker).toEqual(2);
   });
 
-  it('should work with transaction configuration that only provides read log level access', async () => {
+  test('should work with transaction configuration that only provides read log level access', async () => {
     const steps: TestTransactionStep[] = [new TestTransactionStep(), new TestTransactionStep(), new TestTransactionStep()];
     const ctx: TestTransactionContext = { runningTotal: 0, failStep: 2, failRollbackStep: 1 };
     const result: TransactionResult<TestTransactionContext> = await TransactionRatchet.execute(steps, ctx, {

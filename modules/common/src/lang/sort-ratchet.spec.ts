@@ -1,8 +1,9 @@
 import { SortRatchet } from './sort-ratchet.js';
 import { Logger } from '../logger/logger.js';
+import { expect, test, describe } from 'vitest';
 
 describe('#sortRatchet', function () {
-  it('sort nulls and undefined to the top', async () => {
+  test('sort nulls and undefined to the top', async () => {
     const input: string[] = [null, 'a', null, 'b', null, 'c'];
     input.sort((a, b) => SortRatchet.sortNullToTop<string>(a, b, (a, b) => a.localeCompare(b)));
 
@@ -13,7 +14,7 @@ describe('#sortRatchet', function () {
     expect(input[2]).toBeFalsy();
   });
 
-  it('sort nulls and undefined to the bottom', async () => {
+  test('sort nulls and undefined to the bottom', async () => {
     const input: string[] = ['a', null, 'b', undefined, 'c', null];
     input.sort((a, b) => SortRatchet.sortNullToBottom<string>(a, b, (a, b) => a.localeCompare(b)));
 
@@ -26,7 +27,7 @@ describe('#sortRatchet', function () {
     expect(input[5]).toBeFalsy();
   });
 
-  it('sort mixed numbers and strings as numbers', async () => {
+  test('sort mixed numbers and strings as numbers', async () => {
     const input: (string | number)[] = ['1', 10, '5', 20, '-8', 35.2];
     input.sort(SortRatchet.sortNumericStringsAsNumbers);
 
@@ -41,7 +42,7 @@ describe('#sortRatchet', function () {
     expect(input[5]).toEqual(35.2);
   });
 
-  it('sort mixed numbers and strings as numbers handling string as null', async () => {
+  test('sort mixed numbers and strings as numbers handling string as null', async () => {
     const input: (string | number)[] = ['a', 10, 'b', 20, '-8', 35.2];
     input.sort(SortRatchet.sortNumericStringsAsNumbers);
 

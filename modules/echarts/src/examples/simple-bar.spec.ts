@@ -1,5 +1,7 @@
 import { EChartRatchet } from '../common/echart-ratchet.js';
 import { EChartsOption } from 'echarts';
+import { expect, test, describe, vi, beforeEach } from 'vitest';
+import { mock, MockProxy } from 'vitest-mock-extended';
 
 const options: EChartsOption = {
   title: {
@@ -23,7 +25,7 @@ const options: EChartsOption = {
 };
 
 describe('#simpleBarChart', function () {
-  it('should generate the chart', async () => {
+  test('should generate the chart', async () => {
     const data: Buffer = await EChartRatchet.renderChart(options, {
       width: 1000,
       height: 500,

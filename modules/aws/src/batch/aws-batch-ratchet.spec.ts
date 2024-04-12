@@ -1,6 +1,7 @@
 import { AwsBatchRatchet } from './aws-batch-ratchet.js';
 import { BatchClient, JobStatus, JobSummary, ListJobsCommand, SubmitJobCommand, SubmitJobCommandOutput } from '@aws-sdk/client-batch';
 import { mockClient } from 'aws-sdk-client-mock';
+import { expect, test, describe, vi, beforeEach } from 'vitest';
 
 let mockBatch;
 
@@ -10,7 +11,7 @@ describe('#AwsBatchService', () => {
     mockBatch.reset();
   });
 
-  it('Should schedule batch job', async () => {
+  test('Should schedule batch job', async () => {
     const svc: AwsBatchRatchet = new AwsBatchRatchet(mockBatch);
     mockBatch.on(SubmitJobCommand).resolves({ jobName: 'b' });
 
@@ -22,7 +23,7 @@ describe('#AwsBatchService', () => {
     expect(res).not.toBeNull();
   });
 
-  it('Should list jobs', async () => {
+  test('Should list jobs', async () => {
     const svc: AwsBatchRatchet = new AwsBatchRatchet(mockBatch);
     mockBatch.on(ListJobsCommand).resolves([{}] as JobSummary[]);
 
@@ -31,7 +32,7 @@ describe('#AwsBatchService', () => {
     expect(res.length).toEqual(1);
   });
 
-  it('Should count jobs in state', async () => {
+  test('Should count jobs in state', async () => {
     const svc: AwsBatchRatchet = new AwsBatchRatchet(mockBatch);
     mockBatch.on(ListJobsCommand).resolves([{}] as JobSummary[]);
 
