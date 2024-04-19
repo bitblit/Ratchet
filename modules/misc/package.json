@@ -11,6 +11,7 @@
     "bin/**"
   ],
   "exports": {
+    "./sobol/*": "./lib/sobol/generated/*",
     ".": {
       "types": "./lib/index.d.ts",
       "import": "./lib/index.mjs"
