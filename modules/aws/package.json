@@ -73,9 +73,9 @@
     "@aws-sdk/lib-storage": "3.533.0",
     "@aws-sdk/s3-request-presigner": "3.533.0",
     "@aws-sdk/types": "3.533.0",
-    "@smithy/abort-controller": "2.1.4",
-    "@smithy/smithy-client": "2.4.5",
-    "@smithy/util-waiter": "2.1.4"
+    "@smithy/abort-controller": "2.2.0",
+    "@smithy/smithy-client": "2.5.1",
+    "@smithy/util-waiter": "2.2.0"
   },
   "peerDependencies": {
     "@aws-sdk/client-athena": "^3.533.0",

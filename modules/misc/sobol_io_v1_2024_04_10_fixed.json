@@ -1,0 +1,3594 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Sobol API Docs",
+    "version": "1.0.0",
+    "description": "An OpenAPI Implementation exposing Sobol's RESTful API",
+    "termsOfService": "https://sobol.io/privacy-policy/",
+    "contact":
+      {
+        "name": "API Support",
+        "email": "team@sobol.io"
+      }
+
+  },
+  "servers": [
+    {
+      "url": "https://sobol.io/d/api/v1"
+    }
+  ],
+  "components": {
+    "schemas": {
+      "Role": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_type": {
+            "type": "string",
+            "enum": [
+              "role"
+            ]
+          },
+          "_rootId": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_createdOn": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "_createdBy": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_updatedOn": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "_updatedBy": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_archivedOn": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "_archivedBy": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_deletedOn": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "_deletedBy": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_operationId": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_isPublic": {
+            "type": "boolean"
+          },
+          "name": {
+            "type": "string",
+            "maximum": 400
+          },
+          "description": {
+            "type": "string",
+            "maximum": 20000
+          },
+          "templateId": {
+            "type": "string",
+            "maximum": 100
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "draft",
+              "active",
+              "archived"
+            ]
+          },
+          "userAllocationPercent": {
+            "type": "number"
+          },
+          "contributesTo": {
+            "type": "object",
+            "properties": {
+              "_id": {
+                "type": "string"
+              },
+              "_type": {
+                "type": "string",
+                "enum": [
+                  "team"
+                ]
+              }
+            }
+          },
+          "assignments": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "type": "string"
+                },
+                "_type": {
+                  "type": "string",
+                  "enum": [
+                    "role_assignment"
+                  ]
+                }
+              }
+            }
+          },
+          "accountableTo": {
+            "type": "object",
+            "properties": {
+              "_id": {
+                "type": "string"
+              },
+              "_type": {
+                "type": "string",
+                "enum": [
+                  "role"
+                ]
+              }
+            }
+          },
+          "accountableFor": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "type": "string"
+                },
+                "_type": {
+                  "type": "string",
+                  "enum": [
+                    "role"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "required": [
+          "_id",
+          "_rootId",
+          "_createdBy",
+          "name",
+          "contributesTo"
+        ]
+      },
+      "RoleAssignment": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_type": {
+            "type": "string",
+            "enum": [
+              "role_assignment"
+            ]
+          },
+          "_rootId": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_createdOn": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "_createdBy": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_updatedOn": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "_updatedBy": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_archivedOn": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "_archivedBy": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_deletedOn": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "_deletedBy": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_operationId": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_isPublic": {
+            "type": "boolean"
+          },
+          "templateId": {
+            "type": "string",
+            "maximum": 100
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "draft",
+              "active",
+              "archived"
+            ]
+          },
+          "userAllocationPercent": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "_id",
+          "_rootId",
+          "_createdBy"
+        ]
+      },
+      "Team": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_type": {
+            "type": "string",
+            "enum": [
+              "team"
+            ]
+          },
+          "_rootId": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_createdOn": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "_createdBy": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_updatedOn": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "_updatedBy": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_archivedOn": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "_archivedBy": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_deletedOn": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "_deletedBy": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_operationId": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_isPublic": {
+            "type": "boolean"
+          },
+          "name": {
+            "type": "string",
+            "maximum": 400
+          },
+          "_picture": {
+            "type": "string",
+            "maximum": 300
+          },
+          "_picture_small": {
+            "type": "string",
+            "maximum": 300
+          },
+          "_picture_medium": {
+            "type": "string",
+            "maximum": 300
+          },
+          "_picture_large": {
+            "type": "string",
+            "maximum": 300
+          },
+          "description": {
+            "type": "string",
+            "maximum": 20000
+          },
+          "addresses": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "templateId": {
+            "type": "string",
+            "maximum": 100
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "draft",
+              "active",
+              "archived"
+            ]
+          },
+          "parentTeam": {
+            "type": "object",
+            "properties": {
+              "_id": {
+                "type": "string"
+              },
+              "_type": {
+                "type": "string",
+                "enum": [
+                  "team"
+                ]
+              }
+            }
+          },
+          "owners": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "type": "string"
+                },
+                "_type": {
+                  "type": "string",
+                  "enum": [
+                    "role",
+                    "user"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "required": [
+          "_id",
+          "_rootId",
+          "_createdBy",
+          "name",
+          "addresses",
+          "parentTeam"
+        ]
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_type": {
+            "type": "string",
+            "enum": [
+              "user"
+            ]
+          },
+          "_rootId": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_createdOn": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "_createdBy": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_updatedOn": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "_updatedBy": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_archivedOn": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "_archivedBy": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_deletedOn": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "_deletedBy": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_operationId": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_isPublic": {
+            "type": "boolean"
+          },
+          "firstName": {
+            "type": "string",
+            "maximum": 400
+          },
+          "lastName": {
+            "type": "string",
+            "maximum": 400
+          },
+          "username": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_picture": {
+            "type": "string",
+            "maximum": 300
+          },
+          "_picture_small": {
+            "type": "string",
+            "maximum": 300
+          },
+          "_picture_medium": {
+            "type": "string",
+            "maximum": 300
+          },
+          "_picture_large": {
+            "type": "string",
+            "maximum": 300
+          },
+          "state": {
+            "type": "string",
+            "maximum": 400
+          },
+          "countryCode": {
+            "type": "string",
+            "maximum": 400
+          },
+          "city": {
+            "type": "string",
+            "maximum": 400
+          },
+          "_lastLogin": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "latLng": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          },
+          "timezone": {
+            "type": "string",
+            "maximum": 400
+          },
+          "_globalId": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_currentRootId": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_isAutomated": {
+            "type": "boolean"
+          },
+          "name": {
+            "type": "string",
+            "maximum": 400
+          },
+          "_userType": {
+            "type": "string",
+            "enum": [
+              "regular",
+              "admin",
+              "system",
+              "read_only"
+            ]
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "draft",
+              "active",
+              "archived"
+            ]
+          },
+          "_externalId": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_externalType": {
+            "type": "string",
+            "enum": [
+              "discord",
+              "scim"
+            ]
+          },
+          "templateId": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_invitedOn": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "localIdentities": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "type": "string"
+                },
+                "_type": {
+                  "type": "string",
+                  "enum": [
+                    "local_identity"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "required": [
+          "_id",
+          "_rootId",
+          "_createdBy",
+          "_isAutomated",
+          "name",
+          "_userType"
+        ]
+      },
+      "LocalIdentity": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_type": {
+            "type": "string",
+            "enum": [
+              "local_identity"
+            ]
+          },
+          "_rootId": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_createdOn": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "_createdBy": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_updatedOn": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "_updatedBy": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_archivedOn": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "_archivedBy": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_deletedOn": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "_deletedBy": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_operationId": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_isPublic": {
+            "type": "boolean"
+          },
+          "identityId": {
+            "type": "string",
+            "maximum": 100
+          },
+          "displayId": {
+            "type": "string",
+            "maximum": 100
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "email",
+              "discord",
+              "eth_wallet"
+            ]
+          },
+          "globalIdentityId": {
+            "type": "string",
+            "maximum": 100
+          },
+          "isRequired": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "_id",
+          "_rootId",
+          "_createdBy",
+          "identityId",
+          "type"
+        ]
+      },
+      "GlobalIdentity": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_type": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_createdBy": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_createdOn": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "_updatedOn": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "_updatedBy": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_archivedOn": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "_archivedBy": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_deletedOn": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "_deletedBy": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_operationId": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_signedTerms": {
+            "type": "boolean"
+          },
+          "identityId": {
+            "type": "string",
+            "maximum": 100
+          },
+          "displayId": {
+            "type": "string",
+            "maximum": 100
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "email",
+              "discord",
+              "eth_wallet"
+            ]
+          },
+          "validatedBy": {
+            "type": "string",
+            "enum": [
+              "saml",
+              "google",
+              "passwordless",
+              "discord",
+              "eth_wallet",
+              "enterprise_admin"
+            ]
+          },
+          "orgId": {
+            "type": "string",
+            "maximum": 100
+          }
+        },
+        "required": [
+          "_id",
+          "_type",
+          "_createdBy",
+          "identityId",
+          "type",
+          "validatedBy"
+        ]
+      },
+      "GlobalUserSettings": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_type": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_createdBy": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_createdOn": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "_updatedOn": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "_updatedBy": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_archivedOn": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "_archivedBy": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_deletedOn": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "_deletedBy": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_operationId": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_signedTerms": {
+            "type": "boolean"
+          },
+          "globalUserId": {
+            "type": "string",
+            "maximum": 100
+          },
+          "notifications": {
+            "type": "object"
+          },
+          "theme": {
+            "type": "string"
+          },
+          "identiconType": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "_id",
+          "_type",
+          "_createdBy",
+          "globalUserId",
+          "notifications"
+        ]
+      },
+      "Goal": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_type": {
+            "type": "string",
+            "enum": [
+              "goal"
+            ]
+          },
+          "_rootId": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_createdOn": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "_createdBy": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_updatedOn": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "_updatedBy": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_archivedOn": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "_archivedBy": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_deletedOn": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "_deletedBy": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_operationId": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_isPublic": {
+            "type": "boolean"
+          },
+          "name": {
+            "type": "string",
+            "maximum": 400
+          },
+          "description": {
+            "type": "string",
+            "maximum": 20000
+          },
+          "startValue": {
+            "type": "number"
+          },
+          "targetValue": {
+            "type": "number"
+          },
+          "valueType": {
+            "type": "string",
+            "maximum": 100
+          },
+          "currentValue": {
+            "type": "number"
+          },
+          "currentValueChangedOn": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "_completionDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "goalType": {
+            "type": "string",
+            "enum": [
+              "target",
+              "binary",
+              "gauge",
+              "calculated"
+            ]
+          },
+          "templateId": {
+            "type": "string",
+            "maximum": 100
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "draft",
+              "active",
+              "done",
+              "archived"
+            ]
+          },
+          "order": {
+            "type": "number"
+          },
+          "owners": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "type": "string"
+                },
+                "_type": {
+                  "type": "string",
+                  "enum": [
+                    "role",
+                    "team",
+                    "user"
+                  ]
+                }
+              }
+            }
+          },
+          "parentGoal": {
+            "type": "object",
+            "properties": {
+              "_id": {
+                "type": "string"
+              },
+              "_type": {
+                "type": "string",
+                "enum": [
+                  "goal"
+                ]
+              }
+            }
+          }
+        },
+        "required": [
+          "_id",
+          "_rootId",
+          "_createdBy",
+          "name"
+        ]
+      },
+      "GoalValue": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_type": {
+            "type": "string",
+            "enum": [
+              "goal_value"
+            ]
+          },
+          "_rootId": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_createdOn": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "_createdBy": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_updatedOn": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "_updatedBy": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_archivedOn": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "_archivedBy": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_deletedOn": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "_deletedBy": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_operationId": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_isPublic": {
+            "type": "boolean"
+          },
+          "value": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "_id",
+          "_rootId",
+          "_createdBy",
+          "value"
+        ]
+      },
+      "Agreement": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_type": {
+            "type": "string",
+            "enum": [
+              "agreement"
+            ]
+          },
+          "_rootId": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_createdOn": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "_createdBy": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_updatedOn": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "_updatedBy": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_archivedOn": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "_archivedBy": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_deletedOn": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "_deletedBy": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_operationId": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_isPublic": {
+            "type": "boolean"
+          },
+          "name": {
+            "type": "string",
+            "maximum": 400
+          },
+          "description": {
+            "type": "string",
+            "maximum": 20000
+          },
+          "activatedOn": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "_activatedBy": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_deactivatedBy": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_deactivatedOn": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "_completedOn": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "_completedBy": {
+            "type": "string",
+            "maximum": 100
+          },
+          "templateId": {
+            "type": "string",
+            "maximum": 100
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "draft",
+              "active",
+              "done",
+              "archived"
+            ]
+          },
+          "owners": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "type": "string"
+                },
+                "_type": {
+                  "type": "string",
+                  "enum": [
+                    "team",
+                    "user",
+                    "role"
+                  ]
+                }
+              }
+            }
+          },
+          "signatories": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "type": "string"
+                },
+                "_type": {
+                  "type": "string",
+                  "enum": [
+                    "user"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "required": [
+          "_id",
+          "_rootId",
+          "_createdBy",
+          "name",
+          "owners"
+        ]
+      },
+      "CustomField": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_type": {
+            "type": "string",
+            "enum": [
+              "custom_field"
+            ]
+          },
+          "_rootId": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_createdOn": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "_createdBy": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_updatedOn": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "_updatedBy": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_archivedOn": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "_archivedBy": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_deletedOn": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "_deletedBy": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_operationId": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_isPublic": {
+            "type": "boolean"
+          },
+          "_fieldType": {
+            "type": "string",
+            "enum": [
+              "text",
+              "badge",
+              "dropdown_single",
+              "dropdown_multi",
+              "tag",
+              "relates_to_single",
+              "relates_to_multi"
+            ]
+          },
+          "name": {
+            "type": "string",
+            "maximum": 400
+          },
+          "description": {
+            "type": "string",
+            "maximum": 20000
+          },
+          "placeholder": {
+            "type": "string",
+            "maximum": 20000
+          },
+          "visibility": {
+            "type": "boolean"
+          },
+          "controlledBy": {
+            "type": "string",
+            "maximum": 100
+          },
+          "order": {
+            "type": "number"
+          },
+          "objectTypes": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "team",
+                "user",
+                "goal",
+                "role",
+                "role_assignment",
+                "agreement"
+              ]
+            }
+          },
+          "config": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/CustomFieldTextConfig"
+              },
+              {
+                "$ref": "#/components/schemas/CustomFieldBadgeConfig"
+              },
+              {
+                "$ref": "#/components/schemas/CustomFieldSingleSelectDropDownConfig"
+              },
+              {
+                "$ref": "#/components/schemas/CustomFieldMultiSelectDropDownConfig"
+              }
+            ]
+          }
+        }
+      },
+      "CustomFieldValue": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_type": {
+            "type": "string",
+            "enum": [
+              "custom_field_value"
+            ]
+          },
+          "_rootId": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_createdOn": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "_createdBy": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_updatedOn": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "_updatedBy": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_archivedOn": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "_archivedBy": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_deletedOn": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "_deletedBy": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_operationId": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_isPublic": {
+            "type": "boolean"
+          },
+          "_customFieldId": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_customFieldType": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_customFieldName": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_objectType": {
+            "type": "string",
+            "enum": [
+              "team",
+              "user",
+              "goal",
+              "role",
+              "role_assignment",
+              "agreement"
+            ]
+          },
+          "_objectId": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_fieldType": {
+            "type": "string",
+            "enum": [
+              "text",
+              "badge",
+              "dropdown_single",
+              "dropdown_multi",
+              "tag",
+              "relates_to_single",
+              "relates_to_multi"
+            ]
+          },
+          "content": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/CustomFieldTextContent"
+              },
+              {
+                "$ref": "#/components/schemas/CustomFieldBadgeContent"
+              },
+              {
+                "$ref": "#/components/schemas/CustomFieldSingleSelectDropDownContent"
+              },
+              {
+                "$ref": "#/components/schemas/CustomFieldMultiSelectDropDownContent"
+              }
+            ]
+          }
+        }
+      },
+      "Address": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_type": {
+            "type": "string",
+            "enum": [
+              "address"
+            ]
+          },
+          "_rootId": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_createdOn": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "_createdBy": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_updatedOn": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "_updatedBy": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_archivedOn": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "_archivedBy": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_deletedOn": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "_deletedBy": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_operationId": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_isPublic": {
+            "type": "boolean"
+          },
+          "name": {
+            "type": "string",
+            "maximum": 20000
+          },
+          "address": {
+            "type": "string"
+          },
+          "chainId": {
+            "type": "string",
+            "enum": [
+              "1",
+              "137",
+              "42161",
+              "100",
+              "10",
+              "1313161554",
+              "43114",
+              "56",
+              "5",
+              "11155111"
+            ]
+          },
+          "type": {
+            "$ref": "#/components/schemas/AddressTypeInternalEnum"
+          }
+        },
+        "required": [
+          "_id",
+          "_rootId",
+          "_createdBy",
+          "address"
+        ]
+      },
+      "AddressTypeInternalEnum": {
+        "type": "string",
+        "enum": [
+          "address",
+          "contract",
+          "gnosis_safe"
+        ]
+      },
+      "FeatureToggle": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_type": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_rootId": {
+            "type": "string",
+            "maximum": 100
+          },
+          "_createdOn": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "featureType": {
+            "type": "string",
+            "enum": [
+              "goals",
+              "agreements"
+            ]
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "modifiers": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "_id",
+          "_type",
+          "_rootId",
+          "enabled"
+        ]
+      },
+      "ObjectRef": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string"
+          },
+          "_type": {
+            "type": "string",
+            "enum": [
+              "team",
+              "role",
+              "user",
+              "goal",
+              "agreement"
+            ]
+          }
+        }
+      },
+      "ArrayOfObjectRefs": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/ObjectRef"
+        }
+      },
+      "CustomFieldTextConfig": {
+        "type": "object",
+        "description": "Text custom field config",
+        "properties": {
+          "placeholder": {
+            "type": "string"
+          }
+        }
+      },
+      "CustomFieldBadgeConfig": {
+        "type": "object",
+        "description": "Single select dropdown custom field config",
+        "properties": {
+          "options": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "_picture": {
+                  "type": "string"
+                },
+                "_picture_small": {
+                  "type": "string"
+                },
+                "_picture_medium": {
+                  "type": "string"
+                },
+                "_picture_large": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "CustomFieldSingleSelectDropDownConfig": {
+        "type": "object",
+        "description": "Multi select dropdown custom field config",
+        "properties": {
+          "options": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "CustomFieldMultiSelectDropDownConfig": {
+        "type": "object",
+        "description": "Badge custom field config",
+        "properties": {
+          "options": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "CustomFieldTextContent": {
+        "type": "object",
+        "description": "Text custom field content",
+        "properties": {
+          "text": {
+            "type": "string"
+          }
+        }
+      },
+      "CustomFieldBadgeContent": {
+        "type": "object",
+        "description": "Badge custom field content",
+        "properties": {
+          "badges": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "CustomFieldSingleSelectDropDownContent": {
+        "type": "object",
+        "description": "Single select dropdown custom field content",
+        "properties": {
+          "selectedOptions": {
+            "type": "object",
+            "properties": {
+              "ids": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "values": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "CustomFieldMultiSelectDropDownContent": {
+        "type": "object",
+        "description": "Single select dropdown custom field content",
+        "properties": {
+          "selectedOptions": {
+            "type": "object",
+            "properties": {
+              "ids": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "values": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "parameters": {
+      "orgId": {
+        "name": "orgId",
+        "in": "path",
+        "schema": {
+          "type": "string"
+        },
+        "required": true,
+        "description": "ID of the organization"
+      },
+      "objectId": {
+        "name": "objectId",
+        "in": "path",
+        "schema": {
+          "type": "string"
+        },
+        "required": true,
+        "description": "ID of the object"
+      },
+      "objectType": {
+        "name": "objectType",
+        "in": "path",
+        "schema": {
+          "type": "string"
+        },
+        "required": true,
+        "description": "Type of the object"
+      },
+      "userId": {
+        "name": "userId",
+        "in": "path",
+        "schema": {
+          "type": "string"
+        },
+        "required": true,
+        "description": "ID of the user"
+      }
+    },
+    "requestBodies": {
+      "Role": {
+        "required": true,
+        "description": "Role request object",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Role"
+            },
+            "example": {
+              "name": "string",
+              "contributesTo": {
+                "_id": "string",
+                "_type": "team"
+              }
+            }
+          }
+        }
+      },
+      "RoleAssignment": {
+        "required": true,
+        "description": "RoleAssignment request object",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/RoleAssignment"
+            },
+            "example": {}
+          }
+        }
+      },
+      "Team": {
+        "required": true,
+        "description": "Team request object",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Team"
+            },
+            "example": {
+              "name": "string",
+              "parentTeam": {
+                "_id": "string",
+                "_type": "team"
+              }
+            }
+          }
+        }
+      },
+      "User": {
+        "required": true,
+        "description": "User request object",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/User"
+            },
+            "example": {
+              "name": "string",
+              "status": "draft"
+            }
+          }
+        }
+      },
+      "LocalIdentity": {
+        "required": true,
+        "description": "LocalIdentity request object",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/LocalIdentity"
+            },
+            "example": {}
+          }
+        }
+      },
+      "GlobalIdentity": {
+        "required": true,
+        "description": "GlobalIdentity request object",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/GlobalIdentity"
+            },
+            "example": {}
+          }
+        }
+      },
+      "GlobalUserSettings": {
+        "required": true,
+        "description": "GlobalUserSettings request object",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/GlobalUserSettings"
+            },
+            "example": {}
+          }
+        }
+      },
+      "GoalValue": {
+        "required": true,
+        "description": "GoalValue request object",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/GoalValue"
+            },
+            "example": {}
+          }
+        }
+      },
+      "Agreement": {
+        "required": true,
+        "description": "Agreement request object",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Agreement"
+            },
+            "example": {
+              "name": "string",
+              "owners": [
+                {
+                  "_id": "string",
+                  "_type": "team"
+                }
+              ]
+            }
+          }
+        }
+      },
+      "CustomField": {
+        "required": true,
+        "description": "CustomField request object",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/CustomField"
+            },
+            "example": {}
+          }
+        }
+      },
+      "CustomFieldValue": {
+        "required": true,
+        "description": "CustomFieldValue request object",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/CustomFieldValue"
+            },
+            "example": {}
+          }
+        }
+      },
+      "AddressRequestBody": {
+        "required": true,
+        "description": "Address request object",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Address"
+            },
+            "example": {
+              "chainId": "1",
+              "type": "address"
+            }
+          }
+        }
+      },
+      "FeatureToggle": {
+        "required": true,
+        "description": "FeatureToggle request object",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/FeatureToggle"
+            },
+            "example": {}
+          }
+        }
+      }
+    },
+    "responses": {},
+    "securitySchemes": {
+      "APIKey": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "security": [
+    {
+      "APIKey": []
+    }
+  ],
+  "paths": {
+    "/org/{orgId}/agreements": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/orgId"
+        }
+      ],
+      "post": {
+        "summary": "Create an agreement",
+        "tags": [
+          "Agreements"
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/Agreement"
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Agreement"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Get all agreements in the organization",
+        "tags": [
+          "Agreements"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Agreement"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/org/{orgId}/agreements/{objectId}": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/orgId"
+        },
+        {
+          "$ref": "#/components/parameters/objectId"
+        }
+      ],
+      "put": {
+        "summary": "Update an agreement. Note that you cannot update `owners` or `signatories` directly here. There are specialized endpoints for modifying either collection.",
+        "tags": [
+          "Agreements"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Agreement"
+              },
+              "examples": {
+                "updateName": {
+                  "summary": "Updating name and description",
+                  "value": {
+                    "name": "new name",
+                    "description": "new description"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Agreement"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete an agreement",
+        "tags": [
+          "Agreements"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/org/{orgId}/agreements/{objectId}/signatories": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/orgId"
+        },
+        {
+          "$ref": "#/components/parameters/objectId"
+        }
+      ],
+      "post": {
+        "summary": "Add a signatory to an agreement",
+        "tags": [
+          "Agreements"
+        ],
+        "requestBody": {
+          "description": "Reference to a user to add as a signatory. Note that Agreement must be Active to add signatories.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ObjectRef"
+              },
+              "examples": {
+                "addSignatory": {
+                  "summary": "Adding a user signatory",
+                  "value": {
+                    "_id": "userId"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/org/{orgId}/agreements/{objectId}/signatories/{userId}": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/orgId"
+        },
+        {
+          "$ref": "#/components/parameters/objectId"
+        },
+        {
+          "$ref": "#/components/parameters/userId"
+        }
+      ],
+      "delete": {
+        "summary": "Remove a signatory from an agreement",
+        "tags": [
+          "Agreements"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/org/{orgId}/agreements/{objectId}/owners": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/orgId"
+        },
+        {
+          "$ref": "#/components/parameters/objectId"
+        }
+      ],
+      "post": {
+        "summary": "Update the agreement's owners. Note that this overwrites the entire list of owners.",
+        "tags": [
+          "Agreements"
+        ],
+        "requestBody": {
+          "description": "Array of object refs of owners",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ArrayOfObjectRefs"
+              },
+              "examples": {
+                "overwriteOwners": {
+                  "summary": "Overwrite the list of owners",
+                  "value": {
+                    "owners": [
+                      {
+                        "_id": "userId",
+                        "_type": "user"
+                      },
+                      {
+                        "_id": "teamId",
+                        "_type": "team"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/org/{orgId}/custom-field-values": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/orgId"
+        }
+      ],
+      "post": {
+        "summary": "Create a custom field value. Note that if a value already exists for the given object and custom field combination, you should update that value instead of posting a new one",
+        "tags": [
+          "Custom Field Values"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CustomFieldValue"
+              },
+              "examples": {
+                "customTextFieldValue": {
+                  "summary": "Create custom text field value",
+                  "value": {
+                    "_objectType": "role",
+                    "_objectId": "roleId1",
+                    "_customFieldId": "customFieldId1",
+                    "_customFieldType": "text",
+                    "content": {
+                      "text": "New custom field value content"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomFieldValue"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Get all custom field values",
+        "tags": [
+          "Custom Field Values"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "objectId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "objectId to retrieve custom field values for"
+          },
+          {
+            "in": "query",
+            "name": "objectType",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "team",
+                "user",
+                "goal",
+                "role",
+                "agreement"
+              ]
+            },
+            "description": "objectType to retrieve custom field values for"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CustomFieldValue"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/org/{orgId}/custom-field-values/{objectId}": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/orgId"
+        },
+        {
+          "$ref": "#/components/parameters/objectId"
+        }
+      ],
+      "put": {
+        "summary": "Update a custom field value",
+        "tags": [
+          "Custom Field Values"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CustomFieldValue"
+              },
+              "examples": {
+                "changeCustomTextFieldValue": {
+                  "summary": "Modify an existing custom text field value",
+                  "value": {
+                    "content": {
+                      "text": "Modified custom field value content"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomFieldValue"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a custom field value",
+        "tags": [
+          "Custom Field Values"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/org/{orgId}/custom-fields": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/orgId"
+        }
+      ],
+      "post": {
+        "summary": "Create a custom field",
+        "tags": [
+          "Custom Fields"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CustomField"
+              },
+              "examples": {
+                "customTextField": {
+                  "summary": "Create custom text field",
+                  "value": {
+                    "_fieldType": "text",
+                    "name": "new custom text field",
+                    "placeholder": "placeholder content",
+                    "description": "a text field with custom meaning"
+                  }
+                },
+                "customSingleDropdownField": {
+                  "summary": "Create custom single select dropdown field",
+                  "value": {
+                    "_fieldType": "dropdown_single",
+                    "name": "new custom single dropdown field",
+                    "placeholder": "placeholder content",
+                    "description": "a dropdown field with custom meaning",
+                    "config": [
+                      {
+                        "name": "option1"
+                      },
+                      {
+                        "name": "option2"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomField"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Get all custom fields",
+        "tags": [
+          "Custom Fields"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CustomField"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/org/{orgId}/custom-fields/{objectId}": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/orgId"
+        },
+        {
+          "$ref": "#/components/parameters/objectId"
+        }
+      ],
+      "put": {
+        "summary": "Update a custom field",
+        "tags": [
+          "Custom Fields"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CustomField"
+              },
+              "examples": {
+                "updateCustomTextField": {
+                  "summary": "Change a custom text field placeholder text and description",
+                  "value": {
+                    "placeholder": "modified placeholder content",
+                    "description": "modified custom field description"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomField"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Get a custom field",
+        "tags": [
+          "Custom Fields"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomField"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a custom field and all corresponding custom field values",
+        "tags": [
+          "Custom Fields"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/org/{orgId}/goals": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/orgId"
+        }
+      ],
+      "post": {
+        "summary": "Create a goal",
+        "tags": [
+          "Goals"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Goal"
+              },
+              "examples": {
+                "goalWithOwners": {
+                  "summary": "Create a goal with owners",
+                  "value": {
+                    "name": "new goal",
+                    "owners": [
+                      {
+                        "_id": "userId",
+                        "_type": "user"
+                      },
+                      {
+                        "_id": "teamId",
+                        "_type": "team"
+                      }
+                    ]
+                  }
+                },
+                "goalWithParentGoal": {
+                  "summary": "Create a goal with a parent goal",
+                  "value": {
+                    "name": "new goal",
+                    "parentGoal": {
+                      "_id": "goalId",
+                      "_type": "goal"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Goal"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Get all goals in the organization",
+        "tags": [
+          "Goals"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Goal"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/org/{orgId}/goals/{objectId}": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/orgId"
+        },
+        {
+          "$ref": "#/components/parameters/objectId"
+        }
+      ],
+      "put": {
+        "summary": "Update a goal",
+        "tags": [
+          "Goals"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Goal"
+              },
+              "examples": {
+                "updateGoalName": {
+                  "summary": "Updating name and description",
+                  "value": {
+                    "name": "new goal",
+                    "description": "new description"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Goal"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a goal",
+        "tags": [
+          "Goals"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/org/{orgId}/goals/{objectId}/owners": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/orgId"
+        },
+        {
+          "$ref": "#/components/parameters/objectId"
+        }
+      ],
+      "post": {
+        "summary": "Update a goal's owners",
+        "tags": [
+          "Goals"
+        ],
+        "requestBody": {
+          "description": "Array of object refs of owners",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ArrayOfObjectRefs"
+              },
+              "examples": {
+                "overwriteOwners": {
+                  "summary": "Overwrite the list of owners",
+                  "value": {
+                    "owners": [
+                      {
+                        "_id": "userId",
+                        "_type": "user"
+                      },
+                      {
+                        "_id": "teamId",
+                        "_type": "team"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/org/{orgId}/goals/{objectId}/parent": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/orgId"
+        },
+        {
+          "$ref": "#/components/parameters/objectId"
+        }
+      ],
+      "post": {
+        "summary": "Update a goal's parent goal",
+        "tags": [
+          "Goals"
+        ],
+        "requestBody": {
+          "description": "Reference to a goal object to add as the parent.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ObjectRef"
+              },
+              "examples": {
+                "addParent": {
+                  "summary": "Adding a parent goal",
+                  "value": {
+                    "parentGoal": {
+                      "_id": "goalId",
+                      "_type": "goal"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/org/{orgId}/role-assignments": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/orgId"
+        }
+      ],
+      "get": {
+        "summary": "Get all role assignments",
+        "tags": [
+          "Role Assignments"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RoleAssignment"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a role",
+        "tags": [
+          "Role Assignments"
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/RoleAssignment"
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RoleAssignment"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/org/{orgId}/role-assignments/{objectId}": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/orgId"
+        },
+        {
+          "$ref": "#/components/parameters/objectId"
+        }
+      ],
+      "put": {
+        "summary": "Update a role assignment",
+        "tags": [
+          "Role Assignments"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RoleAssignment"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RoleAssignment"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a role assignment",
+        "tags": [
+          "Roles"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/org/{orgId}/roles": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/orgId"
+        }
+      ],
+      "post": {
+        "summary": "Create a role",
+        "tags": [
+          "Roles"
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/Role"
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Role"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Get all roles",
+        "tags": [
+          "Roles"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Role"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/org/{orgId}/roles/{objectId}": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/orgId"
+        },
+        {
+          "$ref": "#/components/parameters/objectId"
+        }
+      ],
+      "put": {
+        "summary": "Update a role",
+        "tags": [
+          "Roles"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Role"
+              },
+              "examples": {
+                "updateGoalName": {
+                  "summary": "Updating name and description",
+                  "value": {
+                    "name": "new role",
+                    "description": "new description"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Role"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Get a role",
+        "tags": [
+          "Roles"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Role"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a role",
+        "tags": [
+          "Roles"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/org/{orgId}/roles/{objectId}/assignments": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/orgId"
+        },
+        {
+          "$ref": "#/components/parameters/objectId"
+        }
+      ],
+      "post": {
+        "summary": "Update a roles's assignments",
+        "tags": [
+          "Roles"
+        ],
+        "requestBody": {
+          "description": "Array of object refs of owners",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ArrayOfObjectRefs"
+              },
+              "examples": {
+                "overwriteOwners": {
+                  "summary": "Overwrite the list of owners",
+                  "value": {
+                    "owners": [
+                      {
+                        "_id": "userId1",
+                        "_type": "user"
+                      },
+                      {
+                        "_id": "userId2",
+                        "_type": "user"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/org/{orgId}/roles/{objectId}/parent": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/orgId"
+        },
+        {
+          "$ref": "#/components/parameters/objectId"
+        }
+      ],
+      "post": {
+        "summary": "Move the role under a different parent team",
+        "tags": [
+          "Roles"
+        ],
+        "requestBody": {
+          "description": "Reference to a team object to set as the parent",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ObjectRef"
+              },
+              "examples": {
+                "addParent": {
+                  "summary": "Changing the parent team",
+                  "value": {
+                    "contributesTo": {
+                      "_id": "teamId",
+                      "_type": "team"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/org/{orgId}/teams": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/orgId"
+        }
+      ],
+      "post": {
+        "summary": "Create a team",
+        "tags": [
+          "Teams"
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/Team"
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Team"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Get all teams",
+        "tags": [
+          "Teams"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Team"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/org/{orgId}/teams/{objectId}": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/orgId"
+        },
+        {
+          "$ref": "#/components/parameters/objectId"
+        }
+      ],
+      "put": {
+        "summary": "Update a team",
+        "tags": [
+          "Teams"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Team"
+              },
+              "examples": {
+                "updateTeamName": {
+                  "summary": "Updating name and description",
+                  "value": {
+                    "name": "new team",
+                    "description": "new description"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Team"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Get a team",
+        "tags": [
+          "Teams"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Team"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a team",
+        "tags": [
+          "Teams"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/org/{orgId}/teams/{objectId}/parent": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/orgId"
+        },
+        {
+          "$ref": "#/components/parameters/objectId"
+        }
+      ],
+      "post": {
+        "summary": "Move the team under a different parent team",
+        "tags": [
+          "Teams"
+        ],
+        "requestBody": {
+          "description": "Team Parent Object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ObjectRef"
+              },
+              "examples": {
+                "addParent": {
+                  "summary": "Changing the parent team",
+                  "value": {
+                    "parentTeam": {
+                      "_id": "teamId",
+                      "_type": "team"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/org/{orgId}/teams/{objectId}/owners": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/orgId"
+        },
+        {
+          "$ref": "#/components/parameters/objectId"
+        }
+      ],
+      "post": {
+        "summary": "Update the team's owners",
+        "tags": [
+          "Teams"
+        ],
+        "requestBody": {
+          "description": "Array of object refs of owners",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ArrayOfObjectRefs"
+              },
+              "examples": {
+                "overwriteOwners": {
+                  "summary": "Overwrite the list of user owners",
+                  "value": {
+                    "owners": [
+                      {
+                        "_id": "userId1",
+                        "_type": "user"
+                      },
+                      {
+                        "_id": "userId2",
+                        "_type": "user"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/org/{orgId}/teams/{objectId}/members": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/orgId"
+        },
+        {
+          "$ref": "#/components/parameters/objectId"
+        }
+      ],
+      "post": {
+        "summary": "Update the team's members",
+        "tags": [
+          "Teams"
+        ],
+        "requestBody": {
+          "description": "Array of object refs of members",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ArrayOfObjectRefs"
+              },
+              "examples": {
+                "overwriteMembers": {
+                  "summary": "Overwrite the list of user members",
+                  "value": {
+                    "members": [
+                      {
+                        "_id": "userId1",
+                        "_type": "user"
+                      },
+                      {
+                        "_id": "userId2",
+                        "_type": "user"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/org/{orgId}/users": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/orgId"
+        }
+      ],
+      "post": {
+        "summary": "Create a user",
+        "tags": [
+          "Users"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              },
+              "examples": {
+                "draftUserWithEmail": {
+                  "summary": "Create a draft user with email as required identity",
+                  "value": {
+                    "name": "Human Person",
+                    "status": "draft",
+                    "localIdentities": [
+                      {
+                        "type": "email",
+                        "identityId": "human.person@gmail.com",
+                        "isRequired": true
+                      }
+                    ]
+                  }
+                },
+                "userWithoutEmail": {
+                  "summary": "Create an active user with discord as required identity",
+                  "value": {
+                    "name": "Human Person",
+                    "status": "active",
+                    "localIdentities": [
+                      {
+                        "type": "discord",
+                        "identityId": "123456789012345678",
+                        "isRequired": true
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Get all users",
+        "tags": [
+          "Users"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/User"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/org/{orgId}/users/{userId}/identities/setRequired": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/orgId"
+        },
+        {
+          "$ref": "#/components/parameters/userId"
+        }
+      ],
+      "put": {
+        "summary": "Change the user's required identity for accessing the organization.",
+        "tags": [
+          "Users"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LocalIdentity"
+              },
+              "examples": {
+                "setRequiredEmail": {
+                  "summary": "Set required identity to be an email ",
+                  "value": {
+                    "type": "email",
+                    "identityId": "human.person@gmail.com",
+                    "isRequired": true
+                  }
+                },
+                "setRequiredWallet": {
+                  "summary": "Set required identity to be an Eth wallet",
+                  "value": {
+                    "type": "eth_wallet",
+                    "identityId": "0x71C7656EC7ab88b098defB751B7401B5f6d8976F",
+                    "isRequired": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/org/{orgId}/users/{userId}": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/orgId"
+        },
+        {
+          "$ref": "#/components/parameters/userId"
+        }
+      ],
+      "get": {
+        "summary": "Get a user",
+        "tags": [
+          "Users"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Update a user",
+        "tags": [
+          "Users"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              },
+              "examples": {
+                "updateUsersName": {
+                  "summary": "Updating users name",
+                  "value": {
+                    "name": "Human Person2"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a user",
+        "tags": [
+          "Users"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/org/{orgId}/users/invite": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/orgId"
+        }
+      ],
+      "post": {
+        "summary": "Invite a user",
+        "tags": [
+          "Users"
+        ],
+        "requestBody": {
+          "description": "A list of user ids",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "examples": {
+                "inviteUser": {
+                  "summary": "Invite two draft users into the organization (activate them)",
+                  "value": [
+                    "userId1",
+                    "userId2"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    }
+  },
+  "tags": []
+}
