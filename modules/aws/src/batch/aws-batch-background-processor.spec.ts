@@ -1,7 +1,7 @@
 import { AwsBatchRatchet } from './aws-batch-ratchet.js';
 import { SubmitJobCommandOutput } from '@aws-sdk/client-batch';
 import { AwsBatchBackgroundProcessor } from './aws-batch-background-processor.js';
-import { expect, test, describe, beforeEach } from 'vitest';
+import { beforeEach, describe, expect, test } from 'vitest';
 import { mock, MockProxy } from 'vitest-mock-extended';
 
 let mockBatchRatchet: MockProxy<AwsBatchRatchet>;
