@@ -1,11 +1,11 @@
-import {Logger, MapRatchet, StringRatchet, RestfulApiHttpError} from '@bitblit/ratchet-common';
-import {EventUtil} from '../../http/event-util.js';
-import {BadRequestError} from '../../http/error/bad-request-error.js';
-import {FilterFunction} from '../../config/http/filter-function.js';
-import {ResponseUtil} from '../../http/response-util.js';
-import {FilterChainContext} from '../../config/http/filter-chain-context.js';
-import {MisconfiguredError} from '../../http/error/misconfigured-error.js';
-import {APIGatewayProxyResult} from 'aws-lambda';
+import { Logger, MapRatchet, StringRatchet, RestfulApiHttpError } from '@bitblit/ratchet-common';
+import { EventUtil } from '../../http/event-util.js';
+import { BadRequestError } from '../../http/error/bad-request-error.js';
+import { FilterFunction } from '../../config/http/filter-function.js';
+import { ResponseUtil } from '../../http/response-util.js';
+import { FilterChainContext } from '../../config/http/filter-chain-context.js';
+import { MisconfiguredError } from '../../http/error/misconfigured-error.js';
+import { APIGatewayProxyResult } from 'aws-lambda';
 
 export class BuiltInFilters {
   public static readonly MAXIMUM_LAMBDA_BODY_SIZE_BYTES: number = 1024 * 1024 * 5 - 1024 * 100; // 5Mb - 100k buffer
@@ -69,7 +69,7 @@ export class BuiltInFilters {
       Object.keys(fCtx.event.queryStringParameters).forEach((k) => {
         const val: string = fCtx.event.queryStringParameters[k];
         if (val) {
-          fCtx.event.queryStringParameters[k] = decodeURIComponent(val);
+          fCtx.event.queryStringParameters[k] = BuiltInFilters.decodeUriComponentAndReplacePlus(val);
         }
       });
     }
@@ -77,12 +77,19 @@ export class BuiltInFilters {
       Object.keys(fCtx.event.multiValueQueryStringParameters).forEach((k) => {
         const val: string[] = fCtx.event.multiValueQueryStringParameters[k];
         if (val && val.length) {
-          const cleaned: string[] = val.map((v) => decodeURIComponent(v));
+          const cleaned: string[] = val.map((v) => BuiltInFilters.decodeUriComponentAndReplacePlus(v));
           fCtx.event.multiValueQueryStringParameters[k] = cleaned;
         }
       });
     }
     return true;
+  }
+
+  /**
+   * Performs decodeURIComponent on a value after replacing all "+" values with spaces.
+   */
+  private static decodeUriComponentAndReplacePlus(val: string): string {
+    return decodeURIComponent(val.replace(/\+/g, ' '));
   }
 
   public static async fixStillEncodedQueryParams(fCtx: FilterChainContext): Promise<boolean> {
@@ -134,7 +141,7 @@ export class BuiltInFilters {
     if (fCtx.result?.body && fCtx.result.body.length > BuiltInFilters.MAXIMUM_LAMBDA_BODY_SIZE_BYTES) {
       const delta: number = fCtx.result.body.length - BuiltInFilters.MAXIMUM_LAMBDA_BODY_SIZE_BYTES;
       throw new RestfulApiHttpError(
-        'Response size is ' + fCtx.result.body.length + ' bytes, which is ' + delta + ' bytes too large for this handler'
+        'Response size is ' + fCtx.result.body.length + ' bytes, which is ' + delta + ' bytes too large for this handler',
       ).withHttpStatusCode(500);
     }
     return true;
@@ -150,7 +157,7 @@ export class BuiltInFilters {
           fCtx.routeAndParse.mapping.validation.modelName,
           fCtx.event.parsedBody,
           fCtx.routeAndParse.mapping.validation.emptyAllowed,
-          fCtx.routeAndParse.mapping.validation.extraPropertiesAllowed
+          fCtx.routeAndParse.mapping.validation.extraPropertiesAllowed,
         );
         if (errors.length > 0) {
           Logger.info('Found errors while validating %s object %j', fCtx.routeAndParse.mapping.validation.modelName, errors);
@@ -183,13 +190,13 @@ export class BuiltInFilters {
           fCtx.routeAndParse.mapping.outboundValidation.modelName,
           fCtx.rawResult,
           fCtx.routeAndParse.mapping.outboundValidation.emptyAllowed,
-          fCtx.routeAndParse.mapping.outboundValidation.extraPropertiesAllowed
+          fCtx.routeAndParse.mapping.outboundValidation.extraPropertiesAllowed,
         );
         if (errors.length > 0) {
           Logger.error(
             'Found outbound errors while validating %s object %j',
             fCtx.routeAndParse.mapping.outboundValidation.modelName,
-            errors
+            errors,
           );
           errors.unshift('Server sent object invalid according to spec');
           throw new RestfulApiHttpError().withErrors(errors).withHttpStatusCode(500).withDetails(fCtx.rawResult);
@@ -230,7 +237,7 @@ export class BuiltInFilters {
   public static async secureOutboundServerErrorForProduction(
     fCtx: FilterChainContext,
     errorMessage: string,
-    errCode: number
+    errCode: number,
   ): Promise<boolean> {
     if (fCtx?.result?.statusCode) {
       if (errCode === null || fCtx.result.statusCode === errCode) {
