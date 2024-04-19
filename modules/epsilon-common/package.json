@@ -63,10 +63,10 @@
   },
   "license": "Apache-2.0",
   "dependencies": {
-    "@aws-sdk/client-s3": "3.533.0",
-    "@aws-sdk/client-sns": "3.533.0",
-    "@aws-sdk/client-sqs": "3.533.0",
-    "@aws-sdk/types": "3.533.0",
+    "@aws-sdk/client-s3": "3.556.0",
+    "@aws-sdk/client-sns": "3.556.0",
+    "@aws-sdk/client-sqs": "3.556.0",
+    "@aws-sdk/types": "3.535.0",
     "@bitblit/ratchet-aws": "0.0.0-snapshot",
     "@bitblit/ratchet-common": "0.0.0-snapshot",
     "@bitblit/ratchet-misc": "0.0.0-snapshot",
@@ -87,7 +87,7 @@
     "swagger-model-validator": "3.0.21"
   },
   "peerDependencies": {
-    "@apollo/server": "^4.10.2",
+    "@apollo/server": "^4.10.4",
     "@bitblit/ratchet-aws": "0.0.0-snapshot",
     "@bitblit/ratchet-common": "0.0.0-snapshot",
     "@bitblit/ratchet-misc": "0.0.0-snapshot",
@@ -105,7 +105,7 @@
   "devDependencies": {
     "@apollo/server": "4.10.4",
     "@types/aws-lambda": "8.10.137",
-    "aws-sdk-client-mock": "3.1.0",
+    "aws-sdk-client-mock": "4.0.0",
     "graphql": "16.8.1",
     "graphql-tag": "2.12.6"
   }

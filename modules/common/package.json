@@ -60,7 +60,7 @@
   },
   "peerDependencies": {
     "jsonwebtoken": "^9.0.2",
-    "ts-enum-util": "^4.0.2"
+    "ts-enum-util": "^4.1.0"
   },
   "peerDependenciesMeta": {
     "ts-enum-util": {

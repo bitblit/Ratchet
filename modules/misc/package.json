@@ -46,10 +46,10 @@
     "node": ">=14.18"
   },
   "scripts": {
-    "cleanup-brevo-open-api-files": "yarn shx rm -Rf src/brevo/openapi-generated",
-    "regenerate-brevo-open-api-files": "yarn cleanup-brevo-open-api-files && yarn openapi-generator-cli generate -i brevo-open-api-spec-2024-02-14.yaml -g typescript-fetch -o ./src/brevo/openapi-generated --additional-properties=supportsES6=true,withInterfaces=true,stringEnums=true,importFileExtension=.js && rm src/brevo/openapi-generated/apis/index.ts && rm src/brevo/openapi-generated/index.ts",
-    "cleanup-sobol-open-api-files": "yarn shx rm -Rf src/sobol/openapi-generated",
-    "regenerate-sobol-open-api-files": "yarn cleanup-sobol-open-api-files && yarn openapi-generator-cli generate -i sobol_io_v1_2024_04_10_fixed.json -g typescript-fetch -o ./src/sobol/openapi-generated --global-property=apis --global-property=models --global-property=supportingFiles --additional-properties=supportsES6=true,enumPropertyNaming=original,withInterfaces=true,stringEnums=true,importFileExtension=.js,modelPropertyNaming=original && rm src/sobol/openapi-generated/apis/index.ts && rm src/sobol/openapi-generated/index.ts"
+    "cleanup-brevo-open-api-files": "yarn shx rm -Rf src/brevo/generated",
+    "regenerate-brevo-open-api-files": "yarn cleanup-brevo-open-api-files && yarn openapi-generator-cli generate -i brevo-open-api-spec-2024-02-14.yaml -g typescript-fetch -o ./src/brevo/generated --additional-properties=supportsES6=true,withInterfaces=true,stringEnums=true,importFileExtension=.js && rm src/brevo/generated/apis/index.ts && rm src/brevo/generated/index.ts",
+    "cleanup-sobol-open-api-files": "yarn shx rm -Rf src/sobol/generated",
+    "regenerate-sobol-open-api-files": "yarn cleanup-sobol-open-api-files && yarn openapi-generator-cli generate -i sobol_io_v1_2024_04_10_fixed.json -g typescript-fetch -o ./src/sobol/generated --global-property=apis --global-property=models --global-property=supportingFiles --additional-properties=supportsES6=true,enumPropertyNaming=original,withInterfaces=true,stringEnums=true,importFileExtension=.js,modelPropertyNaming=original && rm src/sobol/generated/apis/index.ts && rm src/sobol/generated/index.ts"
   },
   "license": "Apache-2.0",
   "dependencies": {

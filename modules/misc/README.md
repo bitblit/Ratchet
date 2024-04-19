@@ -4,7 +4,7 @@ This is random stuff that didn't fit anywhere else and I didn't want to make peo
 
 ## Brevo
 
-Brevo is a service for sending marketing and transactional emails.  I'm leaning on it for now both because it
+Brevo (https://www.brevo.com/) is a service for sending marketing and transactional emails.  I'm leaning on it for now both because it
 lets me pretty easily outsource the mail design to my biz partners, and also because AWS SES is getting harder and
 harder to get approval for - no idea why.  Sure, spam.
 
@@ -14,3 +14,9 @@ am doing the typical weirdness for working around multi-import issues in the typ
 
 Using the OpenAPI spec taken from here: https://api.brevo.com/v3/swagger_definition.yml
 Snapshotting it locally so that a bad web server cant break a build
+
+## Sobol
+
+Sobol (https://sobol.io/) is a SAAS for organizing decentralized management structures.  I'm using it for one of my projects,
+so I'm wrapping the most recent API of theirs I can find (https://sobol.io/d/api/v1/docs/) in here to make it easier
+to work with.

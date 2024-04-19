@@ -422,15 +422,15 @@ export class WardenService {
     const options = await generateRegistrationOptions({
       rpName: this.opts.relyingPartyName,
       rpID: rpID,
-      userID: entry.userId,
+      userID: StringRatchet.stringToUint8Array(entry.userId),
       userName: entry.userLabel,
       // Don't prompt users for additional information about the authenticator
       // (Recommended for smoother UX)
       attestationType: 'none',
       // Prevent users from re-registering existing authenticators
       excludeCredentials: entry.webAuthnAuthenticators.map((authenticator) => ({
-        id: Base64Ratchet.base64UrlStringToBytes(authenticator.credentialPublicKeyBase64),
-        type: 'public-key',
+        id: Base64Ratchet.decodeBase64UrlStringToString(authenticator.credentialPublicKeyBase64),
+        //type: 'public-key',
         // Optional
         transports: authenticator.transports as unknown as AuthenticatorTransportFuture[],
       })),
@@ -489,7 +489,7 @@ export class WardenService {
           counter: verification.registrationInfo.counter,
           credentialBackedUp: verification.registrationInfo.credentialBackedUp,
           credentialDeviceType: verification.registrationInfo.credentialDeviceType,
-          credentialIdBase64: Base64Ratchet.uint8ArrayToBase64UrlString(verification.registrationInfo.credentialID),
+          credentialIdBase64: verification.registrationInfo.credentialID,
           credentialPublicKeyBase64: Base64Ratchet.uint8ArrayToBase64UrlString(verification.registrationInfo.credentialPublicKey),
           //transports: TBD
         };
@@ -547,6 +547,7 @@ export class WardenService {
 
     const options: PublicKeyCredentialRequestOptionsJSON = await generateAuthenticationOptions({
       // Require users to use a previously-registered authenticator
+      rpID: rpID,
       allowCredentials: out,
       userVerification: 'preferred',
     });
@@ -637,7 +638,7 @@ export class WardenService {
 
     const authenticator: AuthenticatorDevice = {
       counter: auth.counter,
-      credentialID: Base64Ratchet.base64UrlStringToBytes(auth.credentialIdBase64),
+      credentialID: auth.credentialIdBase64,
       credentialPublicKey: Base64Ratchet.base64UrlStringToBytes(auth.credentialPublicKeyBase64),
     };
 

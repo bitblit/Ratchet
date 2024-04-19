@@ -1,10 +1,9 @@
-import { BrevoKeys } from './brevo-keys.js';
-import { BrevoRatchet } from './brevo-ratchet.js';
-import { Mailer, ReadyToSendEmail } from '@bitblit/ratchet-common';
-import { BrevoMailSendingProvider } from './brevo-mail-sending-provider';
-import { CreateSmtpEmail } from './openapi-generated/models';
-import { expect, test, describe, vi, beforeEach } from 'vitest';
-import { mock, MockProxy } from 'vitest-mock-extended';
+import { BrevoKeys } from "./brevo-keys.js";
+import { BrevoRatchet } from "./brevo-ratchet.js";
+import { Mailer, ReadyToSendEmail } from "@bitblit/ratchet-common";
+import { BrevoMailSendingProvider } from "./brevo-mail-sending-provider";
+import { CreateSmtpEmail } from "./generated/models";
+import { describe, expect, test } from "vitest";
 
 describe('#brevoRatchet', () => {
   test.skip('should fetch account info', async () => {

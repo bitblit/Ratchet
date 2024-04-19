@@ -3,10 +3,10 @@
 //import { AccountApi, TransactionalEmailsApi } from '@getbrevo/brevo';
 import { BrevoKeys } from './brevo-keys';
 import { Logger } from '@bitblit/ratchet-common';
-import { AccountApi } from './openapi-generated/apis/AccountApi.js';
-import { SMTPApi } from './openapi-generated/apis/SMTPApi';
-import { Configuration, ConfigurationParameters, FetchParams, Middleware, RequestContext } from './openapi-generated/runtime';
-import { GetAccount } from './openapi-generated/models';
+import { AccountApi } from './generated/apis/AccountApi.js';
+import { SMTPApi } from './generated/apis/SMTPApi';
+import { Configuration, ConfigurationParameters, FetchParams, Middleware, RequestContext } from './generated/runtime';
+import { GetAccount } from './generated/models';
 
 export class BrevoRatchet {
   constructor(
