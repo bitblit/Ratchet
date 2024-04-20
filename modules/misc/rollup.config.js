@@ -3,7 +3,7 @@
 import typescript from '@rollup/plugin-typescript';
 import terser from '@rollup/plugin-terser';
 
-export default {
+export default [{
   input: './src/index.ts',
   output: {
     //dir: 'lib/',
@@ -19,4 +19,20 @@ export default {
     //commonjs(),
     //nodePolyfills({ include: null, sourceMap: true }),
   ],
-};
+}, {
+  input: './src/sobol/generated/index.ts',
+  output: {
+    //dir: 'lib/',
+    file: 'lib/sobol/generated/index.mjs',
+    format: 'esm',
+    sourcemap: true,
+  },
+  plugins: [
+    //nodeResolve({ preferBuiltins: true, browser: true }),
+    terser(),
+    //json(),
+    typescript(),
+    //commonjs(),
+    //nodePolyfills({ include: null, sourceMap: true }),
+  ],
+}];
