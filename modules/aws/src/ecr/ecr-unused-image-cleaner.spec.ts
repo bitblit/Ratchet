@@ -29,7 +29,7 @@ describe('#ecrUnusedImageCleaner', function () {
     AwsCredentialsRatchet.applySetProfileEnvironmentalVariable('your-profile-here');
     const cleaner: EcrUnusedImageCleaner = new EcrUnusedImageCleaner(new ECRClient({ region: 'us-east-1' }));
     const output: EcrUnusedImageCleanerOutput = await cleaner.performCleaning({
-      dryRun: false,
+      dryRun: true,
       usedImageFinders: [
         new LambdaUsedImageFinder(new LambdaClient({ region: 'us-east-1' })),
         new AwsBatchUsedImageFinder(new BatchClient({ region: 'us-east-1' })),
