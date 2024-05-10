@@ -1,25 +1,26 @@
 import { APIGatewayEvent, Context, ProxyResult } from 'aws-lambda';
-import { Logger } from '@bitblit/ratchet-common';
+import { Base64Ratchet, Logger, Uint8ArrayRatchet } from "@bitblit/ratchet-common";
 import { LoggerLevelName } from '@bitblit/ratchet-common';
 import http, { IncomingMessage, Server, ServerResponse } from 'http';
 import { EventUtil } from './http/event-util.js';
 import fetch from 'cross-fetch';
 import { LocalServer } from './local-server.js';
 import { StringRatchet } from '@bitblit/ratchet-common';
+import { CliRatchet } from "@bitblit/ratchet-node-only";
 
 /**
- * A simplistic server for testing your lambdas locally
+ * A simplistic server for testing your lambdas-in-container locally
  */
 export class LocalContainerServer {
   private server: Server;
   private aborted: boolean = false;
 
-  constructor(private port: number = 8889) {}
+  constructor(private port: number = 8889, private containerUrl: string = 'http://localhost:9000/2015-03-31/functions/function/invocations') {}
 
   public async runServer(): Promise<boolean> {
     return new Promise<boolean>((res, rej) => {
       try {
-        Logger.info('Starting Epsilon server on port %d', this.port);
+        Logger.info('Starting Epsilon container-wrapper server on port %d calling to %s', this.port, this.containerUrl);
         this.server = http.createServer(this.requestHandler.bind(this)).listen(this.port);
         Logger.info('Epsilon server is listening');
 
@@ -48,19 +49,25 @@ export class LocalContainerServer {
 
     Logger.logByLevel(logEventLevel, 'Processing event: %j', evt);
 
+    let respBodyText: string = null;
+    let result: ProxyResult;
     if (evt.path == '/epsilon-poison-pill') {
       this.aborted = true;
       return true;
     } else {
-      const url: string = 'http://localhost:8080/2015-03-31/functions/function/invocations';
       try {
-        const postResp: Response = await fetch(url, { method: 'POST', body: JSON.stringify(evt) });
-        const respBody: any = await postResp.json();
-        const result: ProxyResult = respBody;
-        const written: boolean = await LocalServer.writeProxyResultToServerResponse(result, response, LoggerLevelName.debug);
-        return written;
+        const postResp: Response = await fetch(this.containerUrl, { method: 'POST', body: JSON.stringify(evt) });
+        response.statusCode = postResp.status;
+        postResp.headers.forEach((value, name)=>{
+          response.setHeader(name, value);
+        });
+        // TODO: set headers
+        const body: ArrayBuffer = await postResp.arrayBuffer();
+        response.end(new Uint8Array(body));
+
+        return true;
       } catch (err) {
-        Logger.error('Failed: %s', err);
+        Logger.error('Failed: %s : Body was %s Response was : %j', err, respBodyText, result, err);
         return '{"bad":true}';
       }
     }
@@ -70,6 +77,7 @@ export class LocalContainerServer {
     try {
       Logger.setLevel(LoggerLevelName.debug);
       Logger.debug('Running local container server : %j', process?.argv);
+      const postArgs: string[] = CliRatchet.argsAfterCommand(['run-local-container-server']);
       const testServer: LocalContainerServer = new LocalContainerServer();
       await testServer.runServer();
       Logger.info('Got res server');

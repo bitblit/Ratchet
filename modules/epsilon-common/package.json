@@ -38,12 +38,12 @@
   },
   "config": {},
   "scripts": {
-    "run-local-container-server": "yarn build && node bin/cli.js run-local-container-server",
-    "run-build-sample-server": "yarn build && node bin/cli.js run-sample-local-server",
+    "run-local-container-server": "yarn mod:build && node bin/cli.js run-local-container-server",
+    "run-build-sample-server": "yarn mod:build && node bin/cli.js run-sample-local-server",
     "run-sample-server": "node bin/cli.js run-sample-local-server",
-    "run-test-error-server": "yarn build && node bin/cli.js run-test-error-server",
-    "run-batch-sample-server": "yarn build && node bin/cli.js run-sample-local-batch-server",
-    "run-background-process-from-command-line-dry-run": "yarn build && node bin/cli.js run-background-process"
+    "run-test-error-server": "yarn mod:build && node bin/cli.js run-test-error-server",
+    "run-batch-sample-server": "yarn mod:build && node bin/cli.js run-sample-local-batch-server",
+    "run-background-process-from-command-line-dry-run": "yarn mod:build && node bin/cli.js run-background-process"
   },
   "repository": {
     "type": "git",
