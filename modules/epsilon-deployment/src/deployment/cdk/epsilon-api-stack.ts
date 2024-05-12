@@ -53,7 +53,6 @@ export class EpsilonApiStack extends Stack {
         SecurityGroup.fromSecurityGroupId(this, `SecurityGroup${index}`, `sg-${sgId}`),
       );
 
-
     // Build the docker image first
     const dockerImageAsset: DockerImageAsset = new DockerImageAsset(this, id + 'DockerImage', {
       directory: props.dockerFileFolder,
@@ -200,7 +199,7 @@ export class EpsilonApiStack extends Stack {
       const webImageFunctionProps: DockerImageFunctionProps = {
         //reservedConcurrentExecutions: 1,
         retryAttempts: 2,
-        allowAllOutbound: true, // Needs a VPC
+        // now says to set this on security groups allowAllOutbound: true, // Needs a VPC
         memorySize: props.webMemorySizeMb || 128,
         ephemeralStorageSize: Size.mebibytes(512),
         timeout: Duration.seconds(props.webTimeoutSeconds || 20),
