@@ -1,13 +1,13 @@
 import {
-  generateAuthenticationOptions,
+  generateAuthenticationOptions, GenerateAuthenticationOptionsOpts,
   generateRegistrationOptions,
   VerifiedAuthenticationResponse,
   VerifiedRegistrationResponse,
   verifyAuthenticationResponse,
   VerifyAuthenticationResponseOpts,
   verifyRegistrationResponse,
-  VerifyRegistrationResponseOpts,
-} from '@simplewebauthn/server';
+  VerifyRegistrationResponseOpts
+} from "@simplewebauthn/server";
 import {
   AuthenticationResponseJSON,
   AuthenticatorDevice,
@@ -524,10 +524,9 @@ export class WardenService {
     return rval;
   }
 
-  // Part of the login process - for a given user, generate the challenge that the deviec will have to answer
+  // Part of the login process - for a given user, generate the challenge that the device will have to answer
   public async generateWebAuthnAuthenticationChallenge(user: WardenEntry, origin: string): Promise<PublicKeyCredentialRequestOptionsJSON> {
-    // (Pseudocode) Retrieve any of the user's previously-
-    // registered authenticators
+    // (Pseudocode) Retrieve any of the user's previously-registered authenticators
     const userAuthenticators: WardenWebAuthnEntry[] = user.webAuthnAuthenticators;
     if (!origin || !this.opts.allowedOrigins.includes(origin)) {
       throw new Error('Invalid origin : ' + origin);
@@ -537,20 +536,22 @@ export class WardenService {
 
     const out: any[] = userAuthenticators.map((authenticator) => {
       const next: any = {
-        id: Base64Ratchet.base64UrlStringToBytes(authenticator.credentialIdBase64),
-        type: 'public-key',
+        id:   authenticator.credentialIdBase64, // Type is Base64URLString
+        //type: 'public-key',
         // Optional
         transports: authenticator.transports,
       };
       return next;
     });
 
-    const options: PublicKeyCredentialRequestOptionsJSON = await generateAuthenticationOptions({
+    const opts: GenerateAuthenticationOptionsOpts = {
       // Require users to use a previously-registered authenticator
       rpID: rpID,
       allowCredentials: out,
       userVerification: 'preferred',
-    });
+    };
+
+    const options: PublicKeyCredentialRequestOptionsJSON = await generateAuthenticationOptions(opts);
 
     // (Pseudocode) Remember this challenge for this user
     await this.opts.storageProvider.updateUserChallenge(user.userId, rpID, options.challenge);

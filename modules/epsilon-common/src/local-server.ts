@@ -122,23 +122,23 @@ export class LocalServer {
         requestId: context.awsRequestId,
         requestTime: formattedTime, // '09/Apr/2015:12:34:56 +0000',
         requestTimeEpoch: reqTime, //1428582896000,
-        identity: null,
-        /*
-                identity: {
-                    apiKey: null,
-                    cognitoIdentityPoolId: null,
-                    accountId: null,
-                    cognitoIdentityId: null,
-                    caller: null,
-                    accessKey: null,
-                    sourceIp: '127.0.0.1',
-                    cognitoAuthenticationType: null,
-                    cognitoAuthenticationProvider: null,
-                    userArn: null,
-                    userAgent: 'Custom User Agent String',
-                    user: null
-                },
-                */
+        identity: {
+          apiKeyId:null,
+          clientCert: null,
+          principalOrgId: null,
+          apiKey: null,
+          cognitoIdentityPoolId: null,
+          accountId: null,
+          cognitoIdentityId: null,
+          caller: null,
+          accessKey: null,
+          sourceIp: '127.0.0.1',
+          cognitoAuthenticationType: null,
+          cognitoAuthenticationProvider: null,
+          userArn: null,
+          userAgent: 'Custom User Agent String',
+          user: null
+        },
         path: request.url, // /prod/path/to/resource
         domainName: request.headers['host'],
         resourcePath: '/{proxy+}',
