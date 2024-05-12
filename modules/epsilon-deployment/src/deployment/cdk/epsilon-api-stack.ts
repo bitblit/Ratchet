@@ -1,6 +1,13 @@
 import { Duration, Lazy, Size, Stack } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
-import { DockerImageCode, DockerImageFunction, FunctionUrl, FunctionUrlAuthType, HttpMethod } from 'aws-cdk-lib/aws-lambda';
+import {
+  DockerImageCode,
+  DockerImageFunction,
+  DockerImageFunctionProps,
+  FunctionUrl,
+  FunctionUrlAuthType,
+  HttpMethod
+} from "aws-cdk-lib/aws-lambda";
 import { ManagedPolicy, PolicyDocument, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { Topic } from 'aws-cdk-lib/aws-sns';
 import { Queue } from 'aws-cdk-lib/aws-sqs';
@@ -23,7 +30,7 @@ import {
   JobQueue,
   JobQueueProps,
 } from 'aws-cdk-lib/aws-batch';
-import { SecurityGroup, Subnet, SubnetSelection, Vpc } from "aws-cdk-lib/aws-ec2";
+import { ISecurityGroup, IVpc, SecurityGroup, Subnet, SubnetSelection, Vpc } from "aws-cdk-lib/aws-ec2";
 
 import { ContainerImage } from 'aws-cdk-lib/aws-ecs';
 import { EpsilonApiStackFeature } from './epsilon-api-stack-feature.js';
@@ -38,6 +45,14 @@ export class EpsilonApiStack extends Stack {
     super(scope, id, props);
 
     const disabledFeatures: EpsilonApiStackFeature[] = props?.disabledFeatures || [];
+    const sharedVpc: IVpc = Vpc.fromLookup(this, `Vpc`, { vpcId: props.vpcId });
+    const sharedVpcSubnetSelection: SubnetSelection = {
+      subnets: props.vpcSubnetIds.map((subnetId, index) => Subnet.fromSubnetId(this, `VpcSubnet${index}`, `subnet-${subnetId}`)),
+    };
+    const sharedVpcSecurityGroups: ISecurityGroup[] = props.lambdaSecurityGroupIds.map((sgId, index) =>
+        SecurityGroup.fromSecurityGroupId(this, `SecurityGroup${index}`, `sg-${sgId}`),
+      );
+
 
     // Build the docker image first
     const dockerImageAsset: DockerImageAsset = new DockerImageAsset(this, id + 'DockerImage', {
@@ -96,27 +111,21 @@ export class EpsilonApiStack extends Stack {
         },
       });
 
-      const subnetSelection: SubnetSelection = {
-        subnets: props.vpcSubnetIds.map((subnetId, index) => Subnet.fromSubnetId(this, `VpcSubnet${index}`, `subnet-${subnetId}`)),
-      };
-
       // Created AWSServiceBatchRole
       // https://docs.aws.amazon.com/batch/latest/userguide/service_IAM_role.html
       const compEnvProps: FargateComputeEnvironmentProps = {
-        vpc: Vpc.fromLookup(this, `Vpc`, { vpcId: props.vpcId }),
+        vpc: sharedVpc,
         computeEnvironmentName: id + 'ComputeEnv',
         enabled: true,
         maxvCpus: 16,
         replaceComputeEnvironment: false,
-        securityGroups: props.lambdaSecurityGroupIds.map((sgId, index) =>
-          SecurityGroup.fromSecurityGroupId(this, `SecurityGroup${index}`, `sg-${sgId}`),
-        ),
+        securityGroups: sharedVpcSecurityGroups,
         serviceRole: Role.fromRoleArn(this, `${id}ServiceRole`, 'arn:aws:iam::' + props.env.account + ':role/AWSBatchServiceRole'),
         spot: false,
         terminateOnUpdate: false,
         updateTimeout: Duration.hours(4),
         updateToLatestImageVersion: true,
-        vpcSubnets: subnetSelection,
+        vpcSubnets: sharedVpcSubnetSelection,
       };
 
       const compEnv: FargateComputeEnvironment = new FargateComputeEnvironment(this, id + 'ComputeEnv', compEnvProps);
@@ -187,17 +196,23 @@ export class EpsilonApiStack extends Stack {
     });
 
     if (!disabledFeatures.includes(EpsilonApiStackFeature.WebLambda)) {
-      this.webHandler = new DockerImageFunction(this, id + 'Web', {
+
+      const webImageFunctionProps: DockerImageFunctionProps = {
         //reservedConcurrentExecutions: 1,
         retryAttempts: 2,
-        //allowAllOutbound: true, // Needs a VPC
+        allowAllOutbound: true, // Needs a VPC
         memorySize: props.webMemorySizeMb || 128,
         ephemeralStorageSize: Size.mebibytes(512),
         timeout: Duration.seconds(props.webTimeoutSeconds || 20),
         code: dockerImageCode,
         role: lambdaRole,
         environment: env,
-      });
+        vpc: sharedVpc,
+        vpcSubnets: sharedVpcSubnetSelection,
+        securityGroups: sharedVpcSecurityGroups
+      };
+
+      this.webHandler = new DockerImageFunction(this, id + 'Web', webImageFunctionProps);
 
       if (props?.webLambdaPingMinutes && props.webLambdaPingMinutes > 0) {
         // Wire up the cron handler
