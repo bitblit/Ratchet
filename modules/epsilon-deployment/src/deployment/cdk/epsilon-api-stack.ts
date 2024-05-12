@@ -23,7 +23,7 @@ import {
   JobQueue,
   JobQueueProps,
 } from 'aws-cdk-lib/aws-batch';
-import { SecurityGroup, Vpc } from 'aws-cdk-lib/aws-ec2';
+import { SecurityGroup, Subnet, SubnetSelection, Vpc } from "aws-cdk-lib/aws-ec2";
 
 import { ContainerImage } from 'aws-cdk-lib/aws-ecs';
 import { EpsilonApiStackFeature } from './epsilon-api-stack-feature.js';
@@ -96,9 +96,9 @@ export class EpsilonApiStack extends Stack {
         },
       });
 
-      //const subnetSelection: SubnetSelection = {
-      //  subnets: props.vpcSubnetIds.map((subnetId, index) => Subnet.fromSubnetId(this, `VpcSubnet${index}`, `subnet-${subnetId}`)),
-      //};
+      const subnetSelection: SubnetSelection = {
+        subnets: props.vpcSubnetIds.map((subnetId, index) => Subnet.fromSubnetId(this, `VpcSubnet${index}`, `subnet-${subnetId}`)),
+      };
 
       // Created AWSServiceBatchRole
       // https://docs.aws.amazon.com/batch/latest/userguide/service_IAM_role.html
@@ -116,7 +116,7 @@ export class EpsilonApiStack extends Stack {
         terminateOnUpdate: false,
         updateTimeout: Duration.hours(4),
         updateToLatestImageVersion: true,
-        //vpcSubnets: subnetSelection,
+        vpcSubnets: subnetSelection,
       };
 
       const compEnv: FargateComputeEnvironment = new FargateComputeEnvironment(this, id + 'ComputeEnv', compEnvProps);
