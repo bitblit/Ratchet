@@ -128,6 +128,9 @@
     "@aws-sdk/client-ecr": {
       "optional": true
     },
+    "@aws-sdk/client-lambda": {
+      "optional": true
+    },
     "@aws-sdk/client-route-53": {
       "optional": true
     },
