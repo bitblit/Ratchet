@@ -2,12 +2,13 @@
 
 import typescript from '@rollup/plugin-typescript';
 import terser from '@rollup/plugin-terser';
+import { dts } from "rollup-plugin-dts";
 
-export default {
+const config = [{
   input: './src/index.ts',
   output: {
     //dir: 'lib/',
-    file: 'lib/index.mjs',
+    file: 'tmp/index.mjs',
     format: 'esm',
     sourcemap: true,
   },
@@ -19,4 +20,12 @@ export default {
     //commonjs(),
     //nodePolyfills({ include: null, sourceMap: true }),
   ],
-};
+},
+  {
+    input: "./src/index.ts",
+    output: [{ file: "tmp/types.d.ts", format: "es" }],
+    plugins: [dts()],
+  }
+];
+
+export default config

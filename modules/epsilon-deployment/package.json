@@ -5,14 +5,14 @@
   "sideEffects": false,
   "type": "module",
   "module": "./lib/index.mjs",
-  "types": "./lib/index.d.ts",
+  "types": "./lib/types.d.ts",
   "files": [
     "lib/**",
     "bin/**"
   ],
   "exports": {
     ".": {
-      "types": "./lib/index.d.ts",
+      "types": "./lib/types.d.ts",
       "import": "./lib/index.mjs"
     }
   },
