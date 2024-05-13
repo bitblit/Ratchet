@@ -55,10 +55,10 @@ export class EpsilonApiStack extends Stack {
 
      */
     const sharedVpcPrivateSubnetSelection: SubnetSelection = {
-      subnets: props.vpcPrivateSubnetIds.map((subnetId, index) => Subnet.fromSubnetId(this, `VpcSubnet${index}`, `subnet-${subnetId}`)),
+      subnets: props.vpcPrivateSubnetIds.map((subnetId, index) => Subnet.fromSubnetId(this, `VpcPrivateSubnet${index}`, `subnet-${subnetId}`)),
     };
     const sharedVpcPublicSubnetSelection: SubnetSelection = {
-      subnets: props.vpcPublicSubnetIds.map((subnetId, index) => Subnet.fromSubnetId(this, `VpcSubnet${index}`, `subnet-${subnetId}`)),
+      subnets: props.vpcPublicSubnetIds.map((subnetId, index) => Subnet.fromSubnetId(this, `VpcPublicSubnet${index}`, `subnet-${subnetId}`)),
     };
     const fargateVpcSecurityGroups: ISecurityGroup[] = props.lambdaSecurityGroupIds.map((sgId, index) =>
       SecurityGroup.fromSecurityGroupId(this, `SecurityGroup${index}`, `sg-${sgId}`),
