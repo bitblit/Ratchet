@@ -45,13 +45,15 @@ export class EpsilonApiStack extends Stack {
     super(scope, id, props);
 
     const disabledFeatures: EpsilonApiStackFeature[] = props?.disabledFeatures || [];
-    const sharedVpc: IVpc = //Vpc.fromLookup(this, `Vpc`, { vpcId: props.vpcId });
-    Vpc.fromVpcAttributes(this, 'Vpc', {
+    const sharedVpc: IVpc = Vpc.fromLookup(this, `Vpc`, { vpcId: props.vpcId });
+    /*Vpc.fromVpcAttributes(this, 'Vpc', {
       vpcId: props.vpcId,
       availabilityZones: props.availabilityZones,
       privateSubnetIds: (props.vpcPrivateSubnetIds || []).map(s=>'subnet-'+s),
       publicSubnetIds: (props.vpcPublicSubnetIds || []).map(s=>'subnet-'+s)
     });
+
+     */
     const fargateVpcSubnetSelection: SubnetSelection = {
       subnets: props.vpcPrivateSubnetIds.map((subnetId, index) => Subnet.fromSubnetId(this, `VpcSubnet${index}`, `subnet-${subnetId}`)),
     };
