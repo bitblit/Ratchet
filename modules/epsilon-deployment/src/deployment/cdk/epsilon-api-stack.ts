@@ -49,8 +49,8 @@ export class EpsilonApiStack extends Stack {
     Vpc.fromVpcAttributes(this, 'Vpc', {
       vpcId: props.vpcId,
       availabilityZones: props.availabilityZones,
-      privateSubnetIds: props.vpcPrivateSubnetIds,
-      publicSubnetIds: props.vpcPublicSubnetIds
+      privateSubnetIds: (props.vpcPrivateSubnetIds || []).map(s=>'subnet-'+s),
+      publicSubnetIds: (props.vpcPublicSubnetIds || []).map(s=>'subnet-'+s)
     });
     const fargateVpcSubnetSelection: SubnetSelection = {
       subnets: props.vpcPrivateSubnetIds.map((subnetId, index) => Subnet.fromSubnetId(this, `VpcSubnet${index}`, `subnet-${subnetId}`)),
