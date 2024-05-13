@@ -54,8 +54,11 @@ export class EpsilonApiStack extends Stack {
     });
 
      */
-    const fargateVpcSubnetSelection: SubnetSelection = {
+    const sharedVpcPrivateSubnetSelection: SubnetSelection = {
       subnets: props.vpcPrivateSubnetIds.map((subnetId, index) => Subnet.fromSubnetId(this, `VpcSubnet${index}`, `subnet-${subnetId}`)),
+    };
+    const sharedVpcPublicSubnetSelection: SubnetSelection = {
+      subnets: props.vpcPublicSubnetIds.map((subnetId, index) => Subnet.fromSubnetId(this, `VpcSubnet${index}`, `subnet-${subnetId}`)),
     };
     const fargateVpcSecurityGroups: ISecurityGroup[] = props.lambdaSecurityGroupIds.map((sgId, index) =>
       SecurityGroup.fromSecurityGroupId(this, `SecurityGroup${index}`, `sg-${sgId}`),
@@ -133,7 +136,7 @@ export class EpsilonApiStack extends Stack {
         terminateOnUpdate: false,
         updateTimeout: Duration.hours(4),
         updateToLatestImageVersion: true,
-        vpcSubnets: fargateVpcSubnetSelection,
+        vpcSubnets: sharedVpcPrivateSubnetSelection,
       };
 
       const compEnv: FargateComputeEnvironment = new FargateComputeEnvironment(this, id + 'ComputeEnv', compEnvProps);
@@ -216,7 +219,7 @@ export class EpsilonApiStack extends Stack {
         role: lambdaRole,
         environment: env,
         vpc: sharedVpc,
-        //vpcSubnets: sharedVpcSubnetSelection,
+        vpcSubnets: sharedVpcPrivateSubnetSelection,
         securityGroups: fargateVpcSecurityGroups
       };
 
