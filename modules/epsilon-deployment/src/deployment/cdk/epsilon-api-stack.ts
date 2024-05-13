@@ -45,13 +45,20 @@ export class EpsilonApiStack extends Stack {
     super(scope, id, props);
 
     const disabledFeatures: EpsilonApiStackFeature[] = props?.disabledFeatures || [];
-    const sharedVpc: IVpc = Vpc.fromLookup(this, `Vpc`, { vpcId: props.vpcId });
-    const sharedVpcSubnetSelection: SubnetSelection = {
-      subnets: props.vpcSubnetIds.map((subnetId, index) => Subnet.fromSubnetId(this, `VpcSubnet${index}`, `subnet-${subnetId}`)),
+    const sharedVpc: IVpc = //Vpc.fromLookup(this, `Vpc`, { vpcId: props.vpcId });
+    Vpc.fromVpcAttributes(this, 'Vpc', {
+      vpcId: props.vpcId,
+      availabilityZones: props.availabilityZones,
+      privateSubnetIds: props.vpcPrivateSubnetIds,
+      publicSubnetIds: props.vpcPublicSubnetIds
+    });
+    const fargateVpcSubnetSelection: SubnetSelection = {
+      subnets: props.vpcPrivateSubnetIds.map((subnetId, index) => Subnet.fromSubnetId(this, `VpcSubnet${index}`, `subnet-${subnetId}`)),
     };
-    const sharedVpcSecurityGroups: ISecurityGroup[] = props.lambdaSecurityGroupIds.map((sgId, index) =>
-        SecurityGroup.fromSecurityGroupId(this, `SecurityGroup${index}`, `sg-${sgId}`),
-      );
+    const fargateVpcSecurityGroups: ISecurityGroup[] = props.lambdaSecurityGroupIds.map((sgId, index) =>
+      SecurityGroup.fromSecurityGroupId(this, `SecurityGroup${index}`, `sg-${sgId}`),
+    );
+
 
     // Build the docker image first
     const dockerImageAsset: DockerImageAsset = new DockerImageAsset(this, id + 'DockerImage', {
@@ -118,13 +125,13 @@ export class EpsilonApiStack extends Stack {
         enabled: true,
         maxvCpus: 16,
         replaceComputeEnvironment: false,
-        securityGroups: sharedVpcSecurityGroups,
+        securityGroups: fargateVpcSecurityGroups,
         serviceRole: Role.fromRoleArn(this, `${id}ServiceRole`, 'arn:aws:iam::' + props.env.account + ':role/AWSBatchServiceRole'),
         spot: false,
         terminateOnUpdate: false,
         updateTimeout: Duration.hours(4),
         updateToLatestImageVersion: true,
-        vpcSubnets: sharedVpcSubnetSelection,
+        vpcSubnets: fargateVpcSubnetSelection,
       };
 
       const compEnv: FargateComputeEnvironment = new FargateComputeEnvironment(this, id + 'ComputeEnv', compEnvProps);
@@ -207,8 +214,8 @@ export class EpsilonApiStack extends Stack {
         role: lambdaRole,
         environment: env,
         vpc: sharedVpc,
-        vpcSubnets: sharedVpcSubnetSelection,
-        securityGroups: sharedVpcSecurityGroups
+        //vpcSubnets: sharedVpcSubnetSelection,
+        securityGroups: fargateVpcSecurityGroups
       };
 
       this.webHandler = new DockerImageFunction(this, id + 'Web', webImageFunctionProps);

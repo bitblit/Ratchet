@@ -12,7 +12,9 @@ export interface EpsilonApiStackProps extends StackProps {
   dockerFileName: string;
 
   lambdaSecurityGroupIds: string[];
-  vpcSubnetIds: string[];
+  vpcPrivateSubnetIds: string[];
+  vpcPublicSubnetIds: string[];
+  availabilityZones: string[];
   vpcId: string;
 
   extraEnvironmentalVars?: Record<string, string>;
