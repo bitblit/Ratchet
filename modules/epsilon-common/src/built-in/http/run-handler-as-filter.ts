@@ -1,4 +1,4 @@
-import {Logger, PromiseRatchet, TimeoutToken, RestfulApiHttpError} from '@bitblit/ratchet-common';
+import { Logger, PromiseRatchet, TimeoutToken, RestfulApiHttpError, StringRatchet } from "@bitblit/ratchet-common";
 import {Context} from 'aws-lambda';
 import {ExtendedAPIGatewayEvent} from '../../config/http/extended-api-gateway-event.js';
 import {RequestTimeoutError} from '../../http/error/request-timeout-error.js';
@@ -14,7 +14,7 @@ export class RunHandlerAsFilter {
     // Check for continue
     // Run the controller
     const handler: Promise<any> = RunHandlerAsFilter.findHandler(rm, fCtx.event, fCtx.context);
-    Logger.debug('Processing event with epsilon: %j', fCtx.event);
+    Logger.debug('Processing event with epsilon: %j', RunHandlerAsFilter.eventToStringForLog(fCtx.event));
     let tmp: any = await handler;
     if (TimeoutToken.isTimeoutToken(tmp)) {
       (tmp as TimeoutToken).writeToLog();
@@ -60,7 +60,10 @@ export class RunHandlerAsFilter {
 
       rval = PromiseRatchet.timeout(
         rm.mapping.function(event, context),
-        'Timed out after ' + rm.mapping.metaProcessingConfig.timeoutMS + ' ms.  Request was ' + JSON.stringify(event),
+        'Timed out after ' +
+        rm.mapping.metaProcessingConfig.timeoutMS +
+        ' ms.  Request was ' +
+        RunHandlerAsFilter.eventToStringForLog(event),
         rm.mapping.metaProcessingConfig.timeoutMS
       );
     } else if (add404OnMissing) {
@@ -73,5 +76,23 @@ export class RunHandlerAsFilter {
     if (filters) {
       filters.push((fCtx) => RunHandlerAsFilter.runHandler(fCtx, rm));
     }
+  }
+
+  private static eventToStringForLog(event: any): string {
+    const eventToLog = structuredClone(event);
+
+    if (eventToLog?.authorization?.raw) {
+      eventToLog.authorization.raw = RunHandlerAsFilter.redact(eventToLog.authorization.raw);
+    }
+    if (eventToLog?.headers?.authorization) {
+      eventToLog.headers.authorization = RunHandlerAsFilter.redact(eventToLog.headers.authorization);
+    }
+
+    return JSON.stringify(eventToLog);
+  }
+
+  public static redact(input: string): string {
+    const rval: string = input ? StringRatchet.obscure(input, 1, 1) : input;
+    return rval;
   }
 }

@@ -50,4 +50,20 @@ describe('#routerUtilApplyOpenApiDoc', function () {
     const outString: string = RouterUtil.openApiPathToRouteParserPath(inString);
     expect(outString).toEqual('/meta/item/:itemId');
   });
+
+
+  test('should redact authorization values from events for logging', function () {
+    const inputEvent: any = {
+      authorization: {
+        raw: 'secret-access-token-here',
+      },
+      headers: {
+        authorization: 'Bearer secret-access-token-here',
+      },
+    };
+    // @ts-expect-error private method
+    const logEventObj: any = JSON.parse(RunHandlerAsFilter.eventToStringForLog(inputEvent));
+    expect(logEventObj.authorization.raw).toEqual(RunHandlerAsFilter.redact(inputEvent.authorization.raw));
+    expect(logEventObj.headers.authorization).toEqual(RunHandlerAsFilter.redact(logEventObj.headers.authorization));
+  });
 });
