@@ -15,7 +15,7 @@ import { QueryDefaults } from './model/query-defaults.js';
 export class RdsMysqlStyleConnectionProvider implements MysqlStyleConnectionProvider {
   // While this _technically_ expands the possible scope of Sql injection, we already
   // tightly limit to Named parameters, so multiple statements is more useful than not!
-  public static DEFAULT_CONNECTION_OPTIONS: ConnectionOptions = { multipleStatements: true, connectTimeout: 5_000 };
+  public static DEFAULT_CONNECTION_OPTIONS: ConnectionOptions = { multipleStatements: true };
 
   private tunnels = new Map<string, SshTunnelContainer>();
   private dbPromise = new Map<string, Promise<Connection | undefined>>(); // Cache the promises to make it a single connection
