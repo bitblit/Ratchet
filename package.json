@@ -35,7 +35,7 @@
     "publish": "wsrun mod:publish",
     "publish-alpha": "wsrun mod:publish",
     "mod:generate-barrels": "cd $INIT_CWD && barrelsby -e \".*\\.spec\\.ts\" -q --delete -d src -e src/**/generated && sed -i 's/\\x27;/.js\\x27;/' src/index.ts",
-    "mod:build": "cd $INIT_CWD && yarn mod:clean && yarn mod:generate-barrels && cd $INIT_CWD && rollup -c ../../rollup.global.config.mjs && mkdir lib && cp tmp/index.mjs tmp/types.d.ts lib && rm -Rf tmp",
+    "mod:build": "cd $INIT_CWD && yarn mod:clean && yarn mod:generate-barrels && cd $INIT_CWD && rollup -c ../../rollup.global.config.mjs && echo Finished build && mkdir lib && cp tmp/index.mjs tmp/types.d.ts lib && rm -Rf tmp",
     "mod:clean": "cd $INIT_CWD && shx rm -Rf lib && shx rm -Rf tmp",
     "mod:docs": "cd $INIT_CWD && typedoc",
     "mod:lint": "cd $INIT_CWD && eslint src/**/*.ts",
