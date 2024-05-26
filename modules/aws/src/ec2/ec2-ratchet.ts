@@ -164,4 +164,5 @@ export class Ec2Ratchet {
     const rval: SendSSHPublicKeyCommandOutput = await this.ec2InstanceConnect.send(new SendSSHPublicKeyCommand(req));
     return rval;
   }
+
 }

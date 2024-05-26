@@ -51,6 +51,21 @@ export class EpsilonStackUtil {
         effect: Effect.ALLOW,
         actions: ['batch:*'],
         resources: ['*'],
+      }),,
+      new PolicyStatement({
+        effect: Effect.ALLOW,
+        actions: ['ec2:DescribeSecurityGroups'],
+        resources: ['*'],
+      }),,
+      new PolicyStatement({
+        effect: Effect.ALLOW,
+        actions: ['ec2:DescribeSubnets'],
+        resources: ['*'],
+      }),,
+      new PolicyStatement({
+        effect: Effect.ALLOW,
+        actions: ['ec2:DescribeVpcs'],
+        resources: ['*'],
       }),
     ]);
     return rval;

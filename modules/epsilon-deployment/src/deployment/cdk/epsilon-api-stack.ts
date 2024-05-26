@@ -136,7 +136,7 @@ export class EpsilonApiStack extends Stack {
         terminateOnUpdate: false,
         updateTimeout: Duration.hours(4),
         updateToLatestImageVersion: true,
-        vpcSubnets: sharedVpcPrivateSubnetSelection,
+        vpcSubnets: sharedVpcPublicSubnetSelection,
       };
 
       const compEnv: FargateComputeEnvironment = new FargateComputeEnvironment(this, id + 'ComputeEnv', compEnvProps);
@@ -219,7 +219,7 @@ export class EpsilonApiStack extends Stack {
         role: lambdaRole,
         environment: env,
         vpc: sharedVpc,
-        vpcSubnets: sharedVpcPrivateSubnetSelection,
+        vpcSubnets: sharedVpcPublicSubnetSelection,
         securityGroups: fargateVpcSecurityGroups
       };
 

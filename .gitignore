@@ -10,6 +10,7 @@ yarn-error.log
 bundles
 temp
 lib
+tmp
 artifacts
 tsconfig.tsbuildinfo
 
