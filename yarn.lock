@@ -597,6 +597,55 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@aws-sdk/client-cognito-identity@npm:3.572.0":
+  version: 3.572.0
+  resolution: "@aws-sdk/client-cognito-identity@npm:3.572.0"
+  dependencies:
+    "@aws-crypto/sha256-browser": 3.0.0
+    "@aws-crypto/sha256-js": 3.0.0
+    "@aws-sdk/client-sso-oidc": 3.572.0
+    "@aws-sdk/client-sts": 3.572.0
+    "@aws-sdk/core": 3.572.0
+    "@aws-sdk/credential-provider-node": 3.572.0
+    "@aws-sdk/middleware-host-header": 3.567.0
+    "@aws-sdk/middleware-logger": 3.568.0
+    "@aws-sdk/middleware-recursion-detection": 3.567.0
+    "@aws-sdk/middleware-user-agent": 3.572.0
+    "@aws-sdk/region-config-resolver": 3.572.0
+    "@aws-sdk/types": 3.567.0
+    "@aws-sdk/util-endpoints": 3.572.0
+    "@aws-sdk/util-user-agent-browser": 3.567.0
+    "@aws-sdk/util-user-agent-node": 3.568.0
+    "@smithy/config-resolver": ^2.2.0
+    "@smithy/core": ^1.4.2
+    "@smithy/fetch-http-handler": ^2.5.0
+    "@smithy/hash-node": ^2.2.0
+    "@smithy/invalid-dependency": ^2.2.0
+    "@smithy/middleware-content-length": ^2.2.0
+    "@smithy/middleware-endpoint": ^2.5.1
+    "@smithy/middleware-retry": ^2.3.1
+    "@smithy/middleware-serde": ^2.3.0
+    "@smithy/middleware-stack": ^2.2.0
+    "@smithy/node-config-provider": ^2.3.0
+    "@smithy/node-http-handler": ^2.5.0
+    "@smithy/protocol-http": ^3.3.0
+    "@smithy/smithy-client": ^2.5.1
+    "@smithy/types": ^2.12.0
+    "@smithy/url-parser": ^2.2.0
+    "@smithy/util-base64": ^2.3.0
+    "@smithy/util-body-length-browser": ^2.2.0
+    "@smithy/util-body-length-node": ^2.3.0
+    "@smithy/util-defaults-mode-browser": ^2.2.1
+    "@smithy/util-defaults-mode-node": ^2.3.1
+    "@smithy/util-endpoints": ^1.2.0
+    "@smithy/util-middleware": ^2.2.0
+    "@smithy/util-retry": ^2.2.0
+    "@smithy/util-utf8": ^2.3.0
+    tslib: ^2.6.2
+  checksum: 01acd8005d1a2a7b4b37450444cfbeb1eff2938f55bc2f677f466e43927ad31689d2e2471af29482a0be8058ede46a3a7e675db8d8f2ffb01db25752113f991b
+  languageName: node
+  linkType: hard
+
 "@aws-sdk/client-dynamodb@npm:3.572.0":
   version: 3.572.0
   resolution: "@aws-sdk/client-dynamodb@npm:3.572.0"
@@ -1330,6 +1379,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@aws-sdk/credential-provider-cognito-identity@npm:3.572.0":
+  version: 3.572.0
+  resolution: "@aws-sdk/credential-provider-cognito-identity@npm:3.572.0"
+  dependencies:
+    "@aws-sdk/client-cognito-identity": 3.572.0
+    "@aws-sdk/types": 3.567.0
+    "@smithy/property-provider": ^2.2.0
+    "@smithy/types": ^2.12.0
+    tslib: ^2.6.2
+  checksum: 3f80417001b4d4b4805f6894294907c3f8bf8afb2e70a4abf1abecd8621a75af367e7d74918aa9797bd9cb360e8314755589cf3cbc86f525eac0249ce25365ff
+  languageName: node
+  linkType: hard
+
 "@aws-sdk/credential-provider-env@npm:3.568.0":
   version: 3.568.0
   resolution: "@aws-sdk/credential-provider-env@npm:3.568.0"
@@ -1438,6 +1500,30 @@ __metadata:
   peerDependencies:
     "@aws-sdk/client-sts": ^3.568.0
   checksum: 451f89ff474417322149cfe5ea4e32742afa78f151d04e953aab6a76fbb9fcae3aa486ef904cd3491c533ca50c099669a750b854173a5a7517e9a196430b4da8
+  languageName: node
+  linkType: hard
+
+"@aws-sdk/credential-providers@npm:3.572.0":
+  version: 3.572.0
+  resolution: "@aws-sdk/credential-providers@npm:3.572.0"
+  dependencies:
+    "@aws-sdk/client-cognito-identity": 3.572.0
+    "@aws-sdk/client-sso": 3.572.0
+    "@aws-sdk/client-sts": 3.572.0
+    "@aws-sdk/credential-provider-cognito-identity": 3.572.0
+    "@aws-sdk/credential-provider-env": 3.568.0
+    "@aws-sdk/credential-provider-http": 3.568.0
+    "@aws-sdk/credential-provider-ini": 3.572.0
+    "@aws-sdk/credential-provider-node": 3.572.0
+    "@aws-sdk/credential-provider-process": 3.572.0
+    "@aws-sdk/credential-provider-sso": 3.572.0
+    "@aws-sdk/credential-provider-web-identity": 3.568.0
+    "@aws-sdk/types": 3.567.0
+    "@smithy/credential-provider-imds": ^2.3.0
+    "@smithy/property-provider": ^2.2.0
+    "@smithy/types": ^2.12.0
+    tslib: ^2.6.2
+  checksum: 042acb9f86f93aa8bd5e4882be72ca352e24140d0ec2da5b956103e7bcbddd1c8ee54e51dc19dcddd02cb4d154521645a361cfe89b3a39006a727a724a707b20
   languageName: node
   linkType: hard
 
@@ -2180,6 +2266,7 @@ __metadata:
   resolution: "@bitblit/ratchet-aws-node-only@workspace:modules/aws-node-only"
   dependencies:
     "@aws-sdk/client-athena": 3.572.0
+    "@aws-sdk/client-sts": 3.572.0
     "@aws-sdk/types": 3.567.0
     "@bitblit/ratchet-aws": 0.0.0-snapshot
     "@bitblit/ratchet-common": 0.0.0-snapshot
@@ -2215,6 +2302,7 @@ __metadata:
     "@aws-sdk/client-sns": 3.572.0
     "@aws-sdk/client-ssm": 3.572.0
     "@aws-sdk/client-sts": 3.572.0
+    "@aws-sdk/credential-providers": 3.572.0
     "@aws-sdk/lib-dynamodb": 3.572.0
     "@aws-sdk/lib-storage": 3.572.0
     "@aws-sdk/s3-request-presigner": 3.572.0
@@ -2242,6 +2330,7 @@ __metadata:
     "@aws-sdk/client-sns": ^3.572.0
     "@aws-sdk/client-ssm": ^3.572.0
     "@aws-sdk/client-sts": ^3.572.0
+    "@aws-sdk/credential-providers": ^3.572.0
     "@aws-sdk/lib-dynamodb": ^3.572.0
     "@aws-sdk/lib-storage": ^3.572.0
     "@aws-sdk/s3-request-presigner": ^3.572.0
@@ -2280,6 +2369,8 @@ __metadata:
     "@aws-sdk/client-ssm":
       optional: true
     "@aws-sdk/client-sts":
+      optional: true
+    "@aws-sdk/credential-providers":
       optional: true
     "@aws-sdk/lib-dynamodb":
       optional: true
@@ -2325,6 +2416,8 @@ __metadata:
     "@aws-sdk/client-ssm":
       optional: true
     "@aws-sdk/client-sts":
+      optional: true
+    "@aws-sdk/credential-providers":
       optional: true
     "@aws-sdk/lib-dynamodb":
       optional: true

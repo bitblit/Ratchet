@@ -58,6 +58,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@aws-sdk/client-athena": "3.572.0",
+    "@aws-sdk/client-sts": "3.572.0",
     "@aws-sdk/types": "3.567.0",
     "@bitblit/ratchet-aws": "0.0.0-snapshot",
     "@bitblit/ratchet-common": "0.0.0-snapshot",
