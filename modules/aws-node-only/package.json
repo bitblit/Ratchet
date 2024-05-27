@@ -68,7 +68,7 @@
     "mailparser": "3.7.1",
     "mime-types": "2.1.35",
     "tmp": "0.2.3",
-    "unzipper": "0.11.5",
+    "unzipper": "0.11.6",
     "walk": "2.3.15"
   }
 }
