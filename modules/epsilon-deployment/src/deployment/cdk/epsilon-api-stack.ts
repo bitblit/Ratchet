@@ -8,7 +8,7 @@ import {
   FunctionUrlAuthType,
   HttpMethod
 } from "aws-cdk-lib/aws-lambda";
-import { ManagedPolicy, PolicyDocument, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
+import { ManagedPolicy, PolicyDocument, PolicyStatement, Role, ServicePrincipal } from "aws-cdk-lib/aws-iam";
 import { Topic } from 'aws-cdk-lib/aws-sns';
 import { Queue } from 'aws-cdk-lib/aws-sqs';
 import { LambdaSubscription } from 'aws-cdk-lib/aws-sns-subscriptions';
@@ -16,7 +16,7 @@ import { LambdaSubscription } from 'aws-cdk-lib/aws-sns-subscriptions';
 import { Rule, Schedule } from 'aws-cdk-lib/aws-events';
 import { LambdaFunction } from 'aws-cdk-lib/aws-events-targets';
 import { DockerImageAsset } from 'aws-cdk-lib/aws-ecr-assets';
-import { StringRatchet } from '@bitblit/ratchet-common';
+import { Logger, StringRatchet } from "@bitblit/ratchet-common";
 import { EpsilonStackUtil } from './epsilon-stack-util.js';
 import { EpsilonApiStackProps } from './epsilon-api-stack-props.js';
 import { RatchetEpsilonDeploymentInfo } from '../../build/ratchet-epsilon-deployment-info.js';
@@ -107,6 +107,9 @@ export class EpsilonApiStack extends Stack {
     };
     const env: Record<string, string> = Object.assign({}, props.extraEnvironmentalVars || {}, epsilonEnv);
 
+    const epsilonInlinePolicies: PolicyStatement[] = EpsilonStackUtil.createDefaultPolicyStatementList(props, workQueue, notificationTopic, interApiGenericEventTopic);
+    Logger.info('Using inline policies: %j', epsilonInlinePolicies);
+
     if (!disabledFeatures.includes(EpsilonApiStackFeature.AwsBatchHandler)) {
       // Then build the Batch compute stuff...
       // This is the role that ECS uses to pull containers, secrets, etc
@@ -126,7 +129,7 @@ export class EpsilonApiStack extends Stack {
         managedPolicies: [ManagedPolicy.fromAwsManagedPolicyName('service-role/AWSLambdaVPCAccessExecutionRole')],
         inlinePolicies: {
           root: new PolicyDocument({
-            statements: EpsilonStackUtil.createDefaultPolicyStatementList(props, workQueue, notificationTopic, interApiGenericEventTopic),
+            statements: epsilonInlinePolicies,
           }),
         },
       });
@@ -210,7 +213,7 @@ export class EpsilonApiStack extends Stack {
       managedPolicies: [ManagedPolicy.fromAwsManagedPolicyName('service-role/AWSLambdaVPCAccessExecutionRole')],
       inlinePolicies: {
         root: new PolicyDocument({
-          statements: EpsilonStackUtil.createDefaultPolicyStatementList(props, workQueue, notificationTopic, interApiGenericEventTopic),
+          statements: epsilonInlinePolicies,
         }),
       },
     });
@@ -272,6 +275,11 @@ export class EpsilonApiStack extends Stack {
         code: dockerImageCode,
         role: lambdaRole,
         environment: env,
+
+        vpc: sharedVpc,
+        vpcSubnets: sharedVpcSubnetSelection,
+        securityGroups: fargateVpcSecurityGroups,
+        allowPublicSubnet: props.allowPublicSubnet
       });
 
       notificationTopic.addSubscription(new LambdaSubscription(this.backgroundHandler));
