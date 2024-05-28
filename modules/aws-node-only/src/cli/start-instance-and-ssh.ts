@@ -6,6 +6,7 @@ import os from 'os';
 import path from 'path';
 import { Instance } from '@aws-sdk/client-ec2';
 import { SendSSHPublicKeyResponse } from '@aws-sdk/client-ec2-instance-connect';
+import { Ec2InstanceUtil } from "../ec2/ec2-instance-util";
 
 export class StartInstanceAndSsh {
   private instanceId: string;
@@ -14,6 +15,7 @@ export class StartInstanceAndSsh {
   private region: string;
   private availabilityZone: string;
   private ec2Ratchet: Ec2Ratchet;
+  private instanceUtil: Ec2InstanceUtil;
 
   constructor(
     instanceId: string,
@@ -29,6 +31,7 @@ export class StartInstanceAndSsh {
     this.availabilityZone = availabilityZone;
 
     this.ec2Ratchet = new Ec2Ratchet(this.region, this.availabilityZone);
+    this.instanceUtil = new Ec2InstanceUtil(this.ec2Ratchet);
   }
 
   public static createFromArgs(args: string[]): StartInstanceAndSsh {
@@ -50,37 +53,13 @@ export class StartInstanceAndSsh {
 
   public async run(): Promise<any> {
     //return new Promise<any>(async (res, rej) => {
-    let instance: Instance = await this.ec2Ratchet.describeInstance(this.instanceId);
+    let instance: Instance = await this.instanceUtil.startInstanceAndUploadPublicKeyFile(this.instanceId, this.publicKeyFile, this.instanceOsUser);
     if (!!instance) {
-      let launched: boolean = false;
-      if (instance.State.Code == 16) {
-        Logger.info('Instance is already running...');
-        launched = true;
-      } else {
-        Logger.info('Instance is not running... starting up : %s', this.instanceId);
-        launched = await this.ec2Ratchet.launchInstance(this.instanceId, 1000 * 30); // 30 seconds
-      }
-
-      if (launched) {
-        Logger.info('Uploading public key...');
-        const publicKeyText: string = fs.readFileSync(this.publicKeyFile).toString();
-        const publicKeyResponse: SendSSHPublicKeyResponse = await this.ec2Ratchet.sendPublicKeyToEc2Instance(
-          this.instanceId,
-          publicKeyText,
-          this.instanceOsUser
-        );
-        Logger.info('Key response : %j', publicKeyResponse);
-
-        instance = instance && instance.PublicIpAddress ? instance : await this.ec2Ratchet.describeInstance(this.instanceId);
         Logger.info('Instance IP address is %s', instance.PublicIpAddress);
         const ret: SpawnSyncReturns<Buffer> = spawnSync('ssh', [this.instanceOsUser + '@' + instance.PublicIpAddress], {
           stdio: 'inherit',
         });
-
         Logger.info('%j', ret);
-      } else {
-        Logger.info('Instance could not start - check logs');
-      }
     } else {
       Logger.info('No such instance found - check your AWS keys? : %s', this.instanceId);
     }

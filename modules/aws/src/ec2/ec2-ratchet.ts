@@ -13,9 +13,11 @@ import {
   EC2InstanceConnectClient,
   SendSSHPublicKeyCommand,
   SendSSHPublicKeyCommandInput,
-  SendSSHPublicKeyCommandOutput,
-} from '@aws-sdk/client-ec2-instance-connect';
+  SendSSHPublicKeyCommandOutput, SendSSHPublicKeyResponse
+} from "@aws-sdk/client-ec2-instance-connect";
 import { DurationRatchet, Logger, PromiseRatchet } from '@bitblit/ratchet-common';
+import fs from "fs";
+import { spawnSync, SpawnSyncReturns } from "child_process";
 
 /**
  * Service to simplify interacting with EC2 instances

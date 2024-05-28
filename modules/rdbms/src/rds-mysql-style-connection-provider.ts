@@ -9,6 +9,7 @@ import { SshTunnelContainer } from './model/ssh/ssh-tunnel-container.js';
 import { DbConfig } from './model/db-config.js';
 import { SshTunnelConfig } from './model/ssh/ssh-tunnel-config.js';
 import { QueryDefaults } from './model/query-defaults.js';
+import { ConnectionAndTunnel } from "./model/connection-and-tunnel";
 
 /**
  */
@@ -17,8 +18,9 @@ export class RdsMysqlStyleConnectionProvider implements MysqlStyleConnectionProv
   // tightly limit to Named parameters, so multiple statements is more useful than not!
   public static DEFAULT_CONNECTION_OPTIONS: ConnectionOptions = { multipleStatements: true };
 
-  private tunnels = new Map<string, SshTunnelContainer>();
-  private dbPromise = new Map<string, Promise<Connection | undefined>>(); // Cache the promises to make it a single connection
+  private connectionCache = new Map<string, Promise<ConnectionAndTunnel<Connection>>>; //// Cache the promises to make it a single connection
+  //private tunnels = new Map<string, SshTunnelContainer>();
+  //private dbPromise = new Map<string, Promise<Connection | undefined>>(); // Cache the promises to make it a single connection
   private cacheConfigPromise: Promise<ConnectionConfig>;
   constructor(
     private configPromiseProvider: () => Promise<ConnectionConfig>,
@@ -47,78 +49,84 @@ export class RdsMysqlStyleConnectionProvider implements MysqlStyleConnectionProv
     const rval = false;
     Logger.info('Clearing connection cache for RdsMysqlConnectionProvider');
     // First, clear the connection caches so that subsequent connection attempts start fresh
-    const oldDbHooks = this.dbPromise;
-    const oldSshTunnels = this.tunnels;
+    const oldConnections: Promise<ConnectionAndTunnel<Connection>>[] = Array.from(this.connectionCache.values());
+    //const oldDbHooks = this.dbPromise;
+    //const oldSshTunnels = this.tunnels;
     this.cacheConfigPromise = null; // Re-read config in case the password expired, etc
-    this.dbPromise = new Map();
-    this.tunnels = new Map();
+    this.connectionCache = new Map();
+    //this.tunnels = new Map();
     // Resolve any leftover DB connections & end them
-    if (oldDbHooks.size > 0) {
-      const hookNames: string[] = Array.from(oldDbHooks.keys());
-      for (const hookName of hookNames) {
-        Logger.info('Shutting down connection : %s', hookName);
-        const oldDbHook = oldDbHooks.get(hookName);
+    if (oldConnections.length > 0) {
+      for (let i=0;i<oldConnections.length;i++) {
+        Logger.info('Shutting down old connection %d of %d', i, oldConnections.length);
         try {
-          const oldConn = await oldDbHook;
-          if (oldConn) {
-            await oldConn.destroy();
-            Logger.info('Finished destroying old connection');
-          } else {
-            Logger.warn('Could not get old connection, so not destroying it');
+          const conn: ConnectionAndTunnel<Connection> = await oldConnections[i];
+          Logger.info('Conn %d is %s', i, conn?.config?.label);
+          if (conn.db) {
+            Logger.info('Stopping connection to database');
+            try {
+              conn.db.destroy();
+              Logger.info('Database connection closed');
+            } catch (err) {
+              if (ErrorRatchet.asErr(err).message.includes('closed state')) {
+                // DB was already closed, ignore
+              } else {
+                Logger.error('Something went wrong closing the database connection : %s', err);
+              }
+            }
+          }
+          if (conn.ssh) {
+            try {
+              Logger.info('Stopping ssh tunnel');
+              await this.ssh.shutdown(conn.ssh);
+              Logger.info('Ssh tunnel stopped');
+            } catch (err) {
+              Logger.warn('Failed to stop ssh tunnel : %s',err,err);
+            }
           }
         } catch (err) {
-          if (ErrorRatchet.asErr(err).message.includes('closed state')) {
-            // DB was already closed, ignore
-          } else {
-            Logger.error('Something went wrong closing the connection : %s', err);
-            throw err; // Rethrow it...
-          }
+          Logger.warn('Shutdown failed : %s ',err,err);
         }
       }
     }
-    // End any remaining SSH tunnels
-    if (oldSshTunnels.size > 0) {
-      const tunnelNames = Array.from(oldSshTunnels.keys());
-      for (const tunnelName of tunnelNames) {
-        try {
-          Logger.info('Shutting down SSH tunnel: %s', tunnelName);
-          const tunnel = oldSshTunnels.get(tunnelName);
-          if (tunnel) {
-            await this.ssh.shutdown(tunnel);
-          } else {
-            Logger.warn('Could not get old tunnel, so not destroying it');
-          }
-          Logger.info('SSH Tunnel closed');
-        } catch (err) {
-          // Nothing else to be done but log it...
-          Logger.error('Failure closing old tunnel : %s', err);
-        }
-      }
-    }
-    Logger.info('Old db and tunnel removed');
+    Logger.info('Old db and tunnels removed');
     return rval;
+  }
+
+  public async getConnectionAndTunnel(name: string): Promise<ConnectionAndTunnel<Connection>> {
+    Logger.silly('getConnectionAndTunnel : %s', name);
+    if (!this.connectionCache.has(name)) {
+      Logger.info('No connectionCache found for %s - creating new one', name);
+      const dbConfig = await this.getDbConfig(name);
+      const connection = this.createConnectionAndTunnel(dbConfig, this.additionalConfig, true);
+      this.connectionCache.set(name, connection);
+      Logger.info('Added connectionCache for %s', name);
+    }
+    return this.connectionCache.get(name);
   }
 
   public async getConnection(name: string): Promise<Connection | undefined> {
     Logger.silly('getConnection : %s', name);
-    if (!this.dbPromise.has(name)) {
-      Logger.info('No dbPromise found for %s - creating new one', name);
-      const dbConfig = await this.getDbConfig(name);
-      const connection = this.createDatabaseConnection(dbConfig, this.additionalConfig, true);
-      this.dbPromise.set(name, connection);
-      Logger.info('Added dbPromise for %s', name);
-    }
-    return this.dbPromise.get(name);
+    const conn: ConnectionAndTunnel<Connection> = await this.getConnectionAndTunnel(name);
+    return conn?.db;
   }
+
+
+  public async createNonPooledConnectionAndTunnel( queryDefaults: QueryDefaults,
+                                                   additionalConfig: ConnectionOptions = RdsMysqlStyleConnectionProvider.DEFAULT_CONNECTION_OPTIONS): Promise<ConnectionAndTunnel<Connection>> {
+    Logger.info('Creating non-pooled connection for %s', queryDefaults.databaseName);
+    const dbConfig = await this.getDbConfig(queryDefaults.databaseName);
+    const rval = await this.createConnectionAndTunnel(dbConfig, additionalConfig, false);
+    return rval;
+  }
+
 
   public async createNonPooledDatabaseConnection(
     queryDefaults: QueryDefaults,
     additionalConfig: ConnectionOptions = RdsMysqlStyleConnectionProvider.DEFAULT_CONNECTION_OPTIONS
   ): Promise<Connection | undefined> {
-    Logger.info('Creating non-pooled connection for %s', queryDefaults.databaseName);
-    const dbConfig = await this.getDbConfig(queryDefaults.databaseName);
-    const rval = await this.createDatabaseConnection(dbConfig, additionalConfig, false);
-    return rval;
+    const conTunnel: ConnectionAndTunnel<Connection> = await this.createNonPooledConnectionAndTunnel(queryDefaults, additionalConfig);
+    return conTunnel?.db;
   }
 
   private async getDbConfig(name: string): Promise<DbConfig> {
@@ -137,36 +145,40 @@ export class RdsMysqlStyleConnectionProvider implements MysqlStyleConnectionProv
   }
 
   // Always creates a promise
-  private async createDatabaseConnection(
+  private async createConnectionAndTunnel(
     dbCfg: DbConfig,
     additionalConfig: ConnectionOptions = RdsMysqlStyleConnectionProvider.DEFAULT_CONNECTION_OPTIONS,
-    clearCacheOnConnectionFailure: boolean,
-    sshConfigPromise?: Promise<SshTunnelConfig>
-  ): Promise<Connection | undefined> {
-    Logger.info('In RdsMysqlStyleConnectionProvider:createDatabaseConnection : %s', dbCfg.label);
+    clearCacheOnConnectionFailure: boolean
+  ): Promise<ConnectionAndTunnel<Connection> | undefined> {
+    Logger.info('In RdsMysqlStyleConnectionProvider:createConnectionAndTunnel : %s', dbCfg.label);
+    RequireRatchet.notNullOrUndefined(dbCfg, 'dbCfg');
 
-    const cfgCopy = _.omit(_.clone(dbCfg), 'label', 'tunnelPort');
-    // Verify the tunnel
-    if (this.usingSshTunnel && dbCfg.tunnelPort) {
-      let tunnel = this.tunnels.get(dbCfg.label);
-      if (!tunnel) {
-        Logger.debug('Creating SSH tunnel from local port %d to remote host %s and port %d', dbCfg.tunnelPort, dbCfg.host, dbCfg.port);
-        const sshConfig: SshTunnelConfig = await sshConfigPromise;
-        tunnel = await this.ssh.createSSHTunnel(sshConfig, dbCfg.host, dbCfg.port, dbCfg.tunnelPort);
-        this.tunnels.set(dbCfg.label, tunnel);
-      }
-      cfgCopy.port = tunnel.serverOptions.port ?? -1;
-      cfgCopy.host = 'localhost';
+    let tunnel: SshTunnelContainer = null;
+    if (dbCfg.sshTunnelConfig) {
+      const localPort: number = dbCfg.sshTunnelConfig.forceLocalPort || await getPort();
+      Logger.debug('SSH tunnel config found, opening tunnel to %s / %s to using local port %s', dbCfg.sshTunnelConfig.host, dbCfg.sshTunnelConfig.port, localPort);
+      tunnel = await this.ssh.createSSHTunnel(dbCfg.sshTunnelConfig, dbCfg.host, dbCfg.port, localPort);
+      Logger.debug('SSH Tunnel open');
+    } else {
+      Logger.debug('No ssh configuration - skipping tunnel');
     }
 
     Logger.debug('Opening connection for RdsMysqlStyleConnectionProvider');
     let connection: Connection;
     try {
+      const cfgCopy: DbConfig = structuredClone(dbCfg);
+      delete cfgCopy.label;
+      delete cfgCopy.sshTunnelConfig;
+      if (tunnel) {
+        cfgCopy.host = 'localhost';
+        cfgCopy.port = tunnel.localPort;
+      }
+
       connection = await maria.createConnection({ ...additionalConfig, ...cfgCopy });
     } catch (err) {
       Logger.info('Failed trying to create connection : %s : clearing for retry', err);
       if (clearCacheOnConnectionFailure) {
-        this.dbPromise = new Map<string, Promise<Connection>>();
+        this.connectionCache = new Map<string, Promise<ConnectionAndTunnel<Connection>>>();
       }
       return undefined;
     }
@@ -183,7 +195,14 @@ export class RdsMysqlStyleConnectionProvider implements MysqlStyleConnectionProv
       connection.rawListeners('error').length,
       process.rawListeners('exit').length
     );
-    return connection;
+
+    const rval: ConnectionAndTunnel<Connection> = {
+      config: dbCfg,
+      db: connection,
+      ssh: tunnel
+    };
+
+    return rval;
   }
 
   private configPromise(): Promise<ConnectionConfig> {
@@ -200,11 +219,32 @@ export class RdsMysqlStyleConnectionProvider implements MysqlStyleConnectionProv
     const cfg: ConnectionConfig = await inputPromise;
     RequireRatchet.true(cfg.dbList.length > 0, 'input.dbList');
 
-    if (this.usingSshTunnel) {
-      for (const dbConfig of cfg.dbList) {
-        dbConfig.tunnelPort = await getPort();
+    cfg.dbList.forEach(db=>{
+      const errors: string[] = RdsMysqlStyleConnectionProvider.validDbConfig(db);
+      if (errors?.length) {
+        throw ErrorRatchet.fErr('Errors found in db config : %j', errors);
       }
-    }
+    });
     return cfg;
+  }
+
+  public static validDbConfig(cfg: DbConfig): string[] {
+    let rval: string[] = [];
+    if (!cfg) {
+      rval.push('The config is null');
+    } else {
+      rval.push(StringRatchet.trimToNull(cfg.host) ? null : 'host is required and non-empty');
+      rval.push(StringRatchet.trimToNull(cfg.label) ? null : 'label is required and non-empty');
+      rval.push(StringRatchet.trimToNull(cfg.database) ? null : 'database is required and non-empty');
+      rval.push(StringRatchet.trimToNull(cfg.user) ? null : 'user is required and non-empty');
+      rval.push(StringRatchet.trimToNull(cfg.password) ? null : 'password is required and non-empty');
+      rval.push(cfg.port ? null : 'port is required and non-empty');
+    }
+    if (cfg.sshTunnelConfig) {
+      rval.push(StringRatchet.trimToNull(cfg.sshTunnelConfig.host) ? null : 'If sshTunnelConfig is non-null, host is required and non-empty');
+      rval.push(cfg.sshTunnelConfig.port ? null : 'If sshTunnelConfig is non-null, port is required and non-empty');
+    }
+    rval = rval.filter(s=>!!s);
+    return rval;
   }
 }

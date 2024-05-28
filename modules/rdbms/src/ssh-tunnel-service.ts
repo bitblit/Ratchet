@@ -46,6 +46,7 @@ export class SshTunnelService {
     });
 
     const rval: SshTunnelContainer = {
+      localPort: localPort,
       tunnelOptions: tunnelOptions,
       serverOptions: serverOptions,
       sshOptions: sshOptions,

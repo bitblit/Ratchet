@@ -9,6 +9,7 @@ export * from './cli/dynamo-exporter.js';
 export * from './cli/ratchet-cli-handler.js';
 export * from './cli/start-instance-and-ssh.js';
 export * from './cli/site-uploader/site-uploader.js';
+export * from './ec2/ec2-instance-util.js';
 export * from './mail/inbound/email-to-db-insert-processor.js';
 export * from './mail/inbound/inbound-email-ratchet.js';
 export * from './mail/inbound/parsed-email-processor.js';

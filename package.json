@@ -24,7 +24,7 @@
   ],
   "scripts": {
     "clean": "wsrun mod:clean",
-    "build": "wsrun --serial mod:build && echo Completed full build",
+    "build": "wsrun --serial --fast-exit mod:build && echo Completed full build",
     "lint": "wsrun --serial mod:lint",
     "lint-fix": "wsrun --serial mod:lint-fix",
     "test": "echo Starting full test && wsrun mod:test",

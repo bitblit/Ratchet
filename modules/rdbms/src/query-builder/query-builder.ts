@@ -1,5 +1,4 @@
 import { ErrorRatchet, Logger, RequireRatchet, StringRatchet } from '@bitblit/ratchet-common';
-import _ from 'lodash';
 
 import { QueryBuilderResult } from './query-builder-result.js';
 import { TransactionIsolationLevel } from '../model/transaction-isolation-level.js';
@@ -36,10 +35,10 @@ export class QueryBuilder {
     if (this.query) {
       clone.withBaseQuery(this.query);
     }
-    clone.sqlConstructs = _.clone(this.sqlConstructs);
-    clone.namedParams = _.clone(this.namedParams);
-    clone.conditionals = _.clone(this.conditionals);
-    clone.paginator = _.clone(this.paginator);
+    clone.sqlConstructs = structuredClone(this.sqlConstructs);
+    clone.namedParams = structuredClone(this.namedParams);
+    clone.conditionals = structuredClone(this.conditionals);
+    clone.paginator = structuredClone(this.paginator);
     clone.debugComment = this.debugComment;
     clone.transactionIsolationLevel = this.transactionIsolationLevel;
     return clone;

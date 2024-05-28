@@ -8,5 +8,6 @@ export interface SshTunnelContainer {
   sshOptions: ConnectConfig;
   forwardOptions: TunnelSsh.ForwardOptions;
   server: Server;
+  localPort: number;
   connection?: Connection;
 }
