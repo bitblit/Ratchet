@@ -2430,11 +2430,11 @@ __metadata:
     "@bitblit/ratchet-aws": 0.0.0-snapshot
     "@bitblit/ratchet-common": 0.0.0-snapshot
     "@bitblit/ratchet-epsilon-common": 0.0.0-snapshot
-    aws-cdk-lib: 2.143.0
+    aws-cdk-lib: 2.141.0
     constructs: 10.3.0
   peerDependencies:
     "@bitblit/ratchet-common": 0.0.0-snapshot
-    aws-cdk-lib: ^2.143.0
+    aws-cdk-lib: ^2.141.0
     constructs: ^10.3.0
   languageName: unknown
   linkType: soft
@@ -5330,9 +5330,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"aws-cdk-lib@npm:2.143.0":
-  version: 2.143.0
-  resolution: "aws-cdk-lib@npm:2.143.0"
+"aws-cdk-lib@npm:2.141.0":
+  version: 2.141.0
+  resolution: "aws-cdk-lib@npm:2.141.0"
   dependencies:
     "@aws-cdk/asset-awscli-v1": ^2.2.202
     "@aws-cdk/asset-kubectl-v20": ^2.1.2
@@ -5350,7 +5350,7 @@ __metadata:
     yaml: 1.10.2
   peerDependencies:
     constructs: ^10.0.0
-  checksum: e85b68300de927fed58fd99008592de9d8f9405381b3a454864b495b3a81ca2a5c124e3402dffa351e9cd21e4df01ebcd8a47bcb2fa2702e6cb33062f0eb742f
+  checksum: 9aec7c509b82589cf36f3ec91c9e4c74478d6ca1d414521a8c76d4f818a5300730706d02850c22dd05545448224f406b0d8bdbd4f371f0b7b016c015f55cc64a
   languageName: node
   linkType: hard
 
