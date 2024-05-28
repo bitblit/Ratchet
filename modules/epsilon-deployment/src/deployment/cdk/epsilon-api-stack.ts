@@ -54,12 +54,21 @@ export class EpsilonApiStack extends Stack {
     });
 
      */
+
+    /*
     const sharedVpcPrivateSubnetSelection: SubnetSelection = {
       subnets: props.vpcPrivateSubnets.map((subnet, index) => Subnet.fromSubnetAttributes(this, `VpcPrivateSubnet${index}`, subnet)),
     };
     const sharedVpcPublicSubnetSelection: SubnetSelection = {
       subnets: props.vpcPublicSubnets.map((subnet, index) => Subnet.fromSubnetAttributes(this, `VpcPublicSubnet${index}`, subnet)),
     };
+
+     */
+    const sharedVpcSubnetSelection: SubnetSelection = {
+      subnets: props.vpcSubnets.map((subnet, index) => Subnet.fromSubnetAttributes(this, `VpcSubnet${index}`, subnet)),
+    };
+
+
     const fargateVpcSecurityGroups: ISecurityGroup[] = props.lambdaSecurityGroupIds.map((sgId, index) =>
       SecurityGroup.fromSecurityGroupId(this, `SecurityGroup${index}`, `sg-${sgId}`),
     );
@@ -136,7 +145,7 @@ export class EpsilonApiStack extends Stack {
         terminateOnUpdate: false,
         updateTimeout: Duration.hours(4),
         updateToLatestImageVersion: true,
-        vpcSubnets: sharedVpcPublicSubnetSelection,
+        vpcSubnets: sharedVpcSubnetSelection,
       };
 
       const compEnv: FargateComputeEnvironment = new FargateComputeEnvironment(this, id + 'ComputeEnv', compEnvProps);
@@ -219,8 +228,9 @@ export class EpsilonApiStack extends Stack {
         role: lambdaRole,
         environment: env,
         vpc: sharedVpc,
-        vpcSubnets: sharedVpcPublicSubnetSelection,
-        securityGroups: fargateVpcSecurityGroups
+        vpcSubnets: sharedVpcSubnetSelection,
+        securityGroups: fargateVpcSecurityGroups,
+        allowPublicSubnet: props.allowPublicSubnet
       };
 
       this.webHandler = new DockerImageFunction(this, id + 'Web', webImageFunctionProps);

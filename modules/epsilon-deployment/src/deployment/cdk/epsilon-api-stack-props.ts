@@ -1,7 +1,7 @@
 import { StackProps } from 'aws-cdk-lib';
 import { PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { EpsilonApiStackFeature } from './epsilon-api-stack-feature.js';
-import { SubnetAttributes } from "aws-cdk-lib/aws-ec2";
+import { Subnet, SubnetAttributes } from "aws-cdk-lib/aws-ec2";
 
 export interface EpsilonApiStackProps extends StackProps {
   batchInstancesEc2KeyPairName?: string;
@@ -13,8 +13,10 @@ export interface EpsilonApiStackProps extends StackProps {
   dockerFileName: string;
 
   lambdaSecurityGroupIds: string[];
-  vpcPrivateSubnets: SubnetAttributes[];
-  vpcPublicSubnets: SubnetAttributes[];
+  vpcSubnets: SubnetAttributes[];
+  allowPublicSubnet?: boolean;
+  //vpcPrivateSubnets: SubnetAttributes[];
+  //vpcPublicSubnets: SubnetAttributes[];
   availabilityZones: string[];
   vpcId: string;
 

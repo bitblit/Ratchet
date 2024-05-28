@@ -19,6 +19,7 @@ export class Ec2InstanceUtil {
   }
 
   public async startInstanceAndUploadPublicKey(instanceId: string, publicKeyText: string, instanceOsUser: string = 'ec2-user'): Promise<Instance> {
+    Logger.info('Starting instance %s, public key length %d, user %s', instanceId, publicKeyText.length, instanceOsUser);
     let instance: Instance = await this.ec2Ratchet.describeInstance(instanceId);
     if (!!instance) {
       let launched: boolean = false;

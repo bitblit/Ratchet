@@ -1,11 +1,9 @@
-import { Logger } from '@bitblit/ratchet-common';
-import { Ec2Ratchet } from '@bitblit/ratchet-aws';
-import { spawnSync, SpawnSyncReturns } from 'child_process';
-import fs from 'fs';
-import os from 'os';
-import path from 'path';
-import { Instance } from '@aws-sdk/client-ec2';
-import { SendSSHPublicKeyResponse } from '@aws-sdk/client-ec2-instance-connect';
+import { Logger } from "@bitblit/ratchet-common";
+import { Ec2Ratchet } from "@bitblit/ratchet-aws";
+import { spawnSync, SpawnSyncReturns } from "child_process";
+import os from "os";
+import path from "path";
+import { Instance } from "@aws-sdk/client-ec2";
 import { Ec2InstanceUtil } from "../ec2/ec2-instance-util";
 
 export class StartInstanceAndSsh {
