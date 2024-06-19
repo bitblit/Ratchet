@@ -1,14 +1,7 @@
 import { Duration, Lazy, Size, Stack } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
-import {
-  DockerImageCode,
-  DockerImageFunction,
-  DockerImageFunctionProps,
-  FunctionUrl,
-  FunctionUrlAuthType,
-  HttpMethod
-} from "aws-cdk-lib/aws-lambda";
-import { ManagedPolicy, PolicyDocument, PolicyStatement, Role, ServicePrincipal } from "aws-cdk-lib/aws-iam";
+import { DockerImageCode, DockerImageFunction, FunctionUrl, FunctionUrlAuthType, HttpMethod } from 'aws-cdk-lib/aws-lambda';
+import { ManagedPolicy, PolicyDocument, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { Topic } from 'aws-cdk-lib/aws-sns';
 import { Queue } from 'aws-cdk-lib/aws-sqs';
 import { LambdaSubscription } from 'aws-cdk-lib/aws-sns-subscriptions';
@@ -16,7 +9,7 @@ import { LambdaSubscription } from 'aws-cdk-lib/aws-sns-subscriptions';
 import { Rule, Schedule } from 'aws-cdk-lib/aws-events';
 import { LambdaFunction } from 'aws-cdk-lib/aws-events-targets';
 import { DockerImageAsset } from 'aws-cdk-lib/aws-ecr-assets';
-import { Logger, StringRatchet } from "@bitblit/ratchet-common";
+import { StringRatchet } from '@bitblit/ratchet-common';
 import { EpsilonStackUtil } from './epsilon-stack-util.js';
 import { EpsilonApiStackProps } from './epsilon-api-stack-props.js';
 import { RatchetEpsilonDeploymentInfo } from '../../build/ratchet-epsilon-deployment-info.js';
@@ -30,7 +23,7 @@ import {
   JobQueue,
   JobQueueProps,
 } from 'aws-cdk-lib/aws-batch';
-import { ISecurityGroup, IVpc, SecurityGroup, Subnet, SubnetSelection, Vpc } from "aws-cdk-lib/aws-ec2";
+import { SecurityGroup, Vpc } from 'aws-cdk-lib/aws-ec2';
 
 import { ContainerImage } from 'aws-cdk-lib/aws-ecs';
 import { EpsilonApiStackFeature } from './epsilon-api-stack-feature.js';
@@ -45,34 +38,6 @@ export class EpsilonApiStack extends Stack {
     super(scope, id, props);
 
     const disabledFeatures: EpsilonApiStackFeature[] = props?.disabledFeatures || [];
-    const sharedVpc: IVpc = Vpc.fromLookup(this, `Vpc`, { vpcId: props.vpcId });
-    /*Vpc.fromVpcAttributes(this, 'Vpc', {
-      vpcId: props.vpcId,
-      availabilityZones: props.availabilityZones,
-      privateSubnetIds: (props.vpcPrivateSubnetIds || []).map(s=>'subnet-'+s),
-      publicSubnetIds: (props.vpcPublicSubnetIds || []).map(s=>'subnet-'+s)
-    });
-
-     */
-
-    /*
-    const sharedVpcPrivateSubnetSelection: SubnetSelection = {
-      subnets: props.vpcPrivateSubnets.map((subnet, index) => Subnet.fromSubnetAttributes(this, `VpcPrivateSubnet${index}`, subnet)),
-    };
-    const sharedVpcPublicSubnetSelection: SubnetSelection = {
-      subnets: props.vpcPublicSubnets.map((subnet, index) => Subnet.fromSubnetAttributes(this, `VpcPublicSubnet${index}`, subnet)),
-    };
-
-     */
-    const sharedVpcSubnetSelection: SubnetSelection = {
-      subnets: props.vpcSubnets.map((subnet, index) => Subnet.fromSubnetAttributes(this, `VpcSubnet${index}`, subnet)),
-    };
-
-
-    const fargateVpcSecurityGroups: ISecurityGroup[] = props.lambdaSecurityGroupIds.map((sgId, index) =>
-      SecurityGroup.fromSecurityGroupId(this, `SecurityGroup${index}`, `sg-${sgId}`),
-    );
-
 
     // Build the docker image first
     const dockerImageAsset: DockerImageAsset = new DockerImageAsset(this, id + 'DockerImage', {
@@ -107,9 +72,6 @@ export class EpsilonApiStack extends Stack {
     };
     const env: Record<string, string> = Object.assign({}, props.extraEnvironmentalVars || {}, epsilonEnv);
 
-    const epsilonInlinePolicies: PolicyStatement[] = EpsilonStackUtil.createDefaultPolicyStatementList(props, workQueue, notificationTopic, interApiGenericEventTopic);
-    Logger.info('Using inline policies: %j', epsilonInlinePolicies);
-
     if (!disabledFeatures.includes(EpsilonApiStackFeature.AwsBatchHandler)) {
       // Then build the Batch compute stuff...
       // This is the role that ECS uses to pull containers, secrets, etc
@@ -129,26 +91,32 @@ export class EpsilonApiStack extends Stack {
         managedPolicies: [ManagedPolicy.fromAwsManagedPolicyName('service-role/AWSLambdaVPCAccessExecutionRole')],
         inlinePolicies: {
           root: new PolicyDocument({
-            statements: epsilonInlinePolicies,
+            statements: EpsilonStackUtil.createDefaultPolicyStatementList(props, workQueue, notificationTopic, interApiGenericEventTopic),
           }),
         },
       });
 
+      //const subnetSelection: SubnetSelection = {
+      //  subnets: props.vpcSubnetIds.map((subnetId, index) => Subnet.fromSubnetId(this, `VpcSubnet${index}`, `subnet-${subnetId}`)),
+      //};
+
       // Created AWSServiceBatchRole
       // https://docs.aws.amazon.com/batch/latest/userguide/service_IAM_role.html
       const compEnvProps: FargateComputeEnvironmentProps = {
-        vpc: sharedVpc,
+        vpc: Vpc.fromLookup(this, `Vpc`, { vpcId: props.vpcId }),
         computeEnvironmentName: id + 'ComputeEnv',
         enabled: true,
         maxvCpus: 16,
         replaceComputeEnvironment: false,
-        securityGroups: fargateVpcSecurityGroups,
+        securityGroups: props.lambdaSecurityGroupIds.map((sgId, index) =>
+          SecurityGroup.fromSecurityGroupId(this, `SecurityGroup${index}`, `sg-${sgId}`),
+        ),
         serviceRole: Role.fromRoleArn(this, `${id}ServiceRole`, 'arn:aws:iam::' + props.env.account + ':role/AWSBatchServiceRole'),
         spot: false,
         terminateOnUpdate: false,
         updateTimeout: Duration.hours(4),
         updateToLatestImageVersion: true,
-        vpcSubnets: sharedVpcSubnetSelection,
+        //vpcSubnets: subnetSelection,
       };
 
       const compEnv: FargateComputeEnvironment = new FargateComputeEnvironment(this, id + 'ComputeEnv', compEnvProps);
@@ -213,31 +181,23 @@ export class EpsilonApiStack extends Stack {
       managedPolicies: [ManagedPolicy.fromAwsManagedPolicyName('service-role/AWSLambdaVPCAccessExecutionRole')],
       inlinePolicies: {
         root: new PolicyDocument({
-          statements: epsilonInlinePolicies,
+          statements: EpsilonStackUtil.createDefaultPolicyStatementList(props, workQueue, notificationTopic, interApiGenericEventTopic),
         }),
       },
     });
 
     if (!disabledFeatures.includes(EpsilonApiStackFeature.WebLambda)) {
-
-      const webImageFunctionProps: DockerImageFunctionProps = {
+      this.webHandler = new DockerImageFunction(this, id + 'Web', {
         //reservedConcurrentExecutions: 1,
         retryAttempts: 2,
-        // now says to set this on security groups allowAllOutbound: true, // Needs a VPC
+        //allowAllOutbound: true, // Needs a VPC
         memorySize: props.webMemorySizeMb || 128,
         ephemeralStorageSize: Size.mebibytes(512),
         timeout: Duration.seconds(props.webTimeoutSeconds || 20),
         code: dockerImageCode,
         role: lambdaRole,
         environment: env,
-        vpc: sharedVpc,
-        vpcSubnets: sharedVpcSubnetSelection,
-        securityGroups: fargateVpcSecurityGroups,
-        allowPublicSubnet: props.allowPublicSubnet,
-        // filesystem:xxx
-      };
-
-      this.webHandler = new DockerImageFunction(this, id + 'Web', webImageFunctionProps);
+      });
 
       if (props?.webLambdaPingMinutes && props.webLambdaPingMinutes > 0) {
         // Wire up the cron handler
@@ -276,11 +236,6 @@ export class EpsilonApiStack extends Stack {
         code: dockerImageCode,
         role: lambdaRole,
         environment: env,
-
-        vpc: sharedVpc,
-        vpcSubnets: sharedVpcSubnetSelection,
-        securityGroups: fargateVpcSecurityGroups,
-        allowPublicSubnet: props.allowPublicSubnet
       });
 
       notificationTopic.addSubscription(new LambdaSubscription(this.backgroundHandler));
