@@ -164,7 +164,7 @@ export class WardenUserService<T> {
     return t ? t.exp - Math.floor(Date.now() / 1000) : null;
   }
 
-  private updateLoggedInUserFromTokenString(token: string): WardenLoggedInUserWrapper<T> {
+  private async updateLoggedInUserFromTokenString(token: string): Promise<WardenLoggedInUserWrapper<T>> {
     let rval: WardenLoggedInUserWrapper<T> = null;
     if (!StringRatchet.trimToNull(token)) {
       Logger.info('Called updateLoggedInUserFromTokenString with empty string - logging out');
@@ -172,7 +172,7 @@ export class WardenUserService<T> {
     } else {
       Logger.info('updateLoggedInUserFromTokenString : %s', token);
 
-      const parsed: WardenJwtToken<T> = JwtRatchet.decodeTokenNoVerify<WardenJwtToken<T>>(token);
+      const parsed: WardenJwtToken<T> = await JwtRatchet.decodeTokenNoVerify<WardenJwtToken<T>>(token);
       if (parsed) {
         rval = {
           userObject: parsed,
@@ -197,7 +197,7 @@ export class WardenUserService<T> {
       Logger.info('Could not refresh - no token available');
     } else {
       const newToken: string = await this.options.wardenClient.refreshJwtToken(currentWrapper.jwtToken);
-      rval = this.updateLoggedInUserFromTokenString(newToken);
+      rval = await this.updateLoggedInUserFromTokenString(newToken);
     }
     return rval;
   }
@@ -213,7 +213,7 @@ export class WardenUserService<T> {
       Logger.info('Warden: response : %j ', resp);
       if (resp.jwtToken) {
         Logger.info('Applying login');
-        rval = this.updateLoggedInUserFromTokenString(resp.jwtToken);
+        rval = await this.updateLoggedInUserFromTokenString(resp.jwtToken);
       } else if (resp.error) {
         this.options.eventProcessor.onLoginFailure(resp.error);
       } else {
