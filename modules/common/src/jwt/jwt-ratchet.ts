@@ -1,4 +1,3 @@
-import jwt from 'jsonwebtoken';
 import { RequireRatchet } from '../lang/require-ratchet.js';
 import { Logger } from '../logger/logger.js';
 import { StringRatchet } from '../lang/string-ratchet.js';
@@ -19,6 +18,7 @@ import { JwtRatchetLike } from './jwt-ratchet-like.js';
  */
 export class JwtRatchet implements JwtRatchetLike {
   private static readonly EXPIRED_FLAG_NAME: string = '__jwtServiceExpiredFlag';
+  private static CACHE_JWTLIB: any;
 
   constructor(
     private _encryptionKeyPromise: Promise<string | string[]>,
@@ -28,6 +28,17 @@ export class JwtRatchet implements JwtRatchetLike {
     private _parseFailureLogLevel: LoggerLevelName = LoggerLevelName.debug,
   ) {
     RequireRatchet.notNullOrUndefined(_encryptionKeyPromise, 'encryptionKeyPromise');
+  }
+
+  private static async fetchJwtLibraryAsync(): Promise<any> {
+    try {
+      if (!JwtRatchet.CACHE_JWTLIB) {
+        JwtRatchet.CACHE_JWTLIB = await import ('jsonwebtoken');
+      }
+      return JwtRatchet.CACHE_JWTLIB;
+    } catch (err) {
+      throw new Error('Could not find the "jsonwebtoken" library - it is required to use JwtRatchet')
+    }
   }
 
   public get encryptionKeyPromise(): Promise<string | string[]> {
@@ -61,7 +72,8 @@ export class JwtRatchet implements JwtRatchetLike {
   ): Promise<T> {
     let rval: T = null;
     try {
-      rval = jwt.verify(payloadString, decryptKey, { ignoreExpiration: true }) as unknown as T; // We'll check/flag expiration later
+      const jwtLib = await JwtRatchet.fetchJwtLibraryAsync();
+      rval = jwtLib.verify(payloadString, decryptKey, { ignoreExpiration: true }) as unknown as T; // We'll check/flag expiration later
     } catch (err) {
       Logger.logByLevel(logLevel, 'Caught %s - ignoring', err);
     }
@@ -171,7 +183,9 @@ export class JwtRatchet implements JwtRatchetLike {
       Logger.debug('Forcing expiration to %d', expires);
       payload.exp = expires;
     }
-    const token: string = jwt.sign(payload, encKey); // , algorithm = 'HS256')
+    const jwtLib = await JwtRatchet.fetchJwtLibraryAsync();
+
+    const token: string = jwtLib.sign(payload, encKey); // , algorithm = 'HS256')
     return token;
   }
 
@@ -188,9 +202,10 @@ export class JwtRatchet implements JwtRatchetLike {
     return token;
   }
 
-  // Helper method that reads the token without checking it, therefore the keys arent needed
-  public static decodeTokenNoVerify<T extends JwtTokenBase>(token: string): T {
-    return jwt.decode(token) as T;
+  // Helper method that reads the token without checking it, therefore the keys are not needed
+  public static async decodeTokenNoVerify<T extends JwtTokenBase>(token: string): Promise<T> {
+    const jwtLib = await JwtRatchet.fetchJwtLibraryAsync();
+    return jwtLib.decode(token) as T;
   }
 
   // Removes any jwt fields from an object
