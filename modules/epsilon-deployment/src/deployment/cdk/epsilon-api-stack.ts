@@ -233,7 +233,8 @@ export class EpsilonApiStack extends Stack {
         vpc: sharedVpc,
         vpcSubnets: sharedVpcSubnetSelection,
         securityGroups: fargateVpcSecurityGroups,
-        allowPublicSubnet: props.allowPublicSubnet
+        allowPublicSubnet: props.allowPublicSubnet,
+        // filesystem:xxx
       };
 
       this.webHandler = new DockerImageFunction(this, id + 'Web', webImageFunctionProps);
