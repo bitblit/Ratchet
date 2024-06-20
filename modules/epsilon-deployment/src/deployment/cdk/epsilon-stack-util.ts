@@ -1,4 +1,4 @@
-import { StringRatchet } from '@bitblit/ratchet-common';
+import { Logger, StringRatchet } from "@bitblit/ratchet-common";
 import { Effect, PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { Topic } from 'aws-cdk-lib/aws-sns';
 import { Queue } from 'aws-cdk-lib/aws-sqs';
@@ -51,23 +51,24 @@ export class EpsilonStackUtil {
         effect: Effect.ALLOW,
         actions: ['batch:*'],
         resources: ['*'],
-      }),,
+      }),
       new PolicyStatement({
         effect: Effect.ALLOW,
         actions: ['ec2:DescribeSecurityGroups'],
         resources: ['*'],
-      }),,
+      }),
       new PolicyStatement({
         effect: Effect.ALLOW,
         actions: ['ec2:DescribeSubnets'],
         resources: ['*'],
-      }),,
+      }),
       new PolicyStatement({
         effect: Effect.ALLOW,
         actions: ['ec2:DescribeVpcs'],
         resources: ['*'],
       }),
     ]);
+    Logger.info('Created policy statement list: %j', rval);
     return rval;
   }
 
