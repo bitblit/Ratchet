@@ -1,8 +1,7 @@
 import { SshTunnelContainer } from "./ssh/ssh-tunnel-container";
-import { DbConfig } from "./db-config";
 
-export interface ConnectionAndTunnel<T> {
-  config: DbConfig;
+export interface ConnectionAndTunnel<T,R> {
+  config: R;
   db: T;
   ssh: SshTunnelContainer
 }

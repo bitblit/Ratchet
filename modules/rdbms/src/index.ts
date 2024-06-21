@@ -4,10 +4,9 @@
 
 export * from './build/ratchet-rdbms-info.js';
 export * from './model/connection-and-tunnel.js';
-export * from './model/connection-config.js';
 export * from './model/database-access-provider.js';
 export * from './model/database-access.js';
-export * from './model/db-config.js';
+export * from './model/database-config-list.js';
 export * from './model/group-by-count-result.js';
 export * from './model/paginated-results.js';
 export * from './model/pagination-bounds.js';
