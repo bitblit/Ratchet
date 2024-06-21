@@ -30,19 +30,19 @@ import { DatabaseAccessProvider } from "../model/database-access-provider";
  * (Then the cleanShutdown)
  */
 
-export class TransactionalNamedParameterDatabaseService<T,R> extends NamedParameterDatabaseService<T,R> {
+export class TransactionalNamedParameterDatabaseService extends NamedParameterDatabaseService {
   private currentTxFlag?: string;
 
   constructor(
     private myQueryProvider: QueryTextProvider,
-    private myConnectionProvider: DatabaseAccessProvider<T, R>,
+    private myConnectionProvider: DatabaseAccessProvider,
     private myQueryDefaults: QueryDefaults,
-    private additionalConfig: R
+    private additionalConfig: Record<string,any>
   ) {
     super(myQueryProvider, myConnectionProvider, myQueryDefaults);
   }
 
-  public nonPooledExtraConfiguration(): R {
+  public nonPooledExtraConfiguration(): Record<string,any> {
     return this.additionalConfig;
   }
 
@@ -130,13 +130,13 @@ export class TransactionalNamedParameterDatabaseService<T,R> extends NamedParame
     }
   }
 
-  public static async oneStepBuildAndExecuteUpdateOrInsertInTransaction<T,R>(
-    src: NamedParameterDatabaseService<T,R>,
+  public static async oneStepBuildAndExecuteUpdateOrInsertInTransaction(
+    src: NamedParameterDatabaseService,
     queryBuilder: QueryBuilder,
     timeoutMS: number = src.getQueryDefaults().timeoutMS,
-    additionalConfig?: R
+    additionalConfig?: Record<string,any>
   ): Promise<UpdateResults | null> {
-    let handler: TransactionalNamedParameterDatabaseService<T,R> | undefined;
+    let handler: TransactionalNamedParameterDatabaseService | undefined;
     let rval: UpdateResults | null = null;
     try {
       handler = new TransactionalNamedParameterDatabaseService(src.getQueryProvider(), src.databaseAccessProvider, src.getQueryDefaults(), additionalConfig);
@@ -152,12 +152,12 @@ export class TransactionalNamedParameterDatabaseService<T,R> extends NamedParame
   }
 
   public static async oneStepBuildAndExecuteInTransaction<S,T,R>(
-    src: NamedParameterDatabaseService<T,R>,
+    src: NamedParameterDatabaseService,
     queryBuilder: QueryBuilder,
     timeoutMS: number = src.getQueryDefaults().timeoutMS,
     additionalConfig?: R
   ): Promise<S[] | null> {
-    let handler: TransactionalNamedParameterDatabaseService<T,R> | undefined;
+    let handler: TransactionalNamedParameterDatabaseService | undefined;
     let rval: S[] | null = null;
     try {
       handler = new TransactionalNamedParameterDatabaseService(src.getQueryProvider(), src.databaseAccessProvider, src.getQueryDefaults(), additionalConfig);

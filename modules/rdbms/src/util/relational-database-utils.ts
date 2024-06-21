@@ -8,7 +8,7 @@ import { NamedParameterDatabaseService } from "../service/named-parameter-databa
  */
 export class RelationalDatabaseUtils {
   public static async uploadObjectArrayToTable<Item extends object>(
-    db: NamedParameterDatabaseService<any,any>,
+    db: NamedParameterDatabaseService,
     tableName: string,
     data: Item[],
     clearTableFirst = false

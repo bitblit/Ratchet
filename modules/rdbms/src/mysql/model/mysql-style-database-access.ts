@@ -3,7 +3,7 @@ import { DatabaseAccess } from "../../model/database-access";
 import { FieldPacket } from "mysql2";
 import { QueryResults } from "../../model/query-results";
 
-export class MysqlStyleDatabaseAccess implements DatabaseAccess<Connection, ConnectionOptions> {
+export class MysqlStyleDatabaseAccess implements DatabaseAccess {
 
   constructor(private _connection: Connection,private _connectionOptions: ConnectionOptions) {
   }

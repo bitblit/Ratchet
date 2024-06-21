@@ -13,7 +13,7 @@ import { MysqlStyleDatabaseAccess } from "./model/mysql-style-database-access";
 
 /**
  */
-export class RdsMysqlStyleConnectionProvider implements DatabaseAccessProvider<Connection, ConnectionOptions> {
+export class RdsMysqlStyleConnectionProvider implements DatabaseAccessProvider {
   // While this _technically_ expands the possible scope of Sql injection, we already
   // tightly limit to Named parameters, so multiple statements is more useful than not!
   public static DEFAULT_CONNECTION_OPTIONS: ConnectionOptions = { multipleStatements: true };
@@ -105,10 +105,10 @@ export class RdsMysqlStyleConnectionProvider implements DatabaseAccessProvider<C
     return this.connectionCache.get(name);
   }
 
-  public async getDatabaseAccess(name: string): Promise<DatabaseAccess<Connection,ConnectionOptions> | undefined> {
+  public async getDatabaseAccess(name: string): Promise<DatabaseAccess | undefined> {
     Logger.silly('getConnection : %s', name);
     const conn: ConnectionAndTunnel<Connection> = await this.getConnectionAndTunnel(name);
-    const rval: DatabaseAccess<Connection, ConnectionOptions> = conn?.db ? new MysqlStyleDatabaseAccess(conn.db, this.additionalConfig) : null;
+    const rval: DatabaseAccess = conn?.db ? new MysqlStyleDatabaseAccess(conn.db, this.additionalConfig) : null;
     return rval;
   }
 

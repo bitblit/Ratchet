@@ -38,8 +38,8 @@ const prov: QueryTextProvider = {
   },
 };
 
-const mockAccess: DatabaseAccessProvider<string,string> = mock<DatabaseAccessProvider<string,string>>();
-const mariaDb = new NamedParameterDatabaseService<string,string>(prov, mockAccess, { databaseName: 'test', timeoutMS: 2_000 });
+const mockAccess: DatabaseAccessProvider = mock<DatabaseAccessProvider>();
+const mariaDb = new NamedParameterDatabaseService(prov, mockAccess, { databaseName: 'test', timeoutMS: 2_000 });
 
 describe('query-builder', () => {
   test('builds filtered', () => {

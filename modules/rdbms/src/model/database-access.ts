@@ -8,10 +8,7 @@ import { QueryResults } from "./query-results";
 // T = Class of the connection
 // R = Class of any extra connection configuration props
 // S = Class of the object returned by a query (data)
-export interface DatabaseAccess <T,R> {
-  getRawDatabase(): T;
-  getRawDatabaseConfig(): R;
-
+export interface DatabaseAccess {
   // Force the connection closed
   close(): Promise<boolean>;
   escape(value: any): string;

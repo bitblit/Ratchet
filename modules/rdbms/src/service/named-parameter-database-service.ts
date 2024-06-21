@@ -31,20 +31,20 @@ import { QueryResults } from "../model/query-results";
  * If your conditional section uses the <<:zz>>yyy<</>> then the section is included if named parameter zz is set not null/undefined and if it is an array the length is greater than zero.
  */
 
-export class NamedParameterDatabaseService<T,R> {
+export class NamedParameterDatabaseService {
   private static LONG_QUERY_TIME_MS = 8500;
 
   private serviceName = 'TBD';
 
   constructor(
     private queryProvider: QueryTextProvider,
-    private connectionProvider: DatabaseAccessProvider<T,R>,
+    private connectionProvider: DatabaseAccessProvider,
     private queryDefaults: QueryDefaults
   ) {
     this.serviceName = 'NamedParameterDatabaseService';
   }
 
-  public nonPooledExtraConfiguration(): R {
+  public nonPooledExtraConfiguration(): Record<string,any> {
     return null;
   }
 
@@ -52,7 +52,7 @@ export class NamedParameterDatabaseService<T,R> {
     return false;
   }
 
-  public get databaseAccessProvider(): DatabaseAccessProvider<T, R> {
+  public get databaseAccessProvider(): DatabaseAccessProvider {
     return this.connectionProvider;
   }
 
@@ -67,13 +67,13 @@ export class NamedParameterDatabaseService<T,R> {
 
   public async createNonPooledDatabaseAccess(
     queryDefaults: QueryDefaults,
-    additionalConfig?: R
-  ): Promise<DatabaseAccess<T, R>> {
+    additionalConfig?: Record<string,any>
+  ): Promise<DatabaseAccess> {
     Logger.info('createTransactional :  %s : %j', queryDefaults, additionalConfig);
     if (!this.connectionProvider.createNonPooledDatabaseAccess) {
       throw new Error(`Connection provider does not implement createNonPooledDatabaseAccess`);
     }
-    const newConn: DatabaseAccess<T, R> = await this.connectionProvider.createNonPooledDatabaseAccess(queryDefaults, additionalConfig);
+    const newConn: DatabaseAccess = await this.connectionProvider.createNonPooledDatabaseAccess(queryDefaults, additionalConfig);
     if (!newConn) {
       throw new Error(`Connection could not be created for DB type ${queryDefaults}`);
     }
@@ -285,7 +285,7 @@ export class NamedParameterDatabaseService<T,R> {
 
   public async forceCloseConnectionForTesting(): Promise<boolean> {
     Logger.warn('Forcing connection closed for testing');
-    const conn: DatabaseAccess<T,R> = await this.getDB();
+    const conn: DatabaseAccess = await this.getDB();
     try {
       await conn.close();
       Logger.info('Connection has been ended, but not set to null');
@@ -332,7 +332,7 @@ export class NamedParameterDatabaseService<T,R> {
       } else {
         Logger.error('Named Param DB Query Failed : Err: %s Query: %s Params: %j', err, query, fields, err);
         try {
-          const conn: DatabaseAccess<T,R> = await this.getDB();
+          const conn: DatabaseAccess = await this.getDB();
           Logger.error(
             '-----\nFor paste into tooling only: \n\n%s\n\n',
             QueryUtil.renderQueryStringForPasteIntoTool(query, fields, (v) => conn.escape(v))
@@ -348,7 +348,7 @@ export class NamedParameterDatabaseService<T,R> {
   }
 
   private async innerExecutePreparedAsPromise<Row>(query: string, fields: object = {}): Promise<QueryResults<Row>> {
-    const conn: DatabaseAccess<T,R> = await this.getDB();
+    const conn: DatabaseAccess = await this.getDB();
     if (conn.preQuery) {
       await conn.preQuery();
     }
@@ -380,8 +380,8 @@ export class NamedParameterDatabaseService<T,R> {
   }
 
   // Creates a promise if there isn't already a cached one or if it is closed
-  public async getDB(): Promise<DatabaseAccess<T,R>> {
-    const conn: DatabaseAccess<T,R> | undefined =
+  public async getDB(): Promise<DatabaseAccess> {
+    const conn: DatabaseAccess | undefined =
       this.nonPooledMode() ? await this.connectionProvider.createNonPooledDatabaseAccess(this.queryDefaults, this.nonPooledExtraConfiguration()) :
       await this.connectionProvider.getDatabaseAccess(this.queryDefaults.databaseName);
     if (!conn) {
