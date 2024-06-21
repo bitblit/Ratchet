@@ -24,7 +24,7 @@ describe('#S3SyncedFile', function () {
   beforeEach(() => {
   });
 
-  test('should sync on it', async () => {
+  test.skip('should sync on it', async () => {
     AwsCredentialsRatchet.applySetProfileEnvironmentalVariable('erigir');
     const s3: S3CacheRatchet = new S3CacheRatchet(new S3Client({ region: 'us-east-1' }), 'bella-lingua-data');
 
