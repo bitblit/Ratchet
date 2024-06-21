@@ -1,4 +1,4 @@
-export interface MysqlUpdateResults {
+export interface UpdateResults {
   fieldCount: number;
   affectedRows: number;
   insertId: number;

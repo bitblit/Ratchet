@@ -6,17 +6,20 @@ import { Readable } from 'stream';
 import {
   CompleteMultipartUploadCommandOutput,
   CopyObjectCommandOutput,
-  DeleteObjectCommandOutput,
+  DeleteObjectCommandOutput, GetObjectCommandInput,
   GetObjectCommandOutput,
   HeadObjectCommandOutput,
   PutObjectCommandInput,
-  S3Client,
-} from '@aws-sdk/client-s3';
+  S3Client
+} from "@aws-sdk/client-s3";
 
 export interface S3CacheRatchetLike {
   getDefaultBucket(): string;
   getS3Client(): S3Client;
   fileExists(key: string, bucket?: string): Promise<boolean>;
+
+  fetchCacheFilePassThru(req: GetObjectCommandInput): Promise<GetObjectCommandOutput>;
+
   fetchCacheFileAsS3GetObjectCommandOutput(key: string, bucket?: string): Promise<GetObjectCommandOutput>;
 
   fetchCacheFileAsReadableStream(key: string, bucket?: string): Promise<ReadableStream>;

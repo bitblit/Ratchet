@@ -1,19 +1,19 @@
-import maria, { Connection, ConnectionOptions } from 'mysql2/promise';
-import { ErrorRatchet, Logger, RequireRatchet, StringRatchet } from '@bitblit/ratchet-common';
-import { SshTunnelService } from './ssh-tunnel-service.js';
-import { MysqlStyleConnectionProvider } from './model/mysql/mysql-style-connection-provider.js';
-import { ConnectionConfig } from './model/connection-config.js';
-import getPort from 'get-port';
-import _ from 'lodash';
-import { SshTunnelContainer } from './model/ssh/ssh-tunnel-container.js';
-import { DbConfig } from './model/db-config.js';
-import { SshTunnelConfig } from './model/ssh/ssh-tunnel-config.js';
-import { QueryDefaults } from './model/query-defaults.js';
-import { ConnectionAndTunnel } from "./model/connection-and-tunnel";
+import maria, { Connection, ConnectionOptions } from "mysql2/promise";
+import { ErrorRatchet, Logger, RequireRatchet, StringRatchet } from "@bitblit/ratchet-common";
+import { SshTunnelService } from "../service/ssh-tunnel-service.js";
+import { ConnectionConfig } from "../model/connection-config.js";
+import getPort from "get-port";
+import { SshTunnelContainer } from "../model/ssh/ssh-tunnel-container.js";
+import { DbConfig } from "../model/db-config.js";
+import { QueryDefaults } from "../model/query-defaults.js";
+import { ConnectionAndTunnel } from "../model/connection-and-tunnel";
+import { DatabaseAccessProvider } from "../model/database-access-provider";
+import { DatabaseAccess } from "../model/database-access";
+import { MysqlStyleDatabaseAccess } from "./model/mysql-style-database-access";
 
 /**
  */
-export class RdsMysqlStyleConnectionProvider implements MysqlStyleConnectionProvider {
+export class RdsMysqlStyleConnectionProvider implements DatabaseAccessProvider<Connection, ConnectionOptions> {
   // While this _technically_ expands the possible scope of Sql injection, we already
   // tightly limit to Named parameters, so multiple statements is more useful than not!
   public static DEFAULT_CONNECTION_OPTIONS: ConnectionOptions = { multipleStatements: true };
@@ -39,13 +39,13 @@ export class RdsMysqlStyleConnectionProvider implements MysqlStyleConnectionProv
   private addShutdownHandlerToProcess(): void {
     process.on('exit', () => {
       Logger.info('Process is shutting down, closing connections');
-      this.clearConnectionCache().catch((err) => {
+      this.clearDatabaseAccessCache().catch((err) => {
         Logger.error('Shutdown connection failed : %s', err);
       });
     });
   }
 
-  public async clearConnectionCache(): Promise<boolean> {
+  public async clearDatabaseAccessCache(): Promise<boolean> {
     const rval = false;
     Logger.info('Clearing connection cache for RdsMysqlConnectionProvider');
     // First, clear the connection caches so that subsequent connection attempts start fresh
@@ -105,10 +105,11 @@ export class RdsMysqlStyleConnectionProvider implements MysqlStyleConnectionProv
     return this.connectionCache.get(name);
   }
 
-  public async getConnection(name: string): Promise<Connection | undefined> {
+  public async getDatabaseAccess(name: string): Promise<DatabaseAccess<Connection,ConnectionOptions> | undefined> {
     Logger.silly('getConnection : %s', name);
     const conn: ConnectionAndTunnel<Connection> = await this.getConnectionAndTunnel(name);
-    return conn?.db;
+    const rval: DatabaseAccess<Connection, ConnectionOptions> = conn?.db ? new MysqlStyleDatabaseAccess(conn.db, this.additionalConfig) : null;
+    return rval;
   }
 
 
@@ -184,7 +185,7 @@ export class RdsMysqlStyleConnectionProvider implements MysqlStyleConnectionProv
     }
     connection.on('error', (err) => {
       Logger.info('An error was detected on the connection : %s : Clearing', err);
-      this.clearConnectionCache()
+      this.clearDatabaseAccessCache()
         .then((cleared) => {
           Logger.info('Connection cleared: %s', cleared);
         })

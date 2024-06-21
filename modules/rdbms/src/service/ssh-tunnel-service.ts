@@ -1,7 +1,7 @@
 import * as TunnelSsh from 'tunnel-ssh';
 import { Logger } from '@bitblit/ratchet-common';
-import { SshTunnelContainer } from './model/ssh/ssh-tunnel-container.js';
-import { SshTunnelConfig } from './model/ssh/ssh-tunnel-config.js';
+import { SshTunnelContainer } from '../model/ssh/ssh-tunnel-container.js';
+import { SshTunnelConfig } from '../model/ssh/ssh-tunnel-config.js';
 
 export class SshTunnelService {
   public async shutdown(ssh: SshTunnelContainer): Promise<boolean> {

@@ -76,6 +76,23 @@ export class S3CacheRatchet implements S3CacheRatchetLike {
     }
   }
 
+  public async fetchCacheFilePassThru(req: GetObjectCommandInput): Promise<GetObjectCommandOutput> {
+    let rval: GetObjectCommandOutput = null;
+    try {
+
+      rval = await this.s3.send(new GetObjectCommand(req));
+    } catch (err) {
+      if (err instanceof NoSuchKey) {
+        Logger.debug('Key %s not found - returning null', req.Key);
+        rval = null;
+      } else {
+        // Rethrow everything else
+        throw err;
+      }
+    }
+    return rval;
+  }
+
   public async fetchCacheFileAsS3GetObjectCommandOutput(key: string, bucket: string = null): Promise<GetObjectCommandOutput> {
     let rval: GetObjectCommandOutput = null;
     try {

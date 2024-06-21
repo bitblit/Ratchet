@@ -1,15 +1,21 @@
-import { DurationRatchet, ErrorRatchet, Logger, PromiseRatchet, StopWatch, TimeoutToken } from '@bitblit/ratchet-common';
-import { Connection, ConnectionOptions } from 'mysql2/promise';
-import { MysqlResultsWrapper } from './model/mysql/mysql-results-wrapper.js';
-import { MysqlUpdateResults } from './model/mysql/mysql-update-results.js';
-import { QueryUtil } from './query-builder/query-util.js';
-import { TransactionIsolationLevel } from './model/transaction-isolation-level.js';
-import { NonPooledMysqlStyleConnectionProvider } from './non-pooled-mysql-style-connection-provider.js';
-import { MysqlStyleConnectionProvider } from './model/mysql/mysql-style-connection-provider.js';
-import { QueryBuilder } from './query-builder/query-builder.js';
-import { GroupByCountResult } from './model/group-by-count-result.js';
-import { QueryDefaults } from './model/query-defaults.js';
-import { QueryTextProvider } from './model/query-text-provider.js';
+import {
+  DurationRatchet,
+  ErrorRatchet,
+  Logger,
+  PromiseRatchet,
+  StopWatch,
+  TimeoutToken
+} from "@bitblit/ratchet-common";
+import { QueryUtil } from "../query-builder/query-util.js";
+import { TransactionIsolationLevel } from "../model/transaction-isolation-level.js";
+import { QueryBuilder } from "../query-builder/query-builder.js";
+import { GroupByCountResult } from "../model/group-by-count-result.js";
+import { QueryDefaults } from "../model/query-defaults.js";
+import { QueryTextProvider } from "../model/query-text-provider.js";
+import { UpdateResults } from "../model/update-results";
+import { DatabaseAccessProvider } from "../model/database-access-provider";
+import { DatabaseAccess } from "../model/database-access";
+import { QueryResults } from "../model/query-results";
 
 /**
  * Service to simplify talking to any Mysql dialect system
@@ -25,18 +31,31 @@ import { QueryTextProvider } from './model/query-text-provider.js';
  * If your conditional section uses the <<:zz>>yyy<</>> then the section is included if named parameter zz is set not null/undefined and if it is an array the length is greater than zero.
  */
 
-export class NamedParameterMariaDbService {
+export class NamedParameterDatabaseService<T,R> {
   private static LONG_QUERY_TIME_MS = 8500;
 
   private serviceName = 'TBD';
 
   constructor(
     private queryProvider: QueryTextProvider,
-    private connectionProvider: MysqlStyleConnectionProvider,
+    private connectionProvider: DatabaseAccessProvider<T,R>,
     private queryDefaults: QueryDefaults
   ) {
-    this.serviceName = 'NamedParameterMariaDb';
+    this.serviceName = 'NamedParameterDatabaseService';
   }
+
+  public nonPooledExtraConfiguration(): R {
+    return null;
+  }
+
+  public nonPooledMode(): boolean {
+    return false;
+  }
+
+  public get databaseAccessProvider(): DatabaseAccessProvider<T, R> {
+    return this.connectionProvider;
+  }
+
 
   public getQueryDefaults(): QueryDefaults {
     return this.queryDefaults;
@@ -46,19 +65,19 @@ export class NamedParameterMariaDbService {
     return this.queryProvider;
   }
 
-  public async createNonPooledMysqlStyleConnectionProvider(
+  public async createNonPooledDatabaseAccess(
     queryDefaults: QueryDefaults,
-    additionalConfig?: ConnectionOptions
-  ): Promise<NonPooledMysqlStyleConnectionProvider> {
+    additionalConfig?: R
+  ): Promise<DatabaseAccess<T, R>> {
     Logger.info('createTransactional :  %s : %j', queryDefaults, additionalConfig);
-    if (!this.connectionProvider.createNonPooledDatabaseConnection) {
-      throw new Error(`Connection provider does not implement createNonPooledDatabaseConnection`);
+    if (!this.connectionProvider.createNonPooledDatabaseAccess) {
+      throw new Error(`Connection provider does not implement createNonPooledDatabaseAccess`);
     }
-    const newConn = await this.connectionProvider.createNonPooledDatabaseConnection(queryDefaults, additionalConfig);
+    const newConn: DatabaseAccess<T, R> = await this.connectionProvider.createNonPooledDatabaseAccess(queryDefaults, additionalConfig);
     if (!newConn) {
       throw new Error(`Connection could not be created for DB type ${queryDefaults}`);
     }
-    return new NonPooledMysqlStyleConnectionProvider(newConn);
+    return newConn;
   }
 
   public fetchQueryRawTextByName(queryPath: string): string {
@@ -77,7 +96,7 @@ export class NamedParameterMariaDbService {
     queryPath: string,
     params?: object,
     timeoutMS: number = this.queryDefaults.timeoutMS
-  ): Promise<MysqlUpdateResults> {
+  ): Promise<UpdateResults> {
     const builder = this.queryBuilder(queryPath).withParams(params ?? {});
     return this.buildAndExecuteUpdateOrInsert(builder, timeoutMS);
   }
@@ -85,9 +104,9 @@ export class NamedParameterMariaDbService {
   public async buildAndExecuteUpdateOrInsert(
     queryBuilder: QueryBuilder,
     timeoutMS: number = this.queryDefaults.timeoutMS
-  ): Promise<MysqlUpdateResults> {
+  ): Promise<UpdateResults> {
     const build = queryBuilder.build();
-    const resp = await this.executeQueryWithMeta<MysqlUpdateResults>(
+    const resp = await this.executeQueryWithMeta<UpdateResults>(
       build.transactionIsolationLevel,
       build.query,
       build.namedParams,
@@ -101,9 +120,9 @@ export class NamedParameterMariaDbService {
     queryBuilder: QueryBuilder,
     maxRetries: number,
     timeoutMS: number = this.queryDefaults.timeoutMS
-  ): Promise<MysqlUpdateResults> {
+  ): Promise<UpdateResults> {
     let retry = 0;
-    let res: MysqlUpdateResults | undefined;
+    let res: UpdateResults | undefined;
     while (!res && retry < maxRetries) {
       retry++;
       try {
@@ -194,7 +213,7 @@ export class NamedParameterMariaDbService {
     fields: object = {},
     timeoutMS: number = this.queryDefaults.timeoutMS,
     debugComment?: string
-  ): Promise<MysqlResultsWrapper<Row>> {
+  ): Promise<QueryResults<Row>> {
     const sw: StopWatch = new StopWatch();
     if (!timeoutMS) {
       timeoutMS = this.queryDefaults.timeoutMS;
@@ -202,7 +221,7 @@ export class NamedParameterMariaDbService {
 
     await this.changeNextQueryTransactionIsolationLevel(transactionIsolationLevel);
 
-    const result = await PromiseRatchet.timeout<MysqlResultsWrapper<Row>>(
+    const result = await PromiseRatchet.timeout<QueryResults<Row>>(
       this.innerExecutePreparedAsPromiseWithRetryCloseConnection<Row>(query, fields, undefined),
       'Query:' + query,
       timeoutMS
@@ -213,13 +232,13 @@ export class NamedParameterMariaDbService {
       const duration = DurationRatchet.colonFormatMsDuration(timeoutMS);
       throw new Error(`Timed out (after ${duration}) waiting for query : ${query}`);
     }
-    const rval = result as MysqlResultsWrapper<Row>;
+    const rval = result as QueryResults<Row>;
     if (!rval.results) {
       Logger.error('DB:executeQueryWithMeta:Failure: %j', rval);
     }
 
-    if (debugComment && sw.elapsedMS() > NamedParameterMariaDbService.LONG_QUERY_TIME_MS) {
-      Logger.info('NamedParameterMariaDbService long query: %s, %s', debugComment, sw.dump());
+    if (debugComment && sw.elapsedMS() > NamedParameterDatabaseService.LONG_QUERY_TIME_MS) {
+      Logger.info('NamedParameterDatabaseService long query: %s, %s', debugComment, sw.dump());
     }
     return rval;
   }
@@ -228,7 +247,7 @@ export class NamedParameterMariaDbService {
     Logger.info('Shutting down %s service', this.serviceName);
     let rval: boolean;
     try {
-      rval = await this.connectionProvider.clearConnectionCache();
+      rval = await this.connectionProvider.clearDatabaseAccessCache();
     } catch (err) {
       Logger.error('Failure trying to shutdown : %s', err, err);
       rval = false;
@@ -256,7 +275,7 @@ export class NamedParameterMariaDbService {
 
   public async changeNextQueryTransactionIsolationLevel<Row>(
     tx: TransactionIsolationLevel | null
-  ): Promise<MysqlResultsWrapper<Row> | null> {
+  ): Promise<QueryResults<Row> | null> {
     if (tx && tx !== TransactionIsolationLevel.Default) {
       Logger.debug('Setting tx to %s', tx);
       return await this.innerExecutePreparedAsPromiseWithRetryCloseConnection('SET TRANSACTION ISOLATION LEVEL ' + tx, {});
@@ -266,9 +285,9 @@ export class NamedParameterMariaDbService {
 
   public async forceCloseConnectionForTesting(): Promise<boolean> {
     Logger.warn('Forcing connection closed for testing');
-    const conn: Connection = await this.getDB();
+    const conn: DatabaseAccess<T,R> = await this.getDB();
     try {
-      await conn.end();
+      await conn.close();
       Logger.info('Connection has been ended, but not set to null');
       return true;
     } catch (err) {
@@ -281,9 +300,9 @@ export class NamedParameterMariaDbService {
     query: string,
     fields: object = {},
     retryCount = 1
-  ): Promise<MysqlResultsWrapper<Row>> {
+  ): Promise<QueryResults<Row>> {
     try {
-      const result = await this.innerExecutePreparedAsPromise<Row>(query, fields);
+      const result: QueryResults<Row> = await this.innerExecutePreparedAsPromise<Row>(query, fields);
       return result;
     } catch (errIn) {
       const err: Error = ErrorRatchet.asErr(errIn);
@@ -302,7 +321,7 @@ export class NamedParameterMariaDbService {
           err.message
         );
         if (retryCount < 4) {
-          const cleared: boolean = await this.connectionProvider.clearConnectionCache();
+          const cleared: boolean = await this.connectionProvider.clearDatabaseAccessCache();
           Logger.info('Clear connection cache returned %s', cleared);
           await PromiseRatchet.wait(wait);
           return this.innerExecutePreparedAsPromiseWithRetryCloseConnection(query, fields, retryCount + 1);
@@ -313,7 +332,7 @@ export class NamedParameterMariaDbService {
       } else {
         Logger.error('Named Param DB Query Failed : Err: %s Query: %s Params: %j', err, query, fields, err);
         try {
-          const conn: Connection = await this.getDB();
+          const conn: DatabaseAccess<T,R> = await this.getDB();
           Logger.error(
             '-----\nFor paste into tooling only: \n\n%s\n\n',
             QueryUtil.renderQueryStringForPasteIntoTool(query, fields, (v) => conn.escape(v))
@@ -328,32 +347,43 @@ export class NamedParameterMariaDbService {
     }
   }
 
-  private async innerExecutePreparedAsPromise<Row>(query: string, fields: object = {}): Promise<MysqlResultsWrapper<Row>> {
-    const conn: Connection = await this.getDB();
-    conn.config.namedPlaceholders = true;
+  private async innerExecutePreparedAsPromise<Row>(query: string, fields: object = {}): Promise<QueryResults<Row>> {
+    const conn: DatabaseAccess<T,R> = await this.getDB();
+    if (conn.preQuery) {
+      await conn.preQuery();
+    }
     const sw: StopWatch = new StopWatch();
 
     try {
-      const [rows, outFields] = await conn.query(query, fields);
-      const rval: MysqlResultsWrapper<Row> = {
-        results: rows as Row,
-        fields: outFields,
-      };
+      const output: QueryResults<Row> = await conn.query<Row>(query, fields);
       // If we reached here we were ok
       Logger.debug('Success : Finished query : %s\n%s\n\nParams : %j', sw.dump(), QueryUtil.reformatQueryForLogging(query), fields);
       Logger.debug(
         '-----\nFor paste into tooling only : \n\n%s\n\n',
         QueryUtil.renderQueryStringForPasteIntoTool(query, fields, (v) => conn.escape(v))
       );
-      return rval;
+      if (conn.onQuerySuccessOnly) {
+        await conn.onQuerySuccessOnly();
+      }
+
+      return output;
+    } catch(err) {
+      if (conn.onQueryFailureOnly) {
+        await conn.onQueryFailureOnly();
+      }
+      throw err;
     } finally {
-      conn.config.namedPlaceholders = false;
+      if (conn.onQuerySuccessOrFailure) {
+        await conn.onQuerySuccessOrFailure();
+      }
     }
   }
 
   // Creates a promise if there isn't already a cached one or if it is closed
-  public async getDB(): Promise<Connection> {
-    const conn: Connection | undefined = await this.connectionProvider.getConnection(this.queryDefaults.databaseName);
+  public async getDB(): Promise<DatabaseAccess<T,R>> {
+    const conn: DatabaseAccess<T,R> | undefined =
+      this.nonPooledMode() ? await this.connectionProvider.createNonPooledDatabaseAccess(this.queryDefaults, this.nonPooledExtraConfiguration()) :
+      await this.connectionProvider.getDatabaseAccess(this.queryDefaults.databaseName);
     if (!conn) {
       // If we just couldn't connect to the DB
       throw new Error('RatchetNoConnection : getConnection returned null - likely failed to get connection from db');
@@ -365,7 +395,7 @@ export class NamedParameterMariaDbService {
     let rval = false;
     Logger.info('Resetting connection');
     try {
-      await this.connectionProvider.clearConnectionCache();
+      await this.connectionProvider.clearDatabaseAccessCache();
       const tmpValue = await this.testConnection();
       rval = !!tmpValue;
       Logger.info('Reset connection returning %s', rval);

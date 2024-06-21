@@ -1,10 +1,11 @@
 import { QueryTextProvider } from '../model/query-text-provider.js';
-import { NamedParameterMariaDbService } from '../named-parameter-maria-db-service.js';
-import { expect, test, describe, vi, beforeEach } from 'vitest';
+import { expect, test, describe, vi, beforeEach, Mock } from "vitest";
 import { mock, MockProxy } from 'vitest-mock-extended';
 
 import { SortDirection } from '../model/sort-direction.js';
-import { MysqlStyleConnectionProvider } from '../model/mysql/mysql-style-connection-provider';
+import { NamedParameterDatabaseService } from "../service/named-parameter-database-service";
+import { DatabaseAccess } from "../model/database-access";
+import { DatabaseAccessProvider } from "../model/database-access-provider";
 
 const prov: QueryTextProvider = {
   fetchQuery(queryPath: string): string {
@@ -37,7 +38,8 @@ const prov: QueryTextProvider = {
   },
 };
 
-const mariaDb = new NamedParameterMariaDbService(prov, mock<MysqlStyleConnectionProvider>(), { databaseName: 'test', timeoutMS: 2_000 });
+const mockAccess: DatabaseAccessProvider<string,string> = mock<DatabaseAccessProvider<string,string>>();
+const mariaDb = new NamedParameterDatabaseService<string,string>(prov, mockAccess, { databaseName: 'test', timeoutMS: 2_000 });
 
 describe('query-builder', () => {
   test('builds filtered', () => {

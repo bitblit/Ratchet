@@ -1,14 +1,14 @@
 import { Logger, RequireRatchet } from '@bitblit/ratchet-common';
-import { MysqlUpdateResults } from '../model/mysql/mysql-update-results.js';
 import { TransactionIsolationLevel } from '../model/transaction-isolation-level.js';
-import { NamedParameterMariaDbService } from '../named-parameter-maria-db-service.js';
+import { UpdateResults } from "../model/update-results";
+import { NamedParameterDatabaseService } from "../service/named-parameter-database-service";
 
 /**
  * Any useful tools for working with relational databases
  */
 export class RelationalDatabaseUtils {
   public static async uploadObjectArrayToTable<Item extends object>(
-    db: NamedParameterMariaDbService,
+    db: NamedParameterDatabaseService<any,any>,
     tableName: string,
     data: Item[],
     clearTableFirst = false
@@ -20,7 +20,7 @@ export class RelationalDatabaseUtils {
 
     if (clearTableFirst) {
       Logger.info('Clearing table %s', tableName);
-      const { results: deleteResult } = await db.executeQueryWithMeta<MysqlUpdateResults>(
+      const { results: deleteResult } = await db.executeQueryWithMeta<UpdateResults>(
         TransactionIsolationLevel.Default,
         'DELETE FROM ' + tableName,
         {}
@@ -33,7 +33,7 @@ export class RelationalDatabaseUtils {
     Logger.info('Found columns : %j', colArr);
     const sql: string = 'INSERT INTO ' + tableName + ' (' + colArr.join(',') + ') VALUES :multiValue';
 
-    const { results: insertResult } = await db.executeQueryWithMeta<MysqlUpdateResults>(TransactionIsolationLevel.Default, sql, {
+    const { results: insertResult } = await db.executeQueryWithMeta<UpdateResults>(TransactionIsolationLevel.Default, sql, {
       multiValue: data,
     });
     const inserted = insertResult.affectedRows;

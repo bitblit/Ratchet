@@ -1,21 +1,20 @@
-import { NamedParameterMariaDbService } from './named-parameter-maria-db-service.js';
-import { MysqlStyleConnectionProvider } from './model/mysql/mysql-style-connection-provider.js';
-import { ConnectionOptions } from 'mysql2/promise';
-import { ErrorRatchet, Logger, StringRatchet } from '@bitblit/ratchet-common';
-import { QueryBuilder } from './query-builder/query-builder.js';
-import { NonPooledMysqlStyleConnectionProvider } from './non-pooled-mysql-style-connection-provider.js';
-import { MysqlUpdateResults } from './model/mysql/mysql-update-results.js';
-import { QueryDefaults } from './model/query-defaults.js';
-import { QueryTextProvider } from './model/query-text-provider.js';
+import { NamedParameterDatabaseService } from "./named-parameter-database-service";
+import { ConnectionOptions } from "mysql2/promise";
+import { ErrorRatchet, Logger, StringRatchet } from "@bitblit/ratchet-common";
+import { QueryBuilder } from "../query-builder/query-builder.js";
+import { QueryDefaults } from "../model/query-defaults.js";
+import { QueryTextProvider } from "../model/query-text-provider.js";
+import { UpdateResults } from "../model/update-results";
+import { DatabaseAccessProvider } from "../model/database-access-provider";
 
 /**
- * Extends NamedParameterMariaDbService to add transactional functionality
+ * Extends NamedParameterDatabaseService to add transactional functionality
  *
  * Typical usage would look like:
  *
- * (assume db is a NamedParameterMariaDbService)
- * const tx: TransactionalNamedParameterMariaDbService = await TransactionalNamedParameterMariaDbService.create(db);
- * const result: MysqlUpdateResults = await tx.buildAndExecuteUpdateOrInsertInTransaction(queryBuilder);
+ * (assume db is a NamedParameterDatabaseService)
+ * const tx: TransactionalNamedParameterDatabaseService = await TransactionalNamedParameterDatabaseService.create(db);
+ * const result: UpdateResults = await tx.buildAndExecuteUpdateOrInsertInTransaction(queryBuilder);
  * ...
  * (best practice is to clean-up the connection after)
  * await tx.cleanShutdown();
@@ -31,38 +30,33 @@ import { QueryTextProvider } from './model/query-text-provider.js';
  * (Then the cleanShutdown)
  */
 
-export class TransactionalNamedParameterMariaDbService extends NamedParameterMariaDbService {
+export class TransactionalNamedParameterDatabaseService<T,R> extends NamedParameterDatabaseService<T,R> {
   private currentTxFlag?: string;
-
-  // CAW 2022-07-01 : Have to wire it up this kinda weird way to avoid a circular import with NamedParameterMariaDbService
-  public static async create(
-    src: NamedParameterMariaDbService,
-    queryDefaults: QueryDefaults,
-    additionalConfig?: ConnectionOptions
-  ): Promise<TransactionalNamedParameterMariaDbService> {
-    Logger.info('createTransactionalNamedParameterMariaDbService :  %j : %j', queryDefaults, additionalConfig);
-    const connProv: NonPooledMysqlStyleConnectionProvider = await src.createNonPooledMysqlStyleConnectionProvider(
-      queryDefaults,
-      additionalConfig
-    );
-    return new TransactionalNamedParameterMariaDbService(src.getQueryProvider(), connProv, queryDefaults);
-  }
 
   constructor(
     private myQueryProvider: QueryTextProvider,
-    private myConnectionProvider: MysqlStyleConnectionProvider,
-    private myQueryDefaults: QueryDefaults
+    private myConnectionProvider: DatabaseAccessProvider<T, R>,
+    private myQueryDefaults: QueryDefaults,
+    private additionalConfig: R
   ) {
     super(myQueryProvider, myConnectionProvider, myQueryDefaults);
+  }
+
+  public nonPooledExtraConfiguration(): R {
+    return this.additionalConfig;
+  }
+
+  public nonPooledMode(): boolean {
+    return true;
   }
 
   public async cleanShutdown(): Promise<void> {
     Logger.info('cleanShutdown');
     try {
-      const conn = await this.myConnectionProvider.getConnection();
+      const conn = await this.myConnectionProvider.getDatabaseAccess();
       if (conn) {
         Logger.info('Shutting down connection');
-        conn.destroy();
+        await conn.close();
       }
     } catch (err) {
       Logger.info('Failure shutting down single-use connection : %s', err);
@@ -73,7 +67,7 @@ export class TransactionalNamedParameterMariaDbService extends NamedParameterMar
     if (!this.currentTxFlag) {
       this.currentTxFlag = StringRatchet.createRandomHexString(10);
       Logger.info('Starting a transaction : %s', this.currentTxFlag);
-      const conn = await this.myConnectionProvider.getConnection();
+      const conn = await this.myConnectionProvider.getDatabaseAccess();
       await conn?.beginTransaction();
     } else {
       ErrorRatchet.throwFormattedErr('Tried to start a new transaction while one is already in progress : %s', this.currentTxFlag);
@@ -83,8 +77,8 @@ export class TransactionalNamedParameterMariaDbService extends NamedParameterMar
   public async commitTransaction(): Promise<void> {
     if (this.currentTxFlag) {
       Logger.info('commit a transaction : %s', this.currentTxFlag);
-      const conn = await this.myConnectionProvider.getConnection();
-      await conn?.commit();
+      const conn = await this.myConnectionProvider.getDatabaseAccess();
+      await conn?.commitTransaction();
       this.currentTxFlag = undefined;
     } else {
       ErrorRatchet.throwFormattedErr('Cannot commit transaction - none in process');
@@ -94,8 +88,8 @@ export class TransactionalNamedParameterMariaDbService extends NamedParameterMar
   public async rollBackTransaction(): Promise<void> {
     if (this.currentTxFlag) {
       Logger.info('rollBack a transaction : %s', this.currentTxFlag);
-      const conn = await this.myConnectionProvider.getConnection();
-      await conn?.rollback();
+      const conn = await this.myConnectionProvider.getDatabaseAccess();
+      await conn?.rollbackTransaction();
       this.currentTxFlag = undefined;
     } else {
       ErrorRatchet.throwFormattedErr('Cannot rollBack transaction - none in process');
@@ -105,7 +99,7 @@ export class TransactionalNamedParameterMariaDbService extends NamedParameterMar
   public async buildAndExecuteUpdateOrInsertInTransaction(
     queryBuilder: QueryBuilder,
     timeoutMS: number = this.myQueryDefaults.timeoutMS
-  ): Promise<MysqlUpdateResults | null> {
+  ): Promise<UpdateResults | null> {
     Logger.info('buildAndExecuteUpdateOrInsertInTransaction');
     await this.startTransaction();
     try {
@@ -136,16 +130,16 @@ export class TransactionalNamedParameterMariaDbService extends NamedParameterMar
     }
   }
 
-  public static async oneStepBuildAndExecuteUpdateOrInsertInTransaction(
-    src: NamedParameterMariaDbService,
+  public static async oneStepBuildAndExecuteUpdateOrInsertInTransaction<T,R>(
+    src: NamedParameterDatabaseService<T,R>,
     queryBuilder: QueryBuilder,
     timeoutMS: number = src.getQueryDefaults().timeoutMS,
-    additionalConfig?: ConnectionOptions
-  ): Promise<MysqlUpdateResults | null> {
-    let handler: TransactionalNamedParameterMariaDbService | undefined;
-    let rval: MysqlUpdateResults | null = null;
+    additionalConfig?: R
+  ): Promise<UpdateResults | null> {
+    let handler: TransactionalNamedParameterDatabaseService<T,R> | undefined;
+    let rval: UpdateResults | null = null;
     try {
-      handler = await TransactionalNamedParameterMariaDbService.create(src, src.getQueryDefaults(), additionalConfig);
+      handler = new TransactionalNamedParameterDatabaseService(src.getQueryProvider(), src.databaseAccessProvider, src.getQueryDefaults(), additionalConfig);
       rval = await handler.buildAndExecuteUpdateOrInsertInTransaction(queryBuilder, timeoutMS);
     } catch (err) {
       Logger.error('Failure in oneStepBuildAndExecuteUpdateOrInsertInTransaction : %j : %s', queryBuilder, err, err);
@@ -157,16 +151,16 @@ export class TransactionalNamedParameterMariaDbService extends NamedParameterMar
     return rval;
   }
 
-  public static async oneStepBuildAndExecuteInTransaction<T>(
-    src: NamedParameterMariaDbService,
+  public static async oneStepBuildAndExecuteInTransaction<S,T,R>(
+    src: NamedParameterDatabaseService<T,R>,
     queryBuilder: QueryBuilder,
     timeoutMS: number = src.getQueryDefaults().timeoutMS,
-    additionalConfig?: ConnectionOptions
-  ): Promise<T[] | null> {
-    let handler: TransactionalNamedParameterMariaDbService | undefined;
-    let rval: T[] | null = null;
+    additionalConfig?: R
+  ): Promise<S[] | null> {
+    let handler: TransactionalNamedParameterDatabaseService<T,R> | undefined;
+    let rval: S[] | null = null;
     try {
-      handler = await TransactionalNamedParameterMariaDbService.create(src, src.getQueryDefaults(), additionalConfig);
+      handler = new TransactionalNamedParameterDatabaseService(src.getQueryProvider(), src.databaseAccessProvider, src.getQueryDefaults(), additionalConfig);
       rval = await handler.buildAndExecuteInTransaction(queryBuilder, timeoutMS);
     } catch (err) {
       Logger.error('Failure in oneStepbuildAndExecuteInTransaction : %j : %s', queryBuilder, err, err);

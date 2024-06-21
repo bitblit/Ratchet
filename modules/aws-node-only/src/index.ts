@@ -15,3 +15,4 @@ export * from './mail/inbound/inbound-email-ratchet.js';
 export * from './mail/inbound/parsed-email-processor.js';
 export * from './mail/inbound/sample-email-processor.js';
 export * from './s3/s3-cache-to-local-disk-ratchet.js';
+export * from './s3/s3-synced-file.js';
