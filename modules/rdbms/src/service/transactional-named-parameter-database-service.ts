@@ -4,7 +4,7 @@ import { ErrorRatchet, Logger, StringRatchet } from "@bitblit/ratchet-common";
 import { QueryBuilder } from "../query-builder/query-builder.js";
 import { QueryDefaults } from "../model/query-defaults.js";
 import { QueryTextProvider } from "../model/query-text-provider.js";
-import { UpdateResults } from "../model/update-results";
+import { ModifyResults } from "../model/modify-results";
 import { DatabaseAccessProvider } from "../model/database-access-provider";
 
 /**
@@ -14,7 +14,7 @@ import { DatabaseAccessProvider } from "../model/database-access-provider";
  *
  * (assume db is a NamedParameterDatabaseService)
  * const tx: TransactionalNamedParameterDatabaseService = await TransactionalNamedParameterDatabaseService.create(db);
- * const result: UpdateResults = await tx.buildAndExecuteUpdateOrInsertInTransaction(queryBuilder);
+ * const result: ModifyResults = await tx.buildAndExecuteUpdateOrInsertInTransaction(queryBuilder);
  * ...
  * (best practice is to clean-up the connection after)
  * await tx.cleanShutdown();
@@ -99,7 +99,7 @@ export class TransactionalNamedParameterDatabaseService extends NamedParameterDa
   public async buildAndExecuteUpdateOrInsertInTransaction(
     queryBuilder: QueryBuilder,
     timeoutMS: number = this.myQueryDefaults.timeoutMS
-  ): Promise<UpdateResults | null> {
+  ): Promise<ModifyResults | null> {
     Logger.info('buildAndExecuteUpdateOrInsertInTransaction');
     await this.startTransaction();
     try {
@@ -135,9 +135,9 @@ export class TransactionalNamedParameterDatabaseService extends NamedParameterDa
     queryBuilder: QueryBuilder,
     timeoutMS: number = src.getQueryDefaults().timeoutMS,
     additionalConfig?: Record<string,any>
-  ): Promise<UpdateResults | null> {
+  ): Promise<ModifyResults | null> {
     let handler: TransactionalNamedParameterDatabaseService | undefined;
-    let rval: UpdateResults | null = null;
+    let rval: ModifyResults | null = null;
     try {
       handler = new TransactionalNamedParameterDatabaseService(src.getQueryProvider(), src.databaseAccessProvider, src.getQueryDefaults(), additionalConfig);
       rval = await handler.buildAndExecuteUpdateOrInsertInTransaction(queryBuilder, timeoutMS);

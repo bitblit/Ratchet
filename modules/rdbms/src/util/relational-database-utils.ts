@@ -1,7 +1,8 @@
 import { Logger, RequireRatchet } from '@bitblit/ratchet-common';
 import { TransactionIsolationLevel } from '../model/transaction-isolation-level.js';
-import { UpdateResults } from "../model/update-results";
+import { ModifyResults } from "../model/modify-results";
 import { NamedParameterDatabaseService } from "../service/named-parameter-database-service";
+import { DatabaseRequestType } from "../model/database-request-type";
 
 /**
  * Any useful tools for working with relational databases
@@ -20,7 +21,8 @@ export class RelationalDatabaseUtils {
 
     if (clearTableFirst) {
       Logger.info('Clearing table %s', tableName);
-      const { results: deleteResult } = await db.executeQueryWithMeta<UpdateResults>(
+      const { results: deleteResult } = await db.executeQueryWithMeta<ModifyResults>(
+        DatabaseRequestType.Modify,
         TransactionIsolationLevel.Default,
         'DELETE FROM ' + tableName,
         {}
@@ -33,7 +35,9 @@ export class RelationalDatabaseUtils {
     Logger.info('Found columns : %j', colArr);
     const sql: string = 'INSERT INTO ' + tableName + ' (' + colArr.join(',') + ') VALUES :multiValue';
 
-    const { results: insertResult } = await db.executeQueryWithMeta<UpdateResults>(TransactionIsolationLevel.Default, sql, {
+    const { results: insertResult } = await db.executeQueryWithMeta<ModifyResults>(
+      DatabaseRequestType.Modify,
+      TransactionIsolationLevel.Default, sql, {
       multiValue: data,
     });
     const inserted = insertResult.affectedRows;

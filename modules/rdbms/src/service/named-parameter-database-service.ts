@@ -12,10 +12,11 @@ import { QueryBuilder } from "../query-builder/query-builder.js";
 import { GroupByCountResult } from "../model/group-by-count-result.js";
 import { QueryDefaults } from "../model/query-defaults.js";
 import { QueryTextProvider } from "../model/query-text-provider.js";
-import { UpdateResults } from "../model/update-results";
+import { ModifyResults } from "../model/modify-results";
 import { DatabaseAccessProvider } from "../model/database-access-provider";
 import { DatabaseAccess } from "../model/database-access";
 import { QueryResults } from "../model/query-results";
+import { DatabaseRequestType } from "../model/database-request-type";
 
 /**
  * Service to simplify talking to any Mysql dialect system
@@ -96,7 +97,7 @@ export class NamedParameterDatabaseService {
     queryPath: string,
     params?: object,
     timeoutMS: number = this.queryDefaults.timeoutMS
-  ): Promise<UpdateResults> {
+  ): Promise<ModifyResults> {
     const builder = this.queryBuilder(queryPath).withParams(params ?? {});
     return this.buildAndExecuteUpdateOrInsert(builder, timeoutMS);
   }
@@ -104,9 +105,10 @@ export class NamedParameterDatabaseService {
   public async buildAndExecuteUpdateOrInsert(
     queryBuilder: QueryBuilder,
     timeoutMS: number = this.queryDefaults.timeoutMS
-  ): Promise<UpdateResults> {
+  ): Promise<ModifyResults> {
     const build = queryBuilder.build();
-    const resp = await this.executeQueryWithMeta<UpdateResults>(
+    const resp = await this.executeQueryWithMeta<ModifyResults>(
+      DatabaseRequestType.Modify,
       build.transactionIsolationLevel,
       build.query,
       build.namedParams,
@@ -120,9 +122,9 @@ export class NamedParameterDatabaseService {
     queryBuilder: QueryBuilder,
     maxRetries: number,
     timeoutMS: number = this.queryDefaults.timeoutMS
-  ): Promise<UpdateResults> {
+  ): Promise<ModifyResults> {
     let retry = 0;
-    let res: UpdateResults | undefined;
+    let res: ModifyResults | undefined;
     while (!res && retry < maxRetries) {
       retry++;
       try {
@@ -163,6 +165,7 @@ export class NamedParameterDatabaseService {
   public async buildAndExecute<Row>(queryBuilder: QueryBuilder, timeoutMS: number = this.queryDefaults.timeoutMS): Promise<Row[]> {
     const build = queryBuilder.build();
     const resp = await this.executeQueryWithMeta<Row[]>(
+      DatabaseRequestType.Query,
       build.transactionIsolationLevel,
       build.query,
       build.namedParams,
@@ -178,6 +181,7 @@ export class NamedParameterDatabaseService {
   ): Promise<Row | null> {
     const build = queryBuilder.build();
     const resp = await this.executeQueryWithMeta<Row[]>(
+      DatabaseRequestType.Query,
       build.transactionIsolationLevel,
       build.query,
       build.namedParams,
@@ -198,6 +202,7 @@ export class NamedParameterDatabaseService {
 
     Logger.info('Unfiltered query %s', buildUnfiltered.query);
     const resp = await this.executeQueryWithMeta<GroupByCountResult[]>(
+      DatabaseRequestType.Query,
       buildUnfiltered.transactionIsolationLevel,
       query,
       buildUnfiltered.namedParams,
@@ -208,6 +213,7 @@ export class NamedParameterDatabaseService {
   }
 
   public async executeQueryWithMeta<Row>(
+    requestType: DatabaseRequestType,
     transactionIsolationLevel: TransactionIsolationLevel,
     query: string,
     fields: object = {},
@@ -222,7 +228,7 @@ export class NamedParameterDatabaseService {
     await this.changeNextQueryTransactionIsolationLevel(transactionIsolationLevel);
 
     const result = await PromiseRatchet.timeout<QueryResults<Row>>(
-      this.innerExecutePreparedAsPromiseWithRetryCloseConnection<Row>(query, fields, undefined),
+      this.innerExecutePreparedAsPromiseWithRetryCloseConnection<Row>(requestType, query, fields, undefined),
       'Query:' + query,
       timeoutMS
     );
@@ -259,7 +265,8 @@ export class NamedParameterDatabaseService {
     if (!quietMode) {
       Logger.info('Running connection test');
     }
-    const res = await this.executeQueryWithMeta(TransactionIsolationLevel.Default, 'SELECT UNIX_TIMESTAMP(now())*1000 AS test');
+    const res = await this.executeQueryWithMeta(DatabaseRequestType.Query,
+      TransactionIsolationLevel.Default, 'SELECT UNIX_TIMESTAMP(now())*1000 AS test');
     const rows = res.results as { test: number }[];
     const timestamp = rows.length === 1 ? rows[0].test : null;
     if (!quietMode) {
@@ -270,7 +277,7 @@ export class NamedParameterDatabaseService {
 
   public async testDbFailure(): Promise<void> {
     // This just executes a query guaranteed to fail to generate a db query failure
-    await this.executeQueryWithMeta(TransactionIsolationLevel.Default, 'this is a bad query');
+    await this.executeQueryWithMeta(DatabaseRequestType.Query,TransactionIsolationLevel.Default, 'this is a bad query');
   }
 
   public async changeNextQueryTransactionIsolationLevel<Row>(
@@ -278,7 +285,7 @@ export class NamedParameterDatabaseService {
   ): Promise<QueryResults<Row> | null> {
     if (tx && tx !== TransactionIsolationLevel.Default) {
       Logger.debug('Setting tx to %s', tx);
-      return await this.innerExecutePreparedAsPromiseWithRetryCloseConnection('SET TRANSACTION ISOLATION LEVEL ' + tx, {});
+      return await this.innerExecutePreparedAsPromiseWithRetryCloseConnection(DatabaseRequestType.Meta, 'SET TRANSACTION ISOLATION LEVEL ' + tx, {});
     }
     return null;
   }
@@ -297,12 +304,13 @@ export class NamedParameterDatabaseService {
   }
 
   private async innerExecutePreparedAsPromiseWithRetryCloseConnection<Row>(
+    requestType: DatabaseRequestType,
     query: string,
     fields: object = {},
     retryCount = 1
   ): Promise<QueryResults<Row>> {
     try {
-      const result: QueryResults<Row> = await this.innerExecutePreparedAsPromise<Row>(query, fields);
+      const result: QueryResults<Row> = await this.innerExecutePreparedAsPromise<Row>(requestType, query, fields);
       return result;
     } catch (errIn) {
       const err: Error = ErrorRatchet.asErr(errIn);
@@ -324,7 +332,7 @@ export class NamedParameterDatabaseService {
           const cleared: boolean = await this.connectionProvider.clearDatabaseAccessCache();
           Logger.info('Clear connection cache returned %s', cleared);
           await PromiseRatchet.wait(wait);
-          return this.innerExecutePreparedAsPromiseWithRetryCloseConnection(query, fields, retryCount + 1);
+          return this.innerExecutePreparedAsPromiseWithRetryCloseConnection(requestType, query, fields, retryCount + 1);
         } else {
           Logger.warn('Ran out of retries');
           throw new Error('Connection closed and cannot retry any more - dying horribly');
@@ -347,7 +355,7 @@ export class NamedParameterDatabaseService {
     }
   }
 
-  private async innerExecutePreparedAsPromise<Row>(query: string, fields: object = {}): Promise<QueryResults<Row>> {
+  private async innerExecutePreparedAsPromise<Row>(requestType: DatabaseRequestType, query: string, fields: object = {}): Promise<QueryResults<Row>> {
     const conn: DatabaseAccess = await this.getDB();
     if (conn.preQuery) {
       await conn.preQuery();

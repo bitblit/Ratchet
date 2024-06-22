@@ -1,7 +1,7 @@
-import { Connection, ConnectionOptions, QueryResult, RowDataPacket } from "mysql2/promise";
+import { Connection, ConnectionOptions, FieldPacket, QueryResult, RowDataPacket } from "mysql2/promise";
 import { DatabaseAccess } from "../../model/database-access";
-import { FieldPacket } from "mysql2";
 import { QueryResults } from "../../model/query-results";
+import { ModifyResults } from "../../model/modify-results";
 
 export class MysqlStyleDatabaseAccess implements DatabaseAccess {
 
@@ -39,8 +39,12 @@ export class MysqlStyleDatabaseAccess implements DatabaseAccess {
       fields: castFields,
     };
 
-
     return rval;
+  }
+
+  public async modify(query: string, fields: Record<string, any>): Promise<ModifyResults> {
+    const tmp: QueryResults<ModifyResults> = await this.query(query, fields);
+    return tmp.results;
   }
 
   public async onQuerySuccessOrFailure(): Promise<void> {

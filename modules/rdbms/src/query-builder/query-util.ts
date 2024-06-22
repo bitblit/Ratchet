@@ -1,4 +1,4 @@
-import { Logger, StringRatchet } from '@bitblit/ratchet-common';
+import { ErrorRatchet, Logger, StringRatchet } from "@bitblit/ratchet-common";
 
 export class QueryUtil {
   private fields: string[] = [];
@@ -81,5 +81,69 @@ export class QueryUtil {
       }
     }
     return loggableQuery + (cleaned.length > 0 ? cleaned : '');
+  }
+
+  // Used by dbs like sqlite3 that want the prefix in the supplied record
+  public static addPrefixToFieldNames(fields: Record<string, any>, prefix: string = ':'): Record<string, any> {
+    let rval: Record<string, any> = {};
+    Object.keys(fields).forEach(k=>{
+      rval[prefix+k]=fields[k];
+    });
+    return rval;
+  }
+
+
+  // If any supplied fields are null/undefined, replaces their variable in the source query
+  // Needed by dbs like sqlite3 that dont handle null injection well
+  public static replaceNullReplacementsInQuery(query: string, fields: Record<string, any>): string {
+    let rval: string = query;
+    Object.keys(fields).forEach(k=>{
+      if (fields[k]===null || fields[k]===undefined) {
+        rval.replaceAll(k, 'null');
+      }
+    });
+    return rval;
+  }
+
+  public static extractUsedNamedParams(query: string): string[] {
+    // TODO: Cmon, this really should be a regex...
+    //const usedParams: string[] = [...query.matchAll(/:[a-z0-9]+/i)].map((s) => StringRatchet.safeString(s));
+    let state: number = 0;
+    let idx: number = 0;
+    const frags: string[] = []; // debug only
+    const usedParams: string[] = [];
+    let curString: string = '';
+    while (idx < query.length) {
+      const nextChar: string = query.charAt(idx++);
+      if (state === 0) {
+        // Not in a var
+        if (nextChar === ':') {
+          frags.push(curString);
+          curString = ':';
+          state = 1;
+        } else {
+          curString += nextChar;
+        }
+      } else if (state === 1) {
+        // In a var
+        if (!StringRatchet.stringContainsOnlyAlphanumeric(nextChar)) {
+          usedParams.push(curString);
+          curString = nextChar;
+          state = 0;
+        } else {
+          curString += nextChar;
+        }
+      } else {
+        throw ErrorRatchet.fErr('Cant happen - invalid state');
+      }
+    }
+    // Whatever was left
+    if (state === 0) {
+      frags.push(curString);
+    } else {
+      usedParams.push(curString);
+    }
+
+    return usedParams;
   }
 }

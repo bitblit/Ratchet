@@ -3,6 +3,7 @@
 // or a AsyncDatabase object in sqlite.  Usually it'll be a wrapper around
 // the actual object to act as an adapter
 import { QueryResults } from "./query-results";
+import { ModifyResults } from "./modify-results";
 
 
 // T = Class of the connection
@@ -15,6 +16,8 @@ export interface DatabaseAccess {
 
   preQuery?(): Promise<void>;
   query<S>(query:string, fields:Record<string,any>): Promise<QueryResults<S>>;
+  modify(query:string, fields:Record<string,any>): Promise<ModifyResults>;
+  // TODO: Handle DDL specially?
   onQuerySuccessOnly?(): Promise<void>;
   onQueryFailureOnly?(): Promise<void>;
   onQuerySuccessOrFailure?(): Promise<void>;
