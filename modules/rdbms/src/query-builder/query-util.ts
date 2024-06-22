@@ -105,6 +105,18 @@ export class QueryUtil {
     return rval;
   }
 
+  // Return a record that only contains fields that are actually used in the query
+  public static removeUnusedFields(query: string, fields: Record<string, any>, prefix?:string): Record<string,any> {
+    const usedFields: string[] = QueryUtil.extractUsedNamedParams(query);
+    let rval: Record<string,any> = {  };
+    Object.keys(fields).forEach(k=>{
+      if (usedFields.includes(k) || (prefix && usedFields.includes(prefix+k))) {
+        rval[k]=fields[k];
+      }
+    });
+    return rval;
+  }
+
   public static extractUsedNamedParams(query: string): string[] {
     // TODO: Cmon, this really should be a regex...
     //const usedParams: string[] = [...query.matchAll(/:[a-z0-9]+/i)].map((s) => StringRatchet.safeString(s));
