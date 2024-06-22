@@ -2,8 +2,9 @@
 // as a Connection object in mysql/maria, an HTTP wrapper for an HTTP db,
 // or a AsyncDatabase object in sqlite.  Usually it'll be a wrapper around
 // the actual object to act as an adapter
-import { QueryResults } from "./query-results";
+import { RequestResults } from "./request-results";
 import { ModifyResults } from "./modify-results";
+import { DatabaseRequestType } from "./database-request-type";
 
 
 // T = Class of the connection
@@ -14,13 +15,15 @@ export interface DatabaseAccess {
   close(): Promise<boolean>;
   escape(value: any): string;
 
+  testConnection(logTestResults?: boolean): Promise<number>; // Should be a fast test like 'select 1'
+
   preQuery?(): Promise<void>;
-  query<S>(query:string, fields:Record<string,any>): Promise<QueryResults<S>>;
-  modify(query:string, fields:Record<string,any>): Promise<ModifyResults>;
+  query<S>(query:string, fields:Record<string,any>): Promise<RequestResults<S>>;
+  modify(query:string, fields:Record<string,any>): Promise<RequestResults<ModifyResults>>;
   // TODO: Handle DDL specially?
-  onQuerySuccessOnly?(): Promise<void>;
-  onQueryFailureOnly?(): Promise<void>;
-  onQuerySuccessOrFailure?(): Promise<void>;
+  onRequestSuccessOnly?(type: DatabaseRequestType): Promise<void>;
+  onRequestFailureOnly?(type: DatabaseRequestType): Promise<void>;
+  onRequestSuccessOrFailure?(type: DatabaseRequestType): Promise<void>;
 
   beginTransaction?(): Promise<void>;
   commitTransaction?(): Promise<void>;

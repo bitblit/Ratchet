@@ -15,8 +15,9 @@ import { QueryTextProvider } from "../model/query-text-provider.js";
 import { ModifyResults } from "../model/modify-results";
 import { DatabaseAccessProvider } from "../model/database-access-provider";
 import { DatabaseAccess } from "../model/database-access";
-import { QueryResults } from "../model/query-results";
+import { RequestResults } from "../model/request-results";
 import { DatabaseRequestType } from "../model/database-request-type";
+import { NamedParameterDatabaseServiceConfig } from "../model/named-parameter-database-service-config";
 
 /**
  * Service to simplify talking to any Mysql dialect system
@@ -33,16 +34,15 @@ import { DatabaseRequestType } from "../model/database-request-type";
  */
 
 export class NamedParameterDatabaseService {
-  private static LONG_QUERY_TIME_MS = 8500;
-
-  private serviceName = 'TBD';
 
   constructor(
-    private queryProvider: QueryTextProvider,
-    private connectionProvider: DatabaseAccessProvider,
-    private queryDefaults: QueryDefaults
+    private cfg: NamedParameterDatabaseServiceConfig
   ) {
-    this.serviceName = 'NamedParameterDatabaseService';
+    cfg.serviceName = cfg.serviceName ?? 'NamedParameterDatabaseService';
+  }
+
+  public getConfig(): NamedParameterDatabaseServiceConfig {
+    return this.cfg;
   }
 
   public nonPooledExtraConfiguration(): Record<string,any> {
@@ -54,16 +54,16 @@ export class NamedParameterDatabaseService {
   }
 
   public get databaseAccessProvider(): DatabaseAccessProvider {
-    return this.connectionProvider;
+    return this.cfg.connectionProvider;
   }
 
 
   public getQueryDefaults(): QueryDefaults {
-    return this.queryDefaults;
+    return this.cfg.queryDefaults;
   }
 
   public getQueryProvider(): QueryTextProvider {
-    return this.queryProvider;
+    return this.cfg.queryProvider;
   }
 
   public async createNonPooledDatabaseAccess(
@@ -71,10 +71,10 @@ export class NamedParameterDatabaseService {
     additionalConfig?: Record<string,any>
   ): Promise<DatabaseAccess> {
     Logger.info('createTransactional :  %s : %j', queryDefaults, additionalConfig);
-    if (!this.connectionProvider.createNonPooledDatabaseAccess) {
+    if (!this.cfg.connectionProvider.createNonPooledDatabaseAccess) {
       throw new Error(`Connection provider does not implement createNonPooledDatabaseAccess`);
     }
-    const newConn: DatabaseAccess = await this.connectionProvider.createNonPooledDatabaseAccess(queryDefaults, additionalConfig);
+    const newConn: DatabaseAccess = await this.cfg.connectionProvider.createNonPooledDatabaseAccess(queryDefaults, additionalConfig);
     if (!newConn) {
       throw new Error(`Connection could not be created for DB type ${queryDefaults}`);
     }
@@ -82,11 +82,11 @@ export class NamedParameterDatabaseService {
   }
 
   public fetchQueryRawTextByName(queryPath: string): string {
-    return this.queryProvider.fetchQuery(queryPath);
+    return this.cfg.queryProvider.fetchQuery(queryPath);
   }
 
   public queryBuilder(queryPath?: string): QueryBuilder {
-    const queryBuilder = new QueryBuilder(this.queryProvider);
+    const queryBuilder = new QueryBuilder(this.cfg.queryProvider);
     if (queryPath) {
       queryBuilder.withNamedQuery(queryPath);
     }
@@ -96,7 +96,7 @@ export class NamedParameterDatabaseService {
   public async executeUpdateOrInsertByName(
     queryPath: string,
     params?: object,
-    timeoutMS: number = this.queryDefaults.timeoutMS
+    timeoutMS: number = this.cfg.queryDefaults.timeoutMS
   ): Promise<ModifyResults> {
     const builder = this.queryBuilder(queryPath).withParams(params ?? {});
     return this.buildAndExecuteUpdateOrInsert(builder, timeoutMS);
@@ -104,7 +104,7 @@ export class NamedParameterDatabaseService {
 
   public async buildAndExecuteUpdateOrInsert(
     queryBuilder: QueryBuilder,
-    timeoutMS: number = this.queryDefaults.timeoutMS
+    timeoutMS: number = this.cfg.queryDefaults.timeoutMS
   ): Promise<ModifyResults> {
     const build = queryBuilder.build();
     const resp = await this.executeQueryWithMeta<ModifyResults>(
@@ -121,7 +121,7 @@ export class NamedParameterDatabaseService {
   public async buildAndExecuteUpdateOrInsertWithRetry(
     queryBuilder: QueryBuilder,
     maxRetries: number,
-    timeoutMS: number = this.queryDefaults.timeoutMS
+    timeoutMS: number = this.cfg.queryDefaults.timeoutMS
   ): Promise<ModifyResults> {
     let retry = 0;
     let res: ModifyResults | undefined;
@@ -145,7 +145,7 @@ export class NamedParameterDatabaseService {
   public async executeQueryByName<Row>(
     queryPath: string,
     params: object,
-    timeoutMS: number = this.queryDefaults.timeoutMS
+    timeoutMS: number = this.cfg.queryDefaults.timeoutMS
   ): Promise<Row[]> {
     const builder = this.queryBuilder(queryPath).withParams(params);
     const resp: Row[] = await this.buildAndExecute(builder, timeoutMS);
@@ -155,14 +155,14 @@ export class NamedParameterDatabaseService {
   public async executeQueryByNameSingle<Row>(
     queryPath: string,
     params: object,
-    timeoutMS: number = this.queryDefaults.timeoutMS
+    timeoutMS: number = this.cfg.queryDefaults.timeoutMS
   ): Promise<Row | null> {
     const builder = this.queryBuilder(queryPath).withParams(params);
     const resp = await this.buildAndExecute<Row>(builder, timeoutMS);
     return resp.length === 1 ? resp[0] : null;
   }
 
-  public async buildAndExecute<Row>(queryBuilder: QueryBuilder, timeoutMS: number = this.queryDefaults.timeoutMS): Promise<Row[]> {
+  public async buildAndExecute<Row>(queryBuilder: QueryBuilder, timeoutMS: number = this.cfg.queryDefaults.timeoutMS): Promise<Row[]> {
     const build = queryBuilder.build();
     const resp = await this.executeQueryWithMeta<Row[]>(
       DatabaseRequestType.Query,
@@ -177,7 +177,7 @@ export class NamedParameterDatabaseService {
 
   public async buildAndExecuteSingle<Row>(
     queryBuilder: QueryBuilder,
-    timeoutMS: number = this.queryDefaults.timeoutMS
+    timeoutMS: number = this.cfg.queryDefaults.timeoutMS
   ): Promise<Row | null> {
     const build = queryBuilder.build();
     const resp = await this.executeQueryWithMeta<Row[]>(
@@ -194,7 +194,7 @@ export class NamedParameterDatabaseService {
   public async buildAndExecuteFetchTotalRows(
     queryBuilder: QueryBuilder,
     groupBy = '',
-    timeoutMS: number = this.queryDefaults.timeoutMS
+    timeoutMS: number = this.cfg.queryDefaults.timeoutMS
   ): Promise<GroupByCountResult[]> {
     const buildUnfiltered = queryBuilder.buildUnfiltered();
     let query = buildUnfiltered.query.replace('COUNT(*)', `${groupBy} as groupByField, COUNT(*) as count`);
@@ -217,17 +217,17 @@ export class NamedParameterDatabaseService {
     transactionIsolationLevel: TransactionIsolationLevel,
     query: string,
     fields: object = {},
-    timeoutMS: number = this.queryDefaults.timeoutMS,
+    timeoutMS: number = this.cfg.queryDefaults.timeoutMS,
     debugComment?: string
-  ): Promise<QueryResults<Row>> {
+  ): Promise<RequestResults<Row>> {
     const sw: StopWatch = new StopWatch();
     if (!timeoutMS) {
-      timeoutMS = this.queryDefaults.timeoutMS;
+      timeoutMS = this.cfg.queryDefaults.timeoutMS;
     }
 
     await this.changeNextQueryTransactionIsolationLevel(transactionIsolationLevel);
 
-    const result = await PromiseRatchet.timeout<QueryResults<Row>>(
+    const result = await PromiseRatchet.timeout<RequestResults<Row>>(
       this.innerExecutePreparedAsPromiseWithRetryCloseConnection<Row>(requestType, query, fields, undefined),
       'Query:' + query,
       timeoutMS
@@ -238,41 +238,27 @@ export class NamedParameterDatabaseService {
       const duration = DurationRatchet.colonFormatMsDuration(timeoutMS);
       throw new Error(`Timed out (after ${duration}) waiting for query : ${query}`);
     }
-    const rval = result as QueryResults<Row>;
+    const rval = result as RequestResults<Row>;
     if (!rval.results) {
       Logger.error('DB:executeQueryWithMeta:Failure: %j', rval);
     }
 
-    if (debugComment && sw.elapsedMS() > NamedParameterDatabaseService.LONG_QUERY_TIME_MS) {
+    if (debugComment && sw.elapsedMS() > this.cfg.longQueryTimeMs) {
       Logger.info('NamedParameterDatabaseService long query: %s, %s', debugComment, sw.dump());
     }
     return rval;
   }
 
   public async shutdown(): Promise<boolean> {
-    Logger.info('Shutting down %s service', this.serviceName);
+    Logger.info('Shutting down %s service', this.cfg.serviceName);
     let rval: boolean;
     try {
-      rval = await this.connectionProvider.clearDatabaseAccessCache();
+      rval = await this.cfg.connectionProvider.clearDatabaseAccessCache();
     } catch (err) {
       Logger.error('Failure trying to shutdown : %s', err, err);
       rval = false;
     }
     return rval;
-  }
-
-  public async testConnection(quietMode = false): Promise<number | null> {
-    if (!quietMode) {
-      Logger.info('Running connection test');
-    }
-    const res = await this.executeQueryWithMeta(DatabaseRequestType.Query,
-      TransactionIsolationLevel.Default, 'SELECT UNIX_TIMESTAMP(now())*1000 AS test');
-    const rows = res.results as { test: number }[];
-    const timestamp = rows.length === 1 ? rows[0].test : null;
-    if (!quietMode) {
-      Logger.info('Test returned : %j', timestamp);
-    }
-    return timestamp;
   }
 
   public async testDbFailure(): Promise<void> {
@@ -282,7 +268,7 @@ export class NamedParameterDatabaseService {
 
   public async changeNextQueryTransactionIsolationLevel<Row>(
     tx: TransactionIsolationLevel | null
-  ): Promise<QueryResults<Row> | null> {
+  ): Promise<RequestResults<Row> | null> {
     if (tx && tx !== TransactionIsolationLevel.Default) {
       Logger.debug('Setting tx to %s', tx);
       return await this.innerExecutePreparedAsPromiseWithRetryCloseConnection(DatabaseRequestType.Meta, 'SET TRANSACTION ISOLATION LEVEL ' + tx, {});
@@ -308,9 +294,9 @@ export class NamedParameterDatabaseService {
     query: string,
     fields: object = {},
     retryCount = 1
-  ): Promise<QueryResults<Row>> {
+  ): Promise<RequestResults<Row>> {
     try {
-      const result: QueryResults<Row> = await this.innerExecutePreparedAsPromise<Row>(requestType, query, fields);
+      const result: RequestResults<Row> = await this.innerExecutePreparedAsPromise<Row>(requestType, query, fields);
       return result;
     } catch (errIn) {
       const err: Error = ErrorRatchet.asErr(errIn);
@@ -329,7 +315,7 @@ export class NamedParameterDatabaseService {
           err.message
         );
         if (retryCount < 4) {
-          const cleared: boolean = await this.connectionProvider.clearDatabaseAccessCache();
+          const cleared: boolean = await this.cfg.connectionProvider.clearDatabaseAccessCache();
           Logger.info('Clear connection cache returned %s', cleared);
           await PromiseRatchet.wait(wait);
           return this.innerExecutePreparedAsPromiseWithRetryCloseConnection(requestType, query, fields, retryCount + 1);
@@ -355,7 +341,7 @@ export class NamedParameterDatabaseService {
     }
   }
 
-  private async innerExecutePreparedAsPromise<Row>(requestType: DatabaseRequestType, query: string, fields: object = {}): Promise<QueryResults<Row>> {
+  private async innerExecutePreparedAsPromise<Row>(requestType: DatabaseRequestType, query: string, fields: object = {}): Promise<RequestResults<Row>> {
     const conn: DatabaseAccess = await this.getDB();
     if (conn.preQuery) {
       await conn.preQuery();
@@ -363,26 +349,31 @@ export class NamedParameterDatabaseService {
     const sw: StopWatch = new StopWatch();
 
     try {
-      const output: QueryResults<Row> = await conn.query<Row>(query, fields);
+      let output: RequestResults<Row | ModifyResults>;
+      if (requestType===DatabaseRequestType.Modify) {
+        output = await conn.modify(query, fields);
+      } else {
+        output = await conn.query<Row>(query, fields);
+      }
       // If we reached here we were ok
       Logger.debug('Success : Finished query : %s\n%s\n\nParams : %j', sw.dump(), QueryUtil.reformatQueryForLogging(query), fields);
       Logger.debug(
         '-----\nFor paste into tooling only : \n\n%s\n\n',
         QueryUtil.renderQueryStringForPasteIntoTool(query, fields, (v) => conn.escape(v))
       );
-      if (conn.onQuerySuccessOnly) {
-        await conn.onQuerySuccessOnly();
+      if (conn.onRequestSuccessOnly) {
+        await conn.onRequestSuccessOnly(requestType);
       }
 
-      return output;
+      return output as RequestResults<Row>;
     } catch(err) {
-      if (conn.onQueryFailureOnly) {
-        await conn.onQueryFailureOnly();
+      if (conn.onRequestFailureOnly) {
+        await conn.onRequestFailureOnly(requestType);
       }
       throw err;
     } finally {
-      if (conn.onQuerySuccessOrFailure) {
-        await conn.onQuerySuccessOrFailure();
+      if (conn.onRequestSuccessOrFailure) {
+        await conn.onRequestSuccessOrFailure(requestType);
       }
     }
   }
@@ -390,8 +381,8 @@ export class NamedParameterDatabaseService {
   // Creates a promise if there isn't already a cached one or if it is closed
   public async getDB(): Promise<DatabaseAccess> {
     const conn: DatabaseAccess | undefined =
-      this.nonPooledMode() ? await this.connectionProvider.createNonPooledDatabaseAccess(this.queryDefaults, this.nonPooledExtraConfiguration()) :
-      await this.connectionProvider.getDatabaseAccess(this.queryDefaults.databaseName);
+      this.nonPooledMode() ? await this.cfg.connectionProvider.createNonPooledDatabaseAccess(this.cfg.queryDefaults, this.nonPooledExtraConfiguration()) :
+      await this.cfg.connectionProvider.getDatabaseAccess(this.cfg.queryDefaults.databaseName);
     if (!conn) {
       // If we just couldn't connect to the DB
       throw new Error('RatchetNoConnection : getConnection returned null - likely failed to get connection from db');
@@ -403,8 +394,9 @@ export class NamedParameterDatabaseService {
     let rval = false;
     Logger.info('Resetting connection');
     try {
-      await this.connectionProvider.clearDatabaseAccessCache();
-      const tmpValue = await this.testConnection();
+      await this.cfg.connectionProvider.clearDatabaseAccessCache();
+      const db: DatabaseAccess = await this.getDB();
+      const tmpValue = await db.testConnection(true);
       rval = !!tmpValue;
       Logger.info('Reset connection returning %s', rval);
     } catch (err) {

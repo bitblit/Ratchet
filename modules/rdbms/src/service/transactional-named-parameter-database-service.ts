@@ -6,6 +6,7 @@ import { QueryDefaults } from "../model/query-defaults.js";
 import { QueryTextProvider } from "../model/query-text-provider.js";
 import { ModifyResults } from "../model/modify-results";
 import { DatabaseAccessProvider } from "../model/database-access-provider";
+import { NamedParameterDatabaseServiceConfig } from "../model/named-parameter-database-service-config";
 
 /**
  * Extends NamedParameterDatabaseService to add transactional functionality
@@ -34,12 +35,10 @@ export class TransactionalNamedParameterDatabaseService extends NamedParameterDa
   private currentTxFlag?: string;
 
   constructor(
-    private myQueryProvider: QueryTextProvider,
-    private myConnectionProvider: DatabaseAccessProvider,
-    private myQueryDefaults: QueryDefaults,
+    private transCfg: NamedParameterDatabaseServiceConfig,
     private additionalConfig: Record<string,any>
   ) {
-    super(myQueryProvider, myConnectionProvider, myQueryDefaults);
+    super(transCfg);
   }
 
   public nonPooledExtraConfiguration(): Record<string,any> {
@@ -53,7 +52,7 @@ export class TransactionalNamedParameterDatabaseService extends NamedParameterDa
   public async cleanShutdown(): Promise<void> {
     Logger.info('cleanShutdown');
     try {
-      const conn = await this.myConnectionProvider.getDatabaseAccess();
+      const conn = await this.transCfg.connectionProvider.getDatabaseAccess();
       if (conn) {
         Logger.info('Shutting down connection');
         await conn.close();
@@ -67,7 +66,7 @@ export class TransactionalNamedParameterDatabaseService extends NamedParameterDa
     if (!this.currentTxFlag) {
       this.currentTxFlag = StringRatchet.createRandomHexString(10);
       Logger.info('Starting a transaction : %s', this.currentTxFlag);
-      const conn = await this.myConnectionProvider.getDatabaseAccess();
+      const conn = await this.transCfg.connectionProvider.getDatabaseAccess();
       await conn?.beginTransaction();
     } else {
       ErrorRatchet.throwFormattedErr('Tried to start a new transaction while one is already in progress : %s', this.currentTxFlag);
@@ -77,7 +76,7 @@ export class TransactionalNamedParameterDatabaseService extends NamedParameterDa
   public async commitTransaction(): Promise<void> {
     if (this.currentTxFlag) {
       Logger.info('commit a transaction : %s', this.currentTxFlag);
-      const conn = await this.myConnectionProvider.getDatabaseAccess();
+      const conn = await this.transCfg.connectionProvider.getDatabaseAccess();
       await conn?.commitTransaction();
       this.currentTxFlag = undefined;
     } else {
@@ -88,7 +87,7 @@ export class TransactionalNamedParameterDatabaseService extends NamedParameterDa
   public async rollBackTransaction(): Promise<void> {
     if (this.currentTxFlag) {
       Logger.info('rollBack a transaction : %s', this.currentTxFlag);
-      const conn = await this.myConnectionProvider.getDatabaseAccess();
+      const conn = await this.transCfg.connectionProvider.getDatabaseAccess();
       await conn?.rollbackTransaction();
       this.currentTxFlag = undefined;
     } else {
@@ -98,7 +97,7 @@ export class TransactionalNamedParameterDatabaseService extends NamedParameterDa
 
   public async buildAndExecuteUpdateOrInsertInTransaction(
     queryBuilder: QueryBuilder,
-    timeoutMS: number = this.myQueryDefaults.timeoutMS
+    timeoutMS: number = this.transCfg.queryDefaults.timeoutMS
   ): Promise<ModifyResults | null> {
     Logger.info('buildAndExecuteUpdateOrInsertInTransaction');
     await this.startTransaction();
@@ -115,7 +114,7 @@ export class TransactionalNamedParameterDatabaseService extends NamedParameterDa
 
   public async buildAndExecuteInTransaction<T>(
     queryBuilder: QueryBuilder,
-    timeoutMS: number = this.myQueryDefaults.timeoutMS
+    timeoutMS: number = this.transCfg.queryDefaults.timeoutMS
   ): Promise<T[] | null> {
     Logger.info('buildAndExecuteInTransaction');
     await this.startTransaction();
@@ -139,7 +138,7 @@ export class TransactionalNamedParameterDatabaseService extends NamedParameterDa
     let handler: TransactionalNamedParameterDatabaseService | undefined;
     let rval: ModifyResults | null = null;
     try {
-      handler = new TransactionalNamedParameterDatabaseService(src.getQueryProvider(), src.databaseAccessProvider, src.getQueryDefaults(), additionalConfig);
+      handler = new TransactionalNamedParameterDatabaseService(src.getConfig(), additionalConfig);
       rval = await handler.buildAndExecuteUpdateOrInsertInTransaction(queryBuilder, timeoutMS);
     } catch (err) {
       Logger.error('Failure in oneStepBuildAndExecuteUpdateOrInsertInTransaction : %j : %s', queryBuilder, err, err);
@@ -160,7 +159,7 @@ export class TransactionalNamedParameterDatabaseService extends NamedParameterDa
     let handler: TransactionalNamedParameterDatabaseService | undefined;
     let rval: S[] | null = null;
     try {
-      handler = new TransactionalNamedParameterDatabaseService(src.getQueryProvider(), src.databaseAccessProvider, src.getQueryDefaults(), additionalConfig);
+      handler = new TransactionalNamedParameterDatabaseService(src.getConfig(), additionalConfig);
       rval = await handler.buildAndExecuteInTransaction(queryBuilder, timeoutMS);
     } catch (err) {
       Logger.error('Failure in oneStepbuildAndExecuteInTransaction : %j : %s', queryBuilder, err, err);

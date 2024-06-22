@@ -8,7 +8,7 @@ import { QueryDefaults } from "../model/query-defaults.js";
 import { ConnectionAndTunnel } from "../model/connection-and-tunnel";
 import { DatabaseAccessProvider } from "../model/database-access-provider";
 import { DatabaseAccess } from "../model/database-access";
-import { MysqlStyleDatabaseAccess } from "./model/mysql-style-database-access";
+import { MysqlStyleDatabaseAccess } from "./mysql-style-database-access";
 import { MysqlDbConfig } from "./model/mysql-db-config";
 
 /**

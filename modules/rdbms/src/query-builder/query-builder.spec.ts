@@ -1,11 +1,12 @@
-import { QueryTextProvider } from '../model/query-text-provider.js';
-import { expect, test, describe, vi, beforeEach, Mock } from "vitest";
-import { mock, MockProxy } from 'vitest-mock-extended';
+import { QueryTextProvider } from "../model/query-text-provider.js";
+import { describe, expect, test } from "vitest";
+import { mock } from "vitest-mock-extended";
 
-import { SortDirection } from '../model/sort-direction.js';
+import { SortDirection } from "../model/sort-direction.js";
 import { NamedParameterDatabaseService } from "../service/named-parameter-database-service";
-import { DatabaseAccess } from "../model/database-access";
 import { DatabaseAccessProvider } from "../model/database-access-provider";
+import { NamedParameterDatabaseServiceConfig } from "../model/named-parameter-database-service-config";
+import { QueryDefaults } from "../model/query-defaults";
 
 const prov: QueryTextProvider = {
   fetchQuery(queryPath: string): string {
@@ -39,7 +40,14 @@ const prov: QueryTextProvider = {
 };
 
 const mockAccess: DatabaseAccessProvider = mock<DatabaseAccessProvider>();
-const mariaDb = new NamedParameterDatabaseService(prov, mockAccess, { databaseName: 'test', timeoutMS: 2_000 });
+const cfg: NamedParameterDatabaseServiceConfig = {
+  serviceName: 'testsrv',
+  queryProvider: prov,
+  connectionProvider: mockAccess,
+  queryDefaults:  { databaseName: 'test', timeoutMS: 2_000 },
+  longQueryTimeMs: 8_500
+};
+const mariaDb = new NamedParameterDatabaseService(cfg);
 
 describe('query-builder', () => {
   test('builds filtered', () => {
