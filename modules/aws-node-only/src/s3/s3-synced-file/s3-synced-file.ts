@@ -1,34 +1,19 @@
 import { FileTransferResult, Logger, RemoteFileSyncLike, RequireRatchet, StopWatch } from "@bitblit/ratchet-common";
-import tmp from 'tmp';
-import fs, { WriteStream } from 'fs';
-import { S3CacheRatchet, S3CacheRatchetLike } from "@bitblit/ratchet-aws";
+import tmp from "tmp";
+import fs, { WriteStream } from "fs";
 import {
   CompleteMultipartUploadCommandOutput,
-  CopyObjectCommand,
-  CopyObjectCommandInput,
-  CopyObjectCommandOutput,
-  DeleteObjectCommand,
-  DeleteObjectCommandInput,
-  DeleteObjectCommandOutput,
-  GetObjectCommand,
   GetObjectCommandInput,
   GetObjectCommandOutput,
-  HeadObjectCommand,
-  HeadObjectCommandOutput,
-  ListObjectsCommand,
-  ListObjectsCommandInput,
-  ListObjectsCommandOutput,
-  ListObjectsV2CommandInput,
-  ListObjectsV2CommandOutput,
-  NoSuchKey,
-  NotFound,
-  PutObjectCommandInput,
-  PutObjectCommandOutput,
-  S3Client,
-} from '@aws-sdk/client-s3';
+  HeadObjectCommandOutput
+} from "@aws-sdk/client-s3";
 import { Readable } from "stream";
 import { S3SyncedFileConfig } from "./s3-synced-file-config";
 import { S3SyncedFileConfigInitMode } from "./s3-synced-file-config-init-mode";
+import { BackupResult } from "@bitblit/ratchet-common";
+import { DateTime } from "luxon";
+import { S3SyncedFileRemoteBackupMode } from "./s3-synced-file-remote-backup-mode";
+
 // Keeps a local file up-to-date with a file on S3
 export class S3SyncedFile implements RemoteFileSyncLike{
   private readonly _localFileName: string;
@@ -110,9 +95,15 @@ export class S3SyncedFile implements RemoteFileSyncLike{
   }
 
   public async sendLocalToRemote(): Promise<FileTransferResult> {
+    Logger.info('Sending local file to remote');
     let rval: FileTransferResult = null;
     const sw: StopWatch = new StopWatch();
     try {
+      if (this.config.backupMode===S3SyncedFileRemoteBackupMode.EveryUpload) {
+        Logger.info('EveryUpload mode set - backing up');
+        const backupRes: BackupResult = await this.backupRemote();
+        Logger.info('Backup result : %s',backupRes);
+      }
       const out: CompleteMultipartUploadCommandOutput = await this.config.s3CacheRatchetLike.writeStreamToCacheFile(this.config.s3Path, fs.readFileSync(this._localFileName));
       rval = FileTransferResult.Updated;
     } catch (err) {
@@ -120,6 +111,24 @@ export class S3SyncedFile implements RemoteFileSyncLike{
       rval = FileTransferResult.Error;
     }
     Logger.info('Sent %d bytes to remote in %s', this.localFileBytes, sw.dump())
+    return rval;
+  }
+
+  public async backupRemote(): Promise<BackupResult> {
+    let rval: BackupResult = null;
+    try{
+      const lastSlash: number = this.config.s3Path.lastIndexOf('/');
+      const datePart: string = '/backup/'+DateTime.now().toFormat('yyyy/MM/dd/HH')+'/';
+      const newPath: string = lastSlash>-1 ? this.config.s3Path.substring(0, lastSlash) + datePart + this.config.s3Path.substring(lastSlash+1) :
+        datePart + this.config.s3Path;
+
+      Logger.info('Backing up path %s to %s', this.config.s3Path, newPath);
+      await this.config.s3CacheRatchetLike.copyFile(this.config.s3Path, newPath);
+      rval = BackupResult.Success;
+    } catch(err) {
+      Logger.error('Failed to backup %s : %s', this.config.s3Path, err, err);
+      rval = BackupResult.Error;
+    }
     return rval;
   }
 

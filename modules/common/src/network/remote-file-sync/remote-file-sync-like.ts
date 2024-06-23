@@ -3,6 +3,7 @@
 // or vice versa
 
 import { FileTransferResult } from "./file-transfer-result.js";
+import { BackupResult } from "./backup-result.js";
 
 export interface RemoteFileSyncLike {
    get lastSyncEpochMS(): number ;
@@ -12,6 +13,7 @@ export interface RemoteFileSyncLike {
    get localFileUpdatedEpochMS(): number ;
    get remoteUpdatedEpochMS(): Promise<number> ;
    get remoteSizeInBytes(): Promise<number> ;
+   backupRemote(): Promise<BackupResult>;
    sendLocalToRemote(): Promise<FileTransferResult> ;
    fetchRemoteToLocal(): Promise<FileTransferResult> ;
    fetchRemoteToLocalIfNewerThan?(epochMS: number): Promise<FileTransferResult> ;

@@ -2520,18 +2520,26 @@ __metadata:
     "@bitblit/ratchet-common": 0.0.0-snapshot
     get-port: 7.1.0
     mysql2: 3.10.1
+    promised-sqlite3: 2.1.0
     sqlite3: 5.1.7
+    sqlstring: 2.3.3
     tunnel-ssh: 5.1.2
   peerDependencies:
     "@bitblit/ratchet-common": 0.0.0-snapshot
     get-port: ^7.1.0
     mysql2: ^3.10.1
+    promised-sqlite3: 2.1.0
     sqlite3: ^5.1.7
+    sqlstring: ^2.3.3
     tunnel-ssh: ^5.1.2
   dependenciesMeta:
     mysql2:
       optional: true
+    promised-sqlite3:
+      optional: true
     sqlite3:
+      optional: true
+    sqlstring:
       optional: true
   languageName: unknown
   linkType: soft
@@ -11241,6 +11249,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"promised-sqlite3@npm:2.1.0":
+  version: 2.1.0
+  resolution: "promised-sqlite3@npm:2.1.0"
+  peerDependencies:
+    sqlite3: ^5
+  checksum: 476974b5a2dbfe2ea80de17b35390f3aa0b07587601a8974213b29e8101a208beb206b15495c02ff896b904aaa3b41f00082836cae8e7e807d0d3afb33c9b8fd
+  languageName: node
+  linkType: hard
+
 "prop-types@npm:^15.7.2":
   version: 15.8.1
   resolution: "prop-types@npm:15.8.1"
@@ -12291,7 +12308,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sqlstring@npm:^2.3.2":
+"sqlstring@npm:2.3.3, sqlstring@npm:^2.3.2":
   version: 2.3.3
   resolution: "sqlstring@npm:2.3.3"
   checksum: 1e7e2d51c38a0cf7372e875408ca100b6e0c9a941ab7773975ea41fb36e5528e404dc787689be855780cf6d0a829ff71027964ae3a05a7446e91dce26672fda7

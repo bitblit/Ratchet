@@ -54,13 +54,17 @@
   },
   "optionalDependencies": {
     "mysql2": "3.10.1",
-    "sqlite3": "5.1.7"
+    "promised-sqlite3": "2.1.0",
+    "sqlite3": "5.1.7",
+    "sqlstring": "2.3.3"
   },
   "peerDependencies": {
     "@bitblit/ratchet-common": "0.0.0-snapshot",
     "get-port": "^7.1.0",
     "mysql2": "^3.10.1",
+    "promised-sqlite3": "2.1.0",
     "sqlite3": "^5.1.7",
+    "sqlstring": "^2.3.3",
     "tunnel-ssh": "^5.1.2"
   }
 }

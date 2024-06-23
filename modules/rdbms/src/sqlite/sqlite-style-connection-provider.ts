@@ -1,0 +1,171 @@
+import { ErrorRatchet, Logger, RequireRatchet, StringRatchet } from '@bitblit/ratchet-common';
+import { SqliteConnectionConfig } from './sqlite-connection-config.js';
+import { AsyncDatabase } from 'promised-sqlite3';
+import fs from 'fs';
+import { SqliteDatabaseAccess } from './sqlite-database-access.js';
+import { SqliteRemoteSyncDatabaseAccess } from './sqlite-remote-sync-database-access.js';
+import { DatabaseAccessProvider } from "../model/database-access-provider.js";
+import { DatabaseAccess } from "../model/database-access.js";
+import { DatabaseConfigList } from "../model/database-config-list.js";
+
+/**
+ */
+export class SqliteStyleConnectionProvider implements DatabaseAccessProvider {
+  private connectionCache: Map<string, Promise<DatabaseAccess>> = new Map<string, Promise<DatabaseAccess>>(); //// Cache the promises to make it a single connection
+  private cacheConfigPromise: Promise<DatabaseConfigList<SqliteConnectionConfig>>;
+  constructor(
+    private configPromiseProvider: () => Promise<DatabaseConfigList<SqliteConnectionConfig>>,
+    private additionalConfig: Record<string, any> = {},
+  ) {
+    this.cacheConfigPromise = this.createSqliteConnectionConfig(); // Sets up tunnels, etc
+    Logger.info('Added shutdown handler to the process (Only once per instantiation)');
+    this.addShutdownHandlerToProcess();
+  }
+
+  private addShutdownHandlerToProcess(): void {
+    process.on('exit', () => {
+      Logger.info('Process is shutting down, closing connections');
+      this.clearDatabaseAccessCache().catch((err) => {
+        Logger.error('Shutdown connection failed : %s', err);
+      });
+    });
+  }
+
+  public async clearDatabaseAccessCache(): Promise<boolean> {
+    const rval = false;
+    Logger.info('Clearing connection cache for SqliteStyleConnectionProvider');
+    // First, clear the connection caches so that subsequent connection attempts start fresh
+    const oldConnections: Promise<DatabaseAccess>[] = Array.from(this.connectionCache.values());
+    //const oldDbHooks = this.dbPromise;
+    //const oldSshTunnels = this.tunnels;
+    this.cacheConfigPromise = null; // Re-read config in case the password expired, etc
+    this.connectionCache = new Map();
+    //this.tunnels = new Map();
+    // Resolve any leftover DB connections & end them
+    if (oldConnections.length > 0) {
+      for (let i = 0; i < oldConnections.length; i++) {
+        Logger.info('Shutting down old connection %d of %d', i, oldConnections.length);
+        try {
+          const conn: DatabaseAccess = await oldConnections[i];
+          Logger.info('Conn %d', i);
+          if (conn) {
+            Logger.info('Stopping connection to database');
+            try {
+              await conn.close();
+              Logger.info('Database connection closed');
+            } catch (err) {
+              if (ErrorRatchet.asErr(err).message.includes('closed state')) {
+                // DB was already closed, ignore
+              } else {
+                Logger.error('Something went wrong closing the database connection : %s', err);
+              }
+            }
+          }
+        } catch (err) {
+          Logger.warn('Shutdown failed : %s ', err, err);
+        }
+      }
+    }
+    Logger.info('Old db and tunnels removed');
+    return rval;
+  }
+
+  public async getDatabaseAccess(name: string): Promise<DatabaseAccess | undefined> {
+    Logger.silly('getConnectionAndTunnel : %s', name);
+    if (!this.connectionCache.has(name)) {
+      Logger.info('No connectionCache found for %s - creating new one', name);
+      const dbConfig: SqliteConnectionConfig = await this.getDbConfig(name);
+      const connection: Promise<DatabaseAccess> = this.createAsyncDatabase(dbConfig, this.additionalConfig, true);
+      this.connectionCache.set(name, connection);
+      Logger.info('Added connectionCache for %s', name);
+    }
+    return this.connectionCache.get(name);
+  }
+
+  private async getDbConfig(name: string): Promise<SqliteConnectionConfig> {
+    Logger.info('SqliteStyleConnectionProvider:getDbConfig:Initiating promise for %s', name);
+    const cfgs: DatabaseConfigList<SqliteConnectionConfig> = await this.configPromise();
+    const finder: string = StringRatchet.trimToEmpty(name).toLowerCase();
+    const dbConfig: SqliteConnectionConfig = cfgs.dbList.find((s) => StringRatchet.trimToEmpty(s.label).toLowerCase() === finder);
+    if (!dbConfig) {
+      throw ErrorRatchet.fErr(
+        'Cannot find any connection config named %s (Available are %j)',
+        name,
+        cfgs.dbList.map((d) => d.label),
+      );
+    }
+    return dbConfig;
+  }
+
+  // Always creates a promise
+  private async createAsyncDatabase(
+    dbCfg: SqliteConnectionConfig,
+    _additionalConfig: Record<string, any> = {},
+    clearCacheOnConnectionFailure: boolean,
+  ): Promise<DatabaseAccess | undefined> {
+    Logger.info('In SqliteStyleConnectionProvider:createAsyncDatabase : %s', dbCfg.label);
+    RequireRatchet.notNullOrUndefined(dbCfg, 'dbCfg');
+
+    Logger.debug('Opening connection for SqliteStyleConnectionProvider');
+    let rval: DatabaseAccess;
+    try {
+      if (dbCfg.remoteFileSync) {
+        rval = new SqliteRemoteSyncDatabaseAccess(dbCfg.remoteFileSync, _additionalConfig);
+      } else {
+        if (!fs.existsSync(dbCfg.filePath)) {
+          throw ErrorRatchet.fErr('Requested file does not exist : %s', dbCfg.filePath);
+        }
+        const db: AsyncDatabase = await AsyncDatabase.open(dbCfg.filePath);
+        rval = new SqliteDatabaseAccess(db, _additionalConfig);
+      }
+    } catch (err) {
+      Logger.info('Failed trying to create connection : %s : clearing for retry', err);
+      if (clearCacheOnConnectionFailure) {
+        this.connectionCache = new Map<string, Promise<DatabaseAccess>>();
+      }
+      return undefined;
+    }
+
+    return rval;
+  }
+
+  private configPromise(): Promise<DatabaseConfigList<SqliteConnectionConfig>> {
+    if (!this.cacheConfigPromise) {
+      this.cacheConfigPromise = this.createSqliteConnectionConfig();
+    }
+    return this.cacheConfigPromise;
+  }
+
+  private async createSqliteConnectionConfig(): Promise<DatabaseConfigList<SqliteConnectionConfig>> {
+    RequireRatchet.notNullOrUndefined(this.configPromiseProvider, 'input');
+    const inputPromise: Promise<DatabaseConfigList<SqliteConnectionConfig>> = this.configPromiseProvider();
+    Logger.info('Creating connection config');
+    const cfg: DatabaseConfigList<SqliteConnectionConfig> = await inputPromise;
+    RequireRatchet.true(cfg.dbList.length > 0, 'input.dbList');
+
+    cfg.dbList.forEach((db) => {
+      const errors: string[] = SqliteStyleConnectionProvider.validDbConfig(db);
+      if (errors?.length) {
+        throw ErrorRatchet.fErr('Errors found in db config : %j', errors);
+      }
+    });
+    return cfg;
+  }
+
+  public static validDbConfig(cfg: SqliteConnectionConfig): string[] {
+    let rval: string[] = [];
+    if (!cfg) {
+      rval.push('The config is null');
+    } else {
+      if (!StringRatchet.trimToNull(cfg.filePath) && !cfg.remoteFileSync) {
+        rval.push('Must define either filePath or remoteFileSync');
+      }
+      if (StringRatchet.trimToNull(cfg.filePath) && cfg.remoteFileSync) {
+        rval.push('May not define both filePath and remoteFileSync');
+      }
+      rval.push(StringRatchet.trimToNull(cfg.label) ? null : 'label is required and non-empty');
+    }
+    rval = rval.filter((s) => !!s);
+    return rval;
+  }
+}
