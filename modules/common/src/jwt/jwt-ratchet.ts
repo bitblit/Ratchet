@@ -37,6 +37,18 @@ export class JwtRatchet implements JwtRatchetLike {
     return EsmRatchet.cachedTypedDynamicImport<JwtLibLike>('jsonwebtoken','default', ['verify','sign','decode']);
   }
 
+  public get copyConfig(): JwtRatchetConfig {
+    const rval: JwtRatchetConfig = {
+      encryptionKeyPromise: this.cfg.encryptionKeyPromise,
+      decryptKeysPromise : this.cfg.decryptKeysPromise,
+      jtiGenerator :this.cfg.jtiGenerator,
+      decryptOnlyKeyUseLogLevel : this.cfg.decryptOnlyKeyUseLogLevel,
+      parseFailureLogLevel :this.cfg.parseFailureLogLevel,
+      jwtLibPromise : this.cfg.jwtLibPromise,
+    }
+    return rval;
+  }
+
   public get encryptionKeyPromise(): Promise<string | string[]> {
     return this.cfg.encryptionKeyPromise;
   }

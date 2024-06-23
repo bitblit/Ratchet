@@ -1,4 +1,4 @@
-import { Logger } from '@bitblit/ratchet-common';
+import { JwtRatchetConfig, Logger } from "@bitblit/ratchet-common";
 import { WebTokenManipulator } from './web-token-manipulator.js';
 import { UnauthorizedError } from '../error/unauthorized-error.js';
 import { StringRatchet } from '@bitblit/ratchet-common';
@@ -18,41 +18,35 @@ export class LocalWebTokenManipulator<T extends JwtTokenBase> implements WebToke
   constructor(private encryptionKeys: string[], private issuer: string) {
     RequireRatchet.notNullOrUndefined(encryptionKeys, 'encryptionKeys');
     RequireRatchet.noNullOrUndefinedValuesInArray(encryptionKeys, encryptionKeys.length);
-    this._ratchet = new JwtRatchet(Promise.resolve(encryptionKeys));
+    const cfg: JwtRatchetConfig = {
+      encryptionKeyPromise: Promise.resolve(encryptionKeys)
+    }
+
+    this._ratchet = new JwtRatchet(cfg);
   }
 
   public withExtraDecryptionKeys(keys: string[]): LocalWebTokenManipulator<T> {
     RequireRatchet.notNullOrUndefined(keys, 'keys');
     RequireRatchet.noNullOrUndefinedValuesInArray(keys, keys.length);
-    this._ratchet = new JwtRatchet(
-      this._ratchet.encryptionKeyPromise,
-      Promise.resolve(keys),
-      this._ratchet.jtiGenerator,
-      this._ratchet.decryptOnlyKeyUseLogLevel,
-      this._ratchet.parseFailureLogLevel
-    );
+
+    const cfg: JwtRatchetConfig = this._ratchet.copyConfig;
+    cfg.decryptKeysPromise = Promise.resolve(keys);
+
+    this._ratchet = new JwtRatchet(cfg);
     return this;
   }
 
   public withParseFailureLogLevel(logLevel: LoggerLevelName): LocalWebTokenManipulator<T> {
-    this._ratchet = new JwtRatchet(
-      this._ratchet.encryptionKeyPromise,
-      this._ratchet.decryptKeysPromise,
-      this._ratchet.jtiGenerator,
-      this._ratchet.decryptOnlyKeyUseLogLevel,
-      logLevel
-    );
+    const cfg: JwtRatchetConfig = this._ratchet.copyConfig;
+    cfg.parseFailureLogLevel = logLevel;
+    this._ratchet = new JwtRatchet(cfg);
     return this;
   }
 
   public withOldKeyUseLogLevel(logLevel: LoggerLevelName): LocalWebTokenManipulator<T> {
-    this._ratchet = new JwtRatchet(
-      this._ratchet.encryptionKeyPromise,
-      this._ratchet.decryptKeysPromise,
-      this._ratchet.jtiGenerator,
-      logLevel,
-      this._ratchet.parseFailureLogLevel
-    );
+    const cfg: JwtRatchetConfig = this._ratchet.copyConfig;
+    cfg.decryptOnlyKeyUseLogLevel = logLevel;
+    this._ratchet = new JwtRatchet(cfg);
     return this;
   }
 

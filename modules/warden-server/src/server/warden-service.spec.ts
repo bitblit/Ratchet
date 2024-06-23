@@ -37,7 +37,7 @@ describe('#WardenService', () => {
 
       storageProvider: mockWardenStorageProvider,
       singleUseCodeProviders: [mockWardenSingleUseCodeProvider],
-      jwtRatchet: new JwtRatchet(Promise.resolve('asdf')), //mockJwtRatchet,
+      jwtRatchet: new JwtRatchet({encryptionKeyPromise:Promise.resolve('asdf')}), //mockJwtRatchet,
       userDecorationProvider: mockUserDecorationProvider,
       eventProcessor: undefined,
     };
