@@ -1,5 +1,4 @@
 import { ErrorRatchet, Logger, RequireRatchet, StringRatchet } from '@bitblit/ratchet-common';
-import { SqliteConnectionConfig } from './sqlite-connection-config.js';
 import { AsyncDatabase } from 'promised-sqlite3';
 import fs from 'fs';
 import { SqliteDatabaseAccess } from './sqlite-database-access.js';
@@ -7,6 +6,7 @@ import { SqliteRemoteSyncDatabaseAccess } from './sqlite-remote-sync-database-ac
 import { DatabaseAccessProvider } from "../model/database-access-provider.js";
 import { DatabaseAccess } from "../model/database-access.js";
 import { DatabaseConfigList } from "../model/database-config-list.js";
+import { SqliteConnectionConfig } from "./model/sqlite-connection-config.js";
 
 /**
  */
