@@ -118,7 +118,7 @@ export class S3SyncedFile implements RemoteFileSyncLike{
     let rval: BackupResult = null;
     try{
       const lastSlash: number = this.config.s3Path.lastIndexOf('/');
-      const datePart: string = '/backup/'+DateTime.now().toFormat('yyyy/MM/dd/HH')+'/';
+      const datePart: string = '/backup/'+DateTime.now().toFormat('yyyy/MM/dd/HH/mm/ss')+'/';
       const newPath: string = lastSlash>-1 ? this.config.s3Path.substring(0, lastSlash) + datePart + this.config.s3Path.substring(lastSlash+1) :
         datePart + this.config.s3Path;
 
