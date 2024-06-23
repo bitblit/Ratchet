@@ -39,15 +39,15 @@ describe('#promiseRatchet', function () {
     Logger.setLevel(LoggerLevelName.debug);
     const elements: any[][] = [
       [100, 'Test1'],
-      [200, 'Test2'],
-      [300, 'Test3'],
-      [400, 'Test4'],
-      [500, 'Test5'],
-      [600, 'Test6'],
-      [700, 'Test7'],
-      [800, 'Test8'],
-      [900, 'Test9'],
-      [1000, 'Test10'],
+      [120, 'Test2'],
+      [130, 'Test3'],
+      [140, 'Test4'],
+      [150, 'Test5'],
+      [160, 'Test6'],
+      [170, 'Test7'],
+      [180, 'Test8'],
+      [190, 'Test9'],
+      [200, 'Test10'],
     ];
 
     const results: number[] = await PromiseRatchet.runBoundedParallel<number>(waitAndPrint, elements, this, 2);
@@ -59,7 +59,7 @@ describe('#promiseRatchet', function () {
 
   test('should run 10 waits, 2 at a time', async () => {
     Logger.setLevel(LoggerLevelName.debug);
-    const elements: number[] = [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000];
+    const elements: number[] = [100, 110, 120, 130, 140, 150, 160, 170, 180, 200];
 
     const results: any[] = await PromiseRatchet.runBoundedParallelSingleParam(PromiseRatchet.wait, elements, this, 2);
 

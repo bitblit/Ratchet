@@ -13,6 +13,8 @@ export * from './histogram/histogram-entry.js';
 export * from './histogram/histogram.js';
 export * from './jwt/common-jwt-token.js';
 export * from './jwt/expired-jwt-handling.js';
+export * from './jwt/jwt-lib-like.js';
+export * from './jwt/jwt-ratchet-config.js';
 export * from './jwt/jwt-ratchet-like.js';
 export * from './jwt/jwt-ratchet.js';
 export * from './jwt/jwt-token-base.js';

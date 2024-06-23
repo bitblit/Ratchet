@@ -3,7 +3,7 @@ import { StringRatchet } from './string-ratchet.js';
 
 /**
  * This class is here because Typescript's enums aren't very good - they aren't typesafe, and are difficult
- * to go back-and-forth from strings, etc.  This also allows the HTTP layer to send a enum that isn't using the
+ * to go back-and-forth from strings, etc.  This also allows the HTTP layer to send an enum that isn't using the
  * same case as the enum and still handle it correctly.  Either way, it puts all the conversion login in one
  * place so if typescript changes this yet again in the future there'll be a convenient place to fix them
  * all at once
