@@ -1,12 +1,13 @@
 import { AsyncDatabase } from 'promised-sqlite3';
-import { ErrorRatchet, FileTransferResult, Logger, RequireRatchet } from '@bitblit/ratchet-common';
+import { BackupResult, ErrorRatchet, FileTransferResult, Logger, RequireRatchet } from "@bitblit/ratchet-common";
 import SqlString from 'sqlstring';
-import { FlushRemoteMode, SqliteRemoteFileSyncConfig } from './sqlite-remote-file-sync-config.js';
+import { SqliteRemoteFileSyncConfig } from './sqlite-remote-file-sync-config.js';
 import { SqliteDatabaseAccess } from './sqlite-database-access.js';
 import { DatabaseAccess } from "../model/database-access.js";
 import { DatabaseRequestType } from "../model/database-request-type.js";
 import { RequestResults } from "../model/request-results.js";
 import { ModifyResults } from "../model/modify-results.js";
+import { FlushRemoteMode } from "./flush-remote-mode";
 
 export class SqliteRemoteSyncDatabaseAccess implements DatabaseAccess {
   private cacheDb: Promise<SqliteDatabaseAccess>;
@@ -21,6 +22,10 @@ export class SqliteRemoteSyncDatabaseAccess implements DatabaseAccess {
       this.cacheDb = this.createDb();
     }
     return this.cacheDb;
+  }
+
+  public async backupRemoteNow(): Promise<BackupResult> {
+    return this.cfg.remoteFileSync.backupRemote();
   }
 
   public changeFlushRemoteMode(newMode: FlushRemoteMode): void {

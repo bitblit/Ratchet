@@ -32,6 +32,7 @@ export * from './query-builder/query-util.js';
 export * from './service/named-parameter-database-service.js';
 export * from './service/ssh-tunnel-service.js';
 export * from './service/transactional-named-parameter-database-service.js';
+export * from './sqlite/flush-remote-mode.js';
 export * from './sqlite/sqlite-connection-config.js';
 export * from './sqlite/sqlite-database-access.js';
 export * from './sqlite/sqlite-remote-file-sync-config.js';
