@@ -1,5 +1,5 @@
 import { APIGatewayEvent, Context, ProxyResult } from 'aws-lambda';
-import { JwtTokenBase, Logger, LoggerLevelName, StringRatchet } from '@bitblit/ratchet-common';
+import { Base64Ratchet, JwtTokenBase, Logger, LoggerLevelName, StringRatchet } from "@bitblit/ratchet-common";
 import http, { IncomingMessage, Server, ServerResponse } from 'http';
 import https from 'https';
 import { DateTime } from 'luxon';
@@ -157,7 +157,16 @@ export class LocalServer {
     response: ServerResponse,
     logLevel: LoggerLevelName,
   ): Promise<boolean> {
-    Logger.logByLevel(logLevel, 'Result: %j', proxyResult);
+    if (Logger.levelIsEnabled(logLevel)) {
+      if (proxyResult.isBase64Encoded) {
+        const dup:ProxyResult = structuredClone(proxyResult);
+        dup.body = Base64Ratchet.base64StringToString(dup.body);
+        dup.isBase64Encoded=false;
+        Logger.logByLevel(logLevel, 'Result (UB64): %j', dup);
+      } else {
+        Logger.logByLevel(logLevel, 'Result: %j', proxyResult);
+      }
+    }
 
     response.statusCode = proxyResult.statusCode;
     if (proxyResult.headers) {

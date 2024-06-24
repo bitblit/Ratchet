@@ -30,6 +30,10 @@ export class LoggerInstance {
     this.options = inOptions; // MUST use the setter here
   }
 
+  public levelIsEnabled(level: LoggerLevelName): boolean {
+    return LoggerUtil.levelIsEnabled(level, this._level);
+  }
+
   public addPreProcessor(proc: LogMessageProcessor): LogMessageProcessor[] {
     if (proc) {
       this._options.preProcessors = this._options.preProcessors || [];

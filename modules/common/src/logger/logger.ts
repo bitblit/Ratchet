@@ -7,6 +7,7 @@ import { LoggerLevelName } from './logger-level-name.js';
 import { LoggerRingBuffer } from './logger-ring-buffer.js';
 import { LogMessageBuilder } from './log-message-builder.js';
 import { LoggerOutputFunction } from './logger-output-function.js';
+import { LoggerUtil } from "./logger-util";
 
 /**
  * Class to simplify logging across both browsers and node (especially lambda)
@@ -81,6 +82,11 @@ export class Logger {
 
   public static recordMessageBuilder(msgBuild: LogMessageBuilder): string {
     return Logger.getLogger().recordMessageBuilder(msgBuild);
+  }
+
+
+  public static levelIsEnabled(level: LoggerLevelName): boolean {
+    return Logger.getLogger().levelIsEnabled(level);
   }
 
   public static recordMessage(msg: LogMessage): string {
