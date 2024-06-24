@@ -14,7 +14,7 @@ describe('#jwtRatchet', function () {
       jtiGenerator: undefined,
       decryptOnlyKeyUseLogLevel: undefined,
       parseFailureLogLevel: undefined,
-      jwtLibPromise: undefined,
+      jwtLibPromise: JwtRatchet.dynamicallyLoadLibraryDefaultExportAsJwtLibLike('jsonwebtoken')
     };
     return jwtRatchetConfig;
   }
@@ -33,7 +33,7 @@ describe('#jwtRatchet', function () {
     const jwt: JwtRatchet = new JwtRatchet(createConfig());
 
     const token1: string = await jwt.createTokenString({ test: 1 }, 120);
-    const output: number = await JwtRatchet.secondsRemainingUntilExpiration(token1);
+    const output: number = await JwtRatchet.secondsRemainingUntilExpiration(token1, jwt.jwtLibPromise);
 
     expect(output).not.toBeNull();
     expect(output).toBeLessThan(121);

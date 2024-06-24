@@ -26,15 +26,15 @@ export class JwtRatchet implements JwtRatchetLike {
   ) {
     RequireRatchet.notNullOrUndefined(cfg, 'config');
     RequireRatchet.notNullOrUndefined(cfg.encryptionKeyPromise, 'encryptionKeyPromise');
+    RequireRatchet.notNullOrUndefined(cfg.jwtLibPromise, 'jwtLibPromise');
 
     cfg.jtiGenerator = cfg.jtiGenerator ?? StringRatchet.createType4Guid;
     cfg.decryptOnlyKeyUseLogLevel = cfg.decryptOnlyKeyUseLogLevel ?? LoggerLevelName.info;
     cfg.parseFailureLogLevel = cfg.parseFailureLogLevel ?? LoggerLevelName.debug;
-    cfg.jwtLibPromise = cfg.jwtLibPromise ?? JwtRatchet.defaultJsonWebTokenAsJwtLibLike();
   }
 
-  public static defaultJsonWebTokenAsJwtLibLike(): Promise<JwtLibLike> {
-    return EsmRatchet.cachedTypedDynamicImport<JwtLibLike>('jsonwebtoken','default', ['verify','sign','decode']);
+  public static dynamicallyLoadLibraryDefaultExportAsJwtLibLike(libraryName: string): Promise<JwtLibLike> {
+    return EsmRatchet.cachedTypedDynamicImport<JwtLibLike>(libraryName,'default', ['verify','sign','decode']);
   }
 
   public get copyConfig(): JwtRatchetConfig {
@@ -47,6 +47,10 @@ export class JwtRatchet implements JwtRatchetLike {
       jwtLibPromise : this.cfg.jwtLibPromise,
     }
     return rval;
+  }
+
+  public get jwtLibPromise(): Promise<JwtLibLike> {
+    return this.cfg.jwtLibPromise;
   }
 
   public get encryptionKeyPromise(): Promise<string | string[]> {
@@ -77,7 +81,7 @@ export class JwtRatchet implements JwtRatchetLike {
     payloadString: string,
     decryptKey: string,
     logLevel: LoggerLevelName = LoggerLevelName.silly,
-    jwtLibPromise: Promise<JwtLibLike> = JwtRatchet.defaultJsonWebTokenAsJwtLibLike()
+    jwtLibPromise: Promise<JwtLibLike>
   ): Promise<T> {
     let rval: T = null;
     try {
@@ -89,10 +93,10 @@ export class JwtRatchet implements JwtRatchetLike {
     return rval;
   }
 
-  public static async secondsRemainingUntilExpiration(payloadString: string): Promise<number> {
+  public static async secondsRemainingUntilExpiration(payloadString: string,jwtLibPromise: Promise<JwtLibLike>): Promise<number> {
     let rval: number = null;
     if (StringRatchet.trimToNull(payloadString)) {
-      const output: JwtTokenBase = await JwtRatchet.decodeTokenNoVerify<any>(payloadString);
+      const output: JwtTokenBase = await JwtRatchet.decodeTokenNoVerify<any>(payloadString, jwtLibPromise);
       const nowSecond: number = Math.floor(Date.now() / 1000);
       if (output.exp) {
         // A backwards compatibility hack since some of my old code used to incorrectly write the exp field in milliseconds
@@ -103,8 +107,8 @@ export class JwtRatchet implements JwtRatchetLike {
     return rval;
   }
 
-  public static async msRemainingUntilExpiration(payloadString: string): Promise<number> {
-    const secs: number = await JwtRatchet.secondsRemainingUntilExpiration(payloadString);
+  public static async msRemainingUntilExpiration(payloadString: string,jwtLibPromise: Promise<JwtLibLike>): Promise<number> {
+    const secs: number = await JwtRatchet.secondsRemainingUntilExpiration(payloadString,jwtLibPromise);
     let rval: number = null;
     if (secs !== null && secs !== undefined) {
       rval = secs * 1000;
@@ -130,7 +134,7 @@ export class JwtRatchet implements JwtRatchetLike {
       // Only Log on the last one since it might have just been an old key
       const logLevel: LoggerLevelName =
         i === decKeys.length - 1 && this.parseFailureLogLevel ? this.parseFailureLogLevel : LoggerLevelName.silly;
-      payload = await JwtRatchet.invalidSafeDecode(payloadString, decKeys[i], logLevel);
+      payload = await JwtRatchet.invalidSafeDecode(payloadString, decKeys[i], logLevel, this.cfg.jwtLibPromise);
       if (payload && i >= encKeys.length) {
         Logger.logByLevel(this.decryptOnlyKeyUseLogLevel, 'Used old key to decode token : %s', StringRatchet.obscure(decKeys[i], 2));
       }
@@ -212,7 +216,7 @@ export class JwtRatchet implements JwtRatchetLike {
   }
 
   // Helper method that reads the token without checking it, therefore the keys are not needed
-  public static async decodeTokenNoVerify<T extends JwtTokenBase>(token: string, jwtLibPromise: Promise<JwtLibLike> = JwtRatchet.defaultJsonWebTokenAsJwtLibLike()): Promise<T> {
+  public static async decodeTokenNoVerify<T extends JwtTokenBase>(token: string, jwtLibPromise: Promise<JwtLibLike>): Promise<T> {
     const jwtLib = await jwtLibPromise;
     const rval: T = await jwtLib.decode(token);
     return rval;

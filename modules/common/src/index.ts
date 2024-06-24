@@ -78,7 +78,6 @@ export * from './network/fixed-local-ip-provider.js';
 export * from './network/local-ip-provider.js';
 export * from './network/network-ratchet.js';
 export * from './network/restful-api-http-error.js';
-export * from './network/remote-file-sync/backup-mode.js';
 export * from './network/remote-file-sync/backup-result.js';
 export * from './network/remote-file-sync/file-transfer-result.js';
 export * from './network/remote-file-sync/remote-file-sync-like.js';

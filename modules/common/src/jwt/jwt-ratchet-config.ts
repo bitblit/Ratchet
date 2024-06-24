@@ -12,9 +12,9 @@ import { JwtLibLike } from "./jwt-lib-like";
  */
 export interface JwtRatchetConfig {
  encryptionKeyPromise: Promise<string | string[]>;
+ jwtLibPromise: Promise<JwtLibLike>;
  decryptKeysPromise?: Promise<string[]>;
  jtiGenerator?: () => string;
  decryptOnlyKeyUseLogLevel?: LoggerLevelName;
  parseFailureLogLevel?: LoggerLevelName;
- jwtLibPromise?: Promise<JwtLibLike>;
 }
