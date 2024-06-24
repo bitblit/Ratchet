@@ -172,7 +172,7 @@ export class WardenUserService<T> {
     } else {
       Logger.info('updateLoggedInUserFromTokenString : %s', token);
 
-      const parsed: WardenJwtToken<T> = await JwtRatchet.decodeTokenNoVerify<WardenJwtToken<T>>(token, JwtRatchet.dynamicallyLoadLibraryDefaultExportAsJwtLibLike('jsonwebtoken'));
+      const parsed: WardenJwtToken<T> = await JwtRatchet.decodeTokenNoVerify<WardenJwtToken<T>>(token);
       if (parsed) {
         rval = {
           userObject: parsed,

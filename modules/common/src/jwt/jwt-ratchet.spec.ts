@@ -2,8 +2,6 @@ import { JwtRatchet } from './jwt-ratchet.js';
 import { ExpiredJwtHandling } from './expired-jwt-handling.js';
 import { expect, test, describe } from 'vitest';
 import { JwtRatchetConfig } from "./jwt-ratchet-config";
-import { LoggerLevelName } from "../logger/logger-level-name";
-import { JwtLibLike } from "./jwt-lib-like";
 
 describe('#jwtRatchet', function () {
 

@@ -19,8 +19,7 @@ export class LocalWebTokenManipulator<T extends JwtTokenBase> implements WebToke
     RequireRatchet.notNullOrUndefined(encryptionKeys, 'encryptionKeys');
     RequireRatchet.noNullOrUndefinedValuesInArray(encryptionKeys, encryptionKeys.length);
     const cfg: JwtRatchetConfig = {
-      encryptionKeyPromise: Promise.resolve(encryptionKeys),
-      jwtLibPromise: JwtRatchet.dynamicallyLoadLibraryDefaultExportAsJwtLibLike('jsonwebtoken')
+      encryptionKeyPromise: Promise.resolve(encryptionKeys)
     }
 
     this._ratchet = new JwtRatchet(cfg);

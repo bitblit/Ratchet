@@ -54,20 +54,12 @@
     "node": ">=14.18"
   },
   "license": "Apache-2.0",
-  "optionalDependencies": {
+  "dependencies": {
     "jsonwebtoken": "9.0.2",
     "ts-enum-util": "4.1.0"
   },
   "peerDependencies": {
     "jsonwebtoken": "^9.0.2",
     "ts-enum-util": "^4.1.0"
-  },
-  "peerDependenciesMeta": {
-    "ts-enum-util": {
-      "optional": true
-    },
-    "uint8-to-base64": {
-      "optional": true
-    }
   }
 }

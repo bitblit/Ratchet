@@ -1,5 +1,4 @@
 import { LoggerLevelName } from "../logger/logger-level-name.js";
-import { JwtLibLike } from "./jwt-lib-like";
 
 /**
  * Functions to help with creating and decoding JWTs
@@ -12,7 +11,6 @@ import { JwtLibLike } from "./jwt-lib-like";
  */
 export interface JwtRatchetConfig {
  encryptionKeyPromise: Promise<string | string[]>;
- jwtLibPromise: Promise<JwtLibLike>;
  decryptKeysPromise?: Promise<string[]>;
  jtiGenerator?: () => string;
  decryptOnlyKeyUseLogLevel?: LoggerLevelName;
