@@ -121,7 +121,7 @@ export class WardenUtils {
           userId: we.userId,
           userLabel: we.userLabel,
           contactMethods: we.contactMethods,
-          webAuthnAuthenticatorSummaries: (we.webAuthnAuthenticators || []).map((s) => WardenUtils.stripWardenWebAuthnEntryToSummary(s)),
+          webAuthnAuthenticatorSummaries: (we?.webAuthnAuthenticators || []).map((s) => WardenUtils.stripWardenWebAuthnEntryToSummary(s)),
         }
       : null;
     return rval;

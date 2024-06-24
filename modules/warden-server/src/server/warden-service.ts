@@ -419,6 +419,9 @@ export class WardenService {
     const rpID: string = asUrl.hostname;
 
     const entry: WardenEntry = await this.opts.storageProvider.findEntryById(userId);
+    if (!entry) {
+      throw ErrorRatchet.fErr('Cannot generateWebAuthnRegistrationChallengeForLoggedInUser - no user %s / %s', userId, origin);
+    }
     const options = await generateRegistrationOptions({
       rpName: this.opts.relyingPartyName,
       rpID: rpID,
@@ -459,6 +462,10 @@ export class WardenService {
       const rpID: string = asUrl.hostname;
 
       const user: WardenEntry = await this.opts.storageProvider.findEntryById(userId);
+      if (!user) {
+        throw ErrorRatchet.fErr('Cannot storeAuthnRegistration - no user %s / %s', userId, origin);
+      }
+
       // (Pseudocode) Get `options.challenge` that was saved above
       const expectedChallenge: string = await this.opts.storageProvider.fetchCurrentUserChallenge(user.userId, rpID);
 
