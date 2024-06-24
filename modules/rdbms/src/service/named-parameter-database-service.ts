@@ -394,6 +394,11 @@ export class NamedParameterDatabaseService {
     return conn;
   }
 
+  public async testConnection(logTestResults: boolean): Promise<number> {
+    const db: DatabaseAccess = await this.getDB();
+    return db.testConnection(logTestResults);
+  }
+
   public async resetConnection(): Promise<boolean> {
     let rval = false;
     this.cfg.logger.info('Resetting connection');
