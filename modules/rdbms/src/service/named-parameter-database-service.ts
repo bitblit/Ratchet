@@ -39,6 +39,7 @@ export class NamedParameterDatabaseService {
     private cfg: NamedParameterDatabaseServiceConfig
   ) {
     cfg.serviceName = cfg.serviceName ?? 'NamedParameterDatabaseService';
+    cfg.logger = cfg.logger || Logger.getLogger();
   }
 
   public getConfig(): NamedParameterDatabaseServiceConfig {
@@ -70,7 +71,7 @@ export class NamedParameterDatabaseService {
     queryDefaults: QueryDefaults,
     additionalConfig?: Record<string,any>
   ): Promise<DatabaseAccess> {
-    Logger.info('createTransactional :  %s : %j', queryDefaults, additionalConfig);
+    this.cfg.logger.info('createTransactional :  %s : %j', queryDefaults, additionalConfig);
     if (!this.cfg.connectionProvider.createNonPooledDatabaseAccess) {
       throw new Error(`Connection provider does not implement createNonPooledDatabaseAccess`);
     }
@@ -130,7 +131,7 @@ export class NamedParameterDatabaseService {
       try {
         res = await this.buildAndExecuteUpdateOrInsert(queryBuilder, timeoutMS);
       } catch (err) {
-        Logger.info('Caught problem while trying to update/insert : %d : %s ', retry, err);
+        this.cfg.logger.info('Caught problem while trying to update/insert : %d : %s ', retry, err);
         await PromiseRatchet.wait(retry * 2000);
       }
     }
@@ -200,7 +201,7 @@ export class NamedParameterDatabaseService {
     let query = buildUnfiltered.query.replace('COUNT(*)', `${groupBy} as groupByField, COUNT(*) as count`);
     query = `${query} GROUP BY ${groupBy}`;
 
-    Logger.info('Unfiltered query %s', buildUnfiltered.query);
+    this.cfg.logger.info('Unfiltered query %s', buildUnfiltered.query);
     const resp = await this.executeQueryWithMeta<GroupByCountResult[]>(
       DatabaseRequestType.Query,
       buildUnfiltered.transactionIsolationLevel,
@@ -234,28 +235,28 @@ export class NamedParameterDatabaseService {
     );
 
     if (TimeoutToken.isTimeoutToken(result)) {
-      Logger.warn('Timed out (after %s): %j', DurationRatchet.colonFormatMsDuration(timeoutMS), result);
+      this.cfg.logger.warn('Timed out (after %s): %j', DurationRatchet.colonFormatMsDuration(timeoutMS), result);
       const duration = DurationRatchet.colonFormatMsDuration(timeoutMS);
       throw new Error(`Timed out (after ${duration}) waiting for query : ${query}`);
     }
     const rval = result as RequestResults<Row>;
     if (!rval.results) {
-      Logger.error('DB:executeQueryWithMeta:Failure: %j', rval);
+      this.cfg.logger.error('DB:executeQueryWithMeta:Failure: %j', rval);
     }
 
     if (debugComment && sw.elapsedMS() > this.cfg.longQueryTimeMs) {
-      Logger.info('NamedParameterDatabaseService long query: %s, %s', debugComment, sw.dump());
+      this.cfg.logger.info('NamedParameterDatabaseService long query: %s, %s', debugComment, sw.dump());
     }
     return rval;
   }
 
   public async shutdown(): Promise<boolean> {
-    Logger.info('Shutting down %s service', this.cfg.serviceName);
+    this.cfg.logger.info('Shutting down %s service', this.cfg.serviceName);
     let rval: boolean;
     try {
       rval = await this.cfg.connectionProvider.clearDatabaseAccessCache();
     } catch (err) {
-      Logger.error('Failure trying to shutdown : %s', err, err);
+      this.cfg.logger.error('Failure trying to shutdown : %s', err, err);
       rval = false;
     }
     return rval;
@@ -270,21 +271,21 @@ export class NamedParameterDatabaseService {
     tx: TransactionIsolationLevel | null
   ): Promise<RequestResults<Row> | null> {
     if (tx && tx !== TransactionIsolationLevel.Default) {
-      Logger.debug('Setting tx to %s', tx);
+      this.cfg.logger.debug('Setting tx to %s', tx);
       return await this.innerExecutePreparedAsPromiseWithRetryCloseConnection(DatabaseRequestType.Meta, 'SET TRANSACTION ISOLATION LEVEL ' + tx, {});
     }
     return null;
   }
 
   public async forceCloseConnectionForTesting(): Promise<boolean> {
-    Logger.warn('Forcing connection closed for testing');
+    this.cfg.logger.warn('Forcing connection closed for testing');
     const conn: DatabaseAccess = await this.getDB();
     try {
       await conn.close();
-      Logger.info('Connection has been ended, but not set to null');
+      this.cfg.logger.info('Connection has been ended, but not set to null');
       return true;
     } catch (err) {
-      Logger.error('Error closing connection : %s', err, err);
+      this.cfg.logger.error('Error closing connection : %s', err, err);
       return false;
     }
   }
@@ -308,7 +309,7 @@ export class NamedParameterDatabaseService {
         err.message.includes('ER_LOCK_WAIT_TIMEOUT')
       ) {
         const wait: number = Math.min(1000 * retryCount);
-        Logger.warn(
+        this.cfg.logger.warn(
           'Found closed connection or lock timeout - clearing and attempting retry after %d (try %d of 3) (%s)',
           wait,
           retryCount,
@@ -316,23 +317,23 @@ export class NamedParameterDatabaseService {
         );
         if (retryCount < 4) {
           const cleared: boolean = await this.cfg.connectionProvider.clearDatabaseAccessCache();
-          Logger.info('Clear connection cache returned %s', cleared);
+          this.cfg.logger.info('Clear connection cache returned %s', cleared);
           await PromiseRatchet.wait(wait);
           return this.innerExecutePreparedAsPromiseWithRetryCloseConnection(requestType, query, fields, retryCount + 1);
         } else {
-          Logger.warn('Ran out of retries');
+          this.cfg.logger.warn('Ran out of retries');
           throw new Error('Connection closed and cannot retry any more - dying horribly');
         }
       } else {
-        Logger.error('Named Param DB Query Failed : Err: %s Query: %s Params: %j', err, query, fields, err);
+        this.cfg.logger.error('Named Param DB Query Failed : Err: %s Query: %s Params: %j', err, query, fields, err);
         try {
           const conn: DatabaseAccess = await this.getDB();
-          Logger.error(
+          this.cfg.logger.error(
             '-----\nFor paste into tooling only: \n\n%s\n\n',
             QueryUtil.renderQueryStringForPasteIntoTool(query, fields, (v) => conn.escape(v))
           );
         } catch (err2) {
-          Logger.error('Really bad - failed trying to get the conn for logging : %s', err2);
+          this.cfg.logger.error('Really bad - failed trying to get the conn for logging : %s', err2);
         }
 
         // Just rethrow anything else
@@ -351,13 +352,15 @@ export class NamedParameterDatabaseService {
     try {
       let output: RequestResults<Row | ModifyResults>;
       if (requestType===DatabaseRequestType.Modify) {
+        this.cfg.logger.debug('Executing modify on underlying db : %s / %j', query, fields);
         output = await conn.modify(query, fields);
       } else {
+        this.cfg.logger.debug('Executing query on underlying db : %s / %j', query, fields);
         output = await conn.query<Row>(query, fields);
       }
       // If we reached here we were ok
-      Logger.debug('Success : Finished query : %s\n%s\n\nParams : %j', sw.dump(), QueryUtil.reformatQueryForLogging(query), fields);
-      Logger.debug(
+      this.cfg.logger.debug('Success : Finished query : %s\n%s\n\nParams : %j', sw.dump(), QueryUtil.reformatQueryForLogging(query), fields);
+      this.cfg.logger.debug(
         '-----\nFor paste into tooling only : \n\n%s\n\n',
         QueryUtil.renderQueryStringForPasteIntoTool(query, fields, (v) => conn.escape(v))
       );
@@ -392,15 +395,15 @@ export class NamedParameterDatabaseService {
 
   public async resetConnection(): Promise<boolean> {
     let rval = false;
-    Logger.info('Resetting connection');
+    this.cfg.logger.info('Resetting connection');
     try {
       await this.cfg.connectionProvider.clearDatabaseAccessCache();
       const db: DatabaseAccess = await this.getDB();
       const tmpValue = await db.testConnection(true);
       rval = !!tmpValue;
-      Logger.info('Reset connection returning %s', rval);
+      this.cfg.logger.info('Reset connection returning %s', rval);
     } catch (err) {
-      Logger.error('Failed to reset connection : %s', err);
+      this.cfg.logger.error('Failed to reset connection : %s', err);
     }
     return rval;
   }

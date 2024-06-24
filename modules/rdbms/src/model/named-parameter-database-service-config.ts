@@ -1,6 +1,7 @@
 import { QueryTextProvider } from "./query-text-provider";
 import { DatabaseAccessProvider } from "./database-access-provider";
 import { QueryDefaults } from "./query-defaults";
+import { LoggerInstance } from "@bitblit/ratchet-common";
 
 export interface NamedParameterDatabaseServiceConfig {
   serviceName: string;
@@ -8,4 +9,5 @@ export interface NamedParameterDatabaseServiceConfig {
   connectionProvider: DatabaseAccessProvider;
   queryDefaults: QueryDefaults;
   longQueryTimeMs: number;
+  logger?: LoggerInstance;
 }
