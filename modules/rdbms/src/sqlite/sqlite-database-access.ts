@@ -11,7 +11,6 @@ export class SqliteDatabaseAccess implements DatabaseAccess {
   constructor(
     private conn: AsyncDatabase,
     private extraConfig: Record<string, any>,
-    private remoteFileSync?: RemoteFileSyncLike,
   ) {}
 
   get connection(): AsyncDatabase {
@@ -37,8 +36,7 @@ export class SqliteDatabaseAccess implements DatabaseAccess {
   }
 
   escape(value: any): string {
-    return SqlString.format('?', value);
-    //return StringRatchet.safeString(value);
+    return SqlString.escape(value);
   }
 
   async onRequestFailureOnly(_type: DatabaseRequestType): Promise<void> {}
@@ -76,6 +74,7 @@ export class SqliteDatabaseAccess implements DatabaseAccess {
   }
 
   async query<S>(inQuery: string, inFields: Record<string, any>): Promise<RequestResults<S>> {
+    const tt: string = SqlString.format(inQuery, inFields);
     // First, rename all the fields to add the prefix
     const fields: Record<string, any> = QueryUtil.addPrefixToFieldNames(inFields, ':');
     // Then, replace any null params
@@ -88,7 +87,7 @@ export class SqliteDatabaseAccess implements DatabaseAccess {
       const val: any = slFields[k];
       if (Array.isArray(val)) {
         const escaped: string = this.escape(val);
-        query = query.replaceAll(k, '(' + escaped + ')');
+        query = query.replaceAll(k,  escaped );
         delete slFields[k]; // this prolly wont work
       }
     });

@@ -40,6 +40,7 @@ export class NamedParameterDatabaseService {
   ) {
     cfg.serviceName = cfg.serviceName ?? 'NamedParameterDatabaseService';
     cfg.logger = cfg.logger || Logger.getLogger();
+    Logger.info('NamedParameterDatabaseService using logger %s at %s', cfg.logger.guid, cfg.logger.level);
   }
 
   public getConfig(): NamedParameterDatabaseServiceConfig {
