@@ -2344,16 +2344,6 @@ __metadata:
   peerDependencies:
     jsonwebtoken: ^9.0.2
     ts-enum-util: ^4.1.0
-  dependenciesMeta:
-    jsonwebtoken:
-      optional: true
-    ts-enum-util:
-      optional: true
-  peerDependenciesMeta:
-    ts-enum-util:
-      optional: true
-    uint8-to-base64:
-      optional: true
   languageName: unknown
   linkType: soft
 
