@@ -394,7 +394,7 @@ export class NamedParameterDatabaseService {
     return conn;
   }
 
-  public async testConnection(logTestResults: boolean): Promise<number> {
+  public async testConnection(logTestResults?: boolean): Promise<number> {
     const db: DatabaseAccess = await this.getDB();
     return db.testConnection(logTestResults);
   }
