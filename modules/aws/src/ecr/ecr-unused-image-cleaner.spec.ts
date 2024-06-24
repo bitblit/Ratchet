@@ -24,7 +24,7 @@ describe('#ecrUnusedImageCleaner', function () {
 
    */
 
-  test('should run the cleaner', async () => {
+  test.skip('should run the cleaner', async () => {
     Logger.info('Testing cleaner');
     AwsCredentialsRatchet.applySetProfileEnvironmentalVariable('your-profile-here');
     const cleaner: EcrUnusedImageCleaner = new EcrUnusedImageCleaner(new ECRClient({ region: 'us-east-1' }));
