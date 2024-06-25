@@ -19,6 +19,7 @@ import { S3SyncedFileConfig } from "./s3-synced-file-config";
 import { S3SyncedFileConfigInitMode } from "./s3-synced-file-config-init-mode";
 import { DateTime } from "luxon";
 import { S3SyncedFileRemoteBackupMode } from "./s3-synced-file-remote-backup-mode";
+import { S3SyncedFileFetchOptimization } from "./s3-synced-file-fetch-optimization";
 
 // Keeps a local file up-to-date with a file on S3
 export class S3SyncedFile implements RemoteFileSyncLike{
@@ -51,16 +52,21 @@ export class S3SyncedFile implements RemoteFileSyncLike{
     Logger.info('Using local path %s to sync %s / %s', this._localFileName, this.config.s3CacheRatchetLike.getDefaultBucket(), this.config.s3Path);
     if (this.config.initMode === S3SyncedFileConfigInitMode.OnStartup) {
       Logger.info('Initial loading');
-      this.fetchRemoteToLocal().then(()=>{Logger.info('Finished initial load')});
-    } else if (this.config.initMode === S3SyncedFileConfigInitMode.OnStartupDifferentSize) {
-      Logger.info('Initial loading if size different');
-      const localBytes: number = this.localFileBytes;
+      this.fetchRemoteToLocal().then(() => {
+        Logger.info('Finished initial load')
+      });
+    }
+  }
+
+  public async localAndRemoteAreSameSize(): Promise<boolean> {
+    let rval: boolean = false;
+    const localBytes: number = this.localFileBytes;
+    if (localBytes!==null) {
       const remoteBytes: number = await this.remoteSizeInBytes;
       Logger.info('Local size is %s, remote is %s', localBytes, remoteBytes);
-      if (localBytes!==remoteBytes) {
-        this.fetchRemoteToLocal().then(()=>{Logger.info('Finished initial load')});
-      }
+      rval = localBytes===remoteBytes;
     }
+    return rval;
   }
 
   public directWriteValueToLocalFile(value: string|Uint8Array): void {
@@ -165,26 +171,35 @@ export class S3SyncedFile implements RemoteFileSyncLike{
     return this._loadingRemoteSignal;
   }
 
+  private hasFetchOptimization(opt: S3SyncedFileFetchOptimization): boolean {
+    return !!opt && (this?.config?.fetchOptimizations || []).includes(opt);
+  }
+
   private async innerFetchRemoteToLocalIfNewerThan(epochMS: number): Promise<FileTransferResult> {
     try {
       const sw: StopWatch = new StopWatch();
-      const req: GetObjectCommandInput = {
-        Bucket: this.config.s3CacheRatchetLike.getDefaultBucket(),
-        Key: this.config.s3Path,
-        IfModifiedSince: new Date(epochMS)
-      };
 
-      const output: GetObjectCommandOutput = await this.config.s3CacheRatchetLike.fetchCacheFilePassThru(req);
-      const fileStream: WriteStream = fs.createWriteStream(this._localFileName);
-      const readStream: Readable = output.Body as Readable;
-      readStream.pipe(fileStream);
-      Logger.info('Waiting for pipe completion');
-      await PromiseRatchet.resolveOnEvent(fileStream, ['close','finish'], ['error']);
-      Logger.info('Pipe completed');
-      this._lastSyncEpochMS = Date.now();
-      this._remoteModifiedAtLastSyncEpochMS = output.LastModified.getTime();
-      Logger.info('Fetched remote to local, %d bytes in %s', output.ContentLength, sw.dump());
+      if (!this.hasFetchOptimization(S3SyncedFileFetchOptimization.TreatSameSizeAsNoChange) || await this.localAndRemoteAreSameSize()) {
+        const req: GetObjectCommandInput = {
+          Bucket: this.config.s3CacheRatchetLike.getDefaultBucket(),
+          Key: this.config.s3Path,
+          IfModifiedSince: new Date(epochMS)
+        };
 
+        const output: GetObjectCommandOutput = await this.config.s3CacheRatchetLike.fetchCacheFilePassThru(req);
+        const fileStream: WriteStream = fs.createWriteStream(this._localFileName);
+        const readStream: Readable = output.Body as Readable;
+        readStream.pipe(fileStream);
+        Logger.info('Waiting for pipe completion');
+        await PromiseRatchet.resolveOnEvent(fileStream, ['close','finish'], ['error']);
+        Logger.info('Pipe completed');
+        this._lastSyncEpochMS = Date.now();
+        this._remoteModifiedAtLastSyncEpochMS = output.LastModified.getTime();
+        Logger.info('Fetched remote to local, %d bytes in %s', output.ContentLength, sw.dump());
+      } else {
+        Logger.info('TreatSameSizeAsNoChange enabled and files are same size - skipping');
+        this._lastSyncEpochMS = Date.now();
+      }
       return FileTransferResult.Updated;
     } catch (err) {
       Logger.error('Failed to fetch %s / %s : %s', this.config.s3CacheRatchetLike.getDefaultBucket(), this.config.s3Path, err, err);

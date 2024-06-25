@@ -17,5 +17,6 @@ export * from './mail/inbound/sample-email-processor.js';
 export * from './s3/s3-cache-to-local-disk-ratchet.js';
 export * from './s3/s3-synced-file/s3-synced-file-config-init-mode.js';
 export * from './s3/s3-synced-file/s3-synced-file-config.js';
+export * from './s3/s3-synced-file/s3-synced-file-fetch-optimization.js';
 export * from './s3/s3-synced-file/s3-synced-file-remote-backup-mode.js';
 export * from './s3/s3-synced-file/s3-synced-file.js';
