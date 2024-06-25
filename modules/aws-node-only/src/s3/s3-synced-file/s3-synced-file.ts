@@ -1,7 +1,7 @@
 import {
   BackupResult,
   FileTransferResult,
-  Logger,
+  Logger, PromiseRatchet,
   RemoteFileSyncLike,
   RequireRatchet,
   StopWatch
@@ -178,6 +178,9 @@ export class S3SyncedFile implements RemoteFileSyncLike{
       const fileStream: WriteStream = fs.createWriteStream(this._localFileName);
       const readStream: Readable = output.Body as Readable;
       readStream.pipe(fileStream);
+      Logger.info('Waiting for pipe completion');
+      await PromiseRatchet.resolveOnEvent(fileStream, ['close','finish'], ['error']);
+      Logger.info('Pipe completed');
       this._lastSyncEpochMS = Date.now();
       this._remoteModifiedAtLastSyncEpochMS = output.LastModified.getTime();
       Logger.info('Fetched remote to local, %d bytes in %s', output.ContentLength, sw.dump());
