@@ -1,4 +1,11 @@
-import { FileTransferResult, Logger, RemoteFileSyncLike, RequireRatchet, StopWatch } from "@bitblit/ratchet-common";
+import {
+  BackupResult,
+  FileTransferResult,
+  Logger,
+  RemoteFileSyncLike,
+  RequireRatchet,
+  StopWatch
+} from "@bitblit/ratchet-common";
 import tmp from "tmp";
 import fs, { WriteStream } from "fs";
 import {
@@ -10,7 +17,6 @@ import {
 import { Readable } from "stream";
 import { S3SyncedFileConfig } from "./s3-synced-file-config";
 import { S3SyncedFileConfigInitMode } from "./s3-synced-file-config-init-mode";
-import { BackupResult } from "@bitblit/ratchet-common";
 import { DateTime } from "luxon";
 import { S3SyncedFileRemoteBackupMode } from "./s3-synced-file-remote-backup-mode";
 
@@ -35,10 +41,25 @@ export class S3SyncedFile implements RemoteFileSyncLike{
       const extension: string = config.s3Path.includes('.') ? config.s3Path.substring(config.s3Path.lastIndexOf('.')+1) : undefined;
       this._localFileName = config.forceLocalFileFullPath ?? tmp.fileSync({ postfix: extension, keep: config.leaveOnDisk }).name;
     }
-    Logger.info('Using local path %s to sync %s / %s', this._localFileName, config.s3CacheRatchetLike.getDefaultBucket(), this.config.s3Path);
-    if (config.initMode === S3SyncedFileConfigInitMode.OnStartup) {
+
+    this.initialize().then(()=>{
+      Logger.info('Initialized');
+    })
+  }
+
+  private async initialize(): Promise<void> {
+    Logger.info('Using local path %s to sync %s / %s', this._localFileName, this.config.s3CacheRatchetLike.getDefaultBucket(), this.config.s3Path);
+    if (this.config.initMode === S3SyncedFileConfigInitMode.OnStartup) {
       Logger.info('Initial loading');
       this.fetchRemoteToLocal().then(()=>{Logger.info('Finished initial load')});
+    } else if (this.config.initMode === S3SyncedFileConfigInitMode.OnStartupDifferentSize) {
+      Logger.info('Initial loading if size different');
+      const localBytes: number = this.localFileBytes;
+      const remoteBytes: number = await this.remoteSizeInBytes;
+      Logger.info('Local size is %s, remote is %s', localBytes, remoteBytes);
+      if (localBytes!==remoteBytes) {
+        this.fetchRemoteToLocal().then(()=>{Logger.info('Finished initial load')});
+      }
     }
   }
 
@@ -133,6 +154,7 @@ export class S3SyncedFile implements RemoteFileSyncLike{
   }
 
   public async fetchRemoteToLocal(): Promise<FileTransferResult> {
+    Logger.info('Called fetchRemoteToLocal');
     return this.fetchRemoteToLocalIfNewerThan(0);
   }
 
