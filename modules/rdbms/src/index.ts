@@ -37,6 +37,7 @@ export * from './sqlite/sqlite-database-access.js';
 export * from './sqlite/sqlite-remote-sync-database-access.js';
 export * from './sqlite/sqlite-style-connection-provider.js';
 export * from './sqlite/model/flush-remote-mode.js';
+export * from './sqlite/model/sqlite-connection-config-flag.js';
 export * from './sqlite/model/sqlite-connection-config.js';
 export * from './sqlite/model/sqlite-remote-file-sync-config.js';
 export * from './util/aws-rds-cert-2023.js';

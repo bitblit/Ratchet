@@ -24,7 +24,7 @@ describe('sqlite-database-access', () => {
       longQueryTimeMs: 8_500,
     });
 
-    const res: RequestResults<any[]> = await ns.buildAndExecute(ns.queryBuilder('default').withParams({ticketStateList: ['New','Complete']}));
+    const res: any[] = await ns.buildAndExecute<any>(ns.queryBuilder('default').withParams({ticketStateList: ['New','Complete']}));
 
 
     Logger.info('Get: %j', res);

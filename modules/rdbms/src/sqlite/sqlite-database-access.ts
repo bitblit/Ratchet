@@ -6,10 +6,12 @@ import { DatabaseRequestType } from "../model/database-request-type.js";
 import { ModifyResults } from "../model/modify-results.js";
 import { RequestResults } from "../model/request-results.js";
 import { QueryUtil } from "../query-builder/query-util.js";
+import { SqliteConnectionConfigFlag } from "./model/sqlite-connection-config-flag";
 
 export class SqliteDatabaseAccess implements DatabaseAccess {
   constructor(
     private conn: AsyncDatabase,
+    private flags: SqliteConnectionConfigFlag[],
     private extraConfig: Record<string, any>,
   ) {}
 
@@ -74,7 +76,6 @@ export class SqliteDatabaseAccess implements DatabaseAccess {
   }
 
   async query<S>(inQuery: string, inFields: Record<string, any>): Promise<RequestResults<S>> {
-    const tt: string = SqlString.format(inQuery, inFields);
     // First, rename all the fields to add the prefix
     const fields: Record<string, any> = QueryUtil.addPrefixToFieldNames(inFields, ':');
     // Then, replace any null params
@@ -91,6 +92,11 @@ export class SqliteDatabaseAccess implements DatabaseAccess {
         delete slFields[k]; // this prolly wont work
       }
     });
+
+    // Finally, apply flags
+    if ((this.flags || []).includes(SqliteConnectionConfigFlag.AlwaysCollateNoCase)) {
+      query += ' COLLATE NOCASE';
+    }
 
     const res: S[] = await this.conn.all<S>(query, slFields);
 

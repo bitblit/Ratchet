@@ -110,13 +110,13 @@ export class SqliteStyleConnectionProvider implements DatabaseAccessProvider {
     let rval: DatabaseAccess;
     try {
       if (dbCfg.remoteFileSync) {
-        rval = new SqliteRemoteSyncDatabaseAccess(dbCfg.remoteFileSync, _additionalConfig);
+        rval = new SqliteRemoteSyncDatabaseAccess(dbCfg.remoteFileSync, dbCfg.flags, _additionalConfig);
       } else {
         if (!fs.existsSync(dbCfg.filePath)) {
           throw ErrorRatchet.fErr('Requested file does not exist : %s', dbCfg.filePath);
         }
         const db: AsyncDatabase = await AsyncDatabase.open(dbCfg.filePath);
-        rval = new SqliteDatabaseAccess(db, _additionalConfig);
+        rval = new SqliteDatabaseAccess(db, dbCfg.flags, _additionalConfig);
       }
     } catch (err) {
       Logger.info('Failed trying to create connection : %s : clearing for retry', err);

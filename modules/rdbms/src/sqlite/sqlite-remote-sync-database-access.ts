@@ -8,12 +8,14 @@ import { RequestResults } from "../model/request-results.js";
 import { ModifyResults } from "../model/modify-results.js";
 import { SqliteRemoteFileSyncConfig } from "./model/sqlite-remote-file-sync-config.js";
 import { FlushRemoteMode } from "./model/flush-remote-mode.js";
+import { SqliteConnectionConfigFlag } from "./model/sqlite-connection-config-flag";
 
 export class SqliteRemoteSyncDatabaseAccess implements DatabaseAccess {
   private cacheDb: Promise<SqliteDatabaseAccess>;
 
   constructor(
     private cfg: SqliteRemoteFileSyncConfig,
+    private flags: SqliteConnectionConfigFlag[],
     private extraConfig: Record<string, any>,
   ) {}
 
@@ -53,7 +55,7 @@ export class SqliteRemoteSyncDatabaseAccess implements DatabaseAccess {
       : await this.cfg.remoteFileSync.sendLocalToRemote();
     Logger.info('Returned %s - reopening', result);
     const newDb: AsyncDatabase = await AsyncDatabase.open(this.cfg.remoteFileSync.localFileName);
-    const rval: SqliteDatabaseAccess = new SqliteDatabaseAccess(newDb, this.extraConfig);
+    const rval: SqliteDatabaseAccess = new SqliteDatabaseAccess(newDb, this.flags, this.extraConfig);
     return rval;
   }
 
@@ -62,7 +64,7 @@ export class SqliteRemoteSyncDatabaseAccess implements DatabaseAccess {
     await this.cfg.remoteFileSync.fetchRemoteToLocal();
     Logger.info('Creating database');
     const db: AsyncDatabase = await AsyncDatabase.open(this.cfg.remoteFileSync.localFileName);
-    const rval: SqliteDatabaseAccess = new SqliteDatabaseAccess(db, this.extraConfig);
+    const rval: SqliteDatabaseAccess = new SqliteDatabaseAccess(db, this.flags, this.extraConfig);
     return rval;
   }
 
