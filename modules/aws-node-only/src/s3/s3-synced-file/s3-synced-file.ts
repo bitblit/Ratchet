@@ -63,8 +63,8 @@ export class S3SyncedFile implements RemoteFileSyncLike{
     const localBytes: number = this.localFileBytes;
     if (localBytes!==null) {
       const remoteBytes: number = await this.remoteSizeInBytes;
-      Logger.info('Local size is %s, remote is %s', localBytes, remoteBytes);
       rval = localBytes===remoteBytes;
+      Logger.info('Local size is %s, remote is %s, same is %s', localBytes, remoteBytes, rval);
     }
     return rval;
   }
@@ -172,7 +172,9 @@ export class S3SyncedFile implements RemoteFileSyncLike{
   }
 
   private hasFetchOptimization(opt: S3SyncedFileFetchOptimization): boolean {
-    return !!opt && (this?.config?.fetchOptimizations || []).includes(opt);
+    const rval: boolean = !!opt && (this?.config?.fetchOptimizations || []).includes(opt);
+    Logger.info('hasFetchOptimization %s returning %s', opt, rval);
+    return rval;
   }
 
   private async innerFetchRemoteToLocalIfNewerThan(epochMS: number): Promise<FileTransferResult> {
