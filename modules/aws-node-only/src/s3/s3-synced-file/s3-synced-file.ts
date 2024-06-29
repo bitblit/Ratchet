@@ -132,6 +132,7 @@ export class S3SyncedFile implements RemoteFileSyncLike{
         Logger.info('Backup result : %s',backupRes);
       }
       const out: CompleteMultipartUploadCommandOutput = await this.config.s3CacheRatchetLike.writeStreamToCacheFile(this.config.s3Path, fs.readFileSync(this._localFileName));
+      Logger.silly('SendLocalToRemote: %j', out)
       rval = FileTransferResult.Updated;
     } catch (err) {
       Logger.error('Failed to transfer %s : %s', this._localFileName, err, err);
@@ -181,7 +182,7 @@ export class S3SyncedFile implements RemoteFileSyncLike{
     try {
       const sw: StopWatch = new StopWatch();
 
-      if (!this.hasFetchOptimization(S3SyncedFileFetchOptimization.TreatSameSizeAsNoChange) || await this.localAndRemoteAreSameSize()) {
+      if (!this.hasFetchOptimization(S3SyncedFileFetchOptimization.TreatSameSizeAsNoChange) || !(await this.localAndRemoteAreSameSize())) {
         const req: GetObjectCommandInput = {
           Bucket: this.config.s3CacheRatchetLike.getDefaultBucket(),
           Key: this.config.s3Path,
@@ -199,7 +200,7 @@ export class S3SyncedFile implements RemoteFileSyncLike{
         this._remoteModifiedAtLastSyncEpochMS = output.LastModified.getTime();
         Logger.info('Fetched remote to local, %d bytes in %s', output.ContentLength, sw.dump());
       } else {
-        Logger.info('TreatSameSizeAsNoChange enabled and files are same size - skipping');
+        Logger.info('TreatSameSizeAsNoChange not enabled OR files are same size - skipping');
         this._lastSyncEpochMS = Date.now();
       }
       return FileTransferResult.Updated;
