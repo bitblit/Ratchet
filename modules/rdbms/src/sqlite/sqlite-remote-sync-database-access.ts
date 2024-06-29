@@ -1,7 +1,14 @@
-import { AsyncDatabase } from 'promised-sqlite3';
-import { BackupResult, ErrorRatchet, FileTransferResult, Logger, RequireRatchet } from "@bitblit/ratchet-common";
-import SqlString from 'sqlstring';
-import { SqliteDatabaseAccess } from './sqlite-database-access.js';
+import { AsyncDatabase } from "promised-sqlite3";
+import {
+  BackupResult,
+  ErrorRatchet,
+  FileTransferResult,
+  Logger,
+  RequireRatchet,
+  StopWatch
+} from "@bitblit/ratchet-common";
+import SqlString from "sqlstring";
+import { SqliteDatabaseAccess } from "./sqlite-database-access.js";
 import { DatabaseAccess } from "../model/database-access.js";
 import { DatabaseRequestType } from "../model/database-request-type.js";
 import { RequestResults } from "../model/request-results.js";
@@ -9,6 +16,7 @@ import { ModifyResults } from "../model/modify-results.js";
 import { SqliteRemoteFileSyncConfig } from "./model/sqlite-remote-file-sync-config.js";
 import { FlushRemoteMode } from "./model/flush-remote-mode.js";
 import { SqliteConnectionConfigFlag } from "./model/sqlite-connection-config-flag";
+import { FetchRemoteMode } from "./model/fetch-remote-mode";
 
 export class SqliteRemoteSyncDatabaseAccess implements DatabaseAccess {
   private cacheDb: Promise<SqliteDatabaseAccess>;
@@ -17,7 +25,10 @@ export class SqliteRemoteSyncDatabaseAccess implements DatabaseAccess {
     private cfg: SqliteRemoteFileSyncConfig,
     private flags: SqliteConnectionConfigFlag[],
     private extraConfig: Record<string, any>,
-  ) {}
+  ) {
+    this.cfg.flushRemoteMode = this.cfg.flushRemoteMode || FlushRemoteMode.Auto;
+    this.cfg.fetchRemoteMode = this.cfg.fetchRemoteMode || FetchRemoteMode.EveryQuery;
+  }
 
   private async db(): Promise<SqliteDatabaseAccess> {
     if (!this.cacheDb) {
@@ -46,6 +57,7 @@ export class SqliteRemoteSyncDatabaseAccess implements DatabaseAccess {
   }
 
   private async closeSyncReopen(oldDbProm: Promise<SqliteDatabaseAccess>, remoteToLocal: boolean): Promise<SqliteDatabaseAccess> {
+    const sw: StopWatch = new StopWatch();
     const db: SqliteDatabaseAccess = await oldDbProm;
     Logger.info('Closing database for sync');
     await db.close();
@@ -56,6 +68,7 @@ export class SqliteRemoteSyncDatabaseAccess implements DatabaseAccess {
     Logger.info('Returned %s - reopening', result);
     const newDb: AsyncDatabase = await AsyncDatabase.open(this.cfg.remoteFileSync.localFileName);
     const rval: SqliteDatabaseAccess = new SqliteDatabaseAccess(newDb, this.flags, this.extraConfig);
+    Logger.info('closeSyncReopen took %s', sw.dump());
     return rval;
   }
 
@@ -106,11 +119,16 @@ export class SqliteRemoteSyncDatabaseAccess implements DatabaseAccess {
     return Promise.resolve(undefined);
   }
 
-  async preQuery(): Promise<void> {
-    return Promise.resolve(undefined);
-  }
 
  */
+
+  public async preQuery(): Promise<void> {
+    if (this?.cfg?.fetchRemoteMode === FetchRemoteMode.EveryQuery) {
+      Logger.debug('EveryQuery mode - checking remote');
+      await this.reloadRemoteToLocal();
+    }
+  }
+
 
   async modify(query: string, fields: Record<string, any>): Promise<RequestResults<ModifyResults>> {
     const db: SqliteDatabaseAccess = await this.db();
