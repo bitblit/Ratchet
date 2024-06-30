@@ -53,7 +53,7 @@ export class SqliteRemoteSyncDatabaseAccess implements DatabaseAccess {
 
   public async reloadRemoteToLocal(): Promise<void> {
     Logger.info('Reloading remote to local (Fetch mode is %s)', this.cfg.fetchRemoteMode);
-    this.cacheDb = this.closeSyncReopen(this.db(), false);
+    this.cacheDb = this.closeSyncReopen(this.db(), true);
   }
 
   private async closeSyncReopen(oldDbProm: Promise<SqliteDatabaseAccess>, remoteToLocal: boolean): Promise<SqliteDatabaseAccess> {
