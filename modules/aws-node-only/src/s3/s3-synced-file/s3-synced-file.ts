@@ -19,7 +19,7 @@ import { S3SyncedFileConfig } from "./s3-synced-file-config";
 import { S3SyncedFileConfigInitMode } from "./s3-synced-file-config-init-mode";
 import { DateTime } from "luxon";
 import { S3SyncedFileRemoteBackupMode } from "./s3-synced-file-remote-backup-mode";
-import { S3SyncedFileFetchOptimization } from "./s3-synced-file-fetch-optimization";
+import { S3SyncedFileOptimization } from "./s3-synced-file-optimization";
 
 // Keeps a local file up-to-date with a file on S3
 export class S3SyncedFile implements RemoteFileSyncLike{
@@ -40,8 +40,9 @@ export class S3SyncedFile implements RemoteFileSyncLike{
       this._localFileName = config.forceLocalFileFullPath;
     } else {
       const extension: string = config.s3Path.includes('.') ? config.s3Path.substring(config.s3Path.lastIndexOf('.')+1) : undefined;
-      this._localFileName = config.forceLocalFileFullPath ?? tmp.fileSync({ postfix: extension, keep: config.leaveOnDisk }).name;
+      this._localFileName = config.forceLocalFileFullPath ?? tmp.fileSync({ postfix: extension, keep: config.leaveTempFileOnDisk }).name;
     }
+    Logger.info('Using local file %s for remote path %s %s', this._localFileName, this.config.s3CacheRatchetLike.getDefaultBucket(), this.config.s3Path);
 
     this.initialize().then(()=>{
       Logger.info('Initialized');
@@ -122,21 +123,26 @@ export class S3SyncedFile implements RemoteFileSyncLike{
   }
 
   public async sendLocalToRemote(): Promise<FileTransferResult> {
+    const sw: StopWatch = new StopWatch();
     Logger.info('Sending local file to remote');
     let rval: FileTransferResult = null;
-    const sw: StopWatch = new StopWatch();
-    try {
-      if (this.config.backupMode===S3SyncedFileRemoteBackupMode.EveryUpload) {
-        Logger.info('EveryUpload mode set - backing up');
-        const backupRes: BackupResult = await this.backupRemote();
-        Logger.info('Backup result : %s',backupRes);
+    if (!this.hasPushOptimization(S3SyncedFileOptimization.TreatSameSizeAsNoChange) || !(await this.localAndRemoteAreSameSize())) {
+      try {
+        if (this.config.backupMode===S3SyncedFileRemoteBackupMode.EveryUpload) {
+          Logger.info('EveryUpload mode set - backing up');
+          const backupRes: BackupResult = await this.backupRemote();
+          Logger.info('Backup result : %s',backupRes);
+        }
+        const out: CompleteMultipartUploadCommandOutput = await this.config.s3CacheRatchetLike.writeStreamToCacheFile(this.config.s3Path, fs.readFileSync(this._localFileName));
+        Logger.silly('SendLocalToRemote: %j', out)
+        rval = FileTransferResult.Updated;
+      } catch (err) {
+        Logger.error('Failed to transfer %s : %s', this._localFileName, err, err);
+        rval = FileTransferResult.Error;
       }
-      const out: CompleteMultipartUploadCommandOutput = await this.config.s3CacheRatchetLike.writeStreamToCacheFile(this.config.s3Path, fs.readFileSync(this._localFileName));
-      Logger.silly('SendLocalToRemote: %j', out)
-      rval = FileTransferResult.Updated;
-    } catch (err) {
-      Logger.error('Failed to transfer %s : %s', this._localFileName, err, err);
-      rval = FileTransferResult.Error;
+    } else {
+      Logger.info('TreatSameSizeAsNoChange set and files are same size - skipping');
+      rval = FileTransferResult.Skipped;
     }
     Logger.info('Sent %d bytes to remote in %s', this.localFileBytes, sw.dump())
     return rval;
@@ -172,9 +178,15 @@ export class S3SyncedFile implements RemoteFileSyncLike{
     return this._loadingRemoteSignal;
   }
 
-  private hasFetchOptimization(opt: S3SyncedFileFetchOptimization): boolean {
+  private hasFetchOptimization(opt: S3SyncedFileOptimization): boolean {
     const rval: boolean = !!opt && (this?.config?.fetchOptimizations || []).includes(opt);
     Logger.info('hasFetchOptimization %s returning %s', opt, rval);
+    return rval;
+  }
+
+  private hasPushOptimization(opt: S3SyncedFileOptimization): boolean {
+    const rval: boolean = !!opt && (this?.config?.pushOptimizations || []).includes(opt);
+    Logger.info('hasPushOptimization %s returning %s', opt, rval);
     return rval;
   }
 
@@ -182,7 +194,7 @@ export class S3SyncedFile implements RemoteFileSyncLike{
     try {
       const sw: StopWatch = new StopWatch();
 
-      if (!this.hasFetchOptimization(S3SyncedFileFetchOptimization.TreatSameSizeAsNoChange) || !(await this.localAndRemoteAreSameSize())) {
+      if (!this.hasFetchOptimization(S3SyncedFileOptimization.TreatSameSizeAsNoChange) || !(await this.localAndRemoteAreSameSize())) {
         const req: GetObjectCommandInput = {
           Bucket: this.config.s3CacheRatchetLike.getDefaultBucket(),
           Key: this.config.s3Path,

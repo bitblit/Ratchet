@@ -33,7 +33,7 @@ describe('#S3SyncedFile', function () {
       s3Path: 'synctest/test.txt',
       forceLocalFileFullPath: 'localtest.txt',
       initMode: S3SyncedFileConfigInitMode.OnStartup,
-      leaveOnDisk: false
+      leaveTempFileOnDisk: false
     };
     const test: S3SyncedFile = new S3SyncedFile(cfg);
 

@@ -1,4 +1,4 @@
 
-export enum S3SyncedFileFetchOptimization {
+export enum S3SyncedFileOptimization {
   TreatSameSizeAsNoChange = 'TreatSameSizeAsNoChange'
 }
