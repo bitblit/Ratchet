@@ -36,6 +36,7 @@ export * from './service/transactional-named-parameter-database-service.js';
 export * from './sqlite/sqlite-database-access.js';
 export * from './sqlite/sqlite-remote-sync-database-access.js';
 export * from './sqlite/sqlite-style-connection-provider.js';
+export * from './sqlite/model/fetch-remote-mode.js';
 export * from './sqlite/model/flush-remote-mode.js';
 export * from './sqlite/model/sqlite-connection-config-flag.js';
 export * from './sqlite/model/sqlite-connection-config.js';

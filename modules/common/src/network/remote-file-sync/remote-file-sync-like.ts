@@ -13,6 +13,8 @@ export interface RemoteFileSyncLike {
    get localFileUpdatedEpochMS(): number ;
    get remoteUpdatedEpochMS(): Promise<number> ;
    get remoteSizeInBytes(): Promise<number> ;
+   get wouldFetch(): Promise<boolean>; // Returns whether a fetch would occur right now, given optimizations
+   get wouldPush(): Promise<boolean>; // Returns whether a fetch would occur right now, given optimizations
    backupRemote(): Promise<BackupResult>;
    sendLocalToRemote(): Promise<FileTransferResult> ;
    fetchRemoteToLocal(): Promise<FileTransferResult> ;

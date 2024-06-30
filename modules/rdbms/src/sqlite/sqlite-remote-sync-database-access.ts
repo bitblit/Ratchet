@@ -59,16 +59,25 @@ export class SqliteRemoteSyncDatabaseAccess implements DatabaseAccess {
   private async closeSyncReopen(oldDbProm: Promise<SqliteDatabaseAccess>, remoteToLocal: boolean): Promise<SqliteDatabaseAccess> {
     const sw: StopWatch = new StopWatch();
     const db: SqliteDatabaseAccess = await oldDbProm;
-    Logger.info('Closing database for sync');
-    await db.close();
-    Logger.info('Remote sync : %s', remoteToLocal ? 'remoteToLocal' : 'localToRemote');
-    const result: FileTransferResult = remoteToLocal
-      ? await this.cfg.remoteFileSync.fetchRemoteToLocal()
-      : await this.cfg.remoteFileSync.sendLocalToRemote();
-    Logger.info('Returned %s - reopening', result);
-    const newDb: AsyncDatabase = await AsyncDatabase.open(this.cfg.remoteFileSync.localFileName);
-    const rval: SqliteDatabaseAccess = new SqliteDatabaseAccess(newDb, this.flags, this.extraConfig);
-    Logger.info('closeSyncReopen took %s', sw.dump());
+    const takeAction: boolean = await (remoteToLocal ? this.cfg.remoteFileSync.wouldFetch : this.cfg.remoteFileSync.wouldPush);
+    let rval: SqliteDatabaseAccess
+
+    if (takeAction) {
+      Logger.info('Closing database for sync');
+      await db.close();
+      Logger.info('Remote sync : %s', remoteToLocal ? 'remoteToLocal' : 'localToRemote');
+      const result: FileTransferResult = remoteToLocal
+        ? await this.cfg.remoteFileSync.fetchRemoteToLocal()
+        : await this.cfg.remoteFileSync.sendLocalToRemote();
+      Logger.info('Returned %s - reopening', result);
+      const newDb: AsyncDatabase = await AsyncDatabase.open(this.cfg.remoteFileSync.localFileName);
+      rval = new SqliteDatabaseAccess(newDb, this.flags, this.extraConfig);
+      Logger.info('closeSyncReopen took %s', sw.dump());
+    } else {
+      Logger.info('Skipping close/sync/open - no change detected');
+      rval = db;
+    }
+
     return rval;
   }
 

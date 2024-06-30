@@ -49,6 +49,7 @@ export class S3SyncedFile implements RemoteFileSyncLike{
     })
   }
 
+
   private async initialize(): Promise<void> {
     Logger.info('Using local path %s to sync %s / %s', this._localFileName, this.config.s3CacheRatchetLike.getDefaultBucket(), this.config.s3Path);
     if (this.config.initMode === S3SyncedFileConfigInitMode.OnStartup) {
@@ -122,11 +123,26 @@ export class S3SyncedFile implements RemoteFileSyncLike{
     return output ? output.ContentLength : null;})();
   }
 
+  // Returns whether a fetch would occur right now, given optimizations
+  public get wouldFetch(): Promise<boolean> {
+    return (async ()=>{
+      const rval: boolean =  !this.hasFetchOptimization(S3SyncedFileOptimization.TreatSameSizeAsNoChange) || !(await this.localAndRemoteAreSameSize());
+      return rval;
+    })();
+  }
+   public get wouldPush(): Promise<boolean> {
+     return (async ()=>{
+       const rval: boolean =  !this.hasPushOptimization(S3SyncedFileOptimization.TreatSameSizeAsNoChange) || !(await this.localAndRemoteAreSameSize());
+       return rval;
+     })();
+   }
+
+
   public async sendLocalToRemote(): Promise<FileTransferResult> {
     const sw: StopWatch = new StopWatch();
     Logger.info('Sending local file to remote');
     let rval: FileTransferResult = null;
-    if (!this.hasPushOptimization(S3SyncedFileOptimization.TreatSameSizeAsNoChange) || !(await this.localAndRemoteAreSameSize())) {
+    if (await this.wouldPush) {
       try {
         if (this.config.backupMode===S3SyncedFileRemoteBackupMode.EveryUpload) {
           Logger.info('EveryUpload mode set - backing up');
@@ -194,7 +210,7 @@ export class S3SyncedFile implements RemoteFileSyncLike{
     try {
       const sw: StopWatch = new StopWatch();
 
-      if (!this.hasFetchOptimization(S3SyncedFileOptimization.TreatSameSizeAsNoChange) || !(await this.localAndRemoteAreSameSize())) {
+      if (await this.wouldFetch) {
         const req: GetObjectCommandInput = {
           Bucket: this.config.s3CacheRatchetLike.getDefaultBucket(),
           Key: this.config.s3Path,
