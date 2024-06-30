@@ -117,7 +117,7 @@ export class SqliteRemoteSyncDatabaseAccess implements DatabaseAccess {
   async onRequestSuccessOnly(type: DatabaseRequestType): Promise<void> {
     if (type === DatabaseRequestType.Modify && this.cfg.flushRemoteMode === FlushRemoteMode.Auto) {
       Logger.info('Successful modification with auto mode - flushing remote');
-      await this.flushToRemote();
+      await this.flushLocalToRemote();
     }
   }
 
