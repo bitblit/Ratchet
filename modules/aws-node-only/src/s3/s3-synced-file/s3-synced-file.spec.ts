@@ -9,7 +9,7 @@ import {
   S3Client,
   UploadPartCommand,
 } from '@aws-sdk/client-s3';
-import { Logger, WebStreamRatchet, StringRatchet } from '@bitblit/ratchet-common';
+import { Logger, WebStreamRatchet, StringRatchet, RemoteStatusData } from "@bitblit/ratchet-common";
 import { mockClient } from 'aws-sdk-client-mock';
 import { expect, test, describe, vi, beforeEach } from 'vitest';
 import { mock, MockProxy } from 'vitest-mock-extended';
@@ -37,11 +37,13 @@ describe('#S3SyncedFile', function () {
     };
     const test: S3SyncedFile = new S3SyncedFile(cfg);
 
-    Logger.info('Updated: %s', await test.remoteUpdatedEpochMS);
-    Logger.info('Local size: %s Remote Size %s', test.localFileBytes, await test.remoteSizeInBytes);
+    let remote: RemoteStatusData = await test.remoteStatusData;
+
+    Logger.info('Local size: %s Remote %j', test.localFileBytes, remote);
 
     test.directWriteValueToLocalFile('12345 : '+new Date());
     await test.sendLocalToRemote();
-    Logger.info('Local size: %s Remote Size %s', test.localFileBytes, await test.remoteSizeInBytes);
+    remote = await test.remoteStatusData;
+    Logger.info('Local size: %s Remote Size %s', test.localFileBytes, remote);
   });
 });

@@ -11,5 +11,6 @@ export interface S3SyncedFileConfig {
   backupMode?: S3SyncedFileRemoteBackupMode;
   fetchOptimizations?: S3SyncedFileOptimization[];
   pushOptimizations?: S3SyncedFileOptimization[];
+  remoteStatusTtlMs?: number;
   leaveTempFileOnDisk?: boolean; // If true, do not auto-delete
 }

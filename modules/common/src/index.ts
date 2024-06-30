@@ -80,6 +80,7 @@ export * from './network/restful-api-http-error.js';
 export * from './network/remote-file-sync/backup-result.js';
 export * from './network/remote-file-sync/file-transfer-result.js';
 export * from './network/remote-file-sync/remote-file-sync-like.js';
+export * from './network/remote-file-sync/remote-status-data.js';
 export * from './template/ratchet-template-renderer.js';
 export * from './third-party/google/google-recaptcha-ratchet.js';
 export * from './third-party/twilio/twilio-ratchet.js';

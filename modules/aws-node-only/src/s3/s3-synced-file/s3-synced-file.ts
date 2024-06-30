@@ -2,7 +2,7 @@ import {
   BackupResult,
   FileTransferResult,
   Logger, PromiseRatchet,
-  RemoteFileSyncLike,
+  RemoteFileSyncLike, RemoteStatusData,
   RequireRatchet,
   StopWatch
 } from "@bitblit/ratchet-common";
@@ -25,9 +25,8 @@ import { S3SyncedFileOptimization } from "./s3-synced-file-optimization";
 export class S3SyncedFile implements RemoteFileSyncLike{
   private readonly _localFileName: string;
 
+  private _remoteStatus: RemoteStatusData;
   private _lastSyncEpochMS: number;
-  private _remoteModifiedAtLastSyncEpochMS: number;
-
   private _loadingRemoteSignal: Promise<FileTransferResult>;
 
   constructor(private config: S3SyncedFileConfig) {
@@ -49,6 +48,23 @@ export class S3SyncedFile implements RemoteFileSyncLike{
     })
   }
 
+  public   get remoteStatusData(): Promise<RemoteStatusData> {
+      if (!this._remoteStatus || (this.config.remoteStatusTtlMs && (Date.now() - this._remoteStatus.updatedEpochMs) > this.config.remoteStatusTtlMs)) {
+        return (async ()=> {
+          const meta: HeadObjectCommandOutput = await this.fetchRemoteMeta();
+          this._remoteStatus = {
+            updatedEpochMs: Date.now(),
+            remoteSizeInBytes: meta.ContentLength,
+            remoteLastUpdatedEpochMs: meta.LastModified.getTime(),
+            remoteHash: meta.ETag
+          };
+          return this._remoteStatus;
+        })();
+      } else {
+        return Promise.resolve(this._remoteStatus);
+      }
+    }
+
 
   private async initialize(): Promise<void> {
     Logger.info('Using local path %s to sync %s / %s', this._localFileName, this.config.s3CacheRatchetLike.getDefaultBucket(), this.config.s3Path);
@@ -64,7 +80,7 @@ export class S3SyncedFile implements RemoteFileSyncLike{
     let rval: boolean = false;
     const localBytes: number = this.localFileBytes;
     if (localBytes!==null) {
-      const remoteBytes: number = await this.remoteSizeInBytes;
+      const remoteBytes: number = (await this.remoteStatusData).remoteSizeInBytes;
       rval = localBytes===remoteBytes;
       Logger.info('Local size is %s, remote is %s, same is %s', localBytes, remoteBytes, rval);
     }
@@ -79,10 +95,6 @@ export class S3SyncedFile implements RemoteFileSyncLike{
   public get lastSyncEpochMS(): number {
     return this._lastSyncEpochMS;
   }
-  public get remoteModifiedAtLastSyncEpochMS(): number {
-    return this._remoteModifiedAtLastSyncEpochMS;
-  }
-
   public get localFileName(): string {
     return this._localFileName;
   }
@@ -108,19 +120,6 @@ export class S3SyncedFile implements RemoteFileSyncLike{
 
   public async fetchRemoteMeta(): Promise<HeadObjectCommandOutput> {
     return this.config.s3CacheRatchetLike.fetchMetaForCacheFile(this.config.s3Path);
-  }
-
-  public get remoteUpdatedEpochMS(): Promise<number> {
-    return (async ()=>{
-      const output: HeadObjectCommandOutput = await this.fetchRemoteMeta();
-      return output ? output.LastModified.getTime() : null;
-    })();
-  }
-
-  public get remoteSizeInBytes(): Promise<number> {
-    return (async()=>{
-    const output: HeadObjectCommandOutput = await this.fetchRemoteMeta();
-    return output ? output.ContentLength : null;})();
   }
 
   // Returns whether a fetch would occur right now, given optimizations
@@ -151,6 +150,8 @@ export class S3SyncedFile implements RemoteFileSyncLike{
         }
         const out: CompleteMultipartUploadCommandOutput = await this.config.s3CacheRatchetLike.writeStreamToCacheFile(this.config.s3Path, fs.readFileSync(this._localFileName));
         Logger.silly('SendLocalToRemote: %j', out)
+
+        this._remoteStatus = null; // Clear data as now invalid (Force re-read)
         rval = FileTransferResult.Updated;
       } catch (err) {
         Logger.error('Failed to transfer %s : %s', this._localFileName, err, err);
@@ -225,7 +226,13 @@ export class S3SyncedFile implements RemoteFileSyncLike{
         await PromiseRatchet.resolveOnEvent(fileStream, ['close','finish'], ['error']);
         Logger.info('Pipe completed');
         this._lastSyncEpochMS = Date.now();
-        this._remoteModifiedAtLastSyncEpochMS = output.LastModified.getTime();
+
+        this._remoteStatus = { // Update this since it is now up-to-date as a side effect
+          updatedEpochMs: Date.now(),
+          remoteSizeInBytes: output.ContentLength,
+          remoteLastUpdatedEpochMs: output.LastModified.getTime(),
+          remoteHash: output.ETag
+        }
         Logger.info('Fetched remote to local, %d bytes in %s', output.ContentLength, sw.dump());
       } else {
         Logger.info('TreatSameSizeAsNoChange not enabled OR files are same size - skipping');
@@ -237,5 +244,6 @@ export class S3SyncedFile implements RemoteFileSyncLike{
       return FileTransferResult.Error;
     }
   }
+
 
 }

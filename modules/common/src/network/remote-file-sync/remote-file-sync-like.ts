@@ -4,15 +4,14 @@
 
 import { FileTransferResult } from "./file-transfer-result.js";
 import { BackupResult } from "./backup-result.js";
+import { RemoteStatusData } from "./remote-status-data";
 
 export interface RemoteFileSyncLike {
    get lastSyncEpochMS(): number ;
-   get remoteModifiedAtLastSyncEpochMS(): number ;
    get localFileName(): string ;
    get localFileBytes(): number ;
    get localFileUpdatedEpochMS(): number ;
-   get remoteUpdatedEpochMS(): Promise<number> ;
-   get remoteSizeInBytes(): Promise<number> ;
+   get remoteStatusData(): Promise<RemoteStatusData> ;
    get wouldFetch(): Promise<boolean>; // Returns whether a fetch would occur right now, given optimizations
    get wouldPush(): Promise<boolean>; // Returns whether a fetch would occur right now, given optimizations
    backupRemote(): Promise<BackupResult>;
