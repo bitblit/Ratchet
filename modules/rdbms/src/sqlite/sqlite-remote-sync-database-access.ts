@@ -46,6 +46,11 @@ export class SqliteRemoteSyncDatabaseAccess implements DatabaseAccess {
     this.cfg.flushRemoteMode = newMode;
   }
 
+  public changeFetchRemoteMode(newMode: FetchRemoteMode): void {
+    RequireRatchet.notNullOrUndefined(newMode, 'newMode');
+    this.cfg.fetchRemoteMode = newMode;
+  }
+
   public async flushLocalToRemote(): Promise<void> {
     Logger.info('Flushing to remote (Flush mode is %s)', this.cfg.flushRemoteMode);
     this.cacheDb = this.closeSyncReopen(this.db(), false);
