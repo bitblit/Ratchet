@@ -1,8 +1,9 @@
-import { Bucket, BucketEncryption, IBucket } from 'aws-cdk-lib/aws-s3';
-import { Duration, Stack } from 'aws-cdk-lib';
-import { Construct } from 'constructs';
-import path from 'path';
+import { Bucket, BucketEncryption } from "aws-cdk-lib/aws-s3";
+import { Duration, Stack } from "aws-cdk-lib";
+import { Construct } from "constructs";
+import path from "path";
 import {
+  Behavior,
   CloudFrontAllowedCachedMethods,
   CloudFrontAllowedMethods,
   CloudFrontWebDistribution,
@@ -12,14 +13,15 @@ import {
   OriginProtocolPolicy,
   PriceClass,
   SourceConfiguration,
-  ViewerProtocolPolicy,
-} from 'aws-cdk-lib/aws-cloudfront';
-import { HostedZone, RecordSet, RecordType } from 'aws-cdk-lib/aws-route53';
-import { CloudFrontTarget } from 'aws-cdk-lib/aws-route53-targets';
-import { BucketDeployment, Source } from 'aws-cdk-lib/aws-s3-deployment';
-import { EpsilonWebsiteStackProps, EpsilonWebsiteStackPropsRoute53Handling } from './epsilon-website-stack-props.js';
-import { StringRatchet } from '@bitblit/ratchet-common';
-import { ErrorRatchet } from '@bitblit/ratchet-common';
+  ViewerProtocolPolicy
+} from "aws-cdk-lib/aws-cloudfront";
+import { HostedZone, RecordSet, RecordType } from "aws-cdk-lib/aws-route53";
+import { CloudFrontTarget } from "aws-cdk-lib/aws-route53-targets";
+import { BucketDeployment, Source } from "aws-cdk-lib/aws-s3-deployment";
+import { EpsilonWebsiteStackProps, EpsilonWebsiteStackPropsRoute53Handling } from "./epsilon-website-stack-props.js";
+import { ErrorRatchet, StringRatchet } from "@bitblit/ratchet-common";
+import { BucketAndSourceConfiguration } from "./bucket-and-source-configuration.js";
+import { EpsilonWebsiteCacheBehavior } from "./epsilon-website-cache-behavior";
 
 export class EpsilonWebsiteStack extends Stack {
   constructor(scope: Construct, id: string, props?: EpsilonWebsiteStackProps) {
@@ -80,6 +82,7 @@ export class EpsilonWebsiteStack extends Stack {
               pathPattern: eb.pathPattern,
               isDefaultBehavior: false,
               compress: true,
+
               defaultTtl: Duration.seconds(1), //  Duration.days(100),
               minTtl: Duration.seconds(1), //Duration.days(90),
               maxTtl: Duration.seconds(1), //Duration.days(110),
@@ -96,23 +99,51 @@ export class EpsilonWebsiteStack extends Stack {
     //websiteBucket.grantReadWrite(webHandler);
     //websiteBucket.grantReadWrite(bgHandler);
 
+    if (props.websiteCacheBehavior===EpsilonWebsiteCacheBehavior.Custom && !props?.websiteBehaviorOverride?.length) {
+      throw ErrorRatchet.fErr('Custom cache behavior selected but no custom provided');
+    }
+    if (props.websiteCacheBehavior!==EpsilonWebsiteCacheBehavior.Custom && props?.websiteBehaviorOverride?.length) {
+      throw ErrorRatchet.fErr('Custom cache behavior not selected but custom provided');
+    }
+    let websiteBehaviors: Behavior[];
+    switch (props.websiteCacheBehavior) {
+      // case EpsilonWebsiteCacheBehavior.Default: (done below)
+      case EpsilonWebsiteCacheBehavior.NoCache:
+        websiteBehaviors =  [
+          {
+            isDefaultBehavior: true,
+            compress: true,
+            defaultTtl: Duration.seconds(0), //  Duration.days(100),
+            minTtl: Duration.seconds(0), //Duration.days(90),
+            maxTtl: Duration.seconds(0), //Duration.days(110),
+            forwardedValues: {
+              queryString: false,
+            },
+          }
+        ]; break;
+      case EpsilonWebsiteCacheBehavior.Custom:
+        websiteBehaviors = props.websiteBehaviorOverride; break;
+      default:
+        websiteBehaviors =  [
+          {
+            isDefaultBehavior: true,
+            compress: true,
+            defaultTtl: Duration.seconds(1), //  Duration.days(100),
+            minTtl: Duration.seconds(1), //Duration.days(90),
+            maxTtl: Duration.seconds(1), //Duration.days(110),
+            forwardedValues: {
+              queryString: false,
+            },
+          }
+        ]; break;
+    }
+
     const assetSource: SourceConfiguration = {
       s3OriginSource: {
         s3BucketSource: websiteBucket,
         originAccessIdentity: originAccessId,
       },
-      behaviors: [
-        {
-          isDefaultBehavior: true,
-          compress: true,
-          defaultTtl: Duration.seconds(1), //  Duration.days(100),
-          minTtl: Duration.seconds(1), //Duration.days(90),
-          maxTtl: Duration.seconds(1), //Duration.days(110),
-          forwardedValues: {
-            queryString: false,
-          },
-        },
-      ],
+      behaviors:websiteBehaviors
     };
 
     //const parseUrl: URL = new URL(fnUrl.url);
@@ -211,7 +242,3 @@ export class EpsilonWebsiteStack extends Stack {
   }
 }
 
-export interface BucketAndSourceConfiguration {
-  bucket: IBucket;
-  sourceConfig: SourceConfiguration;
-}
