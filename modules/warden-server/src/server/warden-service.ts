@@ -432,7 +432,7 @@ export class WardenService {
       attestationType: 'none',
       // Prevent users from re-registering existing authenticators
       excludeCredentials: entry.webAuthnAuthenticators.map((authenticator) => ({
-        id: Base64Ratchet.decodeBase64UrlStringToString(authenticator.credentialPublicKeyBase64),
+        id: authenticator.credentialPublicKeyBase64,
         //type: 'public-key',
         // Optional
         transports: authenticator.transports as unknown as AuthenticatorTransportFuture[],
