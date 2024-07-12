@@ -78,8 +78,7 @@ export class AlbAthenaLogRatchet {
     let tableCreateQry: string = readFileSync(
       path.join(EsmRatchet.fetchDirName(import.meta.url), '../static/albAthenaTableCreate.txt'),
     ).toString();
-    tableCreateQry = tableCreateQry.split('{{TABLE NAME}}').join(this.athenaTableName);
-    tableCreateQry = tableCreateQry.split('{{ALB_LOG_ROOT}}').join(rootPath);
+    tableCreateQry = StringRatchet.simpleTemplateFill(tableCreateQry, {TABLE_NAME: this.athenaTableName, ALB_LOG_ROOT: rootPath}, true);
     Logger.info('Creating table with %s', tableCreateQry);
 
     try {

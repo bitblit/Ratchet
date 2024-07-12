@@ -313,4 +313,23 @@ export class StringRatchet {
     }
     return rval;
   }
+
+  // Performs simple template fills of the form
+  // This is ${value} output, where value=A, becomes This is A output
+  // Very similar to what handlebars will do, or for that matter what
+  // javascript will do natively with backticks, but typesafe and can
+  // be passed around.  Default template style is ${value} to match JS backticks
+  // Note that any
+  public static simpleTemplateFill(template: string, fillers: Record<string, any>, errorOnMissingFiller:boolean = false, opener: string='${', closer:string='}'): string {
+    let rval: string = template;
+    if (rval && fillers) {
+      Object.keys(fillers).forEach(key=>{
+        rval = rval.split(opener+key+closer).join(fillers[key]);
+      });
+    }
+    if (errorOnMissingFiller && rval?.indexOf(opener)>=0) {
+      throw new Error('Template has unfilled variables:'+rval);
+    }
+    return rval;
+  }
 }

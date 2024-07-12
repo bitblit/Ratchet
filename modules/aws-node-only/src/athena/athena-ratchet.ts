@@ -48,18 +48,6 @@ export class AthenaRatchet {
     return rval;
   }
 
-  public static applyParamsToQuery<T>(query: string, queryParams: T): string {
-    let rval: string = query;
-    if (!!rval && !!queryParams) {
-      Object.keys(queryParams).forEach((k) => {
-        const val: string = StringRatchet.safeString(queryParams[k]);
-        const kk: string = '{' + k + '}';
-        rval = rval.split(kk).join(val);
-      });
-    }
-    return rval;
-  }
-
   public async fetchQueryIds(): Promise<string[]> {
     const params = {
       // MaxResults: 0,
@@ -154,7 +142,7 @@ export class AthenaRatchet {
   private async runQueryToOutputLocation(queryIn: string, queryParams: any = {}, pingTimeMS = 2000): Promise<string> {
     let rval: string = null;
     const timer: StopWatch = new StopWatch();
-    const query: string = AthenaRatchet.applyParamsToQuery(queryIn, queryParams);
+    const query: string = StringRatchet.simpleTemplateFill(queryIn, queryParams, true, '{', '}');
 
     try {
       Logger.info('Starting query : %s', query);

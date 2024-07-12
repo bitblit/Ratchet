@@ -5,7 +5,7 @@ import { Logger } from '../../logger/logger.js';
 import { StringRatchet } from '../../lang/string-ratchet.js';
 import fetch from 'cross-fetch';
 export class GoogleRecaptchaRatchet {
-  private static readonly GOOGLE_VERIFY_URL: string = 'https://www.google.com/recaptcha/api/siteverify?secret={{KEY}}&response={{TOKEN}}';
+  private static readonly GOOGLE_VERIFY_URL: string = 'https://www.google.com/recaptcha/api/siteverify?secret=${KEY}&response=${TOKEN}';
 
   public static async verifyRecaptchaToken(
     keySecret: string,
@@ -21,9 +21,7 @@ export class GoogleRecaptchaRatchet {
     }
 
     Logger.info('Validating Recaptcha via Google API : %s', token);
-    let url: string = GoogleRecaptchaRatchet.GOOGLE_VERIFY_URL;
-    url = url.split('{{KEY}}').join(keySecret);
-    url = url.split('{{TOKEN}}').join(token);
+    let url: string = StringRatchet.simpleTemplateFill(GoogleRecaptchaRatchet.GOOGLE_VERIFY_URL, {KEY: keySecret, TOKEN: token}, true);
     try {
       const resp: Response = await fetchFn(url);
       const body: any = await resp.json();

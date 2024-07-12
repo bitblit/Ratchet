@@ -7,7 +7,7 @@ export class LocalFetchQueryProvider implements GraphqlRatchetQueryProvider {
   private cacheMap: Map<string, string> = new Map<string, string>();
 
   constructor(
-    private pathTemplate: string = 'assets/gql/{{QUERY_NAME}}.gql',
+    private pathTemplate: string = 'assets/gql/${QUERY_NAME}.gql',
     private forcePathToLowerCase: boolean = false,
   ) {}
 
@@ -15,7 +15,7 @@ export class LocalFetchQueryProvider implements GraphqlRatchetQueryProvider {
     let rval: string = this.cacheMap.get(qry.toLowerCase());
     if (!rval) {
       const tgt: string = this.forcePathToLowerCase ? qry.toLowerCase() : qry;
-      const pathInput: string = this.pathTemplate.split('{{QUERY_NAME}}').join(tgt);
+      const pathInput: string = StringRatchet.simpleTemplateFill(this.pathTemplate, {QUERY_NAME: tgt}, true);
       Logger.info('Cache miss, loading %s from %s', qry, pathInput);
       const qryResp: Response = await fetch(pathInput);
       rval = StringRatchet.trimToNull(await qryResp.text());
