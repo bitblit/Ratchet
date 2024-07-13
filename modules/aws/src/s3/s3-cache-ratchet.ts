@@ -322,6 +322,17 @@ export class S3CacheRatchet implements S3CacheRatchetLike {
     }
   }
 
+  // Shortcut to copy/delete
+  public async renameFile(srcKey: string, dstKey: string,  srcBucket: string = null,
+                          dstBucket: string = null): Promise<CopyObjectCommandOutput> {
+    Logger.info('Rename %s to %s (%s/%s)', srcKey, dstKey, srcBucket, dstBucket);
+    const output: CopyObjectCommandOutput = await this.copyFile(srcKey, dstKey, srcBucket, dstBucket);
+    if (output) {
+      await this.removeCacheFile(srcKey, srcBucket);
+    }
+    return output;
+  }
+
   public async copyFile(
     srcKey: string,
     dstKey: string,
