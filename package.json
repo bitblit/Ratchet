@@ -205,6 +205,7 @@
   "resolutions": {
     "@smithy/types": "^2.3.3",
     "@babel/traverse": "^7.23.2",
+    "braces": "^3.0.3",
     "ajv": "^6.12.6",
     "ansi-regex": "^5.0.1",
     "browserslist": "^4.21.5",

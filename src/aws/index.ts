@@ -53,6 +53,7 @@ export * from './lambda/lambda-event-type-guards';
 export * from './model/cloud-watch-metrics-minute-level-dynamo-count-request';
 export * from './model/cloud-watch-metrics-unit';
 export * from './model/dynamo-count-result';
+export * from './rds/aws-rds-cert-2023';
 export * from './route53/route-53-ratchet';
 export * from './runtime-parameter/cached-stored-runtime-parameter';
 export * from './runtime-parameter/dynamo-runtime-parameter-provider';
