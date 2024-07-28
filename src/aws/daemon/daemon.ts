@@ -11,7 +11,9 @@ import { DaemonProcessStatePublicToken } from './daemon-process-state-public-tok
 import { S3Client } from '@aws-sdk/client-s3';
 import { S3CacheRatchetLike } from '../s3/s3-cache-ratchet-like';
 import { JwtRatchetLike } from '../../common/jwt-ratchet-like';
+import { injectable } from 'tsyringe';
 
+@injectable()
 export class Daemon implements DaemonLike {
   public static DEFAULT_DEFAULT_GROUP: string = 'DEFAULT';
 

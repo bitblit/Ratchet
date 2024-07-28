@@ -32,7 +32,9 @@ import { Upload, Progress } from '@aws-sdk/lib-storage';
 import { Readable } from 'stream';
 import { S3CacheRatchetLike } from './s3-cache-ratchet-like';
 import { ExpandedFileChildren } from './expanded-file-children';
+import { injectable } from 'tsyringe';
 
+@injectable()
 export class S3CacheRatchet implements S3CacheRatchetLike {
   constructor(
     private s3: S3Client,

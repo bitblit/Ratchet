@@ -23,7 +23,9 @@ import { ErrorRatchet } from '../../common/error-ratchet';
 import { Logger } from '../../common/logger';
 import { PromiseRatchet } from '../../common/promise-ratchet';
 import { LocalSecondaryIndex } from '@aws-sdk/client-dynamodb/dist-types/models/models_0';
+import { injectable } from 'tsyringe';
 
+@injectable()
 export class DynamoTableRatchet {
   constructor(private awsDDB: DynamoDBClient) {
     if (!awsDDB) {

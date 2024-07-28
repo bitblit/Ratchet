@@ -22,7 +22,9 @@ import { Logger } from '../../common/logger';
 import { CsvRatchet } from '../../node-csv/csv-ratchet';
 import { PromiseRatchet } from '../../common/promise-ratchet';
 import { StopWatch } from '../../common/stop-watch';
+import { injectable } from 'tsyringe';
 
+@injectable()
 export class AthenaRatchet {
   constructor(
     private athena: AthenaClient,
