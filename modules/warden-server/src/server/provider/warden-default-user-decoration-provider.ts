@@ -7,7 +7,9 @@ import { WardenEntrySummary } from '@bitblit/ratchet-warden-common';
 import { WardenUserDecoration } from '@bitblit/ratchet-warden-common';
 import { WardenUtils } from '@bitblit/ratchet-warden-common';
 import { WardenUserDecorationProvider } from './warden-user-decoration-provider.js';
+import { injectable } from "tsyringe";
 
+@injectable()
 export class WardenDefaultUserDecorationProvider implements WardenUserDecorationProvider<WardenEntrySummary> {
   public async fetchDecoration(wardenUser: WardenEntry): Promise<WardenUserDecoration<WardenEntrySummary>> {
     // Default to 1 hour

@@ -1,9 +1,11 @@
 import { StringRatchet } from '@bitblit/ratchet-common';
 import { SyncLockProvider } from './sync-lock-provider.js';
+import { injectable } from "tsyringe";
 
 /**
  * Simple in-memory implementation of the SyncLockProvider interface
  */
+@injectable()
 export class MemorySyncLock implements SyncLockProvider {
   private _locks: Map<string, number> = new Map<string, number>();
 

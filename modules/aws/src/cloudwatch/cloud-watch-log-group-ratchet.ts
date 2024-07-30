@@ -10,7 +10,9 @@ import {
   LogStream,
 } from '@aws-sdk/client-cloudwatch-logs';
 import { Logger, StopWatch } from '@bitblit/ratchet-common';
+import { injectable } from "tsyringe";
 
+@injectable()
 export class CloudWatchLogGroupRatchet {
   constructor(
     private logGroup: string,

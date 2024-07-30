@@ -9,12 +9,14 @@ import { S3CacheRatchet } from '@bitblit/ratchet-aws';
 import { StringRatchet } from '@bitblit/ratchet-common';
 import { ErrorRatchet } from '@bitblit/ratchet-common';
 import { WardenContact } from '@bitblit/ratchet-warden-common';
+import { injectable } from "tsyringe";
 
 /*
 The most quick and dirty implementation of the storage provider.  Not a good choice if you have
 multiple users, etc, since it has no synchronization, etc.  Only really useful for very low traffic
 websites, or getting a demo hacked out quickly
  */
+@injectable()
 export class WardenS3SingleFileStorageProvider implements WardenStorageProvider {
   private ratchet: S3CacheRatchet;
   constructor(

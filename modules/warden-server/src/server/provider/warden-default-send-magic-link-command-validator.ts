@@ -4,7 +4,9 @@
  */
 import { SendMagicLink, WardenEntry } from '@bitblit/ratchet-warden-common';
 import { WardenSendMagicLinkCommandValidator } from './warden-send-magic-link-command-validator.js';
+import { injectable } from "tsyringe";
 
+@injectable()
 export class WardenDefaultSendMagicLinkCommandValidator implements WardenSendMagicLinkCommandValidator {
   public async allowMagicLinkCommand(cmd: SendMagicLink, origin: string, loggedInUser: WardenEntry): Promise<void> {
     if (!cmd) {

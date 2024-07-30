@@ -111,11 +111,15 @@ export class SqliteStyleConnectionProvider implements DatabaseAccessProvider {
     try {
       if (dbCfg.remoteFileSync) {
         rval = new SqliteRemoteSyncDatabaseAccess(dbCfg.remoteFileSync, dbCfg.flags, _additionalConfig);
-      } else {
-        if (!fs.existsSync(dbCfg.filePath)) {
-          throw ErrorRatchet.fErr('Requested file does not exist : %s', dbCfg.filePath);
+      } else if (dbCfg.localFile) {
+        if (!fs.existsSync(dbCfg.localFile.filePath)) {
+          throw ErrorRatchet.fErr('Requested file does not exist : %s', dbCfg.localFile.filePath);
         }
-        const db: AsyncDatabase = await AsyncDatabase.open(dbCfg.filePath);
+        const db: AsyncDatabase = await AsyncDatabase.open(dbCfg.localFile.filePath);
+        rval = new SqliteDatabaseAccess(db, dbCfg.flags, _additionalConfig);
+      } else {
+        Logger.info('Neither remote nor local file specified, using memory');
+        const db: AsyncDatabase = await AsyncDatabase.open(':memory:');
         rval = new SqliteDatabaseAccess(db, dbCfg.flags, _additionalConfig);
       }
     } catch (err) {
@@ -157,11 +161,14 @@ export class SqliteStyleConnectionProvider implements DatabaseAccessProvider {
     if (!cfg) {
       rval.push('The config is null');
     } else {
-      if (!StringRatchet.trimToNull(cfg.filePath) && !cfg.remoteFileSync) {
-        rval.push('Must define either filePath or remoteFileSync');
-      }
-      if (StringRatchet.trimToNull(cfg.filePath) && cfg.remoteFileSync) {
+      if (cfg.localFile && cfg.remoteFileSync) {
         rval.push('May not define both filePath and remoteFileSync');
+      }
+      if (cfg.localFile && !StringRatchet.trimToNull(cfg.localFile.filePath)) {
+        rval.push('Localfile provided but filepath is not');
+      }
+      if (cfg.remoteFileSync && !cfg.remoteFileSync.remoteFileSync) {
+        rval.push('remoteFileSync provided but remoteFileSync value within is not');
       }
       rval.push(StringRatchet.trimToNull(cfg.label) ? null : 'label is required and non-empty');
     }

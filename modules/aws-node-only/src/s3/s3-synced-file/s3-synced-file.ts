@@ -20,8 +20,10 @@ import { S3SyncedFileConfigInitMode } from "./s3-synced-file-config-init-mode";
 import { DateTime } from "luxon";
 import { S3SyncedFileRemoteBackupMode } from "./s3-synced-file-remote-backup-mode";
 import { S3SyncedFileOptimization } from "./s3-synced-file-optimization";
+import { injectable } from "tsyringe";
 
 // Keeps a local file up-to-date with a file on S3
+@injectable()
 export class S3SyncedFile implements RemoteFileSyncLike{
   private readonly _localFileName: string;
 

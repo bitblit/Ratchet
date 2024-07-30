@@ -1,6 +1,8 @@
 import { Logger, RequireRatchet } from '@bitblit/ratchet-common';
 import { PublishCommand, PublishCommandInput, PublishCommandOutput, SNSClient } from '@aws-sdk/client-sns';
+import { injectable } from "tsyringe";
 
+@injectable()
 export class SnsRatchet {
   constructor(private sns: SNSClient = new SNSClient({ region: 'us-east-1' }), private topicArn: string) {
     RequireRatchet.notNullOrUndefined(this.sns, 'sns');

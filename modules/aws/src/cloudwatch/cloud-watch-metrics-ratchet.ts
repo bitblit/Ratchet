@@ -13,7 +13,9 @@ import { KeyValue, Logger } from '@bitblit/ratchet-common';
 import { DynamoCountResult } from '../model/dynamo-count-result.js';
 import { CloudWatchMetricsMinuteLevelDynamoCountRequest } from '../model/cloud-watch-metrics-minute-level-dynamo-count-request.js';
 import { DateTime } from 'luxon';
+import { injectable } from "tsyringe";
 
+@injectable()
 export class CloudWatchMetricsRatchet {
   private cw: CloudWatchClient;
 

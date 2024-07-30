@@ -22,7 +22,9 @@ import fs, { WriteStream } from 'fs';
 import { CsvRatchet } from '@bitblit/ratchet-node-only';
 import { RequireRatchet } from '@bitblit/ratchet-common';
 import { Readable } from 'stream';
+import { injectable } from "tsyringe";
 
+@injectable()
 export class AthenaRatchet {
   constructor(
     private athena: AthenaClient,

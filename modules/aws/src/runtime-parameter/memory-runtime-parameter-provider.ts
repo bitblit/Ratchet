@@ -1,11 +1,13 @@
 import { RuntimeParameterProvider } from './runtime-parameter-provider.js';
 import { StoredRuntimeParameter } from './stored-runtime-parameter.js';
 import { Logger } from '@bitblit/ratchet-common';
+import { injectable } from "tsyringe";
 
 /**
  * Very simple class, basically here just for unit testing although I suppose you could
  * use it for something else
  */
+@injectable()
 export class MemoryRuntimeParameterProvider implements RuntimeParameterProvider {
   constructor(private data: Promise<Record<string, StoredRuntimeParameter>> = Promise.resolve({})) {}
 

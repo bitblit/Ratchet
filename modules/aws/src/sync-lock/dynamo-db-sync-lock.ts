@@ -3,7 +3,9 @@ import { DynamoRatchet } from '../dynamodb/dynamo-ratchet.js';
 import { DeleteCommandOutput, PutCommand, PutCommandOutput, ScanCommandInput } from '@aws-sdk/lib-dynamodb';
 import { SyncLockProvider } from './sync-lock-provider.js';
 import { ConditionalCheckFailedException, ReturnConsumedCapacity } from '@aws-sdk/client-dynamodb';
+import { injectable } from "tsyringe";
 
+@injectable()
 export class DynamoDbSyncLock implements SyncLockProvider {
   constructor(
     private ratchet: DynamoRatchet,

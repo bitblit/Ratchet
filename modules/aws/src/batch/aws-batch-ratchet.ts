@@ -10,10 +10,12 @@ import {
   SubmitJobCommandOutput,
 } from '@aws-sdk/client-batch';
 import { Logger, RequireRatchet } from '@bitblit/ratchet-common';
+import { injectable } from "tsyringe";
 
 /**
  * Ratchet for simplifying interacting with AWS Batch
  */
+@injectable()
 export class AwsBatchRatchet {
   constructor(private _batchClient: BatchClient, private _defaultQueueName?: string, private _defaultJobDefinition?: string) {}
 

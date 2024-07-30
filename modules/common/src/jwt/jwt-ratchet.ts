@@ -9,6 +9,7 @@ import { JwtRatchetLike } from './jwt-ratchet-like.js';
 import { JwtRatchetConfig } from "./jwt-ratchet-config";
 import jsonwebtoken from 'jsonwebtoken';
 import { EsmRatchet } from "../lang/esm-ratchet";
+import { injectable } from "tsyringe";
 
 /**
  * Functions to help with creating and decoding JWTs
@@ -19,6 +20,7 @@ import { EsmRatchet } from "../lang/esm-ratchet";
  * accepting promises here, we make it easy to do JwtRatchet construction in a place (like an IOT container)
  * that itself must be synchronous
  */
+@injectable()
 export class JwtRatchet implements JwtRatchetLike {
   private static readonly EXPIRED_FLAG_NAME: string = '__jwtServiceExpiredFlag';
 

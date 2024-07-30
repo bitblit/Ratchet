@@ -4,7 +4,9 @@ import { Logger, RequireRatchet } from '@bitblit/ratchet-common';
 import { CsvRatchet, MultiStream } from '@bitblit/ratchet-node-only';
 import unzipper from 'unzipper';
 import { DateTime } from 'luxon';
+import { injectable } from "tsyringe";
 
+@injectable()
 export class EmailToDbInsertProcessor implements ParsedEmailProcessor<EmailToDbStatement[]> {
   public canProcess(mail: ParsedMail): boolean {
     return true;

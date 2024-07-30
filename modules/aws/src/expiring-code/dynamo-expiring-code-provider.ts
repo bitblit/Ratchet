@@ -3,7 +3,9 @@ import { DynamoRatchet } from '../dynamodb/dynamo-ratchet.js';
 import { ExpiringCode } from './expiring-code.js';
 import { DynamoTableRatchet } from '../dynamodb/dynamo-table-ratchet.js';
 import { PutCommandOutput } from '@aws-sdk/lib-dynamodb';
+import { injectable } from "tsyringe";
 
+@injectable()
 export class DynamoExpiringCodeProvider implements ExpiringCodeProvider {
   constructor(
     private tableName: string,

@@ -11,6 +11,7 @@ import {
 } from '@aws-sdk/client-s3';
 import { Logger, PromiseRatchet, RequireRatchet } from '@bitblit/ratchet-common';
 import { Upload } from '@aws-sdk/lib-storage';
+import { injectable } from "tsyringe";
 
 export interface S3LocationSyncRatchetConfig {
   srcS3: S3Client;
@@ -36,6 +37,7 @@ interface S3Object {
   LastModified: Date;
 }
 
+@injectable()
 export class S3LocationSyncRatchet {
   private config: S3LocationSyncRatchetConfig;
 

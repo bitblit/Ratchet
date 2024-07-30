@@ -3,6 +3,7 @@ import { SendRawEmailCommand, SendRawEmailCommandOutput, SendRawEmailRequest, SE
 import { DateTime } from 'luxon';
 import { CompleteMultipartUploadCommandOutput } from '@aws-sdk/client-s3';
 import { S3CacheRatchetLike } from '../s3/s3-cache-ratchet-like';
+import { injectable } from "tsyringe";
 
 /**
  * Generic Mail Sender for AWS.
@@ -11,6 +12,7 @@ import { S3CacheRatchetLike } from '../s3/s3-cache-ratchet-like';
  * ses: AWS SES handler, properly configured
  * defaultSendingAddress:
  */
+@injectable()
 export class SesMailSendingProvider implements MailSendingProvider<SendRawEmailCommandOutput, CompleteMultipartUploadCommandOutput> {
   constructor(
     private _ses: SESClient,

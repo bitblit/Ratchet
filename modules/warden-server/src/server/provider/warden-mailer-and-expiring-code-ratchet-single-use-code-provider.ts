@@ -8,6 +8,7 @@ import { WardenSingleUseCodeProvider } from './warden-single-use-code-provider';
 import { Base64Ratchet, ErrorRatchet, Logger, Mailer, ReadyToSendEmail, SendEmailResult, StringRatchet } from '@bitblit/ratchet-common';
 import { WardenMailerAndExpiringCodeRatchetSingleUseCodeProviderOptions } from './warden-mailer-and-expiring-code-ratchet-single-user-provider-options.js';
 import { ExpiringCode, ExpiringCodeRatchet } from '@bitblit/ratchet-aws';
+import { injectable } from "tsyringe";
 
 /**
  * Classes implementing WardenSingleUseCodeProvider are able to
@@ -15,6 +16,7 @@ import { ExpiringCode, ExpiringCodeRatchet } from '@bitblit/ratchet-aws';
  * provided by the user
  **/
 
+@injectable()
 export class WardenMailerAndExpiringCodeRatchetSingleUseCodeProvider implements WardenSingleUseCodeProvider {
   private static defaultOptions(): WardenMailerAndExpiringCodeRatchetSingleUseCodeProviderOptions {
     const rval: WardenMailerAndExpiringCodeRatchetSingleUseCodeProviderOptions = {

@@ -1,10 +1,12 @@
 import { ErrorRatchet, Logger, PromiseRatchet, RequireRatchet } from '@bitblit/ratchet-common';
 import { EnvironmentServiceProvider } from './environment-service-provider.js';
 import { EnvironmentServiceConfig } from './environment-service-config.js';
+import { injectable } from "tsyringe";
 
 /**
  * Wraps up a EnvironmentServiceProvider and provides caching and retry-on-failure logic
  */
+@injectable()
 export class EnvironmentService<T> {
   private readPromiseCache: Map<string, Promise<any>> = new Map();
 

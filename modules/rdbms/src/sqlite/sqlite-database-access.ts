@@ -38,7 +38,9 @@ export class SqliteDatabaseAccess implements DatabaseAccess {
   }
 
   escape(value: any): string {
-    return SqlString.escape(value);
+    let rval: string = SqlString.escape(value);
+    rval = rval.replace('\\\'', '\'\''); // For some reason sqlite uses '' as the escape for '...
+    return rval;
   }
 
   async onRequestFailureOnly(_type: DatabaseRequestType): Promise<void> {}

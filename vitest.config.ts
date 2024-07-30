@@ -4,6 +4,7 @@ export default defineConfig({
   test: {
     pool: 'forks',
     passWithNoTests: true,
+    setupFiles: ['../../vitest.setup.ts'],
     coverage: {
       reportsDirectory: 'artifacts/coverage',
       provider: 'istanbul', // or 'v8'

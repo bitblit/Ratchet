@@ -1,6 +1,6 @@
 import { Logger } from '@bitblit/ratchet-common';
 import { GetQueueAttributesCommand, GetQueueAttributesResult, SQSClient } from '@aws-sdk/client-sqs';
-import { ModelValidator } from '@bitblit/ratchet-misc';
+//import { ModelValidator } from '@bitblit/ratchet-misc';
 import { AwsSqsSnsBackgroundManager } from './aws-sqs-sns-background-manager.js';
 import { BackgroundConfig } from '../../config/background/background-config.js';
 import { EchoProcessor } from '../../built-in/background/echo-processor.js';
@@ -22,7 +22,7 @@ describe('#createEntry', function () {
   const fakeAccountNumber: string = '123456789012';
   let backgroundConfig: BackgroundConfig;
   let backgroundAwsConfig: BackgroundAwsConfig;
-  const fakeModelValidator: ModelValidator = new ModelValidator({ BackgroundBuiltInSampleInputValidatedProcessor: {} });
+  //const fakeModelValidator: ModelValidator = new ModelValidator({ BackgroundBuiltInSampleInputValidatedProcessor: {} });
 
   const echoProcessor: EchoProcessor = new EchoProcessor();
   const noOpProcessor: NoOpProcessor = new NoOpProcessor();

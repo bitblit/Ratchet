@@ -6,7 +6,9 @@ import { Logger } from '@bitblit/ratchet-common';
 import { SimpleCacheStorageProvider } from './simple-cache-storage-provider.js';
 import { SimpleCacheObjectWrapper } from './simple-cache-object-wrapper.js';
 import { SimpleCacheReadOptions } from './simple-cache-read-options.js';
+import { injectable } from "tsyringe";
 
+@injectable()
 export class SimpleCache {
   // Default 1 minute expiration
   constructor(

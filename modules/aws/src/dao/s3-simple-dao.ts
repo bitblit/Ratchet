@@ -7,7 +7,9 @@ import { S3CacheRatchet } from '../s3/s3-cache-ratchet.js';
 import { SimpleDaoItem } from './simple-dao-item.js';
 import { DeleteObjectOutput, PutObjectOutput } from '@aws-sdk/client-s3';
 import { S3CacheRatchetLike } from '../s3/s3-cache-ratchet-like.js';
+import { injectable } from "tsyringe";
 
+@injectable()
 export class S3SimpleDao<T extends SimpleDaoItem> {
   constructor(private cache: S3CacheRatchetLike, private prefix?: string) {
     if (!cache) {

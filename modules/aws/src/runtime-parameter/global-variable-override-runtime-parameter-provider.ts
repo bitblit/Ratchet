@@ -1,6 +1,7 @@
 import { RuntimeParameterProvider } from './runtime-parameter-provider.js';
 import { StoredRuntimeParameter } from './stored-runtime-parameter.js';
 import { ErrorRatchet, RequireRatchet, StringRatchet } from '@bitblit/ratchet-common';
+import { injectable } from "tsyringe";
 
 /**
  * Provides parameters for a runtime parameter from an global (ie, process.env or global.xx) variable, where the key follows
@@ -9,6 +10,7 @@ import { ErrorRatchet, RequireRatchet, StringRatchet } from '@bitblit/ratchet-co
  * "Simple" because it forces all ttls to be the same value (ignores what is passed in) so that the
  * envvar itself can be just a string instead of a complex value
  */
+@injectable()
 export class GlobalVariableOverrideRuntimeParameterProvider implements RuntimeParameterProvider {
   private options: GlobalVariableOverrideRuntimeParameterProviderOptions = {
     globalTTL: 1,

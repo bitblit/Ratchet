@@ -20,7 +20,9 @@ import {
   StopQueryCommandOutput,
 } from '@aws-sdk/client-cloudwatch-logs';
 import { Logger, PromiseRatchet, RequireRatchet, StringRatchet } from '@bitblit/ratchet-common';
+import { injectable } from "tsyringe";
 
+@injectable()
 export class CloudWatchLogsRatchet {
   private static readonly MAX_DELETE_RETRIES = 5;
   private cwLogs: CloudWatchLogsClient;

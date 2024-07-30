@@ -1,5 +1,7 @@
 import { RequireRatchet } from '@bitblit/ratchet-common';
+import { injectable } from "tsyringe";
 
+@injectable()
 export class S3Ratchet {
   // Returns whether the URL passed is s3 valid (not whether it exists or not)
   public static checkS3UrlForValidity(value: string): boolean {

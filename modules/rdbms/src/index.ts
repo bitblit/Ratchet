@@ -18,7 +18,7 @@ export * from './model/query-defaults.js';
 export * from './model/query-text-provider.js';
 export * from './model/request-results.js';
 export * from './model/sort-direction.js';
-export * from './model/testing-query-text-provider.js';
+export * from './model/simple-query-text-provider';
 export * from './model/transaction-isolation-level.js';
 export * from './model/ssh/ssh-tunnel-config.js';
 export * from './model/ssh/ssh-tunnel-container.js';

@@ -1,9 +1,11 @@
 import { Logger, RequireRatchet } from '@bitblit/ratchet-common';
 import { EnvironmentServiceProvider } from './environment-service-provider.js';
+import { injectable } from "tsyringe";
 
 /**
  * Reads a series of providers, returning the first non-null, non-error
  */
+@injectable()
 export class CascadeEnvironmentServiceProvider<T> implements EnvironmentServiceProvider<T> {
   public constructor(private providers: EnvironmentServiceProvider<T>[]) {
     RequireRatchet.notNullOrUndefined(providers);

@@ -3,10 +3,12 @@ import { S3CacheRatchet } from '../s3/s3-cache-ratchet.js';
 import { Logger, RequireRatchet, StopWatch, StringRatchet } from '@bitblit/ratchet-common';
 import { S3Client } from '@aws-sdk/client-s3';
 import { S3CacheRatchetLike } from '../s3/s3-cache-ratchet-like.js';
+import { injectable } from "tsyringe";
 
 /**
  * Service for reading environmental variables from S3
  */
+@injectable()
 export class S3EnvironmentServiceProvider<T> implements EnvironmentServiceProvider<T> {
   private ratchet: S3CacheRatchetLike;
 

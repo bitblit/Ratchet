@@ -3,10 +3,12 @@ import fs from 'fs';
 import path from 'path';
 import { Logger, RequireRatchet, StringRatchet } from '@bitblit/ratchet-common';
 import { S3CacheRatchetLike } from '@bitblit/ratchet-aws';
+import { injectable } from "tsyringe";
 
 /**
  * Use this when you want a lambda to cache a remote S3 bucket locally on disk for faster access
  */
+@injectable()
 export class S3CacheToLocalDiskRatchet {
   private static readonly DEFAULT_CACHE_TIMEOUT_SEC = 7 * 24 * 3600;
 

@@ -1,19 +1,15 @@
-import { UsedImageFinder } from '../used-image-finder';
-import { LambdaClient } from '@aws-sdk/client-lambda';
-import { Logger, RequireRatchet, StringRatchet } from '@bitblit/ratchet-common';
+import { UsedImageFinder } from "../used-image-finder";
+import { Logger, RequireRatchet, StringRatchet } from "@bitblit/ratchet-common";
 import {
   BatchClient,
   DescribeJobDefinitionsCommand,
   DescribeJobDefinitionsCommandInput,
   DescribeJobDefinitionsCommandOutput,
-  JobDefinition,
-  JobStatus,
-  JobSummary,
-  ListJobsCommand,
-  ListJobsCommandInput,
-  ListJobsCommandOutput,
-} from '@aws-sdk/client-batch';
+  JobDefinition
+} from "@aws-sdk/client-batch";
+import { injectable } from "tsyringe";
 
+@injectable()
 export class AwsBatchUsedImageFinder implements UsedImageFinder {
   constructor(private batch: BatchClient) {
     RequireRatchet.notNullOrUndefined(batch, 'batch');

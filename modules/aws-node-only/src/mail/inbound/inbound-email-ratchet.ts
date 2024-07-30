@@ -3,10 +3,12 @@ import { S3CacheRatchet } from '@bitblit/ratchet-aws';
 import { Logger } from '@bitblit/ratchet-common';
 import { RequireRatchet } from '@bitblit/ratchet-common';
 import { ParsedEmailProcessor } from './parsed-email-processor.js';
+import { injectable } from "tsyringe";
 
 /**
  * Service for handling inbound emails
  */
+@injectable()
 export class InboundEmailRatchet {
   constructor(private cache: S3CacheRatchet, private processors: ParsedEmailProcessor<any>[]) {
     RequireRatchet.notNullOrUndefined(this.cache, 'cache');

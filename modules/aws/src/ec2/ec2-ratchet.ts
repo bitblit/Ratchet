@@ -7,17 +7,16 @@ import {
   StartInstancesCommand,
   StartInstancesCommandInput,
   StopInstancesCommand,
-  StopInstancesCommandInput,
-} from '@aws-sdk/client-ec2';
+  StopInstancesCommandInput
+} from "@aws-sdk/client-ec2";
 import {
   EC2InstanceConnectClient,
   SendSSHPublicKeyCommand,
   SendSSHPublicKeyCommandInput,
-  SendSSHPublicKeyCommandOutput, SendSSHPublicKeyResponse
+  SendSSHPublicKeyCommandOutput
 } from "@aws-sdk/client-ec2-instance-connect";
-import { DurationRatchet, Logger, PromiseRatchet } from '@bitblit/ratchet-common';
-import fs from "fs";
-import { spawnSync, SpawnSyncReturns } from "child_process";
+import { DurationRatchet, Logger, PromiseRatchet } from "@bitblit/ratchet-common";
+import { injectable } from "tsyringe";
 
 /**
  * Service to simplify interacting with EC2 instances
@@ -30,6 +29,7 @@ import { spawnSync, SpawnSyncReturns } from "child_process";
  *
  * Really should combine start and stop below
  */
+@injectable()
 export class Ec2Ratchet {
   private ec2: EC2Client;
   private ec2InstanceConnect: EC2InstanceConnectClient;
