@@ -3,9 +3,6 @@ import { Ec2Ratchet } from "@bitblit/ratchet-aws";
 import fs from "fs";
 import { Instance } from "@aws-sdk/client-ec2";
 import { SendSSHPublicKeyResponse } from "@aws-sdk/client-ec2-instance-connect";
-import { injectable } from "tsyringe";
-
-@injectable()
 export class Ec2InstanceUtil {
 
   constructor(private ec2Ratchet: Ec2Ratchet) {

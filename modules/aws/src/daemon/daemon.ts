@@ -8,9 +8,7 @@ import { DaemonLike } from './daemon-like.js';
 import { DaemonProcessStatePublicToken } from './daemon-process-state-public-token.js';
 import { S3Client } from '@aws-sdk/client-s3';
 import { S3CacheRatchetLike } from '../s3/s3-cache-ratchet-like.js';
-import { injectable } from "tsyringe";
 
-@injectable()
 export class Daemon implements DaemonLike {
   public static DEFAULT_DEFAULT_GROUP: string = 'DEFAULT';
 

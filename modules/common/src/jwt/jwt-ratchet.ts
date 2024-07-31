@@ -1,15 +1,13 @@
-import { RequireRatchet } from '../lang/require-ratchet.js';
-import { Logger } from '../logger/logger.js';
-import { StringRatchet } from '../lang/string-ratchet.js';
-import { DurationRatchet } from '../lang/duration-ratchet.js';
-import { JwtTokenBase } from './jwt-token-base.js';
-import { LoggerLevelName } from '../logger/logger-level-name.js';
-import { ExpiredJwtHandling } from './expired-jwt-handling.js';
-import { JwtRatchetLike } from './jwt-ratchet-like.js';
+import { RequireRatchet } from "../lang/require-ratchet.js";
+import { Logger } from "../logger/logger.js";
+import { StringRatchet } from "../lang/string-ratchet.js";
+import { DurationRatchet } from "../lang/duration-ratchet.js";
+import { JwtTokenBase } from "./jwt-token-base.js";
+import { LoggerLevelName } from "../logger/logger-level-name.js";
+import { ExpiredJwtHandling } from "./expired-jwt-handling.js";
+import { JwtRatchetLike } from "./jwt-ratchet-like.js";
 import { JwtRatchetConfig } from "./jwt-ratchet-config";
-import jsonwebtoken from 'jsonwebtoken';
-import { EsmRatchet } from "../lang/esm-ratchet";
-import { injectable } from "tsyringe";
+import jsonwebtoken from "jsonwebtoken";
 
 /**
  * Functions to help with creating and decoding JWTs
@@ -20,7 +18,6 @@ import { injectable } from "tsyringe";
  * accepting promises here, we make it easy to do JwtRatchet construction in a place (like an IOT container)
  * that itself must be synchronous
  */
-@injectable()
 export class JwtRatchet implements JwtRatchetLike {
   private static readonly EXPIRED_FLAG_NAME: string = '__jwtServiceExpiredFlag';
 

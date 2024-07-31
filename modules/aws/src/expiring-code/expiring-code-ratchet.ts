@@ -2,12 +2,10 @@ import { RequireRatchet, StringRatchet } from '@bitblit/ratchet-common';
 import { ExpiringCodeProvider } from './expiring-code-provider.js';
 import { ExpiringCodeParams } from './expiring-code-params.js';
 import { ExpiringCode } from './expiring-code.js';
-import { injectable } from "tsyringe";
 
 /**
  * Supports creating and checking single use codes
  */
-@injectable()
 export class ExpiringCodeRatchet {
   constructor(private provider: ExpiringCodeProvider) {}
 

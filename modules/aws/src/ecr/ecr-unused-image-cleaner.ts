@@ -21,9 +21,7 @@ import { EcrUnusedImageCleanerRepositoryOutput } from './ecr-unused-image-cleane
 import { RetainedImageDescriptor } from './retained-image-descriptor';
 import { RetainedImageReason } from './retained-image-reason';
 import { EcrUnusedImageCleanerOutput } from './ecr-unused-image-cleaner-output';
-import { injectable } from "tsyringe";
 
-@injectable()
 export class EcrUnusedImageCleaner {
   // Do not delete images that are not at least this many days old.
   private static readonly ECR_IMAGE_MINIMUM_AGE_DAYS: number = 60;

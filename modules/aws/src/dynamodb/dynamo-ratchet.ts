@@ -35,9 +35,7 @@ import { DynamoCountResult } from '../model/dynamo-count-result.js';
 import { DynamoRatchetLike } from './dynamo-ratchet-like.js';
 import { NativeAttributeValue } from '@aws-sdk/util-dynamodb';
 import { ConditionalCheckFailedException, ProvisionedThroughputExceededException } from '@aws-sdk/client-dynamodb';
-import { injectable } from "tsyringe";
 
-@injectable()
 export class DynamoRatchet implements DynamoRatchetLike {
   constructor(private awsDDB: DynamoDBDocumentClient) {
     if (!awsDDB) {

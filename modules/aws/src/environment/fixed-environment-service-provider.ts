@@ -1,11 +1,9 @@
 import { Logger, RequireRatchet } from '@bitblit/ratchet-common';
 import { EnvironmentServiceProvider } from './environment-service-provider.js';
-import { injectable } from "tsyringe";
 
 /**
  * Forces in a single object as the environment
  */
-@injectable()
 export class FixedEnvironmentServiceProvider<T> implements EnvironmentServiceProvider<T> {
   public constructor(private value: Map<string, T>) {
     RequireRatchet.notNullOrUndefined(value);

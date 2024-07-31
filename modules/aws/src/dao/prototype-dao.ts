@@ -3,7 +3,6 @@ import { PrototypeDaoProvider } from './prototype-dao-provider.js';
 import { PrototypeDaoDb } from './prototype-dao-db.js';
 import { PrototypeDaoConfig } from './prototype-dao-config.js';
 import { DateTime } from 'luxon';
-import { injectable } from "tsyringe";
 
 /*
   PrototypeDao makes it quick to stand up a simple data access object
@@ -16,7 +15,6 @@ import { injectable } from "tsyringe";
   for anything like serious workloads
 
  */
-@injectable()
 export class PrototypeDao<T> {
   public static defaultDaoConfig(): PrototypeDaoConfig {
     return {

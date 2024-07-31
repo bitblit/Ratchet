@@ -1,13 +1,11 @@
 import { ErrorRatchet, Logger, PromiseRatchet, RequireRatchet, StringRatchet } from '@bitblit/ratchet-common';
 import { GetParameterCommand, GetParameterCommandOutput, ParameterNotFound, SSMClient } from '@aws-sdk/client-ssm';
 import { EnvironmentServiceProvider } from './environment-service-provider.js';
-import { injectable } from "tsyringe";
 
 /**
  * Service for reading environmental variables
  * Also hides the decryption detail from higher up services
  */
-@injectable()
 export class SsmEnvironmentServiceProvider<T> implements EnvironmentServiceProvider<T> {
   private ssm: SSMClient;
   public constructor(

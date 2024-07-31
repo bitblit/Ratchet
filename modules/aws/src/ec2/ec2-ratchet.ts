@@ -16,7 +16,6 @@ import {
   SendSSHPublicKeyCommandOutput
 } from "@aws-sdk/client-ec2-instance-connect";
 import { DurationRatchet, Logger, PromiseRatchet } from "@bitblit/ratchet-common";
-import { injectable } from "tsyringe";
 
 /**
  * Service to simplify interacting with EC2 instances
@@ -29,7 +28,6 @@ import { injectable } from "tsyringe";
  *
  * Really should combine start and stop below
  */
-@injectable()
 export class Ec2Ratchet {
   private ec2: EC2Client;
   private ec2InstanceConnect: EC2InstanceConnectClient;

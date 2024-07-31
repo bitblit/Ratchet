@@ -39,9 +39,7 @@ import { WardenDefaultUserDecorationProvider } from './provider/warden-default-u
 import { WardenNoOpEventProcessingProvider } from './provider/warden-no-op-event-processing-provider.js';
 import { WardenSingleUseCodeProvider } from './provider/warden-single-use-code-provider';
 import { WardenDefaultSendMagicLinkCommandValidator } from './provider/warden-default-send-magic-link-command-validator';
-import { injectable } from "tsyringe";
 
-@injectable()
 export class WardenService {
   private opts: WardenServiceOptions;
 

@@ -4,9 +4,7 @@ import { WardenTwilioVerifySingleUseCodeProviderOptions } from './warden-twilio-
 import { Logger, TwilioVerifyRatchet } from '@bitblit/ratchet-common';
 import { WardenContact, WardenContactType } from '@bitblit/ratchet-warden-common';
 import { WardenSingleUseCodeProvider } from './warden-single-use-code-provider';
-import { injectable } from "tsyringe";
 
-@injectable()
 export class WardenTwilioVerifySingleUseCodeProvider implements WardenSingleUseCodeProvider {
   private _cacheTwilioVerifyRatchet: TwilioVerifyRatchet;
 

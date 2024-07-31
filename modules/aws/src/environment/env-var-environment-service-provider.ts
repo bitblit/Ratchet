@@ -1,12 +1,10 @@
 import { ErrorRatchet, Logger, RequireRatchet, StringRatchet } from '@bitblit/ratchet-common';
 import { EnvironmentServiceProvider } from './environment-service-provider.js';
-import { injectable } from "tsyringe";
 
 /**
  * Service for reading environmental variables
  * Also hides the decryption detail from higher up servicess
  */
-@injectable()
 export class EnvVarEnvironmentServiceProvider<T> implements EnvironmentServiceProvider<T> {
   public constructor(private envVarName: string) {
     RequireRatchet.notNullOrUndefined(envVarName);

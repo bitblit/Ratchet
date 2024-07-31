@@ -3,14 +3,12 @@ import { ExpiringCode } from './expiring-code.js';
 import { Logger, RequireRatchet } from '@bitblit/ratchet-common';
 import { PutObjectOutput } from '@aws-sdk/client-s3';
 import { S3CacheRatchetLike } from '../s3/s3-cache-ratchet-like.js';
-import { injectable } from "tsyringe";
 
 /* An implementation that puts all the values in a single JSON file in S3
   This won't scale well at all for any kind of serious load, but is the easiest
   solution for a very low traffic website since it doesn't require setting up tables,
   provisioning, etc
  */
-@injectable()
 export class S3ExpiringCodeProvider implements ExpiringCodeProvider {
   constructor(private s3CacheRatchet: S3CacheRatchetLike, private keyName: string) {
     RequireRatchet.notNullOrUndefined(s3CacheRatchet, 's3CacheRatchet');

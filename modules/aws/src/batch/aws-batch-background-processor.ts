@@ -2,13 +2,11 @@ import { SubmitJobCommandInput, SubmitJobCommandOutput } from '@aws-sdk/client-b
 import { DateTime } from 'luxon';
 import { ErrorRatchet, Logger, RequireRatchet, StringRatchet } from '@bitblit/ratchet-common';
 import { AwsBatchRatchet } from './aws-batch-ratchet.js';
-import { injectable } from "tsyringe";
 
 /**
  * Class to simplify using AWS batch as a background processor
  * (Primarily used by Epsilon)
  */
-@injectable()
 export class AwsBatchBackgroundProcessor {
   constructor(private batchRatchet: AwsBatchRatchet, private validTaskNames?: string[]) {
     RequireRatchet.notNullOrUndefined(this.batchRatchet, 'batchRatchet');

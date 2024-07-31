@@ -20,9 +20,7 @@ import {
 } from '@aws-sdk/client-dynamodb';
 import { ErrorRatchet, Logger, PromiseRatchet, RequireRatchet } from '@bitblit/ratchet-common';
 import { LocalSecondaryIndex } from '@aws-sdk/client-dynamodb/dist-types/models/models_0.js';
-import { injectable } from "tsyringe";
 
-@injectable()
 export class DynamoTableRatchet {
   constructor(private awsDDB: DynamoDBClient) {
     if (!awsDDB) {

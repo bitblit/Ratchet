@@ -3,9 +3,7 @@ import { RuntimeParameterProvider } from './runtime-parameter-provider.js';
 import { StoredRuntimeParameter } from './stored-runtime-parameter.js';
 import { DynamoRatchet } from '../dynamodb/dynamo-ratchet.js';
 import { Logger, RequireRatchet } from '@bitblit/ratchet-common';
-import { injectable } from "tsyringe";
 
-@injectable()
 export class DynamoRuntimeParameterProvider implements RuntimeParameterProvider {
   constructor(
     private dynamo: DynamoRatchet,

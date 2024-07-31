@@ -8,11 +8,9 @@ import { EsmRatchet } from '@bitblit/ratchet-common';
 import { CsvRatchet } from '@bitblit/ratchet-node-only';
 import { S3Client } from '@aws-sdk/client-s3';
 import { S3Ratchet } from '@bitblit/ratchet-aws';
-import { injectable } from "tsyringe";
 
 // A class to simplify reading an Athena table based on ALB Logs
 // NOTE: This class only runs on Node since it depends on fs and path
-@injectable()
 export class AlbAthenaLogRatchet {
   constructor(
     private athena: AthenaRatchet,

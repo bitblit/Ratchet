@@ -7,9 +7,7 @@ import {
   DescribeJobDefinitionsCommandOutput,
   JobDefinition
 } from "@aws-sdk/client-batch";
-import { injectable } from "tsyringe";
 
-@injectable()
 export class AwsBatchUsedImageFinder implements UsedImageFinder {
   constructor(private batch: BatchClient) {
     RequireRatchet.notNullOrUndefined(batch, 'batch');
