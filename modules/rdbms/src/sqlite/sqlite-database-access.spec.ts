@@ -68,6 +68,12 @@ describe('sqlite-database-access', () => {
 
     expect(multiCount['cnt']).toEqual(3);
 
+    const multiIns2: ModifyResults = await ns.executeUpdateOrInsertByName('multi', {multiVal: [['multi\'s apo\'s']]});
+
+    const multiCount2: RequestResults<any> = await ns.executeQueryByNameSingle('counter', {});
+
+    expect(multiCount2['cnt']).toEqual(4);
+
     Logger.info('Get: %j', singleCount);
   }, 30_000);
 });

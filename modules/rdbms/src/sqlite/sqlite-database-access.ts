@@ -39,7 +39,7 @@ export class SqliteDatabaseAccess implements DatabaseAccess {
 
   escape(value: any): string {
     let rval: string = SqlString.escape(value);
-    rval = rval.replace('\\\'', '\'\''); // For some reason sqlite uses '' as the escape for '...
+    rval = rval.replaceAll('\\\'', '\'\''); // For some reason sqlite uses '' as the escape for '...
     return rval;
   }
 
