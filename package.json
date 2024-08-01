@@ -209,6 +209,7 @@
     "ajv": "^6.12.6",
     "ansi-regex": "^5.0.1",
     "browserslist": "^4.21.5",
+    "fast-xml-parser": "^4.4.1",
     "glob-parent": "^6.0.2",
     "hosted-git-info": "^6.1.1",
     "json5": "^1.0.2",
