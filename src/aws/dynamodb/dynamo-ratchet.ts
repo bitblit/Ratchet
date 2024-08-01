@@ -40,9 +40,7 @@ import { DynamoRatchetLike } from './dynamo-ratchet-like';
 import { DurationRatchet } from '../../common/duration-ratchet';
 import { NumberRatchet } from '../../common/number-ratchet';
 import { ConditionalCheckFailedException, ProvisionedThroughputExceededException } from '@aws-sdk/client-dynamodb';
-import { injectable } from 'tsyringe';
 
-@injectable()
 export class DynamoRatchet implements DynamoRatchetLike {
   constructor(private awsDDB: DynamoDBDocumentClient) {
     if (!awsDDB) {

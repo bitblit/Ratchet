@@ -6,15 +6,10 @@ import { RequireRatchet } from '../../common/require-ratchet';
 import { StringRatchet } from '../../common/string-ratchet';
 import { Logger } from '../../common/logger';
 import { CsvRatchet } from '../../node-csv/csv-ratchet';
-import { PromiseRatchet } from '../../common/promise-ratchet';
-import { StopWatch } from '../../common/stop-watch';
 import { S3Ratchet } from '../../aws/s3/s3-ratchet';
-import { EsmRatchet } from '../../common/esm-ratchet';
-import { injectable } from 'tsyringe';
 
 // A class to simplify reading an Athena table based on ALB Logs
 // NOTE: This class only runs on Node since it depends on fs and path
-@injectable()
 export class AlbAthenaLogRatchet {
   constructor(
     private athena: AthenaRatchet,

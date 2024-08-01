@@ -11,12 +11,10 @@ import {
 } from '@aws-sdk/client-batch';
 import { RequireRatchet } from '../../common/require-ratchet';
 import { Logger } from '../../common/logger';
-import { injectable } from 'tsyringe';
 
 /**
  * Ratchet for simplifying interacting with AWS Batch
  */
-@injectable()
 export class AwsBatchRatchet {
   constructor(
     private _batchClient: BatchClient,
