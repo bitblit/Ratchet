@@ -1,5 +1,5 @@
-import { APIGatewayEvent, Context } from 'aws-lambda';
-import { JwtTokenBase } from '@bitblit/ratchet-common';
+import { APIGatewayEvent, Context } from "aws-lambda";
+import { JwtTokenBase } from "@bitblit/ratchet-common/jwt/jwt-token-base";
 
 export interface DefaultEpsilonApolloContext<T extends JwtTokenBase> {
   user?: T;

@@ -1,8 +1,10 @@
-import { MapRatchet, RequireRatchet, StringRatchet } from '@bitblit/ratchet-common';
 import { PrototypeDaoProvider } from './prototype-dao-provider.js';
 import { PrototypeDaoDb } from './prototype-dao-db.js';
 import { PrototypeDaoConfig } from './prototype-dao-config.js';
 import { DateTime } from 'luxon';
+import { StringRatchet } from "@bitblit/ratchet-common/lang/string-ratchet";
+import { RequireRatchet } from "@bitblit/ratchet-common/lang/require-ratchet";
+import { MapRatchet } from "@bitblit/ratchet-common/lang/map-ratchet";
 
 /*
   PrototypeDao makes it quick to stand up a simple data access object

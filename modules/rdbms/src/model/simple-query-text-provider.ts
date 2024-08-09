@@ -1,5 +1,5 @@
 import { QueryTextProvider } from "./query-text-provider";
-import { StringRatchet } from "@bitblit/ratchet-common";
+import { StringRatchet } from "@bitblit/ratchet-common/lang/string-ratchet";
 
 export class SimpleQueryTextProvider implements QueryTextProvider{
   constructor(private values: Record<string,string>) {

@@ -1,8 +1,11 @@
-import { ErrorRatchet, EsmRatchet, Logger, StringRatchet } from "@bitblit/ratchet-common";
 import fs, { Stats } from "fs";
 import path from "path";
 import { CliRatchet } from "../cli/cli-ratchet.js";
-import { ExportMapBuilderConfig } from "./export-map-builder-config";
+import { ExportMapBuilderConfig } from "./export-map-builder-config.js";
+import { Logger } from "@bitblit/ratchet-common/logger/logger";
+import { EsmRatchet } from "@bitblit/ratchet-common/lang/esm-ratchet";
+import { ErrorRatchet } from "@bitblit/ratchet-common/lang/error-ratchet";
+import { StringRatchet } from "@bitblit/ratchet-common/lang/string-ratchet";
 
 export class ExportMapBuilder {
 
@@ -35,15 +38,23 @@ export class ExportMapBuilder {
     ];
 
     Logger.info('Using sourceRoot %s and targets %j', cfg.sourceRoot, cfg.targets);
-
-
-
-    let rval: Record<string, any> = {};
+    let exports: Record<string, any> = {};
     for (let i = 0; i < cfg.includes.length; i++) {
-      ExportMapBuilder.processSingleFile(cfg.sourceRoot, cfg, rval);
+      ExportMapBuilder.processSingleFile(cfg.sourceRoot, cfg, exports);
     }
 
-    return rval;
+    // Parse package.json
+    const parsedPackage: any = JSON.parse(fs.readFileSync(cfg.targetPackageJsonFile).toString());
+    parsedPackage['exports'] = exports
+
+    if (cfg.dryRun) {
+      Logger.info('DryRun : Would have updated package json to : \n%j',parsedPackage);
+    } else {
+      // Update here
+      fs.writeFileSync(cfg.targetPackageJsonFile, JSON.stringify(parsedPackage, null, 2));
+    }
+
+    return exports;
   }
 
   private static pathMatchesOneOfRegExp(fileName: string, reg: RegExp[]): boolean {
@@ -56,7 +67,7 @@ export class ExportMapBuilder {
 
   private static findExports(fileName: string): string[] {
     const text: string = StringRatchet.trimToEmpty(fs.readFileSync(fileName).toString());
-    const words: string = text.split(/[ \t\n]+/);
+    const words: string[] = text.split(/[ \t\n]+/);
     const exports: string[] = [];
     for (let i=0;i<words.length-2;i++) {
       if (words[i]==='export') {
@@ -64,6 +75,9 @@ export class ExportMapBuilder {
           let next: string = words[i+2];
           if (next.endsWith('{')) {
             next = next.substring(0,next.length-1); // String trailing
+          }
+          if (next.indexOf('<')!==-1) { // Strip generics
+            next = next.substring(0,next.indexOf('<'))
           }
           exports.push(next);
         } else if (words[i+1]==='default') {
@@ -97,10 +111,10 @@ export class ExportMapBuilder {
                   subPath = subPath.substring(0, subPath.length-3);
                 }
                 cfg.targets.forEach(tgt=>{
-                  inRecord[tgt.type] = inRecord[tgt.type] ?? {};
+                  inRecord[s] = inRecord[s] || {};
                   const targetFileName: string = StringRatchet.trimToEmpty(tgt.prefix)+subPath +
                     StringRatchet.trimToEmpty(tgt.suffix);
-                  inRecord[tgt.type][s] = targetFileName;
+                  inRecord[s][tgt.type] = targetFileName;
                 });
               }
             })

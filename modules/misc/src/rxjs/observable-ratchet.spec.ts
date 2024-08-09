@@ -1,8 +1,7 @@
-import { timer } from 'rxjs';
-import { ObservableRatchet } from './observable-ratchet.js';
-import { TimeoutToken } from '@bitblit/ratchet-common';
-import { expect, test, describe, vi, beforeEach } from 'vitest';
-import { mock, MockProxy } from 'vitest-mock-extended';
+import { timer } from "rxjs";
+import { ObservableRatchet } from "./observable-ratchet.js";
+import { TimeoutToken } from "@bitblit/ratchet-common/lang/timeout-token";
+import { describe, expect, test } from "vitest";
 
 describe('#timeout', function () {
   test('should correctly return before timeout', function () {

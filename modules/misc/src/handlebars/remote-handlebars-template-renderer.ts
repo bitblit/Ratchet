@@ -1,9 +1,10 @@
-import handlebars from 'handlebars';
-import fetch from 'cross-fetch';
-import { Logger, StringRatchet } from '@bitblit/ratchet-common';
-import { RatchetTemplateRenderer } from '@bitblit/ratchet-common';
-import layouts from 'handlebars-layouts';
+import handlebars from "handlebars";
+import fetch from "cross-fetch";
+import { Logger } from "@bitblit/ratchet-common/logger/logger";
+import { StringRatchet } from "@bitblit/ratchet-common/lang/string-ratchet";
+import layouts from "handlebars-layouts";
 import Template = Handlebars.Template;
+import { RatchetTemplateRenderer } from "@bitblit/ratchet-common/template/ratchet-template-renderer";
 
 /**
  */

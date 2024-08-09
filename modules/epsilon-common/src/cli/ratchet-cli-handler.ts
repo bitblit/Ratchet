@@ -1,5 +1,5 @@
-import { AbstractRatchetCliHandler } from '@bitblit/ratchet-node-only';
-import { BuildInformation } from '@bitblit/ratchet-common';
+import { AbstractRatchetCliHandler } from '@bitblit/ratchet-node-only/cli/abstract-ratchet-cli-handler';
+import { BuildInformation } from '@bitblit/ratchet-common/build/build-information';
 import { RunBackgroundProcessFromCommandLine } from './run-background-process-from-command-line.js';
 import { TestErrorServer } from '../sample/test-error-server.js';
 import { LocalContainerServer } from '../local-container-server.js';

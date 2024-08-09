@@ -4,7 +4,7 @@
 
 import { FileTransferResult } from "./file-transfer-result.js";
 import { BackupResult } from "./backup-result.js";
-import { RemoteStatusData } from "./remote-status-data";
+import { RemoteStatusData } from "./remote-status-data.js";
 
 export interface RemoteFileSyncLike {
    get lastSyncEpochMS(): number ;

@@ -1,8 +1,9 @@
-import { PutCommandOutput, QueryCommandInput } from '@aws-sdk/lib-dynamodb';
-import { RuntimeParameterProvider } from './runtime-parameter-provider.js';
-import { StoredRuntimeParameter } from './stored-runtime-parameter.js';
-import { DynamoRatchet } from '../dynamodb/dynamo-ratchet.js';
-import { Logger, RequireRatchet } from '@bitblit/ratchet-common';
+import { PutCommandOutput, QueryCommandInput } from "@aws-sdk/lib-dynamodb";
+import { RuntimeParameterProvider } from "./runtime-parameter-provider.js";
+import { StoredRuntimeParameter } from "./stored-runtime-parameter.js";
+import { DynamoRatchet } from "../dynamodb/dynamo-ratchet.js";
+import { RequireRatchet } from "@bitblit/ratchet-common/lang/require-ratchet";
+import { Logger } from "@bitblit/ratchet-common/logger/logger";
 
 export class DynamoRuntimeParameterProvider implements RuntimeParameterProvider {
   constructor(

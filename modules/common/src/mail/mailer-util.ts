@@ -1,6 +1,6 @@
 import { ResolvedReadyToSendEmail } from './resolved-ready-to-send-email.js';
-import { RequireRatchet } from '../lang/require-ratchet';
-import { StringRatchet } from '../lang/string-ratchet';
+import { RequireRatchet } from '../lang/require-ratchet.js';
+import { StringRatchet } from '../lang/string-ratchet.js';
 
 /**
  * Helper functions for the mailer, most notably the one that converts it to raw

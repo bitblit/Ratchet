@@ -3,13 +3,13 @@ import { MailerConfig } from './mailer-config.js';
 import { ResolvedReadyToSendEmail } from './resolved-ready-to-send-email.js';
 import { EmailAttachment } from './email-attachment.js';
 import { MailerLike } from './mailer-like.js';
-import { RequireRatchet } from '../lang/require-ratchet';
-import { ErrorRatchet } from '../lang/error-ratchet';
-import { Logger } from '../logger/logger';
-import { StringRatchet } from '../lang/string-ratchet';
-import { Base64Ratchet } from '../lang/base64-ratchet';
-import { SendEmailResult } from './send-email-result';
-import { ArchiveEmailResult } from './archive-email-result';
+import { RequireRatchet } from '../lang/require-ratchet.js';
+import { ErrorRatchet } from '../lang/error-ratchet.js';
+import { Logger } from '../logger/logger.js';
+import { StringRatchet } from '../lang/string-ratchet.js';
+import { Base64Ratchet } from '../lang/base64-ratchet.js';
+import { SendEmailResult } from './send-email-result.js';
+import { ArchiveEmailResult } from './archive-email-result.js';
 
 /**
  * Generic Mail Sender

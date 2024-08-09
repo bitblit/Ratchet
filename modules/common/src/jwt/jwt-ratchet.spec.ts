@@ -1,7 +1,7 @@
 import { JwtRatchet } from './jwt-ratchet.js';
 import { ExpiredJwtHandling } from './expired-jwt-handling.js';
 import { expect, test, describe } from 'vitest';
-import { JwtRatchetConfig } from "./jwt-ratchet-config";
+import { JwtRatchetConfig } from "./jwt-ratchet-config.js";
 
 describe('#jwtRatchet', function () {
 

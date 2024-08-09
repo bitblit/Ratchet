@@ -1,9 +1,8 @@
-import { Logger } from '@bitblit/ratchet-common';
-import path from 'path';
-import { YamlCombiner } from './yaml-combiner.js';
-import { EsmRatchet } from '@bitblit/ratchet-common';
-import { expect, test, describe, vi, beforeEach } from 'vitest';
-import { mock, MockProxy } from 'vitest-mock-extended';
+import { Logger } from "@bitblit/ratchet-common/logger/logger";
+import path from "path";
+import { YamlCombiner } from "./yaml-combiner.js";
+import { EsmRatchet } from "@bitblit/ratchet-common/lang/esm-ratchet";
+import { describe, expect, test } from "vitest";
 
 describe('#yamlCombiner', function () {
   test('should combine yamls', async () => {

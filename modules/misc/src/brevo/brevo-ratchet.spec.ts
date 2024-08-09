@@ -1,9 +1,10 @@
 import { BrevoKeys } from "./brevo-keys.js";
 import { BrevoRatchet } from "./brevo-ratchet.js";
-import { Mailer, ReadyToSendEmail } from "@bitblit/ratchet-common";
 import { BrevoMailSendingProvider } from "./brevo-mail-sending-provider";
 import { CreateSmtpEmail } from "./generated/models";
 import { describe, expect, test } from "vitest";
+import { ReadyToSendEmail } from "@bitblit/ratchet-common/mail/ready-to-send-email";
+import { Mailer } from "@bitblit/ratchet-common/mail/mailer";
 
 describe('#brevoRatchet', () => {
   test.skip('should fetch account info', async () => {

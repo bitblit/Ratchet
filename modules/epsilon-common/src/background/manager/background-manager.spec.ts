@@ -1,6 +1,6 @@
-import { Logger } from '@bitblit/ratchet-common';
+import { Logger } from '@bitblit/ratchet-common/logger/logger';
 import { GetQueueAttributesCommand, GetQueueAttributesResult, SQSClient } from '@aws-sdk/client-sqs';
-//import { ModelValidator } from '@bitblit/ratchet-misc';
+//import { ModelValidator } from '@bitblit/ratchet-misc/model-validator/model-validator';
 import { AwsSqsSnsBackgroundManager } from './aws-sqs-sns-background-manager.js';
 import { BackgroundConfig } from '../../config/background/background-config.js';
 import { EchoProcessor } from '../../built-in/background/echo-processor.js';

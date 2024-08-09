@@ -1,5 +1,5 @@
-import { BuildInformation } from '@bitblit/ratchet-common';
 import { CliRatchet } from './cli-ratchet.js';
+import { BuildInformation } from "@bitblit/ratchet-common/build/build-information";
 
 export abstract class AbstractRatchetCliHandler {
   abstract fetchHandlerMap(): Record<string, any>;

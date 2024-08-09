@@ -1,6 +1,8 @@
-import {ProxyResult} from 'aws-lambda';
-import {Logger, MapRatchet,RestfulApiHttpError} from '@bitblit/ratchet-common';
-import zlib from 'zlib';
+import { ProxyResult } from "aws-lambda";
+import { Logger } from "@bitblit/ratchet-common/logger/logger";
+import { RestfulApiHttpError } from "@bitblit/ratchet-common/network/restful-api-http-error";
+import { MapRatchet } from "@bitblit/ratchet-common/lang/map-ratchet";
+import zlib from "zlib";
 
 export class ResponseUtil {
   // Prevent instantiation

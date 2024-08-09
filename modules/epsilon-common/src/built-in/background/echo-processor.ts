@@ -1,8 +1,8 @@
-import { ErrorRatchet } from '@bitblit/ratchet-common';
-import { Logger } from '@bitblit/ratchet-common';
-import { BackgroundProcessor } from '../../config/background/background-processor.js';
-import { StringRatchet } from '@bitblit/ratchet-common';
-import { BackgroundManagerLike } from '../../background/manager/background-manager-like.js';
+import { Logger } from "@bitblit/ratchet-common/logger/logger";
+import { BackgroundProcessor } from "../../config/background/background-processor.js";
+import { ErrorRatchet } from "@bitblit/ratchet-common/lang/error-ratchet";
+import { StringRatchet } from "@bitblit/ratchet-common/lang/string-ratchet";
+import { BackgroundManagerLike } from "../../background/manager/background-manager-like.js";
 
 export class EchoProcessor implements BackgroundProcessor<any> {
   public static TYPE_NAME: string = 'EpsilonEcho';

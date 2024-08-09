@@ -1,11 +1,11 @@
-import { EpsilonLambdaEventHandler } from '../config/epsilon-lambda-event-handler';
-import { Context, ProxyResult, SQSEvent } from 'aws-lambda';
-import { GenericAwsEventHandlerFunction } from '../config/generic-aws-event-handler-function';
-import { AwsUtil } from '../util/aws-util';
-import { EpsilonInstance } from '../epsilon-instance';
-import { NoHandlersFoundError } from '../config/no-handlers-found-error';
-import { LambdaEventDetector } from '@bitblit/ratchet-aws';
-import { Logger } from '@bitblit/ratchet-common';
+import { EpsilonLambdaEventHandler } from "../config/epsilon-lambda-event-handler";
+import { Context, ProxyResult, SQSEvent } from "aws-lambda";
+import { GenericAwsEventHandlerFunction } from "../config/generic-aws-event-handler-function";
+import { AwsUtil } from "../util/aws-util";
+import { EpsilonInstance } from "../epsilon-instance";
+import { NoHandlersFoundError } from "../config/no-handlers-found-error";
+import { LambdaEventDetector } from "@bitblit/ratchet-aws/lambda/lambda-event-detector";
+import { Logger } from "@bitblit/ratchet-common/logger/logger";
 
 export class GenericSqsEpsilonLambdaEventHandler implements EpsilonLambdaEventHandler<SQSEvent> {
   constructor(private _epsilon: EpsilonInstance) {}

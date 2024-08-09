@@ -1,8 +1,10 @@
-import { Logger, RequireRatchet } from "@bitblit/ratchet-common";
-import { Ec2Ratchet } from "@bitblit/ratchet-aws";
+import { RequireRatchet } from "@bitblit/ratchet-common/lang/require-ratchet";
+import { Logger } from "@bitblit/ratchet-common/logger/logger";
+import { Ec2Ratchet } from "@bitblit/ratchet-aws/ec2/ec2-ratchet";
 import fs from "fs";
 import { Instance } from "@aws-sdk/client-ec2";
 import { SendSSHPublicKeyResponse } from "@aws-sdk/client-ec2-instance-connect";
+
 export class Ec2InstanceUtil {
 
   constructor(private ec2Ratchet: Ec2Ratchet) {

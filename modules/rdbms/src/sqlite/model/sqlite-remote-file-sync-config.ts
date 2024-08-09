@@ -1,6 +1,6 @@
-import { RemoteFileSyncLike } from '@bitblit/ratchet-common';
 import { FlushRemoteMode } from "./flush-remote-mode.js";
 import { FetchRemoteMode } from "./fetch-remote-mode";
+import { RemoteFileSyncLike } from "@bitblit/ratchet-common/network/remote-file-sync/remote-file-sync-like";
 
 export interface SqliteRemoteFileSyncConfig {
   remoteFileSync: RemoteFileSyncLike;

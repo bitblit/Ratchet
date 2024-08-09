@@ -2609,13 +2609,14 @@ __metadata:
     rimraf: 5.0.7
     rollup: 4.18.0
     rollup-plugin-dts: 6.1.1
+    rollup-plugin-multi-input: 1.5.0
     rollup-plugin-natives: 0.7.8
     rollup-plugin-polyfill-node: 0.13.0
     shx: 0.3.4
     ts-node: 10.9.2
     tsc-watch: 6.2.0
     typedoc: 0.25.13
-    typescript: 5.4.5
+    typescript: 5.5.4
     vitest: 1.6.0
     vitest-mock-extended: 1.3.1
     wsrun: 5.2.4
@@ -7635,7 +7636,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fast-glob@npm:^3.2.12, fast-glob@npm:^3.2.9":
+"fast-glob@npm:3.3.2, fast-glob@npm:^3.2.12, fast-glob@npm:^3.2.9":
   version: 3.3.2
   resolution: "fast-glob@npm:3.3.2"
   dependencies:
@@ -11661,6 +11662,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"rollup-plugin-multi-input@npm:1.5.0":
+  version: 1.5.0
+  resolution: "rollup-plugin-multi-input@npm:1.5.0"
+  dependencies:
+    fast-glob: 3.3.2
+  checksum: 9752c25cd44910b2fdc51a4dbd7ca7dc779849e8c2cce0d47cad0b5afb1f4c29bd96fe81614ee946ffca63287f518f4066239d7bb1284f01b6c4069d4ca5377e
+  languageName: node
+  linkType: hard
+
 "rollup-plugin-natives@npm:0.7.8":
   version: 0.7.8
   resolution: "rollup-plugin-natives@npm:0.7.8"
@@ -13131,23 +13141,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:5.4.5":
-  version: 5.4.5
-  resolution: "typescript@npm:5.4.5"
+"typescript@npm:5.5.4":
+  version: 5.5.4
+  resolution: "typescript@npm:5.5.4"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 53c879c6fa1e3bcb194b274d4501ba1985894b2c2692fa079db03c5a5a7140587a1e04e1ba03184605d35f439b40192d9e138eb3279ca8eee313c081c8bcd9b0
+  checksum: b309040f3a1cd91c68a5a58af6b9fdd4e849b8c42d837b2c2e73f9a4f96a98c4f1ed398a9aab576ee0a4748f5690cf594e6b99dbe61de7839da748c41e6d6ca8
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@5.4.5#~builtin<compat/typescript>":
-  version: 5.4.5
-  resolution: "typescript@patch:typescript@npm%3A5.4.5#~builtin<compat/typescript>::version=5.4.5&hash=14eedb"
+"typescript@patch:typescript@5.5.4#~builtin<compat/typescript>":
+  version: 5.5.4
+  resolution: "typescript@patch:typescript@npm%3A5.5.4#~builtin<compat/typescript>::version=5.5.4&hash=14eedb"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 2373c693f3b328f3b2387c3efafe6d257b057a142f9a79291854b14ff4d5367d3d730810aee981726b677ae0fd8329b23309da3b6aaab8263dbdccf1da07a3ba
+  checksum: fc52962f31a5bcb716d4213bef516885e4f01f30cea797a831205fc9ef12b405a40561c40eae3127ab85ba1548e7df49df2bcdee6b84a94bfbe3a0d7eff16b14
   languageName: node
   linkType: hard
 

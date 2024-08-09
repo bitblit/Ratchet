@@ -1,6 +1,6 @@
-import { GraphqlRatchetErrorHandler } from './graphql-ratchet-error-handler.js';
-import { Logger } from '@bitblit/ratchet-common';
-import { LoggerLevelName } from '@bitblit/ratchet-common';
+import { GraphqlRatchetErrorHandler } from "./graphql-ratchet-error-handler.js";
+import { Logger } from "@bitblit/ratchet-common/logger/logger";
+import { LoggerLevelName } from "@bitblit/ratchet-common/logger/logger-level-name";
 
 export class DefaultGraphqlRatchetErrorHandler implements GraphqlRatchetErrorHandler {
   constructor(

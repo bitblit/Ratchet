@@ -1,13 +1,22 @@
+import { WardenSingleUseCodeProvider } from "./warden-single-use-code-provider";
+import { Logger } from "@bitblit/ratchet-common/logger/logger";
+import { ErrorRatchet } from "@bitblit/ratchet-common/lang/error-ratchet";
+import { StringRatchet } from "@bitblit/ratchet-common/lang/string-ratchet";
+import { Base64Ratchet } from "@bitblit/ratchet-common/lang/base64-ratchet";
 import {
-  WardenContact,
-  WardenContactType,
-  WardenCustomerMessageType,
-  WardenCustomTemplateDescriptor,
-} from '@bitblit/ratchet-warden-common';
-import { WardenSingleUseCodeProvider } from './warden-single-use-code-provider';
-import { Base64Ratchet, ErrorRatchet, Logger, Mailer, ReadyToSendEmail, SendEmailResult, StringRatchet } from '@bitblit/ratchet-common';
-import { WardenMailerAndExpiringCodeRatchetSingleUseCodeProviderOptions } from './warden-mailer-and-expiring-code-ratchet-single-user-provider-options.js';
-import { ExpiringCode, ExpiringCodeRatchet } from '@bitblit/ratchet-aws';
+  WardenMailerAndExpiringCodeRatchetSingleUseCodeProviderOptions
+} from "./warden-mailer-and-expiring-code-ratchet-single-user-provider-options.js";
+import { ExpiringCodeRatchet } from "@bitblit/ratchet-aws/expiring-code/expiring-code-ratchet";
+import { ExpiringCode } from "@bitblit/ratchet-aws/expiring-code/expiring-code";
+import { Mailer } from "@bitblit/ratchet-common/mail/mailer";
+import { ReadyToSendEmail } from "@bitblit/ratchet-common/mail/ready-to-send-email";
+import { SendEmailResult } from "@bitblit/ratchet-common/mail/send-email-result";
+import { WardenContactType } from "@bitblit/ratchet-warden-common/common/model/warden-contact-type";
+import { WardenContact } from "@bitblit/ratchet-warden-common/common/model/warden-contact";
+import { WardenCustomerMessageType } from "@bitblit/ratchet-warden-common/common/model/warden-customer-message-type";
+import {
+  WardenCustomTemplateDescriptor
+} from "@bitblit/ratchet-warden-common/common/command/warden-custom-template-descriptor";
 
 /**
  * Classes implementing WardenSingleUseCodeProvider are able to

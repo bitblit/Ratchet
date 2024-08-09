@@ -1,6 +1,6 @@
 import { DynamoDbSyncLock } from './dynamo-db-sync-lock.js';
 import { DynamoRatchet } from '../dynamodb/dynamo-ratchet.js';
-import { Logger } from '@bitblit/ratchet-common';
+import { Logger } from '@bitblit/ratchet-common/logger/logger';
 
 import { beforeEach, describe, expect, test } from 'vitest';
 import { mock, MockProxy } from 'vitest-mock-extended';

@@ -1,23 +1,23 @@
-import { ErrorRatchet } from '@bitblit/ratchet-common';
-import { Logger } from '@bitblit/ratchet-common';
-import { Context, ProxyResult, SNSEvent } from 'aws-lambda';
-import { LambdaEventDetector } from '@bitblit/ratchet-aws';
-import { EpsilonConstants } from '../epsilon-constants.js';
-import { ModelValidator } from '@bitblit/ratchet-misc';
-import { BackgroundValidator } from './background-validator.js';
-import { BackgroundConfig } from '../config/background/background-config.js';
-import { BackgroundProcessor } from '../config/background/background-processor.js';
-import { InternalBackgroundEntry } from './internal-background-entry.js';
-import { BackgroundTransactionLog } from '../config/background/background-transaction-log.js';
-import { BackgroundExecutionEvent } from './background-execution-event.js';
-import { BackgroundExecutionListener } from './background-execution-listener.js';
-import { BackgroundExecutionEventType } from './background-execution-event-type.js';
-import { EpsilonLambdaEventHandler } from '../config/epsilon-lambda-event-handler.js';
-import { ContextUtil } from '../util/context-util.js';
-import { BackgroundManagerLike } from './manager/background-manager-like.js';
-import { AbstractBackgroundManager } from './manager/abstract-background-manager.js';
-import { StringRatchet } from '@bitblit/ratchet-common';
-import { StopWatch } from '@bitblit/ratchet-common';
+import { Logger } from "@bitblit/ratchet-common/logger/logger";
+import { ErrorRatchet } from "@bitblit/ratchet-common/lang/error-ratchet";
+import { StringRatchet } from "@bitblit/ratchet-common/lang/string-ratchet";
+import { StopWatch } from "@bitblit/ratchet-common/lang/stop-watch";
+import { Context, ProxyResult, SNSEvent } from "aws-lambda";
+import { LambdaEventDetector } from "@bitblit/ratchet-aws/lambda/lambda-event-detector";
+import { EpsilonConstants } from "../epsilon-constants.js";
+import { ModelValidator } from "@bitblit/ratchet-misc/model-validator/model-validator";
+import { BackgroundValidator } from "./background-validator.js";
+import { BackgroundConfig } from "../config/background/background-config.js";
+import { BackgroundProcessor } from "../config/background/background-processor.js";
+import { InternalBackgroundEntry } from "./internal-background-entry.js";
+import { BackgroundTransactionLog } from "../config/background/background-transaction-log.js";
+import { BackgroundExecutionEvent } from "./background-execution-event.js";
+import { BackgroundExecutionListener } from "./background-execution-listener.js";
+import { BackgroundExecutionEventType } from "./background-execution-event-type.js";
+import { EpsilonLambdaEventHandler } from "../config/epsilon-lambda-event-handler.js";
+import { ContextUtil } from "../util/context-util.js";
+import { BackgroundManagerLike } from "./manager/background-manager-like.js";
+import { AbstractBackgroundManager } from "./manager/abstract-background-manager.js";
 
 /**
  * We use a FIFO queue so that 2 different Lambdas don't both work on the same

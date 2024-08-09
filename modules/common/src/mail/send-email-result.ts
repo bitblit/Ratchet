@@ -1,6 +1,6 @@
 import { ReadyToSendEmail } from './ready-to-send-email.js';
 import { ResolvedReadyToSendEmail } from './resolved-ready-to-send-email.js';
-import { ArchiveEmailResult } from './archive-email-result';
+import { ArchiveEmailResult } from './archive-email-result.js';
 
 /**
  * Results of sending an email

@@ -1,12 +1,12 @@
-import { APIGatewayEvent, Context, ProxyResult } from 'aws-lambda';
-import { Base64Ratchet, Logger, Uint8ArrayRatchet } from "@bitblit/ratchet-common";
-import { LoggerLevelName } from '@bitblit/ratchet-common';
-import http, { IncomingMessage, Server, ServerResponse } from 'http';
-import { EventUtil } from './http/event-util.js';
-import fetch from 'cross-fetch';
-import { LocalServer } from './local-server.js';
-import { StringRatchet } from '@bitblit/ratchet-common';
-import { CliRatchet } from "@bitblit/ratchet-node-only";
+import { APIGatewayEvent, Context, ProxyResult } from "aws-lambda";
+import http, { IncomingMessage, Server, ServerResponse } from "http";
+import { EventUtil } from "./http/event-util.js";
+import fetch from "cross-fetch";
+import { LocalServer } from "./local-server.js";
+import { Logger } from "@bitblit/ratchet-common/logger/logger";
+import { StringRatchet } from "@bitblit/ratchet-common/lang/string-ratchet";
+import { LoggerLevelName } from "@bitblit/ratchet-common/logger/logger-level-name";
+import { CliRatchet } from "@bitblit/ratchet-node-only/cli/cli-ratchet";
 
 /**
  * A simplistic server for testing your lambdas-in-container locally

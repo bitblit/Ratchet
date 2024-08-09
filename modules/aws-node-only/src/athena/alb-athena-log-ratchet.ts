@@ -1,13 +1,13 @@
 import { readFileSync, ReadStream } from 'fs';
 import path from 'path';
 import { AthenaRatchet } from './athena-ratchet.js';
-import { Logger } from '@bitblit/ratchet-common';
-import { RequireRatchet } from '@bitblit/ratchet-common';
-import { StringRatchet } from '@bitblit/ratchet-common';
-import { EsmRatchet } from '@bitblit/ratchet-common';
-import { CsvRatchet } from '@bitblit/ratchet-node-only';
+import { Logger } from '@bitblit/ratchet-common/logger/logger';
+import { RequireRatchet } from '@bitblit/ratchet-common/lang/require-ratchet';
+import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet';
+import { EsmRatchet } from '@bitblit/ratchet-common/lang/esm-ratchet';
+import { CsvRatchet } from '@bitblit/ratchet-node-only/csv/csv-ratchet';
 import { S3Client } from '@aws-sdk/client-s3';
-import { S3Ratchet } from '@bitblit/ratchet-aws';
+import { S3Ratchet } from '@bitblit/ratchet-aws/s3/s3-ratchet';
 
 // A class to simplify reading an Athena table based on ALB Logs
 // NOTE: This class only runs on Node since it depends on fs and path

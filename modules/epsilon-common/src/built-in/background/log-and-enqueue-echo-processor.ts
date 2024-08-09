@@ -1,4 +1,4 @@
-import { Logger } from '@bitblit/ratchet-common';
+import { Logger } from '@bitblit/ratchet-common/logger/logger';
 import { BackgroundProcessor } from '../../config/background/background-processor.js';
 import { EchoProcessor } from './echo-processor.js';
 import { BackgroundManagerLike } from '../../background/manager/background-manager-like.js';

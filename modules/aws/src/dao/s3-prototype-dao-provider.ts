@@ -1,4 +1,4 @@
-import { RequireRatchet } from '@bitblit/ratchet-common';
+import { RequireRatchet } from '@bitblit/ratchet-common/lang/require-ratchet';
 import { PutObjectOutput } from '@aws-sdk/client-s3';
 import { PrototypeDaoProvider } from './prototype-dao-provider.js';
 import { PrototypeDaoDb } from './prototype-dao-db.js';

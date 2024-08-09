@@ -1,4 +1,4 @@
-import { DaemonProcessState } from '@bitblit/ratchet-aws';
+import { DaemonProcessState } from "@bitblit/ratchet-aws/daemon/daemon-process-state";
 
 /**
  * Wrapper for future pagination capability

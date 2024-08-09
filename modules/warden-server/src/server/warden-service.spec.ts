@@ -1,21 +1,20 @@
-import { WardenStorageProvider } from './provider/warden-storage-provider.js';
+import { WardenStorageProvider } from "./provider/warden-storage-provider.js";
 
-import { WardenService } from './warden-service.js';
-import { WardenServiceOptions } from './warden-service-options.js';
-import {
-  WardenCommand,
-  WardenCommandResponse,
-  WardenContactType,
-  WardenEntry,
-  WardenLoginRequest,
-  WardenLoginResults,
-} from '@bitblit/ratchet-warden-common';
-import { JwtRatchet } from '@bitblit/ratchet-common';
+import { WardenService } from "./warden-service.js";
+import { WardenServiceOptions } from "./warden-service-options.js";
+import { WardenContactType } from "@bitblit/ratchet-warden-common/common/model/warden-contact-type";
+import { WardenEntry } from "@bitblit/ratchet-warden-common/common/model/warden-entry";
+import { WardenLoginRequest } from "@bitblit/ratchet-warden-common/common/model/warden-login-request";
+import { WardenCommand } from "@bitblit/ratchet-warden-common/common/command/warden-command";
+import { WardenCommandResponse } from "@bitblit/ratchet-warden-common/common/command/warden-command-response";
+import { WardenLoginResults } from "@bitblit/ratchet-warden-common/common/model/warden-login-results";
 
-import { WardenUserDecorationProvider } from './provider/warden-user-decoration-provider.js';
-import { WardenSingleUseCodeProvider } from './provider/warden-single-use-code-provider';
-import { expect, test, describe, vi, beforeEach } from 'vitest';
-import { mock, MockProxy } from 'vitest-mock-extended';
+import { JwtRatchet } from "@bitblit/ratchet-common/jwt/jwt-ratchet";
+
+import { WardenUserDecorationProvider } from "./provider/warden-user-decoration-provider.js";
+import { WardenSingleUseCodeProvider } from "./provider/warden-single-use-code-provider";
+import { beforeEach, describe, expect, test } from "vitest";
+import { mock, MockProxy } from "vitest-mock-extended";
 
 //let mockJwtRatchet: MockProxy<JwtRatchetLike>;
 let mockWardenStorageProvider: MockProxy<WardenStorageProvider>;

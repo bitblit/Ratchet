@@ -1,11 +1,13 @@
-import { SQSClient } from '@aws-sdk/client-sqs';
-import { BackgroundEntry } from '../background-entry';
-import { BackgroundAwsConfig } from '../../config/background/background-aws-config';
-import { InternalBackgroundEntry } from '../internal-background-entry';
-import { SNSClient } from '@aws-sdk/client-sns';
-import { AwsSqsSnsBackgroundManager } from './aws-sqs-sns-background-manager';
-import { S3CacheRatchetLike } from '@bitblit/ratchet-aws';
-import { ErrorRatchet, Logger, StringRatchet } from '@bitblit/ratchet-common';
+import { SQSClient } from "@aws-sdk/client-sqs";
+import { BackgroundEntry } from "../background-entry";
+import { BackgroundAwsConfig } from "../../config/background/background-aws-config";
+import { InternalBackgroundEntry } from "../internal-background-entry";
+import { SNSClient } from "@aws-sdk/client-sns";
+import { AwsSqsSnsBackgroundManager } from "./aws-sqs-sns-background-manager";
+import { S3CacheRatchetLike } from "@bitblit/ratchet-aws/s3/s3-cache-ratchet-like";
+import { Logger } from "@bitblit/ratchet-common/logger/logger";
+import { ErrorRatchet } from "@bitblit/ratchet-common/lang/error-ratchet";
+import { StringRatchet } from "@bitblit/ratchet-common/lang/string-ratchet";
 
 /**
  * Handles all submission of work to the background processing system.

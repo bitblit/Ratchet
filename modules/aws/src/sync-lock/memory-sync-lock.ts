@@ -1,4 +1,4 @@
-import { StringRatchet } from '@bitblit/ratchet-common';
+import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet';
 import { SyncLockProvider } from './sync-lock-provider.js';
 
 /**

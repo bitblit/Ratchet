@@ -1,4 +1,4 @@
-import { Uint8ArrayRatchet } from './uint-8-array-ratchet';
+import { Uint8ArrayRatchet } from './uint-8-array-ratchet.js';
 import { expect, test, describe } from 'vitest';
 
 describe('#Uint8Array', function () {

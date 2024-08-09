@@ -1,5 +1,9 @@
 import maria, { Connection, ConnectionOptions } from "mysql2/promise";
-import { ErrorRatchet, Logger, RequireRatchet, StringRatchet } from "@bitblit/ratchet-common";
+
+import { RequireRatchet } from "@bitblit/ratchet-common/lang/require-ratchet";
+import { Logger } from "@bitblit/ratchet-common/logger/logger";
+import { ErrorRatchet } from "@bitblit/ratchet-common/lang/error-ratchet";
+import { StringRatchet } from "@bitblit/ratchet-common/lang/string-ratchet";
 import { SshTunnelService } from "../service/ssh-tunnel-service.js";
 import { DatabaseConfigList } from "../model/database-config-list";
 import getPort from "get-port";

@@ -1,5 +1,5 @@
 import { AthenaRatchet } from './athena-ratchet.js';
-import { Logger } from '@bitblit/ratchet-common';
+import { Logger } from '@bitblit/ratchet-common/logger/logger';
 import {
   AthenaClient,
   GetQueryExecutionCommand,

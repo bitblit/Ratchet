@@ -3,7 +3,7 @@ import { DatabaseAccess } from "../model/database-access";
 import { RequestResults } from "../model/request-results";
 import { ModifyResults } from "../model/modify-results";
 import { DatabaseRequestType } from "../model/database-request-type";
-import { Logger } from "@bitblit/ratchet-common";
+import { Logger } from "@bitblit/ratchet-common/logger/logger";
 
 export class MysqlStyleDatabaseAccess implements DatabaseAccess {
 

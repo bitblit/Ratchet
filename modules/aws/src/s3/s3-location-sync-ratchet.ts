@@ -7,10 +7,12 @@ import {
   ListObjectsV2CommandInput,
   ListObjectsV2CommandOutput,
   PutObjectCommandInput,
-  S3Client,
-} from '@aws-sdk/client-s3';
-import { Logger, PromiseRatchet, RequireRatchet } from '@bitblit/ratchet-common';
-import { Upload } from '@aws-sdk/lib-storage';
+  S3Client
+} from "@aws-sdk/client-s3";
+import { RequireRatchet } from "@bitblit/ratchet-common/lang/require-ratchet";
+import { Logger } from "@bitblit/ratchet-common/logger/logger";
+import { PromiseRatchet } from "@bitblit/ratchet-common/lang/promise-ratchet";
+import { Upload } from "@aws-sdk/lib-storage";
 
 export interface S3LocationSyncRatchetConfig {
   srcS3: S3Client;

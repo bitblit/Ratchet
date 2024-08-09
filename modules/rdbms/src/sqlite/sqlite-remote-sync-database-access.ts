@@ -1,12 +1,9 @@
 import { AsyncDatabase } from "promised-sqlite3";
-import {
-  BackupResult,
-  ErrorRatchet,
-  FileTransferResult,
-  Logger,
-  RequireRatchet,
-  StopWatch
-} from "@bitblit/ratchet-common";
+
+import { RequireRatchet } from "@bitblit/ratchet-common/lang/require-ratchet";
+import { Logger } from "@bitblit/ratchet-common/logger/logger";
+import { ErrorRatchet } from "@bitblit/ratchet-common/lang/error-ratchet";
+import { StopWatch } from "@bitblit/ratchet-common/lang/stop-watch";
 import SqlString from "sqlstring";
 import { SqliteDatabaseAccess } from "./sqlite-database-access.js";
 import { DatabaseAccess } from "../model/database-access.js";
@@ -17,6 +14,8 @@ import { SqliteRemoteFileSyncConfig } from "./model/sqlite-remote-file-sync-conf
 import { FlushRemoteMode } from "./model/flush-remote-mode.js";
 import { SqliteConnectionConfigFlag } from "./model/sqlite-connection-config-flag";
 import { FetchRemoteMode } from "./model/fetch-remote-mode";
+import { BackupResult } from "@bitblit/ratchet-common/network/remote-file-sync/backup-result";
+import { FileTransferResult } from "@bitblit/ratchet-common/network/remote-file-sync/file-transfer-result";
 
 export class SqliteRemoteSyncDatabaseAccess implements DatabaseAccess {
   private cacheDb: Promise<SqliteDatabaseAccess>;

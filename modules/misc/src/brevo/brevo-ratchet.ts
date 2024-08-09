@@ -2,7 +2,7 @@
 //import * as brevoApi from '@getbrevo/brevo';
 //import { AccountApi, TransactionalEmailsApi } from '@getbrevo/brevo';
 import { BrevoKeys } from './brevo-keys';
-import { Logger } from '@bitblit/ratchet-common';
+import { Logger } from '@bitblit/ratchet-common/logger/logger';
 import { AccountApi } from './generated/apis/AccountApi.js';
 import { SMTPApi } from './generated/apis/SMTPApi';
 import { Configuration, ConfigurationParameters, FetchParams, Middleware, RequestContext } from './generated/runtime';

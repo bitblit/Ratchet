@@ -4,17 +4,16 @@
   "description": "Ratchet miscellaneous tooling that requires smallish dependant libraries",
   "sideEffects": false,
   "type": "module",
-  "module": "./lib/index.mjs",
-  "types": "./lib/types.d.ts",
   "files": [
     "lib/**",
     "bin/**"
   ],
   "exports": {
+    "./package.json": "./package.json",
     "./sobol": "./lib/sobol/generated/index.mjs",
-    ".": {
-      "types": "./lib/types.d.ts",
-      "import": "./lib/index.mjs"
+    "./*": {
+      "import": "./lib/*.js",
+      "types": "./lib/*.d.ts"
     }
   },
   "contributors": [

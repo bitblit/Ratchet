@@ -1,7 +1,7 @@
 import { ResolvedReadyToSendEmail } from './resolved-ready-to-send-email.js';
-import { Logger } from '../logger/logger';
-import { ErrorRatchet } from '../lang/error-ratchet';
-import { MailSendingProvider } from './mail-sending-provider';
+import { Logger } from '../logger/logger.js';
+import { ErrorRatchet } from '../lang/error-ratchet.js';
+import { MailSendingProvider } from './mail-sending-provider.js';
 
 /**
  * An implementation of mail sending provider to simplify testing

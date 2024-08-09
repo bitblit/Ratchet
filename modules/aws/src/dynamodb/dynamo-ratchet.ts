@@ -29,12 +29,17 @@ import {
   UpdateCommandOutput,
   UpdateCommandInput,
 } from '@aws-sdk/lib-dynamodb';
-import { DurationRatchet, ErrorRatchet, Logger, NumberRatchet, PromiseRatchet, RequireRatchet } from '@bitblit/ratchet-common';
 
 import { DynamoCountResult } from '../model/dynamo-count-result.js';
 import { DynamoRatchetLike } from './dynamo-ratchet-like.js';
 import { NativeAttributeValue } from '@aws-sdk/util-dynamodb';
 import { ConditionalCheckFailedException, ProvisionedThroughputExceededException } from '@aws-sdk/client-dynamodb';
+import { Logger } from "@bitblit/ratchet-common/logger/logger";
+import { PromiseRatchet } from "@bitblit/ratchet-common/lang/promise-ratchet";
+import { ErrorRatchet } from "@bitblit/ratchet-common/lang/error-ratchet";
+import { DurationRatchet } from "@bitblit/ratchet-common/lang/duration-ratchet";
+import { RequireRatchet } from "@bitblit/ratchet-common/lang/require-ratchet";
+import { NumberRatchet } from "@bitblit/ratchet-common/lang/number-ratchet";
 
 export class DynamoRatchet implements DynamoRatchetLike {
   constructor(private awsDDB: DynamoDBDocumentClient) {

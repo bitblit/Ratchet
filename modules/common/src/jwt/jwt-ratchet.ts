@@ -6,7 +6,7 @@ import { JwtTokenBase } from "./jwt-token-base.js";
 import { LoggerLevelName } from "../logger/logger-level-name.js";
 import { ExpiredJwtHandling } from "./expired-jwt-handling.js";
 import { JwtRatchetLike } from "./jwt-ratchet-like.js";
-import { JwtRatchetConfig } from "./jwt-ratchet-config";
+import { JwtRatchetConfig } from "./jwt-ratchet-config.js";
 import jsonwebtoken from "jsonwebtoken";
 
 /**

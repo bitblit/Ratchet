@@ -1,4 +1,4 @@
-import { Logger } from '@bitblit/ratchet-common';
+import { Logger } from '@bitblit/ratchet-common/logger/logger';
 import { EcrUnusedImageCleaner } from './ecr-unused-image-cleaner';
 import { ECRClient } from '@aws-sdk/client-ecr';
 import { AwsCredentialsRatchet } from '../iam/aws-credentials-ratchet';

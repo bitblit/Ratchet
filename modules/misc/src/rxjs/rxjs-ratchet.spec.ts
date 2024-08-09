@@ -1,7 +1,7 @@
 import { BehaviorSubject } from 'rxjs';
 import { RxjsRatchet } from './rxjs-ratchet.js';
-import { PromiseRatchet } from '@bitblit/ratchet-common';
-import { Logger } from '@bitblit/ratchet-common';
+import { PromiseRatchet } from '@bitblit/ratchet-common/lang/promise-ratchet';
+import { Logger } from '@bitblit/ratchet-common/logger/logger';
 import { expect, test, describe, vi, beforeEach } from 'vitest';
 import { mock, MockProxy } from 'vitest-mock-extended';
 

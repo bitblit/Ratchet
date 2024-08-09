@@ -1,10 +1,10 @@
-import { Logger } from '@bitblit/ratchet-common';
-import { PromiseRatchet } from '@bitblit/ratchet-common';
-import { DurationRatchet } from '@bitblit/ratchet-common';
-import { NumberRatchet } from '@bitblit/ratchet-common';
-import { BackgroundProcessor } from '../../config/background/background-processor.js';
-import { StringRatchet } from '@bitblit/ratchet-common';
-import { BackgroundManagerLike } from '../../background/manager/background-manager-like.js';
+import { BackgroundProcessor } from "../../config/background/background-processor.js";
+import { BackgroundManagerLike } from "../../background/manager/background-manager-like.js";
+import { Logger } from "@bitblit/ratchet-common/logger/logger";
+import { PromiseRatchet } from "@bitblit/ratchet-common/lang/promise-ratchet";
+import { StringRatchet } from "@bitblit/ratchet-common/lang/string-ratchet";
+import { NumberRatchet } from "@bitblit/ratchet-common/lang/number-ratchet";
+import { DurationRatchet } from "@bitblit/ratchet-common/lang/duration-ratchet";
 
 export class RetryProcessor implements BackgroundProcessor<any> {
   private static readonly RETRY_FIELD_NAME: string = '___RetryProcessorTryNumber';

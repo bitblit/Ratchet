@@ -9,7 +9,7 @@ import { LambdaSubscription } from 'aws-cdk-lib/aws-sns-subscriptions';
 import { Rule, Schedule } from 'aws-cdk-lib/aws-events';
 import { LambdaFunction } from 'aws-cdk-lib/aws-events-targets';
 import { DockerImageAsset } from 'aws-cdk-lib/aws-ecr-assets';
-import { StringRatchet } from '@bitblit/ratchet-common';
+import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet';
 import { EpsilonStackUtil } from './epsilon-stack-util.js';
 import { EpsilonApiStackProps } from './epsilon-api-stack-props.js';
 import { RatchetEpsilonDeploymentInfo } from '../../build/ratchet-epsilon-deployment-info.js';

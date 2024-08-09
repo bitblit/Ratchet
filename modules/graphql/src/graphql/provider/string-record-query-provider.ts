@@ -1,5 +1,6 @@
-import { GraphqlRatchetQueryProvider } from './graphql-ratchet-query-provider.js';
-import { Logger, StringRatchet } from '@bitblit/ratchet-common';
+import { GraphqlRatchetQueryProvider } from "./graphql-ratchet-query-provider.js";
+import { Logger } from "@bitblit/ratchet-common/logger/logger";
+import { StringRatchet } from "@bitblit/ratchet-common/lang/string-ratchet";
 
 export class StringRecordQueryProvider implements GraphqlRatchetQueryProvider {
   private files: Record<string, string> = {};

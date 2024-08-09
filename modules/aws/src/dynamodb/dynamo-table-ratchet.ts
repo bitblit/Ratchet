@@ -18,8 +18,11 @@ import {
   ProvisionedThroughput,
   ResourceNotFoundException,
 } from '@aws-sdk/client-dynamodb';
-import { ErrorRatchet, Logger, PromiseRatchet, RequireRatchet } from '@bitblit/ratchet-common';
 import { LocalSecondaryIndex } from '@aws-sdk/client-dynamodb/dist-types/models/models_0.js';
+import { RequireRatchet } from "@bitblit/ratchet-common/lang/require-ratchet";
+import { Logger } from "@bitblit/ratchet-common/logger/logger";
+import { ErrorRatchet } from "@bitblit/ratchet-common/lang/error-ratchet";
+import { PromiseRatchet } from "@bitblit/ratchet-common/lang/promise-ratchet";
 
 export class DynamoTableRatchet {
   constructor(private awsDDB: DynamoDBClient) {

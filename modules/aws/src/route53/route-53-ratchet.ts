@@ -1,4 +1,4 @@
-import { Logger } from '@bitblit/ratchet-common';
+import { Logger } from '@bitblit/ratchet-common/logger/logger';
 import {
   ChangeResourceRecordSetsCommand,
   ChangeResourceRecordSetsCommandInput,

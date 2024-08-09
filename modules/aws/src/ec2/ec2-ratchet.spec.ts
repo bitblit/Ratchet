@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import os from 'os';
-import { Logger } from '@bitblit/ratchet-common';
+import { Logger } from '@bitblit/ratchet-common/logger/logger';
 import { Ec2Ratchet } from './ec2-ratchet.js';
 import { SendSSHPublicKeyResponse } from '@aws-sdk/client-ec2-instance-connect';
 import { Instance } from '@aws-sdk/client-ec2';

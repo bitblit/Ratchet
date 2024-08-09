@@ -2,8 +2,9 @@
  * The user details gets jammed into the JWT token upon login.  If one is not provided,
  * the default only puts the WardenEntrySummary in there
  */
-import { SendMagicLink, WardenEntry } from '@bitblit/ratchet-warden-common';
-import { WardenSendMagicLinkCommandValidator } from './warden-send-magic-link-command-validator.js';
+import { WardenEntry } from "@bitblit/ratchet-warden-common/common/model/warden-entry";
+import { SendMagicLink } from "@bitblit/ratchet-warden-common/common/command/send-magic-link";
+import { WardenSendMagicLinkCommandValidator } from "./warden-send-magic-link-command-validator.js";
 
 export class WardenDefaultSendMagicLinkCommandValidator implements WardenSendMagicLinkCommandValidator {
   public async allowMagicLinkCommand(cmd: SendMagicLink, origin: string, loggedInUser: WardenEntry): Promise<void> {

@@ -9,7 +9,8 @@ import {
   FilterLogEventsCommandOutput,
   LogStream,
 } from '@aws-sdk/client-cloudwatch-logs';
-import { Logger, StopWatch } from '@bitblit/ratchet-common';
+import { Logger } from "@bitblit/ratchet-common/logger/logger";
+import { StopWatch } from "@bitblit/ratchet-common/lang/stop-watch";
 
 export class CloudWatchLogGroupRatchet {
   constructor(

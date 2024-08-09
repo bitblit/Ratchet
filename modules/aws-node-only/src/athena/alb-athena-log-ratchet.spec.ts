@@ -1,13 +1,12 @@
-import { AthenaRatchet } from './athena-ratchet.js';
-import { Logger } from '@bitblit/ratchet-common';
-import { LoggerLevelName } from '@bitblit/ratchet-common';
-import { TimeZoneRatchet } from '@bitblit/ratchet-common';
+import { AthenaRatchet } from "./athena-ratchet.js";
 
-import { AlbAthenaLogRatchet, AlbLogRecord, AlbLogRecordQuery } from './alb-athena-log-ratchet.js';
-import { S3Client } from '@aws-sdk/client-s3';
-import { AthenaClient } from '@aws-sdk/client-athena';
-import { expect, test, describe, vi, beforeEach } from 'vitest';
-import { mock, MockProxy } from 'vitest-mock-extended';
+import { AlbAthenaLogRatchet, AlbLogRecord, AlbLogRecordQuery } from "./alb-athena-log-ratchet.js";
+import { S3Client } from "@aws-sdk/client-s3";
+import { AthenaClient } from "@aws-sdk/client-athena";
+import { describe, expect, test } from "vitest";
+import { Logger } from "@bitblit/ratchet-common/logger/logger";
+import { LoggerLevelName } from "@bitblit/ratchet-common/logger/logger-level-name";
+import { TimeZoneRatchet } from "@bitblit/ratchet-common/lang/time-zone-ratchet";
 
 describe('#AlbAthenaLogRatchet', function () {
   test('Placeholder', async () => {

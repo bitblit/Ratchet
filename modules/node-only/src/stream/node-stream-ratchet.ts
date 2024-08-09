@@ -1,5 +1,5 @@
 import { Readable, Writable } from 'stream';
-import { StringRatchet } from '@bitblit/ratchet-common';
+import { StringRatchet } from "@bitblit/ratchet-common/lang/string-ratchet";
 
 /**
  * This class is specifically dealing with node streams as opposed to web streams

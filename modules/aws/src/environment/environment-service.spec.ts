@@ -1,5 +1,5 @@
 import { EnvironmentService } from './environment-service.js';
-import { Logger } from '@bitblit/ratchet-common';
+import { Logger } from '@bitblit/ratchet-common/logger/logger';
 import { FixedEnvironmentServiceProvider } from './fixed-environment-service-provider.js';
 import { expect, test, describe, vi, beforeEach } from 'vitest';
 

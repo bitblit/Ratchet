@@ -1,22 +1,12 @@
-import {
-  CopyObjectCommand,
-  CreateMultipartUploadCommand,
-  GetObjectCommand,
-  HeadObjectCommand,
-  PutObjectCommand,
-  PutObjectCommandInput,
-  PutObjectCommandOutput,
-  S3Client,
-  UploadPartCommand,
-} from '@aws-sdk/client-s3';
-import { Logger, WebStreamRatchet, StringRatchet, RemoteStatusData } from "@bitblit/ratchet-common";
-import { mockClient } from 'aws-sdk-client-mock';
-import { expect, test, describe, vi, beforeEach } from 'vitest';
-import { mock, MockProxy } from 'vitest-mock-extended';
+import { S3Client } from "@aws-sdk/client-s3";
+import { Logger } from "@bitblit/ratchet-common/logger/logger";
+import { beforeEach, describe, test } from "vitest";
 import { S3SyncedFile } from "./s3-synced-file";
-import { AwsCredentialsRatchet, S3CacheRatchet, S3CacheRatchetLike } from "@bitblit/ratchet-aws";
+import { AwsCredentialsRatchet } from "@bitblit/ratchet-aws/iam/aws-credentials-ratchet";
+import { S3CacheRatchet } from "@bitblit/ratchet-aws/s3/s3-cache-ratchet";
 import { S3SyncedFileConfig } from "./s3-synced-file-config";
 import { S3SyncedFileConfigInitMode } from "./s3-synced-file-config-init-mode";
+import { RemoteStatusData } from "@bitblit/ratchet-common/network/remote-file-sync/remote-status-data";
 
 
 describe('#S3SyncedFile', function () {

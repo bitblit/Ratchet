@@ -1,6 +1,6 @@
-import { EpsilonGlobalHandler } from './epsilon-global-handler.js';
-import { Logger } from '@bitblit/ratchet-common';
-import { EsmRatchet } from '@bitblit/ratchet-common';
+import { EpsilonGlobalHandler } from "./epsilon-global-handler.js";
+import { Logger } from "@bitblit/ratchet-common/logger/logger";
+import { EsmRatchet } from "@bitblit/ratchet-common/lang/esm-ratchet";
 
 export class EpsilonConstants {
   public static readonly EPSILON_FINDER_DYNAMIC_IMPORT_PATH_ENV_NAME = 'EPSILON_FINDER_DYNAMIC_IMPORT_PATH';

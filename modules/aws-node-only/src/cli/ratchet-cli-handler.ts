@@ -1,7 +1,7 @@
 import { AbstractRatchetCliHandler } from '@bitblit/ratchet-node-only';
 import { SiteUploader } from './site-uploader/site-uploader.js';
 import { StartInstanceAndSsh } from './start-instance-and-ssh.js';
-import { BuildInformation } from '@bitblit/ratchet-common';
+import { BuildInformation } from '@bitblit/ratchet-common/build/build-information';
 import { RatchetAwsNodeOnlyInfo } from '../build/ratchet-aws-node-only-info.js';
 
 export class RatchetCliHandler extends AbstractRatchetCliHandler {

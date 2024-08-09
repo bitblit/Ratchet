@@ -4,8 +4,8 @@ import { EmailAttachment } from './email-attachment.js';
 import { MailerConfig } from './mailer-config.js';
 import { StringRatchet } from '../lang/string-ratchet.js';
 import { Base64Ratchet } from '../lang/base64-ratchet.js';
-import { TestMailSendingProvider } from './test-mail-sending-provider';
-import { SendEmailResult } from './send-email-result';
+import { TestMailSendingProvider } from './test-mail-sending-provider.js';
+import { SendEmailResult } from './send-email-result.js';
 import { expect, test, describe, beforeEach } from 'vitest';
 
 let mockSES;

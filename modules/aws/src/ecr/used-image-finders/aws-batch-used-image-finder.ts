@@ -1,5 +1,8 @@
 import { UsedImageFinder } from "../used-image-finder";
-import { Logger, RequireRatchet, StringRatchet } from "@bitblit/ratchet-common";
+
+import { RequireRatchet } from "@bitblit/ratchet-common/lang/require-ratchet";
+import { Logger } from "@bitblit/ratchet-common/logger/logger";
+import { StringRatchet } from "@bitblit/ratchet-common/lang/string-ratchet";
 import {
   BatchClient,
   DescribeJobDefinitionsCommand,

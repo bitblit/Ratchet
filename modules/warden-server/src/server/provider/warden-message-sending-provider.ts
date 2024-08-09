@@ -1,6 +1,6 @@
-import { WardenContactType } from '@bitblit/ratchet-warden-common';
-import { WardenContact } from '@bitblit/ratchet-warden-common';
-import { WardenCustomerMessageType } from '@bitblit/ratchet-warden-common';
+import { WardenContactType } from "@bitblit/ratchet-warden-common/common/model/warden-contact-type";
+import { WardenContact } from "@bitblit/ratchet-warden-common/common/model/warden-contact";
+import { WardenCustomerMessageType } from "@bitblit/ratchet-warden-common/common/model/warden-customer-message-type";
 
 /**
  * Classes implementing WardenMessageSendingProvider are able to

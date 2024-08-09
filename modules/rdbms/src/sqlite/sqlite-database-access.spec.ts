@@ -2,10 +2,8 @@ import { describe, expect, test } from "vitest";
 import { SqliteStyleConnectionProvider } from "./sqlite-style-connection-provider";
 import * as path from "node:path";
 import { NamedParameterDatabaseService } from "../service/named-parameter-database-service";
-import { Logger } from "@bitblit/ratchet-common";
+import { Logger } from "@bitblit/ratchet-common/logger/logger";
 import { SimpleQueryTextProvider } from "../model/simple-query-text-provider";
-import { DatabaseRequestType } from "../model/database-request-type";
-import { TransactionIsolationLevel } from "../model/transaction-isolation-level";
 import { ModifyResults } from "../model/modify-results";
 import { RequestResults } from "../model/request-results";
 

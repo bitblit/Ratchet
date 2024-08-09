@@ -1,9 +1,12 @@
 //    Service for sending codes via twilio verify
-import { WardenTwilioVerifySingleUseCodeProviderOptions } from './warden-twilio-verify-single-use-code-provider-options';
-
-import { Logger, TwilioVerifyRatchet } from '@bitblit/ratchet-common';
-import { WardenContact, WardenContactType } from '@bitblit/ratchet-warden-common';
-import { WardenSingleUseCodeProvider } from './warden-single-use-code-provider';
+import {
+  WardenTwilioVerifySingleUseCodeProviderOptions
+} from "./warden-twilio-verify-single-use-code-provider-options";
+import { Logger } from "@bitblit/ratchet-common/logger/logger";
+import { WardenSingleUseCodeProvider } from "./warden-single-use-code-provider";
+import { TwilioVerifyRatchet } from "@bitblit/ratchet-common/third-party/twilio/twilio-verify-ratchet";
+import { WardenContactType } from "@bitblit/ratchet-warden-common/common/model/warden-contact-type";
+import { WardenContact } from "@bitblit/ratchet-warden-common/common/model/warden-contact";
 
 export class WardenTwilioVerifySingleUseCodeProvider implements WardenSingleUseCodeProvider {
   private _cacheTwilioVerifyRatchet: TwilioVerifyRatchet;

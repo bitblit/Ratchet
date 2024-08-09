@@ -5,9 +5,9 @@
 
 import { SimpleCacheObjectWrapper } from './simple-cache-object-wrapper.js';
 import { SimpleCacheStorageProvider } from './simple-cache-storage-provider.js';
-import { RequireRatchet } from '@bitblit/ratchet-common';
 import { DynamoRatchet } from '../dynamodb/dynamo-ratchet.js';
 import { PutCommandOutput, ScanCommandInput, QueryCommandInput } from '@aws-sdk/lib-dynamodb';
+import { RequireRatchet } from "@bitblit/ratchet-common/lang/require-ratchet";
 
 export class DynamoDbStorageProvider implements SimpleCacheStorageProvider {
   // If hash key is provided, then the cache key is the range, otherwise the cache key is the hash

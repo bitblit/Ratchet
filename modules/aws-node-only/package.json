@@ -8,16 +8,15 @@
     "ratchet-aws-cli": "./bin/cli.js"
   },
   "type": "module",
-  "module": "./lib/index.mjs",
-  "types": "./lib/types.d.ts",
   "files": [
     "lib/**",
     "bin/**"
   ],
   "exports": {
-    ".": {
-      "types": "./lib/types.d.ts",
-      "import": "./lib/index.mjs"
+    "./package.json": "./package.json",
+    "./*": {
+      "import": "./lib/*.js",
+      "types": "./lib/*.d.ts"
     }
   },
   "contributors": [

@@ -1,14 +1,13 @@
-import { APIGatewayEvent, APIGatewayEventRequestContext, ProxyResult } from 'aws-lambda';
-import { ResponseUtil } from './response-util.js';
-import path from 'path';
-import fs from 'fs';
-import { FilterChainContext } from '../config/http/filter-chain-context.js';
-import { ExtendedAPIGatewayEvent } from '../config/http/extended-api-gateway-event.js';
-import { BuiltInFilters } from '../built-in/http/built-in-filters.js';
-import { EpsilonConstants } from '../epsilon-constants.js';
-import { EsmRatchet } from '@bitblit/ratchet-common';
-import { expect, test, describe, vi, beforeEach } from 'vitest';
-import { mock, MockProxy } from 'vitest-mock-extended';
+import { APIGatewayEvent, APIGatewayEventRequestContext, ProxyResult } from "aws-lambda";
+import { ResponseUtil } from "./response-util.js";
+import path from "path";
+import fs from "fs";
+import { FilterChainContext } from "../config/http/filter-chain-context.js";
+import { ExtendedAPIGatewayEvent } from "../config/http/extended-api-gateway-event.js";
+import { BuiltInFilters } from "../built-in/http/built-in-filters.js";
+import { EpsilonConstants } from "../epsilon-constants.js";
+import { EsmRatchet } from "@bitblit/ratchet-common/lang/esm-ratchet";
+import { describe, expect, test } from "vitest";
 
 describe('#responseUtil', function () {
   test('should correctly combine a redirect url and query params', function () {

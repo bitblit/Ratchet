@@ -7,7 +7,6 @@ import { LoggerLevelName } from './logger-level-name.js';
 import { LoggerRingBuffer } from './logger-ring-buffer.js';
 import { LogMessageBuilder } from './log-message-builder.js';
 import { LoggerOutputFunction } from './logger-output-function.js';
-import { LoggerUtil } from "./logger-util";
 
 /**
  * Class to simplify logging across both browsers and node (especially lambda)

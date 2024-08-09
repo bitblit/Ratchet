@@ -3,9 +3,9 @@
  */
 
 import url from 'url';
-import { ErrorRatchet } from "./error-ratchet";
-import { Logger } from "../logger/logger";
-import { StringRatchet } from "./string-ratchet";
+import { ErrorRatchet } from "./error-ratchet.js";
+import { Logger } from "../logger/logger.js";
+import { StringRatchet } from "./string-ratchet.js";
 
 export class EsmRatchet {
   private static readonly DYNAMIC_IMPORT_CACHE: Map<string, Promise<any>> = new Map<string, Promise<any>>();

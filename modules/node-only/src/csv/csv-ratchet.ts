@@ -5,12 +5,12 @@
 import fs from 'fs';
 import { ReadStream } from 'fs';
 import { Options as ParseOptions, parse } from 'csv-parse';
-import { Logger } from '@bitblit/ratchet-common';
-import { RequireRatchet } from '@bitblit/ratchet-common';
-import { MapRatchet } from '@bitblit/ratchet-common';
 import { Options, stringify } from 'csv-stringify';
 import { Subject, Subscription } from 'rxjs';
 import { Readable, Writable } from 'stream';
+import { Logger } from "@bitblit/ratchet-common/logger/logger";
+import { RequireRatchet } from "@bitblit/ratchet-common/lang/require-ratchet";
+import { MapRatchet } from "@bitblit/ratchet-common/lang/map-ratchet";
 
 export class CsvRatchet {
   public static defaultParseOptions(): ParseOptions {

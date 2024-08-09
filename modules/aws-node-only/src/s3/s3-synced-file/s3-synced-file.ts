@@ -1,11 +1,7 @@
-import {
-  BackupResult,
-  FileTransferResult,
-  Logger, PromiseRatchet,
-  RemoteFileSyncLike, RemoteStatusData,
-  RequireRatchet,
-  StopWatch
-} from "@bitblit/ratchet-common";
+import { RequireRatchet } from "@bitblit/ratchet-common/lang/require-ratchet";
+import { Logger } from "@bitblit/ratchet-common/logger/logger";
+import { PromiseRatchet } from "@bitblit/ratchet-common/lang/promise-ratchet";
+import { StopWatch } from "@bitblit/ratchet-common/lang/stop-watch";
 import tmp from "tmp";
 import fs, { WriteStream } from "fs";
 import {
@@ -20,6 +16,10 @@ import { S3SyncedFileConfigInitMode } from "./s3-synced-file-config-init-mode";
 import { DateTime } from "luxon";
 import { S3SyncedFileRemoteBackupMode } from "./s3-synced-file-remote-backup-mode";
 import { S3SyncedFileOptimization } from "./s3-synced-file-optimization";
+import { RemoteFileSyncLike } from "@bitblit/ratchet-common/network/remote-file-sync/remote-file-sync-like";
+import { RemoteStatusData } from "@bitblit/ratchet-common/network/remote-file-sync/remote-status-data";
+import { FileTransferResult } from "@bitblit/ratchet-common/network/remote-file-sync/file-transfer-result";
+import { BackupResult } from "@bitblit/ratchet-common/network/remote-file-sync/backup-result";
 
 // Keeps a local file up-to-date with a file on S3
 export class S3SyncedFile implements RemoteFileSyncLike{

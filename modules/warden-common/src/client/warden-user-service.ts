@@ -1,21 +1,23 @@
-import { JwtRatchet, Logger, StringRatchet } from '@bitblit/ratchet-common';
-import { Subscription, timer } from 'rxjs';
-import { WardenUserServiceOptions } from './provider/warden-user-service-options.js';
-import { WardenLoggedInUserWrapper } from './provider/warden-logged-in-user-wrapper.js';
-import { WardenContact } from '../common/model/warden-contact.js';
-import { WardenJwtToken } from '../common/model/warden-jwt-token.js';
-import { WardenLoginResults } from '../common/model/warden-login-results.js';
-import { WardenLoginRequest } from '../common/model/warden-login-request.js';
+import { Logger } from "@bitblit/ratchet-common/logger/logger";
+import { StringRatchet } from "@bitblit/ratchet-common/lang/string-ratchet";
+import { JwtRatchet } from "@bitblit/ratchet-common/jwt/jwt-ratchet";
+import { Subscription, timer } from "rxjs";
+import { WardenUserServiceOptions } from "./provider/warden-user-service-options.js";
+import { WardenLoggedInUserWrapper } from "./provider/warden-logged-in-user-wrapper.js";
+import { WardenContact } from "../common/model/warden-contact.js";
+import { WardenJwtToken } from "../common/model/warden-jwt-token.js";
+import { WardenLoginResults } from "../common/model/warden-login-results.js";
+import { WardenLoginRequest } from "../common/model/warden-login-request.js";
 
 import {
   AuthenticationResponseJSON,
   PublicKeyCredentialCreationOptionsJSON,
   PublicKeyCredentialRequestOptionsJSON,
-  RegistrationResponseJSON,
-} from '@simplewebauthn/types';
-import { WardenEntrySummary } from '../common/model/warden-entry-summary.js';
-import { startAuthentication, startRegistration } from '@simplewebauthn/browser';
-import { WardenUtils } from '../common/util/warden-utils';
+  RegistrationResponseJSON
+} from "@simplewebauthn/types";
+import { WardenEntrySummary } from "../common/model/warden-entry-summary.js";
+import { startAuthentication, startRegistration } from "@simplewebauthn/browser";
+import { WardenUtils } from "../common/util/warden-utils";
 
 /**
  * A service that handles logging in, saving the current user, watching
