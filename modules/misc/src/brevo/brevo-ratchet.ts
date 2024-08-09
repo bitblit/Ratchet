@@ -6,7 +6,7 @@ import { Logger } from '@bitblit/ratchet-common/logger/logger';
 import { AccountApi } from './generated/apis/AccountApi.js';
 import { SMTPApi } from './generated/apis/SMTPApi.js';
 import { Configuration, ConfigurationParameters, FetchParams, Middleware, RequestContext } from './generated/runtime.js';
-import { GetAccount } from './generated/models.js';
+import { GetAccount } from './generated/models/GetAccount.js';
 
 export class BrevoRatchet {
   constructor(

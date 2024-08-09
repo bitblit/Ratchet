@@ -34,7 +34,7 @@
     "set-codependencies-alpha": "echo $GITHUB_RUN_NUMBER && ./set-codependencies.sh 4.0.\"$GITHUB_RUN_NUMBER\"-alpha",
     "publish": "wsrun mod:publish",
     "publish-alpha": "wsrun mod:publish",
-    "mod:generate-barrels": "cd $INIT_CWD && barrelsby --delete -d src -l below -q && cd $INIT_CWD && fix-esm-import-path src",
+    "mod:generate-barrels": "cd $INIT_CWD && barrelsby --delete -d src -l below -q && cd $INIT_CWD && fix-esm-import-path src && rm -f src/brevo/index.ts",
     "mod:build": "cd $INIT_CWD && yarn mod:clean && yarn mod:generate-barrels && cd $INIT_CWD && rollup -c ../../rollup.global.config.mjs && echo Finished build",
     "mod:clean": "cd $INIT_CWD && shx rm -Rf lib",
     "mod:docs": "cd $INIT_CWD && typedoc",
