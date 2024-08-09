@@ -47,20 +47,20 @@
   },
   "license": "Apache-2.0",
   "dependencies": {
-    "@bitblit/ratchet-common": "0.0.0-snapshot",
-    "get-port": "7.1.0",
-    "tunnel-ssh": "5.1.2"
+    "@bitblit/ratchet-common": "0.0.0-snapshot"
   },
   "optionalDependencies": {
+    "get-port": "7.1.0",
     "mysql2": "3.11.0",
     "promised-sqlite3": "2.1.0",
     "sqlite3": "5.1.7",
-    "sqlstring": "2.3.3"
+    "sqlstring": "2.3.3",
+    "tunnel-ssh": "5.1.2"
   },
   "peerDependencies": {
     "@bitblit/ratchet-common": "0.0.0-snapshot",
     "get-port": "^7.1.0",
-    "mysql2": "^3.10.1",
+    "mysql2": "^3.11.1",
     "promised-sqlite3": "2.1.0",
     "sqlite3": "^5.1.7",
     "sqlstring": "^2.3.3",

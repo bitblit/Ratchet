@@ -24,9 +24,24 @@ I improve this paragraph should go away.
 
 TBD
 
-### Barrel Files
-A Note on barrel files - All of Ratchet's barrel files are one level down. This is because otherwise everything
-I said above about transitive dependencies gets thrown out the window if you put them all in one big barrel file
+### Barrel Files And Modular Architecture
+Every Ratchet library (eg, @bitblit/ratchet-aws, @bitblit/ratchet-graphql) are developed roughly around a central
+theme.  However, within a given library, since these are utilites, there are often multiple products, which themselves
+depend on other products... and it is likely that you won't really want to use ALL the products.  For example, most users 
+of the ratchet-aws library won't use ALL the features in AWS.  So I don't want to create a top level barrel file
+since that defeats the purpose of tree-shaking and peer (transitive) dependencies.  On the other hand, barrel files
+DO come in handy for keeping import statements clean.  So, in these libraries I take the following approach:
+
+* The library is _conceptually_ related.  
+* The first level folders of a library are dependency separated.  The barrel file is at this level
+
+If you choose to not use the barrel file, of course, that is your option.
+
+This also means that in general, if there are 2 ways to organize files, and one would cause a dependency explosion,
+I'll choose the other.  So you'll often see cases where the interface defining a feature is in one folder, and the
+implementation that depends on a particular library is in a different one.  Eg, "DatabaseAccess" is in the top-level
+model folder, and "MysqlStyleDatabaseAccess" is in the mysql folder, so that people not using mysql don't have to import
+it.
 
 
 ## Utilities and Stuff

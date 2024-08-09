@@ -53,7 +53,7 @@
     "node": ">=14.18"
   },
   "license": "Apache-2.0",
-  "dependencies": {
+  "optionalDependencies": {
     "jsonwebtoken": "9.0.2",
     "ts-enum-util": "4.1.0"
   },

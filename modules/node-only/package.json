@@ -55,11 +55,14 @@
   },
   "license": "Apache-2.0",
   "dependencies": {
-    "@bitblit/ratchet-common": "0.0.0-snapshot",
+    "@bitblit/ratchet-common": "0.0.0-snapshot"
+  },
+  "optionalDependencies": {
     "csv": "6.3.10",
     "rxjs": "7.8.1"
   },
   "peerDependencies": {
+    "@bitblit/ratchet-common": "0.0.0-snapshot",
     "csv": "^6.3.9",
     "rxjs": "^7.8.1"
   },
