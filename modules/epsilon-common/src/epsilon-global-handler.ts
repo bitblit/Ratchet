@@ -26,8 +26,8 @@ import { CronEpsilonLambdaEventHandler } from "./lambda-event-handler/cron-epsil
 import { S3EpsilonLambdaEventHandler } from "./lambda-event-handler/s3-epsilon-lambda-event-handler.js";
 import { DynamoEpsilonLambdaEventHandler } from "./lambda-event-handler/dynamo-epsilon-lambda-event-handler.js";
 import { EpsilonLoggingExtensionProcessor } from "./epsilon-logging-extension-processor.js";
-import { GenericSqsEpsilonLambdaEventHandler } from "./lambda-event-handler/generic-sqs-epsilon-lambda-event-handler";
-import { NoHandlersFoundError } from "./config/no-handlers-found-error";
+import { GenericSqsEpsilonLambdaEventHandler } from "./lambda-event-handler/generic-sqs-epsilon-lambda-event-handler.js";
+import { NoHandlersFoundError } from "./config/no-handlers-found-error.js";
 
 /**
  * This class functions as the adapter from a default Lambda function to the handlers exposed via Epsilon

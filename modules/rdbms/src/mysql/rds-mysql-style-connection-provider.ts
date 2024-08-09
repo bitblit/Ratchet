@@ -5,15 +5,15 @@ import { Logger } from "@bitblit/ratchet-common/logger/logger";
 import { ErrorRatchet } from "@bitblit/ratchet-common/lang/error-ratchet";
 import { StringRatchet } from "@bitblit/ratchet-common/lang/string-ratchet";
 import { SshTunnelService } from "../service/ssh-tunnel-service.js";
-import { DatabaseConfigList } from "../model/database-config-list";
+import { DatabaseConfigList } from "../model/database-config-list.js";
 import getPort from "get-port";
 import { SshTunnelContainer } from "../model/ssh/ssh-tunnel-container.js";
 import { QueryDefaults } from "../model/query-defaults.js";
-import { ConnectionAndTunnel } from "../model/connection-and-tunnel";
-import { DatabaseAccessProvider } from "../model/database-access-provider";
-import { DatabaseAccess } from "../model/database-access";
-import { MysqlStyleDatabaseAccess } from "./mysql-style-database-access";
-import { MysqlDbConfig } from "./model/mysql-db-config";
+import { ConnectionAndTunnel } from "../model/connection-and-tunnel.js";
+import { DatabaseAccessProvider } from "../model/database-access-provider.js";
+import { DatabaseAccess } from "../model/database-access.js";
+import { MysqlStyleDatabaseAccess } from "./mysql-style-database-access.js";
+import { MysqlDbConfig } from "./model/mysql-db-config.js";
 
 /**
  */

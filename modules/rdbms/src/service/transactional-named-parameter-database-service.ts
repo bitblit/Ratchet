@@ -1,10 +1,10 @@
-import { NamedParameterDatabaseService } from "./named-parameter-database-service";
+import { NamedParameterDatabaseService } from "./named-parameter-database-service.js";
 import { Logger } from "@bitblit/ratchet-common/logger/logger";
 import { ErrorRatchet } from "@bitblit/ratchet-common/lang/error-ratchet";
 import { StringRatchet } from "@bitblit/ratchet-common/lang/string-ratchet";
 import { QueryBuilder } from "../query-builder/query-builder.js";
-import { ModifyResults } from "../model/modify-results";
-import { NamedParameterDatabaseServiceConfig } from "../model/named-parameter-database-service-config";
+import { ModifyResults } from "../model/modify-results.js";
+import { NamedParameterDatabaseServiceConfig } from "../model/named-parameter-database-service-config.js";
 
 /**
  * Extends NamedParameterDatabaseService to add transactional functionality

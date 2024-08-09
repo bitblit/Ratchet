@@ -4,7 +4,7 @@ import { spawnSync, SpawnSyncReturns } from "child_process";
 import os from "os";
 import path from "path";
 import { Instance } from "@aws-sdk/client-ec2";
-import { Ec2InstanceUtil } from "../ec2/ec2-instance-util";
+import { Ec2InstanceUtil } from "../ec2/ec2-instance-util.js";
 
 export class StartInstanceAndSsh {
   private instanceId: string;

@@ -1,4 +1,4 @@
-import { UsedImageFinder } from './used-image-finder';
+import { UsedImageFinder } from './used-image-finder.js';
 import { ImageDetail } from '@aws-sdk/client-ecr';
 
 export enum RetainedImageReason {

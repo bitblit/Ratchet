@@ -1,6 +1,6 @@
-import { QueryTextProvider } from "./query-text-provider";
-import { DatabaseAccessProvider } from "./database-access-provider";
-import { QueryDefaults } from "./query-defaults";
+import { QueryTextProvider } from "./query-text-provider.js";
+import { DatabaseAccessProvider } from "./database-access-provider.js";
+import { QueryDefaults } from "./query-defaults.js";
 import { LoggerInstance } from "@bitblit/ratchet-common/logger/logger-instance";
 
 export interface NamedParameterDatabaseServiceConfig {

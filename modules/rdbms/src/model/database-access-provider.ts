@@ -1,5 +1,5 @@
-import { DatabaseAccess } from "./database-access";
-import { QueryDefaults } from "./query-defaults";
+import { DatabaseAccess } from "./database-access.js";
+import { QueryDefaults } from "./query-defaults.js";
 
 export interface DatabaseAccessProvider {
   /**

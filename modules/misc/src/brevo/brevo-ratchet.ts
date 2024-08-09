@@ -1,12 +1,12 @@
 //    Code to simplify interacting with Brevo (brevo.com)
 //import * as brevoApi from '@getbrevo/brevo';
 //import { AccountApi, TransactionalEmailsApi } from '@getbrevo/brevo';
-import { BrevoKeys } from './brevo-keys';
+import { BrevoKeys } from './brevo-keys.js';
 import { Logger } from '@bitblit/ratchet-common/logger/logger';
 import { AccountApi } from './generated/apis/AccountApi.js';
-import { SMTPApi } from './generated/apis/SMTPApi';
-import { Configuration, ConfigurationParameters, FetchParams, Middleware, RequestContext } from './generated/runtime';
-import { GetAccount } from './generated/models';
+import { SMTPApi } from './generated/apis/SMTPApi.js';
+import { Configuration, ConfigurationParameters, FetchParams, Middleware, RequestContext } from './generated/runtime.js';
+import { GetAccount } from './generated/models.js';
 
 export class BrevoRatchet {
   constructor(

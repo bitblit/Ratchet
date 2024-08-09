@@ -1,4 +1,4 @@
-import { UsedImageFinder } from "../used-image-finder";
+import { UsedImageFinder } from "../used-image-finder.js";
 
 import { RequireRatchet } from "@bitblit/ratchet-common/lang/require-ratchet";
 import { Logger } from "@bitblit/ratchet-common/logger/logger";

@@ -22,7 +22,7 @@ import { EpsilonWebsiteStackProps, EpsilonWebsiteStackPropsRoute53Handling } fro
 import { ErrorRatchet } from "@bitblit/ratchet-common/lang/error-ratchet";
 import { StringRatchet } from "@bitblit/ratchet-common/lang/string-ratchet";
 import { BucketAndSourceConfiguration } from "./bucket-and-source-configuration.js";
-import { EpsilonWebsiteCacheBehavior } from "./epsilon-website-cache-behavior";
+import { EpsilonWebsiteCacheBehavior } from "./epsilon-website-cache-behavior.js";
 
 export class EpsilonWebsiteStack extends Stack {
   constructor(scope: Construct, id: string, props?: EpsilonWebsiteStackProps) {

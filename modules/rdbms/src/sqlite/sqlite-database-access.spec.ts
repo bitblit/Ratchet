@@ -1,11 +1,11 @@
 import { describe, expect, test } from "vitest";
-import { SqliteStyleConnectionProvider } from "./sqlite-style-connection-provider";
+import { SqliteStyleConnectionProvider } from "./sqlite-style-connection-provider.js";
 import * as path from "node:path";
-import { NamedParameterDatabaseService } from "../service/named-parameter-database-service";
+import { NamedParameterDatabaseService } from "../service/named-parameter-database-service.js";
 import { Logger } from "@bitblit/ratchet-common/logger/logger";
-import { SimpleQueryTextProvider } from "../model/simple-query-text-provider";
-import { ModifyResults } from "../model/modify-results";
-import { RequestResults } from "../model/request-results";
+import { SimpleQueryTextProvider } from "../model/simple-query-text-provider.js";
+import { ModifyResults } from "../model/modify-results.js";
+import { RequestResults } from "../model/request-results.js";
 
 describe('sqlite-database-access', () => {
   test.skip('builds filtered', async () => {

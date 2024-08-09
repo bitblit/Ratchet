@@ -21,8 +21,8 @@ import {
 } from "./provider/warden-client-current-logged-in-jwt-token-provider.js";
 import { WardenEntrySummary } from "../common/model/warden-entry-summary.js";
 import { WardenContactType } from "../common/model/warden-contact-type.js";
-import { AddWebAuthnRegistrationToLoggedInUser } from "../common/command/add-web-authn-registration-to-logged-in-user";
-import { SendMagicLink } from "../common/command/send-magic-link";
+import { AddWebAuthnRegistrationToLoggedInUser } from "../common/command/add-web-authn-registration-to-logged-in-user.js";
+import { SendMagicLink } from "../common/command/send-magic-link.js";
 
 export class WardenClient {
   constructor(

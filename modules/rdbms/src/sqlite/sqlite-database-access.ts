@@ -7,7 +7,7 @@ import { DatabaseRequestType } from "../model/database-request-type.js";
 import { ModifyResults } from "../model/modify-results.js";
 import { RequestResults } from "../model/request-results.js";
 import { QueryUtil } from "../query-builder/query-util.js";
-import { SqliteConnectionConfigFlag } from "./model/sqlite-connection-config-flag";
+import { SqliteConnectionConfigFlag } from "./model/sqlite-connection-config-flag.js";
 
 export class SqliteDatabaseAccess implements DatabaseAccess {
   constructor(

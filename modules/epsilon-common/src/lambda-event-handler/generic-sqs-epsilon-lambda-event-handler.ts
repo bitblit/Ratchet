@@ -1,9 +1,9 @@
-import { EpsilonLambdaEventHandler } from "../config/epsilon-lambda-event-handler";
+import { EpsilonLambdaEventHandler } from "../config/epsilon-lambda-event-handler.js";
 import { Context, ProxyResult, SQSEvent } from "aws-lambda";
-import { GenericAwsEventHandlerFunction } from "../config/generic-aws-event-handler-function";
-import { AwsUtil } from "../util/aws-util";
-import { EpsilonInstance } from "../epsilon-instance";
-import { NoHandlersFoundError } from "../config/no-handlers-found-error";
+import { GenericAwsEventHandlerFunction } from "../config/generic-aws-event-handler-function.js";
+import { AwsUtil } from "../util/aws-util.js";
+import { EpsilonInstance } from "../epsilon-instance.js";
+import { NoHandlersFoundError } from "../config/no-handlers-found-error.js";
 import { LambdaEventDetector } from "@bitblit/ratchet-aws/lambda/lambda-event-detector";
 import { Logger } from "@bitblit/ratchet-common/logger/logger";
 

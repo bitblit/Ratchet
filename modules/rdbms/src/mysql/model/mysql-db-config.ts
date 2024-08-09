@@ -1,4 +1,4 @@
-import { SshTunnelConfig } from "../../model/ssh/ssh-tunnel-config";
+import { SshTunnelConfig } from "../../model/ssh/ssh-tunnel-config.js";
 
 export interface MysqlDbConfig{
   label: string;

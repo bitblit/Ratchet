@@ -1,8 +1,8 @@
 import { Connection, ConnectionOptions, FieldPacket, RowDataPacket } from "mysql2/promise";
-import { DatabaseAccess } from "../model/database-access";
-import { RequestResults } from "../model/request-results";
-import { ModifyResults } from "../model/modify-results";
-import { DatabaseRequestType } from "../model/database-request-type";
+import { DatabaseAccess } from "../model/database-access.js";
+import { RequestResults } from "../model/request-results.js";
+import { ModifyResults } from "../model/modify-results.js";
+import { DatabaseRequestType } from "../model/database-request-type.js";
 import { Logger } from "@bitblit/ratchet-common/logger/logger";
 
 export class MysqlStyleDatabaseAccess implements DatabaseAccess {

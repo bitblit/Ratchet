@@ -1,9 +1,9 @@
 import { RequireRatchet } from "@bitblit/ratchet-common/lang/require-ratchet";
 import { Logger } from "@bitblit/ratchet-common/logger/logger";
 import { TransactionIsolationLevel } from "../model/transaction-isolation-level.js";
-import { ModifyResults } from "../model/modify-results";
-import { NamedParameterDatabaseService } from "../service/named-parameter-database-service";
-import { DatabaseRequestType } from "../model/database-request-type";
+import { ModifyResults } from "../model/modify-results.js";
+import { NamedParameterDatabaseService } from "../service/named-parameter-database-service.js";
+import { DatabaseRequestType } from "../model/database-request-type.js";
 
 /**
  * Any useful tools for working with relational databases

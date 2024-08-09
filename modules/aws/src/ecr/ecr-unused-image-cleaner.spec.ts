@@ -1,12 +1,12 @@
 import { Logger } from '@bitblit/ratchet-common/logger/logger';
-import { EcrUnusedImageCleaner } from './ecr-unused-image-cleaner';
+import { EcrUnusedImageCleaner } from './ecr-unused-image-cleaner.js';
 import { ECRClient } from '@aws-sdk/client-ecr';
-import { AwsCredentialsRatchet } from '../iam/aws-credentials-ratchet';
-import { LambdaUsedImageFinder } from './used-image-finders/lambda-used-image-finder';
+import { AwsCredentialsRatchet } from '../iam/aws-credentials-ratchet.js';
+import { LambdaUsedImageFinder } from './used-image-finders/lambda-used-image-finder.js';
 import { LambdaClient } from '@aws-sdk/client-lambda';
-import { AwsBatchUsedImageFinder } from './used-image-finders/aws-batch-used-image-finder';
+import { AwsBatchUsedImageFinder } from './used-image-finders/aws-batch-used-image-finder.js';
 import { BatchClient } from '@aws-sdk/client-batch';
-import { EcrUnusedImageCleanerOutput } from './ecr-unused-image-cleaner-output';
+import { EcrUnusedImageCleanerOutput } from './ecr-unused-image-cleaner-output.js';
 import { expect, test, describe, vi, beforeEach } from 'vitest';
 
 //import { mockClient } from 'aws-sdk-client-mock';

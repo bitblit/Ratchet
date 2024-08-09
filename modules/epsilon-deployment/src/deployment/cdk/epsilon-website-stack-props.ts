@@ -2,7 +2,7 @@ import { StackProps } from 'aws-cdk-lib';
 import { SimpleAdditionalS3WebsiteMapping } from './simple-additional-s3-website-mapping.js';
 import { EpsilonLambdaToCloudfrontPathMapping } from './epsilon-lambda-to-cloudfront-path-mapping.js';
 import { Behavior } from "aws-cdk-lib/aws-cloudfront";
-import { EpsilonWebsiteCacheBehavior } from "./epsilon-website-cache-behavior";
+import { EpsilonWebsiteCacheBehavior } from "./epsilon-website-cache-behavior.js";
 
 export interface EpsilonWebsiteStackProps extends StackProps {
   targetBucketName: string;

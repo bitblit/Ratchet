@@ -12,8 +12,8 @@ import { RequestResults } from "../model/request-results.js";
 import { ModifyResults } from "../model/modify-results.js";
 import { SqliteRemoteFileSyncConfig } from "./model/sqlite-remote-file-sync-config.js";
 import { FlushRemoteMode } from "./model/flush-remote-mode.js";
-import { SqliteConnectionConfigFlag } from "./model/sqlite-connection-config-flag";
-import { FetchRemoteMode } from "./model/fetch-remote-mode";
+import { SqliteConnectionConfigFlag } from "./model/sqlite-connection-config-flag.js";
+import { FetchRemoteMode } from "./model/fetch-remote-mode.js";
 import { BackupResult } from "@bitblit/ratchet-common/network/remote-file-sync/backup-result";
 import { FileTransferResult } from "@bitblit/ratchet-common/network/remote-file-sync/file-transfer-result";
 

@@ -2,7 +2,7 @@ import { WardenUserServiceEventProcessingProvider } from './provider/warden-user
 import { WardenLoggedInUserWrapper } from './provider/warden-logged-in-user-wrapper.js';
 import { BehaviorSubject } from 'rxjs';
 import { WardenClientCurrentLoggedInJwtTokenProvider } from './provider/warden-client-current-logged-in-jwt-token-provider.js';
-import { WardenUtils } from '../common/util/warden-utils';
+import { WardenUtils } from '../common/util/warden-utils.js';
 import { Logger } from '@bitblit/ratchet-common/logger/logger';
 
 /**

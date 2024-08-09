@@ -1,4 +1,4 @@
-import { WardenSingleUseCodeProvider } from "./warden-single-use-code-provider";
+import { WardenSingleUseCodeProvider } from "./warden-single-use-code-provider.js";
 import { Logger } from "@bitblit/ratchet-common/logger/logger";
 import { ErrorRatchet } from "@bitblit/ratchet-common/lang/error-ratchet";
 import { StringRatchet } from "@bitblit/ratchet-common/lang/string-ratchet";

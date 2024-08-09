@@ -3,8 +3,8 @@
 import { Logger } from "@bitblit/ratchet-common/logger/logger";
 import { ErrorRatchet } from "@bitblit/ratchet-common/lang/error-ratchet";
 import { BrevoRatchet } from "./brevo-ratchet.js";
-import { SMTPApi } from "./generated/apis/SMTPApi";
-import { CreateSmtpEmail, SendSmtpEmail } from "./generated/models";
+import { SMTPApi } from "./generated/apis/SMTPApi.js";
+import { CreateSmtpEmail, SendSmtpEmail } from "./generated/models.js";
 import { MailSendingProvider } from "@bitblit/ratchet-common/mail/mail-sending-provider";
 import { ResolvedReadyToSendEmail } from "@bitblit/ratchet-common/mail/resolved-ready-to-send-email";
 

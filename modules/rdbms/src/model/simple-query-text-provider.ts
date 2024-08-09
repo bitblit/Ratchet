@@ -1,4 +1,4 @@
-import { QueryTextProvider } from "./query-text-provider";
+import { QueryTextProvider } from "./query-text-provider.js";
 import { StringRatchet } from "@bitblit/ratchet-common/lang/string-ratchet";
 
 export class SimpleQueryTextProvider implements QueryTextProvider{

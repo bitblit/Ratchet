@@ -10,12 +10,12 @@ import { QueryBuilder } from "../query-builder/query-builder.js";
 import { GroupByCountResult } from "../model/group-by-count-result.js";
 import { QueryDefaults } from "../model/query-defaults.js";
 import { QueryTextProvider } from "../model/query-text-provider.js";
-import { ModifyResults } from "../model/modify-results";
-import { DatabaseAccessProvider } from "../model/database-access-provider";
-import { DatabaseAccess } from "../model/database-access";
-import { RequestResults } from "../model/request-results";
-import { DatabaseRequestType } from "../model/database-request-type";
-import { NamedParameterDatabaseServiceConfig } from "../model/named-parameter-database-service-config";
+import { ModifyResults } from "../model/modify-results.js";
+import { DatabaseAccessProvider } from "../model/database-access-provider.js";
+import { DatabaseAccess } from "../model/database-access.js";
+import { RequestResults } from "../model/request-results.js";
+import { DatabaseRequestType } from "../model/database-request-type.js";
+import { NamedParameterDatabaseServiceConfig } from "../model/named-parameter-database-service-config.js";
 
 /**
  * Service to simplify talking to any Mysql dialect system

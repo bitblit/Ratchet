@@ -48,10 +48,10 @@ import { ExpiredJwtHandling } from "@bitblit/ratchet-common/jwt/expired-jwt-hand
 
 import { WardenDefaultUserDecorationProvider } from "./provider/warden-default-user-decoration-provider.js";
 import { WardenNoOpEventProcessingProvider } from "./provider/warden-no-op-event-processing-provider.js";
-import { WardenSingleUseCodeProvider } from "./provider/warden-single-use-code-provider";
+import { WardenSingleUseCodeProvider } from "./provider/warden-single-use-code-provider.js";
 import {
   WardenDefaultSendMagicLinkCommandValidator
-} from "./provider/warden-default-send-magic-link-command-validator";
+} from "./provider/warden-default-send-magic-link-command-validator.js";
 
 export class WardenService {
   private opts: WardenServiceOptions;

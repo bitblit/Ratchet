@@ -1,5 +1,5 @@
-import { EcrUnusedImageCleanerRepositoryOutput } from './ecr-unused-image-cleaner-repository-output';
-import { EcrUnusedImageCleanerOptions } from './ecr-unused-image-cleaner-options';
+import { EcrUnusedImageCleanerRepositoryOutput } from './ecr-unused-image-cleaner-repository-output.js';
+import { EcrUnusedImageCleanerOptions } from './ecr-unused-image-cleaner-options.js';
 
 export interface EcrUnusedImageCleanerOutput {
   registryId: string;

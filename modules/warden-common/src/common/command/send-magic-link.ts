@@ -1,6 +1,6 @@
 import { WardenContact } from '../model/warden-contact.js';
 import { WardenContactLookup } from './warden-contact-lookup.js';
-import { WardenCustomTemplateDescriptor } from './warden-custom-template-descriptor';
+import { WardenCustomTemplateDescriptor } from './warden-custom-template-descriptor.js';
 
 // You must set either contact or contactLookup, but not both
 export interface SendMagicLink {

@@ -17,7 +17,7 @@ import {
 } from "@simplewebauthn/types";
 import { WardenEntrySummary } from "../common/model/warden-entry-summary.js";
 import { startAuthentication, startRegistration } from "@simplewebauthn/browser";
-import { WardenUtils } from "../common/util/warden-utils";
+import { WardenUtils } from "../common/util/warden-utils.js";
 
 /**
  * A service that handles logging in, saving the current user, watching

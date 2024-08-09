@@ -12,7 +12,7 @@ import { WardenLoginResults } from "@bitblit/ratchet-warden-common/common/model/
 import { JwtRatchet } from "@bitblit/ratchet-common/jwt/jwt-ratchet";
 
 import { WardenUserDecorationProvider } from "./provider/warden-user-decoration-provider.js";
-import { WardenSingleUseCodeProvider } from "./provider/warden-single-use-code-provider";
+import { WardenSingleUseCodeProvider } from "./provider/warden-single-use-code-provider.js";
 import { beforeEach, describe, expect, test } from "vitest";
 import { mock, MockProxy } from "vitest-mock-extended";
 

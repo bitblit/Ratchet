@@ -2793,6 +2793,70 @@ __metadata:
     tmp: 0.2.3
     unzipper: 0.12.3
     walk: 2.3.15
+  peerDependencies:
+    "@aws-sdk/client-athena": ^3.624.0
+    "@aws-sdk/client-sts": ^3.624.0
+    "@aws-sdk/types": ^3.609.0
+    "@bitblit/ratchet-aws": 0.0.0-snapshot
+    "@bitblit/ratchet-common": 0.0.0-snapshot
+    "@smithy/abort-controller": ^3.1.1
+    "@smithy/smithy-client": ^3.1.12
+    "@smithy/util-waiter": ^3.1.2
+    mailparser: ^3.7.1
+    mime-types: ^2.1.35
+    tmp: ^0.2.3
+    unzipper: ^0.12.3
+    walk: ^2.3.15
+  dependenciesMeta:
+    "@aws-sdk/client-athena":
+      optional: true
+    "@aws-sdk/client-sts":
+      optional: true
+    "@aws-sdk/types":
+      optional: true
+    "@smithy/abort-controller":
+      optional: true
+    "@smithy/smithy-client":
+      optional: true
+    "@smithy/util-waiter":
+      optional: true
+    mailparser:
+      optional: true
+    mime-types:
+      optional: true
+    tmp:
+      optional: true
+    unzipper:
+      optional: true
+    walk:
+      optional: true
+  peerDependenciesMeta:
+    "@aws-sdk/client-athena":
+      optional: true
+    "@aws-sdk/client-sts":
+      optional: true
+    "@aws-sdk/types":
+      optional: true
+    "@bitblit/ratchet-aws":
+      optional: true
+    "@bitblit/ratchet-common":
+      optional: true
+    "@smithy/abort-controller":
+      optional: true
+    "@smithy/smithy-client":
+      optional: true
+    "@smithy/util-waiter":
+      optional: true
+    mailparser:
+      optional: true
+    mime-types:
+      optional: true
+    tmp:
+      optional: true
+    unzipper:
+      optional: true
+    walk:
+      optional: true
   bin:
     ratchet-aws-cli: ./bin/cli.js
   languageName: unknown
@@ -3215,6 +3279,7 @@ __metadata:
     eslint-config-prettier: 9.1.0
     eslint-plugin-import: 2.29.1
     eslint-plugin-prettier: 5.2.1
+    fix-esm-import-path: 1.10.0
     husky: 9.1.4
     luxon: 3.5.0
     node-gyp: 10.2.0
@@ -9036,6 +9101,17 @@ __metadata:
     micromatch: ^4.0.2
     resolve-dir: ^1.0.1
   checksum: 94131e1107ad63790ed00c4c39ca131a93ea602607bd97afeffd92b69a9a63cf2c6f57d6db88cb753fe748ac7fde79e1e76768ff784247026b7c5ebf23ede3a0
+  languageName: node
+  linkType: hard
+
+"fix-esm-import-path@npm:1.10.0":
+  version: 1.10.0
+  resolution: "fix-esm-import-path@npm:1.10.0"
+  dependencies:
+    debug: ^4.3.2
+  bin:
+    fix-esm-import-path: fix-esm-import-path.js
+  checksum: 4e99caf7d13e95351ac1cb864d8acd53abee7420317fd3bc79512e59eaee0bcae5914a5ca38168c41e7d7de91da93083007b08e351b024ceffcfaa0c1fb105c7
   languageName: node
   linkType: hard
 

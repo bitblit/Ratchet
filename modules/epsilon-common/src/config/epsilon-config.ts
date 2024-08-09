@@ -6,7 +6,7 @@ import { S3Config } from './s3-config.js';
 import { SnsConfig } from './sns-config.js';
 import { EpsilonLoggerConfig } from './epsilon-logger-config.js';
 import { InterApiConfig } from './inter-api/inter-api-config.js';
-import { SqsConfig } from './sqs-config';
+import { SqsConfig } from './sqs-config.js';
 
 export interface EpsilonConfig {
   label?: string;

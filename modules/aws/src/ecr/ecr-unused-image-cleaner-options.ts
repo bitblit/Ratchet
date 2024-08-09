@@ -1,4 +1,4 @@
-import { UsedImageFinder } from './used-image-finder';
+import { UsedImageFinder } from './used-image-finder.js';
 
 export interface EcrUnusedImageCleanerOptions {
   usedImageFinders: UsedImageFinder[]; // List of objects that will find in-use images that should not be removed

@@ -3,10 +3,10 @@ import { describe, expect, test } from "vitest";
 import { mock } from "vitest-mock-extended";
 
 import { SortDirection } from "../model/sort-direction.js";
-import { NamedParameterDatabaseService } from "../service/named-parameter-database-service";
-import { DatabaseAccessProvider } from "../model/database-access-provider";
-import { NamedParameterDatabaseServiceConfig } from "../model/named-parameter-database-service-config";
-import { QueryDefaults } from "../model/query-defaults";
+import { NamedParameterDatabaseService } from "../service/named-parameter-database-service.js";
+import { DatabaseAccessProvider } from "../model/database-access-provider.js";
+import { NamedParameterDatabaseServiceConfig } from "../model/named-parameter-database-service-config.js";
+import { QueryDefaults } from "../model/query-defaults.js";
 
 const prov: QueryTextProvider = {
   fetchQuery(queryPath: string): string {

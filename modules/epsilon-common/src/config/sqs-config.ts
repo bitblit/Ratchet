@@ -1,4 +1,4 @@
-import { GenericAwsEventHandlerFunction } from './generic-aws-event-handler-function';
+import { GenericAwsEventHandlerFunction } from './generic-aws-event-handler-function.js';
 import { SQSEvent } from 'aws-lambda';
 
 export interface SqsConfig {

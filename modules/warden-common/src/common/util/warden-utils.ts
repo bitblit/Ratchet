@@ -7,9 +7,9 @@ import { WardenEntrySummary } from '../model/warden-entry-summary.js';
 import { WardenEntry } from '../model/warden-entry.js';
 import { WardenLoginRequest } from '../model/warden-login-request.js';
 import { WardenTeamRole } from '../model/warden-team-role.js';
-import { WardenWebAuthnEntry } from '../model/warden-web-authn-entry';
-import { WardenWebAuthnEntrySummary } from '../model/warden-web-authn-entry-summary';
-import { WardenLoggedInUserWrapper } from '../../client/provider/warden-logged-in-user-wrapper';
+import { WardenWebAuthnEntry } from '../model/warden-web-authn-entry.js';
+import { WardenWebAuthnEntrySummary } from '../model/warden-web-authn-entry-summary.js';
+import { WardenLoggedInUserWrapper } from '../../client/provider/warden-logged-in-user-wrapper.js';
 
 export class WardenUtils {
   // Prevent instantiation

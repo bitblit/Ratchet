@@ -4,7 +4,7 @@ import { StringRatchet } from "@bitblit/ratchet-common/lang/string-ratchet";
 import { SendRawEmailCommand, SendRawEmailCommandOutput, SendRawEmailRequest, SESClient } from "@aws-sdk/client-ses";
 import { DateTime } from "luxon";
 import { CompleteMultipartUploadCommandOutput } from "@aws-sdk/client-s3";
-import { S3CacheRatchetLike } from "../s3/s3-cache-ratchet-like";
+import { S3CacheRatchetLike } from "../s3/s3-cache-ratchet-like.js";
 import { MailSendingProvider } from "@bitblit/ratchet-common/mail/mail-sending-provider";
 import { ResolvedReadyToSendEmail } from "@bitblit/ratchet-common/mail/resolved-ready-to-send-email";
 import { MailerUtil } from "@bitblit/ratchet-common/mail/mailer-util";

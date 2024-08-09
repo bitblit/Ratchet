@@ -11,11 +11,11 @@ import {
   HeadObjectCommandOutput
 } from "@aws-sdk/client-s3";
 import { Readable } from "stream";
-import { S3SyncedFileConfig } from "./s3-synced-file-config";
-import { S3SyncedFileConfigInitMode } from "./s3-synced-file-config-init-mode";
+import { S3SyncedFileConfig } from "./s3-synced-file-config.js";
+import { S3SyncedFileConfigInitMode } from "./s3-synced-file-config-init-mode.js";
 import { DateTime } from "luxon";
-import { S3SyncedFileRemoteBackupMode } from "./s3-synced-file-remote-backup-mode";
-import { S3SyncedFileOptimization } from "./s3-synced-file-optimization";
+import { S3SyncedFileRemoteBackupMode } from "./s3-synced-file-remote-backup-mode.js";
+import { S3SyncedFileOptimization } from "./s3-synced-file-optimization.js";
 import { RemoteFileSyncLike } from "@bitblit/ratchet-common/network/remote-file-sync/remote-file-sync-like";
 import { RemoteStatusData } from "@bitblit/ratchet-common/network/remote-file-sync/remote-status-data";
 import { FileTransferResult } from "@bitblit/ratchet-common/network/remote-file-sync/file-transfer-result";

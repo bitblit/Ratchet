@@ -5,7 +5,7 @@ import { Logger } from "@bitblit/ratchet-common/logger/logger";
 import { AwsUtil } from "../util/aws-util.js";
 import { EpsilonInstance } from "../epsilon-instance.js";
 import { LambdaEventDetector } from "@bitblit/ratchet-aws/lambda/lambda-event-detector";
-import { NoHandlersFoundError } from "../config/no-handlers-found-error";
+import { NoHandlersFoundError } from "../config/no-handlers-found-error.js";
 
 export class DynamoEpsilonLambdaEventHandler implements EpsilonLambdaEventHandler<DynamoDBStreamEvent> {
   constructor(private _epsilon: EpsilonInstance) {}
