@@ -1,6 +1,6 @@
 import { BuildInformation } from '@bitblit/ratchet-common';
 
-export class RatchetNodeOnlyInfo {
+export class RatchetNodeOnlyInfo{
   // Empty constructor prevents instantiation
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   private constructor() {}

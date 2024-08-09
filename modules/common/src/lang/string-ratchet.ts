@@ -28,6 +28,7 @@ export class StringRatchet {
     '%',
   ];
 
+  public static readonly WHITESPACE: string = ' \n\t';
   public static readonly DIGITS: string = '0123456789';
   public static readonly HEXITS: string = StringRatchet.DIGITS + 'ABCDEF';
   public static readonly UPPER_CASE_LATIN: string = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -171,6 +172,9 @@ export class StringRatchet {
     return rval;
   }
 
+  public static stringContainsOnlyWhitespace(input: string): boolean {
+    return StringRatchet.stringContainsOnly(input, StringRatchet.WHITESPACE);
+  }
   public static stringContainsOnlyNumbers(input: string): boolean {
     const rval: boolean = /^[0-9]+$/.test(input);
     return rval;
