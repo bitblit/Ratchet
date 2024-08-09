@@ -22,6 +22,7 @@ import {
 import { Logger } from "@bitblit/ratchet-common/logger/logger";
 import { PromiseRatchet } from "@bitblit/ratchet-common/lang/promise-ratchet";
 import { RequireRatchet } from "@bitblit/ratchet-common/lang/require-ratchet";
+import { StringRatchet } from "@bitblit/ratchet-common/lang/string-ratchet";
 
 export class CloudWatchLogsRatchet {
   private static readonly MAX_DELETE_RETRIES = 5;

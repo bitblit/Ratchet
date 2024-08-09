@@ -1,4 +1,4 @@
-import { AbstractRatchetCliHandler } from '@bitblit/ratchet-node-only';
+import { AbstractRatchetCliHandler } from '@bitblit/ratchet-node-only/cli/abstract-ratchet-cli-handler';
 import { SiteUploader } from './site-uploader/site-uploader.js';
 import { StartInstanceAndSsh } from './start-instance-and-ssh.js';
 import { BuildInformation } from '@bitblit/ratchet-common/build/build-information';

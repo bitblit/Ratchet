@@ -32,7 +32,7 @@
   "dependencies": {
     "@bitblit/ratchet-common": "0.0.0-snapshot",
     "canvas": "2.11.2",
-    "echarts": "5.5.0"
+    "echarts": "5.5.1"
   },
   "peerDependencies": {
     "@bitblit/ratchet-common": "0.0.0-snapshot",

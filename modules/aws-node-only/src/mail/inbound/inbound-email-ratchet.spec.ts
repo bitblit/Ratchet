@@ -1,3 +1,4 @@
+import { S3CacheRatchet } from "@bitblit/ratchet-aws/s3/s3-cache-ratchet";
 import { InboundEmailRatchet } from "./inbound-email-ratchet.js";
 
 import { SampleEmailProcessor } from "./sample-email-processor.js";

@@ -5,6 +5,7 @@ import { expect, test, describe, vi, beforeEach } from 'vitest';
 
 import { mockClient } from 'aws-sdk-client-mock';
 import { Logger } from "@bitblit/ratchet-common/logger/logger";
+import { LoggerLevelName } from "@bitblit/ratchet-common/logger/logger-level-name";
 
 let mockDynamo;
 
