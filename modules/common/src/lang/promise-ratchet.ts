@@ -166,7 +166,7 @@ export class PromiseRatchet {
   }
 
   public static async runBoundedParallelSingleParam<T>(
-    promiseFn: (...args) => Promise<T>,
+    promiseFn: (arg) => Promise<T>,
     params: any[],
     context: any,
     maxConcurrent = 1,

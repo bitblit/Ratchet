@@ -68,6 +68,22 @@ describe('#promiseRatchet', function () {
     expect(results.length).toEqual(10);
   });
 
+  test('Validate runBoundedParallelSingleParam params', async()=>{
+    const inputSymbols: string[] = ['a','b','c'];
+
+    const output: boolean[] = await PromiseRatchet.runBoundedParallelSingleParam<boolean>(
+      async (symbol) => {
+        Logger.info('Symbol was %s', symbol);
+        return true;
+      },
+      inputSymbols,
+      this,
+      1,
+    );
+
+    expect(output).not.toBeNull();
+  });
+
   test.skip('should run an async function as a for/each', async () => {
     Logger.setLevel(LoggerLevelName.debug);
     const elements: number[] = [1001, 1002, 2000];
