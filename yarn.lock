@@ -2395,6 +2395,11 @@ __metadata:
       optional: true
     ts-enum-util:
       optional: true
+  peerDependenciesMeta:
+    jsonwebtoken:
+      optional: true
+    ts-enum-util:
+      optional: true
   languageName: unknown
   linkType: soft
 
