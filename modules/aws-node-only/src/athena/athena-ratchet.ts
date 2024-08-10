@@ -16,12 +16,12 @@ import { GetObjectCommand, GetObjectCommandOutput, GetObjectRequest, S3Client } 
 import tmp from 'tmp';
 import fs, { WriteStream } from 'fs';
 import { Readable } from 'stream';
-import { RequireRatchet } from "@bitblit/ratchet-common/lang/require-ratchet";
-import { Logger } from "@bitblit/ratchet-common/logger/logger";
-import { CsvRatchet } from "@bitblit/ratchet-node-only/csv/csv-ratchet";
-import { PromiseRatchet } from "@bitblit/ratchet-common/lang/promise-ratchet";
-import { StopWatch } from "@bitblit/ratchet-common/lang/stop-watch";
-import { StringRatchet } from "@bitblit/ratchet-common/lang/string-ratchet";
+import { RequireRatchet } from '@bitblit/ratchet-common/lang/require-ratchet';
+import { Logger } from '@bitblit/ratchet-common/logger/logger';
+import { CsvRatchet } from '@bitblit/ratchet-node-only/csv/csv-ratchet';
+import { PromiseRatchet } from '@bitblit/ratchet-common/lang/promise-ratchet';
+import { StopWatch } from '@bitblit/ratchet-common/lang/stop-watch';
+import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet';
 
 export class AthenaRatchet {
   constructor(

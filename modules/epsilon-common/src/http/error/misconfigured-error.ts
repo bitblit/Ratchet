@@ -1,4 +1,4 @@
-import { RestfulApiHttpError } from "@bitblit/ratchet-common/network/restful-api-http-error";
+import { RestfulApiHttpError } from '@bitblit/ratchet-common/network/restful-api-http-error';
 
 export class MisconfiguredError<T = void> extends RestfulApiHttpError<T> {
   public static readonly HTTP_CODE: number = 500;

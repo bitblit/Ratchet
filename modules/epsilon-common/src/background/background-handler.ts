@@ -1,23 +1,23 @@
-import { Logger } from "@bitblit/ratchet-common/logger/logger";
-import { ErrorRatchet } from "@bitblit/ratchet-common/lang/error-ratchet";
-import { StringRatchet } from "@bitblit/ratchet-common/lang/string-ratchet";
-import { StopWatch } from "@bitblit/ratchet-common/lang/stop-watch";
-import { Context, ProxyResult, SNSEvent } from "aws-lambda";
-import { LambdaEventDetector } from "@bitblit/ratchet-aws/lambda/lambda-event-detector";
-import { EpsilonConstants } from "../epsilon-constants.js";
-import { ModelValidator } from "@bitblit/ratchet-misc/model-validator/model-validator";
-import { BackgroundValidator } from "./background-validator.js";
-import { BackgroundConfig } from "../config/background/background-config.js";
-import { BackgroundProcessor } from "../config/background/background-processor.js";
-import { InternalBackgroundEntry } from "./internal-background-entry.js";
-import { BackgroundTransactionLog } from "../config/background/background-transaction-log.js";
-import { BackgroundExecutionEvent } from "./background-execution-event.js";
-import { BackgroundExecutionListener } from "./background-execution-listener.js";
-import { BackgroundExecutionEventType } from "./background-execution-event-type.js";
-import { EpsilonLambdaEventHandler } from "../config/epsilon-lambda-event-handler.js";
-import { ContextUtil } from "../util/context-util.js";
-import { BackgroundManagerLike } from "./manager/background-manager-like.js";
-import { AbstractBackgroundManager } from "./manager/abstract-background-manager.js";
+import { Logger } from '@bitblit/ratchet-common/logger/logger';
+import { ErrorRatchet } from '@bitblit/ratchet-common/lang/error-ratchet';
+import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet';
+import { StopWatch } from '@bitblit/ratchet-common/lang/stop-watch';
+import { Context, ProxyResult, SNSEvent } from 'aws-lambda';
+import { LambdaEventDetector } from '@bitblit/ratchet-aws/lambda/lambda-event-detector';
+import { EpsilonConstants } from '../epsilon-constants.js';
+import { ModelValidator } from '@bitblit/ratchet-misc/model-validator/model-validator';
+import { BackgroundValidator } from './background-validator.js';
+import { BackgroundConfig } from '../config/background/background-config.js';
+import { BackgroundProcessor } from '../config/background/background-processor.js';
+import { InternalBackgroundEntry } from './internal-background-entry.js';
+import { BackgroundTransactionLog } from '../config/background/background-transaction-log.js';
+import { BackgroundExecutionEvent } from './background-execution-event.js';
+import { BackgroundExecutionListener } from './background-execution-listener.js';
+import { BackgroundExecutionEventType } from './background-execution-event-type.js';
+import { EpsilonLambdaEventHandler } from '../config/epsilon-lambda-event-handler.js';
+import { ContextUtil } from '../util/context-util.js';
+import { BackgroundManagerLike } from './manager/background-manager-like.js';
+import { AbstractBackgroundManager } from './manager/abstract-background-manager.js';
 
 /**
  * We use a FIFO queue so that 2 different Lambdas don't both work on the same
@@ -68,12 +68,10 @@ export class BackgroundHandler implements EpsilonLambdaEventHandler<SNSEvent> {
     return LambdaEventDetector.isValidSnsEvent(evt) && this.isBackgroundSNSEvent(evt);
   }
 
-   
   public isBackgroundSNSEvent(event: any): boolean {
     return this.isBackgroundStartSnsEvent(event) || this.isBackgroundImmediateFireEvent(event);
   }
 
-   
   public isBackgroundStartSnsEvent(event: any): boolean {
     let rval: boolean = false;
     if (event) {
@@ -85,7 +83,6 @@ export class BackgroundHandler implements EpsilonLambdaEventHandler<SNSEvent> {
     return rval;
   }
 
-   
   public isBackgroundImmediateFireEvent(event: any): boolean {
     let rval: boolean = false;
 
@@ -102,7 +99,6 @@ export class BackgroundHandler implements EpsilonLambdaEventHandler<SNSEvent> {
     return rval;
   }
 
-   
   public parseImmediateFireBackgroundEntry(event: any): InternalBackgroundEntry<any> {
     let rval: InternalBackgroundEntry<any> = null;
     try {
@@ -149,7 +145,7 @@ export class BackgroundHandler implements EpsilonLambdaEventHandler<SNSEvent> {
    */
 
   // Either trigger a pull of the SQS queue, or process immediately
-   
+
   public async processEvent(event: any, context: Context): Promise<ProxyResult> {
     let procd: number = null;
     if (!this.isBackgroundStartSnsEvent(event)) {

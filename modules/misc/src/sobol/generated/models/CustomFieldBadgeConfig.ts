@@ -14,9 +14,9 @@
 import { exists, mapValues } from '../runtime.js';
 import type { CustomFieldBadgeConfigOptionsValue } from './CustomFieldBadgeConfigOptionsValue.js';
 import {
-    CustomFieldBadgeConfigOptionsValueFromJSON,
-    CustomFieldBadgeConfigOptionsValueFromJSONTyped,
-    CustomFieldBadgeConfigOptionsValueToJSON,
+  CustomFieldBadgeConfigOptionsValueFromJSON,
+  CustomFieldBadgeConfigOptionsValueFromJSONTyped,
+  CustomFieldBadgeConfigOptionsValueToJSON,
 } from './CustomFieldBadgeConfigOptionsValue.js';
 
 /**
@@ -25,47 +25,44 @@ import {
  * @interface CustomFieldBadgeConfig
  */
 export interface CustomFieldBadgeConfig {
-    /**
-     * 
-     * @type {{ [key: string]: CustomFieldBadgeConfigOptionsValue; }}
-     * @memberof CustomFieldBadgeConfig
-     */
-    options?: { [key: string]: CustomFieldBadgeConfigOptionsValue; };
+  /**
+   *
+   * @type {{ [key: string]: CustomFieldBadgeConfigOptionsValue; }}
+   * @memberof CustomFieldBadgeConfig
+   */
+  options?: { [key: string]: CustomFieldBadgeConfigOptionsValue };
 }
 
 /**
  * Check if a given object implements the CustomFieldBadgeConfig interface.
  */
 export function instanceOfCustomFieldBadgeConfig(value: object): boolean {
-    let isInstance = true;
+  let isInstance = true;
 
-    return isInstance;
+  return isInstance;
 }
 
 export function CustomFieldBadgeConfigFromJSON(json: any): CustomFieldBadgeConfig {
-    return CustomFieldBadgeConfigFromJSONTyped(json, false);
+  return CustomFieldBadgeConfigFromJSONTyped(json, false);
 }
 
 export function CustomFieldBadgeConfigFromJSONTyped(json: any, ignoreDiscriminator: boolean): CustomFieldBadgeConfig {
-    if ((json === undefined) || (json === null)) {
-        return json;
-    }
-    return {
-        
-        'options': !exists(json, 'options') ? undefined : (mapValues(json['options'], CustomFieldBadgeConfigOptionsValueFromJSON)),
-    };
+  if (json === undefined || json === null) {
+    return json;
+  }
+  return {
+    options: !exists(json, 'options') ? undefined : mapValues(json['options'], CustomFieldBadgeConfigOptionsValueFromJSON),
+  };
 }
 
 export function CustomFieldBadgeConfigToJSON(value?: CustomFieldBadgeConfig | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
-    }
-    return {
-        
-        'options': value.options === undefined ? undefined : (mapValues(value.options, CustomFieldBadgeConfigOptionsValueToJSON)),
-    };
+  if (value === undefined) {
+    return undefined;
+  }
+  if (value === null) {
+    return null;
+  }
+  return {
+    options: value.options === undefined ? undefined : mapValues(value.options, CustomFieldBadgeConfigOptionsValueToJSON),
+  };
 }
-

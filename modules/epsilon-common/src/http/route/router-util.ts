@@ -1,25 +1,25 @@
-import { EpsilonRouter } from "./epsilon-router.js";
-import { MisconfiguredError } from "../error/misconfigured-error.js";
-import { Logger } from "@bitblit/ratchet-common/logger/logger";
-import { RouteMapping } from "./route-mapping.js";
-import { RouteValidatorConfig } from "./route-validator-config.js";
-import { JwtTokenBase } from "@bitblit/ratchet-common/jwt/jwt-token-base";
-import { BooleanRatchet } from "@bitblit/ratchet-common/lang/boolean-ratchet";
-import { OpenApiDocument } from "../../config/open-api/open-api-document.js";
+import { EpsilonRouter } from './epsilon-router.js';
+import { MisconfiguredError } from '../error/misconfigured-error.js';
+import { Logger } from '@bitblit/ratchet-common/logger/logger';
+import { RouteMapping } from './route-mapping.js';
+import { RouteValidatorConfig } from './route-validator-config.js';
+import { JwtTokenBase } from '@bitblit/ratchet-common/jwt/jwt-token-base';
+import { BooleanRatchet } from '@bitblit/ratchet-common/lang/boolean-ratchet';
+import { OpenApiDocument } from '../../config/open-api/open-api-document.js';
 import { ModelValidator } from '@bitblit/ratchet-misc/model-validator/model-validator';
-import { BackgroundHttpAdapterHandler } from "../../background/background-http-adapter-handler.js";
-import { HandlerFunction } from "../../config/http/handler-function.js";
-import { HttpConfig } from "../../config/http/http-config.js";
-import { AuthorizerFunction } from "../../config/http/authorizer-function.js";
-import { HttpProcessingConfig } from "../../config/http/http-processing-config.js";
-import { NullReturnedObjectHandling } from "../../config/http/null-returned-object-handling.js";
-import { MappedHttpProcessingConfig } from "../../config/http/mapped-http-processing-config.js";
-import { BuiltInFilters } from "../../built-in/http/built-in-filters.js";
-import { WebTokenManipulator } from "../auth/web-token-manipulator.js";
-import { BuiltInHandlers } from "../../built-in/http/built-in-handlers.js";
-import { FilterFunction } from "../../config/http/filter-function.js";
-import { BuiltInAuthFilters } from "../../built-in/http/built-in-auth-filters.js";
-import { LogLevelManipulationFilter } from "../../built-in/http/log-level-manipulation-filter.js";
+import { BackgroundHttpAdapterHandler } from '../../background/background-http-adapter-handler.js';
+import { HandlerFunction } from '../../config/http/handler-function.js';
+import { HttpConfig } from '../../config/http/http-config.js';
+import { AuthorizerFunction } from '../../config/http/authorizer-function.js';
+import { HttpProcessingConfig } from '../../config/http/http-processing-config.js';
+import { NullReturnedObjectHandling } from '../../config/http/null-returned-object-handling.js';
+import { MappedHttpProcessingConfig } from '../../config/http/mapped-http-processing-config.js';
+import { BuiltInFilters } from '../../built-in/http/built-in-filters.js';
+import { WebTokenManipulator } from '../auth/web-token-manipulator.js';
+import { BuiltInHandlers } from '../../built-in/http/built-in-handlers.js';
+import { FilterFunction } from '../../config/http/filter-function.js';
+import { BuiltInAuthFilters } from '../../built-in/http/built-in-auth-filters.js';
+import { LogLevelManipulationFilter } from '../../built-in/http/log-level-manipulation-filter.js';
 
 /**
  * Endpoints about the api itself
@@ -30,7 +30,7 @@ export class RouterUtil {
   private constructor() {}
 
   public static defaultAuthenticationHeaderParsingEpsilonPreFilters(
-    webTokenManipulator: WebTokenManipulator<JwtTokenBase>
+    webTokenManipulator: WebTokenManipulator<JwtTokenBase>,
   ): FilterFunction[] {
     return [
       (fCtx) => BuiltInAuthFilters.parseAuthorizationHeader(fCtx, webTokenManipulator),
@@ -74,7 +74,7 @@ export class RouterUtil {
   }
 
   public static defaultHttpMetaProcessingConfigWithAuthenticationHeaderParsing(
-    webTokenManipulator: WebTokenManipulator<JwtTokenBase>
+    webTokenManipulator: WebTokenManipulator<JwtTokenBase>,
   ): HttpProcessingConfig {
     const defaults: HttpProcessingConfig = {
       configName: 'EpsilonDefaultHttpMetaProcessingConfig',
@@ -144,7 +144,7 @@ export class RouterUtil {
     httpConfig: HttpConfig,
     openApiDoc: OpenApiDocument,
     modelValidator: ModelValidator,
-    backgroundHttpAdapterHandler: BackgroundHttpAdapterHandler
+    backgroundHttpAdapterHandler: BackgroundHttpAdapterHandler,
   ): EpsilonRouter {
     if (!openApiDoc || !httpConfig) {
       throw new MisconfiguredError('Cannot configure, missing either yaml or cfg');
@@ -230,7 +230,7 @@ export class RouterUtil {
               method,
               path,
               schema,
-              rval.config.overrideModelValidator || rval.openApiModelValidator
+              rval.config.overrideModelValidator || rval.openApiModelValidator,
             );
             const required: boolean = BooleanRatchet.parseBool(entry['requestBody']['required']);
             const validation: RouteValidatorConfig = {
@@ -257,7 +257,7 @@ export class RouterUtil {
               method,
               path,
               schema,
-              rval.config.overrideModelValidator || rval.openApiModelValidator
+              rval.config.overrideModelValidator || rval.openApiModelValidator,
             );
             const validation: RouteValidatorConfig = {
               extraPropertiesAllowed: false,

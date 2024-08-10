@@ -1,7 +1,7 @@
 /* eslint-disable */
 /**
  * SendinBlue API
- * SendinBlue provide a RESTFul API that can be used with any languages. With this API, you will be able to :   - Manage your campaigns and get the statistics   - Manage your contacts   - Send transactional Emails and SMS   - and much more...  You can download our wrappers at https://github.com/orgs/sendinblue  **Possible responses**   | Code | Message |   | :-------------: | ------------- |   | 200  | OK. Successful Request  |   | 201  | OK. Successful Creation |   | 202  | OK. Request accepted |   | 204  | OK. Successful Update/Deletion  |   | 400  | Error. Bad Request  |   | 401  | Error. Authentication Needed  |   | 402  | Error. Not enough credit, plan upgrade needed  |   | 403  | Error. Permission denied  |   | 404  | Error. Object does not exist |   | 405  | Error. Method not allowed  |   | 406  | Error. Not Acceptable  | 
+ * SendinBlue provide a RESTFul API that can be used with any languages. With this API, you will be able to :   - Manage your campaigns and get the statistics   - Manage your contacts   - Send transactional Emails and SMS   - and much more...  You can download our wrappers at https://github.com/orgs/sendinblue  **Possible responses**   | Code | Message |   | :-------------: | ------------- |   | 200  | OK. Successful Request  |   | 201  | OK. Successful Creation |   | 202  | OK. Request accepted |   | 204  | OK. Successful Update/Deletion  |   | 400  | Error. Bad Request  |   | 401  | Error. Authentication Needed  |   | 402  | Error. Not enough credit, plan upgrade needed  |   | 403  | Error. Permission denied  |   | 404  | Error. Object does not exist |   | 405  | Error. Method not allowed  |   | 406  | Error. Not Acceptable  |
  *
  * The version of the OpenAPI document: 3.0.0
  * Contact: contact@sendinblue.com
@@ -13,71 +13,71 @@
 
 import { exists, mapValues } from '../runtime.js';
 /**
- * 
+ *
  * @export
  * @interface GetContactCampaignStatsTransacAttributesInner
  */
 export interface GetContactCampaignStatsTransacAttributesInner {
-    /**
-     * Date of the order
-     * @type {Date}
-     * @memberof GetContactCampaignStatsTransacAttributesInner
-     */
-    orderDate: Date;
-    /**
-     * Price of the order
-     * @type {number}
-     * @memberof GetContactCampaignStatsTransacAttributesInner
-     */
-    orderPrice: number;
-    /**
-     * ID of the order
-     * @type {number}
-     * @memberof GetContactCampaignStatsTransacAttributesInner
-     */
-    orderId: number;
+  /**
+   * Date of the order
+   * @type {Date}
+   * @memberof GetContactCampaignStatsTransacAttributesInner
+   */
+  orderDate: Date;
+  /**
+   * Price of the order
+   * @type {number}
+   * @memberof GetContactCampaignStatsTransacAttributesInner
+   */
+  orderPrice: number;
+  /**
+   * ID of the order
+   * @type {number}
+   * @memberof GetContactCampaignStatsTransacAttributesInner
+   */
+  orderId: number;
 }
 
 /**
  * Check if a given object implements the GetContactCampaignStatsTransacAttributesInner interface.
  */
 export function instanceOfGetContactCampaignStatsTransacAttributesInner(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "orderDate" in value;
-    isInstance = isInstance && "orderPrice" in value;
-    isInstance = isInstance && "orderId" in value;
+  let isInstance = true;
+  isInstance = isInstance && 'orderDate' in value;
+  isInstance = isInstance && 'orderPrice' in value;
+  isInstance = isInstance && 'orderId' in value;
 
-    return isInstance;
+  return isInstance;
 }
 
 export function GetContactCampaignStatsTransacAttributesInnerFromJSON(json: any): GetContactCampaignStatsTransacAttributesInner {
-    return GetContactCampaignStatsTransacAttributesInnerFromJSONTyped(json, false);
+  return GetContactCampaignStatsTransacAttributesInnerFromJSONTyped(json, false);
 }
 
-export function GetContactCampaignStatsTransacAttributesInnerFromJSONTyped(json: any, ignoreDiscriminator: boolean): GetContactCampaignStatsTransacAttributesInner {
-    if ((json === undefined) || (json === null)) {
-        return json;
-    }
-    return {
-        
-        'orderDate': (new Date(json['orderDate'])),
-        'orderPrice': json['orderPrice'],
-        'orderId': json['orderId'],
-    };
+export function GetContactCampaignStatsTransacAttributesInnerFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean,
+): GetContactCampaignStatsTransacAttributesInner {
+  if (json === undefined || json === null) {
+    return json;
+  }
+  return {
+    orderDate: new Date(json['orderDate']),
+    orderPrice: json['orderPrice'],
+    orderId: json['orderId'],
+  };
 }
 
 export function GetContactCampaignStatsTransacAttributesInnerToJSON(value?: GetContactCampaignStatsTransacAttributesInner | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
-    }
-    return {
-        
-        'orderDate': (value.orderDate.toISOString().substring(0,10)),
-        'orderPrice': value.orderPrice,
-        'orderId': value.orderId,
-    };
+  if (value === undefined) {
+    return undefined;
+  }
+  if (value === null) {
+    return null;
+  }
+  return {
+    orderDate: value.orderDate.toISOString().substring(0, 10),
+    orderPrice: value.orderPrice,
+    orderId: value.orderId,
+  };
 }
-

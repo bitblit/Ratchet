@@ -1,12 +1,12 @@
-import { StringRatchet } from "@bitblit/ratchet-common/lang/string-ratchet";
-import { Logger } from "@bitblit/ratchet-common/logger/logger";
-import { PromiseRatchet } from "@bitblit/ratchet-common/lang/promise-ratchet";
-import { RequireRatchet } from "@bitblit/ratchet-common/lang/require-ratchet";
-import fs, { WriteStream } from "fs";
-import { DynamoRatchet } from "@bitblit/ratchet-aws/dynamodb/dynamo-ratchet";
+import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet';
+import { Logger } from '@bitblit/ratchet-common/logger/logger';
+import { PromiseRatchet } from '@bitblit/ratchet-common/lang/promise-ratchet';
+import { RequireRatchet } from '@bitblit/ratchet-common/lang/require-ratchet';
+import fs, { WriteStream } from 'fs';
+import { DynamoRatchet } from '@bitblit/ratchet-aws/dynamodb/dynamo-ratchet';
 
-import readline from "readline";
-import { QueryCommandInput, ScanCommandInput } from "@aws-sdk/lib-dynamodb";
+import readline from 'readline';
+import { QueryCommandInput, ScanCommandInput } from '@aws-sdk/lib-dynamodb';
 
 export class DynamoExporter {
   // Prevent instantiation

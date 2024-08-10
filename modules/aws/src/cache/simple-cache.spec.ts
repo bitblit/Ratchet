@@ -1,7 +1,7 @@
-import { SimpleCache } from "./simple-cache.js";
-import { SimpleCacheObjectWrapper } from "./simple-cache-object-wrapper.js";
-import { describe, expect, test } from "vitest";
-import { MemoryStorageProvider } from "./memory-storage-provider.js";
+import { SimpleCache } from './simple-cache.js';
+import { SimpleCacheObjectWrapper } from './simple-cache-object-wrapper.js';
+import { describe, expect, test } from 'vitest';
+import { MemoryStorageProvider } from './memory-storage-provider.js';
 
 describe('#simpleCache', function () {
   test.skip('should read/write/delete with a memory', async () => {

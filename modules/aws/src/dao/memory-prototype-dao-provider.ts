@@ -1,11 +1,9 @@
 // Memory version for testing
-import { PrototypeDaoProvider } from "./prototype-dao-provider.js";
-import { PrototypeDaoDb } from "./prototype-dao-db.js";
+import { PrototypeDaoProvider } from './prototype-dao-provider.js';
+import { PrototypeDaoDb } from './prototype-dao-db.js';
 
 export class MemoryPrototypeDaoProvider implements PrototypeDaoProvider<any> {
-
   private _db: PrototypeDaoDb<any> = null;
-
 
   public async loadDatabase(): Promise<PrototypeDaoDb<any>> {
     return this._db;
@@ -15,5 +13,4 @@ export class MemoryPrototypeDaoProvider implements PrototypeDaoProvider<any> {
     this._db = db;
     return true;
   }
-
 }

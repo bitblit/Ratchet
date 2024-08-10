@@ -1,16 +1,18 @@
-import { RequireRatchet } from "@bitblit/ratchet-common/lang/require-ratchet";
-import { Logger } from "@bitblit/ratchet-common/logger/logger";
-import { Ec2Ratchet } from "@bitblit/ratchet-aws/ec2/ec2-ratchet";
-import fs from "fs";
-import { Instance } from "@aws-sdk/client-ec2";
-import { SendSSHPublicKeyResponse } from "@aws-sdk/client-ec2-instance-connect";
+import { RequireRatchet } from '@bitblit/ratchet-common/lang/require-ratchet';
+import { Logger } from '@bitblit/ratchet-common/logger/logger';
+import { Ec2Ratchet } from '@bitblit/ratchet-aws/ec2/ec2-ratchet';
+import fs from 'fs';
+import { Instance } from '@aws-sdk/client-ec2';
+import { SendSSHPublicKeyResponse } from '@aws-sdk/client-ec2-instance-connect';
 
 export class Ec2InstanceUtil {
+  constructor(private ec2Ratchet: Ec2Ratchet) {}
 
-  constructor(private ec2Ratchet: Ec2Ratchet) {
-  }
-
-  public async startInstanceAndUploadPublicKeyFile(instanceId: string, filePath: string, instanceOsUser: string = 'ec2-user'): Promise<Instance> {
+  public async startInstanceAndUploadPublicKeyFile(
+    instanceId: string,
+    filePath: string,
+    instanceOsUser: string = 'ec2-user',
+  ): Promise<Instance> {
     RequireRatchet.notNullUndefinedOrOnlyWhitespaceString(instanceId, 'instanceId');
     RequireRatchet.notNullUndefinedOrOnlyWhitespaceString(filePath, 'filePath');
     RequireRatchet.true(fs.existsSync(filePath), 'File does not exist');
@@ -19,7 +21,11 @@ export class Ec2InstanceUtil {
     return this.startInstanceAndUploadPublicKey(instanceId, publicKeyText, instanceOsUser);
   }
 
-  public async startInstanceAndUploadPublicKey(instanceId: string, publicKeyText: string, instanceOsUser: string = 'ec2-user'): Promise<Instance> {
+  public async startInstanceAndUploadPublicKey(
+    instanceId: string,
+    publicKeyText: string,
+    instanceOsUser: string = 'ec2-user',
+  ): Promise<Instance> {
     Logger.info('Starting instance %s, public key length %d, user %s', instanceId, publicKeyText.length, instanceOsUser);
     let instance: Instance = await this.ec2Ratchet.describeInstance(instanceId);
     if (instance) {
@@ -37,7 +43,7 @@ export class Ec2InstanceUtil {
         const publicKeyResponse: SendSSHPublicKeyResponse = await this.ec2Ratchet.sendPublicKeyToEc2Instance(
           instanceId,
           publicKeyText,
-          instanceOsUser
+          instanceOsUser,
         );
         Logger.info('Key response : %j', publicKeyResponse);
 

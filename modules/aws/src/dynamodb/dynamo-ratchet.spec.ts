@@ -1,10 +1,10 @@
-import { DynamoRatchet } from "./dynamo-ratchet.js";
-import { DynamoDBDocumentClient, PutCommandOutput, QueryCommandInput, ScanCommandInput } from "@aws-sdk/lib-dynamodb";
-import { beforeEach, describe, expect, test } from "vitest";
+import { DynamoRatchet } from './dynamo-ratchet.js';
+import { DynamoDBDocumentClient, PutCommandOutput, QueryCommandInput, ScanCommandInput } from '@aws-sdk/lib-dynamodb';
+import { beforeEach, describe, expect, test } from 'vitest';
 
-import { mockClient } from "aws-sdk-client-mock";
-import { Logger } from "@bitblit/ratchet-common/logger/logger";
-import { LoggerLevelName } from "@bitblit/ratchet-common/logger/logger-level-name";
+import { mockClient } from 'aws-sdk-client-mock';
+import { Logger } from '@bitblit/ratchet-common/logger/logger';
+import { LoggerLevelName } from '@bitblit/ratchet-common/logger/logger-level-name';
 
 let mockDynamo;
 

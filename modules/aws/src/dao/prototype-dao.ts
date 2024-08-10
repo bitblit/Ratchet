@@ -2,9 +2,9 @@ import { PrototypeDaoProvider } from './prototype-dao-provider.js';
 import { PrototypeDaoDb } from './prototype-dao-db.js';
 import { PrototypeDaoConfig } from './prototype-dao-config.js';
 import { DateTime } from 'luxon';
-import { StringRatchet } from "@bitblit/ratchet-common/lang/string-ratchet";
-import { RequireRatchet } from "@bitblit/ratchet-common/lang/require-ratchet";
-import { MapRatchet } from "@bitblit/ratchet-common/lang/map-ratchet";
+import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet';
+import { RequireRatchet } from '@bitblit/ratchet-common/lang/require-ratchet';
+import { MapRatchet } from '@bitblit/ratchet-common/lang/map-ratchet';
 
 /*
   PrototypeDao makes it quick to stand up a simple data access object
@@ -29,7 +29,10 @@ export class PrototypeDao<T> {
     };
   }
 
-  constructor(private provider: PrototypeDaoProvider<T>, private cfg: PrototypeDaoConfig = PrototypeDao.defaultDaoConfig()) {
+  constructor(
+    private provider: PrototypeDaoProvider<T>,
+    private cfg: PrototypeDaoConfig = PrototypeDao.defaultDaoConfig(),
+  ) {
     RequireRatchet.notNullOrUndefined(provider, 'provider');
     RequireRatchet.notNullOrUndefined(cfg, 'cfg');
     RequireRatchet.notNullOrUndefined(cfg.guidCreateFunction, 'cfg.guidCreateFunction');

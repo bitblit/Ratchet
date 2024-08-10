@@ -1,6 +1,6 @@
-import { RequireRatchet } from "@bitblit/ratchet-common/lang/require-ratchet";
-import { Logger } from "@bitblit/ratchet-common/logger/logger";
-import { EnvironmentServiceProvider } from "./environment-service-provider.js";
+import { RequireRatchet } from '@bitblit/ratchet-common/lang/require-ratchet';
+import { Logger } from '@bitblit/ratchet-common/logger/logger';
+import { EnvironmentServiceProvider } from './environment-service-provider.js';
 
 /**
  * Forces in a single object as the environment

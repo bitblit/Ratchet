@@ -3,15 +3,18 @@
   approach.
 */
 
-import { SimpleCacheObjectWrapper } from "../../cache/simple-cache-object-wrapper.js";
-import { SimpleCacheStorageProvider } from "../../cache/simple-cache-storage-provider.js";
-import { PutObjectOutput } from "@aws-sdk/client-s3";
-import { S3CacheRatchetLike } from "../s3-cache-ratchet-like.js";
-import { RequireRatchet } from "@bitblit/ratchet-common/lang/require-ratchet";
-import { StringRatchet } from "@bitblit/ratchet-common/lang/string-ratchet";
+import { SimpleCacheObjectWrapper } from '../../cache/simple-cache-object-wrapper.js';
+import { SimpleCacheStorageProvider } from '../../cache/simple-cache-storage-provider.js';
+import { PutObjectOutput } from '@aws-sdk/client-s3';
+import { S3CacheRatchetLike } from '../s3-cache-ratchet-like.js';
+import { RequireRatchet } from '@bitblit/ratchet-common/lang/require-ratchet';
+import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet';
 
 export class S3StorageProvider implements SimpleCacheStorageProvider {
-  constructor(private s3CacheRatchet: S3CacheRatchetLike, private prefix: string) {
+  constructor(
+    private s3CacheRatchet: S3CacheRatchetLike,
+    private prefix: string,
+  ) {
     RequireRatchet.notNullOrUndefined(this.s3CacheRatchet, 's3CacheRatchet');
     RequireRatchet.notNullOrUndefined(this.s3CacheRatchet.getDefaultBucket(), 's3CacheRatchet.defaultBucket');
   }
@@ -27,7 +30,7 @@ export class S3StorageProvider implements SimpleCacheStorageProvider {
 
   public async readFromCache<T>(cacheKey: string): Promise<SimpleCacheObjectWrapper<T>> {
     const rval: SimpleCacheObjectWrapper<T> = await this.s3CacheRatchet.fetchCacheFileAsObject<SimpleCacheObjectWrapper<T>>(
-      this.keyToPath(cacheKey)
+      this.keyToPath(cacheKey),
     );
     return rval;
   }

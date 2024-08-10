@@ -1,5 +1,5 @@
-import { SortDirection } from "./sort-direction.js";
-import { JwtTokenBase } from "@bitblit/ratchet-common/jwt/jwt-token-base";
+import { SortDirection } from './sort-direction.js';
+import { JwtTokenBase } from '@bitblit/ratchet-common/jwt/jwt-token-base';
 
 /**
  * Defines a paginator.

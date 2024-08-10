@@ -1,7 +1,7 @@
 /* eslint-disable */
 /**
  * SendinBlue API
- * SendinBlue provide a RESTFul API that can be used with any languages. With this API, you will be able to :   - Manage your campaigns and get the statistics   - Manage your contacts   - Send transactional Emails and SMS   - and much more...  You can download our wrappers at https://github.com/orgs/sendinblue  **Possible responses**   | Code | Message |   | :-------------: | ------------- |   | 200  | OK. Successful Request  |   | 201  | OK. Successful Creation |   | 202  | OK. Request accepted |   | 204  | OK. Successful Update/Deletion  |   | 400  | Error. Bad Request  |   | 401  | Error. Authentication Needed  |   | 402  | Error. Not enough credit, plan upgrade needed  |   | 403  | Error. Permission denied  |   | 404  | Error. Object does not exist |   | 405  | Error. Method not allowed  |   | 406  | Error. Not Acceptable  | 
+ * SendinBlue provide a RESTFul API that can be used with any languages. With this API, you will be able to :   - Manage your campaigns and get the statistics   - Manage your contacts   - Send transactional Emails and SMS   - and much more...  You can download our wrappers at https://github.com/orgs/sendinblue  **Possible responses**   | Code | Message |   | :-------------: | ------------- |   | 200  | OK. Successful Request  |   | 201  | OK. Successful Creation |   | 202  | OK. Request accepted |   | 204  | OK. Successful Update/Deletion  |   | 400  | Error. Bad Request  |   | 401  | Error. Authentication Needed  |   | 402  | Error. Not enough credit, plan upgrade needed  |   | 403  | Error. Permission denied  |   | 404  | Error. Object does not exist |   | 405  | Error. Method not allowed  |   | 406  | Error. Not Acceptable  |
  *
  * The version of the OpenAPI document: 3.0.0
  * Contact: contact@sendinblue.com
@@ -18,56 +18,53 @@ import { exists, mapValues } from '../runtime.js';
  * @interface SendSmtpEmailReplyTo
  */
 export interface SendSmtpEmailReplyTo {
-    /**
-     * Email address in reply to
-     * @type {string}
-     * @memberof SendSmtpEmailReplyTo
-     */
-    email: string;
-    /**
-     * Name in reply to. Maximum allowed characters are 70.
-     * @type {string}
-     * @memberof SendSmtpEmailReplyTo
-     */
-    name?: string;
+  /**
+   * Email address in reply to
+   * @type {string}
+   * @memberof SendSmtpEmailReplyTo
+   */
+  email: string;
+  /**
+   * Name in reply to. Maximum allowed characters are 70.
+   * @type {string}
+   * @memberof SendSmtpEmailReplyTo
+   */
+  name?: string;
 }
 
 /**
  * Check if a given object implements the SendSmtpEmailReplyTo interface.
  */
 export function instanceOfSendSmtpEmailReplyTo(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "email" in value;
+  let isInstance = true;
+  isInstance = isInstance && 'email' in value;
 
-    return isInstance;
+  return isInstance;
 }
 
 export function SendSmtpEmailReplyToFromJSON(json: any): SendSmtpEmailReplyTo {
-    return SendSmtpEmailReplyToFromJSONTyped(json, false);
+  return SendSmtpEmailReplyToFromJSONTyped(json, false);
 }
 
 export function SendSmtpEmailReplyToFromJSONTyped(json: any, ignoreDiscriminator: boolean): SendSmtpEmailReplyTo {
-    if ((json === undefined) || (json === null)) {
-        return json;
-    }
-    return {
-        
-        'email': json['email'],
-        'name': !exists(json, 'name') ? undefined : json['name'],
-    };
+  if (json === undefined || json === null) {
+    return json;
+  }
+  return {
+    email: json['email'],
+    name: !exists(json, 'name') ? undefined : json['name'],
+  };
 }
 
 export function SendSmtpEmailReplyToToJSON(value?: SendSmtpEmailReplyTo | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
-    }
-    return {
-        
-        'email': value.email,
-        'name': value.name,
-    };
+  if (value === undefined) {
+    return undefined;
+  }
+  if (value === null) {
+    return null;
+  }
+  return {
+    email: value.email,
+    name: value.name,
+  };
 }
-

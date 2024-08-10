@@ -7,17 +7,17 @@ import {
   StartInstancesCommand,
   StartInstancesCommandInput,
   StopInstancesCommand,
-  StopInstancesCommandInput
-} from "@aws-sdk/client-ec2";
+  StopInstancesCommandInput,
+} from '@aws-sdk/client-ec2';
 import {
   EC2InstanceConnectClient,
   SendSSHPublicKeyCommand,
   SendSSHPublicKeyCommandInput,
-  SendSSHPublicKeyCommandOutput
-} from "@aws-sdk/client-ec2-instance-connect";
-import { Logger } from "@bitblit/ratchet-common/logger/logger";
-import { PromiseRatchet } from "@bitblit/ratchet-common/lang/promise-ratchet";
-import { DurationRatchet } from "@bitblit/ratchet-common/lang/duration-ratchet";
+  SendSSHPublicKeyCommandOutput,
+} from '@aws-sdk/client-ec2-instance-connect';
+import { Logger } from '@bitblit/ratchet-common/logger/logger';
+import { PromiseRatchet } from '@bitblit/ratchet-common/lang/promise-ratchet';
+import { DurationRatchet } from '@bitblit/ratchet-common/lang/duration-ratchet';
 
 /**
  * Service to simplify interacting with EC2 instances
@@ -166,5 +166,4 @@ export class Ec2Ratchet {
     const rval: SendSSHPublicKeyCommandOutput = await this.ec2InstanceConnect.send(new SendSSHPublicKeyCommand(req));
     return rval;
   }
-
 }

@@ -1,14 +1,13 @@
-import { DynamoDbSimpleCacheOptions, DynamoDbStorageProvider } from "./dynamo-db-storage-provider.js";
-import { DynamoDBDocument } from "@aws-sdk/lib-dynamodb";
-import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
-import {DynamoRatchet} from "../dynamo-ratchet.js";
-import {SimpleCache} from "../../cache/simple-cache.js";
-import {SimpleCacheObjectWrapper} from "../../cache/simple-cache-object-wrapper.js";
+import { DynamoDbSimpleCacheOptions, DynamoDbStorageProvider } from './dynamo-db-storage-provider.js';
+import { DynamoDBDocument } from '@aws-sdk/lib-dynamodb';
+import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
+import { DynamoRatchet } from '../dynamo-ratchet.js';
+import { SimpleCache } from '../../cache/simple-cache.js';
+import { SimpleCacheObjectWrapper } from '../../cache/simple-cache-object-wrapper.js';
 
-import { describe, expect, test } from "vitest";
+import { describe, expect, test } from 'vitest';
 
 describe('#DynamoDbStorageProvider', function () {
-
   test.skip('should read/write/delete with an dynamo handler', async () => {
     const dr: DynamoRatchet = new DynamoRatchet(DynamoDBDocument.from(new DynamoDBClient({ region: 'us-east-1' })));
     const opts: DynamoDbSimpleCacheOptions = DynamoDbStorageProvider.createDefaultOptions();

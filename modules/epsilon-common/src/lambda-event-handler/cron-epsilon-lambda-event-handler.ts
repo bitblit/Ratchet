@@ -1,15 +1,15 @@
-import { EpsilonLambdaEventHandler } from "../config/epsilon-lambda-event-handler.js";
-import { Context, ProxyResult, ScheduledEvent } from "aws-lambda";
-import { Logger } from "@bitblit/ratchet-common/logger/logger";
-import { AwsUtil } from "../util/aws-util.js";
-import { EpsilonInstance } from "../epsilon-instance.js";
-import { CronConfig } from "../config/cron/cron-config.js";
-import { BackgroundHandler } from "../background/background-handler.js";
-import { BackgroundEntry } from "../background/background-entry.js";
-import { CronBackgroundEntry } from "../config/cron/cron-background-entry.js";
-import { CronUtil } from "../util/cron-util.js";
-import { BackgroundManagerLike } from "../background/manager/background-manager-like.js";
-import { LambdaEventDetector } from "@bitblit/ratchet-aws/lambda/lambda-event-detector";
+import { EpsilonLambdaEventHandler } from '../config/epsilon-lambda-event-handler.js';
+import { Context, ProxyResult, ScheduledEvent } from 'aws-lambda';
+import { Logger } from '@bitblit/ratchet-common/logger/logger';
+import { AwsUtil } from '../util/aws-util.js';
+import { EpsilonInstance } from '../epsilon-instance.js';
+import { CronConfig } from '../config/cron/cron-config.js';
+import { BackgroundHandler } from '../background/background-handler.js';
+import { BackgroundEntry } from '../background/background-entry.js';
+import { CronBackgroundEntry } from '../config/cron/cron-background-entry.js';
+import { CronUtil } from '../util/cron-util.js';
+import { BackgroundManagerLike } from '../background/manager/background-manager-like.js';
+import { LambdaEventDetector } from '@bitblit/ratchet-aws/lambda/lambda-event-detector';
 
 export class CronEpsilonLambdaEventHandler implements EpsilonLambdaEventHandler<ScheduledEvent> {
   constructor(private _epsilon: EpsilonInstance) {}
@@ -37,7 +37,7 @@ export class CronEpsilonLambdaEventHandler implements EpsilonLambdaEventHandler<
         evt,
         this._epsilon.config.cron,
         this._epsilon.backgroundManager,
-        this._epsilon.backgroundHandler
+        this._epsilon.backgroundHandler,
       );
       rval = {
         statusCode: 200,
@@ -52,7 +52,7 @@ export class CronEpsilonLambdaEventHandler implements EpsilonLambdaEventHandler<
     evt: ScheduledEvent,
     cronConfig: CronConfig,
     backgroundManager: BackgroundManagerLike,
-    background: BackgroundHandler
+    background: BackgroundHandler,
   ): Promise<boolean> {
     let rval: boolean = false;
     if (cronConfig && evt && evt.resources[0]) {

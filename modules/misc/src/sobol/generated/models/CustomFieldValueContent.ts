@@ -13,72 +13,80 @@
 
 import type { CustomFieldBadgeContent } from './CustomFieldBadgeContent.js';
 import {
-    instanceOfCustomFieldBadgeContent,
-    CustomFieldBadgeContentFromJSON,
-    CustomFieldBadgeContentFromJSONTyped,
-    CustomFieldBadgeContentToJSON,
+  instanceOfCustomFieldBadgeContent,
+  CustomFieldBadgeContentFromJSON,
+  CustomFieldBadgeContentFromJSONTyped,
+  CustomFieldBadgeContentToJSON,
 } from './CustomFieldBadgeContent.js';
 import type { CustomFieldMultiSelectDropDownContent } from './CustomFieldMultiSelectDropDownContent.js';
 import {
-    instanceOfCustomFieldMultiSelectDropDownContent,
-    CustomFieldMultiSelectDropDownContentFromJSON,
-    CustomFieldMultiSelectDropDownContentFromJSONTyped,
-    CustomFieldMultiSelectDropDownContentToJSON,
+  instanceOfCustomFieldMultiSelectDropDownContent,
+  CustomFieldMultiSelectDropDownContentFromJSON,
+  CustomFieldMultiSelectDropDownContentFromJSONTyped,
+  CustomFieldMultiSelectDropDownContentToJSON,
 } from './CustomFieldMultiSelectDropDownContent.js';
 import type { CustomFieldSingleSelectDropDownContent } from './CustomFieldSingleSelectDropDownContent.js';
 import {
-    instanceOfCustomFieldSingleSelectDropDownContent,
-    CustomFieldSingleSelectDropDownContentFromJSON,
-    CustomFieldSingleSelectDropDownContentFromJSONTyped,
-    CustomFieldSingleSelectDropDownContentToJSON,
+  instanceOfCustomFieldSingleSelectDropDownContent,
+  CustomFieldSingleSelectDropDownContentFromJSON,
+  CustomFieldSingleSelectDropDownContentFromJSONTyped,
+  CustomFieldSingleSelectDropDownContentToJSON,
 } from './CustomFieldSingleSelectDropDownContent.js';
 import type { CustomFieldTextContent } from './CustomFieldTextContent.js';
 import {
-    instanceOfCustomFieldTextContent,
-    CustomFieldTextContentFromJSON,
-    CustomFieldTextContentFromJSONTyped,
-    CustomFieldTextContentToJSON,
+  instanceOfCustomFieldTextContent,
+  CustomFieldTextContentFromJSON,
+  CustomFieldTextContentFromJSONTyped,
+  CustomFieldTextContentToJSON,
 } from './CustomFieldTextContent.js';
 
 /**
  * @type CustomFieldValueContent
- * 
+ *
  * @export
  */
-export type CustomFieldValueContent = CustomFieldBadgeContent | CustomFieldMultiSelectDropDownContent | CustomFieldSingleSelectDropDownContent | CustomFieldTextContent;
+export type CustomFieldValueContent =
+  | CustomFieldBadgeContent
+  | CustomFieldMultiSelectDropDownContent
+  | CustomFieldSingleSelectDropDownContent
+  | CustomFieldTextContent;
 
 export function CustomFieldValueContentFromJSON(json: any): CustomFieldValueContent {
-    return CustomFieldValueContentFromJSONTyped(json, false);
+  return CustomFieldValueContentFromJSONTyped(json, false);
 }
 
 export function CustomFieldValueContentFromJSONTyped(json: any, ignoreDiscriminator: boolean): CustomFieldValueContent {
-    if ((json === undefined) || (json === null)) {
-        return json;
-    }
-    return { ...CustomFieldBadgeContentFromJSONTyped(json, true), ...CustomFieldMultiSelectDropDownContentFromJSONTyped(json, true), ...CustomFieldSingleSelectDropDownContentFromJSONTyped(json, true), ...CustomFieldTextContentFromJSONTyped(json, true) };
+  if (json === undefined || json === null) {
+    return json;
+  }
+  return {
+    ...CustomFieldBadgeContentFromJSONTyped(json, true),
+    ...CustomFieldMultiSelectDropDownContentFromJSONTyped(json, true),
+    ...CustomFieldSingleSelectDropDownContentFromJSONTyped(json, true),
+    ...CustomFieldTextContentFromJSONTyped(json, true),
+  };
 }
 
 export function CustomFieldValueContentToJSON(value?: CustomFieldValueContent | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
-    }
+  if (value === undefined) {
+    return undefined;
+  }
+  if (value === null) {
+    return null;
+  }
 
-    if (instanceOfCustomFieldBadgeContent(value)) {
-        return CustomFieldBadgeContentToJSON(value as CustomFieldBadgeContent);
-    }
-    if (instanceOfCustomFieldMultiSelectDropDownContent(value)) {
-        return CustomFieldMultiSelectDropDownContentToJSON(value as CustomFieldMultiSelectDropDownContent);
-    }
-    if (instanceOfCustomFieldSingleSelectDropDownContent(value)) {
-        return CustomFieldSingleSelectDropDownContentToJSON(value as CustomFieldSingleSelectDropDownContent);
-    }
-    if (instanceOfCustomFieldTextContent(value)) {
-        return CustomFieldTextContentToJSON(value as CustomFieldTextContent);
-    }
+  if (instanceOfCustomFieldBadgeContent(value)) {
+    return CustomFieldBadgeContentToJSON(value as CustomFieldBadgeContent);
+  }
+  if (instanceOfCustomFieldMultiSelectDropDownContent(value)) {
+    return CustomFieldMultiSelectDropDownContentToJSON(value as CustomFieldMultiSelectDropDownContent);
+  }
+  if (instanceOfCustomFieldSingleSelectDropDownContent(value)) {
+    return CustomFieldSingleSelectDropDownContentToJSON(value as CustomFieldSingleSelectDropDownContent);
+  }
+  if (instanceOfCustomFieldTextContent(value)) {
+    return CustomFieldTextContentToJSON(value as CustomFieldTextContent);
+  }
 
-    return {};
+  return {};
 }
-

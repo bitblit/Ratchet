@@ -1,7 +1,7 @@
 /* eslint-disable */
 /**
  * SendinBlue API
- * SendinBlue provide a RESTFul API that can be used with any languages. With this API, you will be able to :   - Manage your campaigns and get the statistics   - Manage your contacts   - Send transactional Emails and SMS   - and much more...  You can download our wrappers at https://github.com/orgs/sendinblue  **Possible responses**   | Code | Message |   | :-------------: | ------------- |   | 200  | OK. Successful Request  |   | 201  | OK. Successful Creation |   | 202  | OK. Request accepted |   | 204  | OK. Successful Update/Deletion  |   | 400  | Error. Bad Request  |   | 401  | Error. Authentication Needed  |   | 402  | Error. Not enough credit, plan upgrade needed  |   | 403  | Error. Permission denied  |   | 404  | Error. Object does not exist |   | 405  | Error. Method not allowed  |   | 406  | Error. Not Acceptable  | 
+ * SendinBlue provide a RESTFul API that can be used with any languages. With this API, you will be able to :   - Manage your campaigns and get the statistics   - Manage your contacts   - Send transactional Emails and SMS   - and much more...  You can download our wrappers at https://github.com/orgs/sendinblue  **Possible responses**   | Code | Message |   | :-------------: | ------------- |   | 200  | OK. Successful Request  |   | 201  | OK. Successful Creation |   | 202  | OK. Request accepted |   | 204  | OK. Successful Update/Deletion  |   | 400  | Error. Bad Request  |   | 401  | Error. Authentication Needed  |   | 402  | Error. Not enough credit, plan upgrade needed  |   | 403  | Error. Permission denied  |   | 404  | Error. Object does not exist |   | 405  | Error. Method not allowed  |   | 406  | Error. Not Acceptable  |
  *
  * The version of the OpenAPI document: 3.0.0
  * Contact: contact@sendinblue.com
@@ -10,7 +10,6 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-
 
 import * as runtime from '../runtime.js';
 import type {
@@ -28,655 +27,829 @@ import type {
   UpdateSmsCampaign,
 } from '../models/index.js';
 import {
-    CreateModelFromJSON,
-    CreateModelToJSON,
-    CreateSmsCampaignFromJSON,
-    CreateSmsCampaignToJSON,
-    CreatedProcessIdFromJSON,
-    CreatedProcessIdToJSON,
-    ErrorModelFromJSON,
-    ErrorModelToJSON,
-    GetSmsCampaignFromJSON,
-    GetSmsCampaignToJSON,
-    GetSmsCampaignsFromJSON,
-    GetSmsCampaignsToJSON,
-    PostSendSmsTestFailedFromJSON,
-    PostSendSmsTestFailedToJSON,
-    RequestSmsRecipientExportFromJSON,
-    RequestSmsRecipientExportToJSON,
-    SendReportFromJSON,
-    SendReportToJSON,
-    SendTestSmsFromJSON,
-    SendTestSmsToJSON,
-    UpdateCampaignStatusFromJSON,
-    UpdateCampaignStatusToJSON,
-    UpdateSmsCampaignFromJSON,
-    UpdateSmsCampaignToJSON,
+  CreateModelFromJSON,
+  CreateModelToJSON,
+  CreateSmsCampaignFromJSON,
+  CreateSmsCampaignToJSON,
+  CreatedProcessIdFromJSON,
+  CreatedProcessIdToJSON,
+  ErrorModelFromJSON,
+  ErrorModelToJSON,
+  GetSmsCampaignFromJSON,
+  GetSmsCampaignToJSON,
+  GetSmsCampaignsFromJSON,
+  GetSmsCampaignsToJSON,
+  PostSendSmsTestFailedFromJSON,
+  PostSendSmsTestFailedToJSON,
+  RequestSmsRecipientExportFromJSON,
+  RequestSmsRecipientExportToJSON,
+  SendReportFromJSON,
+  SendReportToJSON,
+  SendTestSmsFromJSON,
+  SendTestSmsToJSON,
+  UpdateCampaignStatusFromJSON,
+  UpdateCampaignStatusToJSON,
+  UpdateSmsCampaignFromJSON,
+  UpdateSmsCampaignToJSON,
 } from '../models/index.js';
 
 export interface CreateSmsCampaignRequest {
-    createSmsCampaign: CreateSmsCampaign;
+  createSmsCampaign: CreateSmsCampaign;
 }
 
 export interface DeleteSmsCampaignRequest {
-    campaignId: number;
+  campaignId: number;
 }
 
 export interface GetSmsCampaignRequest {
-    campaignId: number;
+  campaignId: number;
 }
 
 export interface GetSmsCampaignsRequest {
-    status?: GetSmsCampaignsStatusEnum;
-    startDate?: Date;
-    endDate?: Date;
-    limit?: number;
-    offset?: number;
+  status?: GetSmsCampaignsStatusEnum;
+  startDate?: Date;
+  endDate?: Date;
+  limit?: number;
+  offset?: number;
 }
 
 export interface RequestSmsRecipientExportRequest {
-    campaignId: number;
-    recipientExport?: RequestSmsRecipientExport;
+  campaignId: number;
+  recipientExport?: RequestSmsRecipientExport;
 }
 
 export interface SendSmsCampaignNowRequest {
-    campaignId: number;
+  campaignId: number;
 }
 
 export interface SendSmsReportRequest {
-    campaignId: number;
-    sendReport: SendReport;
+  campaignId: number;
+  sendReport: SendReport;
 }
 
 export interface SendTestSmsRequest {
-    campaignId: number;
-    phoneNumber: SendTestSms;
+  campaignId: number;
+  phoneNumber: SendTestSms;
 }
 
 export interface UpdateSmsCampaignRequest {
-    campaignId: number;
-    updateSmsCampaign: UpdateSmsCampaign;
+  campaignId: number;
+  updateSmsCampaign: UpdateSmsCampaign;
 }
 
 export interface UpdateSmsCampaignStatusRequest {
-    campaignId: number;
-    status: UpdateCampaignStatus;
+  campaignId: number;
+  status: UpdateCampaignStatus;
 }
 
 /**
  * SMSCampaignsApi - interface
- * 
+ *
  * @export
  * @interface SMSCampaignsApiInterface
  */
 export interface SMSCampaignsApiInterface {
-    /**
-     * 
-     * @summary Creates an SMS campaign
-     * @param {CreateSmsCampaign} createSmsCampaign Values to create an SMS Campaign
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof SMSCampaignsApiInterface
-     */
-    createSmsCampaignRaw(requestParameters: CreateSmsCampaignRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateModel>>;
+  /**
+   *
+   * @summary Creates an SMS campaign
+   * @param {CreateSmsCampaign} createSmsCampaign Values to create an SMS Campaign
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof SMSCampaignsApiInterface
+   */
+  createSmsCampaignRaw(
+    requestParameters: CreateSmsCampaignRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<CreateModel>>;
 
-    /**
-     * Creates an SMS campaign
-     */
-    createSmsCampaign(requestParameters: CreateSmsCampaignRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreateModel>;
+  /**
+   * Creates an SMS campaign
+   */
+  createSmsCampaign(
+    requestParameters: CreateSmsCampaignRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<CreateModel>;
 
-    /**
-     * 
-     * @summary Delete an SMS campaign
-     * @param {number} campaignId id of the SMS campaign
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof SMSCampaignsApiInterface
-     */
-    deleteSmsCampaignRaw(requestParameters: DeleteSmsCampaignRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>>;
+  /**
+   *
+   * @summary Delete an SMS campaign
+   * @param {number} campaignId id of the SMS campaign
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof SMSCampaignsApiInterface
+   */
+  deleteSmsCampaignRaw(
+    requestParameters: DeleteSmsCampaignRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<void>>;
 
-    /**
-     * Delete an SMS campaign
-     */
-    deleteSmsCampaign(requestParameters: DeleteSmsCampaignRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void>;
+  /**
+   * Delete an SMS campaign
+   */
+  deleteSmsCampaign(requestParameters: DeleteSmsCampaignRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void>;
 
-    /**
-     * 
-     * @summary Get an SMS campaign
-     * @param {number} campaignId id of the SMS campaign
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof SMSCampaignsApiInterface
-     */
-    getSmsCampaignRaw(requestParameters: GetSmsCampaignRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetSmsCampaign>>;
+  /**
+   *
+   * @summary Get an SMS campaign
+   * @param {number} campaignId id of the SMS campaign
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof SMSCampaignsApiInterface
+   */
+  getSmsCampaignRaw(
+    requestParameters: GetSmsCampaignRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<GetSmsCampaign>>;
 
-    /**
-     * Get an SMS campaign
-     */
-    getSmsCampaign(requestParameters: GetSmsCampaignRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetSmsCampaign>;
+  /**
+   * Get an SMS campaign
+   */
+  getSmsCampaign(
+    requestParameters: GetSmsCampaignRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<GetSmsCampaign>;
 
-    /**
-     * 
-     * @summary Returns the information for all your created SMS campaigns
-     * @param {'suspended' | 'archive' | 'sent' | 'queued' | 'draft' | 'inProcess'} [status] Status of campaign.
-     * @param {Date} [startDate] Mandatory if endDate is used. Starting (urlencoded) UTC date-time (YYYY-MM-DDTHH:mm:ss.SSSZ) to filter the sent sms campaigns. Prefer to pass your timezone in date-time format for accurate result ( only available if either \&#39;status\&#39; not passed and if passed is set to \&#39;sent\&#39; )
-     * @param {Date} [endDate] Mandatory if startDate is used. Ending (urlencoded) UTC date-time (YYYY-MM-DDTHH:mm:ss.SSSZ) to filter the sent sms campaigns. Prefer to pass your timezone in date-time format for accurate result ( only available if either \&#39;status\&#39; not passed and if passed is set to \&#39;sent\&#39; )
-     * @param {number} [limit] Number limitation for the result returned
-     * @param {number} [offset] Beginning point in the list to retrieve from.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof SMSCampaignsApiInterface
-     */
-    getSmsCampaignsRaw(requestParameters: GetSmsCampaignsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetSmsCampaigns>>;
+  /**
+   *
+   * @summary Returns the information for all your created SMS campaigns
+   * @param {'suspended' | 'archive' | 'sent' | 'queued' | 'draft' | 'inProcess'} [status] Status of campaign.
+   * @param {Date} [startDate] Mandatory if endDate is used. Starting (urlencoded) UTC date-time (YYYY-MM-DDTHH:mm:ss.SSSZ) to filter the sent sms campaigns. Prefer to pass your timezone in date-time format for accurate result ( only available if either \&#39;status\&#39; not passed and if passed is set to \&#39;sent\&#39; )
+   * @param {Date} [endDate] Mandatory if startDate is used. Ending (urlencoded) UTC date-time (YYYY-MM-DDTHH:mm:ss.SSSZ) to filter the sent sms campaigns. Prefer to pass your timezone in date-time format for accurate result ( only available if either \&#39;status\&#39; not passed and if passed is set to \&#39;sent\&#39; )
+   * @param {number} [limit] Number limitation for the result returned
+   * @param {number} [offset] Beginning point in the list to retrieve from.
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof SMSCampaignsApiInterface
+   */
+  getSmsCampaignsRaw(
+    requestParameters: GetSmsCampaignsRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<GetSmsCampaigns>>;
 
-    /**
-     * Returns the information for all your created SMS campaigns
-     */
-    getSmsCampaigns(requestParameters: GetSmsCampaignsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetSmsCampaigns>;
+  /**
+   * Returns the information for all your created SMS campaigns
+   */
+  getSmsCampaigns(
+    requestParameters: GetSmsCampaignsRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<GetSmsCampaigns>;
 
-    /**
-     * It returns the background process ID which on completion calls the notify URL that you have set in the input.
-     * @summary Export an SMS campaign\'s recipients
-     * @param {number} campaignId id of the campaign
-     * @param {RequestSmsRecipientExport} [recipientExport] Values to send for a recipient export request
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof SMSCampaignsApiInterface
-     */
-    requestSmsRecipientExportRaw(requestParameters: RequestSmsRecipientExportRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreatedProcessId>>;
+  /**
+   * It returns the background process ID which on completion calls the notify URL that you have set in the input.
+   * @summary Export an SMS campaign\'s recipients
+   * @param {number} campaignId id of the campaign
+   * @param {RequestSmsRecipientExport} [recipientExport] Values to send for a recipient export request
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof SMSCampaignsApiInterface
+   */
+  requestSmsRecipientExportRaw(
+    requestParameters: RequestSmsRecipientExportRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<CreatedProcessId>>;
 
-    /**
-     * It returns the background process ID which on completion calls the notify URL that you have set in the input.
-     * Export an SMS campaign\'s recipients
-     */
-    requestSmsRecipientExport(requestParameters: RequestSmsRecipientExportRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreatedProcessId>;
+  /**
+   * It returns the background process ID which on completion calls the notify URL that you have set in the input.
+   * Export an SMS campaign\'s recipients
+   */
+  requestSmsRecipientExport(
+    requestParameters: RequestSmsRecipientExportRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<CreatedProcessId>;
 
-    /**
-     * 
-     * @summary Send your SMS campaign immediately
-     * @param {number} campaignId id of the campaign
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof SMSCampaignsApiInterface
-     */
-    sendSmsCampaignNowRaw(requestParameters: SendSmsCampaignNowRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>>;
+  /**
+   *
+   * @summary Send your SMS campaign immediately
+   * @param {number} campaignId id of the campaign
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof SMSCampaignsApiInterface
+   */
+  sendSmsCampaignNowRaw(
+    requestParameters: SendSmsCampaignNowRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<void>>;
 
-    /**
-     * Send your SMS campaign immediately
-     */
-    sendSmsCampaignNow(requestParameters: SendSmsCampaignNowRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void>;
+  /**
+   * Send your SMS campaign immediately
+   */
+  sendSmsCampaignNow(
+    requestParameters: SendSmsCampaignNowRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<void>;
 
-    /**
-     * Send report of Sent and Archived campaign, to the specified email addresses, with respective data and a pdf attachment in detail.
-     * @summary Send an SMS campaign\'s report
-     * @param {number} campaignId id of the campaign
-     * @param {SendReport} sendReport Values for send a report
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof SMSCampaignsApiInterface
-     */
-    sendSmsReportRaw(requestParameters: SendSmsReportRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>>;
+  /**
+   * Send report of Sent and Archived campaign, to the specified email addresses, with respective data and a pdf attachment in detail.
+   * @summary Send an SMS campaign\'s report
+   * @param {number} campaignId id of the campaign
+   * @param {SendReport} sendReport Values for send a report
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof SMSCampaignsApiInterface
+   */
+  sendSmsReportRaw(
+    requestParameters: SendSmsReportRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<void>>;
 
-    /**
-     * Send report of Sent and Archived campaign, to the specified email addresses, with respective data and a pdf attachment in detail.
-     * Send an SMS campaign\'s report
-     */
-    sendSmsReport(requestParameters: SendSmsReportRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void>;
+  /**
+   * Send report of Sent and Archived campaign, to the specified email addresses, with respective data and a pdf attachment in detail.
+   * Send an SMS campaign\'s report
+   */
+  sendSmsReport(requestParameters: SendSmsReportRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void>;
 
-    /**
-     * 
-     * @summary Send a test SMS campaign
-     * @param {number} campaignId Id of the SMS campaign
-     * @param {SendTestSms} phoneNumber Mobile number of the recipient with the country code. This number must belong to one of your contacts in SendinBlue account and must not be blacklisted
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof SMSCampaignsApiInterface
-     */
-    sendTestSmsRaw(requestParameters: SendTestSmsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>>;
+  /**
+   *
+   * @summary Send a test SMS campaign
+   * @param {number} campaignId Id of the SMS campaign
+   * @param {SendTestSms} phoneNumber Mobile number of the recipient with the country code. This number must belong to one of your contacts in SendinBlue account and must not be blacklisted
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof SMSCampaignsApiInterface
+   */
+  sendTestSmsRaw(
+    requestParameters: SendTestSmsRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<void>>;
 
-    /**
-     * Send a test SMS campaign
-     */
-    sendTestSms(requestParameters: SendTestSmsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void>;
+  /**
+   * Send a test SMS campaign
+   */
+  sendTestSms(requestParameters: SendTestSmsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void>;
 
-    /**
-     * 
-     * @summary Update an SMS campaign
-     * @param {number} campaignId id of the SMS campaign
-     * @param {UpdateSmsCampaign} updateSmsCampaign Values to update an SMS Campaign
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof SMSCampaignsApiInterface
-     */
-    updateSmsCampaignRaw(requestParameters: UpdateSmsCampaignRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>>;
+  /**
+   *
+   * @summary Update an SMS campaign
+   * @param {number} campaignId id of the SMS campaign
+   * @param {UpdateSmsCampaign} updateSmsCampaign Values to update an SMS Campaign
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof SMSCampaignsApiInterface
+   */
+  updateSmsCampaignRaw(
+    requestParameters: UpdateSmsCampaignRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<void>>;
 
-    /**
-     * Update an SMS campaign
-     */
-    updateSmsCampaign(requestParameters: UpdateSmsCampaignRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void>;
+  /**
+   * Update an SMS campaign
+   */
+  updateSmsCampaign(requestParameters: UpdateSmsCampaignRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void>;
 
-    /**
-     * 
-     * @summary Update a campaign\'s status
-     * @param {number} campaignId id of the campaign
-     * @param {UpdateCampaignStatus} status Status of the campaign.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof SMSCampaignsApiInterface
-     */
-    updateSmsCampaignStatusRaw(requestParameters: UpdateSmsCampaignStatusRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>>;
+  /**
+   *
+   * @summary Update a campaign\'s status
+   * @param {number} campaignId id of the campaign
+   * @param {UpdateCampaignStatus} status Status of the campaign.
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof SMSCampaignsApiInterface
+   */
+  updateSmsCampaignStatusRaw(
+    requestParameters: UpdateSmsCampaignStatusRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<void>>;
 
-    /**
-     * Update a campaign\'s status
-     */
-    updateSmsCampaignStatus(requestParameters: UpdateSmsCampaignStatusRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void>;
-
+  /**
+   * Update a campaign\'s status
+   */
+  updateSmsCampaignStatus(
+    requestParameters: UpdateSmsCampaignStatusRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<void>;
 }
 
 /**
- * 
+ *
  */
 export class SMSCampaignsApi extends runtime.BaseAPI implements SMSCampaignsApiInterface {
-
-    /**
-     * Creates an SMS campaign
-     */
-    async createSmsCampaignRaw(requestParameters: CreateSmsCampaignRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateModel>> {
-        if (requestParameters.createSmsCampaign === null || requestParameters.createSmsCampaign === undefined) {
-            throw new runtime.RequiredError('createSmsCampaign','Required parameter requestParameters.createSmsCampaign was null or undefined when calling createSmsCampaign.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        if (this.configuration && this.configuration.apiKey) {
-            headerParameters["api-key"] = await this.configuration.apiKey("api-key"); // api-key authentication
-        }
-
-        const response = await this.request({
-            path: `/smsCampaigns`,
-            method: 'POST',
-            headers: headerParameters,
-            query: queryParameters,
-            body: CreateSmsCampaignToJSON(requestParameters.createSmsCampaign),
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => CreateModelFromJSON(jsonValue));
+  /**
+   * Creates an SMS campaign
+   */
+  async createSmsCampaignRaw(
+    requestParameters: CreateSmsCampaignRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<CreateModel>> {
+    if (requestParameters.createSmsCampaign === null || requestParameters.createSmsCampaign === undefined) {
+      throw new runtime.RequiredError(
+        'createSmsCampaign',
+        'Required parameter requestParameters.createSmsCampaign was null or undefined when calling createSmsCampaign.',
+      );
     }
 
-    /**
-     * Creates an SMS campaign
-     */
-    async createSmsCampaign(requestParameters: CreateSmsCampaignRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreateModel> {
-        const response = await this.createSmsCampaignRaw(requestParameters, initOverrides);
-        return await response.value();
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    headerParameters['Content-Type'] = 'application/json';
+
+    if (this.configuration && this.configuration.apiKey) {
+      headerParameters['api-key'] = await this.configuration.apiKey('api-key'); // api-key authentication
     }
 
-    /**
-     * Delete an SMS campaign
-     */
-    async deleteSmsCampaignRaw(requestParameters: DeleteSmsCampaignRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.campaignId === null || requestParameters.campaignId === undefined) {
-            throw new runtime.RequiredError('campaignId','Required parameter requestParameters.campaignId was null or undefined when calling deleteSmsCampaign.');
-        }
+    const response = await this.request(
+      {
+        path: `/smsCampaigns`,
+        method: 'POST',
+        headers: headerParameters,
+        query: queryParameters,
+        body: CreateSmsCampaignToJSON(requestParameters.createSmsCampaign),
+      },
+      initOverrides,
+    );
 
-        const queryParameters: any = {};
+    return new runtime.JSONApiResponse(response, (jsonValue) => CreateModelFromJSON(jsonValue));
+  }
 
-        const headerParameters: runtime.HTTPHeaders = {};
+  /**
+   * Creates an SMS campaign
+   */
+  async createSmsCampaign(
+    requestParameters: CreateSmsCampaignRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<CreateModel> {
+    const response = await this.createSmsCampaignRaw(requestParameters, initOverrides);
+    return await response.value();
+  }
 
-        if (this.configuration && this.configuration.apiKey) {
-            headerParameters["api-key"] = await this.configuration.apiKey("api-key"); // api-key authentication
-        }
-
-        const response = await this.request({
-            path: `/smsCampaigns/{campaignId}`.replace(`{${"campaignId"}}`, encodeURIComponent(String(requestParameters.campaignId))),
-            method: 'DELETE',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.VoidApiResponse(response);
+  /**
+   * Delete an SMS campaign
+   */
+  async deleteSmsCampaignRaw(
+    requestParameters: DeleteSmsCampaignRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<void>> {
+    if (requestParameters.campaignId === null || requestParameters.campaignId === undefined) {
+      throw new runtime.RequiredError(
+        'campaignId',
+        'Required parameter requestParameters.campaignId was null or undefined when calling deleteSmsCampaign.',
+      );
     }
 
-    /**
-     * Delete an SMS campaign
-     */
-    async deleteSmsCampaign(requestParameters: DeleteSmsCampaignRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this.deleteSmsCampaignRaw(requestParameters, initOverrides);
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    if (this.configuration && this.configuration.apiKey) {
+      headerParameters['api-key'] = await this.configuration.apiKey('api-key'); // api-key authentication
     }
 
-    /**
-     * Get an SMS campaign
-     */
-    async getSmsCampaignRaw(requestParameters: GetSmsCampaignRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetSmsCampaign>> {
-        if (requestParameters.campaignId === null || requestParameters.campaignId === undefined) {
-            throw new runtime.RequiredError('campaignId','Required parameter requestParameters.campaignId was null or undefined when calling getSmsCampaign.');
-        }
+    const response = await this.request(
+      {
+        path: `/smsCampaigns/{campaignId}`.replace(`{${'campaignId'}}`, encodeURIComponent(String(requestParameters.campaignId))),
+        method: 'DELETE',
+        headers: headerParameters,
+        query: queryParameters,
+      },
+      initOverrides,
+    );
 
-        const queryParameters: any = {};
+    return new runtime.VoidApiResponse(response);
+  }
 
-        const headerParameters: runtime.HTTPHeaders = {};
+  /**
+   * Delete an SMS campaign
+   */
+  async deleteSmsCampaign(
+    requestParameters: DeleteSmsCampaignRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<void> {
+    await this.deleteSmsCampaignRaw(requestParameters, initOverrides);
+  }
 
-        if (this.configuration && this.configuration.apiKey) {
-            headerParameters["api-key"] = await this.configuration.apiKey("api-key"); // api-key authentication
-        }
-
-        const response = await this.request({
-            path: `/smsCampaigns/{campaignId}`.replace(`{${"campaignId"}}`, encodeURIComponent(String(requestParameters.campaignId))),
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => GetSmsCampaignFromJSON(jsonValue));
+  /**
+   * Get an SMS campaign
+   */
+  async getSmsCampaignRaw(
+    requestParameters: GetSmsCampaignRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<GetSmsCampaign>> {
+    if (requestParameters.campaignId === null || requestParameters.campaignId === undefined) {
+      throw new runtime.RequiredError(
+        'campaignId',
+        'Required parameter requestParameters.campaignId was null or undefined when calling getSmsCampaign.',
+      );
     }
 
-    /**
-     * Get an SMS campaign
-     */
-    async getSmsCampaign(requestParameters: GetSmsCampaignRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetSmsCampaign> {
-        const response = await this.getSmsCampaignRaw(requestParameters, initOverrides);
-        return await response.value();
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    if (this.configuration && this.configuration.apiKey) {
+      headerParameters['api-key'] = await this.configuration.apiKey('api-key'); // api-key authentication
     }
 
-    /**
-     * Returns the information for all your created SMS campaigns
-     */
-    async getSmsCampaignsRaw(requestParameters: GetSmsCampaignsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetSmsCampaigns>> {
-        const queryParameters: any = {};
+    const response = await this.request(
+      {
+        path: `/smsCampaigns/{campaignId}`.replace(`{${'campaignId'}}`, encodeURIComponent(String(requestParameters.campaignId))),
+        method: 'GET',
+        headers: headerParameters,
+        query: queryParameters,
+      },
+      initOverrides,
+    );
 
-        if (requestParameters.status !== undefined) {
-            queryParameters['status'] = requestParameters.status;
-        }
+    return new runtime.JSONApiResponse(response, (jsonValue) => GetSmsCampaignFromJSON(jsonValue));
+  }
 
-        if (requestParameters.startDate !== undefined) {
-            queryParameters['startDate'] = (requestParameters.startDate as any).toISOString();
-        }
+  /**
+   * Get an SMS campaign
+   */
+  async getSmsCampaign(
+    requestParameters: GetSmsCampaignRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<GetSmsCampaign> {
+    const response = await this.getSmsCampaignRaw(requestParameters, initOverrides);
+    return await response.value();
+  }
 
-        if (requestParameters.endDate !== undefined) {
-            queryParameters['endDate'] = (requestParameters.endDate as any).toISOString();
-        }
+  /**
+   * Returns the information for all your created SMS campaigns
+   */
+  async getSmsCampaignsRaw(
+    requestParameters: GetSmsCampaignsRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<GetSmsCampaigns>> {
+    const queryParameters: any = {};
 
-        if (requestParameters.limit !== undefined) {
-            queryParameters['limit'] = requestParameters.limit;
-        }
-
-        if (requestParameters.offset !== undefined) {
-            queryParameters['offset'] = requestParameters.offset;
-        }
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.apiKey) {
-            headerParameters["api-key"] = await this.configuration.apiKey("api-key"); // api-key authentication
-        }
-
-        const response = await this.request({
-            path: `/smsCampaigns`,
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => GetSmsCampaignsFromJSON(jsonValue));
+    if (requestParameters.status !== undefined) {
+      queryParameters['status'] = requestParameters.status;
     }
 
-    /**
-     * Returns the information for all your created SMS campaigns
-     */
-    async getSmsCampaigns(requestParameters: GetSmsCampaignsRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetSmsCampaigns> {
-        const response = await this.getSmsCampaignsRaw(requestParameters, initOverrides);
-        return await response.value();
+    if (requestParameters.startDate !== undefined) {
+      queryParameters['startDate'] = (requestParameters.startDate as any).toISOString();
     }
 
-    /**
-     * It returns the background process ID which on completion calls the notify URL that you have set in the input.
-     * Export an SMS campaign\'s recipients
-     */
-    async requestSmsRecipientExportRaw(requestParameters: RequestSmsRecipientExportRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreatedProcessId>> {
-        if (requestParameters.campaignId === null || requestParameters.campaignId === undefined) {
-            throw new runtime.RequiredError('campaignId','Required parameter requestParameters.campaignId was null or undefined when calling requestSmsRecipientExport.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        if (this.configuration && this.configuration.apiKey) {
-            headerParameters["api-key"] = await this.configuration.apiKey("api-key"); // api-key authentication
-        }
-
-        const response = await this.request({
-            path: `/smsCampaigns/{campaignId}/exportRecipients`.replace(`{${"campaignId"}}`, encodeURIComponent(String(requestParameters.campaignId))),
-            method: 'POST',
-            headers: headerParameters,
-            query: queryParameters,
-            body: RequestSmsRecipientExportToJSON(requestParameters.recipientExport),
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => CreatedProcessIdFromJSON(jsonValue));
+    if (requestParameters.endDate !== undefined) {
+      queryParameters['endDate'] = (requestParameters.endDate as any).toISOString();
     }
 
-    /**
-     * It returns the background process ID which on completion calls the notify URL that you have set in the input.
-     * Export an SMS campaign\'s recipients
-     */
-    async requestSmsRecipientExport(requestParameters: RequestSmsRecipientExportRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreatedProcessId> {
-        const response = await this.requestSmsRecipientExportRaw(requestParameters, initOverrides);
-        return await response.value();
+    if (requestParameters.limit !== undefined) {
+      queryParameters['limit'] = requestParameters.limit;
     }
 
-    /**
-     * Send your SMS campaign immediately
-     */
-    async sendSmsCampaignNowRaw(requestParameters: SendSmsCampaignNowRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.campaignId === null || requestParameters.campaignId === undefined) {
-            throw new runtime.RequiredError('campaignId','Required parameter requestParameters.campaignId was null or undefined when calling sendSmsCampaignNow.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.apiKey) {
-            headerParameters["api-key"] = await this.configuration.apiKey("api-key"); // api-key authentication
-        }
-
-        const response = await this.request({
-            path: `/smsCampaigns/{campaignId}/sendNow`.replace(`{${"campaignId"}}`, encodeURIComponent(String(requestParameters.campaignId))),
-            method: 'POST',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.VoidApiResponse(response);
+    if (requestParameters.offset !== undefined) {
+      queryParameters['offset'] = requestParameters.offset;
     }
 
-    /**
-     * Send your SMS campaign immediately
-     */
-    async sendSmsCampaignNow(requestParameters: SendSmsCampaignNowRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this.sendSmsCampaignNowRaw(requestParameters, initOverrides);
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    if (this.configuration && this.configuration.apiKey) {
+      headerParameters['api-key'] = await this.configuration.apiKey('api-key'); // api-key authentication
     }
 
-    /**
-     * Send report of Sent and Archived campaign, to the specified email addresses, with respective data and a pdf attachment in detail.
-     * Send an SMS campaign\'s report
-     */
-    async sendSmsReportRaw(requestParameters: SendSmsReportRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.campaignId === null || requestParameters.campaignId === undefined) {
-            throw new runtime.RequiredError('campaignId','Required parameter requestParameters.campaignId was null or undefined when calling sendSmsReport.');
-        }
+    const response = await this.request(
+      {
+        path: `/smsCampaigns`,
+        method: 'GET',
+        headers: headerParameters,
+        query: queryParameters,
+      },
+      initOverrides,
+    );
 
-        if (requestParameters.sendReport === null || requestParameters.sendReport === undefined) {
-            throw new runtime.RequiredError('sendReport','Required parameter requestParameters.sendReport was null or undefined when calling sendSmsReport.');
-        }
+    return new runtime.JSONApiResponse(response, (jsonValue) => GetSmsCampaignsFromJSON(jsonValue));
+  }
 
-        const queryParameters: any = {};
+  /**
+   * Returns the information for all your created SMS campaigns
+   */
+  async getSmsCampaigns(
+    requestParameters: GetSmsCampaignsRequest = {},
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<GetSmsCampaigns> {
+    const response = await this.getSmsCampaignsRaw(requestParameters, initOverrides);
+    return await response.value();
+  }
 
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        if (this.configuration && this.configuration.apiKey) {
-            headerParameters["api-key"] = await this.configuration.apiKey("api-key"); // api-key authentication
-        }
-
-        const response = await this.request({
-            path: `/smsCampaigns/{campaignId}/sendReport`.replace(`{${"campaignId"}}`, encodeURIComponent(String(requestParameters.campaignId))),
-            method: 'POST',
-            headers: headerParameters,
-            query: queryParameters,
-            body: SendReportToJSON(requestParameters.sendReport),
-        }, initOverrides);
-
-        return new runtime.VoidApiResponse(response);
+  /**
+   * It returns the background process ID which on completion calls the notify URL that you have set in the input.
+   * Export an SMS campaign\'s recipients
+   */
+  async requestSmsRecipientExportRaw(
+    requestParameters: RequestSmsRecipientExportRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<CreatedProcessId>> {
+    if (requestParameters.campaignId === null || requestParameters.campaignId === undefined) {
+      throw new runtime.RequiredError(
+        'campaignId',
+        'Required parameter requestParameters.campaignId was null or undefined when calling requestSmsRecipientExport.',
+      );
     }
 
-    /**
-     * Send report of Sent and Archived campaign, to the specified email addresses, with respective data and a pdf attachment in detail.
-     * Send an SMS campaign\'s report
-     */
-    async sendSmsReport(requestParameters: SendSmsReportRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this.sendSmsReportRaw(requestParameters, initOverrides);
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    headerParameters['Content-Type'] = 'application/json';
+
+    if (this.configuration && this.configuration.apiKey) {
+      headerParameters['api-key'] = await this.configuration.apiKey('api-key'); // api-key authentication
     }
 
-    /**
-     * Send a test SMS campaign
-     */
-    async sendTestSmsRaw(requestParameters: SendTestSmsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.campaignId === null || requestParameters.campaignId === undefined) {
-            throw new runtime.RequiredError('campaignId','Required parameter requestParameters.campaignId was null or undefined when calling sendTestSms.');
-        }
+    const response = await this.request(
+      {
+        path: `/smsCampaigns/{campaignId}/exportRecipients`.replace(
+          `{${'campaignId'}}`,
+          encodeURIComponent(String(requestParameters.campaignId)),
+        ),
+        method: 'POST',
+        headers: headerParameters,
+        query: queryParameters,
+        body: RequestSmsRecipientExportToJSON(requestParameters.recipientExport),
+      },
+      initOverrides,
+    );
 
-        if (requestParameters.phoneNumber === null || requestParameters.phoneNumber === undefined) {
-            throw new runtime.RequiredError('phoneNumber','Required parameter requestParameters.phoneNumber was null or undefined when calling sendTestSms.');
-        }
+    return new runtime.JSONApiResponse(response, (jsonValue) => CreatedProcessIdFromJSON(jsonValue));
+  }
 
-        const queryParameters: any = {};
+  /**
+   * It returns the background process ID which on completion calls the notify URL that you have set in the input.
+   * Export an SMS campaign\'s recipients
+   */
+  async requestSmsRecipientExport(
+    requestParameters: RequestSmsRecipientExportRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<CreatedProcessId> {
+    const response = await this.requestSmsRecipientExportRaw(requestParameters, initOverrides);
+    return await response.value();
+  }
 
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        if (this.configuration && this.configuration.apiKey) {
-            headerParameters["api-key"] = await this.configuration.apiKey("api-key"); // api-key authentication
-        }
-
-        const response = await this.request({
-            path: `/smsCampaigns/{campaignId}/sendTest`.replace(`{${"campaignId"}}`, encodeURIComponent(String(requestParameters.campaignId))),
-            method: 'POST',
-            headers: headerParameters,
-            query: queryParameters,
-            body: SendTestSmsToJSON(requestParameters.phoneNumber),
-        }, initOverrides);
-
-        return new runtime.VoidApiResponse(response);
+  /**
+   * Send your SMS campaign immediately
+   */
+  async sendSmsCampaignNowRaw(
+    requestParameters: SendSmsCampaignNowRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<void>> {
+    if (requestParameters.campaignId === null || requestParameters.campaignId === undefined) {
+      throw new runtime.RequiredError(
+        'campaignId',
+        'Required parameter requestParameters.campaignId was null or undefined when calling sendSmsCampaignNow.',
+      );
     }
 
-    /**
-     * Send a test SMS campaign
-     */
-    async sendTestSms(requestParameters: SendTestSmsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this.sendTestSmsRaw(requestParameters, initOverrides);
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    if (this.configuration && this.configuration.apiKey) {
+      headerParameters['api-key'] = await this.configuration.apiKey('api-key'); // api-key authentication
     }
 
-    /**
-     * Update an SMS campaign
-     */
-    async updateSmsCampaignRaw(requestParameters: UpdateSmsCampaignRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.campaignId === null || requestParameters.campaignId === undefined) {
-            throw new runtime.RequiredError('campaignId','Required parameter requestParameters.campaignId was null or undefined when calling updateSmsCampaign.');
-        }
+    const response = await this.request(
+      {
+        path: `/smsCampaigns/{campaignId}/sendNow`.replace(`{${'campaignId'}}`, encodeURIComponent(String(requestParameters.campaignId))),
+        method: 'POST',
+        headers: headerParameters,
+        query: queryParameters,
+      },
+      initOverrides,
+    );
 
-        if (requestParameters.updateSmsCampaign === null || requestParameters.updateSmsCampaign === undefined) {
-            throw new runtime.RequiredError('updateSmsCampaign','Required parameter requestParameters.updateSmsCampaign was null or undefined when calling updateSmsCampaign.');
-        }
+    return new runtime.VoidApiResponse(response);
+  }
 
-        const queryParameters: any = {};
+  /**
+   * Send your SMS campaign immediately
+   */
+  async sendSmsCampaignNow(
+    requestParameters: SendSmsCampaignNowRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<void> {
+    await this.sendSmsCampaignNowRaw(requestParameters, initOverrides);
+  }
 
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        if (this.configuration && this.configuration.apiKey) {
-            headerParameters["api-key"] = await this.configuration.apiKey("api-key"); // api-key authentication
-        }
-
-        const response = await this.request({
-            path: `/smsCampaigns/{campaignId}`.replace(`{${"campaignId"}}`, encodeURIComponent(String(requestParameters.campaignId))),
-            method: 'PUT',
-            headers: headerParameters,
-            query: queryParameters,
-            body: UpdateSmsCampaignToJSON(requestParameters.updateSmsCampaign),
-        }, initOverrides);
-
-        return new runtime.VoidApiResponse(response);
+  /**
+   * Send report of Sent and Archived campaign, to the specified email addresses, with respective data and a pdf attachment in detail.
+   * Send an SMS campaign\'s report
+   */
+  async sendSmsReportRaw(
+    requestParameters: SendSmsReportRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<void>> {
+    if (requestParameters.campaignId === null || requestParameters.campaignId === undefined) {
+      throw new runtime.RequiredError(
+        'campaignId',
+        'Required parameter requestParameters.campaignId was null or undefined when calling sendSmsReport.',
+      );
     }
 
-    /**
-     * Update an SMS campaign
-     */
-    async updateSmsCampaign(requestParameters: UpdateSmsCampaignRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this.updateSmsCampaignRaw(requestParameters, initOverrides);
+    if (requestParameters.sendReport === null || requestParameters.sendReport === undefined) {
+      throw new runtime.RequiredError(
+        'sendReport',
+        'Required parameter requestParameters.sendReport was null or undefined when calling sendSmsReport.',
+      );
     }
 
-    /**
-     * Update a campaign\'s status
-     */
-    async updateSmsCampaignStatusRaw(requestParameters: UpdateSmsCampaignStatusRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.campaignId === null || requestParameters.campaignId === undefined) {
-            throw new runtime.RequiredError('campaignId','Required parameter requestParameters.campaignId was null or undefined when calling updateSmsCampaignStatus.');
-        }
+    const queryParameters: any = {};
 
-        if (requestParameters.status === null || requestParameters.status === undefined) {
-            throw new runtime.RequiredError('status','Required parameter requestParameters.status was null or undefined when calling updateSmsCampaignStatus.');
-        }
+    const headerParameters: runtime.HTTPHeaders = {};
 
-        const queryParameters: any = {};
+    headerParameters['Content-Type'] = 'application/json';
 
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        if (this.configuration && this.configuration.apiKey) {
-            headerParameters["api-key"] = await this.configuration.apiKey("api-key"); // api-key authentication
-        }
-
-        const response = await this.request({
-            path: `/smsCampaigns/{campaignId}/status`.replace(`{${"campaignId"}}`, encodeURIComponent(String(requestParameters.campaignId))),
-            method: 'PUT',
-            headers: headerParameters,
-            query: queryParameters,
-            body: UpdateCampaignStatusToJSON(requestParameters.status),
-        }, initOverrides);
-
-        return new runtime.VoidApiResponse(response);
+    if (this.configuration && this.configuration.apiKey) {
+      headerParameters['api-key'] = await this.configuration.apiKey('api-key'); // api-key authentication
     }
 
-    /**
-     * Update a campaign\'s status
-     */
-    async updateSmsCampaignStatus(requestParameters: UpdateSmsCampaignStatusRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this.updateSmsCampaignStatusRaw(requestParameters, initOverrides);
+    const response = await this.request(
+      {
+        path: `/smsCampaigns/{campaignId}/sendReport`.replace(
+          `{${'campaignId'}}`,
+          encodeURIComponent(String(requestParameters.campaignId)),
+        ),
+        method: 'POST',
+        headers: headerParameters,
+        query: queryParameters,
+        body: SendReportToJSON(requestParameters.sendReport),
+      },
+      initOverrides,
+    );
+
+    return new runtime.VoidApiResponse(response);
+  }
+
+  /**
+   * Send report of Sent and Archived campaign, to the specified email addresses, with respective data and a pdf attachment in detail.
+   * Send an SMS campaign\'s report
+   */
+  async sendSmsReport(requestParameters: SendSmsReportRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+    await this.sendSmsReportRaw(requestParameters, initOverrides);
+  }
+
+  /**
+   * Send a test SMS campaign
+   */
+  async sendTestSmsRaw(
+    requestParameters: SendTestSmsRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<void>> {
+    if (requestParameters.campaignId === null || requestParameters.campaignId === undefined) {
+      throw new runtime.RequiredError(
+        'campaignId',
+        'Required parameter requestParameters.campaignId was null or undefined when calling sendTestSms.',
+      );
     }
 
+    if (requestParameters.phoneNumber === null || requestParameters.phoneNumber === undefined) {
+      throw new runtime.RequiredError(
+        'phoneNumber',
+        'Required parameter requestParameters.phoneNumber was null or undefined when calling sendTestSms.',
+      );
+    }
+
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    headerParameters['Content-Type'] = 'application/json';
+
+    if (this.configuration && this.configuration.apiKey) {
+      headerParameters['api-key'] = await this.configuration.apiKey('api-key'); // api-key authentication
+    }
+
+    const response = await this.request(
+      {
+        path: `/smsCampaigns/{campaignId}/sendTest`.replace(`{${'campaignId'}}`, encodeURIComponent(String(requestParameters.campaignId))),
+        method: 'POST',
+        headers: headerParameters,
+        query: queryParameters,
+        body: SendTestSmsToJSON(requestParameters.phoneNumber),
+      },
+      initOverrides,
+    );
+
+    return new runtime.VoidApiResponse(response);
+  }
+
+  /**
+   * Send a test SMS campaign
+   */
+  async sendTestSms(requestParameters: SendTestSmsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+    await this.sendTestSmsRaw(requestParameters, initOverrides);
+  }
+
+  /**
+   * Update an SMS campaign
+   */
+  async updateSmsCampaignRaw(
+    requestParameters: UpdateSmsCampaignRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<void>> {
+    if (requestParameters.campaignId === null || requestParameters.campaignId === undefined) {
+      throw new runtime.RequiredError(
+        'campaignId',
+        'Required parameter requestParameters.campaignId was null or undefined when calling updateSmsCampaign.',
+      );
+    }
+
+    if (requestParameters.updateSmsCampaign === null || requestParameters.updateSmsCampaign === undefined) {
+      throw new runtime.RequiredError(
+        'updateSmsCampaign',
+        'Required parameter requestParameters.updateSmsCampaign was null or undefined when calling updateSmsCampaign.',
+      );
+    }
+
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    headerParameters['Content-Type'] = 'application/json';
+
+    if (this.configuration && this.configuration.apiKey) {
+      headerParameters['api-key'] = await this.configuration.apiKey('api-key'); // api-key authentication
+    }
+
+    const response = await this.request(
+      {
+        path: `/smsCampaigns/{campaignId}`.replace(`{${'campaignId'}}`, encodeURIComponent(String(requestParameters.campaignId))),
+        method: 'PUT',
+        headers: headerParameters,
+        query: queryParameters,
+        body: UpdateSmsCampaignToJSON(requestParameters.updateSmsCampaign),
+      },
+      initOverrides,
+    );
+
+    return new runtime.VoidApiResponse(response);
+  }
+
+  /**
+   * Update an SMS campaign
+   */
+  async updateSmsCampaign(
+    requestParameters: UpdateSmsCampaignRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<void> {
+    await this.updateSmsCampaignRaw(requestParameters, initOverrides);
+  }
+
+  /**
+   * Update a campaign\'s status
+   */
+  async updateSmsCampaignStatusRaw(
+    requestParameters: UpdateSmsCampaignStatusRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<void>> {
+    if (requestParameters.campaignId === null || requestParameters.campaignId === undefined) {
+      throw new runtime.RequiredError(
+        'campaignId',
+        'Required parameter requestParameters.campaignId was null or undefined when calling updateSmsCampaignStatus.',
+      );
+    }
+
+    if (requestParameters.status === null || requestParameters.status === undefined) {
+      throw new runtime.RequiredError(
+        'status',
+        'Required parameter requestParameters.status was null or undefined when calling updateSmsCampaignStatus.',
+      );
+    }
+
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    headerParameters['Content-Type'] = 'application/json';
+
+    if (this.configuration && this.configuration.apiKey) {
+      headerParameters['api-key'] = await this.configuration.apiKey('api-key'); // api-key authentication
+    }
+
+    const response = await this.request(
+      {
+        path: `/smsCampaigns/{campaignId}/status`.replace(`{${'campaignId'}}`, encodeURIComponent(String(requestParameters.campaignId))),
+        method: 'PUT',
+        headers: headerParameters,
+        query: queryParameters,
+        body: UpdateCampaignStatusToJSON(requestParameters.status),
+      },
+      initOverrides,
+    );
+
+    return new runtime.VoidApiResponse(response);
+  }
+
+  /**
+   * Update a campaign\'s status
+   */
+  async updateSmsCampaignStatus(
+    requestParameters: UpdateSmsCampaignStatusRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<void> {
+    await this.updateSmsCampaignStatusRaw(requestParameters, initOverrides);
+  }
 }
 
 /**
-  * @export
-  * @enum {string}
-  */
+ * @export
+ * @enum {string}
+ */
 export enum GetSmsCampaignsStatusEnum {
-    Suspended = 'suspended',
-    Archive = 'archive',
-    Sent = 'sent',
-    Queued = 'queued',
-    Draft = 'draft',
-    InProcess = 'inProcess'
+  Suspended = 'suspended',
+  Archive = 'archive',
+  Sent = 'sent',
+  Queued = 'queued',
+  Draft = 'draft',
+  InProcess = 'inProcess',
 }

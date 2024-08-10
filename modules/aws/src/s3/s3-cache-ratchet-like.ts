@@ -6,12 +6,13 @@ import { Readable } from 'stream';
 import {
   CompleteMultipartUploadCommandOutput,
   CopyObjectCommandOutput,
-  DeleteObjectCommandOutput, GetObjectCommandInput,
+  DeleteObjectCommandOutput,
+  GetObjectCommandInput,
   GetObjectCommandOutput,
   HeadObjectCommandOutput,
   PutObjectCommandInput,
-  S3Client
-} from "@aws-sdk/client-s3";
+  S3Client,
+} from '@aws-sdk/client-s3';
 
 export interface S3CacheRatchetLike {
   getDefaultBucket(): string;
@@ -33,7 +34,7 @@ export interface S3CacheRatchetLike {
   removeCacheFile(key: string, bucket?: string): Promise<DeleteObjectCommandOutput>;
   writeObjectToCacheFile(
     key: string,
-    dataObject: any,  
+    dataObject: any,
     template?: PutObjectCommandInput,
     bucket?: string,
   ): Promise<CompleteMultipartUploadCommandOutput>;

@@ -1,17 +1,17 @@
-import { APIGatewayEvent, Context, ProxyResult } from "aws-lambda";
-import { Logger } from "@bitblit/ratchet-common/logger/logger";
-import { StringRatchet } from "@bitblit/ratchet-common/lang/string-ratchet";
-import { LoggerLevelName } from "@bitblit/ratchet-common/logger/logger-level-name";
-import { Base64Ratchet } from "@bitblit/ratchet-common/lang/base64-ratchet";
-import { JwtTokenBase } from "@bitblit/ratchet-common/jwt/jwt-token-base";
-import http, { IncomingMessage, Server, ServerResponse } from "http";
-import https from "https";
-import { DateTime } from "luxon";
-import { EventUtil } from "./http/event-util.js";
-import { EpsilonGlobalHandler } from "./epsilon-global-handler.js";
-import { LocalServerCert } from "./local-server-cert.js";
-import { SampleServerComponents } from "./sample/sample-server-components.js";
-import { LocalWebTokenManipulator } from "./http/auth/local-web-token-manipulator.js";
+import { APIGatewayEvent, Context, ProxyResult } from 'aws-lambda';
+import { Logger } from '@bitblit/ratchet-common/logger/logger';
+import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet';
+import { LoggerLevelName } from '@bitblit/ratchet-common/logger/logger-level-name';
+import { Base64Ratchet } from '@bitblit/ratchet-common/lang/base64-ratchet';
+import { JwtTokenBase } from '@bitblit/ratchet-common/jwt/jwt-token-base';
+import http, { IncomingMessage, Server, ServerResponse } from 'http';
+import https from 'https';
+import { DateTime } from 'luxon';
+import { EventUtil } from './http/event-util.js';
+import { EpsilonGlobalHandler } from './epsilon-global-handler.js';
+import { LocalServerCert } from './local-server-cert.js';
+import { SampleServerComponents } from './sample/sample-server-components.js';
+import { LocalWebTokenManipulator } from './http/auth/local-web-token-manipulator.js';
 
 /**
  * A simplistic server for testing your lambdas locally
@@ -126,7 +126,7 @@ export class LocalServer {
         requestTime: formattedTime, // '09/Apr/2015:12:34:56 +0000',
         requestTimeEpoch: reqTime, //1428582896000,
         identity: {
-          apiKeyId:null,
+          apiKeyId: null,
           clientCert: null,
           principalOrgId: null,
           apiKey: null,
@@ -140,7 +140,7 @@ export class LocalServer {
           cognitoAuthenticationProvider: null,
           userArn: null,
           userAgent: 'Custom User Agent String',
-          user: null
+          user: null,
         },
         path: request.url, // /prod/path/to/resource
         domainName: request.headers['host'],
@@ -162,9 +162,9 @@ export class LocalServer {
   ): Promise<boolean> {
     if (Logger.levelIsEnabled(logLevel)) {
       if (proxyResult.isBase64Encoded) {
-        const dup:ProxyResult = structuredClone(proxyResult);
+        const dup: ProxyResult = structuredClone(proxyResult);
         dup.body = Base64Ratchet.base64StringToString(dup.body);
-        dup.isBase64Encoded=false;
+        dup.isBase64Encoded = false;
         Logger.logByLevel(logLevel, 'Result (UB64): %j', dup);
       } else {
         Logger.logByLevel(logLevel, 'Result: %j', proxyResult);

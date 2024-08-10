@@ -4,9 +4,9 @@ import util from 'util';
 import { GitCommitData, GitRatchet } from '../git/git-ratchet.js';
 import { CiRunInformation } from '../../ci/ci-run-information.js';
 import { CiRunInformationUtil } from '../../ci/ci-run-information-util.js';
-import { ErrorRatchet } from "@bitblit/ratchet-common/lang/error-ratchet";
-import { Logger } from "@bitblit/ratchet-common/logger/logger";
-import { StringRatchet } from "@bitblit/ratchet-common/lang/string-ratchet";
+import { ErrorRatchet } from '@bitblit/ratchet-common/lang/error-ratchet';
+import { Logger } from '@bitblit/ratchet-common/logger/logger';
+import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet';
 
 export class PublishCiReleaseToSlack {
   public static async process(slackHookUrl: string, timezone = 'America/Los_Angeles'): Promise<string> {

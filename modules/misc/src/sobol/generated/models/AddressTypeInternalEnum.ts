@@ -12,26 +12,24 @@
  */
 
 /**
- * 
+ *
  * @export
  * @enum {string}
  */
 export enum AddressTypeInternalEnum {
-    address = 'address',
-    contract = 'contract',
-    gnosis_safe = 'gnosis_safe'
+  address = 'address',
+  contract = 'contract',
+  gnosis_safe = 'gnosis_safe',
 }
 
-
 export function AddressTypeInternalEnumFromJSON(json: any): AddressTypeInternalEnum {
-    return AddressTypeInternalEnumFromJSONTyped(json, false);
+  return AddressTypeInternalEnumFromJSONTyped(json, false);
 }
 
 export function AddressTypeInternalEnumFromJSONTyped(json: any, ignoreDiscriminator: boolean): AddressTypeInternalEnum {
-    return json as AddressTypeInternalEnum;
+  return json as AddressTypeInternalEnum;
 }
 
 export function AddressTypeInternalEnumToJSON(value?: AddressTypeInternalEnum | null): any {
-    return value as any;
+  return value as any;
 }
-

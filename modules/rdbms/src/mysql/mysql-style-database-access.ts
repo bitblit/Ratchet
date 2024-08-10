@@ -1,21 +1,22 @@
-import { Connection, ConnectionOptions, FieldPacket, RowDataPacket } from "mysql2/promise";
-import { DatabaseAccess } from "../model/database-access.js";
-import { RequestResults } from "../model/request-results.js";
-import { ModifyResults } from "../model/modify-results.js";
-import { DatabaseRequestType } from "../model/database-request-type.js";
-import { Logger } from "@bitblit/ratchet-common/logger/logger";
+import { Connection, ConnectionOptions, FieldPacket, RowDataPacket } from 'mysql2/promise';
+import { DatabaseAccess } from '../model/database-access.js';
+import { RequestResults } from '../model/request-results.js';
+import { ModifyResults } from '../model/modify-results.js';
+import { DatabaseRequestType } from '../model/database-request-type.js';
+import { Logger } from '@bitblit/ratchet-common/logger/logger';
 
 export class MysqlStyleDatabaseAccess implements DatabaseAccess {
+  constructor(
+    private _connection: Connection,
+    private _connectionOptions: ConnectionOptions,
+  ) {}
 
-  constructor(private _connection: Connection,private _connectionOptions: ConnectionOptions) {
-  }
-
-  public async testConnection(logTestResults?:boolean): Promise<number | null> {
+  public async testConnection(logTestResults?: boolean): Promise<number | null> {
     if (logTestResults) {
       Logger.info('Running connection test');
     }
 
-    const res:RequestResults<any> = await this.query( 'SELECT UNIX_TIMESTAMP(now())*1000 AS test', {});
+    const res: RequestResults<any> = await this.query('SELECT UNIX_TIMESTAMP(now())*1000 AS test', {});
     const rows = res.results as { test: number }[];
     const timestamp = rows.length === 1 ? rows[0].test : null;
     if (logTestResults) {
@@ -23,7 +24,6 @@ export class MysqlStyleDatabaseAccess implements DatabaseAccess {
     }
     return timestamp;
   }
-
 
   public getRawDatabase(): Connection {
     return this._connection;
@@ -34,14 +34,14 @@ export class MysqlStyleDatabaseAccess implements DatabaseAccess {
   }
 
   public testConnectionQueryString(): string {
-    return "SELECT UNIX_TIMESTAMP(now())*1000 AS test";
+    return 'SELECT UNIX_TIMESTAMP(now())*1000 AS test';
   }
 
   public async close(): Promise<boolean> {
     return Promise.resolve(false);
   }
 
-  public  escape(query: any): string {
+  public escape(query: any): string {
     return this._connection.escape(query);
   }
 
@@ -72,8 +72,6 @@ export class MysqlStyleDatabaseAccess implements DatabaseAccess {
     this._connection.config.namedPlaceholders = false;
   }
 
-
-
   /*
   public async onQueryFailureOnly(): Promise<void> {
     return Promise.resolve(undefined);
@@ -84,5 +82,4 @@ export class MysqlStyleDatabaseAccess implements DatabaseAccess {
   }
 
    */
-
 }

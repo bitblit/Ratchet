@@ -18,47 +18,44 @@ import { exists, mapValues } from '../runtime.js';
  * @interface CustomFieldTextContent
  */
 export interface CustomFieldTextContent {
-    /**
-     * 
-     * @type {string}
-     * @memberof CustomFieldTextContent
-     */
-    text?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof CustomFieldTextContent
+   */
+  text?: string;
 }
 
 /**
  * Check if a given object implements the CustomFieldTextContent interface.
  */
 export function instanceOfCustomFieldTextContent(value: object): boolean {
-    let isInstance = true;
+  let isInstance = true;
 
-    return isInstance;
+  return isInstance;
 }
 
 export function CustomFieldTextContentFromJSON(json: any): CustomFieldTextContent {
-    return CustomFieldTextContentFromJSONTyped(json, false);
+  return CustomFieldTextContentFromJSONTyped(json, false);
 }
 
 export function CustomFieldTextContentFromJSONTyped(json: any, ignoreDiscriminator: boolean): CustomFieldTextContent {
-    if ((json === undefined) || (json === null)) {
-        return json;
-    }
-    return {
-        
-        'text': !exists(json, 'text') ? undefined : json['text'],
-    };
+  if (json === undefined || json === null) {
+    return json;
+  }
+  return {
+    text: !exists(json, 'text') ? undefined : json['text'],
+  };
 }
 
 export function CustomFieldTextContentToJSON(value?: CustomFieldTextContent | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
-    }
-    return {
-        
-        'text': value.text,
-    };
+  if (value === undefined) {
+    return undefined;
+  }
+  if (value === null) {
+    return null;
+  }
+  return {
+    text: value.text,
+  };
 }
-

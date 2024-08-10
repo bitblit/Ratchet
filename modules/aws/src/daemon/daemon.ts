@@ -1,4 +1,3 @@
-
 import { DaemonProcessState } from './daemon-process-state.js';
 import { S3CacheRatchet } from '../s3/s3-cache-ratchet.js';
 import { DaemonProcessCreateOptions } from './daemon-process-create-options.js';
@@ -7,10 +6,10 @@ import { DaemonLike } from './daemon-like.js';
 import { DaemonProcessStatePublicToken } from './daemon-process-state-public-token.js';
 import { S3Client } from '@aws-sdk/client-s3';
 import { S3CacheRatchetLike } from '../s3/s3-cache-ratchet-like.js';
-import { JwtRatchetLike } from "@bitblit/ratchet-common/jwt/jwt-ratchet-like";
-import { RequireRatchet } from "@bitblit/ratchet-common/lang/require-ratchet";
-import { StringRatchet } from "@bitblit/ratchet-common/lang/string-ratchet";
-import { Logger } from "@bitblit/ratchet-common/logger/logger";
+import { JwtRatchetLike } from '@bitblit/ratchet-common/jwt/jwt-ratchet-like';
+import { RequireRatchet } from '@bitblit/ratchet-common/lang/require-ratchet';
+import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet';
+import { Logger } from '@bitblit/ratchet-common/logger/logger';
 
 export class Daemon implements DaemonLike {
   public static DEFAULT_DEFAULT_GROUP: string = 'DEFAULT';
@@ -22,7 +21,7 @@ export class Daemon implements DaemonLike {
     private bucket: string,
     private prefix: string = '',
     private _defaultGroup: string = Daemon.DEFAULT_DEFAULT_GROUP,
-    private jwtRatchet?: JwtRatchetLike
+    private jwtRatchet?: JwtRatchetLike,
   ) {
     this.cache = new S3CacheRatchet(this.s3, this.bucket);
   }

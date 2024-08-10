@@ -13,60 +13,64 @@
 
 import { exists, mapValues } from '../runtime.js';
 /**
- * 
+ *
  * @export
  * @interface CustomFieldSingleSelectDropDownContentSelectedOptions
  */
 export interface CustomFieldSingleSelectDropDownContentSelectedOptions {
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof CustomFieldSingleSelectDropDownContentSelectedOptions
-     */
-    ids?: Array<string>;
-    /**
-     * 
-     * @type {string}
-     * @memberof CustomFieldSingleSelectDropDownContentSelectedOptions
-     */
-    values?: string;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof CustomFieldSingleSelectDropDownContentSelectedOptions
+   */
+  ids?: Array<string>;
+  /**
+   *
+   * @type {string}
+   * @memberof CustomFieldSingleSelectDropDownContentSelectedOptions
+   */
+  values?: string;
 }
 
 /**
  * Check if a given object implements the CustomFieldSingleSelectDropDownContentSelectedOptions interface.
  */
 export function instanceOfCustomFieldSingleSelectDropDownContentSelectedOptions(value: object): boolean {
-    let isInstance = true;
+  let isInstance = true;
 
-    return isInstance;
+  return isInstance;
 }
 
-export function CustomFieldSingleSelectDropDownContentSelectedOptionsFromJSON(json: any): CustomFieldSingleSelectDropDownContentSelectedOptions {
-    return CustomFieldSingleSelectDropDownContentSelectedOptionsFromJSONTyped(json, false);
+export function CustomFieldSingleSelectDropDownContentSelectedOptionsFromJSON(
+  json: any,
+): CustomFieldSingleSelectDropDownContentSelectedOptions {
+  return CustomFieldSingleSelectDropDownContentSelectedOptionsFromJSONTyped(json, false);
 }
 
-export function CustomFieldSingleSelectDropDownContentSelectedOptionsFromJSONTyped(json: any, ignoreDiscriminator: boolean): CustomFieldSingleSelectDropDownContentSelectedOptions {
-    if ((json === undefined) || (json === null)) {
-        return json;
-    }
-    return {
-        
-        'ids': !exists(json, 'ids') ? undefined : json['ids'],
-        'values': !exists(json, 'values') ? undefined : json['values'],
-    };
+export function CustomFieldSingleSelectDropDownContentSelectedOptionsFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean,
+): CustomFieldSingleSelectDropDownContentSelectedOptions {
+  if (json === undefined || json === null) {
+    return json;
+  }
+  return {
+    ids: !exists(json, 'ids') ? undefined : json['ids'],
+    values: !exists(json, 'values') ? undefined : json['values'],
+  };
 }
 
-export function CustomFieldSingleSelectDropDownContentSelectedOptionsToJSON(value?: CustomFieldSingleSelectDropDownContentSelectedOptions | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
-    }
-    return {
-        
-        'ids': value.ids,
-        'values': value.values,
-    };
+export function CustomFieldSingleSelectDropDownContentSelectedOptionsToJSON(
+  value?: CustomFieldSingleSelectDropDownContentSelectedOptions | null,
+): any {
+  if (value === undefined) {
+    return undefined;
+  }
+  if (value === null) {
+    return null;
+  }
+  return {
+    ids: value.ids,
+    values: value.values,
+  };
 }
-

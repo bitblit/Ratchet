@@ -1,10 +1,10 @@
-import { Logger } from "@bitblit/ratchet-common/logger/logger";
-import jwt from "jsonwebtoken";
-import jwks from "jwks-rsa";
-import { WebTokenManipulator } from "./web-token-manipulator.js";
-import fetch from "cross-fetch";
-import { StringRatchet } from "@bitblit/ratchet-common/lang/string-ratchet";
-import { JwtTokenBase } from "@bitblit/ratchet-common/jwt/jwt-token-base";
+import { Logger } from '@bitblit/ratchet-common/logger/logger';
+import jwt from 'jsonwebtoken';
+import jwks from 'jwks-rsa';
+import { WebTokenManipulator } from './web-token-manipulator.js';
+import fetch from 'cross-fetch';
+import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet';
+import { JwtTokenBase } from '@bitblit/ratchet-common/jwt/jwt-token-base';
 
 export class GoogleWebTokenManipulator implements WebTokenManipulator<JwtTokenBase> {
   private static readonly GOOGLE_DISCOVERY_DOCUMENT: string = 'https://accounts.google.com/.well-known/openid-configuration';
@@ -24,7 +24,7 @@ export class GoogleWebTokenManipulator implements WebTokenManipulator<JwtTokenBa
 
   public async parseAndValidateGoogleToken<T extends JwtTokenBase>(
     googleToken: string,
-    allowExpired: boolean = false
+    allowExpired: boolean = false,
   ): Promise<JwtTokenBase> {
     Logger.debug('Auth : %s', StringRatchet.obscure(googleToken, 4));
 

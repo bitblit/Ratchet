@@ -1,17 +1,17 @@
-import { Logger } from "@bitblit/ratchet-common/logger/logger";
-import { PromiseRatchet } from "@bitblit/ratchet-common/lang/promise-ratchet";
-import { StringRatchet } from "@bitblit/ratchet-common/lang/string-ratchet";
-import { TimeoutToken } from "@bitblit/ratchet-common/lang/timeout-token";
-import { RestfulApiHttpError } from "@bitblit/ratchet-common/network/restful-api-http-error";
-import { Context } from "aws-lambda";
-import { ExtendedAPIGatewayEvent } from "../../config/http/extended-api-gateway-event.js";
-import { RequestTimeoutError } from "../../http/error/request-timeout-error.js";
-import { ResponseUtil } from "../../http/response-util.js";
-import { NotFoundError } from "../../http/error/not-found-error.js";
-import { RouteAndParse } from "../../http/web-handler.js";
-import { NullReturnedObjectHandling } from "../../config/http/null-returned-object-handling.js";
-import { FilterFunction } from "../../config/http/filter-function.js";
-import { FilterChainContext } from "../../config/http/filter-chain-context.js";
+import { Logger } from '@bitblit/ratchet-common/logger/logger';
+import { PromiseRatchet } from '@bitblit/ratchet-common/lang/promise-ratchet';
+import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet';
+import { TimeoutToken } from '@bitblit/ratchet-common/lang/timeout-token';
+import { RestfulApiHttpError } from '@bitblit/ratchet-common/network/restful-api-http-error';
+import { Context } from 'aws-lambda';
+import { ExtendedAPIGatewayEvent } from '../../config/http/extended-api-gateway-event.js';
+import { RequestTimeoutError } from '../../http/error/request-timeout-error.js';
+import { ResponseUtil } from '../../http/response-util.js';
+import { NotFoundError } from '../../http/error/not-found-error.js';
+import { RouteAndParse } from '../../http/web-handler.js';
+import { NullReturnedObjectHandling } from '../../config/http/null-returned-object-handling.js';
+import { FilterFunction } from '../../config/http/filter-function.js';
+import { FilterChainContext } from '../../config/http/filter-chain-context.js';
 
 export class RunHandlerAsFilter {
   public static async runHandler(fCtx: FilterChainContext, rm: RouteAndParse): Promise<boolean> {
@@ -54,7 +54,7 @@ export class RunHandlerAsFilter {
     rm: RouteAndParse,
     event: ExtendedAPIGatewayEvent,
     context: Context,
-    add404OnMissing: boolean = true
+    add404OnMissing: boolean = true,
   ): Promise<any> {
     let rval: Promise<any> = null;
     // Execute
@@ -65,10 +65,10 @@ export class RunHandlerAsFilter {
       rval = PromiseRatchet.timeout(
         rm.mapping.function(event, context),
         'Timed out after ' +
-        rm.mapping.metaProcessingConfig.timeoutMS +
-        ' ms.  Request was ' +
-        RunHandlerAsFilter.eventToStringForLog(event),
-        rm.mapping.metaProcessingConfig.timeoutMS
+          rm.mapping.metaProcessingConfig.timeoutMS +
+          ' ms.  Request was ' +
+          RunHandlerAsFilter.eventToStringForLog(event),
+        rm.mapping.metaProcessingConfig.timeoutMS,
       );
     } else if (add404OnMissing) {
       throw new NotFoundError('No such endpoint');

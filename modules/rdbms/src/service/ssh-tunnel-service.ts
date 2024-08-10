@@ -24,7 +24,7 @@ export class SshTunnelService {
     sshOptions: SshTunnelConfig,
     dstHost: string,
     dstPort: number,
-    localPort: number
+    localPort: number,
   ): Promise<SshTunnelContainer> {
     const tunnelOptions = {
       autoClose: true,

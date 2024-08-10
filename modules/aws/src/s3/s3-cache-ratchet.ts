@@ -20,20 +20,20 @@ import {
   NotFound,
   PutObjectCommandInput,
   PutObjectCommandOutput,
-  S3Client
-} from "@aws-sdk/client-s3";
-import { RequireRatchet } from "@bitblit/ratchet-common/lang/require-ratchet";
-import { Logger } from "@bitblit/ratchet-common/logger/logger";
-import { StringRatchet } from "@bitblit/ratchet-common/lang/string-ratchet";
-import { StopWatch } from "@bitblit/ratchet-common/lang/stop-watch";
-import { WebStreamRatchet } from "@bitblit/ratchet-common/lang/web-stream-ratchet";
+  S3Client,
+} from '@aws-sdk/client-s3';
+import { RequireRatchet } from '@bitblit/ratchet-common/lang/require-ratchet';
+import { Logger } from '@bitblit/ratchet-common/logger/logger';
+import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet';
+import { StopWatch } from '@bitblit/ratchet-common/lang/stop-watch';
+import { WebStreamRatchet } from '@bitblit/ratchet-common/lang/web-stream-ratchet';
 
-import { StreamingBlobPayloadInputTypes } from "@smithy/types";
-import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
-import { Progress, Upload } from "@aws-sdk/lib-storage";
-import { Readable } from "stream";
-import { S3CacheRatchetLike } from "./s3-cache-ratchet-like.js";
-import { ExpandedFileChildren } from "./expanded-file-children.js";
+import { StreamingBlobPayloadInputTypes } from '@smithy/types';
+import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
+import { Progress, Upload } from '@aws-sdk/lib-storage';
+import { Readable } from 'stream';
+import { S3CacheRatchetLike } from './s3-cache-ratchet-like.js';
+import { ExpandedFileChildren } from './expanded-file-children.js';
 
 export class S3CacheRatchet implements S3CacheRatchetLike {
   constructor(
@@ -83,7 +83,6 @@ export class S3CacheRatchet implements S3CacheRatchetLike {
   public async fetchCacheFilePassThru(req: GetObjectCommandInput): Promise<GetObjectCommandOutput> {
     let rval: GetObjectCommandOutput = null;
     try {
-
       rval = await this.s3.send(new GetObjectCommand(req));
     } catch (err) {
       if (err instanceof NoSuchKey) {
@@ -169,7 +168,7 @@ export class S3CacheRatchet implements S3CacheRatchetLike {
   // Given new board data, write it to the S3 file and set the refresh flag appropriately
   public async writeObjectToCacheFile(
     key: string,
-    dataObject: any,  
+    dataObject: any,
     template?: PutObjectCommandInput,
     bucket?: string,
   ): Promise<CompleteMultipartUploadCommandOutput> {
@@ -327,8 +326,12 @@ export class S3CacheRatchet implements S3CacheRatchetLike {
   }
 
   // Shortcut to copy/delete
-  public async renameFile(srcKey: string, dstKey: string,  srcBucket: string = null,
-                          dstBucket: string = null): Promise<CopyObjectCommandOutput> {
+  public async renameFile(
+    srcKey: string,
+    dstKey: string,
+    srcBucket: string = null,
+    dstBucket: string = null,
+  ): Promise<CopyObjectCommandOutput> {
     Logger.info('Rename %s to %s (%s/%s)', srcKey, dstKey, srcBucket, dstBucket);
     const output: CopyObjectCommandOutput = await this.copyFile(srcKey, dstKey, srcBucket, dstBucket);
     if (output) {

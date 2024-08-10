@@ -9,14 +9,18 @@ import {
   SubmitJobCommandInput,
   SubmitJobCommandOutput,
 } from '@aws-sdk/client-batch';
-import { Logger } from "@bitblit/ratchet-common/logger/logger";
-import { RequireRatchet } from "@bitblit/ratchet-common/lang/require-ratchet";
+import { Logger } from '@bitblit/ratchet-common/logger/logger';
+import { RequireRatchet } from '@bitblit/ratchet-common/lang/require-ratchet';
 
 /**
  * Ratchet for simplifying interacting with AWS Batch
  */
 export class AwsBatchRatchet {
-  constructor(private _batchClient: BatchClient, private _defaultQueueName?: string, private _defaultJobDefinition?: string) {}
+  constructor(
+    private _batchClient: BatchClient,
+    private _defaultQueueName?: string,
+    private _defaultJobDefinition?: string,
+  ) {}
 
   public get batchClient(): BatchClient {
     return this._batchClient;

@@ -1,5 +1,5 @@
 // Simple switch to see what kind of event I am looking at
- 
+
 import { APIGatewayEvent, APIGatewayProxyEventV2, DynamoDBStreamEvent, S3Event, ScheduledEvent, SNSEvent, SQSEvent } from 'aws-lambda';
 import { LambdaEventDetector } from './lambda-event-detector.js';
 

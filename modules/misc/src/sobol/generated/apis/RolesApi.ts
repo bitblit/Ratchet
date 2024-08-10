@@ -11,555 +11,726 @@
  * Do not edit the class manually.
  */
 
-
 import * as runtime from '../runtime.js';
-import type {
-  ObjectRef,
-  Role,
-} from '../models/index.js';
-import {
-    ObjectRefFromJSON,
-    ObjectRefToJSON,
-    RoleFromJSON,
-    RoleToJSON,
-} from '../models/index.js';
+import type { ObjectRef, Role } from '../models/index.js';
+import { ObjectRefFromJSON, ObjectRefToJSON, RoleFromJSON, RoleToJSON } from '../models/index.js';
 
 export interface OrgOrgIdRoleAssignmentsObjectIdDeleteRequest {
-    orgId: string;
-    objectId: string;
+  orgId: string;
+  objectId: string;
 }
 
 export interface OrgOrgIdRolesGetRequest {
-    orgId: string;
+  orgId: string;
 }
 
 export interface OrgOrgIdRolesObjectIdAssignmentsPostRequest {
-    orgId: string;
-    objectId: string;
-    objectRef: Array<ObjectRef>;
+  orgId: string;
+  objectId: string;
+  objectRef: Array<ObjectRef>;
 }
 
 export interface OrgOrgIdRolesObjectIdDeleteRequest {
-    orgId: string;
-    objectId: string;
+  orgId: string;
+  objectId: string;
 }
 
 export interface OrgOrgIdRolesObjectIdGetRequest {
-    orgId: string;
-    objectId: string;
+  orgId: string;
+  objectId: string;
 }
 
 export interface OrgOrgIdRolesObjectIdParentPostRequest {
-    orgId: string;
-    objectId: string;
-    objectRef: ObjectRef;
+  orgId: string;
+  objectId: string;
+  objectRef: ObjectRef;
 }
 
 export interface OrgOrgIdRolesObjectIdPutRequest {
-    orgId: string;
-    objectId: string;
-    role: Role;
+  orgId: string;
+  objectId: string;
+  role: Role;
 }
 
 export interface OrgOrgIdRolesPostRequest {
-    orgId: string;
-    role: Role;
+  orgId: string;
+  role: Role;
 }
 
 /**
  * RolesApi - interface
- * 
+ *
  * @export
  * @interface RolesApiInterface
  */
 export interface RolesApiInterface {
-    /**
-     * 
-     * @summary Delete a role assignment
-     * @param {string} orgId ID of the organization
-     * @param {string} objectId ID of the object
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof RolesApiInterface
-     */
-    orgOrgIdRoleAssignmentsObjectIdDeleteRaw(requestParameters: OrgOrgIdRoleAssignmentsObjectIdDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>>;
+  /**
+   *
+   * @summary Delete a role assignment
+   * @param {string} orgId ID of the organization
+   * @param {string} objectId ID of the object
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof RolesApiInterface
+   */
+  orgOrgIdRoleAssignmentsObjectIdDeleteRaw(
+    requestParameters: OrgOrgIdRoleAssignmentsObjectIdDeleteRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<void>>;
 
-    /**
-     * Delete a role assignment
-     */
-    orgOrgIdRoleAssignmentsObjectIdDelete(requestParameters: OrgOrgIdRoleAssignmentsObjectIdDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void>;
+  /**
+   * Delete a role assignment
+   */
+  orgOrgIdRoleAssignmentsObjectIdDelete(
+    requestParameters: OrgOrgIdRoleAssignmentsObjectIdDeleteRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<void>;
 
-    /**
-     * 
-     * @summary Get all roles
-     * @param {string} orgId ID of the organization
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof RolesApiInterface
-     */
-    orgOrgIdRolesGetRaw(requestParameters: OrgOrgIdRolesGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<Role>>>;
+  /**
+   *
+   * @summary Get all roles
+   * @param {string} orgId ID of the organization
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof RolesApiInterface
+   */
+  orgOrgIdRolesGetRaw(
+    requestParameters: OrgOrgIdRolesGetRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<Array<Role>>>;
 
-    /**
-     * Get all roles
-     */
-    orgOrgIdRolesGet(requestParameters: OrgOrgIdRolesGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<Role>>;
+  /**
+   * Get all roles
+   */
+  orgOrgIdRolesGet(
+    requestParameters: OrgOrgIdRolesGetRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<Array<Role>>;
 
-    /**
-     * 
-     * @summary Update a roles\'s assignments
-     * @param {string} orgId ID of the organization
-     * @param {string} objectId ID of the object
-     * @param {Array<ObjectRef>} objectRef Array of object refs of owners
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof RolesApiInterface
-     */
-    orgOrgIdRolesObjectIdAssignmentsPostRaw(requestParameters: OrgOrgIdRolesObjectIdAssignmentsPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>>;
+  /**
+   *
+   * @summary Update a roles\'s assignments
+   * @param {string} orgId ID of the organization
+   * @param {string} objectId ID of the object
+   * @param {Array<ObjectRef>} objectRef Array of object refs of owners
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof RolesApiInterface
+   */
+  orgOrgIdRolesObjectIdAssignmentsPostRaw(
+    requestParameters: OrgOrgIdRolesObjectIdAssignmentsPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<void>>;
 
-    /**
-     * Update a roles\'s assignments
-     */
-    orgOrgIdRolesObjectIdAssignmentsPost(requestParameters: OrgOrgIdRolesObjectIdAssignmentsPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void>;
+  /**
+   * Update a roles\'s assignments
+   */
+  orgOrgIdRolesObjectIdAssignmentsPost(
+    requestParameters: OrgOrgIdRolesObjectIdAssignmentsPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<void>;
 
-    /**
-     * 
-     * @summary Delete a role
-     * @param {string} orgId ID of the organization
-     * @param {string} objectId ID of the object
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof RolesApiInterface
-     */
-    orgOrgIdRolesObjectIdDeleteRaw(requestParameters: OrgOrgIdRolesObjectIdDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>>;
+  /**
+   *
+   * @summary Delete a role
+   * @param {string} orgId ID of the organization
+   * @param {string} objectId ID of the object
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof RolesApiInterface
+   */
+  orgOrgIdRolesObjectIdDeleteRaw(
+    requestParameters: OrgOrgIdRolesObjectIdDeleteRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<void>>;
 
-    /**
-     * Delete a role
-     */
-    orgOrgIdRolesObjectIdDelete(requestParameters: OrgOrgIdRolesObjectIdDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void>;
+  /**
+   * Delete a role
+   */
+  orgOrgIdRolesObjectIdDelete(
+    requestParameters: OrgOrgIdRolesObjectIdDeleteRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<void>;
 
-    /**
-     * 
-     * @summary Get a role
-     * @param {string} orgId ID of the organization
-     * @param {string} objectId ID of the object
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof RolesApiInterface
-     */
-    orgOrgIdRolesObjectIdGetRaw(requestParameters: OrgOrgIdRolesObjectIdGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Role>>;
+  /**
+   *
+   * @summary Get a role
+   * @param {string} orgId ID of the organization
+   * @param {string} objectId ID of the object
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof RolesApiInterface
+   */
+  orgOrgIdRolesObjectIdGetRaw(
+    requestParameters: OrgOrgIdRolesObjectIdGetRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<Role>>;
 
-    /**
-     * Get a role
-     */
-    orgOrgIdRolesObjectIdGet(requestParameters: OrgOrgIdRolesObjectIdGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Role>;
+  /**
+   * Get a role
+   */
+  orgOrgIdRolesObjectIdGet(
+    requestParameters: OrgOrgIdRolesObjectIdGetRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<Role>;
 
-    /**
-     * 
-     * @summary Move the role under a different parent team
-     * @param {string} orgId ID of the organization
-     * @param {string} objectId ID of the object
-     * @param {ObjectRef} objectRef Reference to a team object to set as the parent
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof RolesApiInterface
-     */
-    orgOrgIdRolesObjectIdParentPostRaw(requestParameters: OrgOrgIdRolesObjectIdParentPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>>;
+  /**
+   *
+   * @summary Move the role under a different parent team
+   * @param {string} orgId ID of the organization
+   * @param {string} objectId ID of the object
+   * @param {ObjectRef} objectRef Reference to a team object to set as the parent
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof RolesApiInterface
+   */
+  orgOrgIdRolesObjectIdParentPostRaw(
+    requestParameters: OrgOrgIdRolesObjectIdParentPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<void>>;
 
-    /**
-     * Move the role under a different parent team
-     */
-    orgOrgIdRolesObjectIdParentPost(requestParameters: OrgOrgIdRolesObjectIdParentPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void>;
+  /**
+   * Move the role under a different parent team
+   */
+  orgOrgIdRolesObjectIdParentPost(
+    requestParameters: OrgOrgIdRolesObjectIdParentPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<void>;
 
-    /**
-     * 
-     * @summary Update a role
-     * @param {string} orgId ID of the organization
-     * @param {string} objectId ID of the object
-     * @param {Role} role 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof RolesApiInterface
-     */
-    orgOrgIdRolesObjectIdPutRaw(requestParameters: OrgOrgIdRolesObjectIdPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Role>>;
+  /**
+   *
+   * @summary Update a role
+   * @param {string} orgId ID of the organization
+   * @param {string} objectId ID of the object
+   * @param {Role} role
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof RolesApiInterface
+   */
+  orgOrgIdRolesObjectIdPutRaw(
+    requestParameters: OrgOrgIdRolesObjectIdPutRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<Role>>;
 
-    /**
-     * Update a role
-     */
-    orgOrgIdRolesObjectIdPut(requestParameters: OrgOrgIdRolesObjectIdPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Role>;
+  /**
+   * Update a role
+   */
+  orgOrgIdRolesObjectIdPut(
+    requestParameters: OrgOrgIdRolesObjectIdPutRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<Role>;
 
-    /**
-     * 
-     * @summary Create a role
-     * @param {string} orgId ID of the organization
-     * @param {Role} role Role request object
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof RolesApiInterface
-     */
-    orgOrgIdRolesPostRaw(requestParameters: OrgOrgIdRolesPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Role>>;
+  /**
+   *
+   * @summary Create a role
+   * @param {string} orgId ID of the organization
+   * @param {Role} role Role request object
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof RolesApiInterface
+   */
+  orgOrgIdRolesPostRaw(
+    requestParameters: OrgOrgIdRolesPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<Role>>;
 
-    /**
-     * Create a role
-     */
-    orgOrgIdRolesPost(requestParameters: OrgOrgIdRolesPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Role>;
-
+  /**
+   * Create a role
+   */
+  orgOrgIdRolesPost(requestParameters: OrgOrgIdRolesPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Role>;
 }
 
 /**
- * 
+ *
  */
 export class RolesApi extends runtime.BaseAPI implements RolesApiInterface {
-
-    /**
-     * Delete a role assignment
-     */
-    async orgOrgIdRoleAssignmentsObjectIdDeleteRaw(requestParameters: OrgOrgIdRoleAssignmentsObjectIdDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.orgId === null || requestParameters.orgId === undefined) {
-            throw new runtime.RequiredError('orgId','Required parameter requestParameters.orgId was null or undefined when calling orgOrgIdRoleAssignmentsObjectIdDelete.');
-        }
-
-        if (requestParameters.objectId === null || requestParameters.objectId === undefined) {
-            throw new runtime.RequiredError('objectId','Required parameter requestParameters.objectId was null or undefined when calling orgOrgIdRoleAssignmentsObjectIdDelete.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("APIKey", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-        const response = await this.request({
-            path: `/org/{orgId}/role-assignments/{objectId}`.replace(`{${"orgId"}}`, encodeURIComponent(String(requestParameters.orgId))).replace(`{${"objectId"}}`, encodeURIComponent(String(requestParameters.objectId))),
-            method: 'DELETE',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.VoidApiResponse(response);
+  /**
+   * Delete a role assignment
+   */
+  async orgOrgIdRoleAssignmentsObjectIdDeleteRaw(
+    requestParameters: OrgOrgIdRoleAssignmentsObjectIdDeleteRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<void>> {
+    if (requestParameters.orgId === null || requestParameters.orgId === undefined) {
+      throw new runtime.RequiredError(
+        'orgId',
+        'Required parameter requestParameters.orgId was null or undefined when calling orgOrgIdRoleAssignmentsObjectIdDelete.',
+      );
     }
 
-    /**
-     * Delete a role assignment
-     */
-    async orgOrgIdRoleAssignmentsObjectIdDelete(requestParameters: OrgOrgIdRoleAssignmentsObjectIdDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this.orgOrgIdRoleAssignmentsObjectIdDeleteRaw(requestParameters, initOverrides);
+    if (requestParameters.objectId === null || requestParameters.objectId === undefined) {
+      throw new runtime.RequiredError(
+        'objectId',
+        'Required parameter requestParameters.objectId was null or undefined when calling orgOrgIdRoleAssignmentsObjectIdDelete.',
+      );
     }
 
-    /**
-     * Get all roles
-     */
-    async orgOrgIdRolesGetRaw(requestParameters: OrgOrgIdRolesGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<Role>>> {
-        if (requestParameters.orgId === null || requestParameters.orgId === undefined) {
-            throw new runtime.RequiredError('orgId','Required parameter requestParameters.orgId was null or undefined when calling orgOrgIdRolesGet.');
-        }
+    const queryParameters: any = {};
 
-        const queryParameters: any = {};
+    const headerParameters: runtime.HTTPHeaders = {};
 
-        const headerParameters: runtime.HTTPHeaders = {};
+    if (this.configuration && this.configuration.accessToken) {
+      const token = this.configuration.accessToken;
+      const tokenString = await token('APIKey', []);
 
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("APIKey", []);
+      if (tokenString) {
+        headerParameters['Authorization'] = `Bearer ${tokenString}`;
+      }
+    }
+    const response = await this.request(
+      {
+        path: `/org/{orgId}/role-assignments/{objectId}`
+          .replace(`{${'orgId'}}`, encodeURIComponent(String(requestParameters.orgId)))
+          .replace(`{${'objectId'}}`, encodeURIComponent(String(requestParameters.objectId))),
+        method: 'DELETE',
+        headers: headerParameters,
+        query: queryParameters,
+      },
+      initOverrides,
+    );
 
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-        const response = await this.request({
-            path: `/org/{orgId}/roles`.replace(`{${"orgId"}}`, encodeURIComponent(String(requestParameters.orgId))),
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
+    return new runtime.VoidApiResponse(response);
+  }
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(RoleFromJSON));
+  /**
+   * Delete a role assignment
+   */
+  async orgOrgIdRoleAssignmentsObjectIdDelete(
+    requestParameters: OrgOrgIdRoleAssignmentsObjectIdDeleteRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<void> {
+    await this.orgOrgIdRoleAssignmentsObjectIdDeleteRaw(requestParameters, initOverrides);
+  }
+
+  /**
+   * Get all roles
+   */
+  async orgOrgIdRolesGetRaw(
+    requestParameters: OrgOrgIdRolesGetRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<Array<Role>>> {
+    if (requestParameters.orgId === null || requestParameters.orgId === undefined) {
+      throw new runtime.RequiredError(
+        'orgId',
+        'Required parameter requestParameters.orgId was null or undefined when calling orgOrgIdRolesGet.',
+      );
     }
 
-    /**
-     * Get all roles
-     */
-    async orgOrgIdRolesGet(requestParameters: OrgOrgIdRolesGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<Role>> {
-        const response = await this.orgOrgIdRolesGetRaw(requestParameters, initOverrides);
-        return await response.value();
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    if (this.configuration && this.configuration.accessToken) {
+      const token = this.configuration.accessToken;
+      const tokenString = await token('APIKey', []);
+
+      if (tokenString) {
+        headerParameters['Authorization'] = `Bearer ${tokenString}`;
+      }
+    }
+    const response = await this.request(
+      {
+        path: `/org/{orgId}/roles`.replace(`{${'orgId'}}`, encodeURIComponent(String(requestParameters.orgId))),
+        method: 'GET',
+        headers: headerParameters,
+        query: queryParameters,
+      },
+      initOverrides,
+    );
+
+    return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(RoleFromJSON));
+  }
+
+  /**
+   * Get all roles
+   */
+  async orgOrgIdRolesGet(
+    requestParameters: OrgOrgIdRolesGetRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<Array<Role>> {
+    const response = await this.orgOrgIdRolesGetRaw(requestParameters, initOverrides);
+    return await response.value();
+  }
+
+  /**
+   * Update a roles\'s assignments
+   */
+  async orgOrgIdRolesObjectIdAssignmentsPostRaw(
+    requestParameters: OrgOrgIdRolesObjectIdAssignmentsPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<void>> {
+    if (requestParameters.orgId === null || requestParameters.orgId === undefined) {
+      throw new runtime.RequiredError(
+        'orgId',
+        'Required parameter requestParameters.orgId was null or undefined when calling orgOrgIdRolesObjectIdAssignmentsPost.',
+      );
     }
 
-    /**
-     * Update a roles\'s assignments
-     */
-    async orgOrgIdRolesObjectIdAssignmentsPostRaw(requestParameters: OrgOrgIdRolesObjectIdAssignmentsPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.orgId === null || requestParameters.orgId === undefined) {
-            throw new runtime.RequiredError('orgId','Required parameter requestParameters.orgId was null or undefined when calling orgOrgIdRolesObjectIdAssignmentsPost.');
-        }
-
-        if (requestParameters.objectId === null || requestParameters.objectId === undefined) {
-            throw new runtime.RequiredError('objectId','Required parameter requestParameters.objectId was null or undefined when calling orgOrgIdRolesObjectIdAssignmentsPost.');
-        }
-
-        if (requestParameters.objectRef === null || requestParameters.objectRef === undefined) {
-            throw new runtime.RequiredError('objectRef','Required parameter requestParameters.objectRef was null or undefined when calling orgOrgIdRolesObjectIdAssignmentsPost.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("APIKey", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-        const response = await this.request({
-            path: `/org/{orgId}/roles/{objectId}/assignments`.replace(`{${"orgId"}}`, encodeURIComponent(String(requestParameters.orgId))).replace(`{${"objectId"}}`, encodeURIComponent(String(requestParameters.objectId))),
-            method: 'POST',
-            headers: headerParameters,
-            query: queryParameters,
-            body: requestParameters.objectRef.map(ObjectRefToJSON),
-        }, initOverrides);
-
-        return new runtime.VoidApiResponse(response);
+    if (requestParameters.objectId === null || requestParameters.objectId === undefined) {
+      throw new runtime.RequiredError(
+        'objectId',
+        'Required parameter requestParameters.objectId was null or undefined when calling orgOrgIdRolesObjectIdAssignmentsPost.',
+      );
     }
 
-    /**
-     * Update a roles\'s assignments
-     */
-    async orgOrgIdRolesObjectIdAssignmentsPost(requestParameters: OrgOrgIdRolesObjectIdAssignmentsPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this.orgOrgIdRolesObjectIdAssignmentsPostRaw(requestParameters, initOverrides);
+    if (requestParameters.objectRef === null || requestParameters.objectRef === undefined) {
+      throw new runtime.RequiredError(
+        'objectRef',
+        'Required parameter requestParameters.objectRef was null or undefined when calling orgOrgIdRolesObjectIdAssignmentsPost.',
+      );
     }
 
-    /**
-     * Delete a role
-     */
-    async orgOrgIdRolesObjectIdDeleteRaw(requestParameters: OrgOrgIdRolesObjectIdDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.orgId === null || requestParameters.orgId === undefined) {
-            throw new runtime.RequiredError('orgId','Required parameter requestParameters.orgId was null or undefined when calling orgOrgIdRolesObjectIdDelete.');
-        }
+    const queryParameters: any = {};
 
-        if (requestParameters.objectId === null || requestParameters.objectId === undefined) {
-            throw new runtime.RequiredError('objectId','Required parameter requestParameters.objectId was null or undefined when calling orgOrgIdRolesObjectIdDelete.');
-        }
+    const headerParameters: runtime.HTTPHeaders = {};
 
-        const queryParameters: any = {};
+    headerParameters['Content-Type'] = 'application/json';
 
-        const headerParameters: runtime.HTTPHeaders = {};
+    if (this.configuration && this.configuration.accessToken) {
+      const token = this.configuration.accessToken;
+      const tokenString = await token('APIKey', []);
 
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("APIKey", []);
+      if (tokenString) {
+        headerParameters['Authorization'] = `Bearer ${tokenString}`;
+      }
+    }
+    const response = await this.request(
+      {
+        path: `/org/{orgId}/roles/{objectId}/assignments`
+          .replace(`{${'orgId'}}`, encodeURIComponent(String(requestParameters.orgId)))
+          .replace(`{${'objectId'}}`, encodeURIComponent(String(requestParameters.objectId))),
+        method: 'POST',
+        headers: headerParameters,
+        query: queryParameters,
+        body: requestParameters.objectRef.map(ObjectRefToJSON),
+      },
+      initOverrides,
+    );
 
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-        const response = await this.request({
-            path: `/org/{orgId}/roles/{objectId}`.replace(`{${"orgId"}}`, encodeURIComponent(String(requestParameters.orgId))).replace(`{${"objectId"}}`, encodeURIComponent(String(requestParameters.objectId))),
-            method: 'DELETE',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
+    return new runtime.VoidApiResponse(response);
+  }
 
-        return new runtime.VoidApiResponse(response);
+  /**
+   * Update a roles\'s assignments
+   */
+  async orgOrgIdRolesObjectIdAssignmentsPost(
+    requestParameters: OrgOrgIdRolesObjectIdAssignmentsPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<void> {
+    await this.orgOrgIdRolesObjectIdAssignmentsPostRaw(requestParameters, initOverrides);
+  }
+
+  /**
+   * Delete a role
+   */
+  async orgOrgIdRolesObjectIdDeleteRaw(
+    requestParameters: OrgOrgIdRolesObjectIdDeleteRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<void>> {
+    if (requestParameters.orgId === null || requestParameters.orgId === undefined) {
+      throw new runtime.RequiredError(
+        'orgId',
+        'Required parameter requestParameters.orgId was null or undefined when calling orgOrgIdRolesObjectIdDelete.',
+      );
     }
 
-    /**
-     * Delete a role
-     */
-    async orgOrgIdRolesObjectIdDelete(requestParameters: OrgOrgIdRolesObjectIdDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this.orgOrgIdRolesObjectIdDeleteRaw(requestParameters, initOverrides);
+    if (requestParameters.objectId === null || requestParameters.objectId === undefined) {
+      throw new runtime.RequiredError(
+        'objectId',
+        'Required parameter requestParameters.objectId was null or undefined when calling orgOrgIdRolesObjectIdDelete.',
+      );
     }
 
-    /**
-     * Get a role
-     */
-    async orgOrgIdRolesObjectIdGetRaw(requestParameters: OrgOrgIdRolesObjectIdGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Role>> {
-        if (requestParameters.orgId === null || requestParameters.orgId === undefined) {
-            throw new runtime.RequiredError('orgId','Required parameter requestParameters.orgId was null or undefined when calling orgOrgIdRolesObjectIdGet.');
-        }
+    const queryParameters: any = {};
 
-        if (requestParameters.objectId === null || requestParameters.objectId === undefined) {
-            throw new runtime.RequiredError('objectId','Required parameter requestParameters.objectId was null or undefined when calling orgOrgIdRolesObjectIdGet.');
-        }
+    const headerParameters: runtime.HTTPHeaders = {};
 
-        const queryParameters: any = {};
+    if (this.configuration && this.configuration.accessToken) {
+      const token = this.configuration.accessToken;
+      const tokenString = await token('APIKey', []);
 
-        const headerParameters: runtime.HTTPHeaders = {};
+      if (tokenString) {
+        headerParameters['Authorization'] = `Bearer ${tokenString}`;
+      }
+    }
+    const response = await this.request(
+      {
+        path: `/org/{orgId}/roles/{objectId}`
+          .replace(`{${'orgId'}}`, encodeURIComponent(String(requestParameters.orgId)))
+          .replace(`{${'objectId'}}`, encodeURIComponent(String(requestParameters.objectId))),
+        method: 'DELETE',
+        headers: headerParameters,
+        query: queryParameters,
+      },
+      initOverrides,
+    );
 
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("APIKey", []);
+    return new runtime.VoidApiResponse(response);
+  }
 
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-        const response = await this.request({
-            path: `/org/{orgId}/roles/{objectId}`.replace(`{${"orgId"}}`, encodeURIComponent(String(requestParameters.orgId))).replace(`{${"objectId"}}`, encodeURIComponent(String(requestParameters.objectId))),
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
+  /**
+   * Delete a role
+   */
+  async orgOrgIdRolesObjectIdDelete(
+    requestParameters: OrgOrgIdRolesObjectIdDeleteRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<void> {
+    await this.orgOrgIdRolesObjectIdDeleteRaw(requestParameters, initOverrides);
+  }
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => RoleFromJSON(jsonValue));
+  /**
+   * Get a role
+   */
+  async orgOrgIdRolesObjectIdGetRaw(
+    requestParameters: OrgOrgIdRolesObjectIdGetRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<Role>> {
+    if (requestParameters.orgId === null || requestParameters.orgId === undefined) {
+      throw new runtime.RequiredError(
+        'orgId',
+        'Required parameter requestParameters.orgId was null or undefined when calling orgOrgIdRolesObjectIdGet.',
+      );
     }
 
-    /**
-     * Get a role
-     */
-    async orgOrgIdRolesObjectIdGet(requestParameters: OrgOrgIdRolesObjectIdGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Role> {
-        const response = await this.orgOrgIdRolesObjectIdGetRaw(requestParameters, initOverrides);
-        return await response.value();
+    if (requestParameters.objectId === null || requestParameters.objectId === undefined) {
+      throw new runtime.RequiredError(
+        'objectId',
+        'Required parameter requestParameters.objectId was null or undefined when calling orgOrgIdRolesObjectIdGet.',
+      );
     }
 
-    /**
-     * Move the role under a different parent team
-     */
-    async orgOrgIdRolesObjectIdParentPostRaw(requestParameters: OrgOrgIdRolesObjectIdParentPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.orgId === null || requestParameters.orgId === undefined) {
-            throw new runtime.RequiredError('orgId','Required parameter requestParameters.orgId was null or undefined when calling orgOrgIdRolesObjectIdParentPost.');
-        }
+    const queryParameters: any = {};
 
-        if (requestParameters.objectId === null || requestParameters.objectId === undefined) {
-            throw new runtime.RequiredError('objectId','Required parameter requestParameters.objectId was null or undefined when calling orgOrgIdRolesObjectIdParentPost.');
-        }
+    const headerParameters: runtime.HTTPHeaders = {};
 
-        if (requestParameters.objectRef === null || requestParameters.objectRef === undefined) {
-            throw new runtime.RequiredError('objectRef','Required parameter requestParameters.objectRef was null or undefined when calling orgOrgIdRolesObjectIdParentPost.');
-        }
+    if (this.configuration && this.configuration.accessToken) {
+      const token = this.configuration.accessToken;
+      const tokenString = await token('APIKey', []);
 
-        const queryParameters: any = {};
+      if (tokenString) {
+        headerParameters['Authorization'] = `Bearer ${tokenString}`;
+      }
+    }
+    const response = await this.request(
+      {
+        path: `/org/{orgId}/roles/{objectId}`
+          .replace(`{${'orgId'}}`, encodeURIComponent(String(requestParameters.orgId)))
+          .replace(`{${'objectId'}}`, encodeURIComponent(String(requestParameters.objectId))),
+        method: 'GET',
+        headers: headerParameters,
+        query: queryParameters,
+      },
+      initOverrides,
+    );
 
-        const headerParameters: runtime.HTTPHeaders = {};
+    return new runtime.JSONApiResponse(response, (jsonValue) => RoleFromJSON(jsonValue));
+  }
 
-        headerParameters['Content-Type'] = 'application/json';
+  /**
+   * Get a role
+   */
+  async orgOrgIdRolesObjectIdGet(
+    requestParameters: OrgOrgIdRolesObjectIdGetRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<Role> {
+    const response = await this.orgOrgIdRolesObjectIdGetRaw(requestParameters, initOverrides);
+    return await response.value();
+  }
 
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("APIKey", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-        const response = await this.request({
-            path: `/org/{orgId}/roles/{objectId}/parent`.replace(`{${"orgId"}}`, encodeURIComponent(String(requestParameters.orgId))).replace(`{${"objectId"}}`, encodeURIComponent(String(requestParameters.objectId))),
-            method: 'POST',
-            headers: headerParameters,
-            query: queryParameters,
-            body: ObjectRefToJSON(requestParameters.objectRef),
-        }, initOverrides);
-
-        return new runtime.VoidApiResponse(response);
+  /**
+   * Move the role under a different parent team
+   */
+  async orgOrgIdRolesObjectIdParentPostRaw(
+    requestParameters: OrgOrgIdRolesObjectIdParentPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<void>> {
+    if (requestParameters.orgId === null || requestParameters.orgId === undefined) {
+      throw new runtime.RequiredError(
+        'orgId',
+        'Required parameter requestParameters.orgId was null or undefined when calling orgOrgIdRolesObjectIdParentPost.',
+      );
     }
 
-    /**
-     * Move the role under a different parent team
-     */
-    async orgOrgIdRolesObjectIdParentPost(requestParameters: OrgOrgIdRolesObjectIdParentPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this.orgOrgIdRolesObjectIdParentPostRaw(requestParameters, initOverrides);
+    if (requestParameters.objectId === null || requestParameters.objectId === undefined) {
+      throw new runtime.RequiredError(
+        'objectId',
+        'Required parameter requestParameters.objectId was null or undefined when calling orgOrgIdRolesObjectIdParentPost.',
+      );
     }
 
-    /**
-     * Update a role
-     */
-    async orgOrgIdRolesObjectIdPutRaw(requestParameters: OrgOrgIdRolesObjectIdPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Role>> {
-        if (requestParameters.orgId === null || requestParameters.orgId === undefined) {
-            throw new runtime.RequiredError('orgId','Required parameter requestParameters.orgId was null or undefined when calling orgOrgIdRolesObjectIdPut.');
-        }
-
-        if (requestParameters.objectId === null || requestParameters.objectId === undefined) {
-            throw new runtime.RequiredError('objectId','Required parameter requestParameters.objectId was null or undefined when calling orgOrgIdRolesObjectIdPut.');
-        }
-
-        if (requestParameters.role === null || requestParameters.role === undefined) {
-            throw new runtime.RequiredError('role','Required parameter requestParameters.role was null or undefined when calling orgOrgIdRolesObjectIdPut.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("APIKey", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-        const response = await this.request({
-            path: `/org/{orgId}/roles/{objectId}`.replace(`{${"orgId"}}`, encodeURIComponent(String(requestParameters.orgId))).replace(`{${"objectId"}}`, encodeURIComponent(String(requestParameters.objectId))),
-            method: 'PUT',
-            headers: headerParameters,
-            query: queryParameters,
-            body: RoleToJSON(requestParameters.role),
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => RoleFromJSON(jsonValue));
+    if (requestParameters.objectRef === null || requestParameters.objectRef === undefined) {
+      throw new runtime.RequiredError(
+        'objectRef',
+        'Required parameter requestParameters.objectRef was null or undefined when calling orgOrgIdRolesObjectIdParentPost.',
+      );
     }
 
-    /**
-     * Update a role
-     */
-    async orgOrgIdRolesObjectIdPut(requestParameters: OrgOrgIdRolesObjectIdPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Role> {
-        const response = await this.orgOrgIdRolesObjectIdPutRaw(requestParameters, initOverrides);
-        return await response.value();
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    headerParameters['Content-Type'] = 'application/json';
+
+    if (this.configuration && this.configuration.accessToken) {
+      const token = this.configuration.accessToken;
+      const tokenString = await token('APIKey', []);
+
+      if (tokenString) {
+        headerParameters['Authorization'] = `Bearer ${tokenString}`;
+      }
+    }
+    const response = await this.request(
+      {
+        path: `/org/{orgId}/roles/{objectId}/parent`
+          .replace(`{${'orgId'}}`, encodeURIComponent(String(requestParameters.orgId)))
+          .replace(`{${'objectId'}}`, encodeURIComponent(String(requestParameters.objectId))),
+        method: 'POST',
+        headers: headerParameters,
+        query: queryParameters,
+        body: ObjectRefToJSON(requestParameters.objectRef),
+      },
+      initOverrides,
+    );
+
+    return new runtime.VoidApiResponse(response);
+  }
+
+  /**
+   * Move the role under a different parent team
+   */
+  async orgOrgIdRolesObjectIdParentPost(
+    requestParameters: OrgOrgIdRolesObjectIdParentPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<void> {
+    await this.orgOrgIdRolesObjectIdParentPostRaw(requestParameters, initOverrides);
+  }
+
+  /**
+   * Update a role
+   */
+  async orgOrgIdRolesObjectIdPutRaw(
+    requestParameters: OrgOrgIdRolesObjectIdPutRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<Role>> {
+    if (requestParameters.orgId === null || requestParameters.orgId === undefined) {
+      throw new runtime.RequiredError(
+        'orgId',
+        'Required parameter requestParameters.orgId was null or undefined when calling orgOrgIdRolesObjectIdPut.',
+      );
     }
 
-    /**
-     * Create a role
-     */
-    async orgOrgIdRolesPostRaw(requestParameters: OrgOrgIdRolesPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Role>> {
-        if (requestParameters.orgId === null || requestParameters.orgId === undefined) {
-            throw new runtime.RequiredError('orgId','Required parameter requestParameters.orgId was null or undefined when calling orgOrgIdRolesPost.');
-        }
-
-        if (requestParameters.role === null || requestParameters.role === undefined) {
-            throw new runtime.RequiredError('role','Required parameter requestParameters.role was null or undefined when calling orgOrgIdRolesPost.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("APIKey", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-        const response = await this.request({
-            path: `/org/{orgId}/roles`.replace(`{${"orgId"}}`, encodeURIComponent(String(requestParameters.orgId))),
-            method: 'POST',
-            headers: headerParameters,
-            query: queryParameters,
-            body: RoleToJSON(requestParameters.role),
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => RoleFromJSON(jsonValue));
+    if (requestParameters.objectId === null || requestParameters.objectId === undefined) {
+      throw new runtime.RequiredError(
+        'objectId',
+        'Required parameter requestParameters.objectId was null or undefined when calling orgOrgIdRolesObjectIdPut.',
+      );
     }
 
-    /**
-     * Create a role
-     */
-    async orgOrgIdRolesPost(requestParameters: OrgOrgIdRolesPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Role> {
-        const response = await this.orgOrgIdRolesPostRaw(requestParameters, initOverrides);
-        return await response.value();
+    if (requestParameters.role === null || requestParameters.role === undefined) {
+      throw new runtime.RequiredError(
+        'role',
+        'Required parameter requestParameters.role was null or undefined when calling orgOrgIdRolesObjectIdPut.',
+      );
     }
 
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    headerParameters['Content-Type'] = 'application/json';
+
+    if (this.configuration && this.configuration.accessToken) {
+      const token = this.configuration.accessToken;
+      const tokenString = await token('APIKey', []);
+
+      if (tokenString) {
+        headerParameters['Authorization'] = `Bearer ${tokenString}`;
+      }
+    }
+    const response = await this.request(
+      {
+        path: `/org/{orgId}/roles/{objectId}`
+          .replace(`{${'orgId'}}`, encodeURIComponent(String(requestParameters.orgId)))
+          .replace(`{${'objectId'}}`, encodeURIComponent(String(requestParameters.objectId))),
+        method: 'PUT',
+        headers: headerParameters,
+        query: queryParameters,
+        body: RoleToJSON(requestParameters.role),
+      },
+      initOverrides,
+    );
+
+    return new runtime.JSONApiResponse(response, (jsonValue) => RoleFromJSON(jsonValue));
+  }
+
+  /**
+   * Update a role
+   */
+  async orgOrgIdRolesObjectIdPut(
+    requestParameters: OrgOrgIdRolesObjectIdPutRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<Role> {
+    const response = await this.orgOrgIdRolesObjectIdPutRaw(requestParameters, initOverrides);
+    return await response.value();
+  }
+
+  /**
+   * Create a role
+   */
+  async orgOrgIdRolesPostRaw(
+    requestParameters: OrgOrgIdRolesPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<Role>> {
+    if (requestParameters.orgId === null || requestParameters.orgId === undefined) {
+      throw new runtime.RequiredError(
+        'orgId',
+        'Required parameter requestParameters.orgId was null or undefined when calling orgOrgIdRolesPost.',
+      );
+    }
+
+    if (requestParameters.role === null || requestParameters.role === undefined) {
+      throw new runtime.RequiredError(
+        'role',
+        'Required parameter requestParameters.role was null or undefined when calling orgOrgIdRolesPost.',
+      );
+    }
+
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    headerParameters['Content-Type'] = 'application/json';
+
+    if (this.configuration && this.configuration.accessToken) {
+      const token = this.configuration.accessToken;
+      const tokenString = await token('APIKey', []);
+
+      if (tokenString) {
+        headerParameters['Authorization'] = `Bearer ${tokenString}`;
+      }
+    }
+    const response = await this.request(
+      {
+        path: `/org/{orgId}/roles`.replace(`{${'orgId'}}`, encodeURIComponent(String(requestParameters.orgId))),
+        method: 'POST',
+        headers: headerParameters,
+        query: queryParameters,
+        body: RoleToJSON(requestParameters.role),
+      },
+      initOverrides,
+    );
+
+    return new runtime.JSONApiResponse(response, (jsonValue) => RoleFromJSON(jsonValue));
+  }
+
+  /**
+   * Create a role
+   */
+  async orgOrgIdRolesPost(
+    requestParameters: OrgOrgIdRolesPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<Role> {
+    const response = await this.orgOrgIdRolesPostRaw(requestParameters, initOverrides);
+    return await response.value();
+  }
 }

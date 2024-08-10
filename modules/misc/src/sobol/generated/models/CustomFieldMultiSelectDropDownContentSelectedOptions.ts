@@ -13,60 +13,64 @@
 
 import { exists, mapValues } from '../runtime.js';
 /**
- * 
+ *
  * @export
  * @interface CustomFieldMultiSelectDropDownContentSelectedOptions
  */
 export interface CustomFieldMultiSelectDropDownContentSelectedOptions {
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof CustomFieldMultiSelectDropDownContentSelectedOptions
-     */
-    ids?: Array<string>;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof CustomFieldMultiSelectDropDownContentSelectedOptions
-     */
-    values?: Array<string>;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof CustomFieldMultiSelectDropDownContentSelectedOptions
+   */
+  ids?: Array<string>;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof CustomFieldMultiSelectDropDownContentSelectedOptions
+   */
+  values?: Array<string>;
 }
 
 /**
  * Check if a given object implements the CustomFieldMultiSelectDropDownContentSelectedOptions interface.
  */
 export function instanceOfCustomFieldMultiSelectDropDownContentSelectedOptions(value: object): boolean {
-    let isInstance = true;
+  let isInstance = true;
 
-    return isInstance;
+  return isInstance;
 }
 
-export function CustomFieldMultiSelectDropDownContentSelectedOptionsFromJSON(json: any): CustomFieldMultiSelectDropDownContentSelectedOptions {
-    return CustomFieldMultiSelectDropDownContentSelectedOptionsFromJSONTyped(json, false);
+export function CustomFieldMultiSelectDropDownContentSelectedOptionsFromJSON(
+  json: any,
+): CustomFieldMultiSelectDropDownContentSelectedOptions {
+  return CustomFieldMultiSelectDropDownContentSelectedOptionsFromJSONTyped(json, false);
 }
 
-export function CustomFieldMultiSelectDropDownContentSelectedOptionsFromJSONTyped(json: any, ignoreDiscriminator: boolean): CustomFieldMultiSelectDropDownContentSelectedOptions {
-    if ((json === undefined) || (json === null)) {
-        return json;
-    }
-    return {
-        
-        'ids': !exists(json, 'ids') ? undefined : json['ids'],
-        'values': !exists(json, 'values') ? undefined : json['values'],
-    };
+export function CustomFieldMultiSelectDropDownContentSelectedOptionsFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean,
+): CustomFieldMultiSelectDropDownContentSelectedOptions {
+  if (json === undefined || json === null) {
+    return json;
+  }
+  return {
+    ids: !exists(json, 'ids') ? undefined : json['ids'],
+    values: !exists(json, 'values') ? undefined : json['values'],
+  };
 }
 
-export function CustomFieldMultiSelectDropDownContentSelectedOptionsToJSON(value?: CustomFieldMultiSelectDropDownContentSelectedOptions | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
-    }
-    return {
-        
-        'ids': value.ids,
-        'values': value.values,
-    };
+export function CustomFieldMultiSelectDropDownContentSelectedOptionsToJSON(
+  value?: CustomFieldMultiSelectDropDownContentSelectedOptions | null,
+): any {
+  if (value === undefined) {
+    return undefined;
+  }
+  if (value === null) {
+    return null;
+  }
+  return {
+    ids: value.ids,
+    values: value.values,
+  };
 }
-

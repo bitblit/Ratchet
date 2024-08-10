@@ -11,7 +11,7 @@ export class QueryBuilderResult {
     query: string,
     namedParams: Record<string, unknown>,
     paginator: Paginator<any> | undefined,
-    transactionIsolationLevel: TransactionIsolationLevel
+    transactionIsolationLevel: TransactionIsolationLevel,
   ) {
     this.query = query;
     this.namedParams = namedParams;

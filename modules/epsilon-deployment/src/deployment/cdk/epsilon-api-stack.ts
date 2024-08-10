@@ -1,7 +1,7 @@
 import { Duration, Lazy, Size, Stack } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import { DockerImageCode, DockerImageFunction, FunctionUrl, FunctionUrlAuthType, HttpMethod } from 'aws-cdk-lib/aws-lambda';
-import { ManagedPolicy, PolicyDocument, PolicyStatement, Role, ServicePrincipal } from "aws-cdk-lib/aws-iam";
+import { ManagedPolicy, PolicyDocument, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { Topic } from 'aws-cdk-lib/aws-sns';
 import { Queue } from 'aws-cdk-lib/aws-sqs';
 import { LambdaSubscription } from 'aws-cdk-lib/aws-sns-subscriptions';
@@ -84,7 +84,6 @@ export class EpsilonApiStack extends Stack {
           }),
         },
       });
-
 
       // This is the role used by the container to actually do business logic (your code uses this role)
       const jobRole = new Role(this, id + 'BatchJobRole', {

@@ -1,17 +1,20 @@
 import { SubmitJobCommandInput, SubmitJobCommandOutput } from '@aws-sdk/client-batch';
 import { DateTime } from 'luxon';
 import { AwsBatchRatchet } from './aws-batch-ratchet.js';
-import { RequireRatchet } from "@bitblit/ratchet-common/lang/require-ratchet";
-import { StringRatchet } from "@bitblit/ratchet-common/lang/string-ratchet";
-import { ErrorRatchet } from "@bitblit/ratchet-common/lang/error-ratchet";
-import { Logger } from "@bitblit/ratchet-common/logger/logger";
+import { RequireRatchet } from '@bitblit/ratchet-common/lang/require-ratchet';
+import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet';
+import { ErrorRatchet } from '@bitblit/ratchet-common/lang/error-ratchet';
+import { Logger } from '@bitblit/ratchet-common/logger/logger';
 
 /**
  * Class to simplify using AWS batch as a background processor
  * (Primarily used by Epsilon)
  */
 export class AwsBatchBackgroundProcessor {
-  constructor(private batchRatchet: AwsBatchRatchet, private validTaskNames?: string[]) {
+  constructor(
+    private batchRatchet: AwsBatchRatchet,
+    private validTaskNames?: string[],
+  ) {
     RequireRatchet.notNullOrUndefined(this.batchRatchet, 'batchRatchet');
     RequireRatchet.notNullOrUndefined(this.batchRatchet.batchClient, 'batchRatchet.batchClient');
     RequireRatchet.notNullOrUndefined(this.batchRatchet.defaultJobDefinition, 'batchRatchet.defaultJobDefinition');
@@ -21,7 +24,7 @@ export class AwsBatchBackgroundProcessor {
   public async scheduleBackgroundTask(
     taskName: string,
     data: Record<string, any> = {},
-    meta: Record<string, any> = {}
+    meta: Record<string, any> = {},
   ): Promise<SubmitJobCommandOutput> {
     if (
       this.validTaskNames &&
@@ -59,7 +62,7 @@ export class AwsBatchBackgroundProcessor {
         this.batchRatchet.defaultQueueName,
         jobName,
         data,
-        err
+        err,
       );
     }
 

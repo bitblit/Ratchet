@@ -1,13 +1,13 @@
-import { Logger } from "@bitblit/ratchet-common/logger/logger";
-import { APIGatewayEvent } from "aws-lambda";
-import { RouteMapping } from "../../http/route/route-mapping.js";
-import { EpsilonAuthorizationContext } from "../../config/http/epsilon-authorization-context.js";
-import { CommonJwtToken } from "@bitblit/ratchet-common/jwt/common-jwt-token";
+import { Logger } from '@bitblit/ratchet-common/logger/logger';
+import { APIGatewayEvent } from 'aws-lambda';
+import { RouteMapping } from '../../http/route/route-mapping.js';
+import { EpsilonAuthorizationContext } from '../../config/http/epsilon-authorization-context.js';
+import { CommonJwtToken } from '@bitblit/ratchet-common/jwt/common-jwt-token';
 
 export class BuiltInAuthorizers {
   public static async simpleNoAuthenticationLogAccess(
     authorizationContext: EpsilonAuthorizationContext<any>,
-    evt: APIGatewayEvent
+    evt: APIGatewayEvent,
   ): Promise<boolean> {
     // Just logs the request but does nothing else
     Logger.debug('Auth requested for %s : %j', evt.path, authorizationContext?.auth);
@@ -26,7 +26,7 @@ export class BuiltInAuthorizers {
     event: APIGatewayEvent,
     route: RouteMapping,
     requiredRoleOneOf: string[] = null,
-    requiredRoleAllOf: string[] = null
+    requiredRoleAllOf: string[] = null,
   ): Promise<boolean> {
     let rval: boolean = true;
     const token: CommonJwtToken<any> = authorizationContext?.auth;

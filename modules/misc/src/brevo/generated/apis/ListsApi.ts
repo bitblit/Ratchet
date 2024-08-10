@@ -1,7 +1,7 @@
 /* eslint-disable */
 /**
  * SendinBlue API
- * SendinBlue provide a RESTFul API that can be used with any languages. With this API, you will be able to :   - Manage your campaigns and get the statistics   - Manage your contacts   - Send transactional Emails and SMS   - and much more...  You can download our wrappers at https://github.com/orgs/sendinblue  **Possible responses**   | Code | Message |   | :-------------: | ------------- |   | 200  | OK. Successful Request  |   | 201  | OK. Successful Creation |   | 202  | OK. Request accepted |   | 204  | OK. Successful Update/Deletion  |   | 400  | Error. Bad Request  |   | 401  | Error. Authentication Needed  |   | 402  | Error. Not enough credit, plan upgrade needed  |   | 403  | Error. Permission denied  |   | 404  | Error. Object does not exist |   | 405  | Error. Method not allowed  |   | 406  | Error. Not Acceptable  | 
+ * SendinBlue provide a RESTFul API that can be used with any languages. With this API, you will be able to :   - Manage your campaigns and get the statistics   - Manage your contacts   - Send transactional Emails and SMS   - and much more...  You can download our wrappers at https://github.com/orgs/sendinblue  **Possible responses**   | Code | Message |   | :-------------: | ------------- |   | 200  | OK. Successful Request  |   | 201  | OK. Successful Creation |   | 202  | OK. Request accepted |   | 204  | OK. Successful Update/Deletion  |   | 400  | Error. Bad Request  |   | 401  | Error. Authentication Needed  |   | 402  | Error. Not enough credit, plan upgrade needed  |   | 403  | Error. Permission denied  |   | 404  | Error. Object does not exist |   | 405  | Error. Method not allowed  |   | 406  | Error. Not Acceptable  |
  *
  * The version of the OpenAPI document: 3.0.0
  * Contact: contact@sendinblue.com
@@ -10,7 +10,6 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-
 
 import * as runtime from '../runtime.js';
 import type {
@@ -27,626 +26,758 @@ import type {
   UpdateList,
 } from '../models/index.js';
 import {
-    AddContactToListFromJSON,
-    AddContactToListToJSON,
-    CreateListFromJSON,
-    CreateListToJSON,
-    CreateModelFromJSON,
-    CreateModelToJSON,
-    ErrorModelFromJSON,
-    ErrorModelToJSON,
-    GetContactsFromJSON,
-    GetContactsToJSON,
-    GetExtendedListFromJSON,
-    GetExtendedListToJSON,
-    GetFolderListsFromJSON,
-    GetFolderListsToJSON,
-    GetListsFromJSON,
-    GetListsToJSON,
-    PostContactInfoFromJSON,
-    PostContactInfoToJSON,
-    RemoveContactFromListFromJSON,
-    RemoveContactFromListToJSON,
-    UpdateListFromJSON,
-    UpdateListToJSON,
+  AddContactToListFromJSON,
+  AddContactToListToJSON,
+  CreateListFromJSON,
+  CreateListToJSON,
+  CreateModelFromJSON,
+  CreateModelToJSON,
+  ErrorModelFromJSON,
+  ErrorModelToJSON,
+  GetContactsFromJSON,
+  GetContactsToJSON,
+  GetExtendedListFromJSON,
+  GetExtendedListToJSON,
+  GetFolderListsFromJSON,
+  GetFolderListsToJSON,
+  GetListsFromJSON,
+  GetListsToJSON,
+  PostContactInfoFromJSON,
+  PostContactInfoToJSON,
+  RemoveContactFromListFromJSON,
+  RemoveContactFromListToJSON,
+  UpdateListFromJSON,
+  UpdateListToJSON,
 } from '../models/index.js';
 
 export interface AddContactToListRequest {
-    listId: number;
-    contactEmails: AddContactToList;
+  listId: number;
+  contactEmails: AddContactToList;
 }
 
 export interface CreateListRequest {
-    createList: CreateList;
+  createList: CreateList;
 }
 
 export interface DeleteListRequest {
-    listId: number;
+  listId: number;
 }
 
 export interface GetContactsFromListRequest {
-    listId: number;
-    modifiedSince?: Date;
-    limit?: number;
-    offset?: number;
-    sort?: GetContactsFromListSortEnum;
+  listId: number;
+  modifiedSince?: Date;
+  limit?: number;
+  offset?: number;
+  sort?: GetContactsFromListSortEnum;
 }
 
 export interface GetFolderListsRequest {
-    folderId: number;
-    limit?: number;
-    offset?: number;
-    sort?: GetFolderListsSortEnum;
+  folderId: number;
+  limit?: number;
+  offset?: number;
+  sort?: GetFolderListsSortEnum;
 }
 
 export interface GetListRequest {
-    listId: number;
+  listId: number;
 }
 
 export interface GetListsRequest {
-    limit?: number;
-    offset?: number;
-    sort?: GetListsSortEnum;
+  limit?: number;
+  offset?: number;
+  sort?: GetListsSortEnum;
 }
 
 export interface RemoveContactFromListRequest {
-    listId: number;
-    contactEmails: RemoveContactFromList;
+  listId: number;
+  contactEmails: RemoveContactFromList;
 }
 
 export interface UpdateListRequest {
-    listId: number;
-    updateList: UpdateList;
+  listId: number;
+  updateList: UpdateList;
 }
 
 /**
  * ListsApi - interface
- * 
+ *
  * @export
  * @interface ListsApiInterface
  */
 export interface ListsApiInterface {
-    /**
-     * 
-     * @summary Add existing contacts to a list
-     * @param {number} listId Id of the list
-     * @param {AddContactToList} contactEmails Emails addresses of the contacts
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof ListsApiInterface
-     */
-    addContactToListRaw(requestParameters: AddContactToListRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PostContactInfo>>;
+  /**
+   *
+   * @summary Add existing contacts to a list
+   * @param {number} listId Id of the list
+   * @param {AddContactToList} contactEmails Emails addresses of the contacts
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof ListsApiInterface
+   */
+  addContactToListRaw(
+    requestParameters: AddContactToListRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<PostContactInfo>>;
 
-    /**
-     * Add existing contacts to a list
-     */
-    addContactToList(requestParameters: AddContactToListRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<PostContactInfo>;
+  /**
+   * Add existing contacts to a list
+   */
+  addContactToList(
+    requestParameters: AddContactToListRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<PostContactInfo>;
 
-    /**
-     * 
-     * @summary Create a list
-     * @param {CreateList} createList Values to create a list
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof ListsApiInterface
-     */
-    createListRaw(requestParameters: CreateListRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateModel>>;
+  /**
+   *
+   * @summary Create a list
+   * @param {CreateList} createList Values to create a list
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof ListsApiInterface
+   */
+  createListRaw(
+    requestParameters: CreateListRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<CreateModel>>;
 
-    /**
-     * Create a list
-     */
-    createList(requestParameters: CreateListRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreateModel>;
+  /**
+   * Create a list
+   */
+  createList(requestParameters: CreateListRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreateModel>;
 
-    /**
-     * 
-     * @summary Delete a list
-     * @param {number} listId Id of the list
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof ListsApiInterface
-     */
-    deleteListRaw(requestParameters: DeleteListRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>>;
+  /**
+   *
+   * @summary Delete a list
+   * @param {number} listId Id of the list
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof ListsApiInterface
+   */
+  deleteListRaw(
+    requestParameters: DeleteListRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<void>>;
 
-    /**
-     * Delete a list
-     */
-    deleteList(requestParameters: DeleteListRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void>;
+  /**
+   * Delete a list
+   */
+  deleteList(requestParameters: DeleteListRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void>;
 
-    /**
-     * 
-     * @summary Get contacts in a list
-     * @param {number} listId Id of the list
-     * @param {Date} [modifiedSince] Filter (urlencoded) the contacts modified after a given UTC date-time (YYYY-MM-DDTHH:mm:ss.SSSZ). Prefer to pass your timezone in date-time format for accurate result.
-     * @param {number} [limit] Number of documents per page
-     * @param {number} [offset] Index of the first document of the page
-     * @param {'asc' | 'desc'} [sort] Sort the results in the ascending/descending order of record creation
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof ListsApiInterface
-     */
-    getContactsFromListRaw(requestParameters: GetContactsFromListRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetContacts>>;
+  /**
+   *
+   * @summary Get contacts in a list
+   * @param {number} listId Id of the list
+   * @param {Date} [modifiedSince] Filter (urlencoded) the contacts modified after a given UTC date-time (YYYY-MM-DDTHH:mm:ss.SSSZ). Prefer to pass your timezone in date-time format for accurate result.
+   * @param {number} [limit] Number of documents per page
+   * @param {number} [offset] Index of the first document of the page
+   * @param {'asc' | 'desc'} [sort] Sort the results in the ascending/descending order of record creation
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof ListsApiInterface
+   */
+  getContactsFromListRaw(
+    requestParameters: GetContactsFromListRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<GetContacts>>;
 
-    /**
-     * Get contacts in a list
-     */
-    getContactsFromList(requestParameters: GetContactsFromListRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetContacts>;
+  /**
+   * Get contacts in a list
+   */
+  getContactsFromList(
+    requestParameters: GetContactsFromListRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<GetContacts>;
 
-    /**
-     * 
-     * @summary Get lists in a folder
-     * @param {number} folderId Id of the folder
-     * @param {number} [limit] Number of documents per page
-     * @param {number} [offset] Index of the first document of the page
-     * @param {'asc' | 'desc'} [sort] Sort the results in the ascending/descending order of record creation
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof ListsApiInterface
-     */
-    getFolderListsRaw(requestParameters: GetFolderListsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetFolderLists>>;
+  /**
+   *
+   * @summary Get lists in a folder
+   * @param {number} folderId Id of the folder
+   * @param {number} [limit] Number of documents per page
+   * @param {number} [offset] Index of the first document of the page
+   * @param {'asc' | 'desc'} [sort] Sort the results in the ascending/descending order of record creation
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof ListsApiInterface
+   */
+  getFolderListsRaw(
+    requestParameters: GetFolderListsRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<GetFolderLists>>;
 
-    /**
-     * Get lists in a folder
-     */
-    getFolderLists(requestParameters: GetFolderListsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetFolderLists>;
+  /**
+   * Get lists in a folder
+   */
+  getFolderLists(
+    requestParameters: GetFolderListsRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<GetFolderLists>;
 
-    /**
-     * 
-     * @summary Get a list\'s details
-     * @param {number} listId Id of the list
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof ListsApiInterface
-     */
-    getListRaw(requestParameters: GetListRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetExtendedList>>;
+  /**
+   *
+   * @summary Get a list\'s details
+   * @param {number} listId Id of the list
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof ListsApiInterface
+   */
+  getListRaw(
+    requestParameters: GetListRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<GetExtendedList>>;
 
-    /**
-     * Get a list\'s details
-     */
-    getList(requestParameters: GetListRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetExtendedList>;
+  /**
+   * Get a list\'s details
+   */
+  getList(requestParameters: GetListRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetExtendedList>;
 
-    /**
-     * 
-     * @summary Get all the lists
-     * @param {number} [limit] Number of documents per page
-     * @param {number} [offset] Index of the first document of the page
-     * @param {'asc' | 'desc'} [sort] Sort the results in the ascending/descending order of record creation
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof ListsApiInterface
-     */
-    getListsRaw(requestParameters: GetListsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetLists>>;
+  /**
+   *
+   * @summary Get all the lists
+   * @param {number} [limit] Number of documents per page
+   * @param {number} [offset] Index of the first document of the page
+   * @param {'asc' | 'desc'} [sort] Sort the results in the ascending/descending order of record creation
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof ListsApiInterface
+   */
+  getListsRaw(
+    requestParameters: GetListsRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<GetLists>>;
 
-    /**
-     * Get all the lists
-     */
-    getLists(requestParameters: GetListsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetLists>;
+  /**
+   * Get all the lists
+   */
+  getLists(requestParameters: GetListsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetLists>;
 
-    /**
-     * 
-     * @summary Delete a contact from a list
-     * @param {number} listId Id of the list
-     * @param {RemoveContactFromList} contactEmails Emails adresses of the contact
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof ListsApiInterface
-     */
-    removeContactFromListRaw(requestParameters: RemoveContactFromListRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PostContactInfo>>;
+  /**
+   *
+   * @summary Delete a contact from a list
+   * @param {number} listId Id of the list
+   * @param {RemoveContactFromList} contactEmails Emails adresses of the contact
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof ListsApiInterface
+   */
+  removeContactFromListRaw(
+    requestParameters: RemoveContactFromListRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<PostContactInfo>>;
 
-    /**
-     * Delete a contact from a list
-     */
-    removeContactFromList(requestParameters: RemoveContactFromListRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<PostContactInfo>;
+  /**
+   * Delete a contact from a list
+   */
+  removeContactFromList(
+    requestParameters: RemoveContactFromListRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<PostContactInfo>;
 
-    /**
-     * 
-     * @summary Update a list
-     * @param {number} listId Id of the list
-     * @param {UpdateList} updateList Values to update a list
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof ListsApiInterface
-     */
-    updateListRaw(requestParameters: UpdateListRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>>;
+  /**
+   *
+   * @summary Update a list
+   * @param {number} listId Id of the list
+   * @param {UpdateList} updateList Values to update a list
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof ListsApiInterface
+   */
+  updateListRaw(
+    requestParameters: UpdateListRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<void>>;
 
-    /**
-     * Update a list
-     */
-    updateList(requestParameters: UpdateListRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void>;
-
+  /**
+   * Update a list
+   */
+  updateList(requestParameters: UpdateListRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void>;
 }
 
 /**
- * 
+ *
  */
 export class ListsApi extends runtime.BaseAPI implements ListsApiInterface {
-
-    /**
-     * Add existing contacts to a list
-     */
-    async addContactToListRaw(requestParameters: AddContactToListRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PostContactInfo>> {
-        if (requestParameters.listId === null || requestParameters.listId === undefined) {
-            throw new runtime.RequiredError('listId','Required parameter requestParameters.listId was null or undefined when calling addContactToList.');
-        }
-
-        if (requestParameters.contactEmails === null || requestParameters.contactEmails === undefined) {
-            throw new runtime.RequiredError('contactEmails','Required parameter requestParameters.contactEmails was null or undefined when calling addContactToList.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        if (this.configuration && this.configuration.apiKey) {
-            headerParameters["api-key"] = await this.configuration.apiKey("api-key"); // api-key authentication
-        }
-
-        const response = await this.request({
-            path: `/contacts/lists/{listId}/contacts/add`.replace(`{${"listId"}}`, encodeURIComponent(String(requestParameters.listId))),
-            method: 'POST',
-            headers: headerParameters,
-            query: queryParameters,
-            body: AddContactToListToJSON(requestParameters.contactEmails),
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => PostContactInfoFromJSON(jsonValue));
+  /**
+   * Add existing contacts to a list
+   */
+  async addContactToListRaw(
+    requestParameters: AddContactToListRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<PostContactInfo>> {
+    if (requestParameters.listId === null || requestParameters.listId === undefined) {
+      throw new runtime.RequiredError(
+        'listId',
+        'Required parameter requestParameters.listId was null or undefined when calling addContactToList.',
+      );
     }
 
-    /**
-     * Add existing contacts to a list
-     */
-    async addContactToList(requestParameters: AddContactToListRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<PostContactInfo> {
-        const response = await this.addContactToListRaw(requestParameters, initOverrides);
-        return await response.value();
+    if (requestParameters.contactEmails === null || requestParameters.contactEmails === undefined) {
+      throw new runtime.RequiredError(
+        'contactEmails',
+        'Required parameter requestParameters.contactEmails was null or undefined when calling addContactToList.',
+      );
     }
 
-    /**
-     * Create a list
-     */
-    async createListRaw(requestParameters: CreateListRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateModel>> {
-        if (requestParameters.createList === null || requestParameters.createList === undefined) {
-            throw new runtime.RequiredError('createList','Required parameter requestParameters.createList was null or undefined when calling createList.');
-        }
+    const queryParameters: any = {};
 
-        const queryParameters: any = {};
+    const headerParameters: runtime.HTTPHeaders = {};
 
-        const headerParameters: runtime.HTTPHeaders = {};
+    headerParameters['Content-Type'] = 'application/json';
 
-        headerParameters['Content-Type'] = 'application/json';
-
-        if (this.configuration && this.configuration.apiKey) {
-            headerParameters["api-key"] = await this.configuration.apiKey("api-key"); // api-key authentication
-        }
-
-        const response = await this.request({
-            path: `/contacts/lists`,
-            method: 'POST',
-            headers: headerParameters,
-            query: queryParameters,
-            body: CreateListToJSON(requestParameters.createList),
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => CreateModelFromJSON(jsonValue));
+    if (this.configuration && this.configuration.apiKey) {
+      headerParameters['api-key'] = await this.configuration.apiKey('api-key'); // api-key authentication
     }
 
-    /**
-     * Create a list
-     */
-    async createList(requestParameters: CreateListRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreateModel> {
-        const response = await this.createListRaw(requestParameters, initOverrides);
-        return await response.value();
+    const response = await this.request(
+      {
+        path: `/contacts/lists/{listId}/contacts/add`.replace(`{${'listId'}}`, encodeURIComponent(String(requestParameters.listId))),
+        method: 'POST',
+        headers: headerParameters,
+        query: queryParameters,
+        body: AddContactToListToJSON(requestParameters.contactEmails),
+      },
+      initOverrides,
+    );
+
+    return new runtime.JSONApiResponse(response, (jsonValue) => PostContactInfoFromJSON(jsonValue));
+  }
+
+  /**
+   * Add existing contacts to a list
+   */
+  async addContactToList(
+    requestParameters: AddContactToListRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<PostContactInfo> {
+    const response = await this.addContactToListRaw(requestParameters, initOverrides);
+    return await response.value();
+  }
+
+  /**
+   * Create a list
+   */
+  async createListRaw(
+    requestParameters: CreateListRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<CreateModel>> {
+    if (requestParameters.createList === null || requestParameters.createList === undefined) {
+      throw new runtime.RequiredError(
+        'createList',
+        'Required parameter requestParameters.createList was null or undefined when calling createList.',
+      );
     }
 
-    /**
-     * Delete a list
-     */
-    async deleteListRaw(requestParameters: DeleteListRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.listId === null || requestParameters.listId === undefined) {
-            throw new runtime.RequiredError('listId','Required parameter requestParameters.listId was null or undefined when calling deleteList.');
-        }
+    const queryParameters: any = {};
 
-        const queryParameters: any = {};
+    const headerParameters: runtime.HTTPHeaders = {};
 
-        const headerParameters: runtime.HTTPHeaders = {};
+    headerParameters['Content-Type'] = 'application/json';
 
-        if (this.configuration && this.configuration.apiKey) {
-            headerParameters["api-key"] = await this.configuration.apiKey("api-key"); // api-key authentication
-        }
-
-        const response = await this.request({
-            path: `/contacts/lists/{listId}`.replace(`{${"listId"}}`, encodeURIComponent(String(requestParameters.listId))),
-            method: 'DELETE',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.VoidApiResponse(response);
+    if (this.configuration && this.configuration.apiKey) {
+      headerParameters['api-key'] = await this.configuration.apiKey('api-key'); // api-key authentication
     }
 
-    /**
-     * Delete a list
-     */
-    async deleteList(requestParameters: DeleteListRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this.deleteListRaw(requestParameters, initOverrides);
+    const response = await this.request(
+      {
+        path: `/contacts/lists`,
+        method: 'POST',
+        headers: headerParameters,
+        query: queryParameters,
+        body: CreateListToJSON(requestParameters.createList),
+      },
+      initOverrides,
+    );
+
+    return new runtime.JSONApiResponse(response, (jsonValue) => CreateModelFromJSON(jsonValue));
+  }
+
+  /**
+   * Create a list
+   */
+  async createList(requestParameters: CreateListRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreateModel> {
+    const response = await this.createListRaw(requestParameters, initOverrides);
+    return await response.value();
+  }
+
+  /**
+   * Delete a list
+   */
+  async deleteListRaw(
+    requestParameters: DeleteListRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<void>> {
+    if (requestParameters.listId === null || requestParameters.listId === undefined) {
+      throw new runtime.RequiredError(
+        'listId',
+        'Required parameter requestParameters.listId was null or undefined when calling deleteList.',
+      );
     }
 
-    /**
-     * Get contacts in a list
-     */
-    async getContactsFromListRaw(requestParameters: GetContactsFromListRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetContacts>> {
-        if (requestParameters.listId === null || requestParameters.listId === undefined) {
-            throw new runtime.RequiredError('listId','Required parameter requestParameters.listId was null or undefined when calling getContactsFromList.');
-        }
+    const queryParameters: any = {};
 
-        const queryParameters: any = {};
+    const headerParameters: runtime.HTTPHeaders = {};
 
-        if (requestParameters.modifiedSince !== undefined) {
-            queryParameters['modifiedSince'] = (requestParameters.modifiedSince as any).toISOString();
-        }
-
-        if (requestParameters.limit !== undefined) {
-            queryParameters['limit'] = requestParameters.limit;
-        }
-
-        if (requestParameters.offset !== undefined) {
-            queryParameters['offset'] = requestParameters.offset;
-        }
-
-        if (requestParameters.sort !== undefined) {
-            queryParameters['sort'] = requestParameters.sort;
-        }
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.apiKey) {
-            headerParameters["api-key"] = await this.configuration.apiKey("api-key"); // api-key authentication
-        }
-
-        const response = await this.request({
-            path: `/contacts/lists/{listId}/contacts`.replace(`{${"listId"}}`, encodeURIComponent(String(requestParameters.listId))),
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => GetContactsFromJSON(jsonValue));
+    if (this.configuration && this.configuration.apiKey) {
+      headerParameters['api-key'] = await this.configuration.apiKey('api-key'); // api-key authentication
     }
 
-    /**
-     * Get contacts in a list
-     */
-    async getContactsFromList(requestParameters: GetContactsFromListRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetContacts> {
-        const response = await this.getContactsFromListRaw(requestParameters, initOverrides);
-        return await response.value();
+    const response = await this.request(
+      {
+        path: `/contacts/lists/{listId}`.replace(`{${'listId'}}`, encodeURIComponent(String(requestParameters.listId))),
+        method: 'DELETE',
+        headers: headerParameters,
+        query: queryParameters,
+      },
+      initOverrides,
+    );
+
+    return new runtime.VoidApiResponse(response);
+  }
+
+  /**
+   * Delete a list
+   */
+  async deleteList(requestParameters: DeleteListRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+    await this.deleteListRaw(requestParameters, initOverrides);
+  }
+
+  /**
+   * Get contacts in a list
+   */
+  async getContactsFromListRaw(
+    requestParameters: GetContactsFromListRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<GetContacts>> {
+    if (requestParameters.listId === null || requestParameters.listId === undefined) {
+      throw new runtime.RequiredError(
+        'listId',
+        'Required parameter requestParameters.listId was null or undefined when calling getContactsFromList.',
+      );
     }
 
-    /**
-     * Get lists in a folder
-     */
-    async getFolderListsRaw(requestParameters: GetFolderListsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetFolderLists>> {
-        if (requestParameters.folderId === null || requestParameters.folderId === undefined) {
-            throw new runtime.RequiredError('folderId','Required parameter requestParameters.folderId was null or undefined when calling getFolderLists.');
-        }
+    const queryParameters: any = {};
 
-        const queryParameters: any = {};
-
-        if (requestParameters.limit !== undefined) {
-            queryParameters['limit'] = requestParameters.limit;
-        }
-
-        if (requestParameters.offset !== undefined) {
-            queryParameters['offset'] = requestParameters.offset;
-        }
-
-        if (requestParameters.sort !== undefined) {
-            queryParameters['sort'] = requestParameters.sort;
-        }
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.apiKey) {
-            headerParameters["api-key"] = await this.configuration.apiKey("api-key"); // api-key authentication
-        }
-
-        const response = await this.request({
-            path: `/contacts/folders/{folderId}/lists`.replace(`{${"folderId"}}`, encodeURIComponent(String(requestParameters.folderId))),
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => GetFolderListsFromJSON(jsonValue));
+    if (requestParameters.modifiedSince !== undefined) {
+      queryParameters['modifiedSince'] = (requestParameters.modifiedSince as any).toISOString();
     }
 
-    /**
-     * Get lists in a folder
-     */
-    async getFolderLists(requestParameters: GetFolderListsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetFolderLists> {
-        const response = await this.getFolderListsRaw(requestParameters, initOverrides);
-        return await response.value();
+    if (requestParameters.limit !== undefined) {
+      queryParameters['limit'] = requestParameters.limit;
     }
 
-    /**
-     * Get a list\'s details
-     */
-    async getListRaw(requestParameters: GetListRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetExtendedList>> {
-        if (requestParameters.listId === null || requestParameters.listId === undefined) {
-            throw new runtime.RequiredError('listId','Required parameter requestParameters.listId was null or undefined when calling getList.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.apiKey) {
-            headerParameters["api-key"] = await this.configuration.apiKey("api-key"); // api-key authentication
-        }
-
-        const response = await this.request({
-            path: `/contacts/lists/{listId}`.replace(`{${"listId"}}`, encodeURIComponent(String(requestParameters.listId))),
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => GetExtendedListFromJSON(jsonValue));
+    if (requestParameters.offset !== undefined) {
+      queryParameters['offset'] = requestParameters.offset;
     }
 
-    /**
-     * Get a list\'s details
-     */
-    async getList(requestParameters: GetListRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetExtendedList> {
-        const response = await this.getListRaw(requestParameters, initOverrides);
-        return await response.value();
+    if (requestParameters.sort !== undefined) {
+      queryParameters['sort'] = requestParameters.sort;
     }
 
-    /**
-     * Get all the lists
-     */
-    async getListsRaw(requestParameters: GetListsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetLists>> {
-        const queryParameters: any = {};
+    const headerParameters: runtime.HTTPHeaders = {};
 
-        if (requestParameters.limit !== undefined) {
-            queryParameters['limit'] = requestParameters.limit;
-        }
-
-        if (requestParameters.offset !== undefined) {
-            queryParameters['offset'] = requestParameters.offset;
-        }
-
-        if (requestParameters.sort !== undefined) {
-            queryParameters['sort'] = requestParameters.sort;
-        }
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.apiKey) {
-            headerParameters["api-key"] = await this.configuration.apiKey("api-key"); // api-key authentication
-        }
-
-        const response = await this.request({
-            path: `/contacts/lists`,
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => GetListsFromJSON(jsonValue));
+    if (this.configuration && this.configuration.apiKey) {
+      headerParameters['api-key'] = await this.configuration.apiKey('api-key'); // api-key authentication
     }
 
-    /**
-     * Get all the lists
-     */
-    async getLists(requestParameters: GetListsRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetLists> {
-        const response = await this.getListsRaw(requestParameters, initOverrides);
-        return await response.value();
+    const response = await this.request(
+      {
+        path: `/contacts/lists/{listId}/contacts`.replace(`{${'listId'}}`, encodeURIComponent(String(requestParameters.listId))),
+        method: 'GET',
+        headers: headerParameters,
+        query: queryParameters,
+      },
+      initOverrides,
+    );
+
+    return new runtime.JSONApiResponse(response, (jsonValue) => GetContactsFromJSON(jsonValue));
+  }
+
+  /**
+   * Get contacts in a list
+   */
+  async getContactsFromList(
+    requestParameters: GetContactsFromListRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<GetContacts> {
+    const response = await this.getContactsFromListRaw(requestParameters, initOverrides);
+    return await response.value();
+  }
+
+  /**
+   * Get lists in a folder
+   */
+  async getFolderListsRaw(
+    requestParameters: GetFolderListsRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<GetFolderLists>> {
+    if (requestParameters.folderId === null || requestParameters.folderId === undefined) {
+      throw new runtime.RequiredError(
+        'folderId',
+        'Required parameter requestParameters.folderId was null or undefined when calling getFolderLists.',
+      );
     }
 
-    /**
-     * Delete a contact from a list
-     */
-    async removeContactFromListRaw(requestParameters: RemoveContactFromListRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PostContactInfo>> {
-        if (requestParameters.listId === null || requestParameters.listId === undefined) {
-            throw new runtime.RequiredError('listId','Required parameter requestParameters.listId was null or undefined when calling removeContactFromList.');
-        }
+    const queryParameters: any = {};
 
-        if (requestParameters.contactEmails === null || requestParameters.contactEmails === undefined) {
-            throw new runtime.RequiredError('contactEmails','Required parameter requestParameters.contactEmails was null or undefined when calling removeContactFromList.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        if (this.configuration && this.configuration.apiKey) {
-            headerParameters["api-key"] = await this.configuration.apiKey("api-key"); // api-key authentication
-        }
-
-        const response = await this.request({
-            path: `/contacts/lists/{listId}/contacts/remove`.replace(`{${"listId"}}`, encodeURIComponent(String(requestParameters.listId))),
-            method: 'POST',
-            headers: headerParameters,
-            query: queryParameters,
-            body: RemoveContactFromListToJSON(requestParameters.contactEmails),
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => PostContactInfoFromJSON(jsonValue));
+    if (requestParameters.limit !== undefined) {
+      queryParameters['limit'] = requestParameters.limit;
     }
 
-    /**
-     * Delete a contact from a list
-     */
-    async removeContactFromList(requestParameters: RemoveContactFromListRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<PostContactInfo> {
-        const response = await this.removeContactFromListRaw(requestParameters, initOverrides);
-        return await response.value();
+    if (requestParameters.offset !== undefined) {
+      queryParameters['offset'] = requestParameters.offset;
     }
 
-    /**
-     * Update a list
-     */
-    async updateListRaw(requestParameters: UpdateListRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.listId === null || requestParameters.listId === undefined) {
-            throw new runtime.RequiredError('listId','Required parameter requestParameters.listId was null or undefined when calling updateList.');
-        }
-
-        if (requestParameters.updateList === null || requestParameters.updateList === undefined) {
-            throw new runtime.RequiredError('updateList','Required parameter requestParameters.updateList was null or undefined when calling updateList.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        if (this.configuration && this.configuration.apiKey) {
-            headerParameters["api-key"] = await this.configuration.apiKey("api-key"); // api-key authentication
-        }
-
-        const response = await this.request({
-            path: `/contacts/lists/{listId}`.replace(`{${"listId"}}`, encodeURIComponent(String(requestParameters.listId))),
-            method: 'PUT',
-            headers: headerParameters,
-            query: queryParameters,
-            body: UpdateListToJSON(requestParameters.updateList),
-        }, initOverrides);
-
-        return new runtime.VoidApiResponse(response);
+    if (requestParameters.sort !== undefined) {
+      queryParameters['sort'] = requestParameters.sort;
     }
 
-    /**
-     * Update a list
-     */
-    async updateList(requestParameters: UpdateListRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this.updateListRaw(requestParameters, initOverrides);
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    if (this.configuration && this.configuration.apiKey) {
+      headerParameters['api-key'] = await this.configuration.apiKey('api-key'); // api-key authentication
     }
 
+    const response = await this.request(
+      {
+        path: `/contacts/folders/{folderId}/lists`.replace(`{${'folderId'}}`, encodeURIComponent(String(requestParameters.folderId))),
+        method: 'GET',
+        headers: headerParameters,
+        query: queryParameters,
+      },
+      initOverrides,
+    );
+
+    return new runtime.JSONApiResponse(response, (jsonValue) => GetFolderListsFromJSON(jsonValue));
+  }
+
+  /**
+   * Get lists in a folder
+   */
+  async getFolderLists(
+    requestParameters: GetFolderListsRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<GetFolderLists> {
+    const response = await this.getFolderListsRaw(requestParameters, initOverrides);
+    return await response.value();
+  }
+
+  /**
+   * Get a list\'s details
+   */
+  async getListRaw(
+    requestParameters: GetListRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<GetExtendedList>> {
+    if (requestParameters.listId === null || requestParameters.listId === undefined) {
+      throw new runtime.RequiredError('listId', 'Required parameter requestParameters.listId was null or undefined when calling getList.');
+    }
+
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    if (this.configuration && this.configuration.apiKey) {
+      headerParameters['api-key'] = await this.configuration.apiKey('api-key'); // api-key authentication
+    }
+
+    const response = await this.request(
+      {
+        path: `/contacts/lists/{listId}`.replace(`{${'listId'}}`, encodeURIComponent(String(requestParameters.listId))),
+        method: 'GET',
+        headers: headerParameters,
+        query: queryParameters,
+      },
+      initOverrides,
+    );
+
+    return new runtime.JSONApiResponse(response, (jsonValue) => GetExtendedListFromJSON(jsonValue));
+  }
+
+  /**
+   * Get a list\'s details
+   */
+  async getList(requestParameters: GetListRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetExtendedList> {
+    const response = await this.getListRaw(requestParameters, initOverrides);
+    return await response.value();
+  }
+
+  /**
+   * Get all the lists
+   */
+  async getListsRaw(
+    requestParameters: GetListsRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<GetLists>> {
+    const queryParameters: any = {};
+
+    if (requestParameters.limit !== undefined) {
+      queryParameters['limit'] = requestParameters.limit;
+    }
+
+    if (requestParameters.offset !== undefined) {
+      queryParameters['offset'] = requestParameters.offset;
+    }
+
+    if (requestParameters.sort !== undefined) {
+      queryParameters['sort'] = requestParameters.sort;
+    }
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    if (this.configuration && this.configuration.apiKey) {
+      headerParameters['api-key'] = await this.configuration.apiKey('api-key'); // api-key authentication
+    }
+
+    const response = await this.request(
+      {
+        path: `/contacts/lists`,
+        method: 'GET',
+        headers: headerParameters,
+        query: queryParameters,
+      },
+      initOverrides,
+    );
+
+    return new runtime.JSONApiResponse(response, (jsonValue) => GetListsFromJSON(jsonValue));
+  }
+
+  /**
+   * Get all the lists
+   */
+  async getLists(requestParameters: GetListsRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetLists> {
+    const response = await this.getListsRaw(requestParameters, initOverrides);
+    return await response.value();
+  }
+
+  /**
+   * Delete a contact from a list
+   */
+  async removeContactFromListRaw(
+    requestParameters: RemoveContactFromListRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<PostContactInfo>> {
+    if (requestParameters.listId === null || requestParameters.listId === undefined) {
+      throw new runtime.RequiredError(
+        'listId',
+        'Required parameter requestParameters.listId was null or undefined when calling removeContactFromList.',
+      );
+    }
+
+    if (requestParameters.contactEmails === null || requestParameters.contactEmails === undefined) {
+      throw new runtime.RequiredError(
+        'contactEmails',
+        'Required parameter requestParameters.contactEmails was null or undefined when calling removeContactFromList.',
+      );
+    }
+
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    headerParameters['Content-Type'] = 'application/json';
+
+    if (this.configuration && this.configuration.apiKey) {
+      headerParameters['api-key'] = await this.configuration.apiKey('api-key'); // api-key authentication
+    }
+
+    const response = await this.request(
+      {
+        path: `/contacts/lists/{listId}/contacts/remove`.replace(`{${'listId'}}`, encodeURIComponent(String(requestParameters.listId))),
+        method: 'POST',
+        headers: headerParameters,
+        query: queryParameters,
+        body: RemoveContactFromListToJSON(requestParameters.contactEmails),
+      },
+      initOverrides,
+    );
+
+    return new runtime.JSONApiResponse(response, (jsonValue) => PostContactInfoFromJSON(jsonValue));
+  }
+
+  /**
+   * Delete a contact from a list
+   */
+  async removeContactFromList(
+    requestParameters: RemoveContactFromListRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<PostContactInfo> {
+    const response = await this.removeContactFromListRaw(requestParameters, initOverrides);
+    return await response.value();
+  }
+
+  /**
+   * Update a list
+   */
+  async updateListRaw(
+    requestParameters: UpdateListRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<void>> {
+    if (requestParameters.listId === null || requestParameters.listId === undefined) {
+      throw new runtime.RequiredError(
+        'listId',
+        'Required parameter requestParameters.listId was null or undefined when calling updateList.',
+      );
+    }
+
+    if (requestParameters.updateList === null || requestParameters.updateList === undefined) {
+      throw new runtime.RequiredError(
+        'updateList',
+        'Required parameter requestParameters.updateList was null or undefined when calling updateList.',
+      );
+    }
+
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    headerParameters['Content-Type'] = 'application/json';
+
+    if (this.configuration && this.configuration.apiKey) {
+      headerParameters['api-key'] = await this.configuration.apiKey('api-key'); // api-key authentication
+    }
+
+    const response = await this.request(
+      {
+        path: `/contacts/lists/{listId}`.replace(`{${'listId'}}`, encodeURIComponent(String(requestParameters.listId))),
+        method: 'PUT',
+        headers: headerParameters,
+        query: queryParameters,
+        body: UpdateListToJSON(requestParameters.updateList),
+      },
+      initOverrides,
+    );
+
+    return new runtime.VoidApiResponse(response);
+  }
+
+  /**
+   * Update a list
+   */
+  async updateList(requestParameters: UpdateListRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+    await this.updateListRaw(requestParameters, initOverrides);
+  }
 }
 
 /**
-  * @export
-  * @enum {string}
-  */
+ * @export
+ * @enum {string}
+ */
 export enum GetContactsFromListSortEnum {
-    Asc = 'asc',
-    Desc = 'desc'
+  Asc = 'asc',
+  Desc = 'desc',
 }
 /**
-  * @export
-  * @enum {string}
-  */
+ * @export
+ * @enum {string}
+ */
 export enum GetFolderListsSortEnum {
-    Asc = 'asc',
-    Desc = 'desc'
+  Asc = 'asc',
+  Desc = 'desc',
 }
 /**
-  * @export
-  * @enum {string}
-  */
+ * @export
+ * @enum {string}
+ */
 export enum GetListsSortEnum {
-    Asc = 'asc',
-    Desc = 'desc'
+  Asc = 'asc',
+  Desc = 'desc',
 }

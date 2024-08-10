@@ -51,7 +51,6 @@ describe('#routerUtilApplyOpenApiDoc', function () {
     expect(outString).toEqual('/meta/item/:itemId');
   });
 
-
   test('should redact authorization values from events for logging', function () {
     const inputEvent: any = {
       authorization: {

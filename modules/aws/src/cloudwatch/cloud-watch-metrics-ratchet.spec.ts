@@ -3,7 +3,7 @@ import { CloudWatchMetricsRatchet } from './cloud-watch-metrics-ratchet.js';
 import { CloudWatchClient, PutMetricDataCommand, StandardUnit } from '@aws-sdk/client-cloudwatch';
 import { mockClient } from 'aws-sdk-client-mock';
 import { expect, test, describe, vi, beforeEach } from 'vitest';
-import { KeyValue } from "@bitblit/ratchet-common/lang/key-value";
+import { KeyValue } from '@bitblit/ratchet-common/lang/key-value';
 
 let mockCW;
 

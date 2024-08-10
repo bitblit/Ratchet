@@ -1,10 +1,10 @@
-import { APIGatewayEvent, APIGatewayEventRequestContext } from "aws-lambda";
-import { EventUtil } from "./event-util.js";
-import { BasicAuthToken } from "./auth/basic-auth-token.js";
-import fs from "fs";
-import path from "path";
-import { EsmRatchet } from "@bitblit/ratchet-common/lang/esm-ratchet";
-import { describe, expect, test } from "vitest";
+import { APIGatewayEvent, APIGatewayEventRequestContext } from 'aws-lambda';
+import { EventUtil } from './event-util.js';
+import { BasicAuthToken } from './auth/basic-auth-token.js';
+import fs from 'fs';
+import path from 'path';
+import { EsmRatchet } from '@bitblit/ratchet-common/lang/esm-ratchet';
+import { describe, expect, test } from 'vitest';
 
 describe('#eventUtil', function () {
   test('should extract pieces', function () {

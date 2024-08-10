@@ -1,10 +1,10 @@
 import fs from 'fs';
 import { CiRunInformation } from './ci-run-information.js';
 import { CiRunInformationUtil } from './ci-run-information-util.js';
-import { RequireRatchet } from "@bitblit/ratchet-common/lang/require-ratchet";
-import { Logger } from "@bitblit/ratchet-common/logger/logger";
-import { ErrorRatchet } from "@bitblit/ratchet-common/lang/error-ratchet";
-import { StringRatchet } from "@bitblit/ratchet-common/lang/string-ratchet";
+import { RequireRatchet } from '@bitblit/ratchet-common/lang/require-ratchet';
+import { Logger } from '@bitblit/ratchet-common/logger/logger';
+import { ErrorRatchet } from '@bitblit/ratchet-common/lang/error-ratchet';
+import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet';
 
 export class ApplyCiEnvVariablesToFiles {
   public static async process(
@@ -14,7 +14,7 @@ export class ApplyCiEnvVariablesToFiles {
     branchFinder = 'LOCAL-BRANCH',
     hashFinder = 'LOCAL-HASH',
     tagFinder = 'LOCAL-TAG',
-    timeFinder = 'LOCAL-TIME'
+    timeFinder = 'LOCAL-TIME',
   ): Promise<number> {
     RequireRatchet.notNullOrUndefined(cfg, 'cfg');
     RequireRatchet.notNullOrUndefined(cfg.buildNumber, 'cfg.buildNumber');

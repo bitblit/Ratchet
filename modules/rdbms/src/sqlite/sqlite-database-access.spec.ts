@@ -1,32 +1,33 @@
-import { describe, expect, test } from "vitest";
-import { SqliteStyleConnectionProvider } from "./sqlite-style-connection-provider.js";
-import * as path from "node:path";
-import { NamedParameterDatabaseService } from "../service/named-parameter-database-service.js";
-import { Logger } from "@bitblit/ratchet-common/logger/logger";
-import { SimpleQueryTextProvider } from "../model/simple-query-text-provider.js";
-import { ModifyResults } from "../model/modify-results.js";
-import { RequestResults } from "../model/request-results.js";
+import { describe, expect, test } from 'vitest';
+import { SqliteStyleConnectionProvider } from './sqlite-style-connection-provider.js';
+import * as path from 'node:path';
+import { NamedParameterDatabaseService } from '../service/named-parameter-database-service.js';
+import { Logger } from '@bitblit/ratchet-common/logger/logger';
+import { SimpleQueryTextProvider } from '../model/simple-query-text-provider.js';
+import { ModifyResults } from '../model/modify-results.js';
+import { RequestResults } from '../model/request-results.js';
 
 describe('sqlite-database-access', () => {
   test.skip('builds filtered', async () => {
-    const prov: SqliteStyleConnectionProvider = new SqliteStyleConnectionProvider(()=>{
+    const prov: SqliteStyleConnectionProvider = new SqliteStyleConnectionProvider(() => {
       return Promise.resolve({
-        dbList: [{
-          label: 'test',
-          filePath: path.join(process.env['SQLITE_HOME'],'ratchet-test.db')
-        }]
-      })
+        dbList: [
+          {
+            label: 'test',
+            filePath: path.join(process.env['SQLITE_HOME'], 'ratchet-test.db'),
+          },
+        ],
+      });
     });
     const ns: NamedParameterDatabaseService = new NamedParameterDatabaseService({
       serviceName: 'Test',
-      queryProvider: new SimpleQueryTextProvider({default:'SELECT * FROM TICKETS WHERE ticket_state IN (:ticketStateList)'}),
+      queryProvider: new SimpleQueryTextProvider({ default: 'SELECT * FROM TICKETS WHERE ticket_state IN (:ticketStateList)' }),
       connectionProvider: prov,
-      queryDefaults: { databaseName: 'test', timeoutMS: 20_000},
+      queryDefaults: { databaseName: 'test', timeoutMS: 20_000 },
       longQueryTimeMs: 8_500,
     });
 
-    const res: any[] = await ns.buildAndExecute<any>(ns.queryBuilder('default').withParams({ticketStateList: ['New','Complete']}));
-
+    const res: any[] = await ns.buildAndExecute<any>(ns.queryBuilder('default').withParams({ ticketStateList: ['New', 'Complete'] }));
 
     Logger.info('Get: %j', res);
 
@@ -34,19 +35,25 @@ describe('sqlite-database-access', () => {
   });
   test('handles apostrophes in multi-value inserts', async () => {
     // Memory database
-    const prov: SqliteStyleConnectionProvider = new SqliteStyleConnectionProvider(()=>{
+    const prov: SqliteStyleConnectionProvider = new SqliteStyleConnectionProvider(() => {
       return Promise.resolve({
-        dbList: [{
-          label: 'test'
-        }]
-      })
+        dbList: [
+          {
+            label: 'test',
+          },
+        ],
+      });
     });
     const ns: NamedParameterDatabaseService = new NamedParameterDatabaseService({
       serviceName: 'Test',
-      queryProvider: new SimpleQueryTextProvider({create:'create table testable (val varchar(255))', singleIns: 'insert into testable (val) values (:val)',
-      counter: 'select count(1) as cnt from testable', multi: 'insert into testable (val) values :multiVal'}),
+      queryProvider: new SimpleQueryTextProvider({
+        create: 'create table testable (val varchar(255))',
+        singleIns: 'insert into testable (val) values (:val)',
+        counter: 'select count(1) as cnt from testable',
+        multi: 'insert into testable (val) values :multiVal',
+      }),
       connectionProvider: prov,
-      queryDefaults: { databaseName: 'test', timeoutMS: 20_000},
+      queryDefaults: { databaseName: 'test', timeoutMS: 20_000 },
       longQueryTimeMs: 8_500,
     });
 
@@ -54,19 +61,19 @@ describe('sqlite-database-access', () => {
     const createRes: any = await ns.executeUpdateOrInsertByName('create');
 
     // Test single
-    const singleIns: ModifyResults = await ns.executeUpdateOrInsertByName('singleIns', {val: 'val1'});
+    const singleIns: ModifyResults = await ns.executeUpdateOrInsertByName('singleIns', { val: 'val1' });
 
     const singleCount: RequestResults<any> = await ns.executeQueryByNameSingle('counter', {});
 
     expect(singleCount['cnt']).toEqual(1);
 
-    const multiIns: ModifyResults = await ns.executeUpdateOrInsertByName('multi', {multiVal: [['val\'s are 2'],['val3']]});
+    const multiIns: ModifyResults = await ns.executeUpdateOrInsertByName('multi', { multiVal: [["val's are 2"], ['val3']] });
 
     const multiCount: RequestResults<any> = await ns.executeQueryByNameSingle('counter', {});
 
     expect(multiCount['cnt']).toEqual(3);
 
-    const multiIns2: ModifyResults = await ns.executeUpdateOrInsertByName('multi', {multiVal: [['multi\'s apo\'s']]});
+    const multiIns2: ModifyResults = await ns.executeUpdateOrInsertByName('multi', { multiVal: [["multi's apo's"]] });
 
     const multiCount2: RequestResults<any> = await ns.executeQueryByNameSingle('counter', {});
 

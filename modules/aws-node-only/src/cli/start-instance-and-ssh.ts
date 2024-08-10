@@ -1,10 +1,10 @@
-import { Logger } from "@bitblit/ratchet-common/logger/logger";
-import { Ec2Ratchet } from "@bitblit/ratchet-aws/ec2/ec2-ratchet";
-import { spawnSync, SpawnSyncReturns } from "child_process";
-import os from "os";
-import path from "path";
-import { Instance } from "@aws-sdk/client-ec2";
-import { Ec2InstanceUtil } from "../ec2/ec2-instance-util.js";
+import { Logger } from '@bitblit/ratchet-common/logger/logger';
+import { Ec2Ratchet } from '@bitblit/ratchet-aws/ec2/ec2-ratchet';
+import { spawnSync, SpawnSyncReturns } from 'child_process';
+import os from 'os';
+import path from 'path';
+import { Instance } from '@aws-sdk/client-ec2';
+import { Ec2InstanceUtil } from '../ec2/ec2-instance-util.js';
 
 export class StartInstanceAndSsh {
   private instanceId: string;
@@ -20,7 +20,7 @@ export class StartInstanceAndSsh {
     publicKeyFile: string = path.join(os.homedir(), '.ssh', 'id_rsa.pub'),
     instanceOsUser: string = 'ec2-user',
     region: string = 'us-east-1',
-    availabilityZone: string = 'us-east-1a'
+    availabilityZone: string = 'us-east-1a',
   ) {
     this.instanceId = instanceId;
     this.publicKeyFile = publicKeyFile;
@@ -51,13 +51,17 @@ export class StartInstanceAndSsh {
 
   public async run(): Promise<any> {
     //return new Promise<any>(async (res, rej) => {
-    const instance: Instance = await this.instanceUtil.startInstanceAndUploadPublicKeyFile(this.instanceId, this.publicKeyFile, this.instanceOsUser);
+    const instance: Instance = await this.instanceUtil.startInstanceAndUploadPublicKeyFile(
+      this.instanceId,
+      this.publicKeyFile,
+      this.instanceOsUser,
+    );
     if (instance) {
-        Logger.info('Instance IP address is %s', instance.PublicIpAddress);
-        const ret: SpawnSyncReturns<Buffer> = spawnSync('ssh', [this.instanceOsUser + '@' + instance.PublicIpAddress], {
-          stdio: 'inherit',
-        });
-        Logger.info('%j', ret);
+      Logger.info('Instance IP address is %s', instance.PublicIpAddress);
+      const ret: SpawnSyncReturns<Buffer> = spawnSync('ssh', [this.instanceOsUser + '@' + instance.PublicIpAddress], {
+        stdio: 'inherit',
+      });
+      Logger.info('%j', ret);
     } else {
       Logger.info('No such instance found - check your AWS keys? : %s', this.instanceId);
     }

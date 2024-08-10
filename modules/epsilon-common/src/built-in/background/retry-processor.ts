@@ -1,15 +1,18 @@
-import { BackgroundProcessor } from "../../config/background/background-processor.js";
-import { BackgroundManagerLike } from "../../background/manager/background-manager-like.js";
-import { Logger } from "@bitblit/ratchet-common/logger/logger";
-import { PromiseRatchet } from "@bitblit/ratchet-common/lang/promise-ratchet";
-import { StringRatchet } from "@bitblit/ratchet-common/lang/string-ratchet";
-import { NumberRatchet } from "@bitblit/ratchet-common/lang/number-ratchet";
-import { DurationRatchet } from "@bitblit/ratchet-common/lang/duration-ratchet";
+import { BackgroundProcessor } from '../../config/background/background-processor.js';
+import { BackgroundManagerLike } from '../../background/manager/background-manager-like.js';
+import { Logger } from '@bitblit/ratchet-common/logger/logger';
+import { PromiseRatchet } from '@bitblit/ratchet-common/lang/promise-ratchet';
+import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet';
+import { NumberRatchet } from '@bitblit/ratchet-common/lang/number-ratchet';
+import { DurationRatchet } from '@bitblit/ratchet-common/lang/duration-ratchet';
 
 export class RetryProcessor implements BackgroundProcessor<any> {
   private static readonly RETRY_FIELD_NAME: string = '___RetryProcessorTryNumber';
 
-  constructor(private delegate: BackgroundProcessor<any>, private opts: RetryProcessorOptions) {}
+  constructor(
+    private delegate: BackgroundProcessor<any>,
+    private opts: RetryProcessorOptions,
+  ) {}
 
   public get typeName(): string {
     return StringRatchet.trimToEmpty(this.opts?.typePrefix) + this.delegate.typeName + StringRatchet.trimToEmpty(this.opts?.typeSuffix);

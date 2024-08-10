@@ -1,10 +1,10 @@
-import { RequireRatchet } from "@bitblit/ratchet-common/lang/require-ratchet";
-import { Logger } from "@bitblit/ratchet-common/logger/logger";
-import { StringRatchet } from "@bitblit/ratchet-common/lang/string-ratchet";
-import { DynamoRatchet } from "../dynamo-ratchet.js";
-import { DeleteCommandOutput, PutCommand, PutCommandOutput, ScanCommandInput } from "@aws-sdk/lib-dynamodb";
-import { SyncLockProvider } from "../../sync-lock/sync-lock-provider.js";
-import { ConditionalCheckFailedException, ReturnConsumedCapacity } from "@aws-sdk/client-dynamodb";
+import { RequireRatchet } from '@bitblit/ratchet-common/lang/require-ratchet';
+import { Logger } from '@bitblit/ratchet-common/logger/logger';
+import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet';
+import { DynamoRatchet } from '../dynamo-ratchet.js';
+import { DeleteCommandOutput, PutCommand, PutCommandOutput, ScanCommandInput } from '@aws-sdk/lib-dynamodb';
+import { SyncLockProvider } from '../../sync-lock/sync-lock-provider.js';
+import { ConditionalCheckFailedException, ReturnConsumedCapacity } from '@aws-sdk/client-dynamodb';
 
 export class DynamoDbSyncLock implements SyncLockProvider {
   constructor(

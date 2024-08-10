@@ -1,8 +1,6 @@
-import { WardenContactType } from "@bitblit/ratchet-warden-common/common/model/warden-contact-type";
-import { WardenContact } from "@bitblit/ratchet-warden-common/common/model/warden-contact";
-import {
-  WardenCustomTemplateDescriptor
-} from "@bitblit/ratchet-warden-common/common/command/warden-custom-template-descriptor";
+import { WardenContactType } from '@bitblit/ratchet-warden-common/common/model/warden-contact-type';
+import { WardenContact } from '@bitblit/ratchet-warden-common/common/model/warden-contact';
+import { WardenCustomTemplateDescriptor } from '@bitblit/ratchet-warden-common/common/command/warden-custom-template-descriptor';
 
 /**
  * Classes implementing WardenSingleUseCodeProvider are able to

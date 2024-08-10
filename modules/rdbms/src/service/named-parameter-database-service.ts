@@ -1,21 +1,21 @@
-import { Logger } from "@bitblit/ratchet-common/logger/logger";
-import { ErrorRatchet } from "@bitblit/ratchet-common/lang/error-ratchet";
-import { PromiseRatchet } from "@bitblit/ratchet-common/lang/promise-ratchet";
-import { StopWatch } from "@bitblit/ratchet-common/lang/stop-watch";
-import { TimeoutToken } from "@bitblit/ratchet-common/lang/timeout-token";
-import { DurationRatchet } from "@bitblit/ratchet-common/lang/duration-ratchet";
-import { QueryUtil } from "../query-builder/query-util.js";
-import { TransactionIsolationLevel } from "../model/transaction-isolation-level.js";
-import { QueryBuilder } from "../query-builder/query-builder.js";
-import { GroupByCountResult } from "../model/group-by-count-result.js";
-import { QueryDefaults } from "../model/query-defaults.js";
-import { QueryTextProvider } from "../model/query-text-provider.js";
-import { ModifyResults } from "../model/modify-results.js";
-import { DatabaseAccessProvider } from "../model/database-access-provider.js";
-import { DatabaseAccess } from "../model/database-access.js";
-import { RequestResults } from "../model/request-results.js";
-import { DatabaseRequestType } from "../model/database-request-type.js";
-import { NamedParameterDatabaseServiceConfig } from "../model/named-parameter-database-service-config.js";
+import { Logger } from '@bitblit/ratchet-common/logger/logger';
+import { ErrorRatchet } from '@bitblit/ratchet-common/lang/error-ratchet';
+import { PromiseRatchet } from '@bitblit/ratchet-common/lang/promise-ratchet';
+import { StopWatch } from '@bitblit/ratchet-common/lang/stop-watch';
+import { TimeoutToken } from '@bitblit/ratchet-common/lang/timeout-token';
+import { DurationRatchet } from '@bitblit/ratchet-common/lang/duration-ratchet';
+import { QueryUtil } from '../query-builder/query-util.js';
+import { TransactionIsolationLevel } from '../model/transaction-isolation-level.js';
+import { QueryBuilder } from '../query-builder/query-builder.js';
+import { GroupByCountResult } from '../model/group-by-count-result.js';
+import { QueryDefaults } from '../model/query-defaults.js';
+import { QueryTextProvider } from '../model/query-text-provider.js';
+import { ModifyResults } from '../model/modify-results.js';
+import { DatabaseAccessProvider } from '../model/database-access-provider.js';
+import { DatabaseAccess } from '../model/database-access.js';
+import { RequestResults } from '../model/request-results.js';
+import { DatabaseRequestType } from '../model/database-request-type.js';
+import { NamedParameterDatabaseServiceConfig } from '../model/named-parameter-database-service-config.js';
 
 /**
  * Service to simplify talking to any Mysql dialect system
@@ -32,10 +32,7 @@ import { NamedParameterDatabaseServiceConfig } from "../model/named-parameter-da
  */
 
 export class NamedParameterDatabaseService {
-
-  constructor(
-    private cfg: NamedParameterDatabaseServiceConfig
-  ) {
+  constructor(private cfg: NamedParameterDatabaseServiceConfig) {
     cfg.serviceName = cfg.serviceName ?? 'NamedParameterDatabaseService';
     cfg.logger = cfg.logger || Logger.getLogger();
     Logger.info('NamedParameterDatabaseService using logger %s at %s', cfg.logger.guid, cfg.logger.level);
@@ -45,7 +42,7 @@ export class NamedParameterDatabaseService {
     return this.cfg;
   }
 
-  public nonPooledExtraConfiguration(): Record<string,any> {
+  public nonPooledExtraConfiguration(): Record<string, any> {
     return null;
   }
 
@@ -57,7 +54,6 @@ export class NamedParameterDatabaseService {
     return this.cfg.connectionProvider;
   }
 
-
   public getQueryDefaults(): QueryDefaults {
     return this.cfg.queryDefaults;
   }
@@ -68,7 +64,7 @@ export class NamedParameterDatabaseService {
 
   public async createNonPooledDatabaseAccess(
     queryDefaults: QueryDefaults,
-    additionalConfig?: Record<string,any>
+    additionalConfig?: Record<string, any>,
   ): Promise<DatabaseAccess> {
     this.cfg.logger.info('createTransactional :  %s : %j', queryDefaults, additionalConfig);
     if (!this.cfg.connectionProvider.createNonPooledDatabaseAccess) {
@@ -96,7 +92,7 @@ export class NamedParameterDatabaseService {
   public async executeUpdateOrInsertByName(
     queryPath: string,
     params?: object,
-    timeoutMS: number = this.cfg.queryDefaults.timeoutMS
+    timeoutMS: number = this.cfg.queryDefaults.timeoutMS,
   ): Promise<ModifyResults> {
     const builder = this.queryBuilder(queryPath).withParams(params ?? {});
     return this.buildAndExecuteUpdateOrInsert(builder, timeoutMS);
@@ -104,7 +100,7 @@ export class NamedParameterDatabaseService {
 
   public async buildAndExecuteUpdateOrInsert(
     queryBuilder: QueryBuilder,
-    timeoutMS: number = this.cfg.queryDefaults.timeoutMS
+    timeoutMS: number = this.cfg.queryDefaults.timeoutMS,
   ): Promise<ModifyResults> {
     const build = queryBuilder.build();
     const resp = await this.executeQueryWithMeta<ModifyResults>(
@@ -112,7 +108,7 @@ export class NamedParameterDatabaseService {
       build.transactionIsolationLevel,
       build.query,
       build.namedParams,
-      timeoutMS
+      timeoutMS,
     );
     const rval = resp.results;
     return rval;
@@ -121,7 +117,7 @@ export class NamedParameterDatabaseService {
   public async buildAndExecuteUpdateOrInsertWithRetry(
     queryBuilder: QueryBuilder,
     maxRetries: number,
-    timeoutMS: number = this.cfg.queryDefaults.timeoutMS
+    timeoutMS: number = this.cfg.queryDefaults.timeoutMS,
   ): Promise<ModifyResults> {
     let retry = 0;
     let res: ModifyResults | undefined;
@@ -145,7 +141,7 @@ export class NamedParameterDatabaseService {
   public async executeQueryByName<Row>(
     queryPath: string,
     params: object,
-    timeoutMS: number = this.cfg.queryDefaults.timeoutMS
+    timeoutMS: number = this.cfg.queryDefaults.timeoutMS,
   ): Promise<Row[]> {
     const builder = this.queryBuilder(queryPath).withParams(params);
     const resp: Row[] = await this.buildAndExecute(builder, timeoutMS);
@@ -155,7 +151,7 @@ export class NamedParameterDatabaseService {
   public async executeQueryByNameSingle<Row>(
     queryPath: string,
     params: object,
-    timeoutMS: number = this.cfg.queryDefaults.timeoutMS
+    timeoutMS: number = this.cfg.queryDefaults.timeoutMS,
   ): Promise<Row | null> {
     const builder = this.queryBuilder(queryPath).withParams(params);
     const resp = await this.buildAndExecute<Row>(builder, timeoutMS);
@@ -170,14 +166,14 @@ export class NamedParameterDatabaseService {
       build.query,
       build.namedParams,
       timeoutMS,
-      queryBuilder.getDebugComment()
+      queryBuilder.getDebugComment(),
     );
     return resp.results;
   }
 
   public async buildAndExecuteSingle<Row>(
     queryBuilder: QueryBuilder,
-    timeoutMS: number = this.cfg.queryDefaults.timeoutMS
+    timeoutMS: number = this.cfg.queryDefaults.timeoutMS,
   ): Promise<Row | null> {
     const build = queryBuilder.build();
     const resp = await this.executeQueryWithMeta<Row[]>(
@@ -186,7 +182,7 @@ export class NamedParameterDatabaseService {
       build.query,
       build.namedParams,
       timeoutMS,
-      queryBuilder.getDebugComment()
+      queryBuilder.getDebugComment(),
     );
     return resp.results.length === 1 ? resp.results[0] : null;
   }
@@ -194,7 +190,7 @@ export class NamedParameterDatabaseService {
   public async buildAndExecuteFetchTotalRows(
     queryBuilder: QueryBuilder,
     groupBy = '',
-    timeoutMS: number = this.cfg.queryDefaults.timeoutMS
+    timeoutMS: number = this.cfg.queryDefaults.timeoutMS,
   ): Promise<GroupByCountResult[]> {
     const buildUnfiltered = queryBuilder.buildUnfiltered();
     let query = buildUnfiltered.query.replace('COUNT(*)', `${groupBy} as groupByField, COUNT(*) as count`);
@@ -206,7 +202,7 @@ export class NamedParameterDatabaseService {
       buildUnfiltered.transactionIsolationLevel,
       query,
       buildUnfiltered.namedParams,
-      timeoutMS
+      timeoutMS,
     );
 
     return resp.results;
@@ -218,7 +214,7 @@ export class NamedParameterDatabaseService {
     query: string,
     fields: object = {},
     timeoutMS: number = this.cfg.queryDefaults.timeoutMS,
-    debugComment?: string
+    debugComment?: string,
   ): Promise<RequestResults<Row>> {
     const sw: StopWatch = new StopWatch();
     if (!timeoutMS) {
@@ -230,7 +226,7 @@ export class NamedParameterDatabaseService {
     const result = await PromiseRatchet.timeout<RequestResults<Row>>(
       this.innerExecutePreparedAsPromiseWithRetryCloseConnection<Row>(requestType, query, fields, undefined),
       'Query:' + query,
-      timeoutMS
+      timeoutMS,
     );
 
     if (TimeoutToken.isTimeoutToken(result)) {
@@ -263,15 +259,17 @@ export class NamedParameterDatabaseService {
 
   public async testDbFailure(): Promise<void> {
     // This just executes a query guaranteed to fail to generate a db query failure
-    await this.executeQueryWithMeta(DatabaseRequestType.Query,TransactionIsolationLevel.Default, 'this is a bad query');
+    await this.executeQueryWithMeta(DatabaseRequestType.Query, TransactionIsolationLevel.Default, 'this is a bad query');
   }
 
-  public async changeNextQueryTransactionIsolationLevel<Row>(
-    tx: TransactionIsolationLevel | null
-  ): Promise<RequestResults<Row> | null> {
+  public async changeNextQueryTransactionIsolationLevel<Row>(tx: TransactionIsolationLevel | null): Promise<RequestResults<Row> | null> {
     if (tx && tx !== TransactionIsolationLevel.Default) {
       this.cfg.logger.debug('Setting tx to %s', tx);
-      return await this.innerExecutePreparedAsPromiseWithRetryCloseConnection(DatabaseRequestType.Meta, 'SET TRANSACTION ISOLATION LEVEL ' + tx, {});
+      return await this.innerExecutePreparedAsPromiseWithRetryCloseConnection(
+        DatabaseRequestType.Meta,
+        'SET TRANSACTION ISOLATION LEVEL ' + tx,
+        {},
+      );
     }
     return null;
   }
@@ -293,7 +291,7 @@ export class NamedParameterDatabaseService {
     requestType: DatabaseRequestType,
     query: string,
     fields: object = {},
-    retryCount = 1
+    retryCount = 1,
   ): Promise<RequestResults<Row>> {
     try {
       const result: RequestResults<Row> = await this.innerExecutePreparedAsPromise<Row>(requestType, query, fields);
@@ -312,7 +310,7 @@ export class NamedParameterDatabaseService {
           'Found closed connection or lock timeout - clearing and attempting retry after %d (try %d of 3) (%s)',
           wait,
           retryCount,
-          err.message
+          err.message,
         );
         if (retryCount < 4) {
           const cleared: boolean = await this.cfg.connectionProvider.clearDatabaseAccessCache();
@@ -329,7 +327,7 @@ export class NamedParameterDatabaseService {
           const conn: DatabaseAccess = await this.getDB();
           this.cfg.logger.error(
             '-----\nFor paste into tooling only: \n\n%s\n\n',
-            QueryUtil.renderQueryStringForPasteIntoTool(query, fields, (v) => conn.escape(v))
+            QueryUtil.renderQueryStringForPasteIntoTool(query, fields, (v) => conn.escape(v)),
           );
         } catch (err2) {
           this.cfg.logger.error('Really bad - failed trying to get the conn for logging : %s', err2);
@@ -341,7 +339,11 @@ export class NamedParameterDatabaseService {
     }
   }
 
-  private async innerExecutePreparedAsPromise<Row>(requestType: DatabaseRequestType, query: string, fields: object = {}): Promise<RequestResults<Row>> {
+  private async innerExecutePreparedAsPromise<Row>(
+    requestType: DatabaseRequestType,
+    query: string,
+    fields: object = {},
+  ): Promise<RequestResults<Row>> {
     const conn: DatabaseAccess = await this.getDB();
     if (conn.preQuery) {
       await conn.preQuery();
@@ -350,7 +352,7 @@ export class NamedParameterDatabaseService {
 
     try {
       let output: RequestResults<Row | ModifyResults>;
-      if (requestType===DatabaseRequestType.Modify) {
+      if (requestType === DatabaseRequestType.Modify) {
         this.cfg.logger.debug('Executing modify on underlying db : %s / %j', query, fields);
         output = await conn.modify(query, fields);
       } else {
@@ -358,17 +360,22 @@ export class NamedParameterDatabaseService {
         output = await conn.query<Row>(query, fields);
       }
       // If we reached here we were ok
-      this.cfg.logger.debug('Success : Finished query : %s\n%s\n\nParams : %j', sw.dump(), QueryUtil.reformatQueryForLogging(query), fields);
+      this.cfg.logger.debug(
+        'Success : Finished query : %s\n%s\n\nParams : %j',
+        sw.dump(),
+        QueryUtil.reformatQueryForLogging(query),
+        fields,
+      );
       this.cfg.logger.debug(
         '-----\nFor paste into tooling only : \n\n%s\n\n',
-        QueryUtil.renderQueryStringForPasteIntoTool(query, fields, (v) => conn.escape(v))
+        QueryUtil.renderQueryStringForPasteIntoTool(query, fields, (v) => conn.escape(v)),
       );
       if (conn.onRequestSuccessOnly) {
         await conn.onRequestSuccessOnly(requestType);
       }
 
       return output as RequestResults<Row>;
-    } catch(err) {
+    } catch (err) {
       if (conn.onRequestFailureOnly) {
         await conn.onRequestFailureOnly(requestType);
       }
@@ -382,9 +389,9 @@ export class NamedParameterDatabaseService {
 
   // Creates a promise if there isn't already a cached one or if it is closed
   public async getDB(): Promise<DatabaseAccess> {
-    const conn: DatabaseAccess | undefined =
-      this.nonPooledMode() ? await this.cfg.connectionProvider.createNonPooledDatabaseAccess(this.cfg.queryDefaults, this.nonPooledExtraConfiguration()) :
-      await this.cfg.connectionProvider.getDatabaseAccess(this.cfg.queryDefaults.databaseName);
+    const conn: DatabaseAccess | undefined = this.nonPooledMode()
+      ? await this.cfg.connectionProvider.createNonPooledDatabaseAccess(this.cfg.queryDefaults, this.nonPooledExtraConfiguration())
+      : await this.cfg.connectionProvider.getDatabaseAccess(this.cfg.queryDefaults.databaseName);
     if (!conn) {
       // If we just couldn't connect to the DB
       throw new Error('RatchetNoConnection : getConnection returned null - likely failed to get connection from db');

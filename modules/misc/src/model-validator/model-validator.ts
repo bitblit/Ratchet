@@ -1,8 +1,8 @@
-import Validator from "swagger-model-validator";
-import yaml from "js-yaml";
-import { Logger } from "@bitblit/ratchet-common/logger/logger";
-import { ErrorRatchet } from "@bitblit/ratchet-common/lang/error-ratchet";
-import { MapRatchet } from "@bitblit/ratchet-common/lang/map-ratchet";
+import Validator from 'swagger-model-validator';
+import yaml from 'js-yaml';
+import { Logger } from '@bitblit/ratchet-common/logger/logger';
+import { ErrorRatchet } from '@bitblit/ratchet-common/lang/error-ratchet';
+import { MapRatchet } from '@bitblit/ratchet-common/lang/map-ratchet';
 
 /**
  * Helper for validating endpoints

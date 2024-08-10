@@ -1,12 +1,12 @@
-import { QueryTextProvider } from "../model/query-text-provider.js";
-import { describe, expect, test } from "vitest";
-import { mock } from "vitest-mock-extended";
+import { QueryTextProvider } from '../model/query-text-provider.js';
+import { describe, expect, test } from 'vitest';
+import { mock } from 'vitest-mock-extended';
 
-import { SortDirection } from "../model/sort-direction.js";
-import { NamedParameterDatabaseService } from "../service/named-parameter-database-service.js";
-import { DatabaseAccessProvider } from "../model/database-access-provider.js";
-import { NamedParameterDatabaseServiceConfig } from "../model/named-parameter-database-service-config.js";
-import { QueryDefaults } from "../model/query-defaults.js";
+import { SortDirection } from '../model/sort-direction.js';
+import { NamedParameterDatabaseService } from '../service/named-parameter-database-service.js';
+import { DatabaseAccessProvider } from '../model/database-access-provider.js';
+import { NamedParameterDatabaseServiceConfig } from '../model/named-parameter-database-service-config.js';
+import { QueryDefaults } from '../model/query-defaults.js';
 
 const prov: QueryTextProvider = {
   fetchQuery(queryPath: string): string {
@@ -44,8 +44,8 @@ const cfg: NamedParameterDatabaseServiceConfig = {
   serviceName: 'testsrv',
   queryProvider: prov,
   connectionProvider: mockAccess,
-  queryDefaults:  { databaseName: 'test', timeoutMS: 2_000 },
-  longQueryTimeMs: 8_500
+  queryDefaults: { databaseName: 'test', timeoutMS: 2_000 },
+  longQueryTimeMs: 8_500,
 };
 const mariaDb = new NamedParameterDatabaseService(cfg);
 

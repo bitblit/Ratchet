@@ -1,5 +1,5 @@
-import { Observable, Observer, race } from "rxjs";
-import { TimeoutToken } from "@bitblit/ratchet-common/lang/timeout-token";
+import { Observable, Observer, race } from 'rxjs';
+import { TimeoutToken } from '@bitblit/ratchet-common/lang/timeout-token';
 
 /**
  * A class for simplifying working with rxjs observables.

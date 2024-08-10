@@ -1,9 +1,9 @@
-import { RequireRatchet } from "@bitblit/ratchet-common/lang/require-ratchet";
-import { Logger } from "@bitblit/ratchet-common/logger/logger";
-import { TransactionIsolationLevel } from "../model/transaction-isolation-level.js";
-import { ModifyResults } from "../model/modify-results.js";
-import { NamedParameterDatabaseService } from "../service/named-parameter-database-service.js";
-import { DatabaseRequestType } from "../model/database-request-type.js";
+import { RequireRatchet } from '@bitblit/ratchet-common/lang/require-ratchet';
+import { Logger } from '@bitblit/ratchet-common/logger/logger';
+import { TransactionIsolationLevel } from '../model/transaction-isolation-level.js';
+import { ModifyResults } from '../model/modify-results.js';
+import { NamedParameterDatabaseService } from '../service/named-parameter-database-service.js';
+import { DatabaseRequestType } from '../model/database-request-type.js';
 
 /**
  * Any useful tools for working with relational databases
@@ -13,7 +13,7 @@ export class RelationalDatabaseUtils {
     db: NamedParameterDatabaseService,
     tableName: string,
     data: Item[],
-    clearTableFirst = false
+    clearTableFirst = false,
   ): Promise<number> {
     RequireRatchet.notNullOrUndefined(db, 'db');
     RequireRatchet.notNullOrUndefined(tableName, 'tableName');
@@ -26,7 +26,7 @@ export class RelationalDatabaseUtils {
         DatabaseRequestType.Modify,
         TransactionIsolationLevel.Default,
         'DELETE FROM ' + tableName,
-        {}
+        {},
       );
       Logger.info('Removed %d rows', deleteResult.affectedRows);
     }
@@ -38,9 +38,12 @@ export class RelationalDatabaseUtils {
 
     const { results: insertResult } = await db.executeQueryWithMeta<ModifyResults>(
       DatabaseRequestType.Modify,
-      TransactionIsolationLevel.Default, sql, {
-      multiValue: data,
-    });
+      TransactionIsolationLevel.Default,
+      sql,
+      {
+        multiValue: data,
+      },
+    );
     const inserted = insertResult.affectedRows;
     Logger.info('Wrote %d rows', inserted);
     if (inserted !== data.length) {

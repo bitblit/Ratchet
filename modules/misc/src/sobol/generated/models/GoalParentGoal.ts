@@ -13,69 +13,65 @@
 
 import { exists, mapValues } from '../runtime.js';
 /**
- * 
+ *
  * @export
  * @interface GoalParentGoal
  */
 export interface GoalParentGoal {
-    /**
-     * 
-     * @type {string}
-     * @memberof GoalParentGoal
-     */
-    _id?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof GoalParentGoal
-     */
-    _type?: GoalParentGoalTypeEnum;
+  /**
+   *
+   * @type {string}
+   * @memberof GoalParentGoal
+   */
+  _id?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof GoalParentGoal
+   */
+  _type?: GoalParentGoalTypeEnum;
 }
 
 /**
-* @export
-* @enum {string}
-*/
+ * @export
+ * @enum {string}
+ */
 export enum GoalParentGoalTypeEnum {
-    goal = 'goal'
+  goal = 'goal',
 }
-
 
 /**
  * Check if a given object implements the GoalParentGoal interface.
  */
 export function instanceOfGoalParentGoal(value: object): boolean {
-    let isInstance = true;
+  let isInstance = true;
 
-    return isInstance;
+  return isInstance;
 }
 
 export function GoalParentGoalFromJSON(json: any): GoalParentGoal {
-    return GoalParentGoalFromJSONTyped(json, false);
+  return GoalParentGoalFromJSONTyped(json, false);
 }
 
 export function GoalParentGoalFromJSONTyped(json: any, ignoreDiscriminator: boolean): GoalParentGoal {
-    if ((json === undefined) || (json === null)) {
-        return json;
-    }
-    return {
-        
-        '_id': !exists(json, '_id') ? undefined : json['_id'],
-        '_type': !exists(json, '_type') ? undefined : json['_type'],
-    };
+  if (json === undefined || json === null) {
+    return json;
+  }
+  return {
+    _id: !exists(json, '_id') ? undefined : json['_id'],
+    _type: !exists(json, '_type') ? undefined : json['_type'],
+  };
 }
 
 export function GoalParentGoalToJSON(value?: GoalParentGoal | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
-    }
-    return {
-        
-        '_id': value._id,
-        '_type': value._type,
-    };
+  if (value === undefined) {
+    return undefined;
+  }
+  if (value === null) {
+    return null;
+  }
+  return {
+    _id: value._id,
+    _type: value._type,
+  };
 }
-

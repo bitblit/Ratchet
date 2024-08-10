@@ -1,14 +1,17 @@
-import { ParsedMail, simpleParser } from "mailparser";
-import { Logger } from "@bitblit/ratchet-common/logger/logger";
-import { RequireRatchet } from "@bitblit/ratchet-common/lang/require-ratchet";
-import { ParsedEmailProcessor } from "./parsed-email-processor.js";
-import { S3CacheRatchet } from "@bitblit/ratchet-aws/s3/s3-cache-ratchet";
+import { ParsedMail, simpleParser } from 'mailparser';
+import { Logger } from '@bitblit/ratchet-common/logger/logger';
+import { RequireRatchet } from '@bitblit/ratchet-common/lang/require-ratchet';
+import { ParsedEmailProcessor } from './parsed-email-processor.js';
+import { S3CacheRatchet } from '@bitblit/ratchet-aws/s3/s3-cache-ratchet';
 
 /**
  * Service for handling inbound emails
  */
 export class InboundEmailRatchet {
-  constructor(private cache: S3CacheRatchet, private processors: ParsedEmailProcessor<any>[]) {
+  constructor(
+    private cache: S3CacheRatchet,
+    private processors: ParsedEmailProcessor<any>[],
+  ) {
     RequireRatchet.notNullOrUndefined(this.cache, 'cache');
     RequireRatchet.notNullOrUndefined(this.cache.getDefaultBucket(), 'cache.defaultBucket');
   }
@@ -35,7 +38,7 @@ export class InboundEmailRatchet {
       'Found mail from "%s" subject "%s" with %d attachments',
       message?.from?.text,
       message?.subject,
-      message?.attachments?.length
+      message?.attachments?.length,
     );
 
     let procd: boolean = false;

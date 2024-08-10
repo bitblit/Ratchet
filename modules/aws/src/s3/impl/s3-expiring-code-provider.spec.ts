@@ -1,10 +1,10 @@
-import { S3ExpiringCodeProvider, S3ExpiringCodeProviderFileWrapper } from "./s3-expiring-code-provider.js";
-import { PutObjectCommandOutput, PutObjectOutput } from "@aws-sdk/client-s3";
-import { ExpiringCode } from "../../expiring-code/expiring-code.js";
-import { beforeEach, describe, expect, test } from "vitest";
-import { mock, MockProxy } from "vitest-mock-extended";
+import { S3ExpiringCodeProvider, S3ExpiringCodeProviderFileWrapper } from './s3-expiring-code-provider.js';
+import { PutObjectCommandOutput, PutObjectOutput } from '@aws-sdk/client-s3';
+import { ExpiringCode } from '../../expiring-code/expiring-code.js';
+import { beforeEach, describe, expect, test } from 'vitest';
+import { mock, MockProxy } from 'vitest-mock-extended';
 
-import { S3CacheRatchetLike } from "../s3-cache-ratchet-like.js";
+import { S3CacheRatchetLike } from '../s3-cache-ratchet-like.js';
 
 let mockS3Ratchet: MockProxy<S3CacheRatchetLike>;
 const testCode: ExpiringCode = { code: '12345', context: 'ctx', expiresEpochMS: Date.now() + 100_000, tags: ['tag1'] };

@@ -11,10 +11,10 @@ import { expect, test, describe, vi, beforeEach } from 'vitest';
 import { mock, MockProxy } from 'vitest-mock-extended';
 
 import { S3CacheRatchetLike } from '../s3/s3-cache-ratchet-like.js';
-import { Logger } from "@bitblit/ratchet-common/logger/logger";
-import { CsvRatchet } from "@bitblit/ratchet-node-only/csv/csv-ratchet";
-import { PromiseRatchet } from "@bitblit/ratchet-common/lang/promise-ratchet";
-import { LoggerLevelName } from "@bitblit/ratchet-common/logger/logger-level-name";
+import { Logger } from '@bitblit/ratchet-common/logger/logger';
+import { CsvRatchet } from '@bitblit/ratchet-node-only/csv/csv-ratchet';
+import { PromiseRatchet } from '@bitblit/ratchet-common/lang/promise-ratchet';
+import { LoggerLevelName } from '@bitblit/ratchet-common/logger/logger-level-name';
 
 let mockS3CR: MockProxy<S3CacheRatchetLike>;
 

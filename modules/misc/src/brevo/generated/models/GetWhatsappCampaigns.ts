@@ -1,7 +1,7 @@
 /* eslint-disable */
 /**
  * SendinBlue API
- * SendinBlue provide a RESTFul API that can be used with any languages. With this API, you will be able to :   - Manage your campaigns and get the statistics   - Manage your contacts   - Send transactional Emails and SMS   - and much more...  You can download our wrappers at https://github.com/orgs/sendinblue  **Possible responses**   | Code | Message |   | :-------------: | ------------- |   | 200  | OK. Successful Request  |   | 201  | OK. Successful Creation |   | 202  | OK. Request accepted |   | 204  | OK. Successful Update/Deletion  |   | 400  | Error. Bad Request  |   | 401  | Error. Authentication Needed  |   | 402  | Error. Not enough credit, plan upgrade needed  |   | 403  | Error. Permission denied  |   | 404  | Error. Object does not exist |   | 405  | Error. Method not allowed  |   | 406  | Error. Not Acceptable  | 
+ * SendinBlue provide a RESTFul API that can be used with any languages. With this API, you will be able to :   - Manage your campaigns and get the statistics   - Manage your contacts   - Send transactional Emails and SMS   - and much more...  You can download our wrappers at https://github.com/orgs/sendinblue  **Possible responses**   | Code | Message |   | :-------------: | ------------- |   | 200  | OK. Successful Request  |   | 201  | OK. Successful Creation |   | 202  | OK. Request accepted |   | 204  | OK. Successful Update/Deletion  |   | 400  | Error. Bad Request  |   | 401  | Error. Authentication Needed  |   | 402  | Error. Not enough credit, plan upgrade needed  |   | 403  | Error. Permission denied  |   | 404  | Error. Object does not exist |   | 405  | Error. Method not allowed  |   | 406  | Error. Not Acceptable  |
  *
  * The version of the OpenAPI document: 3.0.0
  * Contact: contact@sendinblue.com
@@ -14,66 +14,63 @@
 import { exists, mapValues } from '../runtime.js';
 import type { GetWhatsappCampaignsCampaignsInner } from './GetWhatsappCampaignsCampaignsInner.js';
 import {
-    GetWhatsappCampaignsCampaignsInnerFromJSON,
-    GetWhatsappCampaignsCampaignsInnerFromJSONTyped,
-    GetWhatsappCampaignsCampaignsInnerToJSON,
+  GetWhatsappCampaignsCampaignsInnerFromJSON,
+  GetWhatsappCampaignsCampaignsInnerFromJSONTyped,
+  GetWhatsappCampaignsCampaignsInnerToJSON,
 } from './GetWhatsappCampaignsCampaignsInner.js';
 
 /**
- * 
+ *
  * @export
  * @interface GetWhatsappCampaigns
  */
 export interface GetWhatsappCampaigns {
-    /**
-     * 
-     * @type {Array<GetWhatsappCampaignsCampaignsInner>}
-     * @memberof GetWhatsappCampaigns
-     */
-    campaigns?: Array<GetWhatsappCampaignsCampaignsInner>;
-    /**
-     * Number of WhatsApp campaigns retrived
-     * @type {number}
-     * @memberof GetWhatsappCampaigns
-     */
-    count?: number;
+  /**
+   *
+   * @type {Array<GetWhatsappCampaignsCampaignsInner>}
+   * @memberof GetWhatsappCampaigns
+   */
+  campaigns?: Array<GetWhatsappCampaignsCampaignsInner>;
+  /**
+   * Number of WhatsApp campaigns retrived
+   * @type {number}
+   * @memberof GetWhatsappCampaigns
+   */
+  count?: number;
 }
 
 /**
  * Check if a given object implements the GetWhatsappCampaigns interface.
  */
 export function instanceOfGetWhatsappCampaigns(value: object): boolean {
-    let isInstance = true;
+  let isInstance = true;
 
-    return isInstance;
+  return isInstance;
 }
 
 export function GetWhatsappCampaignsFromJSON(json: any): GetWhatsappCampaigns {
-    return GetWhatsappCampaignsFromJSONTyped(json, false);
+  return GetWhatsappCampaignsFromJSONTyped(json, false);
 }
 
 export function GetWhatsappCampaignsFromJSONTyped(json: any, ignoreDiscriminator: boolean): GetWhatsappCampaigns {
-    if ((json === undefined) || (json === null)) {
-        return json;
-    }
-    return {
-        
-        'campaigns': !exists(json, 'campaigns') ? undefined : ((json['campaigns'] as Array<any>).map(GetWhatsappCampaignsCampaignsInnerFromJSON)),
-        'count': !exists(json, 'count') ? undefined : json['count'],
-    };
+  if (json === undefined || json === null) {
+    return json;
+  }
+  return {
+    campaigns: !exists(json, 'campaigns') ? undefined : (json['campaigns'] as Array<any>).map(GetWhatsappCampaignsCampaignsInnerFromJSON),
+    count: !exists(json, 'count') ? undefined : json['count'],
+  };
 }
 
 export function GetWhatsappCampaignsToJSON(value?: GetWhatsappCampaigns | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
-    }
-    return {
-        
-        'campaigns': value.campaigns === undefined ? undefined : ((value.campaigns as Array<any>).map(GetWhatsappCampaignsCampaignsInnerToJSON)),
-        'count': value.count,
-    };
+  if (value === undefined) {
+    return undefined;
+  }
+  if (value === null) {
+    return null;
+  }
+  return {
+    campaigns: value.campaigns === undefined ? undefined : (value.campaigns as Array<any>).map(GetWhatsappCampaignsCampaignsInnerToJSON),
+    count: value.count,
+  };
 }
-

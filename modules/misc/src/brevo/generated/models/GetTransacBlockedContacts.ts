@@ -1,7 +1,7 @@
 /* eslint-disable */
 /**
  * SendinBlue API
- * SendinBlue provide a RESTFul API that can be used with any languages. With this API, you will be able to :   - Manage your campaigns and get the statistics   - Manage your contacts   - Send transactional Emails and SMS   - and much more...  You can download our wrappers at https://github.com/orgs/sendinblue  **Possible responses**   | Code | Message |   | :-------------: | ------------- |   | 200  | OK. Successful Request  |   | 201  | OK. Successful Creation |   | 202  | OK. Request accepted |   | 204  | OK. Successful Update/Deletion  |   | 400  | Error. Bad Request  |   | 401  | Error. Authentication Needed  |   | 402  | Error. Not enough credit, plan upgrade needed  |   | 403  | Error. Permission denied  |   | 404  | Error. Object does not exist |   | 405  | Error. Method not allowed  |   | 406  | Error. Not Acceptable  | 
+ * SendinBlue provide a RESTFul API that can be used with any languages. With this API, you will be able to :   - Manage your campaigns and get the statistics   - Manage your contacts   - Send transactional Emails and SMS   - and much more...  You can download our wrappers at https://github.com/orgs/sendinblue  **Possible responses**   | Code | Message |   | :-------------: | ------------- |   | 200  | OK. Successful Request  |   | 201  | OK. Successful Creation |   | 202  | OK. Request accepted |   | 204  | OK. Successful Update/Deletion  |   | 400  | Error. Bad Request  |   | 401  | Error. Authentication Needed  |   | 402  | Error. Not enough credit, plan upgrade needed  |   | 403  | Error. Permission denied  |   | 404  | Error. Object does not exist |   | 405  | Error. Method not allowed  |   | 406  | Error. Not Acceptable  |
  *
  * The version of the OpenAPI document: 3.0.0
  * Contact: contact@sendinblue.com
@@ -14,66 +14,63 @@
 import { exists, mapValues } from '../runtime.js';
 import type { GetTransacBlockedContactsContactsInner } from './GetTransacBlockedContactsContactsInner.js';
 import {
-    GetTransacBlockedContactsContactsInnerFromJSON,
-    GetTransacBlockedContactsContactsInnerFromJSONTyped,
-    GetTransacBlockedContactsContactsInnerToJSON,
+  GetTransacBlockedContactsContactsInnerFromJSON,
+  GetTransacBlockedContactsContactsInnerFromJSONTyped,
+  GetTransacBlockedContactsContactsInnerToJSON,
 } from './GetTransacBlockedContactsContactsInner.js';
 
 /**
- * 
+ *
  * @export
  * @interface GetTransacBlockedContacts
  */
 export interface GetTransacBlockedContacts {
-    /**
-     * Count of blocked or unsubscribed contact
-     * @type {number}
-     * @memberof GetTransacBlockedContacts
-     */
-    count?: number;
-    /**
-     * 
-     * @type {Array<GetTransacBlockedContactsContactsInner>}
-     * @memberof GetTransacBlockedContacts
-     */
-    contacts?: Array<GetTransacBlockedContactsContactsInner>;
+  /**
+   * Count of blocked or unsubscribed contact
+   * @type {number}
+   * @memberof GetTransacBlockedContacts
+   */
+  count?: number;
+  /**
+   *
+   * @type {Array<GetTransacBlockedContactsContactsInner>}
+   * @memberof GetTransacBlockedContacts
+   */
+  contacts?: Array<GetTransacBlockedContactsContactsInner>;
 }
 
 /**
  * Check if a given object implements the GetTransacBlockedContacts interface.
  */
 export function instanceOfGetTransacBlockedContacts(value: object): boolean {
-    let isInstance = true;
+  let isInstance = true;
 
-    return isInstance;
+  return isInstance;
 }
 
 export function GetTransacBlockedContactsFromJSON(json: any): GetTransacBlockedContacts {
-    return GetTransacBlockedContactsFromJSONTyped(json, false);
+  return GetTransacBlockedContactsFromJSONTyped(json, false);
 }
 
 export function GetTransacBlockedContactsFromJSONTyped(json: any, ignoreDiscriminator: boolean): GetTransacBlockedContacts {
-    if ((json === undefined) || (json === null)) {
-        return json;
-    }
-    return {
-        
-        'count': !exists(json, 'count') ? undefined : json['count'],
-        'contacts': !exists(json, 'contacts') ? undefined : ((json['contacts'] as Array<any>).map(GetTransacBlockedContactsContactsInnerFromJSON)),
-    };
+  if (json === undefined || json === null) {
+    return json;
+  }
+  return {
+    count: !exists(json, 'count') ? undefined : json['count'],
+    contacts: !exists(json, 'contacts') ? undefined : (json['contacts'] as Array<any>).map(GetTransacBlockedContactsContactsInnerFromJSON),
+  };
 }
 
 export function GetTransacBlockedContactsToJSON(value?: GetTransacBlockedContacts | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
-    }
-    return {
-        
-        'count': value.count,
-        'contacts': value.contacts === undefined ? undefined : ((value.contacts as Array<any>).map(GetTransacBlockedContactsContactsInnerToJSON)),
-    };
+  if (value === undefined) {
+    return undefined;
+  }
+  if (value === null) {
+    return null;
+  }
+  return {
+    count: value.count,
+    contacts: value.contacts === undefined ? undefined : (value.contacts as Array<any>).map(GetTransacBlockedContactsContactsInnerToJSON),
+  };
 }
-

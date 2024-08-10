@@ -1,5 +1,5 @@
-import { describe, expect, test } from "vitest";
-import { QueryUtil } from "./query-util.js";
+import { describe, expect, test } from 'vitest';
+import { QueryUtil } from './query-util.js';
 
 describe('query-util', () => {
   test('extract used params', () => {

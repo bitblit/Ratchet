@@ -1,7 +1,7 @@
 /* eslint-disable */
 /**
  * SendinBlue API
- * SendinBlue provide a RESTFul API that can be used with any languages. With this API, you will be able to :   - Manage your campaigns and get the statistics   - Manage your contacts   - Send transactional Emails and SMS   - and much more...  You can download our wrappers at https://github.com/orgs/sendinblue  **Possible responses**   | Code | Message |   | :-------------: | ------------- |   | 200  | OK. Successful Request  |   | 201  | OK. Successful Creation |   | 202  | OK. Request accepted |   | 204  | OK. Successful Update/Deletion  |   | 400  | Error. Bad Request  |   | 401  | Error. Authentication Needed  |   | 402  | Error. Not enough credit, plan upgrade needed  |   | 403  | Error. Permission denied  |   | 404  | Error. Object does not exist |   | 405  | Error. Method not allowed  |   | 406  | Error. Not Acceptable  | 
+ * SendinBlue provide a RESTFul API that can be used with any languages. With this API, you will be able to :   - Manage your campaigns and get the statistics   - Manage your contacts   - Send transactional Emails and SMS   - and much more...  You can download our wrappers at https://github.com/orgs/sendinblue  **Possible responses**   | Code | Message |   | :-------------: | ------------- |   | 200  | OK. Successful Request  |   | 201  | OK. Successful Creation |   | 202  | OK. Request accepted |   | 204  | OK. Successful Update/Deletion  |   | 400  | Error. Bad Request  |   | 401  | Error. Authentication Needed  |   | 402  | Error. Not enough credit, plan upgrade needed  |   | 403  | Error. Permission denied  |   | 404  | Error. Object does not exist |   | 405  | Error. Method not allowed  |   | 406  | Error. Not Acceptable  |
  *
  * The version of the OpenAPI document: 3.0.0
  * Contact: contact@sendinblue.com
@@ -13,60 +13,53 @@
 
 import { exists, mapValues } from '../runtime.js';
 import type { GetIp } from './GetIp.js';
-import {
-    GetIpFromJSON,
-    GetIpFromJSONTyped,
-    GetIpToJSON,
-} from './GetIp.js';
+import { GetIpFromJSON, GetIpFromJSONTyped, GetIpToJSON } from './GetIp.js';
 
 /**
- * 
+ *
  * @export
  * @interface GetIps
  */
 export interface GetIps {
-    /**
-     * Dedicated IP(s) available on your account
-     * @type {Array<GetIp>}
-     * @memberof GetIps
-     */
-    ips: Array<GetIp>;
+  /**
+   * Dedicated IP(s) available on your account
+   * @type {Array<GetIp>}
+   * @memberof GetIps
+   */
+  ips: Array<GetIp>;
 }
 
 /**
  * Check if a given object implements the GetIps interface.
  */
 export function instanceOfGetIps(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "ips" in value;
+  let isInstance = true;
+  isInstance = isInstance && 'ips' in value;
 
-    return isInstance;
+  return isInstance;
 }
 
 export function GetIpsFromJSON(json: any): GetIps {
-    return GetIpsFromJSONTyped(json, false);
+  return GetIpsFromJSONTyped(json, false);
 }
 
 export function GetIpsFromJSONTyped(json: any, ignoreDiscriminator: boolean): GetIps {
-    if ((json === undefined) || (json === null)) {
-        return json;
-    }
-    return {
-        
-        'ips': ((json['ips'] as Array<any>).map(GetIpFromJSON)),
-    };
+  if (json === undefined || json === null) {
+    return json;
+  }
+  return {
+    ips: (json['ips'] as Array<any>).map(GetIpFromJSON),
+  };
 }
 
 export function GetIpsToJSON(value?: GetIps | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
-    }
-    return {
-        
-        'ips': ((value.ips as Array<any>).map(GetIpToJSON)),
-    };
+  if (value === undefined) {
+    return undefined;
+  }
+  if (value === null) {
+    return null;
+  }
+  return {
+    ips: (value.ips as Array<any>).map(GetIpToJSON),
+  };
 }
-

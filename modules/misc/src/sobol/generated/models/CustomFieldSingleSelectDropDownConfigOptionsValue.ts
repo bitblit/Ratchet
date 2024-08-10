@@ -13,60 +13,62 @@
 
 import { exists, mapValues } from '../runtime.js';
 /**
- * 
+ *
  * @export
  * @interface CustomFieldSingleSelectDropDownConfigOptionsValue
  */
 export interface CustomFieldSingleSelectDropDownConfigOptionsValue {
-    /**
-     * 
-     * @type {string}
-     * @memberof CustomFieldSingleSelectDropDownConfigOptionsValue
-     */
-    _id?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof CustomFieldSingleSelectDropDownConfigOptionsValue
-     */
-    name?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof CustomFieldSingleSelectDropDownConfigOptionsValue
+   */
+  _id?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof CustomFieldSingleSelectDropDownConfigOptionsValue
+   */
+  name?: string;
 }
 
 /**
  * Check if a given object implements the CustomFieldSingleSelectDropDownConfigOptionsValue interface.
  */
 export function instanceOfCustomFieldSingleSelectDropDownConfigOptionsValue(value: object): boolean {
-    let isInstance = true;
+  let isInstance = true;
 
-    return isInstance;
+  return isInstance;
 }
 
 export function CustomFieldSingleSelectDropDownConfigOptionsValueFromJSON(json: any): CustomFieldSingleSelectDropDownConfigOptionsValue {
-    return CustomFieldSingleSelectDropDownConfigOptionsValueFromJSONTyped(json, false);
+  return CustomFieldSingleSelectDropDownConfigOptionsValueFromJSONTyped(json, false);
 }
 
-export function CustomFieldSingleSelectDropDownConfigOptionsValueFromJSONTyped(json: any, ignoreDiscriminator: boolean): CustomFieldSingleSelectDropDownConfigOptionsValue {
-    if ((json === undefined) || (json === null)) {
-        return json;
-    }
-    return {
-        
-        '_id': !exists(json, '_id') ? undefined : json['_id'],
-        'name': !exists(json, 'name') ? undefined : json['name'],
-    };
+export function CustomFieldSingleSelectDropDownConfigOptionsValueFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean,
+): CustomFieldSingleSelectDropDownConfigOptionsValue {
+  if (json === undefined || json === null) {
+    return json;
+  }
+  return {
+    _id: !exists(json, '_id') ? undefined : json['_id'],
+    name: !exists(json, 'name') ? undefined : json['name'],
+  };
 }
 
-export function CustomFieldSingleSelectDropDownConfigOptionsValueToJSON(value?: CustomFieldSingleSelectDropDownConfigOptionsValue | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
-    }
-    return {
-        
-        '_id': value._id,
-        'name': value.name,
-    };
+export function CustomFieldSingleSelectDropDownConfigOptionsValueToJSON(
+  value?: CustomFieldSingleSelectDropDownConfigOptionsValue | null,
+): any {
+  if (value === undefined) {
+    return undefined;
+  }
+  if (value === null) {
+    return null;
+  }
+  return {
+    _id: value._id,
+    name: value.name,
+  };
 }
-

@@ -1,19 +1,19 @@
-import maria, { Connection, ConnectionOptions } from "mysql2/promise";
+import maria, { Connection, ConnectionOptions } from 'mysql2/promise';
 
-import { RequireRatchet } from "@bitblit/ratchet-common/lang/require-ratchet";
-import { Logger } from "@bitblit/ratchet-common/logger/logger";
-import { ErrorRatchet } from "@bitblit/ratchet-common/lang/error-ratchet";
-import { StringRatchet } from "@bitblit/ratchet-common/lang/string-ratchet";
-import { SshTunnelService } from "../service/ssh-tunnel-service.js";
-import { DatabaseConfigList } from "../model/database-config-list.js";
-import getPort from "get-port";
-import { SshTunnelContainer } from "../model/ssh/ssh-tunnel-container.js";
-import { QueryDefaults } from "../model/query-defaults.js";
-import { ConnectionAndTunnel } from "../model/connection-and-tunnel.js";
-import { DatabaseAccessProvider } from "../model/database-access-provider.js";
-import { DatabaseAccess } from "../model/database-access.js";
-import { MysqlStyleDatabaseAccess } from "./mysql-style-database-access.js";
-import { MysqlDbConfig } from "./model/mysql-db-config.js";
+import { RequireRatchet } from '@bitblit/ratchet-common/lang/require-ratchet';
+import { Logger } from '@bitblit/ratchet-common/logger/logger';
+import { ErrorRatchet } from '@bitblit/ratchet-common/lang/error-ratchet';
+import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet';
+import { SshTunnelService } from '../service/ssh-tunnel-service.js';
+import { DatabaseConfigList } from '../model/database-config-list.js';
+import getPort from 'get-port';
+import { SshTunnelContainer } from '../model/ssh/ssh-tunnel-container.js';
+import { QueryDefaults } from '../model/query-defaults.js';
+import { ConnectionAndTunnel } from '../model/connection-and-tunnel.js';
+import { DatabaseAccessProvider } from '../model/database-access-provider.js';
+import { DatabaseAccess } from '../model/database-access.js';
+import { MysqlStyleDatabaseAccess } from './mysql-style-database-access.js';
+import { MysqlDbConfig } from './model/mysql-db-config.js';
 
 /**
  */
@@ -22,14 +22,14 @@ export class RdsMysqlStyleConnectionProvider implements DatabaseAccessProvider {
   // tightly limit to Named parameters, so multiple statements is more useful than not!
   public static DEFAULT_CONNECTION_OPTIONS: ConnectionOptions = { multipleStatements: true };
 
-  private connectionCache = new Map<string, Promise<ConnectionAndTunnel<Connection, MysqlDbConfig>>>; //// Cache the promises to make it a single connection
+  private connectionCache = new Map<string, Promise<ConnectionAndTunnel<Connection, MysqlDbConfig>>>(); //// Cache the promises to make it a single connection
   //private tunnels = new Map<string, SshTunnelContainer>();
   //private dbPromise = new Map<string, Promise<Connection | undefined>>(); // Cache the promises to make it a single connection
   private cacheConfigPromise: Promise<DatabaseConfigList<MysqlDbConfig>>;
   constructor(
     private configPromiseProvider: () => Promise<DatabaseConfigList<MysqlDbConfig>>,
     private additionalConfig: ConnectionOptions = RdsMysqlStyleConnectionProvider.DEFAULT_CONNECTION_OPTIONS,
-    private ssh?: SshTunnelService
+    private ssh?: SshTunnelService,
   ) {
     this.cacheConfigPromise = this.createConnectionConfig(); // Sets up tunnels, etc
     Logger.info('Added shutdown handler to the process (Only once per instantiation)');
@@ -61,7 +61,7 @@ export class RdsMysqlStyleConnectionProvider implements DatabaseAccessProvider {
     //this.tunnels = new Map();
     // Resolve any leftover DB connections & end them
     if (oldConnections.length > 0) {
-      for (let i=0;i<oldConnections.length;i++) {
+      for (let i = 0; i < oldConnections.length; i++) {
         Logger.info('Shutting down old connection %d of %d', i, oldConnections.length);
         try {
           const conn: ConnectionAndTunnel<Connection, MysqlDbConfig> = await oldConnections[i];
@@ -85,11 +85,11 @@ export class RdsMysqlStyleConnectionProvider implements DatabaseAccessProvider {
               await this.ssh.shutdown(conn.ssh);
               Logger.info('Ssh tunnel stopped');
             } catch (err) {
-              Logger.warn('Failed to stop ssh tunnel : %s',err,err);
+              Logger.warn('Failed to stop ssh tunnel : %s', err, err);
             }
           }
         } catch (err) {
-          Logger.warn('Shutdown failed : %s ',err,err);
+          Logger.warn('Shutdown failed : %s ', err, err);
         }
       }
     }
@@ -97,7 +97,7 @@ export class RdsMysqlStyleConnectionProvider implements DatabaseAccessProvider {
     return rval;
   }
 
-  public async getConnectionAndTunnel(name: string): Promise<ConnectionAndTunnel<Connection,MysqlDbConfig>> {
+  public async getConnectionAndTunnel(name: string): Promise<ConnectionAndTunnel<Connection, MysqlDbConfig>> {
     Logger.silly('getConnectionAndTunnel : %s', name);
     if (!this.connectionCache.has(name)) {
       Logger.info('No connectionCache found for %s - creating new one', name);
@@ -111,26 +111,29 @@ export class RdsMysqlStyleConnectionProvider implements DatabaseAccessProvider {
 
   public async getDatabaseAccess(name: string): Promise<DatabaseAccess | undefined> {
     Logger.silly('getConnection : %s', name);
-    const conn: ConnectionAndTunnel<Connection,MysqlDbConfig> = await this.getConnectionAndTunnel(name);
+    const conn: ConnectionAndTunnel<Connection, MysqlDbConfig> = await this.getConnectionAndTunnel(name);
     const rval: DatabaseAccess = conn?.db ? new MysqlStyleDatabaseAccess(conn.db, this.additionalConfig) : null;
     return rval;
   }
 
-
-  public async createNonPooledConnectionAndTunnel( queryDefaults: QueryDefaults,
-                                                   additionalConfig: ConnectionOptions = RdsMysqlStyleConnectionProvider.DEFAULT_CONNECTION_OPTIONS): Promise<ConnectionAndTunnel<Connection,MysqlDbConfig>> {
+  public async createNonPooledConnectionAndTunnel(
+    queryDefaults: QueryDefaults,
+    additionalConfig: ConnectionOptions = RdsMysqlStyleConnectionProvider.DEFAULT_CONNECTION_OPTIONS,
+  ): Promise<ConnectionAndTunnel<Connection, MysqlDbConfig>> {
     Logger.info('Creating non-pooled connection for %s', queryDefaults.databaseName);
     const dbConfig = await this.getDbConfig(queryDefaults.databaseName);
     const rval = await this.createConnectionAndTunnel(dbConfig, additionalConfig, false);
     return rval;
   }
 
-
   public async createNonPooledDatabaseConnection(
     queryDefaults: QueryDefaults,
-    additionalConfig: ConnectionOptions = RdsMysqlStyleConnectionProvider.DEFAULT_CONNECTION_OPTIONS
+    additionalConfig: ConnectionOptions = RdsMysqlStyleConnectionProvider.DEFAULT_CONNECTION_OPTIONS,
   ): Promise<Connection | undefined> {
-    const conTunnel: ConnectionAndTunnel<Connection,MysqlDbConfig> = await this.createNonPooledConnectionAndTunnel(queryDefaults, additionalConfig);
+    const conTunnel: ConnectionAndTunnel<Connection, MysqlDbConfig> = await this.createNonPooledConnectionAndTunnel(
+      queryDefaults,
+      additionalConfig,
+    );
     return conTunnel?.db;
   }
 
@@ -143,7 +146,7 @@ export class RdsMysqlStyleConnectionProvider implements DatabaseAccessProvider {
       throw ErrorRatchet.fErr(
         'Cannot find any connection config named %s (Available are %j)',
         name,
-        cfgs.dbList.map((d) => d.label)
+        cfgs.dbList.map((d) => d.label),
       );
     }
     return dbConfig;
@@ -153,15 +156,20 @@ export class RdsMysqlStyleConnectionProvider implements DatabaseAccessProvider {
   private async createConnectionAndTunnel(
     dbCfg: MysqlDbConfig,
     additionalConfig: ConnectionOptions = RdsMysqlStyleConnectionProvider.DEFAULT_CONNECTION_OPTIONS,
-    clearCacheOnConnectionFailure: boolean
-  ): Promise<ConnectionAndTunnel<Connection,MysqlDbConfig> | undefined> {
+    clearCacheOnConnectionFailure: boolean,
+  ): Promise<ConnectionAndTunnel<Connection, MysqlDbConfig> | undefined> {
     Logger.info('In RdsMysqlStyleConnectionProvider:createConnectionAndTunnel : %s', dbCfg.label);
     RequireRatchet.notNullOrUndefined(dbCfg, 'dbCfg');
 
     let tunnel: SshTunnelContainer = null;
     if (dbCfg.sshTunnelConfig) {
-      const localPort: number = dbCfg.sshTunnelConfig.forceLocalPort || await getPort();
-      Logger.debug('SSH tunnel config found, opening tunnel to %s / %s to using local port %s', dbCfg.sshTunnelConfig.host, dbCfg.sshTunnelConfig.port, localPort);
+      const localPort: number = dbCfg.sshTunnelConfig.forceLocalPort || (await getPort());
+      Logger.debug(
+        'SSH tunnel config found, opening tunnel to %s / %s to using local port %s',
+        dbCfg.sshTunnelConfig.host,
+        dbCfg.sshTunnelConfig.port,
+        localPort,
+      );
       tunnel = await this.ssh.createSSHTunnel(dbCfg.sshTunnelConfig, dbCfg.host, dbCfg.port, localPort);
       Logger.debug('SSH Tunnel open');
     } else {
@@ -183,7 +191,7 @@ export class RdsMysqlStyleConnectionProvider implements DatabaseAccessProvider {
     } catch (err) {
       Logger.info('Failed trying to create connection : %s : clearing for retry', err);
       if (clearCacheOnConnectionFailure) {
-        this.connectionCache = new Map<string, Promise<ConnectionAndTunnel<Connection,MysqlDbConfig>>>();
+        this.connectionCache = new Map<string, Promise<ConnectionAndTunnel<Connection, MysqlDbConfig>>>();
       }
       return undefined;
     }
@@ -198,13 +206,13 @@ export class RdsMysqlStyleConnectionProvider implements DatabaseAccessProvider {
     Logger.info(
       'Added error handler to db, there are now %d error handlers and %d shutdown handlers',
       connection.rawListeners('error').length,
-      process.rawListeners('exit').length
+      process.rawListeners('exit').length,
     );
 
-    const rval: ConnectionAndTunnel<Connection,MysqlDbConfig> = {
+    const rval: ConnectionAndTunnel<Connection, MysqlDbConfig> = {
       config: dbCfg,
       db: connection,
-      ssh: tunnel
+      ssh: tunnel,
     };
 
     return rval;
@@ -224,7 +232,7 @@ export class RdsMysqlStyleConnectionProvider implements DatabaseAccessProvider {
     const cfg: DatabaseConfigList<MysqlDbConfig> = await inputPromise;
     RequireRatchet.true(cfg.dbList.length > 0, 'input.dbList');
 
-    cfg.dbList.forEach(db=>{
+    cfg.dbList.forEach((db) => {
       const errors: string[] = RdsMysqlStyleConnectionProvider.validDbConfig(db);
       if (errors?.length) {
         throw ErrorRatchet.fErr('Errors found in db config : %j', errors);
@@ -246,10 +254,12 @@ export class RdsMysqlStyleConnectionProvider implements DatabaseAccessProvider {
       rval.push(cfg.port ? null : 'port is required and non-empty');
     }
     if (cfg.sshTunnelConfig) {
-      rval.push(StringRatchet.trimToNull(cfg.sshTunnelConfig.host) ? null : 'If sshTunnelConfig is non-null, host is required and non-empty');
+      rval.push(
+        StringRatchet.trimToNull(cfg.sshTunnelConfig.host) ? null : 'If sshTunnelConfig is non-null, host is required and non-empty',
+      );
       rval.push(cfg.sshTunnelConfig.port ? null : 'If sshTunnelConfig is non-null, port is required and non-empty');
     }
-    rval = rval.filter(s=>!!s);
+    rval = rval.filter((s) => !!s);
     return rval;
   }
 }

@@ -14,9 +14,9 @@
 import { exists, mapValues } from '../runtime.js';
 import type { CustomFieldBadgeContentBadgesInner } from './CustomFieldBadgeContentBadgesInner.js';
 import {
-    CustomFieldBadgeContentBadgesInnerFromJSON,
-    CustomFieldBadgeContentBadgesInnerFromJSONTyped,
-    CustomFieldBadgeContentBadgesInnerToJSON,
+  CustomFieldBadgeContentBadgesInnerFromJSON,
+  CustomFieldBadgeContentBadgesInnerFromJSONTyped,
+  CustomFieldBadgeContentBadgesInnerToJSON,
 } from './CustomFieldBadgeContentBadgesInner.js';
 
 /**
@@ -25,47 +25,44 @@ import {
  * @interface CustomFieldBadgeContent
  */
 export interface CustomFieldBadgeContent {
-    /**
-     * 
-     * @type {Array<CustomFieldBadgeContentBadgesInner>}
-     * @memberof CustomFieldBadgeContent
-     */
-    badges?: Array<CustomFieldBadgeContentBadgesInner>;
+  /**
+   *
+   * @type {Array<CustomFieldBadgeContentBadgesInner>}
+   * @memberof CustomFieldBadgeContent
+   */
+  badges?: Array<CustomFieldBadgeContentBadgesInner>;
 }
 
 /**
  * Check if a given object implements the CustomFieldBadgeContent interface.
  */
 export function instanceOfCustomFieldBadgeContent(value: object): boolean {
-    let isInstance = true;
+  let isInstance = true;
 
-    return isInstance;
+  return isInstance;
 }
 
 export function CustomFieldBadgeContentFromJSON(json: any): CustomFieldBadgeContent {
-    return CustomFieldBadgeContentFromJSONTyped(json, false);
+  return CustomFieldBadgeContentFromJSONTyped(json, false);
 }
 
 export function CustomFieldBadgeContentFromJSONTyped(json: any, ignoreDiscriminator: boolean): CustomFieldBadgeContent {
-    if ((json === undefined) || (json === null)) {
-        return json;
-    }
-    return {
-        
-        'badges': !exists(json, 'badges') ? undefined : ((json['badges'] as Array<any>).map(CustomFieldBadgeContentBadgesInnerFromJSON)),
-    };
+  if (json === undefined || json === null) {
+    return json;
+  }
+  return {
+    badges: !exists(json, 'badges') ? undefined : (json['badges'] as Array<any>).map(CustomFieldBadgeContentBadgesInnerFromJSON),
+  };
 }
 
 export function CustomFieldBadgeContentToJSON(value?: CustomFieldBadgeContent | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
-    }
-    return {
-        
-        'badges': value.badges === undefined ? undefined : ((value.badges as Array<any>).map(CustomFieldBadgeContentBadgesInnerToJSON)),
-    };
+  if (value === undefined) {
+    return undefined;
+  }
+  if (value === null) {
+    return null;
+  }
+  return {
+    badges: value.badges === undefined ? undefined : (value.badges as Array<any>).map(CustomFieldBadgeContentBadgesInnerToJSON),
+  };
 }
-

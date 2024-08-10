@@ -1,10 +1,10 @@
-import { RequireRatchet } from "@bitblit/ratchet-common/lang/require-ratchet";
-import { ErrorRatchet } from "@bitblit/ratchet-common/lang/error-ratchet";
-import { StringRatchet } from "@bitblit/ratchet-common/lang/string-ratchet";
-import { ScheduledEvent } from "aws-lambda";
-import { DateTime } from "luxon";
-import { AbstractCronEntry } from "../config/cron/abstract-cron-entry.js";
-import { CronConfig } from "../config/cron/cron-config.js";
+import { RequireRatchet } from '@bitblit/ratchet-common/lang/require-ratchet';
+import { ErrorRatchet } from '@bitblit/ratchet-common/lang/error-ratchet';
+import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet';
+import { ScheduledEvent } from 'aws-lambda';
+import { DateTime } from 'luxon';
+import { AbstractCronEntry } from '../config/cron/abstract-cron-entry.js';
+import { CronConfig } from '../config/cron/cron-config.js';
 
 export class CronUtil {
   public static everyNMinuteFilter(n: number): number[] {
@@ -24,7 +24,7 @@ export class CronUtil {
       ErrorRatchet.throwFormattedErr(
         'Invalid config - this function only makes sense for 2 < N < %d and %d evenly divisible by N',
         half,
-        m
+        m,
       );
       throw new Error('Invalid config - this function only makes sense for 2 < N < 31 and 60 evenly divisible by N');
     }
@@ -43,7 +43,7 @@ export class CronUtil {
     event: ScheduledEvent,
     entry: AbstractCronEntry,
     cfg: CronConfig,
-    testTimeEpochMS: number = new Date().getTime()
+    testTimeEpochMS: number = new Date().getTime(),
   ): boolean {
     let rval: boolean = false;
     if (!!event && !!entry && !!cfg.timezone) {

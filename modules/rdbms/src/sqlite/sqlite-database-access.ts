@@ -1,13 +1,13 @@
-import { AsyncDatabase } from "promised-sqlite3";
-import { Logger } from "@bitblit/ratchet-common/logger/logger";
-import { ErrorRatchet } from "@bitblit/ratchet-common/lang/error-ratchet";
-import SqlString from "sqlstring";
-import { DatabaseAccess } from "../model/database-access.js";
-import { DatabaseRequestType } from "../model/database-request-type.js";
-import { ModifyResults } from "../model/modify-results.js";
-import { RequestResults } from "../model/request-results.js";
-import { QueryUtil } from "../query-builder/query-util.js";
-import { SqliteConnectionConfigFlag } from "./model/sqlite-connection-config-flag.js";
+import { AsyncDatabase } from 'promised-sqlite3';
+import { Logger } from '@bitblit/ratchet-common/logger/logger';
+import { ErrorRatchet } from '@bitblit/ratchet-common/lang/error-ratchet';
+import SqlString from 'sqlstring';
+import { DatabaseAccess } from '../model/database-access.js';
+import { DatabaseRequestType } from '../model/database-request-type.js';
+import { ModifyResults } from '../model/modify-results.js';
+import { RequestResults } from '../model/request-results.js';
+import { QueryUtil } from '../query-builder/query-util.js';
+import { SqliteConnectionConfigFlag } from './model/sqlite-connection-config-flag.js';
 
 export class SqliteDatabaseAccess implements DatabaseAccess {
   constructor(
@@ -40,7 +40,7 @@ export class SqliteDatabaseAccess implements DatabaseAccess {
 
   escape(value: any): string {
     let rval: string = SqlString.escape(value);
-    rval = rval.replaceAll('\\\'', '\'\''); // For some reason sqlite uses '' as the escape for '...
+    rval = rval.replaceAll("\\'", "''"); // For some reason sqlite uses '' as the escape for '...
     return rval;
   }
 
@@ -91,7 +91,7 @@ export class SqliteDatabaseAccess implements DatabaseAccess {
       const val: any = slFields[k];
       if (Array.isArray(val)) {
         const escaped: string = this.escape(val);
-        query = query.replaceAll(k,  escaped );
+        query = query.replaceAll(k, escaped);
         delete slFields[k]; // this prolly wont work
       }
     });

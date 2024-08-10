@@ -13,69 +13,65 @@
 
 import { exists, mapValues } from '../runtime.js';
 /**
- * 
+ *
  * @export
  * @interface AgreementSignatoriesInner
  */
 export interface AgreementSignatoriesInner {
-    /**
-     * 
-     * @type {string}
-     * @memberof AgreementSignatoriesInner
-     */
-    _id?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof AgreementSignatoriesInner
-     */
-    _type?: AgreementSignatoriesInnerTypeEnum;
+  /**
+   *
+   * @type {string}
+   * @memberof AgreementSignatoriesInner
+   */
+  _id?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof AgreementSignatoriesInner
+   */
+  _type?: AgreementSignatoriesInnerTypeEnum;
 }
 
 /**
-* @export
-* @enum {string}
-*/
+ * @export
+ * @enum {string}
+ */
 export enum AgreementSignatoriesInnerTypeEnum {
-    user = 'user'
+  user = 'user',
 }
-
 
 /**
  * Check if a given object implements the AgreementSignatoriesInner interface.
  */
 export function instanceOfAgreementSignatoriesInner(value: object): boolean {
-    let isInstance = true;
+  let isInstance = true;
 
-    return isInstance;
+  return isInstance;
 }
 
 export function AgreementSignatoriesInnerFromJSON(json: any): AgreementSignatoriesInner {
-    return AgreementSignatoriesInnerFromJSONTyped(json, false);
+  return AgreementSignatoriesInnerFromJSONTyped(json, false);
 }
 
 export function AgreementSignatoriesInnerFromJSONTyped(json: any, ignoreDiscriminator: boolean): AgreementSignatoriesInner {
-    if ((json === undefined) || (json === null)) {
-        return json;
-    }
-    return {
-        
-        '_id': !exists(json, '_id') ? undefined : json['_id'],
-        '_type': !exists(json, '_type') ? undefined : json['_type'],
-    };
+  if (json === undefined || json === null) {
+    return json;
+  }
+  return {
+    _id: !exists(json, '_id') ? undefined : json['_id'],
+    _type: !exists(json, '_type') ? undefined : json['_type'],
+  };
 }
 
 export function AgreementSignatoriesInnerToJSON(value?: AgreementSignatoriesInner | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
-    }
-    return {
-        
-        '_id': value._id,
-        '_type': value._type,
-    };
+  if (value === undefined) {
+    return undefined;
+  }
+  if (value === null) {
+    return null;
+  }
+  return {
+    _id: value._id,
+    _type: value._type,
+  };
 }
-

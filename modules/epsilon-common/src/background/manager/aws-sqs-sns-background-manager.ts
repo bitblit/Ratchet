@@ -1,5 +1,5 @@
-import { Logger } from "@bitblit/ratchet-common/logger/logger";
-import { ErrorRatchet } from "@bitblit/ratchet-common/lang/error-ratchet";
+import { Logger } from '@bitblit/ratchet-common/logger/logger';
+import { ErrorRatchet } from '@bitblit/ratchet-common/lang/error-ratchet';
 import {
   DeleteMessageCommand,
   DeleteMessageCommandOutput,
@@ -12,16 +12,16 @@ import {
   ReceiveMessageCommandOutput,
   SendMessageCommand,
   SendMessageCommandOutput,
-  SQSClient
-} from "@aws-sdk/client-sqs";
-import { BackgroundEntry } from "../background-entry.js";
-import { BackgroundAwsConfig } from "../../config/background/background-aws-config.js";
-import { EpsilonConstants } from "../../epsilon-constants.js";
-import { InternalBackgroundEntry } from "../internal-background-entry.js";
-import { AbstractBackgroundManager } from "./abstract-background-manager.js";
-import { BackgroundValidator } from "../background-validator.js";
-import { PublishCommand, PublishCommandOutput, SNSClient } from "@aws-sdk/client-sns";
-import { NumberRatchet } from "@bitblit/ratchet-common/lang/number-ratchet";
+  SQSClient,
+} from '@aws-sdk/client-sqs';
+import { BackgroundEntry } from '../background-entry.js';
+import { BackgroundAwsConfig } from '../../config/background/background-aws-config.js';
+import { EpsilonConstants } from '../../epsilon-constants.js';
+import { InternalBackgroundEntry } from '../internal-background-entry.js';
+import { AbstractBackgroundManager } from './abstract-background-manager.js';
+import { BackgroundValidator } from '../background-validator.js';
+import { PublishCommand, PublishCommandOutput, SNSClient } from '@aws-sdk/client-sns';
+import { NumberRatchet } from '@bitblit/ratchet-common/lang/number-ratchet';
 
 /**
  * Handles all submission of work to the background processing system.

@@ -1,9 +1,9 @@
-import { S3StorageProvider } from "./s3-storage-provider.js";
-import { S3Client } from "@aws-sdk/client-s3";
-import { describe, expect, test } from "vitest";
-import { S3CacheRatchet } from "../s3-cache-ratchet.js";
-import { SimpleCache } from "../../cache/simple-cache.js";
-import { SimpleCacheObjectWrapper } from "../../cache/simple-cache-object-wrapper.js";
+import { S3StorageProvider } from './s3-storage-provider.js';
+import { S3Client } from '@aws-sdk/client-s3';
+import { describe, expect, test } from 'vitest';
+import { S3CacheRatchet } from '../s3-cache-ratchet.js';
+import { SimpleCache } from '../../cache/simple-cache.js';
+import { SimpleCacheObjectWrapper } from '../../cache/simple-cache-object-wrapper.js';
 
 describe('#S3StorageProvider', function () {
   test.skip('should read/write/delete with an S3 handler', async () => {

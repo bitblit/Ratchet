@@ -1,10 +1,10 @@
-import { BackgroundTransactionLogger } from "../config/background/background-transaction-logger.js";
-import { BackgroundTransactionLog } from "../config/background/background-transaction-log.js";
-import { AbstractBackgroundManager } from "./manager/abstract-background-manager.js";
-import { Logger } from "@bitblit/ratchet-common/logger/logger";
-import { ErrorRatchet } from "@bitblit/ratchet-common/lang/error-ratchet";
-import { S3Client } from "@aws-sdk/client-s3";
-import { S3CacheRatchet } from "@bitblit/ratchet-aws/s3/s3-cache-ratchet";
+import { BackgroundTransactionLogger } from '../config/background/background-transaction-logger.js';
+import { BackgroundTransactionLog } from '../config/background/background-transaction-log.js';
+import { AbstractBackgroundManager } from './manager/abstract-background-manager.js';
+import { Logger } from '@bitblit/ratchet-common/logger/logger';
+import { ErrorRatchet } from '@bitblit/ratchet-common/lang/error-ratchet';
+import { S3Client } from '@aws-sdk/client-s3';
+import { S3CacheRatchet } from '@bitblit/ratchet-aws/s3/s3-cache-ratchet';
 
 export class S3BackgroundTransactionLogger implements BackgroundTransactionLogger {
   private s3TransactionLogCacheRatchet: S3CacheRatchet;
@@ -22,7 +22,7 @@ export class S3BackgroundTransactionLogger implements BackgroundTransactionLogge
       if (txLog.request?.guid) {
         await this.s3TransactionLogCacheRatchet.writeObjectToCacheFile(
           AbstractBackgroundManager.backgroundGuidToPath(this.cfg.prefix, txLog.request.guid),
-          txLog
+          txLog,
         );
       } else {
         Logger.warn('Could not write transaction record - no guid defined : %j', txLog);

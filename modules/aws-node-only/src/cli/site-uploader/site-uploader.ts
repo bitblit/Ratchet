@@ -36,7 +36,6 @@ export class SiteUploader {
     return inst.runPump();
   }
 
-   
   findMatch(prefix: string, fileName: string, config: any): any {
     let found = null;
 
@@ -55,7 +54,6 @@ export class SiteUploader {
     return found;
   }
 
-   
   findMime(fileName: string, config: any): string {
     let found = null;
 
@@ -129,7 +127,7 @@ export class SiteUploader {
               Logger.warn('%s failed to upload : %s : Continuing', key, err);
               next();
             });
-        }.bind(this)
+        }.bind(this),
       );
 
       walker.on('errors', function (root, nodeStatsArray, next) {

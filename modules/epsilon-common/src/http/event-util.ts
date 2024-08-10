@@ -1,19 +1,18 @@
-import { APIGatewayEvent, APIGatewayEventRequestContext, AuthResponseContext } from "aws-lambda";
-import { UnauthorizedError } from "./error/unauthorized-error.js";
-import { BadRequestError } from "./error/bad-request-error.js";
-import { EpsilonLoggerConfig } from "../config/epsilon-logger-config.js";
-import { Logger } from "@bitblit/ratchet-common/logger/logger";
+import { APIGatewayEvent, APIGatewayEventRequestContext, AuthResponseContext } from 'aws-lambda';
+import { UnauthorizedError } from './error/unauthorized-error.js';
+import { BadRequestError } from './error/bad-request-error.js';
+import { EpsilonLoggerConfig } from '../config/epsilon-logger-config.js';
+import { Logger } from '@bitblit/ratchet-common/logger/logger';
 
-import jwt from "jsonwebtoken";
-import { ExtendedAuthResponseContext } from "./route/extended-auth-response-context.js";
-import { BasicAuthToken } from "./auth/basic-auth-token.js";
-import { EpsilonConstants } from "../epsilon-constants.js";
-import { StringRatchet } from "@bitblit/ratchet-common/lang/string-ratchet";
-import { LoggerLevelName } from "@bitblit/ratchet-common/logger/logger-level-name";
-import { Base64Ratchet } from "@bitblit/ratchet-common/lang/base64-ratchet";
-import { MapRatchet } from "@bitblit/ratchet-common/lang/map-ratchet";
-import { EnumRatchet } from "@bitblit/ratchet-common/lang/enum-ratchet";
-
+import jwt from 'jsonwebtoken';
+import { ExtendedAuthResponseContext } from './route/extended-auth-response-context.js';
+import { BasicAuthToken } from './auth/basic-auth-token.js';
+import { EpsilonConstants } from '../epsilon-constants.js';
+import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet';
+import { LoggerLevelName } from '@bitblit/ratchet-common/logger/logger-level-name';
+import { Base64Ratchet } from '@bitblit/ratchet-common/lang/base64-ratchet';
+import { MapRatchet } from '@bitblit/ratchet-common/lang/map-ratchet';
+import { EnumRatchet } from '@bitblit/ratchet-common/lang/enum-ratchet';
 
 /**
  * Endpoints about the api itself

@@ -1,28 +1,28 @@
-import { RequireRatchet } from "@bitblit/ratchet-common/lang/require-ratchet";
-import { Logger } from "@bitblit/ratchet-common/logger/logger";
-import { PromiseRatchet } from "@bitblit/ratchet-common/lang/promise-ratchet";
-import { StopWatch } from "@bitblit/ratchet-common/lang/stop-watch";
-import tmp from "tmp";
-import fs, { WriteStream } from "fs";
+import { RequireRatchet } from '@bitblit/ratchet-common/lang/require-ratchet';
+import { Logger } from '@bitblit/ratchet-common/logger/logger';
+import { PromiseRatchet } from '@bitblit/ratchet-common/lang/promise-ratchet';
+import { StopWatch } from '@bitblit/ratchet-common/lang/stop-watch';
+import tmp from 'tmp';
+import fs, { WriteStream } from 'fs';
 import {
   CompleteMultipartUploadCommandOutput,
   GetObjectCommandInput,
   GetObjectCommandOutput,
-  HeadObjectCommandOutput
-} from "@aws-sdk/client-s3";
-import { Readable } from "stream";
-import { S3SyncedFileConfig } from "./s3-synced-file-config.js";
-import { S3SyncedFileConfigInitMode } from "./s3-synced-file-config-init-mode.js";
-import { DateTime } from "luxon";
-import { S3SyncedFileRemoteBackupMode } from "./s3-synced-file-remote-backup-mode.js";
-import { S3SyncedFileOptimization } from "./s3-synced-file-optimization.js";
-import { RemoteFileSyncLike } from "@bitblit/ratchet-common/network/remote-file-sync/remote-file-sync-like";
-import { RemoteStatusData } from "@bitblit/ratchet-common/network/remote-file-sync/remote-status-data";
-import { FileTransferResult } from "@bitblit/ratchet-common/network/remote-file-sync/file-transfer-result";
-import { BackupResult } from "@bitblit/ratchet-common/network/remote-file-sync/backup-result";
+  HeadObjectCommandOutput,
+} from '@aws-sdk/client-s3';
+import { Readable } from 'stream';
+import { S3SyncedFileConfig } from './s3-synced-file-config.js';
+import { S3SyncedFileConfigInitMode } from './s3-synced-file-config-init-mode.js';
+import { DateTime } from 'luxon';
+import { S3SyncedFileRemoteBackupMode } from './s3-synced-file-remote-backup-mode.js';
+import { S3SyncedFileOptimization } from './s3-synced-file-optimization.js';
+import { RemoteFileSyncLike } from '@bitblit/ratchet-common/network/remote-file-sync/remote-file-sync-like';
+import { RemoteStatusData } from '@bitblit/ratchet-common/network/remote-file-sync/remote-status-data';
+import { FileTransferResult } from '@bitblit/ratchet-common/network/remote-file-sync/file-transfer-result';
+import { BackupResult } from '@bitblit/ratchet-common/network/remote-file-sync/backup-result';
 
 // Keeps a local file up-to-date with a file on S3
-export class S3SyncedFile implements RemoteFileSyncLike{
+export class S3SyncedFile implements RemoteFileSyncLike {
   private readonly _localFileName: string;
 
   private _remoteStatus: RemoteStatusData;
@@ -33,45 +33,60 @@ export class S3SyncedFile implements RemoteFileSyncLike{
     RequireRatchet.notNullOrUndefined(config, 'config');
     RequireRatchet.notNullUndefinedOrOnlyWhitespaceString(config.s3Path, 's3Path');
     RequireRatchet.notNullOrUndefined(config.s3CacheRatchetLike, 's3CacheRatchetLike');
-    RequireRatchet.notNullUndefinedOrOnlyWhitespaceString(config.s3CacheRatchetLike.getDefaultBucket(), 's3CacheRatchetLike.getDefaultBucket()');
+    RequireRatchet.notNullUndefinedOrOnlyWhitespaceString(
+      config.s3CacheRatchetLike.getDefaultBucket(),
+      's3CacheRatchetLike.getDefaultBucket()',
+    );
 
     if (config.forceLocalFileFullPath) {
       this._localFileName = config.forceLocalFileFullPath;
     } else {
-      const extension: string = config.s3Path.includes('.') ? config.s3Path.substring(config.s3Path.lastIndexOf('.')+1) : undefined;
+      const extension: string = config.s3Path.includes('.') ? config.s3Path.substring(config.s3Path.lastIndexOf('.') + 1) : undefined;
       this._localFileName = config.forceLocalFileFullPath ?? tmp.fileSync({ postfix: extension, keep: config.leaveTempFileOnDisk }).name;
     }
-    Logger.info('Using local file %s for remote path %s %s', this._localFileName, this.config.s3CacheRatchetLike.getDefaultBucket(), this.config.s3Path);
+    Logger.info(
+      'Using local file %s for remote path %s %s',
+      this._localFileName,
+      this.config.s3CacheRatchetLike.getDefaultBucket(),
+      this.config.s3Path,
+    );
 
-    this.initialize().then(()=>{
+    this.initialize().then(() => {
       Logger.info('Initialized');
-    })
+    });
   }
 
-  public   get remoteStatusData(): Promise<RemoteStatusData> {
-      if (!this._remoteStatus || (this.config.remoteStatusTtlMs && (Date.now() - this._remoteStatus.updatedEpochMs) > this.config.remoteStatusTtlMs)) {
-        return (async ()=> {
-          const meta: HeadObjectCommandOutput = await this.fetchRemoteMeta();
-          this._remoteStatus = {
-            updatedEpochMs: Date.now(),
-            remoteSizeInBytes: meta.ContentLength,
-            remoteLastUpdatedEpochMs: meta.LastModified.getTime(),
-            remoteHash: meta.ETag
-          };
-          return this._remoteStatus;
-        })();
-      } else {
-        return Promise.resolve(this._remoteStatus);
-      }
+  public get remoteStatusData(): Promise<RemoteStatusData> {
+    if (
+      !this._remoteStatus ||
+      (this.config.remoteStatusTtlMs && Date.now() - this._remoteStatus.updatedEpochMs > this.config.remoteStatusTtlMs)
+    ) {
+      return (async () => {
+        const meta: HeadObjectCommandOutput = await this.fetchRemoteMeta();
+        this._remoteStatus = {
+          updatedEpochMs: Date.now(),
+          remoteSizeInBytes: meta.ContentLength,
+          remoteLastUpdatedEpochMs: meta.LastModified.getTime(),
+          remoteHash: meta.ETag,
+        };
+        return this._remoteStatus;
+      })();
+    } else {
+      return Promise.resolve(this._remoteStatus);
     }
-
+  }
 
   private async initialize(): Promise<void> {
-    Logger.info('Using local path %s to sync %s / %s', this._localFileName, this.config.s3CacheRatchetLike.getDefaultBucket(), this.config.s3Path);
+    Logger.info(
+      'Using local path %s to sync %s / %s',
+      this._localFileName,
+      this.config.s3CacheRatchetLike.getDefaultBucket(),
+      this.config.s3Path,
+    );
     if (this.config.initMode === S3SyncedFileConfigInitMode.OnStartup) {
       Logger.info('Initial loading');
       this.fetchRemoteToLocal().then(() => {
-        Logger.info('Finished initial load')
+        Logger.info('Finished initial load');
       });
     }
   }
@@ -79,15 +94,15 @@ export class S3SyncedFile implements RemoteFileSyncLike{
   public async localAndRemoteAreSameSize(): Promise<boolean> {
     let rval: boolean = false;
     const localBytes: number = this.localFileBytes;
-    if (localBytes!==null) {
+    if (localBytes !== null) {
       const remoteBytes: number = (await this.remoteStatusData).remoteSizeInBytes;
-      rval = localBytes===remoteBytes;
+      rval = localBytes === remoteBytes;
       Logger.info('Local size is %s, remote is %s, same is %s', localBytes, remoteBytes, rval);
     }
     return rval;
   }
 
-  public directWriteValueToLocalFile(value: string|Uint8Array): void {
+  public directWriteValueToLocalFile(value: string | Uint8Array): void {
     RequireRatchet.notNullOrUndefined(value, 'value');
     fs.writeFileSync(this._localFileName, value);
   }
@@ -124,18 +139,19 @@ export class S3SyncedFile implements RemoteFileSyncLike{
 
   // Returns whether a fetch would occur right now, given optimizations
   public get wouldFetch(): Promise<boolean> {
-    return (async ()=>{
-      const rval: boolean =  !this.hasFetchOptimization(S3SyncedFileOptimization.TreatSameSizeAsNoChange) || !(await this.localAndRemoteAreSameSize());
+    return (async () => {
+      const rval: boolean =
+        !this.hasFetchOptimization(S3SyncedFileOptimization.TreatSameSizeAsNoChange) || !(await this.localAndRemoteAreSameSize());
       return rval;
     })();
   }
-   public get wouldPush(): Promise<boolean> {
-     return (async ()=>{
-       const rval: boolean =  !this.hasPushOptimization(S3SyncedFileOptimization.TreatSameSizeAsNoChange) || !(await this.localAndRemoteAreSameSize());
-       return rval;
-     })();
-   }
-
+  public get wouldPush(): Promise<boolean> {
+    return (async () => {
+      const rval: boolean =
+        !this.hasPushOptimization(S3SyncedFileOptimization.TreatSameSizeAsNoChange) || !(await this.localAndRemoteAreSameSize());
+      return rval;
+    })();
+  }
 
   public async sendLocalToRemote(): Promise<FileTransferResult> {
     const sw: StopWatch = new StopWatch();
@@ -143,13 +159,16 @@ export class S3SyncedFile implements RemoteFileSyncLike{
     let rval: FileTransferResult = null;
     if (await this.wouldPush) {
       try {
-        if (this.config.backupMode===S3SyncedFileRemoteBackupMode.EveryUpload) {
+        if (this.config.backupMode === S3SyncedFileRemoteBackupMode.EveryUpload) {
           Logger.info('EveryUpload mode set - backing up');
           const backupRes: BackupResult = await this.backupRemote();
-          Logger.info('Backup result : %s',backupRes);
+          Logger.info('Backup result : %s', backupRes);
         }
-        const out: CompleteMultipartUploadCommandOutput = await this.config.s3CacheRatchetLike.writeStreamToCacheFile(this.config.s3Path, fs.readFileSync(this._localFileName));
-        Logger.silly('SendLocalToRemote: %j', out)
+        const out: CompleteMultipartUploadCommandOutput = await this.config.s3CacheRatchetLike.writeStreamToCacheFile(
+          this.config.s3Path,
+          fs.readFileSync(this._localFileName),
+        );
+        Logger.silly('SendLocalToRemote: %j', out);
 
         this._remoteStatus = null; // Clear data as now invalid (Force re-read)
         rval = FileTransferResult.Updated;
@@ -161,22 +180,24 @@ export class S3SyncedFile implements RemoteFileSyncLike{
       Logger.info('TreatSameSizeAsNoChange set and files are same size - skipping');
       rval = FileTransferResult.Skipped;
     }
-    Logger.info('Sent %d bytes to remote in %s', this.localFileBytes, sw.dump())
+    Logger.info('Sent %d bytes to remote in %s', this.localFileBytes, sw.dump());
     return rval;
   }
 
   public async backupRemote(): Promise<BackupResult> {
     let rval: BackupResult = null;
-    try{
+    try {
       const lastSlash: number = this.config.s3Path.lastIndexOf('/');
-      const datePart: string = '/backup/'+DateTime.now().toFormat('yyyy/MM/dd/HH/mm/ss')+'/';
-      const newPath: string = lastSlash>-1 ? this.config.s3Path.substring(0, lastSlash) + datePart + this.config.s3Path.substring(lastSlash+1) :
-        datePart + this.config.s3Path;
+      const datePart: string = '/backup/' + DateTime.now().toFormat('yyyy/MM/dd/HH/mm/ss') + '/';
+      const newPath: string =
+        lastSlash > -1
+          ? this.config.s3Path.substring(0, lastSlash) + datePart + this.config.s3Path.substring(lastSlash + 1)
+          : datePart + this.config.s3Path;
 
       Logger.info('Backing up path %s to %s', this.config.s3Path, newPath);
       await this.config.s3CacheRatchetLike.copyFile(this.config.s3Path, newPath);
       rval = BackupResult.Success;
-    } catch(err) {
+    } catch (err) {
       Logger.error('Failed to backup %s : %s', this.config.s3Path, err, err);
       rval = BackupResult.Error;
     }
@@ -215,7 +236,7 @@ export class S3SyncedFile implements RemoteFileSyncLike{
         const req: GetObjectCommandInput = {
           Bucket: this.config.s3CacheRatchetLike.getDefaultBucket(),
           Key: this.config.s3Path,
-          IfModifiedSince: new Date(epochMS)
+          IfModifiedSince: new Date(epochMS),
         };
 
         const output: GetObjectCommandOutput = await this.config.s3CacheRatchetLike.fetchCacheFilePassThru(req);
@@ -223,16 +244,17 @@ export class S3SyncedFile implements RemoteFileSyncLike{
         const readStream: Readable = output.Body as Readable;
         readStream.pipe(fileStream);
         Logger.info('Waiting for pipe completion');
-        await PromiseRatchet.resolveOnEvent(fileStream, ['close','finish'], ['error']);
+        await PromiseRatchet.resolveOnEvent(fileStream, ['close', 'finish'], ['error']);
         Logger.info('Pipe completed');
         this._lastSyncEpochMS = Date.now();
 
-        this._remoteStatus = { // Update this since it is now up-to-date as a side effect
+        this._remoteStatus = {
+          // Update this since it is now up-to-date as a side effect
           updatedEpochMs: Date.now(),
           remoteSizeInBytes: output.ContentLength,
           remoteLastUpdatedEpochMs: output.LastModified.getTime(),
-          remoteHash: output.ETag
-        }
+          remoteHash: output.ETag,
+        };
         Logger.info('Fetched remote to local, %d bytes in %s', output.ContentLength, sw.dump());
       } else {
         Logger.info('TreatSameSizeAsNoChange not enabled OR files are same size - skipping');
@@ -244,6 +266,4 @@ export class S3SyncedFile implements RemoteFileSyncLike{
       return FileTransferResult.Error;
     }
   }
-
-
 }

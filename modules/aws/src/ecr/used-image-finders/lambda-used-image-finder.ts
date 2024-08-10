@@ -1,16 +1,16 @@
-import { UsedImageFinder } from "../used-image-finder.js";
-import { RequireRatchet } from "@bitblit/ratchet-common/lang/require-ratchet";
-import { Logger } from "@bitblit/ratchet-common/logger/logger";
-import { StringRatchet } from "@bitblit/ratchet-common/lang/string-ratchet";
+import { UsedImageFinder } from '../used-image-finder.js';
+import { RequireRatchet } from '@bitblit/ratchet-common/lang/require-ratchet';
+import { Logger } from '@bitblit/ratchet-common/logger/logger';
+import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet';
 import {
   FunctionConfiguration,
   GetFunctionCommand,
   GetFunctionCommandOutput,
   LambdaClient,
   ListFunctionsCommand,
-  ListFunctionsCommandInput
-} from "@aws-sdk/client-lambda";
-import { ListFunctionsResponse } from "@aws-sdk/client-lambda/dist-types/models";
+  ListFunctionsCommandInput,
+} from '@aws-sdk/client-lambda';
+import { ListFunctionsResponse } from '@aws-sdk/client-lambda/dist-types/models';
 
 export class LambdaUsedImageFinder implements UsedImageFinder {
   constructor(private lambda: LambdaClient) {

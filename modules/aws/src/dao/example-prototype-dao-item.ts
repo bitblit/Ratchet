@@ -1,4 +1,3 @@
-
 export interface ExamplePrototypeDaoItem {
   fieldA: number;
   fieldB: string;

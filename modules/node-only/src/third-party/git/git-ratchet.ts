@@ -1,6 +1,6 @@
 import process from 'child_process';
-import { EsmRatchet } from "@bitblit/ratchet-common/lang/esm-ratchet";
-import { Logger } from "@bitblit/ratchet-common/logger/logger";
+import { EsmRatchet } from '@bitblit/ratchet-common/lang/esm-ratchet';
+import { Logger } from '@bitblit/ratchet-common/logger/logger';
 
 // Mainly ripped from https://raw.githubusercontent.com/seymen/git-last-commit/master/source/index.js
 // All credit due to https://github.com/seymen
@@ -8,7 +8,6 @@ export class GitRatchet {
   private static readonly SPLIT_CHARACTER: string = '<##>';
   private static readonly PRETTY_FORMAT: string[] = ['%h', '%H', '%s', '%f', '%b', '%at', '%ct', '%an', '%ae', '%cn', '%ce', '%N', ''];
 
-   
   public static async executeCommand(command: string, options: any): Promise<string> {
     let dst: string = EsmRatchet.fetchDirName(import.meta.url);
 

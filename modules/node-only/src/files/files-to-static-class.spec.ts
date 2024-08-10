@@ -4,7 +4,7 @@ import { FilesToStaticClass } from './files-to-static-class.js';
 //import { Logger } from '../../common/logger';
 import { expect, test, describe, vi, beforeEach } from 'vitest';
 import { mock, MockProxy } from 'vitest-mock-extended';
-import { EsmRatchet } from "@bitblit/ratchet-common/lang/esm-ratchet";
+import { EsmRatchet } from '@bitblit/ratchet-common/lang/esm-ratchet';
 
 const testDirname: string = EsmRatchet.fetchDirName(import.meta.url);
 

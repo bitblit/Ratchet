@@ -1,15 +1,15 @@
-import { WebTokenManipulator } from "./web-token-manipulator.js";
-import { UnauthorizedError } from "../error/unauthorized-error.js";
+import { WebTokenManipulator } from './web-token-manipulator.js';
+import { UnauthorizedError } from '../error/unauthorized-error.js';
 
-import { RequireRatchet } from "@bitblit/ratchet-common/lang/require-ratchet";
-import { Logger } from "@bitblit/ratchet-common/logger/logger";
-import { StringRatchet } from "@bitblit/ratchet-common/lang/string-ratchet";
-import { LoggerLevelName } from "@bitblit/ratchet-common/logger/logger-level-name";
-import { CommonJwtToken } from "@bitblit/ratchet-common/jwt/common-jwt-token";
-import { JwtTokenBase } from "@bitblit/ratchet-common/jwt/jwt-token-base";
-import { ExpiredJwtHandling } from "@bitblit/ratchet-common/jwt/expired-jwt-handling";
-import { JwtRatchet } from "@bitblit/ratchet-common/jwt/jwt-ratchet";
-import { JwtRatchetConfig } from "@bitblit/ratchet-common/jwt/jwt-ratchet-config";
+import { RequireRatchet } from '@bitblit/ratchet-common/lang/require-ratchet';
+import { Logger } from '@bitblit/ratchet-common/logger/logger';
+import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet';
+import { LoggerLevelName } from '@bitblit/ratchet-common/logger/logger-level-name';
+import { CommonJwtToken } from '@bitblit/ratchet-common/jwt/common-jwt-token';
+import { JwtTokenBase } from '@bitblit/ratchet-common/jwt/jwt-token-base';
+import { ExpiredJwtHandling } from '@bitblit/ratchet-common/jwt/expired-jwt-handling';
+import { JwtRatchet } from '@bitblit/ratchet-common/jwt/jwt-ratchet';
+import { JwtRatchetConfig } from '@bitblit/ratchet-common/jwt/jwt-ratchet-config';
 
 /**
  * Service for handling jwt tokens
@@ -17,12 +17,15 @@ import { JwtRatchetConfig } from "@bitblit/ratchet-common/jwt/jwt-ratchet-config
 export class LocalWebTokenManipulator<T extends JwtTokenBase> implements WebTokenManipulator<T> {
   private _ratchet: JwtRatchet;
 
-  constructor(private encryptionKeys: string[], private issuer: string) {
+  constructor(
+    private encryptionKeys: string[],
+    private issuer: string,
+  ) {
     RequireRatchet.notNullOrUndefined(encryptionKeys, 'encryptionKeys');
     RequireRatchet.noNullOrUndefinedValuesInArray(encryptionKeys, encryptionKeys.length);
     const cfg: JwtRatchetConfig = {
-      encryptionKeyPromise: Promise.resolve(encryptionKeys)
-    }
+      encryptionKeyPromise: Promise.resolve(encryptionKeys),
+    };
 
     this._ratchet = new JwtRatchet(cfg);
   }
@@ -79,7 +82,7 @@ export class LocalWebTokenManipulator<T extends JwtTokenBase> implements WebToke
     userObject: T,
     roles: string[] = ['USER'],
     expirationSeconds: number = 3600,
-    proxyUser: T = null
+    proxyUser: T = null,
   ): Promise<string> {
     Logger.info('Creating JWT token for %s  that expires in %s', principal, expirationSeconds);
     const now = new Date().getTime();

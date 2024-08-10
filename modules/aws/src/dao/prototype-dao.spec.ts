@@ -1,13 +1,11 @@
-import { PrototypeDao } from "./prototype-dao.js";
-import { describe, expect, test } from "vitest";
-import { MemoryPrototypeDaoProvider } from "./memory-prototype-dao-provider.js";
-import { ExamplePrototypeDaoItem } from "./example-prototype-dao-item.js";
+import { PrototypeDao } from './prototype-dao.js';
+import { describe, expect, test } from 'vitest';
+import { MemoryPrototypeDaoProvider } from './memory-prototype-dao-provider.js';
+import { ExamplePrototypeDaoItem } from './example-prototype-dao-item.js';
 
 describe('#PrototypeDao', () => {
   test.skip('Should save/load files', async () => {
-    const svc: PrototypeDao<ExamplePrototypeDaoItem> = new PrototypeDao<ExamplePrototypeDaoItem>(
-      new MemoryPrototypeDaoProvider()
-    );
+    const svc: PrototypeDao<ExamplePrototypeDaoItem> = new PrototypeDao<ExamplePrototypeDaoItem>(new MemoryPrototypeDaoProvider());
     await svc.resetDatabase();
 
     await svc.store({ fieldA: 1, fieldB: 'test1', type: 'a' });

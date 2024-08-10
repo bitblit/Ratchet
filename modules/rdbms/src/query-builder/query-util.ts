@@ -1,6 +1,6 @@
-import { Logger } from "@bitblit/ratchet-common/logger/logger";
-import { ErrorRatchet } from "@bitblit/ratchet-common/lang/error-ratchet";
-import { StringRatchet } from "@bitblit/ratchet-common/lang/string-ratchet";
+import { Logger } from '@bitblit/ratchet-common/logger/logger';
+import { ErrorRatchet } from '@bitblit/ratchet-common/lang/error-ratchet';
+import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet';
 
 export class QueryUtil {
   private fields: string[] = [];
@@ -88,19 +88,18 @@ export class QueryUtil {
   // Used by dbs like sqlite3 that want the prefix in the supplied record
   public static addPrefixToFieldNames(fields: Record<string, any>, prefix: string = ':'): Record<string, any> {
     const rval: Record<string, any> = {};
-    Object.keys(fields).forEach(k=>{
-      rval[prefix+k]=fields[k];
+    Object.keys(fields).forEach((k) => {
+      rval[prefix + k] = fields[k];
     });
     return rval;
   }
-
 
   // If any supplied fields are null/undefined, replaces their variable in the source query
   // Needed by dbs like sqlite3 that dont handle null injection well
   public static replaceNullReplacementsInQuery(query: string, fields: Record<string, any>): string {
     const rval: string = query;
-    Object.keys(fields).forEach(k=>{
-      if (fields[k]===null || fields[k]===undefined) {
+    Object.keys(fields).forEach((k) => {
+      if (fields[k] === null || fields[k] === undefined) {
         rval.replaceAll(k, 'null');
       }
     });
@@ -108,12 +107,12 @@ export class QueryUtil {
   }
 
   // Return a record that only contains fields that are actually used in the query
-  public static removeUnusedFields(query: string, fields: Record<string, any>, prefix?:string): Record<string,any> {
+  public static removeUnusedFields(query: string, fields: Record<string, any>, prefix?: string): Record<string, any> {
     const usedFields: string[] = QueryUtil.extractUsedNamedParams(query);
-    const rval: Record<string,any> = {  };
-    Object.keys(fields).forEach(k=>{
-      if (usedFields.includes(k) || (prefix && usedFields.includes(prefix+k))) {
-        rval[k]=fields[k];
+    const rval: Record<string, any> = {};
+    Object.keys(fields).forEach((k) => {
+      if (usedFields.includes(k) || (prefix && usedFields.includes(prefix + k))) {
+        rval[k] = fields[k];
       }
     });
     return rval;

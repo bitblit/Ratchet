@@ -2,12 +2,10 @@
     Functions for working with rxjs objects
 */
 
-
-import { MapRatchet } from "@bitblit/ratchet-common/lang/map-ratchet";
-import { BehaviorSubject, Subscription } from "rxjs";
+import { MapRatchet } from '@bitblit/ratchet-common/lang/map-ratchet';
+import { BehaviorSubject, Subscription } from 'rxjs';
 
 export class RxjsRatchet {
-   
   public static safeUnsubscribe(sub: any): boolean {
     return MapRatchet.safeCallFunction(sub, 'unsubscribe');
   }

@@ -1,13 +1,13 @@
 // Bridge from the BrevoRatchet to the implementation needed by mailer
 
-import { Logger } from "@bitblit/ratchet-common/logger/logger";
-import { ErrorRatchet } from "@bitblit/ratchet-common/lang/error-ratchet";
-import { BrevoRatchet } from "./brevo-ratchet.js";
-import { SMTPApi } from "./generated/apis/SMTPApi.js";
-import { CreateSmtpEmail } from "./generated/models/CreateSmtpEmail.js";
-import { SendSmtpEmail } from "./generated/models/SendSmtpEmail.js";
-import { MailSendingProvider } from "@bitblit/ratchet-common/mail/mail-sending-provider";
-import { ResolvedReadyToSendEmail } from "@bitblit/ratchet-common/mail/resolved-ready-to-send-email";
+import { Logger } from '@bitblit/ratchet-common/logger/logger';
+import { ErrorRatchet } from '@bitblit/ratchet-common/lang/error-ratchet';
+import { BrevoRatchet } from './brevo-ratchet.js';
+import { SMTPApi } from './generated/apis/SMTPApi.js';
+import { CreateSmtpEmail } from './generated/models/CreateSmtpEmail.js';
+import { SendSmtpEmail } from './generated/models/SendSmtpEmail.js';
+import { MailSendingProvider } from '@bitblit/ratchet-common/mail/mail-sending-provider';
+import { ResolvedReadyToSendEmail } from '@bitblit/ratchet-common/mail/resolved-ready-to-send-email';
 
 export class BrevoMailSendingProvider implements MailSendingProvider<CreateSmtpEmail, string> {
   constructor(private brevo: BrevoRatchet) {}

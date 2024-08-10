@@ -2,10 +2,10 @@ import { ParsedEmailProcessor } from './parsed-email-processor.js';
 import { ParsedMail } from 'mailparser';
 import unzipper from 'unzipper';
 import { DateTime } from 'luxon';
-import { RequireRatchet } from "@bitblit/ratchet-common/lang/require-ratchet";
-import { Logger } from "@bitblit/ratchet-common/logger/logger";
-import { CsvRatchet } from "@bitblit/ratchet-node-only/csv/csv-ratchet";
-import { MultiStream } from "@bitblit/ratchet-node-only/stream/multi-stream";
+import { RequireRatchet } from '@bitblit/ratchet-common/lang/require-ratchet';
+import { Logger } from '@bitblit/ratchet-common/logger/logger';
+import { CsvRatchet } from '@bitblit/ratchet-node-only/csv/csv-ratchet';
+import { MultiStream } from '@bitblit/ratchet-node-only/stream/multi-stream';
 
 export class EmailToDbInsertProcessor implements ParsedEmailProcessor<EmailToDbStatement[]> {
   public canProcess(mail: ParsedMail): boolean {

@@ -1,18 +1,15 @@
-import { StoredRuntimeParameter } from "./stored-runtime-parameter.js";
-import { Logger } from "@bitblit/ratchet-common/logger/logger";
-import { LoggerLevelName } from "@bitblit/ratchet-common/logger/logger-level-name";
-import { RuntimeParameterRatchet } from "./runtime-parameter-ratchet.js";
-import {
-  GlobalVariableOverrideRuntimeParameterProvider
-} from "./global-variable-override-runtime-parameter-provider.js";
-import { describe, expect, test } from "vitest";
-import { MemoryRuntimeParameterProvider } from "./memory-runtime-parameter-provider.js";
+import { StoredRuntimeParameter } from './stored-runtime-parameter.js';
+import { Logger } from '@bitblit/ratchet-common/logger/logger';
+import { LoggerLevelName } from '@bitblit/ratchet-common/logger/logger-level-name';
+import { RuntimeParameterRatchet } from './runtime-parameter-ratchet.js';
+import { GlobalVariableOverrideRuntimeParameterProvider } from './global-variable-override-runtime-parameter-provider.js';
+import { describe, expect, test } from 'vitest';
+import { MemoryRuntimeParameterProvider } from './memory-runtime-parameter-provider.js';
 
 const testEntry: StoredRuntimeParameter = { groupId: 'test', paramKey: 'test', paramValue: '15', ttlSeconds: 0.5 };
 const testEntry2: StoredRuntimeParameter = { groupId: 'test', paramKey: 'test1', paramValue: '"not-overridden"', ttlSeconds: 0.5 };
 
 describe('#globalVariableOverrideRuntimeParameterProvider', function () {
-
   test('reads underlying entries', async () => {
     Logger.setLevel(LoggerLevelName.silly);
     //mockDynamoRatchet.fullyExecuteQuery.resolves([testEntry, testEntry2]);

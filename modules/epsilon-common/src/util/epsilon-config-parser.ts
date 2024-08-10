@@ -1,18 +1,18 @@
-import { Logger } from "@bitblit/ratchet-common/logger/logger";
-import { ErrorRatchet } from "@bitblit/ratchet-common/lang/error-ratchet";
-import yaml from "js-yaml";
+import { Logger } from '@bitblit/ratchet-common/logger/logger';
+import { ErrorRatchet } from '@bitblit/ratchet-common/lang/error-ratchet';
+import yaml from 'js-yaml';
 import { ModelValidator } from '@bitblit/ratchet-misc/model-validator/model-validator';
-import { BackgroundHttpAdapterHandler } from "../background/background-http-adapter-handler.js";
-import { OpenApiDocument } from "../config/open-api/open-api-document.js";
-import { EpsilonConfig } from "../config/epsilon-config.js";
-import { EpsilonInstance } from "../epsilon-instance.js";
-import { BackgroundHandler } from "../background/background-handler.js";
-import { EpsilonRouter } from "../http/route/epsilon-router.js";
-import { RouterUtil } from "../http/route/router-util.js";
-import { WebHandler } from "../http/web-handler.js";
-import { MisconfiguredError } from "../http/error/misconfigured-error.js";
-import { EpsilonGlobalHandler } from "../epsilon-global-handler.js";
-import { BackgroundManagerLike } from "../background/manager/background-manager-like.js";
+import { BackgroundHttpAdapterHandler } from '../background/background-http-adapter-handler.js';
+import { OpenApiDocument } from '../config/open-api/open-api-document.js';
+import { EpsilonConfig } from '../config/epsilon-config.js';
+import { EpsilonInstance } from '../epsilon-instance.js';
+import { BackgroundHandler } from '../background/background-handler.js';
+import { EpsilonRouter } from '../http/route/epsilon-router.js';
+import { RouterUtil } from '../http/route/router-util.js';
+import { WebHandler } from '../http/web-handler.js';
+import { MisconfiguredError } from '../http/error/misconfigured-error.js';
+import { EpsilonGlobalHandler } from '../epsilon-global-handler.js';
+import { BackgroundManagerLike } from '../background/manager/background-manager-like.js';
 
 export class EpsilonConfigParser {
   // Prevent instantiation
@@ -21,7 +21,7 @@ export class EpsilonConfigParser {
 
   public static epsilonConfigToEpsilonGlobalHandler(
     config: EpsilonConfig,
-    backgroundManager?: BackgroundManagerLike
+    backgroundManager?: BackgroundManagerLike,
   ): EpsilonGlobalHandler {
     return new EpsilonGlobalHandler(EpsilonConfigParser.epsilonConfigToEpsilonInstance(config, backgroundManager));
   }
@@ -35,7 +35,7 @@ export class EpsilonConfigParser {
     const backgroundHttpAdapter: BackgroundHttpAdapterHandler = new BackgroundHttpAdapterHandler(
       config.backgroundConfig,
       modelValidator,
-      backgroundManager
+      backgroundManager,
     );
     const backgroundHandler: BackgroundHandler = config.backgroundConfig
       ? new BackgroundHandler(config.backgroundConfig, backgroundManager, modelValidator)

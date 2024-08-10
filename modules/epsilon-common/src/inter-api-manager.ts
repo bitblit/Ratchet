@@ -9,7 +9,10 @@ import { PublishCommand, PublishCommandOutput, SNSClient } from '@aws-sdk/client
  * Handles all submission of events to the inter-api SNS topic (if any)
  */
 export class InterApiManager {
-  constructor(private _aws: InterApiAwsConfig, private _sns: SNSClient) {}
+  constructor(
+    private _aws: InterApiAwsConfig,
+    private _sns: SNSClient,
+  ) {}
 
   public get config(): InterApiAwsConfig {
     return this._aws;

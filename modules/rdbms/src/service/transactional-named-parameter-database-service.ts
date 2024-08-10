@@ -1,10 +1,10 @@
-import { NamedParameterDatabaseService } from "./named-parameter-database-service.js";
-import { Logger } from "@bitblit/ratchet-common/logger/logger";
-import { ErrorRatchet } from "@bitblit/ratchet-common/lang/error-ratchet";
-import { StringRatchet } from "@bitblit/ratchet-common/lang/string-ratchet";
-import { QueryBuilder } from "../query-builder/query-builder.js";
-import { ModifyResults } from "../model/modify-results.js";
-import { NamedParameterDatabaseServiceConfig } from "../model/named-parameter-database-service-config.js";
+import { NamedParameterDatabaseService } from './named-parameter-database-service.js';
+import { Logger } from '@bitblit/ratchet-common/logger/logger';
+import { ErrorRatchet } from '@bitblit/ratchet-common/lang/error-ratchet';
+import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet';
+import { QueryBuilder } from '../query-builder/query-builder.js';
+import { ModifyResults } from '../model/modify-results.js';
+import { NamedParameterDatabaseServiceConfig } from '../model/named-parameter-database-service-config.js';
 
 /**
  * Extends NamedParameterDatabaseService to add transactional functionality
@@ -34,12 +34,12 @@ export class TransactionalNamedParameterDatabaseService extends NamedParameterDa
 
   constructor(
     private transCfg: NamedParameterDatabaseServiceConfig,
-    private additionalConfig: Record<string,any>
+    private additionalConfig: Record<string, any>,
   ) {
     super(transCfg);
   }
 
-  public nonPooledExtraConfiguration(): Record<string,any> {
+  public nonPooledExtraConfiguration(): Record<string, any> {
     return this.additionalConfig;
   }
 
@@ -95,7 +95,7 @@ export class TransactionalNamedParameterDatabaseService extends NamedParameterDa
 
   public async buildAndExecuteUpdateOrInsertInTransaction(
     queryBuilder: QueryBuilder,
-    timeoutMS: number = this.transCfg.queryDefaults.timeoutMS
+    timeoutMS: number = this.transCfg.queryDefaults.timeoutMS,
   ): Promise<ModifyResults | null> {
     Logger.info('buildAndExecuteUpdateOrInsertInTransaction');
     await this.startTransaction();
@@ -112,7 +112,7 @@ export class TransactionalNamedParameterDatabaseService extends NamedParameterDa
 
   public async buildAndExecuteInTransaction<T>(
     queryBuilder: QueryBuilder,
-    timeoutMS: number = this.transCfg.queryDefaults.timeoutMS
+    timeoutMS: number = this.transCfg.queryDefaults.timeoutMS,
   ): Promise<T[] | null> {
     Logger.info('buildAndExecuteInTransaction');
     await this.startTransaction();
@@ -131,7 +131,7 @@ export class TransactionalNamedParameterDatabaseService extends NamedParameterDa
     src: NamedParameterDatabaseService,
     queryBuilder: QueryBuilder,
     timeoutMS: number = src.getQueryDefaults().timeoutMS,
-    additionalConfig?: Record<string,any>
+    additionalConfig?: Record<string, any>,
   ): Promise<ModifyResults | null> {
     let handler: TransactionalNamedParameterDatabaseService | undefined;
     let rval: ModifyResults | null = null;
@@ -148,11 +148,11 @@ export class TransactionalNamedParameterDatabaseService extends NamedParameterDa
     return rval;
   }
 
-  public static async oneStepBuildAndExecuteInTransaction<S,T,R>(
+  public static async oneStepBuildAndExecuteInTransaction<S, T, R>(
     src: NamedParameterDatabaseService,
     queryBuilder: QueryBuilder,
     timeoutMS: number = src.getQueryDefaults().timeoutMS,
-    additionalConfig?: R
+    additionalConfig?: R,
   ): Promise<S[] | null> {
     let handler: TransactionalNamedParameterDatabaseService | undefined;
     let rval: S[] | null = null;

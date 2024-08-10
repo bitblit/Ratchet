@@ -1,9 +1,9 @@
-import { Logger } from "@bitblit/ratchet-common/logger/logger";
-import { StringRatchet } from "@bitblit/ratchet-common/lang/string-ratchet";
-import { Effect, PolicyStatement } from "aws-cdk-lib/aws-iam";
-import { Topic } from "aws-cdk-lib/aws-sns";
-import { Queue } from "aws-cdk-lib/aws-sqs";
-import { EpsilonApiStackProps } from "./epsilon-api-stack-props.js";
+import { Logger } from '@bitblit/ratchet-common/logger/logger';
+import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet';
+import { Effect, PolicyStatement } from 'aws-cdk-lib/aws-iam';
+import { Topic } from 'aws-cdk-lib/aws-sns';
+import { Queue } from 'aws-cdk-lib/aws-sqs';
+import { EpsilonApiStackProps } from './epsilon-api-stack-props.js';
 
 export class EpsilonStackUtil {
   // Prevent instantiation
@@ -25,7 +25,7 @@ export class EpsilonStackUtil {
     props: EpsilonApiStackProps,
     backgroundLambdaSqs: Queue,
     backgroundLambdaSns: Topic,
-    interApiSns: Topic
+    interApiSns: Topic,
   ): PolicyStatement[] {
     const rval: PolicyStatement[] = (props.additionalPolicyStatements || []).concat([
       new PolicyStatement({

@@ -1,17 +1,20 @@
 import { ModelValidator } from '@bitblit/ratchet-misc/model-validator/model-validator';
-import { Logger } from "@bitblit/ratchet-common/logger/logger";
-import { ErrorRatchet } from "@bitblit/ratchet-common/lang/error-ratchet";
-import { StringRatchet } from "@bitblit/ratchet-common/lang/string-ratchet";
-import { BackgroundConfig } from "../config/background/background-config.js";
-import { BackgroundEntry } from "./background-entry.js";
-import { BackgroundProcessor } from "../config/background/background-processor.js";
-import { BackgroundAwsConfig } from "../config/background/background-aws-config.js";
+import { Logger } from '@bitblit/ratchet-common/logger/logger';
+import { ErrorRatchet } from '@bitblit/ratchet-common/lang/error-ratchet';
+import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet';
+import { BackgroundConfig } from '../config/background/background-config.js';
+import { BackgroundEntry } from './background-entry.js';
+import { BackgroundProcessor } from '../config/background/background-processor.js';
+import { BackgroundAwsConfig } from '../config/background/background-aws-config.js';
 
 /**
  * Handles all submission of work to the background processing system.
  */
 export class BackgroundValidator {
-  constructor(private cfg: BackgroundConfig, private modelValidator: ModelValidator) {}
+  constructor(
+    private cfg: BackgroundConfig,
+    private modelValidator: ModelValidator,
+  ) {}
 
   public findProcessor(typeName: string): BackgroundProcessor<any> {
     const rval: BackgroundProcessor<any> = this.cfg.processors.find((s) => s.typeName === typeName);
@@ -47,7 +50,7 @@ export class BackgroundValidator {
 
   public static validateAndMapProcessors(
     processorInput: BackgroundProcessor<any>[],
-    modelValidator: ModelValidator
+    modelValidator: ModelValidator,
   ): Map<string, BackgroundProcessor<any>> {
     const rval: Map<string, BackgroundProcessor<any>> = new Map<string, BackgroundProcessor<any>>();
     processorInput.forEach((p, idx) => {

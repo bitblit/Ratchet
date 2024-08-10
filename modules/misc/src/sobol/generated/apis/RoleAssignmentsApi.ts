@@ -11,223 +11,279 @@
  * Do not edit the class manually.
  */
 
-
 import * as runtime from '../runtime.js';
-import type {
-  RoleAssignment,
-} from '../models/index.js';
-import {
-    RoleAssignmentFromJSON,
-    RoleAssignmentToJSON,
-} from '../models/index.js';
+import type { RoleAssignment } from '../models/index.js';
+import { RoleAssignmentFromJSON, RoleAssignmentToJSON } from '../models/index.js';
 
 export interface OrgOrgIdRoleAssignmentsGetRequest {
-    orgId: string;
+  orgId: string;
 }
 
 export interface OrgOrgIdRoleAssignmentsObjectIdPutRequest {
-    orgId: string;
-    objectId: string;
-    roleAssignment: RoleAssignment;
+  orgId: string;
+  objectId: string;
+  roleAssignment: RoleAssignment;
 }
 
 export interface OrgOrgIdRoleAssignmentsPostRequest {
-    orgId: string;
-    roleAssignment: RoleAssignment;
+  orgId: string;
+  roleAssignment: RoleAssignment;
 }
 
 /**
  * RoleAssignmentsApi - interface
- * 
+ *
  * @export
  * @interface RoleAssignmentsApiInterface
  */
 export interface RoleAssignmentsApiInterface {
-    /**
-     * 
-     * @summary Get all role assignments
-     * @param {string} orgId ID of the organization
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof RoleAssignmentsApiInterface
-     */
-    orgOrgIdRoleAssignmentsGetRaw(requestParameters: OrgOrgIdRoleAssignmentsGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<RoleAssignment>>>;
+  /**
+   *
+   * @summary Get all role assignments
+   * @param {string} orgId ID of the organization
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof RoleAssignmentsApiInterface
+   */
+  orgOrgIdRoleAssignmentsGetRaw(
+    requestParameters: OrgOrgIdRoleAssignmentsGetRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<Array<RoleAssignment>>>;
 
-    /**
-     * Get all role assignments
-     */
-    orgOrgIdRoleAssignmentsGet(requestParameters: OrgOrgIdRoleAssignmentsGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<RoleAssignment>>;
+  /**
+   * Get all role assignments
+   */
+  orgOrgIdRoleAssignmentsGet(
+    requestParameters: OrgOrgIdRoleAssignmentsGetRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<Array<RoleAssignment>>;
 
-    /**
-     * 
-     * @summary Update a role assignment
-     * @param {string} orgId ID of the organization
-     * @param {string} objectId ID of the object
-     * @param {RoleAssignment} roleAssignment 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof RoleAssignmentsApiInterface
-     */
-    orgOrgIdRoleAssignmentsObjectIdPutRaw(requestParameters: OrgOrgIdRoleAssignmentsObjectIdPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<RoleAssignment>>;
+  /**
+   *
+   * @summary Update a role assignment
+   * @param {string} orgId ID of the organization
+   * @param {string} objectId ID of the object
+   * @param {RoleAssignment} roleAssignment
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof RoleAssignmentsApiInterface
+   */
+  orgOrgIdRoleAssignmentsObjectIdPutRaw(
+    requestParameters: OrgOrgIdRoleAssignmentsObjectIdPutRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<RoleAssignment>>;
 
-    /**
-     * Update a role assignment
-     */
-    orgOrgIdRoleAssignmentsObjectIdPut(requestParameters: OrgOrgIdRoleAssignmentsObjectIdPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<RoleAssignment>;
+  /**
+   * Update a role assignment
+   */
+  orgOrgIdRoleAssignmentsObjectIdPut(
+    requestParameters: OrgOrgIdRoleAssignmentsObjectIdPutRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<RoleAssignment>;
 
-    /**
-     * 
-     * @summary Create a role
-     * @param {string} orgId ID of the organization
-     * @param {RoleAssignment} roleAssignment RoleAssignment request object
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof RoleAssignmentsApiInterface
-     */
-    orgOrgIdRoleAssignmentsPostRaw(requestParameters: OrgOrgIdRoleAssignmentsPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<RoleAssignment>>;
+  /**
+   *
+   * @summary Create a role
+   * @param {string} orgId ID of the organization
+   * @param {RoleAssignment} roleAssignment RoleAssignment request object
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof RoleAssignmentsApiInterface
+   */
+  orgOrgIdRoleAssignmentsPostRaw(
+    requestParameters: OrgOrgIdRoleAssignmentsPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<RoleAssignment>>;
 
-    /**
-     * Create a role
-     */
-    orgOrgIdRoleAssignmentsPost(requestParameters: OrgOrgIdRoleAssignmentsPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<RoleAssignment>;
-
+  /**
+   * Create a role
+   */
+  orgOrgIdRoleAssignmentsPost(
+    requestParameters: OrgOrgIdRoleAssignmentsPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<RoleAssignment>;
 }
 
 /**
- * 
+ *
  */
 export class RoleAssignmentsApi extends runtime.BaseAPI implements RoleAssignmentsApiInterface {
-
-    /**
-     * Get all role assignments
-     */
-    async orgOrgIdRoleAssignmentsGetRaw(requestParameters: OrgOrgIdRoleAssignmentsGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<RoleAssignment>>> {
-        if (requestParameters.orgId === null || requestParameters.orgId === undefined) {
-            throw new runtime.RequiredError('orgId','Required parameter requestParameters.orgId was null or undefined when calling orgOrgIdRoleAssignmentsGet.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("APIKey", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-        const response = await this.request({
-            path: `/org/{orgId}/role-assignments`.replace(`{${"orgId"}}`, encodeURIComponent(String(requestParameters.orgId))),
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(RoleAssignmentFromJSON));
+  /**
+   * Get all role assignments
+   */
+  async orgOrgIdRoleAssignmentsGetRaw(
+    requestParameters: OrgOrgIdRoleAssignmentsGetRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<Array<RoleAssignment>>> {
+    if (requestParameters.orgId === null || requestParameters.orgId === undefined) {
+      throw new runtime.RequiredError(
+        'orgId',
+        'Required parameter requestParameters.orgId was null or undefined when calling orgOrgIdRoleAssignmentsGet.',
+      );
     }
 
-    /**
-     * Get all role assignments
-     */
-    async orgOrgIdRoleAssignmentsGet(requestParameters: OrgOrgIdRoleAssignmentsGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<RoleAssignment>> {
-        const response = await this.orgOrgIdRoleAssignmentsGetRaw(requestParameters, initOverrides);
-        return await response.value();
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    if (this.configuration && this.configuration.accessToken) {
+      const token = this.configuration.accessToken;
+      const tokenString = await token('APIKey', []);
+
+      if (tokenString) {
+        headerParameters['Authorization'] = `Bearer ${tokenString}`;
+      }
+    }
+    const response = await this.request(
+      {
+        path: `/org/{orgId}/role-assignments`.replace(`{${'orgId'}}`, encodeURIComponent(String(requestParameters.orgId))),
+        method: 'GET',
+        headers: headerParameters,
+        query: queryParameters,
+      },
+      initOverrides,
+    );
+
+    return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(RoleAssignmentFromJSON));
+  }
+
+  /**
+   * Get all role assignments
+   */
+  async orgOrgIdRoleAssignmentsGet(
+    requestParameters: OrgOrgIdRoleAssignmentsGetRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<Array<RoleAssignment>> {
+    const response = await this.orgOrgIdRoleAssignmentsGetRaw(requestParameters, initOverrides);
+    return await response.value();
+  }
+
+  /**
+   * Update a role assignment
+   */
+  async orgOrgIdRoleAssignmentsObjectIdPutRaw(
+    requestParameters: OrgOrgIdRoleAssignmentsObjectIdPutRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<RoleAssignment>> {
+    if (requestParameters.orgId === null || requestParameters.orgId === undefined) {
+      throw new runtime.RequiredError(
+        'orgId',
+        'Required parameter requestParameters.orgId was null or undefined when calling orgOrgIdRoleAssignmentsObjectIdPut.',
+      );
     }
 
-    /**
-     * Update a role assignment
-     */
-    async orgOrgIdRoleAssignmentsObjectIdPutRaw(requestParameters: OrgOrgIdRoleAssignmentsObjectIdPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<RoleAssignment>> {
-        if (requestParameters.orgId === null || requestParameters.orgId === undefined) {
-            throw new runtime.RequiredError('orgId','Required parameter requestParameters.orgId was null or undefined when calling orgOrgIdRoleAssignmentsObjectIdPut.');
-        }
-
-        if (requestParameters.objectId === null || requestParameters.objectId === undefined) {
-            throw new runtime.RequiredError('objectId','Required parameter requestParameters.objectId was null or undefined when calling orgOrgIdRoleAssignmentsObjectIdPut.');
-        }
-
-        if (requestParameters.roleAssignment === null || requestParameters.roleAssignment === undefined) {
-            throw new runtime.RequiredError('roleAssignment','Required parameter requestParameters.roleAssignment was null or undefined when calling orgOrgIdRoleAssignmentsObjectIdPut.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("APIKey", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-        const response = await this.request({
-            path: `/org/{orgId}/role-assignments/{objectId}`.replace(`{${"orgId"}}`, encodeURIComponent(String(requestParameters.orgId))).replace(`{${"objectId"}}`, encodeURIComponent(String(requestParameters.objectId))),
-            method: 'PUT',
-            headers: headerParameters,
-            query: queryParameters,
-            body: RoleAssignmentToJSON(requestParameters.roleAssignment),
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => RoleAssignmentFromJSON(jsonValue));
+    if (requestParameters.objectId === null || requestParameters.objectId === undefined) {
+      throw new runtime.RequiredError(
+        'objectId',
+        'Required parameter requestParameters.objectId was null or undefined when calling orgOrgIdRoleAssignmentsObjectIdPut.',
+      );
     }
 
-    /**
-     * Update a role assignment
-     */
-    async orgOrgIdRoleAssignmentsObjectIdPut(requestParameters: OrgOrgIdRoleAssignmentsObjectIdPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<RoleAssignment> {
-        const response = await this.orgOrgIdRoleAssignmentsObjectIdPutRaw(requestParameters, initOverrides);
-        return await response.value();
+    if (requestParameters.roleAssignment === null || requestParameters.roleAssignment === undefined) {
+      throw new runtime.RequiredError(
+        'roleAssignment',
+        'Required parameter requestParameters.roleAssignment was null or undefined when calling orgOrgIdRoleAssignmentsObjectIdPut.',
+      );
     }
 
-    /**
-     * Create a role
-     */
-    async orgOrgIdRoleAssignmentsPostRaw(requestParameters: OrgOrgIdRoleAssignmentsPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<RoleAssignment>> {
-        if (requestParameters.orgId === null || requestParameters.orgId === undefined) {
-            throw new runtime.RequiredError('orgId','Required parameter requestParameters.orgId was null or undefined when calling orgOrgIdRoleAssignmentsPost.');
-        }
+    const queryParameters: any = {};
 
-        if (requestParameters.roleAssignment === null || requestParameters.roleAssignment === undefined) {
-            throw new runtime.RequiredError('roleAssignment','Required parameter requestParameters.roleAssignment was null or undefined when calling orgOrgIdRoleAssignmentsPost.');
-        }
+    const headerParameters: runtime.HTTPHeaders = {};
 
-        const queryParameters: any = {};
+    headerParameters['Content-Type'] = 'application/json';
 
-        const headerParameters: runtime.HTTPHeaders = {};
+    if (this.configuration && this.configuration.accessToken) {
+      const token = this.configuration.accessToken;
+      const tokenString = await token('APIKey', []);
 
-        headerParameters['Content-Type'] = 'application/json';
+      if (tokenString) {
+        headerParameters['Authorization'] = `Bearer ${tokenString}`;
+      }
+    }
+    const response = await this.request(
+      {
+        path: `/org/{orgId}/role-assignments/{objectId}`
+          .replace(`{${'orgId'}}`, encodeURIComponent(String(requestParameters.orgId)))
+          .replace(`{${'objectId'}}`, encodeURIComponent(String(requestParameters.objectId))),
+        method: 'PUT',
+        headers: headerParameters,
+        query: queryParameters,
+        body: RoleAssignmentToJSON(requestParameters.roleAssignment),
+      },
+      initOverrides,
+    );
 
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("APIKey", []);
+    return new runtime.JSONApiResponse(response, (jsonValue) => RoleAssignmentFromJSON(jsonValue));
+  }
 
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-        const response = await this.request({
-            path: `/org/{orgId}/role-assignments`.replace(`{${"orgId"}}`, encodeURIComponent(String(requestParameters.orgId))),
-            method: 'POST',
-            headers: headerParameters,
-            query: queryParameters,
-            body: RoleAssignmentToJSON(requestParameters.roleAssignment),
-        }, initOverrides);
+  /**
+   * Update a role assignment
+   */
+  async orgOrgIdRoleAssignmentsObjectIdPut(
+    requestParameters: OrgOrgIdRoleAssignmentsObjectIdPutRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<RoleAssignment> {
+    const response = await this.orgOrgIdRoleAssignmentsObjectIdPutRaw(requestParameters, initOverrides);
+    return await response.value();
+  }
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => RoleAssignmentFromJSON(jsonValue));
+  /**
+   * Create a role
+   */
+  async orgOrgIdRoleAssignmentsPostRaw(
+    requestParameters: OrgOrgIdRoleAssignmentsPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<RoleAssignment>> {
+    if (requestParameters.orgId === null || requestParameters.orgId === undefined) {
+      throw new runtime.RequiredError(
+        'orgId',
+        'Required parameter requestParameters.orgId was null or undefined when calling orgOrgIdRoleAssignmentsPost.',
+      );
     }
 
-    /**
-     * Create a role
-     */
-    async orgOrgIdRoleAssignmentsPost(requestParameters: OrgOrgIdRoleAssignmentsPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<RoleAssignment> {
-        const response = await this.orgOrgIdRoleAssignmentsPostRaw(requestParameters, initOverrides);
-        return await response.value();
+    if (requestParameters.roleAssignment === null || requestParameters.roleAssignment === undefined) {
+      throw new runtime.RequiredError(
+        'roleAssignment',
+        'Required parameter requestParameters.roleAssignment was null or undefined when calling orgOrgIdRoleAssignmentsPost.',
+      );
     }
 
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    headerParameters['Content-Type'] = 'application/json';
+
+    if (this.configuration && this.configuration.accessToken) {
+      const token = this.configuration.accessToken;
+      const tokenString = await token('APIKey', []);
+
+      if (tokenString) {
+        headerParameters['Authorization'] = `Bearer ${tokenString}`;
+      }
+    }
+    const response = await this.request(
+      {
+        path: `/org/{orgId}/role-assignments`.replace(`{${'orgId'}}`, encodeURIComponent(String(requestParameters.orgId))),
+        method: 'POST',
+        headers: headerParameters,
+        query: queryParameters,
+        body: RoleAssignmentToJSON(requestParameters.roleAssignment),
+      },
+      initOverrides,
+    );
+
+    return new runtime.JSONApiResponse(response, (jsonValue) => RoleAssignmentFromJSON(jsonValue));
+  }
+
+  /**
+   * Create a role
+   */
+  async orgOrgIdRoleAssignmentsPost(
+    requestParameters: OrgOrgIdRoleAssignmentsPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<RoleAssignment> {
+    const response = await this.orgOrgIdRoleAssignmentsPostRaw(requestParameters, initOverrides);
+    return await response.value();
+  }
 }

@@ -1,9 +1,9 @@
-import { ExpiringCodeProvider } from "../../expiring-code/expiring-code-provider.js";
-import { ExpiringCode } from "../../expiring-code/expiring-code.js";
-import { RequireRatchet } from "@bitblit/ratchet-common/lang/require-ratchet";
-import { Logger } from "@bitblit/ratchet-common/logger/logger";
-import { PutObjectOutput } from "@aws-sdk/client-s3";
-import { S3CacheRatchetLike } from "../s3-cache-ratchet-like.js";
+import { ExpiringCodeProvider } from '../../expiring-code/expiring-code-provider.js';
+import { ExpiringCode } from '../../expiring-code/expiring-code.js';
+import { RequireRatchet } from '@bitblit/ratchet-common/lang/require-ratchet';
+import { Logger } from '@bitblit/ratchet-common/logger/logger';
+import { PutObjectOutput } from '@aws-sdk/client-s3';
+import { S3CacheRatchetLike } from '../s3-cache-ratchet-like.js';
 
 /* An implementation that puts all the values in a single JSON file in S3
   This won't scale well at all for any kind of serious load, but is the easiest
@@ -11,7 +11,10 @@ import { S3CacheRatchetLike } from "../s3-cache-ratchet-like.js";
   provisioning, etc
  */
 export class S3ExpiringCodeProvider implements ExpiringCodeProvider {
-  constructor(private s3CacheRatchet: S3CacheRatchetLike, private keyName: string) {
+  constructor(
+    private s3CacheRatchet: S3CacheRatchetLike,
+    private keyName: string,
+  ) {
     RequireRatchet.notNullOrUndefined(s3CacheRatchet, 's3CacheRatchet');
     RequireRatchet.notNullUndefinedOrOnlyWhitespaceString(s3CacheRatchet.getDefaultBucket(), 's3CacheRatchet.defaultBucket');
     RequireRatchet.notNullUndefinedOrOnlyWhitespaceString(keyName, 'keyName');
@@ -19,7 +22,7 @@ export class S3ExpiringCodeProvider implements ExpiringCodeProvider {
 
   public async fetchFile(): Promise<S3ExpiringCodeProviderFileWrapper> {
     const rval: S3ExpiringCodeProviderFileWrapper = (await this.s3CacheRatchet.fetchCacheFileAsObject<S3ExpiringCodeProviderFileWrapper>(
-      this.keyName
+      this.keyName,
     )) || {
       data: [],
       lastModifiedEpochMS: Date.now(),
@@ -41,7 +44,7 @@ export class S3ExpiringCodeProvider implements ExpiringCodeProvider {
   public async checkCode(code: string, context: string, deleteOnMatch?: boolean): Promise<boolean> {
     const val: S3ExpiringCodeProviderFileWrapper = await this.fetchFile();
     const rval: ExpiringCode = val.data.find(
-      (d) => d?.code?.toUpperCase() === code?.toUpperCase() && d?.context?.toUpperCase() === context?.toUpperCase()
+      (d) => d?.code?.toUpperCase() === code?.toUpperCase() && d?.context?.toUpperCase() === context?.toUpperCase(),
     );
     if (rval) {
       if (deleteOnMatch || rval.expiresEpochMS < Date.now()) {

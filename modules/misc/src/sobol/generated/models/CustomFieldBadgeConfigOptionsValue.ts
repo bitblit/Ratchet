@@ -13,92 +13,92 @@
 
 import { exists, mapValues } from '../runtime.js';
 /**
- * 
+ *
  * @export
  * @interface CustomFieldBadgeConfigOptionsValue
  */
 export interface CustomFieldBadgeConfigOptionsValue {
-    /**
-     * 
-     * @type {string}
-     * @memberof CustomFieldBadgeConfigOptionsValue
-     */
-    _id?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof CustomFieldBadgeConfigOptionsValue
-     */
-    name?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof CustomFieldBadgeConfigOptionsValue
-     */
-    _picture?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof CustomFieldBadgeConfigOptionsValue
-     */
-    _picture_small?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof CustomFieldBadgeConfigOptionsValue
-     */
-    _picture_medium?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof CustomFieldBadgeConfigOptionsValue
-     */
-    _picture_large?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof CustomFieldBadgeConfigOptionsValue
+   */
+  _id?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof CustomFieldBadgeConfigOptionsValue
+   */
+  name?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof CustomFieldBadgeConfigOptionsValue
+   */
+  _picture?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof CustomFieldBadgeConfigOptionsValue
+   */
+  _picture_small?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof CustomFieldBadgeConfigOptionsValue
+   */
+  _picture_medium?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof CustomFieldBadgeConfigOptionsValue
+   */
+  _picture_large?: string;
 }
 
 /**
  * Check if a given object implements the CustomFieldBadgeConfigOptionsValue interface.
  */
 export function instanceOfCustomFieldBadgeConfigOptionsValue(value: object): boolean {
-    let isInstance = true;
+  let isInstance = true;
 
-    return isInstance;
+  return isInstance;
 }
 
 export function CustomFieldBadgeConfigOptionsValueFromJSON(json: any): CustomFieldBadgeConfigOptionsValue {
-    return CustomFieldBadgeConfigOptionsValueFromJSONTyped(json, false);
+  return CustomFieldBadgeConfigOptionsValueFromJSONTyped(json, false);
 }
 
-export function CustomFieldBadgeConfigOptionsValueFromJSONTyped(json: any, ignoreDiscriminator: boolean): CustomFieldBadgeConfigOptionsValue {
-    if ((json === undefined) || (json === null)) {
-        return json;
-    }
-    return {
-        
-        '_id': !exists(json, '_id') ? undefined : json['_id'],
-        'name': !exists(json, 'name') ? undefined : json['name'],
-        '_picture': !exists(json, '_picture') ? undefined : json['_picture'],
-        '_picture_small': !exists(json, '_picture_small') ? undefined : json['_picture_small'],
-        '_picture_medium': !exists(json, '_picture_medium') ? undefined : json['_picture_medium'],
-        '_picture_large': !exists(json, '_picture_large') ? undefined : json['_picture_large'],
-    };
+export function CustomFieldBadgeConfigOptionsValueFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean,
+): CustomFieldBadgeConfigOptionsValue {
+  if (json === undefined || json === null) {
+    return json;
+  }
+  return {
+    _id: !exists(json, '_id') ? undefined : json['_id'],
+    name: !exists(json, 'name') ? undefined : json['name'],
+    _picture: !exists(json, '_picture') ? undefined : json['_picture'],
+    _picture_small: !exists(json, '_picture_small') ? undefined : json['_picture_small'],
+    _picture_medium: !exists(json, '_picture_medium') ? undefined : json['_picture_medium'],
+    _picture_large: !exists(json, '_picture_large') ? undefined : json['_picture_large'],
+  };
 }
 
 export function CustomFieldBadgeConfigOptionsValueToJSON(value?: CustomFieldBadgeConfigOptionsValue | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
-    }
-    return {
-        
-        '_id': value._id,
-        'name': value.name,
-        '_picture': value._picture,
-        '_picture_small': value._picture_small,
-        '_picture_medium': value._picture_medium,
-        '_picture_large': value._picture_large,
-    };
+  if (value === undefined) {
+    return undefined;
+  }
+  if (value === null) {
+    return null;
+  }
+  return {
+    _id: value._id,
+    name: value.name,
+    _picture: value._picture,
+    _picture_small: value._picture_small,
+    _picture_medium: value._picture_medium,
+    _picture_large: value._picture_large,
+  };
 }
-

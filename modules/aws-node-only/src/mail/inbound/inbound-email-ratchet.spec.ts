@@ -1,9 +1,9 @@
-import { S3CacheRatchet } from "@bitblit/ratchet-aws/s3/s3-cache-ratchet";
-import { InboundEmailRatchet } from "./inbound-email-ratchet.js";
+import { S3CacheRatchet } from '@bitblit/ratchet-aws/s3/s3-cache-ratchet';
+import { InboundEmailRatchet } from './inbound-email-ratchet.js';
 
-import { SampleEmailProcessor } from "./sample-email-processor.js";
-import { beforeEach, describe, expect, test } from "vitest";
-import { mock, MockProxy } from "vitest-mock-extended";
+import { SampleEmailProcessor } from './sample-email-processor.js';
+import { beforeEach, describe, expect, test } from 'vitest';
+import { mock, MockProxy } from 'vitest-mock-extended';
 
 let mockS3CR: MockProxy<S3CacheRatchet>;
 

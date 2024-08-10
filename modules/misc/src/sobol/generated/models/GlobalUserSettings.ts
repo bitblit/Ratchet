@@ -13,177 +13,174 @@
 
 import { exists, mapValues } from '../runtime.js';
 /**
- * 
+ *
  * @export
  * @interface GlobalUserSettings
  */
 export interface GlobalUserSettings {
-    /**
-     * 
-     * @type {string}
-     * @memberof GlobalUserSettings
-     */
-    _id: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof GlobalUserSettings
-     */
-    _type: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof GlobalUserSettings
-     */
-    _createdBy: string;
-    /**
-     * 
-     * @type {Date}
-     * @memberof GlobalUserSettings
-     */
-    _createdOn?: Date;
-    /**
-     * 
-     * @type {Date}
-     * @memberof GlobalUserSettings
-     */
-    _updatedOn?: Date;
-    /**
-     * 
-     * @type {string}
-     * @memberof GlobalUserSettings
-     */
-    _updatedBy?: string;
-    /**
-     * 
-     * @type {Date}
-     * @memberof GlobalUserSettings
-     */
-    _archivedOn?: Date;
-    /**
-     * 
-     * @type {string}
-     * @memberof GlobalUserSettings
-     */
-    _archivedBy?: string;
-    /**
-     * 
-     * @type {Date}
-     * @memberof GlobalUserSettings
-     */
-    _deletedOn?: Date;
-    /**
-     * 
-     * @type {string}
-     * @memberof GlobalUserSettings
-     */
-    _deletedBy?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof GlobalUserSettings
-     */
-    _operationId?: string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof GlobalUserSettings
-     */
-    _signedTerms?: boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof GlobalUserSettings
-     */
-    globalUserId: string;
-    /**
-     * 
-     * @type {object}
-     * @memberof GlobalUserSettings
-     */
-    notifications: object;
-    /**
-     * 
-     * @type {string}
-     * @memberof GlobalUserSettings
-     */
-    theme?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof GlobalUserSettings
-     */
-    identiconType?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof GlobalUserSettings
+   */
+  _id: string;
+  /**
+   *
+   * @type {string}
+   * @memberof GlobalUserSettings
+   */
+  _type: string;
+  /**
+   *
+   * @type {string}
+   * @memberof GlobalUserSettings
+   */
+  _createdBy: string;
+  /**
+   *
+   * @type {Date}
+   * @memberof GlobalUserSettings
+   */
+  _createdOn?: Date;
+  /**
+   *
+   * @type {Date}
+   * @memberof GlobalUserSettings
+   */
+  _updatedOn?: Date;
+  /**
+   *
+   * @type {string}
+   * @memberof GlobalUserSettings
+   */
+  _updatedBy?: string;
+  /**
+   *
+   * @type {Date}
+   * @memberof GlobalUserSettings
+   */
+  _archivedOn?: Date;
+  /**
+   *
+   * @type {string}
+   * @memberof GlobalUserSettings
+   */
+  _archivedBy?: string;
+  /**
+   *
+   * @type {Date}
+   * @memberof GlobalUserSettings
+   */
+  _deletedOn?: Date;
+  /**
+   *
+   * @type {string}
+   * @memberof GlobalUserSettings
+   */
+  _deletedBy?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof GlobalUserSettings
+   */
+  _operationId?: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof GlobalUserSettings
+   */
+  _signedTerms?: boolean;
+  /**
+   *
+   * @type {string}
+   * @memberof GlobalUserSettings
+   */
+  globalUserId: string;
+  /**
+   *
+   * @type {object}
+   * @memberof GlobalUserSettings
+   */
+  notifications: object;
+  /**
+   *
+   * @type {string}
+   * @memberof GlobalUserSettings
+   */
+  theme?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof GlobalUserSettings
+   */
+  identiconType?: string;
 }
 
 /**
  * Check if a given object implements the GlobalUserSettings interface.
  */
 export function instanceOfGlobalUserSettings(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "_id" in value;
-    isInstance = isInstance && "_type" in value;
-    isInstance = isInstance && "_createdBy" in value;
-    isInstance = isInstance && "globalUserId" in value;
-    isInstance = isInstance && "notifications" in value;
+  let isInstance = true;
+  isInstance = isInstance && '_id' in value;
+  isInstance = isInstance && '_type' in value;
+  isInstance = isInstance && '_createdBy' in value;
+  isInstance = isInstance && 'globalUserId' in value;
+  isInstance = isInstance && 'notifications' in value;
 
-    return isInstance;
+  return isInstance;
 }
 
 export function GlobalUserSettingsFromJSON(json: any): GlobalUserSettings {
-    return GlobalUserSettingsFromJSONTyped(json, false);
+  return GlobalUserSettingsFromJSONTyped(json, false);
 }
 
 export function GlobalUserSettingsFromJSONTyped(json: any, ignoreDiscriminator: boolean): GlobalUserSettings {
-    if ((json === undefined) || (json === null)) {
-        return json;
-    }
-    return {
-        
-        '_id': json['_id'],
-        '_type': json['_type'],
-        '_createdBy': json['_createdBy'],
-        '_createdOn': !exists(json, '_createdOn') ? undefined : (new Date(json['_createdOn'])),
-        '_updatedOn': !exists(json, '_updatedOn') ? undefined : (new Date(json['_updatedOn'])),
-        '_updatedBy': !exists(json, '_updatedBy') ? undefined : json['_updatedBy'],
-        '_archivedOn': !exists(json, '_archivedOn') ? undefined : (new Date(json['_archivedOn'])),
-        '_archivedBy': !exists(json, '_archivedBy') ? undefined : json['_archivedBy'],
-        '_deletedOn': !exists(json, '_deletedOn') ? undefined : (new Date(json['_deletedOn'])),
-        '_deletedBy': !exists(json, '_deletedBy') ? undefined : json['_deletedBy'],
-        '_operationId': !exists(json, '_operationId') ? undefined : json['_operationId'],
-        '_signedTerms': !exists(json, '_signedTerms') ? undefined : json['_signedTerms'],
-        'globalUserId': json['globalUserId'],
-        'notifications': json['notifications'],
-        'theme': !exists(json, 'theme') ? undefined : json['theme'],
-        'identiconType': !exists(json, 'identiconType') ? undefined : json['identiconType'],
-    };
+  if (json === undefined || json === null) {
+    return json;
+  }
+  return {
+    _id: json['_id'],
+    _type: json['_type'],
+    _createdBy: json['_createdBy'],
+    _createdOn: !exists(json, '_createdOn') ? undefined : new Date(json['_createdOn']),
+    _updatedOn: !exists(json, '_updatedOn') ? undefined : new Date(json['_updatedOn']),
+    _updatedBy: !exists(json, '_updatedBy') ? undefined : json['_updatedBy'],
+    _archivedOn: !exists(json, '_archivedOn') ? undefined : new Date(json['_archivedOn']),
+    _archivedBy: !exists(json, '_archivedBy') ? undefined : json['_archivedBy'],
+    _deletedOn: !exists(json, '_deletedOn') ? undefined : new Date(json['_deletedOn']),
+    _deletedBy: !exists(json, '_deletedBy') ? undefined : json['_deletedBy'],
+    _operationId: !exists(json, '_operationId') ? undefined : json['_operationId'],
+    _signedTerms: !exists(json, '_signedTerms') ? undefined : json['_signedTerms'],
+    globalUserId: json['globalUserId'],
+    notifications: json['notifications'],
+    theme: !exists(json, 'theme') ? undefined : json['theme'],
+    identiconType: !exists(json, 'identiconType') ? undefined : json['identiconType'],
+  };
 }
 
 export function GlobalUserSettingsToJSON(value?: GlobalUserSettings | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
-    }
-    return {
-        
-        '_id': value._id,
-        '_type': value._type,
-        '_createdBy': value._createdBy,
-        '_createdOn': value._createdOn === undefined ? undefined : (value._createdOn.toISOString()),
-        '_updatedOn': value._updatedOn === undefined ? undefined : (value._updatedOn.toISOString()),
-        '_updatedBy': value._updatedBy,
-        '_archivedOn': value._archivedOn === undefined ? undefined : (value._archivedOn.toISOString()),
-        '_archivedBy': value._archivedBy,
-        '_deletedOn': value._deletedOn === undefined ? undefined : (value._deletedOn.toISOString()),
-        '_deletedBy': value._deletedBy,
-        '_operationId': value._operationId,
-        '_signedTerms': value._signedTerms,
-        'globalUserId': value.globalUserId,
-        'notifications': value.notifications,
-        'theme': value.theme,
-        'identiconType': value.identiconType,
-    };
+  if (value === undefined) {
+    return undefined;
+  }
+  if (value === null) {
+    return null;
+  }
+  return {
+    _id: value._id,
+    _type: value._type,
+    _createdBy: value._createdBy,
+    _createdOn: value._createdOn === undefined ? undefined : value._createdOn.toISOString(),
+    _updatedOn: value._updatedOn === undefined ? undefined : value._updatedOn.toISOString(),
+    _updatedBy: value._updatedBy,
+    _archivedOn: value._archivedOn === undefined ? undefined : value._archivedOn.toISOString(),
+    _archivedBy: value._archivedBy,
+    _deletedOn: value._deletedOn === undefined ? undefined : value._deletedOn.toISOString(),
+    _deletedBy: value._deletedBy,
+    _operationId: value._operationId,
+    _signedTerms: value._signedTerms,
+    globalUserId: value.globalUserId,
+    notifications: value.notifications,
+    theme: value.theme,
+    identiconType: value.identiconType,
+  };
 }
-

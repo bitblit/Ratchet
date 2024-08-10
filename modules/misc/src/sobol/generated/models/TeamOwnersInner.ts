@@ -13,70 +13,66 @@
 
 import { exists, mapValues } from '../runtime.js';
 /**
- * 
+ *
  * @export
  * @interface TeamOwnersInner
  */
 export interface TeamOwnersInner {
-    /**
-     * 
-     * @type {string}
-     * @memberof TeamOwnersInner
-     */
-    _id?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof TeamOwnersInner
-     */
-    _type?: TeamOwnersInnerTypeEnum;
+  /**
+   *
+   * @type {string}
+   * @memberof TeamOwnersInner
+   */
+  _id?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof TeamOwnersInner
+   */
+  _type?: TeamOwnersInnerTypeEnum;
 }
 
 /**
-* @export
-* @enum {string}
-*/
+ * @export
+ * @enum {string}
+ */
 export enum TeamOwnersInnerTypeEnum {
-    role = 'role',
-    user = 'user'
+  role = 'role',
+  user = 'user',
 }
-
 
 /**
  * Check if a given object implements the TeamOwnersInner interface.
  */
 export function instanceOfTeamOwnersInner(value: object): boolean {
-    let isInstance = true;
+  let isInstance = true;
 
-    return isInstance;
+  return isInstance;
 }
 
 export function TeamOwnersInnerFromJSON(json: any): TeamOwnersInner {
-    return TeamOwnersInnerFromJSONTyped(json, false);
+  return TeamOwnersInnerFromJSONTyped(json, false);
 }
 
 export function TeamOwnersInnerFromJSONTyped(json: any, ignoreDiscriminator: boolean): TeamOwnersInner {
-    if ((json === undefined) || (json === null)) {
-        return json;
-    }
-    return {
-        
-        '_id': !exists(json, '_id') ? undefined : json['_id'],
-        '_type': !exists(json, '_type') ? undefined : json['_type'],
-    };
+  if (json === undefined || json === null) {
+    return json;
+  }
+  return {
+    _id: !exists(json, '_id') ? undefined : json['_id'],
+    _type: !exists(json, '_type') ? undefined : json['_type'],
+  };
 }
 
 export function TeamOwnersInnerToJSON(value?: TeamOwnersInner | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
-    }
-    return {
-        
-        '_id': value._id,
-        '_type': value._type,
-    };
+  if (value === undefined) {
+    return undefined;
+  }
+  if (value === null) {
+    return null;
+  }
+  return {
+    _id: value._id,
+    _type: value._type,
+  };
 }
-

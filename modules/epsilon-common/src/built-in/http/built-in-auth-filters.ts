@@ -1,13 +1,13 @@
-import { UnauthorizedError } from "../../http/error/unauthorized-error.js";
-import { MisconfiguredError } from "../../http/error/misconfigured-error.js";
-import { FilterChainContext } from "../../config/http/filter-chain-context.js";
-import { ForbiddenError } from "../../http/error/forbidden-error.js";
-import { AuthorizerFunction } from "../../config/http/authorizer-function.js";
-import { WebTokenManipulator } from "../../http/auth/web-token-manipulator.js";
-import { EventUtil } from "../../http/event-util.js";
-import { StringRatchet } from "@bitblit/ratchet-common/lang/string-ratchet";
-import { CommonJwtToken } from "@bitblit/ratchet-common/jwt/common-jwt-token";
-import { JwtTokenBase } from "@bitblit/ratchet-common/jwt/jwt-token-base";
+import { UnauthorizedError } from '../../http/error/unauthorized-error.js';
+import { MisconfiguredError } from '../../http/error/misconfigured-error.js';
+import { FilterChainContext } from '../../config/http/filter-chain-context.js';
+import { ForbiddenError } from '../../http/error/forbidden-error.js';
+import { AuthorizerFunction } from '../../config/http/authorizer-function.js';
+import { WebTokenManipulator } from '../../http/auth/web-token-manipulator.js';
+import { EventUtil } from '../../http/event-util.js';
+import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet';
+import { CommonJwtToken } from '@bitblit/ratchet-common/jwt/common-jwt-token';
+import { JwtTokenBase } from '@bitblit/ratchet-common/jwt/jwt-token-base';
 
 export class BuiltInAuthFilters {
   public static async requireAllRolesInCommonJwt(fCtx: FilterChainContext, requiredRoleAllOf: string[]): Promise<boolean> {
@@ -62,7 +62,7 @@ export class BuiltInAuthFilters {
 
   public static async parseAuthorizationHeader(
     fCtx: FilterChainContext,
-    webTokenManipulators: WebTokenManipulator<JwtTokenBase> | WebTokenManipulator<JwtTokenBase>[]
+    webTokenManipulators: WebTokenManipulator<JwtTokenBase> | WebTokenManipulator<JwtTokenBase>[],
   ): Promise<boolean> {
     if (!fCtx?.event || !webTokenManipulators || (Array.isArray(webTokenManipulators) && !webTokenManipulators.length)) {
       throw new MisconfiguredError('Cannot continue - missing event or encryption');
@@ -111,7 +111,7 @@ export class BuiltInAuthFilters {
       } else {
         throw new MisconfiguredError().withFormattedErrorMessage(
           'Authorizer %s requested but not found',
-          fCtx.routeAndParse.mapping.authorizerName
+          fCtx.routeAndParse.mapping.authorizerName,
         );
       }
     } else {

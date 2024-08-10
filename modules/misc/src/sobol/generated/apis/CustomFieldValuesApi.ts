@@ -11,317 +11,402 @@
  * Do not edit the class manually.
  */
 
-
 import * as runtime from '../runtime.js';
-import type {
-  CustomFieldValue,
-} from '../models/index.js';
-import {
-    CustomFieldValueFromJSON,
-    CustomFieldValueToJSON,
-} from '../models/index.js';
+import type { CustomFieldValue } from '../models/index.js';
+import { CustomFieldValueFromJSON, CustomFieldValueToJSON } from '../models/index.js';
 
 export interface OrgOrgIdCustomFieldValuesGetRequest {
-    orgId: string;
-    objectId: string;
-    objectType: OrgOrgIdCustomFieldValuesGetObjectTypeEnum;
+  orgId: string;
+  objectId: string;
+  objectType: OrgOrgIdCustomFieldValuesGetObjectTypeEnum;
 }
 
 export interface OrgOrgIdCustomFieldValuesObjectIdDeleteRequest {
-    orgId: string;
-    objectId: string;
+  orgId: string;
+  objectId: string;
 }
 
 export interface OrgOrgIdCustomFieldValuesObjectIdPutRequest {
-    orgId: string;
-    objectId: string;
-    customFieldValue: CustomFieldValue;
+  orgId: string;
+  objectId: string;
+  customFieldValue: CustomFieldValue;
 }
 
 export interface OrgOrgIdCustomFieldValuesPostRequest {
-    orgId: string;
-    customFieldValue: CustomFieldValue;
+  orgId: string;
+  customFieldValue: CustomFieldValue;
 }
 
 /**
  * CustomFieldValuesApi - interface
- * 
+ *
  * @export
  * @interface CustomFieldValuesApiInterface
  */
 export interface CustomFieldValuesApiInterface {
-    /**
-     * 
-     * @summary Get all custom field values
-     * @param {string} orgId ID of the organization
-     * @param {string} objectId objectId to retrieve custom field values for
-     * @param {'team' | 'user' | 'goal' | 'role' | 'agreement'} objectType objectType to retrieve custom field values for
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof CustomFieldValuesApiInterface
-     */
-    orgOrgIdCustomFieldValuesGetRaw(requestParameters: OrgOrgIdCustomFieldValuesGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<CustomFieldValue>>>;
+  /**
+   *
+   * @summary Get all custom field values
+   * @param {string} orgId ID of the organization
+   * @param {string} objectId objectId to retrieve custom field values for
+   * @param {'team' | 'user' | 'goal' | 'role' | 'agreement'} objectType objectType to retrieve custom field values for
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof CustomFieldValuesApiInterface
+   */
+  orgOrgIdCustomFieldValuesGetRaw(
+    requestParameters: OrgOrgIdCustomFieldValuesGetRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<Array<CustomFieldValue>>>;
 
-    /**
-     * Get all custom field values
-     */
-    orgOrgIdCustomFieldValuesGet(requestParameters: OrgOrgIdCustomFieldValuesGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<CustomFieldValue>>;
+  /**
+   * Get all custom field values
+   */
+  orgOrgIdCustomFieldValuesGet(
+    requestParameters: OrgOrgIdCustomFieldValuesGetRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<Array<CustomFieldValue>>;
 
-    /**
-     * 
-     * @summary Delete a custom field value
-     * @param {string} orgId ID of the organization
-     * @param {string} objectId ID of the object
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof CustomFieldValuesApiInterface
-     */
-    orgOrgIdCustomFieldValuesObjectIdDeleteRaw(requestParameters: OrgOrgIdCustomFieldValuesObjectIdDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>>;
+  /**
+   *
+   * @summary Delete a custom field value
+   * @param {string} orgId ID of the organization
+   * @param {string} objectId ID of the object
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof CustomFieldValuesApiInterface
+   */
+  orgOrgIdCustomFieldValuesObjectIdDeleteRaw(
+    requestParameters: OrgOrgIdCustomFieldValuesObjectIdDeleteRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<void>>;
 
-    /**
-     * Delete a custom field value
-     */
-    orgOrgIdCustomFieldValuesObjectIdDelete(requestParameters: OrgOrgIdCustomFieldValuesObjectIdDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void>;
+  /**
+   * Delete a custom field value
+   */
+  orgOrgIdCustomFieldValuesObjectIdDelete(
+    requestParameters: OrgOrgIdCustomFieldValuesObjectIdDeleteRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<void>;
 
-    /**
-     * 
-     * @summary Update a custom field value
-     * @param {string} orgId ID of the organization
-     * @param {string} objectId ID of the object
-     * @param {CustomFieldValue} customFieldValue 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof CustomFieldValuesApiInterface
-     */
-    orgOrgIdCustomFieldValuesObjectIdPutRaw(requestParameters: OrgOrgIdCustomFieldValuesObjectIdPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CustomFieldValue>>;
+  /**
+   *
+   * @summary Update a custom field value
+   * @param {string} orgId ID of the organization
+   * @param {string} objectId ID of the object
+   * @param {CustomFieldValue} customFieldValue
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof CustomFieldValuesApiInterface
+   */
+  orgOrgIdCustomFieldValuesObjectIdPutRaw(
+    requestParameters: OrgOrgIdCustomFieldValuesObjectIdPutRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<CustomFieldValue>>;
 
-    /**
-     * Update a custom field value
-     */
-    orgOrgIdCustomFieldValuesObjectIdPut(requestParameters: OrgOrgIdCustomFieldValuesObjectIdPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CustomFieldValue>;
+  /**
+   * Update a custom field value
+   */
+  orgOrgIdCustomFieldValuesObjectIdPut(
+    requestParameters: OrgOrgIdCustomFieldValuesObjectIdPutRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<CustomFieldValue>;
 
-    /**
-     * 
-     * @summary Create a custom field value. Note that if a value already exists for the given object and custom field combination, you should update that value instead of posting a new one
-     * @param {string} orgId ID of the organization
-     * @param {CustomFieldValue} customFieldValue 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof CustomFieldValuesApiInterface
-     */
-    orgOrgIdCustomFieldValuesPostRaw(requestParameters: OrgOrgIdCustomFieldValuesPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CustomFieldValue>>;
+  /**
+   *
+   * @summary Create a custom field value. Note that if a value already exists for the given object and custom field combination, you should update that value instead of posting a new one
+   * @param {string} orgId ID of the organization
+   * @param {CustomFieldValue} customFieldValue
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof CustomFieldValuesApiInterface
+   */
+  orgOrgIdCustomFieldValuesPostRaw(
+    requestParameters: OrgOrgIdCustomFieldValuesPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<CustomFieldValue>>;
 
-    /**
-     * Create a custom field value. Note that if a value already exists for the given object and custom field combination, you should update that value instead of posting a new one
-     */
-    orgOrgIdCustomFieldValuesPost(requestParameters: OrgOrgIdCustomFieldValuesPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CustomFieldValue>;
-
+  /**
+   * Create a custom field value. Note that if a value already exists for the given object and custom field combination, you should update that value instead of posting a new one
+   */
+  orgOrgIdCustomFieldValuesPost(
+    requestParameters: OrgOrgIdCustomFieldValuesPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<CustomFieldValue>;
 }
 
 /**
- * 
+ *
  */
 export class CustomFieldValuesApi extends runtime.BaseAPI implements CustomFieldValuesApiInterface {
-
-    /**
-     * Get all custom field values
-     */
-    async orgOrgIdCustomFieldValuesGetRaw(requestParameters: OrgOrgIdCustomFieldValuesGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<CustomFieldValue>>> {
-        if (requestParameters.orgId === null || requestParameters.orgId === undefined) {
-            throw new runtime.RequiredError('orgId','Required parameter requestParameters.orgId was null or undefined when calling orgOrgIdCustomFieldValuesGet.');
-        }
-
-        if (requestParameters.objectId === null || requestParameters.objectId === undefined) {
-            throw new runtime.RequiredError('objectId','Required parameter requestParameters.objectId was null or undefined when calling orgOrgIdCustomFieldValuesGet.');
-        }
-
-        if (requestParameters.objectType === null || requestParameters.objectType === undefined) {
-            throw new runtime.RequiredError('objectType','Required parameter requestParameters.objectType was null or undefined when calling orgOrgIdCustomFieldValuesGet.');
-        }
-
-        const queryParameters: any = {};
-
-        if (requestParameters.objectId !== undefined) {
-            queryParameters['objectId'] = requestParameters.objectId;
-        }
-
-        if (requestParameters.objectType !== undefined) {
-            queryParameters['objectType'] = requestParameters.objectType;
-        }
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("APIKey", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-        const response = await this.request({
-            path: `/org/{orgId}/custom-field-values`.replace(`{${"orgId"}}`, encodeURIComponent(String(requestParameters.orgId))),
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(CustomFieldValueFromJSON));
+  /**
+   * Get all custom field values
+   */
+  async orgOrgIdCustomFieldValuesGetRaw(
+    requestParameters: OrgOrgIdCustomFieldValuesGetRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<Array<CustomFieldValue>>> {
+    if (requestParameters.orgId === null || requestParameters.orgId === undefined) {
+      throw new runtime.RequiredError(
+        'orgId',
+        'Required parameter requestParameters.orgId was null or undefined when calling orgOrgIdCustomFieldValuesGet.',
+      );
     }
 
-    /**
-     * Get all custom field values
-     */
-    async orgOrgIdCustomFieldValuesGet(requestParameters: OrgOrgIdCustomFieldValuesGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<CustomFieldValue>> {
-        const response = await this.orgOrgIdCustomFieldValuesGetRaw(requestParameters, initOverrides);
-        return await response.value();
+    if (requestParameters.objectId === null || requestParameters.objectId === undefined) {
+      throw new runtime.RequiredError(
+        'objectId',
+        'Required parameter requestParameters.objectId was null or undefined when calling orgOrgIdCustomFieldValuesGet.',
+      );
     }
 
-    /**
-     * Delete a custom field value
-     */
-    async orgOrgIdCustomFieldValuesObjectIdDeleteRaw(requestParameters: OrgOrgIdCustomFieldValuesObjectIdDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.orgId === null || requestParameters.orgId === undefined) {
-            throw new runtime.RequiredError('orgId','Required parameter requestParameters.orgId was null or undefined when calling orgOrgIdCustomFieldValuesObjectIdDelete.');
-        }
-
-        if (requestParameters.objectId === null || requestParameters.objectId === undefined) {
-            throw new runtime.RequiredError('objectId','Required parameter requestParameters.objectId was null or undefined when calling orgOrgIdCustomFieldValuesObjectIdDelete.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("APIKey", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-        const response = await this.request({
-            path: `/org/{orgId}/custom-field-values/{objectId}`.replace(`{${"orgId"}}`, encodeURIComponent(String(requestParameters.orgId))).replace(`{${"objectId"}}`, encodeURIComponent(String(requestParameters.objectId))),
-            method: 'DELETE',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.VoidApiResponse(response);
+    if (requestParameters.objectType === null || requestParameters.objectType === undefined) {
+      throw new runtime.RequiredError(
+        'objectType',
+        'Required parameter requestParameters.objectType was null or undefined when calling orgOrgIdCustomFieldValuesGet.',
+      );
     }
 
-    /**
-     * Delete a custom field value
-     */
-    async orgOrgIdCustomFieldValuesObjectIdDelete(requestParameters: OrgOrgIdCustomFieldValuesObjectIdDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this.orgOrgIdCustomFieldValuesObjectIdDeleteRaw(requestParameters, initOverrides);
+    const queryParameters: any = {};
+
+    if (requestParameters.objectId !== undefined) {
+      queryParameters['objectId'] = requestParameters.objectId;
     }
 
-    /**
-     * Update a custom field value
-     */
-    async orgOrgIdCustomFieldValuesObjectIdPutRaw(requestParameters: OrgOrgIdCustomFieldValuesObjectIdPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CustomFieldValue>> {
-        if (requestParameters.orgId === null || requestParameters.orgId === undefined) {
-            throw new runtime.RequiredError('orgId','Required parameter requestParameters.orgId was null or undefined when calling orgOrgIdCustomFieldValuesObjectIdPut.');
-        }
-
-        if (requestParameters.objectId === null || requestParameters.objectId === undefined) {
-            throw new runtime.RequiredError('objectId','Required parameter requestParameters.objectId was null or undefined when calling orgOrgIdCustomFieldValuesObjectIdPut.');
-        }
-
-        if (requestParameters.customFieldValue === null || requestParameters.customFieldValue === undefined) {
-            throw new runtime.RequiredError('customFieldValue','Required parameter requestParameters.customFieldValue was null or undefined when calling orgOrgIdCustomFieldValuesObjectIdPut.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("APIKey", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-        const response = await this.request({
-            path: `/org/{orgId}/custom-field-values/{objectId}`.replace(`{${"orgId"}}`, encodeURIComponent(String(requestParameters.orgId))).replace(`{${"objectId"}}`, encodeURIComponent(String(requestParameters.objectId))),
-            method: 'PUT',
-            headers: headerParameters,
-            query: queryParameters,
-            body: CustomFieldValueToJSON(requestParameters.customFieldValue),
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => CustomFieldValueFromJSON(jsonValue));
+    if (requestParameters.objectType !== undefined) {
+      queryParameters['objectType'] = requestParameters.objectType;
     }
 
-    /**
-     * Update a custom field value
-     */
-    async orgOrgIdCustomFieldValuesObjectIdPut(requestParameters: OrgOrgIdCustomFieldValuesObjectIdPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CustomFieldValue> {
-        const response = await this.orgOrgIdCustomFieldValuesObjectIdPutRaw(requestParameters, initOverrides);
-        return await response.value();
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    if (this.configuration && this.configuration.accessToken) {
+      const token = this.configuration.accessToken;
+      const tokenString = await token('APIKey', []);
+
+      if (tokenString) {
+        headerParameters['Authorization'] = `Bearer ${tokenString}`;
+      }
+    }
+    const response = await this.request(
+      {
+        path: `/org/{orgId}/custom-field-values`.replace(`{${'orgId'}}`, encodeURIComponent(String(requestParameters.orgId))),
+        method: 'GET',
+        headers: headerParameters,
+        query: queryParameters,
+      },
+      initOverrides,
+    );
+
+    return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(CustomFieldValueFromJSON));
+  }
+
+  /**
+   * Get all custom field values
+   */
+  async orgOrgIdCustomFieldValuesGet(
+    requestParameters: OrgOrgIdCustomFieldValuesGetRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<Array<CustomFieldValue>> {
+    const response = await this.orgOrgIdCustomFieldValuesGetRaw(requestParameters, initOverrides);
+    return await response.value();
+  }
+
+  /**
+   * Delete a custom field value
+   */
+  async orgOrgIdCustomFieldValuesObjectIdDeleteRaw(
+    requestParameters: OrgOrgIdCustomFieldValuesObjectIdDeleteRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<void>> {
+    if (requestParameters.orgId === null || requestParameters.orgId === undefined) {
+      throw new runtime.RequiredError(
+        'orgId',
+        'Required parameter requestParameters.orgId was null or undefined when calling orgOrgIdCustomFieldValuesObjectIdDelete.',
+      );
     }
 
-    /**
-     * Create a custom field value. Note that if a value already exists for the given object and custom field combination, you should update that value instead of posting a new one
-     */
-    async orgOrgIdCustomFieldValuesPostRaw(requestParameters: OrgOrgIdCustomFieldValuesPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CustomFieldValue>> {
-        if (requestParameters.orgId === null || requestParameters.orgId === undefined) {
-            throw new runtime.RequiredError('orgId','Required parameter requestParameters.orgId was null or undefined when calling orgOrgIdCustomFieldValuesPost.');
-        }
-
-        if (requestParameters.customFieldValue === null || requestParameters.customFieldValue === undefined) {
-            throw new runtime.RequiredError('customFieldValue','Required parameter requestParameters.customFieldValue was null or undefined when calling orgOrgIdCustomFieldValuesPost.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("APIKey", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-        const response = await this.request({
-            path: `/org/{orgId}/custom-field-values`.replace(`{${"orgId"}}`, encodeURIComponent(String(requestParameters.orgId))),
-            method: 'POST',
-            headers: headerParameters,
-            query: queryParameters,
-            body: CustomFieldValueToJSON(requestParameters.customFieldValue),
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => CustomFieldValueFromJSON(jsonValue));
+    if (requestParameters.objectId === null || requestParameters.objectId === undefined) {
+      throw new runtime.RequiredError(
+        'objectId',
+        'Required parameter requestParameters.objectId was null or undefined when calling orgOrgIdCustomFieldValuesObjectIdDelete.',
+      );
     }
 
-    /**
-     * Create a custom field value. Note that if a value already exists for the given object and custom field combination, you should update that value instead of posting a new one
-     */
-    async orgOrgIdCustomFieldValuesPost(requestParameters: OrgOrgIdCustomFieldValuesPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CustomFieldValue> {
-        const response = await this.orgOrgIdCustomFieldValuesPostRaw(requestParameters, initOverrides);
-        return await response.value();
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    if (this.configuration && this.configuration.accessToken) {
+      const token = this.configuration.accessToken;
+      const tokenString = await token('APIKey', []);
+
+      if (tokenString) {
+        headerParameters['Authorization'] = `Bearer ${tokenString}`;
+      }
+    }
+    const response = await this.request(
+      {
+        path: `/org/{orgId}/custom-field-values/{objectId}`
+          .replace(`{${'orgId'}}`, encodeURIComponent(String(requestParameters.orgId)))
+          .replace(`{${'objectId'}}`, encodeURIComponent(String(requestParameters.objectId))),
+        method: 'DELETE',
+        headers: headerParameters,
+        query: queryParameters,
+      },
+      initOverrides,
+    );
+
+    return new runtime.VoidApiResponse(response);
+  }
+
+  /**
+   * Delete a custom field value
+   */
+  async orgOrgIdCustomFieldValuesObjectIdDelete(
+    requestParameters: OrgOrgIdCustomFieldValuesObjectIdDeleteRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<void> {
+    await this.orgOrgIdCustomFieldValuesObjectIdDeleteRaw(requestParameters, initOverrides);
+  }
+
+  /**
+   * Update a custom field value
+   */
+  async orgOrgIdCustomFieldValuesObjectIdPutRaw(
+    requestParameters: OrgOrgIdCustomFieldValuesObjectIdPutRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<CustomFieldValue>> {
+    if (requestParameters.orgId === null || requestParameters.orgId === undefined) {
+      throw new runtime.RequiredError(
+        'orgId',
+        'Required parameter requestParameters.orgId was null or undefined when calling orgOrgIdCustomFieldValuesObjectIdPut.',
+      );
     }
 
+    if (requestParameters.objectId === null || requestParameters.objectId === undefined) {
+      throw new runtime.RequiredError(
+        'objectId',
+        'Required parameter requestParameters.objectId was null or undefined when calling orgOrgIdCustomFieldValuesObjectIdPut.',
+      );
+    }
+
+    if (requestParameters.customFieldValue === null || requestParameters.customFieldValue === undefined) {
+      throw new runtime.RequiredError(
+        'customFieldValue',
+        'Required parameter requestParameters.customFieldValue was null or undefined when calling orgOrgIdCustomFieldValuesObjectIdPut.',
+      );
+    }
+
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    headerParameters['Content-Type'] = 'application/json';
+
+    if (this.configuration && this.configuration.accessToken) {
+      const token = this.configuration.accessToken;
+      const tokenString = await token('APIKey', []);
+
+      if (tokenString) {
+        headerParameters['Authorization'] = `Bearer ${tokenString}`;
+      }
+    }
+    const response = await this.request(
+      {
+        path: `/org/{orgId}/custom-field-values/{objectId}`
+          .replace(`{${'orgId'}}`, encodeURIComponent(String(requestParameters.orgId)))
+          .replace(`{${'objectId'}}`, encodeURIComponent(String(requestParameters.objectId))),
+        method: 'PUT',
+        headers: headerParameters,
+        query: queryParameters,
+        body: CustomFieldValueToJSON(requestParameters.customFieldValue),
+      },
+      initOverrides,
+    );
+
+    return new runtime.JSONApiResponse(response, (jsonValue) => CustomFieldValueFromJSON(jsonValue));
+  }
+
+  /**
+   * Update a custom field value
+   */
+  async orgOrgIdCustomFieldValuesObjectIdPut(
+    requestParameters: OrgOrgIdCustomFieldValuesObjectIdPutRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<CustomFieldValue> {
+    const response = await this.orgOrgIdCustomFieldValuesObjectIdPutRaw(requestParameters, initOverrides);
+    return await response.value();
+  }
+
+  /**
+   * Create a custom field value. Note that if a value already exists for the given object and custom field combination, you should update that value instead of posting a new one
+   */
+  async orgOrgIdCustomFieldValuesPostRaw(
+    requestParameters: OrgOrgIdCustomFieldValuesPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<CustomFieldValue>> {
+    if (requestParameters.orgId === null || requestParameters.orgId === undefined) {
+      throw new runtime.RequiredError(
+        'orgId',
+        'Required parameter requestParameters.orgId was null or undefined when calling orgOrgIdCustomFieldValuesPost.',
+      );
+    }
+
+    if (requestParameters.customFieldValue === null || requestParameters.customFieldValue === undefined) {
+      throw new runtime.RequiredError(
+        'customFieldValue',
+        'Required parameter requestParameters.customFieldValue was null or undefined when calling orgOrgIdCustomFieldValuesPost.',
+      );
+    }
+
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    headerParameters['Content-Type'] = 'application/json';
+
+    if (this.configuration && this.configuration.accessToken) {
+      const token = this.configuration.accessToken;
+      const tokenString = await token('APIKey', []);
+
+      if (tokenString) {
+        headerParameters['Authorization'] = `Bearer ${tokenString}`;
+      }
+    }
+    const response = await this.request(
+      {
+        path: `/org/{orgId}/custom-field-values`.replace(`{${'orgId'}}`, encodeURIComponent(String(requestParameters.orgId))),
+        method: 'POST',
+        headers: headerParameters,
+        query: queryParameters,
+        body: CustomFieldValueToJSON(requestParameters.customFieldValue),
+      },
+      initOverrides,
+    );
+
+    return new runtime.JSONApiResponse(response, (jsonValue) => CustomFieldValueFromJSON(jsonValue));
+  }
+
+  /**
+   * Create a custom field value. Note that if a value already exists for the given object and custom field combination, you should update that value instead of posting a new one
+   */
+  async orgOrgIdCustomFieldValuesPost(
+    requestParameters: OrgOrgIdCustomFieldValuesPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<CustomFieldValue> {
+    const response = await this.orgOrgIdCustomFieldValuesPostRaw(requestParameters, initOverrides);
+    return await response.value();
+  }
 }
 
 /**
-  * @export
-  * @enum {string}
-  */
+ * @export
+ * @enum {string}
+ */
 export enum OrgOrgIdCustomFieldValuesGetObjectTypeEnum {
-    team = 'team',
-    user = 'user',
-    goal = 'goal',
-    role = 'role',
-    agreement = 'agreement'
+  team = 'team',
+  user = 'user',
+  goal = 'goal',
+  role = 'role',
+  agreement = 'agreement',
 }

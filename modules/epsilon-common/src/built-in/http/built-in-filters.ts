@@ -1,14 +1,14 @@
-import { Logger } from "@bitblit/ratchet-common/logger/logger";
-import { StringRatchet } from "@bitblit/ratchet-common/lang/string-ratchet";
-import { RestfulApiHttpError } from "@bitblit/ratchet-common/network/restful-api-http-error";
-import { MapRatchet } from "@bitblit/ratchet-common/lang/map-ratchet";
-import { EventUtil } from "../../http/event-util.js";
-import { BadRequestError } from "../../http/error/bad-request-error.js";
-import { FilterFunction } from "../../config/http/filter-function.js";
-import { ResponseUtil } from "../../http/response-util.js";
-import { FilterChainContext } from "../../config/http/filter-chain-context.js";
-import { MisconfiguredError } from "../../http/error/misconfigured-error.js";
-import { APIGatewayProxyResult } from "aws-lambda";
+import { Logger } from '@bitblit/ratchet-common/logger/logger';
+import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet';
+import { RestfulApiHttpError } from '@bitblit/ratchet-common/network/restful-api-http-error';
+import { MapRatchet } from '@bitblit/ratchet-common/lang/map-ratchet';
+import { EventUtil } from '../../http/event-util.js';
+import { BadRequestError } from '../../http/error/bad-request-error.js';
+import { FilterFunction } from '../../config/http/filter-function.js';
+import { ResponseUtil } from '../../http/response-util.js';
+import { FilterChainContext } from '../../config/http/filter-chain-context.js';
+import { MisconfiguredError } from '../../http/error/misconfigured-error.js';
+import { APIGatewayProxyResult } from 'aws-lambda';
 
 export class BuiltInFilters {
   public static readonly MAXIMUM_LAMBDA_BODY_SIZE_BYTES: number = 1024 * 1024 * 5 - 1024 * 100; // 5Mb - 100k buffer

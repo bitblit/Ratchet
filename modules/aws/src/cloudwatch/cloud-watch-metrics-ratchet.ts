@@ -12,8 +12,8 @@ import {
 import { DynamoCountResult } from '../model/dynamo-count-result.js';
 import { CloudWatchMetricsMinuteLevelDynamoCountRequest } from '../model/cloud-watch-metrics-minute-level-dynamo-count-request.js';
 import { DateTime } from 'luxon';
-import { KeyValue } from "@bitblit/ratchet-common/lang/key-value";
-import { Logger } from "@bitblit/ratchet-common/logger/logger";
+import { KeyValue } from '@bitblit/ratchet-common/lang/key-value';
+import { Logger } from '@bitblit/ratchet-common/logger/logger';
 
 export class CloudWatchMetricsRatchet {
   private cw: CloudWatchClient;

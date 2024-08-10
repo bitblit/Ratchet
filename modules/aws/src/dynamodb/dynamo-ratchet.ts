@@ -34,12 +34,12 @@ import { DynamoCountResult } from '../model/dynamo-count-result.js';
 import { DynamoRatchetLike } from './dynamo-ratchet-like.js';
 import { NativeAttributeValue } from '@aws-sdk/util-dynamodb';
 import { ConditionalCheckFailedException, ProvisionedThroughputExceededException } from '@aws-sdk/client-dynamodb';
-import { Logger } from "@bitblit/ratchet-common/logger/logger";
-import { PromiseRatchet } from "@bitblit/ratchet-common/lang/promise-ratchet";
-import { ErrorRatchet } from "@bitblit/ratchet-common/lang/error-ratchet";
-import { DurationRatchet } from "@bitblit/ratchet-common/lang/duration-ratchet";
-import { RequireRatchet } from "@bitblit/ratchet-common/lang/require-ratchet";
-import { NumberRatchet } from "@bitblit/ratchet-common/lang/number-ratchet";
+import { Logger } from '@bitblit/ratchet-common/logger/logger';
+import { PromiseRatchet } from '@bitblit/ratchet-common/lang/promise-ratchet';
+import { ErrorRatchet } from '@bitblit/ratchet-common/lang/error-ratchet';
+import { DurationRatchet } from '@bitblit/ratchet-common/lang/duration-ratchet';
+import { RequireRatchet } from '@bitblit/ratchet-common/lang/require-ratchet';
+import { NumberRatchet } from '@bitblit/ratchet-common/lang/number-ratchet';
 
 export class DynamoRatchet implements DynamoRatchetLike {
   constructor(private awsDDB: DynamoDBDocumentClient) {
@@ -544,7 +544,6 @@ export class DynamoRatchet implements DynamoRatchetLike {
     return rval;
   }
 
-   
   public async simplePut(tableName: string, value: Record<string, any>, autoRetryCount: number = 3): Promise<PutCommandOutput> {
     let rval: PutCommandOutput = null;
     let currentTry: number = 0;
@@ -609,7 +608,6 @@ export class DynamoRatchet implements DynamoRatchetLike {
     return rval;
   }
 
-   
   // This works like simplePut, but if a collision is detected it adjusts the object and tries writing again
   // The adjustment function MUST change one of the keys - otherwise this just runs forever (or until it hits "maxAdjusts")
   public async simplePutWithCollisionAvoidance<T>(
@@ -683,7 +681,6 @@ export class DynamoRatchet implements DynamoRatchetLike {
     return pio ? (params.Item as T) : null;
   }
 
-   
   public async simpleGet<T>(tableName: string, keys: Record<string, any>, autoRetryCount: number = 3): Promise<T> {
     let holder: GetCommandOutput = null;
     let currentTry: number = 0;
@@ -718,7 +715,6 @@ export class DynamoRatchet implements DynamoRatchetLike {
     return !!err && err instanceof ProvisionedThroughputExceededException;
   }
 
-   
   public async simpleGetWithCounterDecrement<T>(
     tableName: string,
     keys: Record<string, any>,
@@ -776,7 +772,6 @@ export class DynamoRatchet implements DynamoRatchetLike {
     return rval;
   }
 
-   
   public async simpleDelete(tableName: string, keys: Record<string, any>): Promise<DeleteCommandOutput> {
     const params: DeleteCommandInput = {
       TableName: tableName,
@@ -787,7 +782,6 @@ export class DynamoRatchet implements DynamoRatchetLike {
     return holder;
   }
 
-   
   public async atomicCounter(tableName: string, keys: Record<string, any>, counterFieldName: string, increment = 1): Promise<number> {
     const update: UpdateCommandInput = {
       TableName: tableName,
@@ -810,7 +804,7 @@ export class DynamoRatchet implements DynamoRatchetLike {
   // Recursively Removes any empty strings in place
   // Here for backwards compatibility - really should just configure your document client the
   // way you want it instead
-   
+
   public static cleanObject(ob: Record<string, any>): void {
     if (ob) {
       const rem: string[] = [];

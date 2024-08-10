@@ -1,5 +1,5 @@
 // Simple switch to see what kind of event I am looking at
- 
+
 export class LambdaEventDetector {
   public static isValidCronEvent(event: any): boolean {
     return event && event.source == 'aws.events' && event.resources && event.resources.length > 0;

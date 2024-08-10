@@ -1,7 +1,7 @@
 /* eslint-disable */
 /**
  * SendinBlue API
- * SendinBlue provide a RESTFul API that can be used with any languages. With this API, you will be able to :   - Manage your campaigns and get the statistics   - Manage your contacts   - Send transactional Emails and SMS   - and much more...  You can download our wrappers at https://github.com/orgs/sendinblue  **Possible responses**   | Code | Message |   | :-------------: | ------------- |   | 200  | OK. Successful Request  |   | 201  | OK. Successful Creation |   | 202  | OK. Request accepted |   | 204  | OK. Successful Update/Deletion  |   | 400  | Error. Bad Request  |   | 401  | Error. Authentication Needed  |   | 402  | Error. Not enough credit, plan upgrade needed  |   | 403  | Error. Permission denied  |   | 404  | Error. Object does not exist |   | 405  | Error. Method not allowed  |   | 406  | Error. Not Acceptable  | 
+ * SendinBlue provide a RESTFul API that can be used with any languages. With this API, you will be able to :   - Manage your campaigns and get the statistics   - Manage your contacts   - Send transactional Emails and SMS   - and much more...  You can download our wrappers at https://github.com/orgs/sendinblue  **Possible responses**   | Code | Message |   | :-------------: | ------------- |   | 200  | OK. Successful Request  |   | 201  | OK. Successful Creation |   | 202  | OK. Request accepted |   | 204  | OK. Successful Update/Deletion  |   | 400  | Error. Bad Request  |   | 401  | Error. Authentication Needed  |   | 402  | Error. Not enough credit, plan upgrade needed  |   | 403  | Error. Permission denied  |   | 404  | Error. Object does not exist |   | 405  | Error. Method not allowed  |   | 406  | Error. Not Acceptable  |
  *
  * The version of the OpenAPI document: 3.0.0
  * Contact: contact@sendinblue.com
@@ -14,86 +14,86 @@
 import { exists, mapValues } from '../runtime.js';
 import type { GetTransacBlockedContactsContactsInnerReason } from './GetTransacBlockedContactsContactsInnerReason.js';
 import {
-    GetTransacBlockedContactsContactsInnerReasonFromJSON,
-    GetTransacBlockedContactsContactsInnerReasonFromJSONTyped,
-    GetTransacBlockedContactsContactsInnerReasonToJSON,
+  GetTransacBlockedContactsContactsInnerReasonFromJSON,
+  GetTransacBlockedContactsContactsInnerReasonFromJSONTyped,
+  GetTransacBlockedContactsContactsInnerReasonToJSON,
 } from './GetTransacBlockedContactsContactsInnerReason.js';
 
 /**
- * 
+ *
  * @export
  * @interface GetTransacBlockedContactsContactsInner
  */
 export interface GetTransacBlockedContactsContactsInner {
-    /**
-     * Email address of the blocked or unsubscribed contact
-     * @type {string}
-     * @memberof GetTransacBlockedContactsContactsInner
-     */
-    email: string;
-    /**
-     * Sender email address of the blocked or unsubscribed contact
-     * @type {string}
-     * @memberof GetTransacBlockedContactsContactsInner
-     */
-    senderEmail: string;
-    /**
-     * 
-     * @type {GetTransacBlockedContactsContactsInnerReason}
-     * @memberof GetTransacBlockedContactsContactsInner
-     */
-    reason: GetTransacBlockedContactsContactsInnerReason;
-    /**
-     * Date when the contact was blocked or unsubscribed on
-     * @type {Date}
-     * @memberof GetTransacBlockedContactsContactsInner
-     */
-    blockedAt: Date;
+  /**
+   * Email address of the blocked or unsubscribed contact
+   * @type {string}
+   * @memberof GetTransacBlockedContactsContactsInner
+   */
+  email: string;
+  /**
+   * Sender email address of the blocked or unsubscribed contact
+   * @type {string}
+   * @memberof GetTransacBlockedContactsContactsInner
+   */
+  senderEmail: string;
+  /**
+   *
+   * @type {GetTransacBlockedContactsContactsInnerReason}
+   * @memberof GetTransacBlockedContactsContactsInner
+   */
+  reason: GetTransacBlockedContactsContactsInnerReason;
+  /**
+   * Date when the contact was blocked or unsubscribed on
+   * @type {Date}
+   * @memberof GetTransacBlockedContactsContactsInner
+   */
+  blockedAt: Date;
 }
 
 /**
  * Check if a given object implements the GetTransacBlockedContactsContactsInner interface.
  */
 export function instanceOfGetTransacBlockedContactsContactsInner(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "email" in value;
-    isInstance = isInstance && "senderEmail" in value;
-    isInstance = isInstance && "reason" in value;
-    isInstance = isInstance && "blockedAt" in value;
+  let isInstance = true;
+  isInstance = isInstance && 'email' in value;
+  isInstance = isInstance && 'senderEmail' in value;
+  isInstance = isInstance && 'reason' in value;
+  isInstance = isInstance && 'blockedAt' in value;
 
-    return isInstance;
+  return isInstance;
 }
 
 export function GetTransacBlockedContactsContactsInnerFromJSON(json: any): GetTransacBlockedContactsContactsInner {
-    return GetTransacBlockedContactsContactsInnerFromJSONTyped(json, false);
+  return GetTransacBlockedContactsContactsInnerFromJSONTyped(json, false);
 }
 
-export function GetTransacBlockedContactsContactsInnerFromJSONTyped(json: any, ignoreDiscriminator: boolean): GetTransacBlockedContactsContactsInner {
-    if ((json === undefined) || (json === null)) {
-        return json;
-    }
-    return {
-        
-        'email': json['email'],
-        'senderEmail': json['senderEmail'],
-        'reason': GetTransacBlockedContactsContactsInnerReasonFromJSON(json['reason']),
-        'blockedAt': (new Date(json['blockedAt'])),
-    };
+export function GetTransacBlockedContactsContactsInnerFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean,
+): GetTransacBlockedContactsContactsInner {
+  if (json === undefined || json === null) {
+    return json;
+  }
+  return {
+    email: json['email'],
+    senderEmail: json['senderEmail'],
+    reason: GetTransacBlockedContactsContactsInnerReasonFromJSON(json['reason']),
+    blockedAt: new Date(json['blockedAt']),
+  };
 }
 
 export function GetTransacBlockedContactsContactsInnerToJSON(value?: GetTransacBlockedContactsContactsInner | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
-    }
-    return {
-        
-        'email': value.email,
-        'senderEmail': value.senderEmail,
-        'reason': GetTransacBlockedContactsContactsInnerReasonToJSON(value.reason),
-        'blockedAt': (value.blockedAt.toISOString()),
-    };
+  if (value === undefined) {
+    return undefined;
+  }
+  if (value === null) {
+    return null;
+  }
+  return {
+    email: value.email,
+    senderEmail: value.senderEmail,
+    reason: GetTransacBlockedContactsContactsInnerReasonToJSON(value.reason),
+    blockedAt: value.blockedAt.toISOString(),
+  };
 }
-

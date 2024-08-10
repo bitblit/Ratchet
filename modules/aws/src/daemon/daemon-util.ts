@@ -12,8 +12,8 @@ import { Readable } from 'stream';
 import { Upload } from '@aws-sdk/lib-storage';
 import { S3CacheRatchetLike } from '../s3/s3-cache-ratchet-like.js';
 import { DaemonStreamDataOptions } from './daemon-stream-data-options.js';
-import { Logger } from "@bitblit/ratchet-common/logger/logger";
-import { StringRatchet } from "@bitblit/ratchet-common/lang/string-ratchet";
+import { Logger } from '@bitblit/ratchet-common/logger/logger';
+import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet';
 
 /**
  * Internal utilities which are here for the USE OF THE DAEMON OBJECT ONLY - if you are trying to use this

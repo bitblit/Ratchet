@@ -7,14 +7,14 @@ import {
   PutObjectCommandInput,
   PutObjectCommandOutput,
   S3Client,
-  UploadPartCommand
-} from "@aws-sdk/client-s3";
-import { S3CacheRatchet } from "./s3-cache-ratchet.js";
-import { Logger } from "@bitblit/ratchet-common/logger/logger";
-import { StringRatchet } from "@bitblit/ratchet-common/lang/string-ratchet";
-import { WebStreamRatchet } from "@bitblit/ratchet-common/lang/web-stream-ratchet";
-import { mockClient } from "aws-sdk-client-mock";
-import { beforeEach, describe, expect, test, vi } from "vitest";
+  UploadPartCommand,
+} from '@aws-sdk/client-s3';
+import { S3CacheRatchet } from './s3-cache-ratchet.js';
+import { Logger } from '@bitblit/ratchet-common/logger/logger';
+import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet';
+import { WebStreamRatchet } from '@bitblit/ratchet-common/lang/web-stream-ratchet';
+import { mockClient } from 'aws-sdk-client-mock';
+import { beforeEach, describe, expect, test, vi } from 'vitest';
 
 vi.mock('@aws-sdk/s3-request-presigner', async (importOriginal) => {
   const mod = await importOriginal<typeof import('@aws-sdk/s3-request-presigner')>();

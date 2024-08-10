@@ -1,12 +1,12 @@
-import { Logger } from "@bitblit/ratchet-common/logger/logger";
-import { DaemonProcessState } from "@bitblit/ratchet-aws/daemon/daemon-process-state";
-import { DaemonLike } from "@bitblit/ratchet-aws/daemon/daemon-like";
-import { DaemonAuthorizerFunction } from "./daemon-authorizer-function.js";
-import { ExtendedAPIGatewayEvent } from "../../config/http/extended-api-gateway-event.js";
-import { NotFoundError } from "../../http/error/not-found-error.js";
-import { DaemonProcessStateList } from "./daemon-process-state-list.js";
-import { DaemonConfig } from "./daemon-config.js";
-import { StringRatchet } from "@bitblit/ratchet-common/lang/string-ratchet";
+import { Logger } from '@bitblit/ratchet-common/logger/logger';
+import { DaemonProcessState } from '@bitblit/ratchet-aws/daemon/daemon-process-state';
+import { DaemonLike } from '@bitblit/ratchet-aws/daemon/daemon-like';
+import { DaemonAuthorizerFunction } from './daemon-authorizer-function.js';
+import { ExtendedAPIGatewayEvent } from '../../config/http/extended-api-gateway-event.js';
+import { NotFoundError } from '../../http/error/not-found-error.js';
+import { DaemonProcessStateList } from './daemon-process-state-list.js';
+import { DaemonConfig } from './daemon-config.js';
+import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet';
 
 /**
  * A helper class to simplify adding Ratchet "Daemon" handling to your application
@@ -14,7 +14,7 @@ import { StringRatchet } from "@bitblit/ratchet-common/lang/string-ratchet";
 export class DaemonHandler {
   public static readonly ALLOW_EVERYTHING_AUTHORIZER: DaemonAuthorizerFunction = async (
     evt: ExtendedAPIGatewayEvent,
-    proc: DaemonProcessState
+    proc: DaemonProcessState,
   ) => {
     return true;
   };
@@ -25,7 +25,10 @@ export class DaemonHandler {
   /**
    * Initialize the Router
    */
-  constructor(private daemon: DaemonLike, private inConfig?: DaemonConfig) {
+  constructor(
+    private daemon: DaemonLike,
+    private inConfig?: DaemonConfig,
+  ) {
     this.config = inConfig || {};
     this.config.authorizer = this.config.authorizer || DaemonHandler.ALLOW_EVERYTHING_AUTHORIZER;
     this.config.groupSelector = this.config.groupSelector || ((evt: ExtendedAPIGatewayEvent) => Promise.resolve(daemon.defaultGroup));

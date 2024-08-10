@@ -14,9 +14,9 @@
 import { exists, mapValues } from '../runtime.js';
 import type { CustomFieldSingleSelectDropDownContentSelectedOptions } from './CustomFieldSingleSelectDropDownContentSelectedOptions.js';
 import {
-    CustomFieldSingleSelectDropDownContentSelectedOptionsFromJSON,
-    CustomFieldSingleSelectDropDownContentSelectedOptionsFromJSONTyped,
-    CustomFieldSingleSelectDropDownContentSelectedOptionsToJSON,
+  CustomFieldSingleSelectDropDownContentSelectedOptionsFromJSON,
+  CustomFieldSingleSelectDropDownContentSelectedOptionsFromJSONTyped,
+  CustomFieldSingleSelectDropDownContentSelectedOptionsToJSON,
 } from './CustomFieldSingleSelectDropDownContentSelectedOptions.js';
 
 /**
@@ -25,47 +25,49 @@ import {
  * @interface CustomFieldSingleSelectDropDownContent
  */
 export interface CustomFieldSingleSelectDropDownContent {
-    /**
-     * 
-     * @type {CustomFieldSingleSelectDropDownContentSelectedOptions}
-     * @memberof CustomFieldSingleSelectDropDownContent
-     */
-    selectedOptions?: CustomFieldSingleSelectDropDownContentSelectedOptions;
+  /**
+   *
+   * @type {CustomFieldSingleSelectDropDownContentSelectedOptions}
+   * @memberof CustomFieldSingleSelectDropDownContent
+   */
+  selectedOptions?: CustomFieldSingleSelectDropDownContentSelectedOptions;
 }
 
 /**
  * Check if a given object implements the CustomFieldSingleSelectDropDownContent interface.
  */
 export function instanceOfCustomFieldSingleSelectDropDownContent(value: object): boolean {
-    let isInstance = true;
+  let isInstance = true;
 
-    return isInstance;
+  return isInstance;
 }
 
 export function CustomFieldSingleSelectDropDownContentFromJSON(json: any): CustomFieldSingleSelectDropDownContent {
-    return CustomFieldSingleSelectDropDownContentFromJSONTyped(json, false);
+  return CustomFieldSingleSelectDropDownContentFromJSONTyped(json, false);
 }
 
-export function CustomFieldSingleSelectDropDownContentFromJSONTyped(json: any, ignoreDiscriminator: boolean): CustomFieldSingleSelectDropDownContent {
-    if ((json === undefined) || (json === null)) {
-        return json;
-    }
-    return {
-        
-        'selectedOptions': !exists(json, 'selectedOptions') ? undefined : CustomFieldSingleSelectDropDownContentSelectedOptionsFromJSON(json['selectedOptions']),
-    };
+export function CustomFieldSingleSelectDropDownContentFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean,
+): CustomFieldSingleSelectDropDownContent {
+  if (json === undefined || json === null) {
+    return json;
+  }
+  return {
+    selectedOptions: !exists(json, 'selectedOptions')
+      ? undefined
+      : CustomFieldSingleSelectDropDownContentSelectedOptionsFromJSON(json['selectedOptions']),
+  };
 }
 
 export function CustomFieldSingleSelectDropDownContentToJSON(value?: CustomFieldSingleSelectDropDownContent | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
-    }
-    return {
-        
-        'selectedOptions': CustomFieldSingleSelectDropDownContentSelectedOptionsToJSON(value.selectedOptions),
-    };
+  if (value === undefined) {
+    return undefined;
+  }
+  if (value === null) {
+    return null;
+  }
+  return {
+    selectedOptions: CustomFieldSingleSelectDropDownContentSelectedOptionsToJSON(value.selectedOptions),
+  };
 }
-

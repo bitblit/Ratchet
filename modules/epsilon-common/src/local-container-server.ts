@@ -1,12 +1,12 @@
-import { APIGatewayEvent, Context, ProxyResult } from "aws-lambda";
-import http, { IncomingMessage, Server, ServerResponse } from "http";
-import { EventUtil } from "./http/event-util.js";
-import fetch from "cross-fetch";
-import { LocalServer } from "./local-server.js";
-import { Logger } from "@bitblit/ratchet-common/logger/logger";
-import { StringRatchet } from "@bitblit/ratchet-common/lang/string-ratchet";
-import { LoggerLevelName } from "@bitblit/ratchet-common/logger/logger-level-name";
-import { CliRatchet } from "@bitblit/ratchet-node-only/cli/cli-ratchet";
+import { APIGatewayEvent, Context, ProxyResult } from 'aws-lambda';
+import http, { IncomingMessage, Server, ServerResponse } from 'http';
+import { EventUtil } from './http/event-util.js';
+import fetch from 'cross-fetch';
+import { LocalServer } from './local-server.js';
+import { Logger } from '@bitblit/ratchet-common/logger/logger';
+import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet';
+import { LoggerLevelName } from '@bitblit/ratchet-common/logger/logger-level-name';
+import { CliRatchet } from '@bitblit/ratchet-node-only/cli/cli-ratchet';
 
 /**
  * A simplistic server for testing your lambdas-in-container locally
@@ -15,7 +15,10 @@ export class LocalContainerServer {
   private server: Server;
   private aborted: boolean = false;
 
-  constructor(private port: number = 8889, private containerUrl: string = 'http://localhost:9000/2015-03-31/functions/function/invocations') {}
+  constructor(
+    private port: number = 8889,
+    private containerUrl: string = 'http://localhost:9000/2015-03-31/functions/function/invocations',
+  ) {}
 
   public async runServer(): Promise<boolean> {
     return new Promise<boolean>((res, rej) => {
@@ -58,7 +61,7 @@ export class LocalContainerServer {
       try {
         const postResp: Response = await fetch(this.containerUrl, { method: 'POST', body: JSON.stringify(evt) });
         response.statusCode = postResp.status;
-        postResp.headers.forEach((value, name)=>{
+        postResp.headers.forEach((value, name) => {
           response.setHeader(name, value);
         });
         // TODO: set headers

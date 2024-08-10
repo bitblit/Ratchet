@@ -10,7 +10,10 @@ import { S3CacheRatchetLike } from '../s3-cache-ratchet-like.js';
   provisioning, etc
  */
 export class S3PrototypeDaoProvider<T> implements PrototypeDaoProvider<T> {
-  constructor(private s3CacheRatchet: S3CacheRatchetLike, private keyName: string) {
+  constructor(
+    private s3CacheRatchet: S3CacheRatchetLike,
+    private keyName: string,
+  ) {
     RequireRatchet.notNullOrUndefined(s3CacheRatchet, 's3CacheRatchet');
     RequireRatchet.notNullUndefinedOrOnlyWhitespaceString(s3CacheRatchet.getDefaultBucket(), 's3CacheRatchet.defaultBucket');
     RequireRatchet.notNullUndefinedOrOnlyWhitespaceString(keyName, 'keyName');

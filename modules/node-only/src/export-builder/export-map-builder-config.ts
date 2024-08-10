@@ -1,4 +1,4 @@
-import { ExportMapBuilderTargetConfig } from "./export-map-builder-target-config.js";
+import { ExportMapBuilderTargetConfig } from './export-map-builder-target-config.js';
 
 export interface ExportMapBuilderConfig {
   sourceRoot?: string; // Folder, by default the folder src in the same folder as targetPackageJsonFile

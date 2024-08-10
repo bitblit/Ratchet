@@ -8,9 +8,9 @@
 import fs, { Stats } from 'fs';
 import path from 'path';
 import { CliRatchet } from '../cli/cli-ratchet.js';
-import { Logger } from "@bitblit/ratchet-common/logger/logger";
-import { BooleanRatchet } from "@bitblit/ratchet-common/lang/boolean-ratchet";
-import { StringRatchet } from "@bitblit/ratchet-common/lang/string-ratchet";
+import { Logger } from '@bitblit/ratchet-common/logger/logger';
+import { BooleanRatchet } from '@bitblit/ratchet-common/lang/boolean-ratchet';
+import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet';
 
 export class UniqueFileRename {
   public static async process(inFolder: string, recursive: boolean = false, dryRun: boolean = false): Promise<number> {

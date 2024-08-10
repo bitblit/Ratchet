@@ -18,47 +18,44 @@ import { exists, mapValues } from '../runtime.js';
  * @interface CustomFieldTextConfig
  */
 export interface CustomFieldTextConfig {
-    /**
-     * 
-     * @type {string}
-     * @memberof CustomFieldTextConfig
-     */
-    placeholder?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof CustomFieldTextConfig
+   */
+  placeholder?: string;
 }
 
 /**
  * Check if a given object implements the CustomFieldTextConfig interface.
  */
 export function instanceOfCustomFieldTextConfig(value: object): boolean {
-    let isInstance = true;
+  let isInstance = true;
 
-    return isInstance;
+  return isInstance;
 }
 
 export function CustomFieldTextConfigFromJSON(json: any): CustomFieldTextConfig {
-    return CustomFieldTextConfigFromJSONTyped(json, false);
+  return CustomFieldTextConfigFromJSONTyped(json, false);
 }
 
 export function CustomFieldTextConfigFromJSONTyped(json: any, ignoreDiscriminator: boolean): CustomFieldTextConfig {
-    if ((json === undefined) || (json === null)) {
-        return json;
-    }
-    return {
-        
-        'placeholder': !exists(json, 'placeholder') ? undefined : json['placeholder'],
-    };
+  if (json === undefined || json === null) {
+    return json;
+  }
+  return {
+    placeholder: !exists(json, 'placeholder') ? undefined : json['placeholder'],
+  };
 }
 
 export function CustomFieldTextConfigToJSON(value?: CustomFieldTextConfig | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
-    }
-    return {
-        
-        'placeholder': value.placeholder,
-    };
+  if (value === undefined) {
+    return undefined;
+  }
+  if (value === null) {
+    return null;
+  }
+  return {
+    placeholder: value.placeholder,
+  };
 }
-

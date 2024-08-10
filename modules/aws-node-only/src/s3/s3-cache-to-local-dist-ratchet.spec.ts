@@ -1,8 +1,8 @@
-import { S3CacheToLocalDiskRatchet } from "./s3-cache-to-local-disk-ratchet.js";
-import { S3CacheRatchetLike } from "@bitblit/ratchet-aws/s3/s3-cache-ratchet-like";
-import { tmpdir } from "os";
-import { beforeEach, describe, expect, test } from "vitest";
-import { mock, MockProxy } from "vitest-mock-extended";
+import { S3CacheToLocalDiskRatchet } from './s3-cache-to-local-disk-ratchet.js';
+import { S3CacheRatchetLike } from '@bitblit/ratchet-aws/s3/s3-cache-ratchet-like';
+import { tmpdir } from 'os';
+import { beforeEach, describe, expect, test } from 'vitest';
+import { mock, MockProxy } from 'vitest-mock-extended';
 
 let mockS3CR: MockProxy<S3CacheRatchetLike>;
 

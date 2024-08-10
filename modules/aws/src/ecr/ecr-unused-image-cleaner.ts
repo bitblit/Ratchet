@@ -12,17 +12,17 @@ import {
   DescribeRepositoriesResponse,
   ECRClient,
   ImageDetail,
-  Repository
-} from "@aws-sdk/client-ecr";
-import { RequireRatchet } from "@bitblit/ratchet-common/lang/require-ratchet";
-import { Logger } from "@bitblit/ratchet-common/logger/logger";
-import { StringRatchet } from "@bitblit/ratchet-common/lang/string-ratchet";
-import { EcrUnusedImageCleanerOptions } from "./ecr-unused-image-cleaner-options.js";
-import { UsedImageFinder } from "./used-image-finder.js";
-import { EcrUnusedImageCleanerRepositoryOutput } from "./ecr-unused-image-cleaner-repository-output.js";
-import { RetainedImageDescriptor } from "./retained-image-descriptor.js";
-import { RetainedImageReason } from "./retained-image-reason.js";
-import { EcrUnusedImageCleanerOutput } from "./ecr-unused-image-cleaner-output.js";
+  Repository,
+} from '@aws-sdk/client-ecr';
+import { RequireRatchet } from '@bitblit/ratchet-common/lang/require-ratchet';
+import { Logger } from '@bitblit/ratchet-common/logger/logger';
+import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet';
+import { EcrUnusedImageCleanerOptions } from './ecr-unused-image-cleaner-options.js';
+import { UsedImageFinder } from './used-image-finder.js';
+import { EcrUnusedImageCleanerRepositoryOutput } from './ecr-unused-image-cleaner-repository-output.js';
+import { RetainedImageDescriptor } from './retained-image-descriptor.js';
+import { RetainedImageReason } from './retained-image-reason.js';
+import { EcrUnusedImageCleanerOutput } from './ecr-unused-image-cleaner-output.js';
 
 export class EcrUnusedImageCleaner {
   // Do not delete images that are not at least this many days old.

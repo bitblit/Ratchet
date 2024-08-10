@@ -1,22 +1,18 @@
-import { WardenSingleUseCodeProvider } from "./warden-single-use-code-provider.js";
-import { Logger } from "@bitblit/ratchet-common/logger/logger";
-import { ErrorRatchet } from "@bitblit/ratchet-common/lang/error-ratchet";
-import { StringRatchet } from "@bitblit/ratchet-common/lang/string-ratchet";
-import { Base64Ratchet } from "@bitblit/ratchet-common/lang/base64-ratchet";
-import {
-  WardenMailerAndExpiringCodeRatchetSingleUseCodeProviderOptions
-} from "./warden-mailer-and-expiring-code-ratchet-single-user-provider-options.js";
-import { ExpiringCodeRatchet } from "@bitblit/ratchet-aws/expiring-code/expiring-code-ratchet";
-import { ExpiringCode } from "@bitblit/ratchet-aws/expiring-code/expiring-code";
-import { Mailer } from "@bitblit/ratchet-common/mail/mailer";
-import { ReadyToSendEmail } from "@bitblit/ratchet-common/mail/ready-to-send-email";
-import { SendEmailResult } from "@bitblit/ratchet-common/mail/send-email-result";
-import { WardenContactType } from "@bitblit/ratchet-warden-common/common/model/warden-contact-type";
-import { WardenContact } from "@bitblit/ratchet-warden-common/common/model/warden-contact";
-import { WardenCustomerMessageType } from "@bitblit/ratchet-warden-common/common/model/warden-customer-message-type";
-import {
-  WardenCustomTemplateDescriptor
-} from "@bitblit/ratchet-warden-common/common/command/warden-custom-template-descriptor";
+import { WardenSingleUseCodeProvider } from './warden-single-use-code-provider.js';
+import { Logger } from '@bitblit/ratchet-common/logger/logger';
+import { ErrorRatchet } from '@bitblit/ratchet-common/lang/error-ratchet';
+import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet';
+import { Base64Ratchet } from '@bitblit/ratchet-common/lang/base64-ratchet';
+import { WardenMailerAndExpiringCodeRatchetSingleUseCodeProviderOptions } from './warden-mailer-and-expiring-code-ratchet-single-user-provider-options.js';
+import { ExpiringCodeRatchet } from '@bitblit/ratchet-aws/expiring-code/expiring-code-ratchet';
+import { ExpiringCode } from '@bitblit/ratchet-aws/expiring-code/expiring-code';
+import { Mailer } from '@bitblit/ratchet-common/mail/mailer';
+import { ReadyToSendEmail } from '@bitblit/ratchet-common/mail/ready-to-send-email';
+import { SendEmailResult } from '@bitblit/ratchet-common/mail/send-email-result';
+import { WardenContactType } from '@bitblit/ratchet-warden-common/common/model/warden-contact-type';
+import { WardenContact } from '@bitblit/ratchet-warden-common/common/model/warden-contact';
+import { WardenCustomerMessageType } from '@bitblit/ratchet-warden-common/common/model/warden-customer-message-type';
+import { WardenCustomTemplateDescriptor } from '@bitblit/ratchet-warden-common/common/command/warden-custom-template-descriptor';
 
 /**
  * Classes implementing WardenSingleUseCodeProvider are able to
@@ -85,7 +81,7 @@ export class WardenMailerAndExpiringCodeRatchetSingleUseCodeProvider implements 
     const meta: Record<string, any> = Object.assign({}, metaIn || {}, { contact: loginContact });
     const encodedMeta: string = Base64Ratchet.safeObjectToBase64JSON(meta || {});
 
-    const landingUrlFilled: string = StringRatchet.simpleTemplateFill(landingUrl, {CODE: token.code, META: encodedMeta}, true,'{', '}');
+    const landingUrlFilled: string = StringRatchet.simpleTemplateFill(landingUrl, { CODE: token.code, META: encodedMeta }, true, '{', '}');
 
     const context: Record<string, string> = Object.assign({}, meta || {}, {
       landingUrl: landingUrlFilled,

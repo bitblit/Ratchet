@@ -1,10 +1,10 @@
-import { EpsilonLambdaEventHandler } from "../config/epsilon-lambda-event-handler.js";
-import { Context, ProxyResult, S3Event } from "aws-lambda";
-import { GenericAwsEventHandlerFunction } from "../config/generic-aws-event-handler-function.js";
-import { Logger } from "@bitblit/ratchet-common/logger/logger";
-import { AwsUtil } from "../util/aws-util.js";
-import { EpsilonInstance } from "../epsilon-instance.js";
-import { LambdaEventDetector } from "@bitblit/ratchet-aws/lambda/lambda-event-detector";
+import { EpsilonLambdaEventHandler } from '../config/epsilon-lambda-event-handler.js';
+import { Context, ProxyResult, S3Event } from 'aws-lambda';
+import { GenericAwsEventHandlerFunction } from '../config/generic-aws-event-handler-function.js';
+import { Logger } from '@bitblit/ratchet-common/logger/logger';
+import { AwsUtil } from '../util/aws-util.js';
+import { EpsilonInstance } from '../epsilon-instance.js';
+import { LambdaEventDetector } from '@bitblit/ratchet-aws/lambda/lambda-event-detector';
 
 export class S3EpsilonLambdaEventHandler implements EpsilonLambdaEventHandler<S3Event> {
   constructor(private _epsilon: EpsilonInstance) {}
@@ -26,7 +26,7 @@ export class S3EpsilonLambdaEventHandler implements EpsilonLambdaEventHandler<S3
       if (isRemoveEvent) {
         const handler: GenericAwsEventHandlerFunction<S3Event> = AwsUtil.findInMap<GenericAwsEventHandlerFunction<S3Event>>(
           finder,
-          this._epsilon.config.s3.removeHandlers
+          this._epsilon.config.s3.removeHandlers,
         );
         if (handler) {
           rval = await handler(evt);
@@ -36,7 +36,7 @@ export class S3EpsilonLambdaEventHandler implements EpsilonLambdaEventHandler<S3
       } else {
         const handler: GenericAwsEventHandlerFunction<S3Event> = AwsUtil.findInMap<GenericAwsEventHandlerFunction<S3Event>>(
           finder,
-          this._epsilon.config.s3.createHandlers
+          this._epsilon.config.s3.createHandlers,
         );
         if (handler) {
           rval = await handler(evt);

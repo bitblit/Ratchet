@@ -1,8 +1,8 @@
 import { PublishCiReleaseToSlack } from './publish-ci-release-to-slack.js';
 import { expect, test, describe, vi, beforeEach } from 'vitest';
 import { mock, MockProxy } from 'vitest-mock-extended';
-import { Logger } from "@bitblit/ratchet-common/logger/logger";
-import { GlobalRatchet } from "@bitblit/ratchet-common/lang/global-ratchet";
+import { Logger } from '@bitblit/ratchet-common/logger/logger';
+import { GlobalRatchet } from '@bitblit/ratchet-common/lang/global-ratchet';
 
 describe('#publishCircleCiReleaseToSlack', function () {
   test.skip('should fail if not in a circle ci environment', async () => {

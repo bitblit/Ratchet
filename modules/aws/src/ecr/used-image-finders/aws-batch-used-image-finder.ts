@@ -1,15 +1,15 @@
-import { UsedImageFinder } from "../used-image-finder.js";
+import { UsedImageFinder } from '../used-image-finder.js';
 
-import { RequireRatchet } from "@bitblit/ratchet-common/lang/require-ratchet";
-import { Logger } from "@bitblit/ratchet-common/logger/logger";
-import { StringRatchet } from "@bitblit/ratchet-common/lang/string-ratchet";
+import { RequireRatchet } from '@bitblit/ratchet-common/lang/require-ratchet';
+import { Logger } from '@bitblit/ratchet-common/logger/logger';
+import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet';
 import {
   BatchClient,
   DescribeJobDefinitionsCommand,
   DescribeJobDefinitionsCommandInput,
   DescribeJobDefinitionsCommandOutput,
-  JobDefinition
-} from "@aws-sdk/client-batch";
+  JobDefinition,
+} from '@aws-sdk/client-batch';
 
 export class AwsBatchUsedImageFinder implements UsedImageFinder {
   constructor(private batch: BatchClient) {

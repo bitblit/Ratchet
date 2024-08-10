@@ -1,9 +1,9 @@
-import { RequireRatchet } from "@bitblit/ratchet-common/lang/require-ratchet";
-import { Logger } from "@bitblit/ratchet-common/logger/logger";
-import { ErrorRatchet } from "@bitblit/ratchet-common/lang/error-ratchet";
-import { PromiseRatchet } from "@bitblit/ratchet-common/lang/promise-ratchet";
-import { EnvironmentServiceProvider } from "./environment-service-provider.js";
-import { EnvironmentServiceConfig } from "./environment-service-config.js";
+import { RequireRatchet } from '@bitblit/ratchet-common/lang/require-ratchet';
+import { Logger } from '@bitblit/ratchet-common/logger/logger';
+import { ErrorRatchet } from '@bitblit/ratchet-common/lang/error-ratchet';
+import { PromiseRatchet } from '@bitblit/ratchet-common/lang/promise-ratchet';
+import { EnvironmentServiceProvider } from './environment-service-provider.js';
+import { EnvironmentServiceConfig } from './environment-service-config.js';
 
 /**
  * Wraps up a EnvironmentServiceProvider and provides caching and retry-on-failure logic
@@ -21,7 +21,7 @@ export class EnvironmentService<T> {
 
   constructor(
     private provider: EnvironmentServiceProvider<T>,
-    private cfg: EnvironmentServiceConfig = EnvironmentService.defaultEnvironmentServiceConfig()
+    private cfg: EnvironmentServiceConfig = EnvironmentService.defaultEnvironmentServiceConfig(),
   ) {
     RequireRatchet.notNullOrUndefined(provider);
     RequireRatchet.notNullOrUndefined(cfg);
@@ -55,7 +55,7 @@ export class EnvironmentService<T> {
           this.cfg.maxRetries,
           waitMS,
           err,
-          err
+          err,
         );
         await PromiseRatchet.wait(waitMS);
       }

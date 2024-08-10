@@ -1,14 +1,14 @@
-import { BaseContext } from "@apollo/server";
-import { EpsilonLambdaApolloContextFunctionArgument } from "./epsilon-lambda-apollo-context-function-argument.js";
-import { EventUtil } from "../../../http/event-util.js";
-import { DefaultEpsilonApolloContext } from "./default-epsilon-apollo-context.js";
-import { UnauthorizedError } from "../../../http/error/unauthorized-error.js";
-import { Logger } from "@bitblit/ratchet-common/logger/logger";
-import { StringRatchet } from "@bitblit/ratchet-common/lang/string-ratchet";
-import { JwtTokenBase } from "@bitblit/ratchet-common/jwt/jwt-token-base";
-import { MapRatchet } from "@bitblit/ratchet-common/lang/map-ratchet";
-import { JwtRatchetLike } from "@bitblit/ratchet-common/jwt/jwt-ratchet-like";
-import { ExpiredJwtHandling } from "@bitblit/ratchet-common/jwt/expired-jwt-handling";
+import { BaseContext } from '@apollo/server';
+import { EpsilonLambdaApolloContextFunctionArgument } from './epsilon-lambda-apollo-context-function-argument.js';
+import { EventUtil } from '../../../http/event-util.js';
+import { DefaultEpsilonApolloContext } from './default-epsilon-apollo-context.js';
+import { UnauthorizedError } from '../../../http/error/unauthorized-error.js';
+import { Logger } from '@bitblit/ratchet-common/logger/logger';
+import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet';
+import { JwtTokenBase } from '@bitblit/ratchet-common/jwt/jwt-token-base';
+import { MapRatchet } from '@bitblit/ratchet-common/lang/map-ratchet';
+import { JwtRatchetLike } from '@bitblit/ratchet-common/jwt/jwt-ratchet-like';
+import { ExpiredJwtHandling } from '@bitblit/ratchet-common/jwt/expired-jwt-handling';
 
 export class ApolloUtil {
   // Prevent instantiation
@@ -23,7 +23,7 @@ export class ApolloUtil {
 
   public static async defaultEpsilonApolloContext(
     args: EpsilonLambdaApolloContextFunctionArgument,
-    jwt?: JwtRatchetLike
+    jwt?: JwtRatchetLike,
   ): Promise<DefaultEpsilonApolloContext<any>> {
     const authTokenSt: string = EventUtil.extractBearerTokenFromEvent(args.lambdaEvent);
     let token: JwtTokenBase = null;
@@ -45,7 +45,7 @@ export class ApolloUtil {
 
   public static async nonRouteableOnlyEpsilonApolloContext(
     args: EpsilonLambdaApolloContextFunctionArgument,
-    jwt?: JwtRatchetLike
+    jwt?: JwtRatchetLike,
   ): Promise<DefaultEpsilonApolloContext<any>> {
     const hostName: string = StringRatchet.trimToNull(MapRatchet.extractValueFromMapIgnoreCase(args.lambdaEvent.headers, 'host'));
     const hostIsLocalOrNotRoutableIP4: boolean = EventUtil.hostIsLocalOrNotRoutableIP4(hostName);

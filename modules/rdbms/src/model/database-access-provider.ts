@@ -1,5 +1,5 @@
-import { DatabaseAccess } from "./database-access.js";
-import { QueryDefaults } from "./query-defaults.js";
+import { DatabaseAccess } from './database-access.js';
+import { QueryDefaults } from './query-defaults.js';
 
 export interface DatabaseAccessProvider {
   /**
@@ -7,5 +7,5 @@ export interface DatabaseAccessProvider {
    */
   getDatabaseAccess(name?: string): Promise<DatabaseAccess | undefined>;
   clearDatabaseAccessCache(): Promise<boolean>;
-  createNonPooledDatabaseAccess?(queryDefaults: QueryDefaults, additionalConfig?: Record<string,any>): Promise<DatabaseAccess | undefined>;
+  createNonPooledDatabaseAccess?(queryDefaults: QueryDefaults, additionalConfig?: Record<string, any>): Promise<DatabaseAccess | undefined>;
 }

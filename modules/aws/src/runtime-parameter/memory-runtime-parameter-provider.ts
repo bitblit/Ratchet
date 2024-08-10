@@ -34,7 +34,6 @@ export class MemoryRuntimeParameterProvider implements RuntimeParameterProvider 
     return out;
   }
 
-   
   public async writeParameter(toStore: StoredRuntimeParameter): Promise<boolean> {
     const d: Record<string, StoredRuntimeParameter> = await this._data;
     d[toStore.groupId + '::' + toStore.paramKey] = toStore;

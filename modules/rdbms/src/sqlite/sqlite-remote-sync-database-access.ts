@@ -1,21 +1,21 @@
-import { AsyncDatabase } from "promised-sqlite3";
+import { AsyncDatabase } from 'promised-sqlite3';
 
-import { RequireRatchet } from "@bitblit/ratchet-common/lang/require-ratchet";
-import { Logger } from "@bitblit/ratchet-common/logger/logger";
-import { ErrorRatchet } from "@bitblit/ratchet-common/lang/error-ratchet";
-import { StopWatch } from "@bitblit/ratchet-common/lang/stop-watch";
-import SqlString from "sqlstring";
-import { SqliteDatabaseAccess } from "./sqlite-database-access.js";
-import { DatabaseAccess } from "../model/database-access.js";
-import { DatabaseRequestType } from "../model/database-request-type.js";
-import { RequestResults } from "../model/request-results.js";
-import { ModifyResults } from "../model/modify-results.js";
-import { SqliteRemoteFileSyncConfig } from "./model/sqlite-remote-file-sync-config.js";
-import { FlushRemoteMode } from "./model/flush-remote-mode.js";
-import { SqliteConnectionConfigFlag } from "./model/sqlite-connection-config-flag.js";
-import { FetchRemoteMode } from "./model/fetch-remote-mode.js";
-import { BackupResult } from "@bitblit/ratchet-common/network/remote-file-sync/backup-result";
-import { FileTransferResult } from "@bitblit/ratchet-common/network/remote-file-sync/file-transfer-result";
+import { RequireRatchet } from '@bitblit/ratchet-common/lang/require-ratchet';
+import { Logger } from '@bitblit/ratchet-common/logger/logger';
+import { ErrorRatchet } from '@bitblit/ratchet-common/lang/error-ratchet';
+import { StopWatch } from '@bitblit/ratchet-common/lang/stop-watch';
+import SqlString from 'sqlstring';
+import { SqliteDatabaseAccess } from './sqlite-database-access.js';
+import { DatabaseAccess } from '../model/database-access.js';
+import { DatabaseRequestType } from '../model/database-request-type.js';
+import { RequestResults } from '../model/request-results.js';
+import { ModifyResults } from '../model/modify-results.js';
+import { SqliteRemoteFileSyncConfig } from './model/sqlite-remote-file-sync-config.js';
+import { FlushRemoteMode } from './model/flush-remote-mode.js';
+import { SqliteConnectionConfigFlag } from './model/sqlite-connection-config-flag.js';
+import { FetchRemoteMode } from './model/fetch-remote-mode.js';
+import { BackupResult } from '@bitblit/ratchet-common/network/remote-file-sync/backup-result';
+import { FileTransferResult } from '@bitblit/ratchet-common/network/remote-file-sync/file-transfer-result';
 
 export class SqliteRemoteSyncDatabaseAccess implements DatabaseAccess {
   private cacheDb: Promise<SqliteDatabaseAccess>;
@@ -66,7 +66,7 @@ export class SqliteRemoteSyncDatabaseAccess implements DatabaseAccess {
     const sw: StopWatch = new StopWatch();
     const db: SqliteDatabaseAccess = await oldDbProm;
     const takeAction: boolean = await (remoteToLocal ? this.cfg.remoteFileSync.wouldFetch : this.cfg.remoteFileSync.wouldPush);
-    let rval: SqliteDatabaseAccess
+    let rval: SqliteDatabaseAccess;
 
     if (takeAction) {
       Logger.info('Closing database for sync');
@@ -143,7 +143,6 @@ export class SqliteRemoteSyncDatabaseAccess implements DatabaseAccess {
       await this.reloadRemoteToLocal();
     }
   }
-
 
   async modify(query: string, fields: Record<string, any>): Promise<RequestResults<ModifyResults>> {
     const db: SqliteDatabaseAccess = await this.db();

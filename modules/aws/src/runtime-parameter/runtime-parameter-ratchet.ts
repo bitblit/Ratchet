@@ -1,8 +1,8 @@
-import { RequireRatchet } from "@bitblit/ratchet-common/lang/require-ratchet";
-import { Logger } from "@bitblit/ratchet-common/logger/logger";
-import { CachedStoredRuntimeParameter } from "./cached-stored-runtime-parameter.js";
-import { RuntimeParameterProvider } from "./runtime-parameter-provider.js";
-import { StoredRuntimeParameter } from "./stored-runtime-parameter.js";
+import { RequireRatchet } from '@bitblit/ratchet-common/lang/require-ratchet';
+import { Logger } from '@bitblit/ratchet-common/logger/logger';
+import { CachedStoredRuntimeParameter } from './cached-stored-runtime-parameter.js';
+import { RuntimeParameterProvider } from './runtime-parameter-provider.js';
+import { StoredRuntimeParameter } from './stored-runtime-parameter.js';
 
 export class RuntimeParameterRatchet {
   private cache: Map<string, CachedStoredRuntimeParameter> = new Map<string, CachedStoredRuntimeParameter>();
@@ -55,7 +55,6 @@ export class RuntimeParameterRatchet {
     return this.provider.readAllParametersForGroup(groupId);
   }
 
-   
   public async storeParameter(groupId: string, paramKey: string, paramValue: any, ttlSeconds: number): Promise<StoredRuntimeParameter> {
     const toStore: StoredRuntimeParameter = {
       groupId: groupId,

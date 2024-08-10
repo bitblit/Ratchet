@@ -1,7 +1,7 @@
 /* eslint-disable */
 /**
  * SendinBlue API
- * SendinBlue provide a RESTFul API that can be used with any languages. With this API, you will be able to :   - Manage your campaigns and get the statistics   - Manage your contacts   - Send transactional Emails and SMS   - and much more...  You can download our wrappers at https://github.com/orgs/sendinblue  **Possible responses**   | Code | Message |   | :-------------: | ------------- |   | 200  | OK. Successful Request  |   | 201  | OK. Successful Creation |   | 202  | OK. Request accepted |   | 204  | OK. Successful Update/Deletion  |   | 400  | Error. Bad Request  |   | 401  | Error. Authentication Needed  |   | 402  | Error. Not enough credit, plan upgrade needed  |   | 403  | Error. Permission denied  |   | 404  | Error. Object does not exist |   | 405  | Error. Method not allowed  |   | 406  | Error. Not Acceptable  | 
+ * SendinBlue provide a RESTFul API that can be used with any languages. With this API, you will be able to :   - Manage your campaigns and get the statistics   - Manage your contacts   - Send transactional Emails and SMS   - and much more...  You can download our wrappers at https://github.com/orgs/sendinblue  **Possible responses**   | Code | Message |   | :-------------: | ------------- |   | 200  | OK. Successful Request  |   | 201  | OK. Successful Creation |   | 202  | OK. Request accepted |   | 204  | OK. Successful Update/Deletion  |   | 400  | Error. Bad Request  |   | 401  | Error. Authentication Needed  |   | 402  | Error. Not enough credit, plan upgrade needed  |   | 403  | Error. Permission denied  |   | 404  | Error. Object does not exist |   | 405  | Error. Method not allowed  |   | 406  | Error. Not Acceptable  |
  *
  * The version of the OpenAPI document: 3.0.0
  * Contact: contact@sendinblue.com
@@ -18,69 +18,68 @@ import { exists, mapValues } from '../runtime.js';
  * @interface GetTransacBlockedContactsContactsInnerReason
  */
 export interface GetTransacBlockedContactsContactsInnerReason {
-    /**
-     * Reason code for blocking / unsubscribing (This code is safe for comparison)
-     * @type {string}
-     * @memberof GetTransacBlockedContactsContactsInnerReason
-     */
-    code?: GetTransacBlockedContactsContactsInnerReasonCodeEnum;
-    /**
-     * Reason for blocking / unsubscribing (This string is not safe for comparison)
-     * @type {string}
-     * @memberof GetTransacBlockedContactsContactsInnerReason
-     */
-    message?: string;
+  /**
+   * Reason code for blocking / unsubscribing (This code is safe for comparison)
+   * @type {string}
+   * @memberof GetTransacBlockedContactsContactsInnerReason
+   */
+  code?: GetTransacBlockedContactsContactsInnerReasonCodeEnum;
+  /**
+   * Reason for blocking / unsubscribing (This string is not safe for comparison)
+   * @type {string}
+   * @memberof GetTransacBlockedContactsContactsInnerReason
+   */
+  message?: string;
 }
 
 /**
-* @export
-* @enum {string}
-*/
+ * @export
+ * @enum {string}
+ */
 export enum GetTransacBlockedContactsContactsInnerReasonCodeEnum {
-    UnsubscribedViaMa = 'unsubscribedViaMA',
-    UnsubscribedViaEmail = 'unsubscribedViaEmail',
-    AdminBlocked = 'adminBlocked',
-    UnsubscribedViaApi = 'unsubscribedViaApi',
-    HardBounce = 'hardBounce',
-    ContactFlaggedAsSpam = 'contactFlaggedAsSpam'
+  UnsubscribedViaMa = 'unsubscribedViaMA',
+  UnsubscribedViaEmail = 'unsubscribedViaEmail',
+  AdminBlocked = 'adminBlocked',
+  UnsubscribedViaApi = 'unsubscribedViaApi',
+  HardBounce = 'hardBounce',
+  ContactFlaggedAsSpam = 'contactFlaggedAsSpam',
 }
-
 
 /**
  * Check if a given object implements the GetTransacBlockedContactsContactsInnerReason interface.
  */
 export function instanceOfGetTransacBlockedContactsContactsInnerReason(value: object): boolean {
-    let isInstance = true;
+  let isInstance = true;
 
-    return isInstance;
+  return isInstance;
 }
 
 export function GetTransacBlockedContactsContactsInnerReasonFromJSON(json: any): GetTransacBlockedContactsContactsInnerReason {
-    return GetTransacBlockedContactsContactsInnerReasonFromJSONTyped(json, false);
+  return GetTransacBlockedContactsContactsInnerReasonFromJSONTyped(json, false);
 }
 
-export function GetTransacBlockedContactsContactsInnerReasonFromJSONTyped(json: any, ignoreDiscriminator: boolean): GetTransacBlockedContactsContactsInnerReason {
-    if ((json === undefined) || (json === null)) {
-        return json;
-    }
-    return {
-        
-        'code': !exists(json, 'code') ? undefined : json['code'],
-        'message': !exists(json, 'message') ? undefined : json['message'],
-    };
+export function GetTransacBlockedContactsContactsInnerReasonFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean,
+): GetTransacBlockedContactsContactsInnerReason {
+  if (json === undefined || json === null) {
+    return json;
+  }
+  return {
+    code: !exists(json, 'code') ? undefined : json['code'],
+    message: !exists(json, 'message') ? undefined : json['message'],
+  };
 }
 
 export function GetTransacBlockedContactsContactsInnerReasonToJSON(value?: GetTransacBlockedContactsContactsInnerReason | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
-    }
-    return {
-        
-        'code': value.code,
-        'message': value.message,
-    };
+  if (value === undefined) {
+    return undefined;
+  }
+  if (value === null) {
+    return null;
+  }
+  return {
+    code: value.code,
+    message: value.message,
+  };
 }
-
