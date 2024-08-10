@@ -2641,6 +2641,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@bitblit/ratchet@workspace:."
   dependencies:
+    "@eslint/js": 9.9.0
     "@rollup/plugin-terser": 0.4.4
     "@rollup/plugin-typescript": 11.1.6
     "@types/luxon": 3.4.2

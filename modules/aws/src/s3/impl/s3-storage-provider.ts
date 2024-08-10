@@ -3,10 +3,10 @@
   approach.
 */
 
-import { SimpleCacheObjectWrapper } from '../../cache/simple-cache-object-wrapper.js';
-import { SimpleCacheStorageProvider } from '../../cache/simple-cache-storage-provider.js';
-import { PutObjectOutput } from '@aws-sdk/client-s3';
-import { S3CacheRatchetLike } from '../s3-cache-ratchet-like.js';
+import { SimpleCacheObjectWrapper } from "../../cache/simple-cache-object-wrapper.js";
+import { SimpleCacheStorageProvider } from "../../cache/simple-cache-storage-provider.js";
+import { PutObjectOutput } from "@aws-sdk/client-s3";
+import { S3CacheRatchetLike } from "../s3-cache-ratchet-like.js";
 import { RequireRatchet } from "@bitblit/ratchet-common/lang/require-ratchet";
 import { StringRatchet } from "@bitblit/ratchet-common/lang/string-ratchet";
 

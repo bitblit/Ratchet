@@ -1,9 +1,8 @@
-import { DynamoRatchet } from './dynamo-ratchet.js';
-import { DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
-import { PutCommandOutput, ScanCommandInput, QueryCommandInput } from '@aws-sdk/lib-dynamodb';
-import { expect, test, describe, vi, beforeEach } from 'vitest';
+import { DynamoRatchet } from "./dynamo-ratchet.js";
+import { DynamoDBDocumentClient, PutCommandOutput, QueryCommandInput, ScanCommandInput } from "@aws-sdk/lib-dynamodb";
+import { beforeEach, describe, expect, test } from "vitest";
 
-import { mockClient } from 'aws-sdk-client-mock';
+import { mockClient } from "aws-sdk-client-mock";
 import { Logger } from "@bitblit/ratchet-common/logger/logger";
 import { LoggerLevelName } from "@bitblit/ratchet-common/logger/logger-level-name";
 
@@ -86,7 +85,7 @@ describe('#dynamoRatchet', function () {
     const dr: DynamoRatchet = new DynamoRatchet(mockDynamo);
 
     const now: number = new Date().getTime();
-    const nowSec: number = Math.floor(now / 1000);
+    const _nowSec: number = Math.floor(now / 1000);
     const curHash: string = 'someHash';
 
     const qry: QueryCommandInput = {
@@ -108,7 +107,7 @@ describe('#dynamoRatchet', function () {
 
     Logger.setLevel(LoggerLevelName.debug);
     const now: number = new Date().getTime();
-    const nowSec: number = Math.floor(now / 1000);
+    const _nowSec: number = Math.floor(now / 1000);
 
     const nums: any[] = [];
     for (let i = 0; i < 300; i++) {

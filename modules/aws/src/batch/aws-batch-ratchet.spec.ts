@@ -1,7 +1,14 @@
-import { AwsBatchRatchet } from './aws-batch-ratchet.js';
-import { BatchClient, JobStatus, JobSummary, ListJobsCommand, SubmitJobCommand, SubmitJobCommandOutput } from '@aws-sdk/client-batch';
-import { mockClient } from 'aws-sdk-client-mock';
-import { expect, test, describe, vi, beforeEach } from 'vitest';
+import { AwsBatchRatchet } from "./aws-batch-ratchet.js";
+import {
+  BatchClient,
+  JobStatus,
+  JobSummary,
+  ListJobsCommand,
+  SubmitJobCommand,
+  SubmitJobCommandOutput
+} from "@aws-sdk/client-batch";
+import { mockClient } from "aws-sdk-client-mock";
+import { beforeEach, describe, expect, test } from "vitest";
 
 let mockBatch;
 
