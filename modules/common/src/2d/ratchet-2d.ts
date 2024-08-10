@@ -5,8 +5,8 @@ import { PolyLine2d } from './poly-line-2d.js';
 import { BooleanRatchet } from '../lang/boolean-ratchet.js';
 
 export class Ratchet2d {
-  // Empty constructor prevents instantiation
-   
+  // Prevent instantiation
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   private constructor() {}
 
   public static translateToOriginVector(points: Point2d[]): Point2d {
@@ -263,7 +263,7 @@ export class Ratchet2d {
     return tmp.length === 1 ? tmp[0] : null;
   }
 
-  public static transformLines(lines: Line2d[], src: Plane2d, dst: Plane2d): Line2d[] {
+  public static transformLines(_lines: Line2d[], _src: Plane2d, _dst: Plane2d): Line2d[] {
     return null;
   }
 

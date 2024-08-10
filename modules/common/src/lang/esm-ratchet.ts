@@ -48,7 +48,7 @@ export class EsmRatchet {
         Logger.debug('Cannot find library %s but swallow specified, returning null', libPath);
         rval = null;
       } else {
-        throw ErrorRatchet.fErr('Could not find the "%s" library', libPath);
+        throw ErrorRatchet.fErr('Could not find the "%s" library : %s', libPath, err);
       }
     }
     if (StringRatchet.trimToNull(importName)) {

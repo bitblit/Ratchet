@@ -37,7 +37,6 @@ describe('#colonFormatMsDuration', function () {
 
 describe('#createSteps', function () {
   test('should create steps', function () {
-    const tt: DateTime = DateTime.fromFormat('2019-01-01', 'yyyy-MM-dd');
     const startEpochMS: number = DateTime.fromFormat('2019-01-01', 'yyyy-MM-dd').toJSDate().getTime();
     const endEpochMS: number = DateTime.fromFormat('2019-01-05', 'yyyy-MM-dd').toJSDate().getTime();
 

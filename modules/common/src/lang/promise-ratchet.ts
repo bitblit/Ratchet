@@ -21,7 +21,7 @@ export class PromiseRatchet {
    
   public static resolveOnEvent<T>(evtSrc: any, okEvtNames: string[], errEvtNames: string[] = [], rval: T = null): Promise<T> {
     if (!evtSrc || !okEvtNames || okEvtNames.length === 0 || !evtSrc['on']) {
-      Promise.reject('Cannot continue - missing source object or name, or the object is not an event source');
+      return Promise.reject('Cannot continue - missing source object or name, or the object is not an event source');
     }
 
     return new Promise<T>((res, rej) => {
@@ -115,7 +115,7 @@ export class PromiseRatchet {
     let curVal: any = null;
     try {
       curVal = testFunction(count);
-    } catch (err) {
+    } catch (_err) {
       Logger.warn('%s: Caught error while waiting, giving up', label);
       return false;
     }
@@ -138,7 +138,7 @@ export class PromiseRatchet {
   }
 
   public static async runBoundedParallel<T>(
-    promiseFn: Function, // eslint-disable-line @typescript-eslint/ban-types
+    promiseFn: Function,
     params: any[][],
     context: any,  
     maxConcurrent = 1,
@@ -170,7 +170,7 @@ export class PromiseRatchet {
   }
 
   public static async runBoundedParallelSingleParam<T>(
-    promiseFn: Function, // eslint-disable-line @typescript-eslint/ban-types
+    promiseFn: Function,
     params: any[],
     context: any,  
     maxConcurrent = 1,
@@ -180,14 +180,12 @@ export class PromiseRatchet {
     return PromiseRatchet.runBoundedParallel<T>(promiseFn, wrappedParams, context, maxConcurrent, logLevel);
   }
 
-  // eslint-disable-next-line @typescript-eslint/ban-types
   public static async asyncForEachSerial(array: any[], callback: Function): Promise<void> {
     for (let index = 0; index < array.length; index++) {
       await callback(array[index], index, array);
     }
   }
 
-  // eslint-disable-next-line @typescript-eslint/ban-types
   public static async asyncForEachParallel(array: any[], callback: Function): Promise<void> {
     const proms: Promise<any>[] = [];
 

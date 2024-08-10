@@ -1,7 +1,7 @@
-import { BrowserLocalIpProvider } from './browser-local-ip-provider.js';
-import { NetworkRatchet } from './network-ratchet.js';
-import { PromiseRatchet } from '../lang/promise-ratchet.js';
-import { expect, test, describe, vi } from 'vitest';
+import { BrowserLocalIpProvider } from "./browser-local-ip-provider.js";
+import { NetworkRatchet } from "./network-ratchet.js";
+import { PromiseRatchet } from "../lang/promise-ratchet.js";
+import { describe, expect, test, vi } from "vitest";
 
 vi.mock('./network-ratchet');
 

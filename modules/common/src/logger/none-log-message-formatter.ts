@@ -4,7 +4,7 @@ import { LoggerMeta } from './logger-meta.js';
 
 // No-op, useful for testing and turning off all logging
 export class NoneLogMessageFormatter implements LogMessageFormatter {
-  public formatMessage(msg: LogMessage, meta: LoggerMeta): string {
+  public formatMessage(_msg: LogMessage, _meta: LoggerMeta): string {
     return null;
   }
 }

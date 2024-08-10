@@ -26,8 +26,6 @@ describe('#parseBool', function () {
 
   test('should xxx', function () {
     const val = 'false';
-    const r1: boolean = BooleanRatchet.parseBool(val);
-    const r2: boolean = BooleanRatchet.intToBool(val);
 
     const result: boolean = BooleanRatchet.parseBool(val) || BooleanRatchet.intToBool(NumberRatchet.safeNumber(val));
     expect(result).toEqual(false);

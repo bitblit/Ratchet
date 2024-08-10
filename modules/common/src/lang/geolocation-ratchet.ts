@@ -8,8 +8,8 @@ import { ErrorRatchet } from './error-ratchet.js';
 import { Logger } from '../logger/logger.js';
 
 export class GeolocationRatchet {
-  // Empty constructor prevents instantiation
-   
+  // Prevent instantiation
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   private constructor() {}
 
   // Ripped off almost straight from https://www.geodatasource.com/developers/javascript

@@ -16,7 +16,7 @@ export class ErrorRatchet {
         try {
           rval = JSON.stringify(err);
         } catch (err2) {
-          Logger.error('Failed to json stringify');
+          Logger.error('Failed to json stringify: %s',err2);
           rval = String(err);
         }
       }
@@ -24,7 +24,7 @@ export class ErrorRatchet {
     if (log) {
       Logger.error('%s', rval, err);
     }
-    return rval;
+    return rval; 
   }
 
   // Mainly for Typescript 4.5+ where this is now any/unknown by default

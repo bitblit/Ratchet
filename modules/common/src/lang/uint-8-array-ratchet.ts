@@ -1,8 +1,8 @@
 // Uint8Array is the common denominator between node and web apis
 // https://medium.com/@naveenkumarasinghe/javascript-lost-in-binaries-buffer-blob-uint8array-arraybuffer-ed8d2b4de44a
 export class Uint8ArrayRatchet {
-  // Empty constructor prevents instantiation
-   
+  // Prevent instantiation
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   private constructor() {}
 
   // Taken from https://stackoverflow.com/questions/49129643/how-do-i-merge-an-array-of-uint8arrays

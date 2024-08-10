@@ -184,7 +184,7 @@ export class JwtRatchet implements JwtRatchetLike {
       payload.exp = expires;
     }
 
-    const token: string = await jsonwebtoken.sign(payload, encKey); // , algorithm = 'HS256')
+    const token: string = jsonwebtoken.sign(payload, encKey); // , algorithm = 'HS256')
     return token;
   }
 

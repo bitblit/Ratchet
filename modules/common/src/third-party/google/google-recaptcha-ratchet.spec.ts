@@ -1,13 +1,13 @@
 import { GoogleRecaptchaRatchet } from './google-recaptcha-ratchet.js';
 import { expect, test, describe, vi } from 'vitest';
 
-const fakeFetch = vi.fn((input, init) =>
+const fakeFetch = vi.fn((_input, _init) =>
   Promise.resolve({
     json: () => Promise.resolve({ success: true }),
   } as Response),
 );
 
-const fakeFailFetch = vi.fn((input, init) => Promise.reject('Failed to read'));
+const fakeFailFetch = vi.fn((_input, _init) => Promise.reject('Failed to read'));
 
 describe('#googleRecaptchaService', () => {
   test('should validate a recaptcha token', async () => {

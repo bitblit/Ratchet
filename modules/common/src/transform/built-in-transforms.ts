@@ -10,7 +10,7 @@ import { DateTime } from 'luxon';
 export class BuiltInTransforms {
   public static keysOnly(rule: TransformRule): TransformRule {
     return {
-      transform(value: any, isKey: boolean, context: any): any {
+      transform(value: any, _isKey: boolean, _context: any): any {
         return isKey ? rule.transform(value, isKey, context) : value;
       },
     } as TransformRule;
@@ -18,7 +18,7 @@ export class BuiltInTransforms {
 
   public static valuesOnly(rule: TransformRule): TransformRule {
     return {
-      transform(value: any, isKey: boolean, context: any): any {
+      transform(value: any, _isKey: boolean, _context: any): any {
         return !isKey ? rule.transform(value, isKey, context) : value;
       },
     } as TransformRule;
@@ -26,7 +26,7 @@ export class BuiltInTransforms {
 
   public static stringReplaceTransform(input: string, output: string): TransformRule {
     return {
-      transform(value: any, isKey: boolean, context: any): any {
+      transform(value: any, _isKey: boolean, _context: any): any {
         return value == input ? output : value;
       },
     } as TransformRule;
@@ -34,7 +34,7 @@ export class BuiltInTransforms {
 
   public static stripStringTransform(input: string): TransformRule {
     return {
-      transform(value: any, isKey: boolean, context: any): any {
+      transform(value: any, _isKey: boolean, _context: any): any {
         return value == input ? null : value;
       },
     } as TransformRule;
@@ -42,7 +42,7 @@ export class BuiltInTransforms {
 
   public static retainAll(input: string[]): TransformRule {
     return {
-      transform(value: any, isKey: boolean, context: any): any {
+      transform(value: any, _isKey: boolean, _context: any): any {
         return input.indexOf(value) == -1 ? null : value;
       },
     } as TransformRule;
@@ -50,7 +50,7 @@ export class BuiltInTransforms {
 
   public static removeAll(input: string[]): TransformRule {
     return {
-      transform(value: any, isKey: boolean, context: any): any {
+      transform(value: any, _isKey: boolean, _context: any): any {
         return input.indexOf(value) > -1 ? null : value;
       },
     } as TransformRule;
@@ -58,7 +58,7 @@ export class BuiltInTransforms {
 
   public static snakeToCamelCase(): TransformRule {
     return {
-      transform(value: any, isKey: boolean, context: any): any {
+      transform(value: any, _isKey: boolean, _context: any): any {
         let rval = value;
         if (typeof value == 'string') {
           // Taken, mainly, from https://stackoverflow.com/questions/4969605/javascript-regexp-to-camelcase-a-hyphened-css-property
@@ -73,7 +73,7 @@ export class BuiltInTransforms {
 
   public static stringToNumber(): TransformRule {
     return {
-      transform(value: any, isKey: boolean, context: any): any {
+      transform(value: any, _isKey: boolean, _context: any): any {
         let rval = value;
         if (typeof value == 'string') {
           const num: number = NumberRatchet.safeNumber(value);
@@ -88,7 +88,7 @@ export class BuiltInTransforms {
 
   public static camelToSnakeCase(): TransformRule {
     return {
-      transform(value: any, isKey: boolean, context: any): any {
+      transform(value: any, _isKey: boolean, _context: any): any {
         let rval = value;
         if (typeof value == 'string') {
           // https://stackoverflow.com/questions/30521224/javascript-convert-pascalcase-to-underscore-case
@@ -109,7 +109,7 @@ export class BuiltInTransforms {
     abortIfFieldMissing = true,
   ): TransformRule {
     return {
-      transform(value: any, isKey: boolean, context: any): any {
+      transform(value: any, _isKey: boolean, _context: any): any {
         if (typeof value == 'object') {
           let rval = '';
           oldFieldNamesInOrder.forEach((n) => {
@@ -134,7 +134,7 @@ export class BuiltInTransforms {
 
   public static numberToBool(fieldNames: string[]): TransformRule {
     return {
-      transform(value: any, isKey: boolean, context: any): any {
+      transform(value: any, _isKey: boolean, _context: any): any {
         if (typeof value == 'object') {
           fieldNames.forEach((n) => {
             const oldVal = value[n];
@@ -151,7 +151,7 @@ export class BuiltInTransforms {
 
   public static boolToNumber(fieldNames: string[]): TransformRule {
     return {
-      transform(value: any, isKey: boolean, context: any): any {
+      transform(value: any, _isKey: boolean, _context: any): any {
         if (typeof value == 'object') {
           fieldNames.forEach((n) => {
             const oldVal = value[n];
@@ -168,7 +168,7 @@ export class BuiltInTransforms {
 
   public static makeDuplicateField(oldName: string, newName: string): TransformRule {
     return {
-      transform(value: any, isKey: boolean, context: any): any {
+      transform(value: any, _isKey: boolean, _context: any): any {
         if (typeof value == 'object') {
           const oldVal = value[oldName];
           if (oldVal != null) {
@@ -182,7 +182,7 @@ export class BuiltInTransforms {
 
   public static addField(name: string, valueToAdd: string): TransformRule {
     return {
-      transform(value: any, isKey: boolean, context: any): any {
+      transform(value: any, _isKey: boolean, _context: any): any {
         if (typeof value == 'object') {
           value[name] = valueToAdd;
         }
@@ -194,7 +194,7 @@ export class BuiltInTransforms {
   // Moment formats, https://momentjs.com/docs/#/parsing/
   public static reformatDateFields(fieldNames: string[], oldFormat: string, newFormat: string): TransformRule {
     return {
-      transform(value: any, isKey: boolean, context: any): any {
+      transform(value: any, _isKey: boolean, _context: any): any {
         if (typeof value == 'object') {
           fieldNames.forEach((key) => {
             const oldValue = value[key];

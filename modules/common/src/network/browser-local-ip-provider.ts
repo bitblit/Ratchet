@@ -1,6 +1,6 @@
-import { LocalIpProvider } from './local-ip-provider.js';
-import { NetworkRatchet } from './network-ratchet.js';
-import { Logger } from '../logger/logger.js';
+import { LocalIpProvider } from "./local-ip-provider.js";
+import { NetworkRatchet } from "./network-ratchet.js";
+import { Logger } from "../logger/logger.js";
 
 export class BrowserLocalIpProvider implements LocalIpProvider {
   private currentIp = 'UNSET';

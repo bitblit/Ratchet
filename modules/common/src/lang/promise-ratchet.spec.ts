@@ -4,7 +4,7 @@ import { TimeoutToken } from './timeout-token.js';
 import { LoggerLevelName } from '../logger/logger-level-name.js';
 import { expect, test, describe } from 'vitest';
 
-const fnFalse = (ignored) => {
+const fnFalse = (_ignored) => {
   return false;
 };
 const fnOn3 = (t) => {

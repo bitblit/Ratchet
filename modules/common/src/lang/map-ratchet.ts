@@ -151,7 +151,7 @@ export class MapRatchet {
       ) {
         delete o[key]; // Delete undefined and null.
       } else {
-        o[key] = o[key]; // Copy value.
+        // Leave it alone
       }
     });
 

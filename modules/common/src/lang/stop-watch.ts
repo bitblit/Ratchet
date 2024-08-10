@@ -19,8 +19,6 @@ export class StopWatch {
   private _label: string = StringRatchet.createRandomHexString(4);
   private _labelIncludedInOutput = false;
 
-  constructor() {}
-
   public withLabel(val: string): StopWatch {
     this._label = StringRatchet.trimToNull(val);
     return this;

@@ -2,9 +2,9 @@
     Functions for working with base64
 */
 
-import { Logger } from '../logger/logger.js';
-import { StringRatchet } from './string-ratchet.js';
-import { ErrorRatchet } from './error-ratchet.js';
+import { Logger } from "../logger/logger.js";
+import { StringRatchet } from "./string-ratchet.js";
+import { ErrorRatchet } from "./error-ratchet.js";
 
 // We use uint8 arrays in here because the default javascript handling of base64 encoding/decoding is
 // broken for anything that isn't a normal ascii string

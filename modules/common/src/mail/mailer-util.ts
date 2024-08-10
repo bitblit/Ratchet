@@ -9,7 +9,9 @@ import { StringRatchet } from '../lang/string-ratchet.js';
 export class MailerUtil {
   public static readonly EMAIL: RegExp = new RegExp('.+@.+\\.[a-z]+');
 
-  constructor() {}
+  // Prevent instantiation
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  private constructor() {}
 
   public static convertResolvedReadyToSendEmailToRaw(rts: ResolvedReadyToSendEmail): string {
     RequireRatchet.notNullOrUndefined(rts, 'RTS must be defined');

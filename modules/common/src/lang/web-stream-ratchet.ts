@@ -8,15 +8,15 @@ import { Uint8ArrayRatchet } from './uint-8-array-ratchet.js';
  * Readable and Writeable, and CERTAINLY not the FS based streams)
  */
 export class WebStreamRatchet {
-  // Empty constructor prevents instantiation
-   
+  // Prevent instantiation
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   private constructor() {}
 
   public static async webReadableStreamToUint8Array(stream: ReadableStream): Promise<Uint8Array> {
     const out: Uint8Array[] = [];
     const writer: WritableStream = new WritableStream(
       {
-        async write(chunk, controller): Promise<any> {
+        async write(chunk, _controller): Promise<any> {
           if (typeof chunk === 'string') {
             out.push(StringRatchet.stringToUint8Array(chunk));
           } else {

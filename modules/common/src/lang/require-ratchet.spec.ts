@@ -1,7 +1,7 @@
-import { RequireRatchet } from './require-ratchet.js';
-import { fail } from 'assert';
-import { Logger } from '../logger/logger.js';
-import { expect, test, describe } from 'vitest';
+import { RequireRatchet } from "./require-ratchet.js";
+import { fail } from "assert";
+import { Logger } from "../logger/logger.js";
+import { describe, test } from "vitest";
 
 describe('#standardCases', function () {
   test('should throw exception on null value', function () {
@@ -62,12 +62,12 @@ describe('#noNullOrUndefinedValuesInArray', function () {
   });
 
   test('should not throw exception on good constructor values', function () {
-    const test: ConstructorTester = new ConstructorTester('a', 'b');
+    const _test: ConstructorTester = new ConstructorTester('a', 'b');
   });
 
   test('throw exception on null constructor param', function () {
     try {
-      const test: ConstructorTester = new ConstructorTester('a', null);
+      const _test: ConstructorTester = new ConstructorTester('a', null);
       fail('Should have thrown exception');
     } catch (err) {
       Logger.debug('Correctly threw exception : %s', err);
@@ -76,7 +76,7 @@ describe('#noNullOrUndefinedValuesInArray', function () {
 });
 
 export class ConstructorTester {
-  constructor(testVal1: string, testVal2: string) {
+  constructor(_testVal1: string, _testVal2: string) {
     Logger.info('Args : %j', this.constructor);
     //Logger.info('Args : %j', this.constructor.arguments.length);
 

@@ -6,8 +6,8 @@ import { RequireRatchet } from './require-ratchet.js';
 import { Logger } from '../logger/logger.js';
 
 export class GlobalRatchet {
-  // Empty constructor prevents instantiation
-   
+  // Prevent instantiation
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   private constructor() {}
 
   public static fetchGlobalRecord(returnNullOnNone?: boolean): Record<string, any> {
