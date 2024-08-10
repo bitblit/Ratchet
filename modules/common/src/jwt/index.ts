@@ -6,6 +6,5 @@ export * from './common-jwt-token.js';
 export * from './expired-jwt-handling.js';
 export * from './jwt-ratchet-config.js';
 export * from './jwt-ratchet-like.js';
-export * from './jwt-ratchet.spec.js';
 export * from './jwt-ratchet.js';
 export * from './jwt-token-base.js';

@@ -11,7 +11,7 @@ export class MapRatchet {
   // eg, x['a.b']=2 becomes x['a']={b:2}
   // Renamed because the pre-v4 version deferred to lodash and handled arrays correctly.
   // This removes the lodash dependency, but isn't fully backward compatible
-  public static expandNestedKeysToObjects<T>(src: any, separator: string = '.'): T {
+  public static expandNestedKeysToObjects<T>(src: any, separator = '.'): T {
     if (!separator || separator.length !== 1) {
       throw new Error('Invalid separator (must be single character)');
     }
@@ -36,7 +36,7 @@ export class MapRatchet {
 
     const rval: Map<R, T> = new Map<R, T>();
     input.forEach((i) => {
-      const val: R = !!i ? i[propName] : null;
+      const val: R = i ? i[propName] : null;
       if (val === null || val === undefined) {
         throw new Error('No value for ' + propName + ' found in ' + JSON.stringify(i));
       }
@@ -55,7 +55,7 @@ export class MapRatchet {
 
     const rval: Map<R, T[]> = new Map<R, T[]>();
     input.forEach((i) => {
-      const val: R = !!i ? i[propName] : null;
+      const val: R = i ? i[propName] : null;
       if (val === null || val === undefined) {
         throw ErrorRatchet.fErr('No value for %s found in %j', propName, i);
       }
@@ -67,7 +67,7 @@ export class MapRatchet {
     return rval;
   }
 
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+   
   public static findValue(toSearch: any, path: string[]): any {
     if (!path || path.length == 0) {
       return toSearch;
@@ -80,7 +80,7 @@ export class MapRatchet {
     }
   }
 
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+   
   public static findValueDotPath(toSearch: any, dotPath: string): any {
     if (!dotPath || dotPath.length == 0) {
       return toSearch;
@@ -96,14 +96,14 @@ export class MapRatchet {
   // Ok so this does the dumbest possible deep compare, by converting
   // both objects to JSON and comparing strings.  Its slow and stupid
   // but its easy.
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+   
   public static simpleDeepCompare(object1: any, object2: any): boolean {
     if (object1 == null && object2 == null) return true;
     if (object1 == null || object2 == null) return false;
     return JSON.stringify(object1) == JSON.stringify(object2);
   }
 
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+   
   public static toKeyValueList(value: Record<string, any>): KeyValue<any>[] {
     const returnArray: KeyValue<any>[] = [];
 
@@ -158,7 +158,7 @@ export class MapRatchet {
     return o; // Return new object.
   }
 
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+   
   public static extractValueFromMapIgnoreCase(src: any, key: string): any {
     let rval: any = null;
     if (src && key) {
@@ -176,7 +176,7 @@ export class MapRatchet {
     return rval;
   }
 
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+   
   public static safeCallFunction(ob: any, fnName: string): boolean {
     let rval = false;
     if (!!ob && !!ob[fnName] && typeof ob[fnName] === 'function') {
@@ -190,7 +190,7 @@ export class MapRatchet {
     return rval;
   }
 
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+   
   public static caseInsensitiveAccess<T>(ob: any, keyName: string): T {
     let rval: T = null;
 
@@ -198,7 +198,7 @@ export class MapRatchet {
       rval = ob[keyName]; // Short circuit
       if (!rval) {
         const keyNameCI: string = Object.keys(ob).find((f) => f.toLowerCase() === keyName.toLowerCase());
-        if (!!keyNameCI) {
+        if (keyNameCI) {
           rval = ob[keyNameCI];
         }
       }

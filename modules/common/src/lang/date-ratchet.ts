@@ -12,8 +12,8 @@ export class DateRatchet {
   public static DEFAULT_DATE_FORMAT = 'yyyy-MM-dd';
   public static FULL_DATE_FORMAT = 'yyyy-MM-dd_HH_mm_ss';
 
-  public static PACIFIC_TIME_ZONE: string = 'America/Los_Angeles';
-  public static UTC_TIME_ZONE: string = 'etc/UTC';
+  public static PACIFIC_TIME_ZONE = 'America/Los_Angeles';
+  public static UTC_TIME_ZONE = 'etc/UTC';
 
   public static formatFullDate(input: Date): string {
     return DateTime.fromJSDate(input).toFormat(DateRatchet.FULL_DATE_FORMAT);
@@ -30,7 +30,7 @@ export class DateRatchet {
 
   public static parseCommonUsDate(input: string): Date {
     let rval: Date = null;
-    if (!!input) {
+    if (input) {
       let templ: string = DateRatchet.COMMON_US_DATE_FORMAT;
       if (input.indexOf('-') === 2) {
         templ = templ.split('/').join('-');

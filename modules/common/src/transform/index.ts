@@ -3,6 +3,5 @@
  */
 
 export * from './built-in-transforms.js';
-export * from './transform-ratchet.spec.js';
 export * from './transform-ratchet.js';
 export * from './transform-rule.js';

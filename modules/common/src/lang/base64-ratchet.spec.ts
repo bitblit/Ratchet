@@ -15,7 +15,7 @@ describe('#base64', function () {
   });
 
   test('should round-trip a string', function () {
-    const testString: string = 'teststring';
+    const testString = 'teststring';
     const enc: string = Base64Ratchet.generateBase64VersionOfString(testString);
     const result: string = Base64Ratchet.base64StringToString(enc);
     expect(result).toBeTruthy();
@@ -32,7 +32,7 @@ describe('#base64', function () {
   });
 
   test('should work on special characters', function () {
-    const src: string = '✓ à la mode';
+    const src = '✓ à la mode';
     const b64: string = Base64Ratchet.generateBase64VersionOfString(src);
     const back: string = Base64Ratchet.base64StringToString(b64);
     expect(b64).toEqual('4pyTIMOgIGxhIG1vZGU=');
@@ -40,7 +40,7 @@ describe('#base64', function () {
   });
 
   test('should work on arbitrary data', function () {
-    const srcB64: string = '7zo_JDdubAcOMnLtkoth_rLRc6Zj5RKRpNGv_nTVYY4';
+    const srcB64 = '7zo_JDdubAcOMnLtkoth_rLRc6Zj5RKRpNGv_nTVYY4';
     const back: Uint8Array = Base64Ratchet.base64UrlStringToBytes(srcB64);
     expect(back).toBeTruthy();
     expect(back.length).toEqual(32);

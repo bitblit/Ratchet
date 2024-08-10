@@ -14,12 +14,12 @@ import { TransformRule } from './transform-rule.js';
 import { Logger } from '../logger/logger.js';
 
 export class TransformRatchet {
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+   
   public static transform(toTransform: any, rules: TransformRule[] = []): any {
     return TransformRatchet.transformGeneric(toTransform, rules, false, null);
   }
 
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+   
   private static transformGeneric(toTransform: any, rules: TransformRule[] = [], isKey: boolean, context: any): any {
     let rval: any = null;
     const type: string = typeof toTransform;
@@ -43,7 +43,7 @@ export class TransformRatchet {
     return rval;
   }
 
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+   
   private static applyTransformToObject(toTransform: any, rules: TransformRule[] = [], isKey: boolean, context: any = null) {
     Logger.silly('Tranform: %j, %s, %j', toTransform, isKey, context);
     let rval: any = null;
@@ -81,7 +81,7 @@ export class TransformRatchet {
     return rval;
   }
 
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+   
   private static applyTransformToPrimitive(toTransform: any, rules: TransformRule[] = [], isKey: boolean, context: any) {
     let rval: any = toTransform;
     rules.forEach((r) => {

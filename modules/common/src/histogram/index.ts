@@ -3,5 +3,4 @@
  */
 
 export * from './histogram-entry.js';
-export * from './histogram.spec.js';
 export * from './histogram.js';

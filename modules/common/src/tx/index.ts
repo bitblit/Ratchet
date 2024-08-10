@@ -4,7 +4,6 @@
 
 export * from './transaction-configuration.js';
 export * from './transaction-final-state.js';
-export * from './transaction-ratchet.spec.js';
 export * from './transaction-ratchet.js';
 export * from './transaction-result.js';
 export * from './transaction-step.js';

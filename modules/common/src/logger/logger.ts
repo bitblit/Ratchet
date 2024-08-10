@@ -19,7 +19,7 @@ import { LoggerOutputFunction } from './logger-output-function.js';
  */
 
 export class Logger {
-  private static LOGGER_INSTANCE_MAP_GLOBAL_KEY: string = 'RATCHET_GLOBAL_LOGGER_MAP_V01';
+  private static LOGGER_INSTANCE_MAP_GLOBAL_KEY = 'RATCHET_GLOBAL_LOGGER_MAP_V01';
   private static GLOBAL_PROVIDER: Record<string, any> = process || global || window;
   //private static LOGGER_INSTANCES: Map<string, LoggerInstance> = new Map<string, LoggerInstance>();
   private static DEFAULT_OPTIONS: LoggerOptions = {
@@ -67,7 +67,7 @@ export class Logger {
     }
   }
 
-  public static getLogger(loggerName: string = 'default', inOptions?: LoggerOptions): LoggerInstance {
+  public static getLogger(loggerName = 'default', inOptions?: LoggerOptions): LoggerInstance {
     let inst: LoggerInstance = Logger.loggerInstances().get(loggerName);
     if (!inst) {
       const options: LoggerOptions = Logger.applyDefaultsToOptions(inOptions);

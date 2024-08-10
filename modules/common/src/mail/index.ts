@@ -8,7 +8,6 @@ export * from './mail-sending-provider.js';
 export * from './mailer-config.js';
 export * from './mailer-like.js';
 export * from './mailer-util.js';
-export * from './mailer.spec.js';
 export * from './mailer.js';
 export * from './ready-to-send-email.js';
 export * from './resolved-ready-to-send-email.js';

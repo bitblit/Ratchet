@@ -9,7 +9,7 @@ import { Uint8ArrayRatchet } from './uint-8-array-ratchet.js';
  */
 export class WebStreamRatchet {
   // Empty constructor prevents instantiation
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {}
 
   public static async webReadableStreamToUint8Array(stream: ReadableStream): Promise<Uint8Array> {

@@ -17,7 +17,7 @@ export class StopWatch {
 
   private _createTime: number = Date.now();
   private _label: string = StringRatchet.createRandomHexString(4);
-  private _labelIncludedInOutput: boolean = false;
+  private _labelIncludedInOutput = false;
 
   constructor() {}
 
@@ -84,7 +84,7 @@ export class StopWatch {
     return Array.from(this.starts.keys());
   }
 
-  public dumpAll(separator: string = ', ', shortForm?: boolean): string {
+  public dumpAll(separator = ', ', shortForm?: boolean): string {
     const outs: string[] = this.timerNames().map((s) => this.dump(s, shortForm));
     let rval: string = 'Overall: ' + this.dump(null, shortForm);
     if (outs.length > 0) {
@@ -105,7 +105,7 @@ export class StopWatch {
       rval += (cleanName || 'Default') + ' ';
       if (!!start && !!end) {
         rval += 'completed in ' + DurationRatchet.formatMsDuration(end - start, !shortForm);
-      } else if (!!start) {
+      } else if (start) {
         rval += 'running for ' + DurationRatchet.formatMsDuration(Date.now() - start, !shortForm);
       }
     }
@@ -128,7 +128,7 @@ export class StopWatch {
         const end: number = name ? this.ends.get(cleanName) : Date.now();
         if (!!start && !!end) {
           rval += 'completed in ' + DurationRatchet.formatMsDuration(end - start, !shortForm);
-        } else if (!!start) {
+        } else if (start) {
           const now: number = Date.now();
           const elapsedMS: number = now - start;
           const expectedTotalMS: number = elapsedMS / pctComplete;
@@ -157,7 +157,7 @@ export class StopWatch {
       const end: number = name ? this.ends.get(cleanName) : Date.now();
       if (!!start && !!end) {
         rval = end - start; // already completed
-      } else if (!!start) {
+      } else if (start) {
         const now: number = Date.now();
         const elapsedMS: number = now - start;
         const expectedTotalMS: number = elapsedMS / pctComplete;
@@ -177,7 +177,7 @@ export class StopWatch {
       const end: number = name ? this.ends.get(cleanName) : Date.now();
       if (!!start && !!end) {
         rval = end - start;
-      } else if (!!start) {
+      } else if (start) {
         rval = Date.now() - start;
       }
     }

@@ -9,14 +9,14 @@ import { Logger } from '../logger/logger.js';
 
 export class GeolocationRatchet {
   // Empty constructor prevents instantiation
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {}
 
   // Ripped off almost straight from https://www.geodatasource.com/developers/javascript
   // All credit to those original authors
   // Units one of M for miles, K for kilometers, N for nautical miles, F for feet, E for meters
   public static distanceBetweenLocations(lat1: number, lon1: number, lat2: number, lon2: number, unit = 'M'): number {
-    const uU: string = !!unit ? unit.toUpperCase() : '';
+    const uU: string = unit ? unit.toUpperCase() : '';
 
     if (['M', 'K', 'N', 'F', 'E'].indexOf(uU) === -1) {
       throw new Error('Invalid unit');
@@ -51,7 +51,7 @@ export class GeolocationRatchet {
     }
   }
 
-  public static distanceBetweenRatchetGeoLocations(loc1: RatchetGeoLocation, loc2: RatchetGeoLocation, unit: string = 'M'): number {
+  public static distanceBetweenRatchetGeoLocations(loc1: RatchetGeoLocation, loc2: RatchetGeoLocation, unit = 'M'): number {
     return GeolocationRatchet.distanceBetweenLocations(loc1.lat, loc1.lng, loc2.lat, loc2.lng, unit);
   }
 
@@ -115,7 +115,7 @@ export class GeolocationRatchet {
     if (latSlices * lngSlices < 2) {
       ErrorRatchet.throwFormattedErr('Cannot set slices to less than 2 : %d x %d', latSlices, lngSlices);
     }
-    if (!!inputVal) {
+    if (inputVal) {
       rval = [];
       const input: RatchetLocationBounds[] = Object.assign([], inputVal); // Don't want to modify the original
       input.sort((a, b) => a.origin.lng - b.origin.lng);
@@ -148,7 +148,7 @@ export class GeolocationRatchet {
 
   // Puts a bounds into canonical form (upper left, lower right)
   // If a crossover occurs  (on both sides of date line) will throw an exception unless allow specified
-  public static canonicalizeBounds(inp: RatchetLocationBounds, allowCrossover: boolean = false): RatchetLocationBounds {
+  public static canonicalizeBounds(inp: RatchetLocationBounds, allowCrossover = false): RatchetLocationBounds {
     RequireRatchet.notNullOrUndefined(inp, 'RatchetLocationBounds');
     const minLat: number = Math.min(inp.extent.lat, inp.origin.lat);
     const maxLat: number = Math.max(inp.extent.lat, inp.origin.lat);
@@ -244,7 +244,7 @@ export class GeolocationRatchet {
   public static pointInRatchetLocationBoundsMap(pt: RatchetGeoLocation, mp: RatchetLocationBoundsMap): boolean {
     let rval = false;
     const entry: RatchetLocationBoundsMapEntry = GeolocationRatchet.findRatchetLocationBoundsMapEntry(pt, mp);
-    if (!!entry) {
+    if (entry) {
       const bounds: RatchetLocationBounds[] = entry.bounds;
 
       for (let i = 0; i < bounds.length && !rval; i++) {

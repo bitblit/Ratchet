@@ -21,7 +21,7 @@ export class GoogleRecaptchaRatchet {
     }
 
     Logger.info('Validating Recaptcha via Google API : %s', token);
-    let url: string = StringRatchet.simpleTemplateFill(GoogleRecaptchaRatchet.GOOGLE_VERIFY_URL, {KEY: keySecret, TOKEN: token}, true);
+    const url: string = StringRatchet.simpleTemplateFill(GoogleRecaptchaRatchet.GOOGLE_VERIFY_URL, {KEY: keySecret, TOKEN: token}, true);
     try {
       const resp: Response = await fetchFn(url);
       const body: any = await resp.json();

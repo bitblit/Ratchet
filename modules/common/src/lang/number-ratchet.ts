@@ -20,7 +20,7 @@ export class NumberRatchet {
     return v === null || v === undefined ? v : NumberRatchet.safeNumber(v.toFixed(placesAfterPoint));
   }
 
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+   
   public static leadingZeros(val: any, size: number): string {
     const sVal = String(val);
     if (sVal.length < size) {
@@ -52,7 +52,7 @@ export class NumberRatchet {
   // useDefaultForNullAndUndefined flag, use it instead
   // I support both modes because some people consider "null/undefined" a valid value for
   // numbers and others don't!
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+   
   public static safeNumber(input: any, ifNotNumber: number = null, useDefaultForNullAndUndefined?: boolean): number {
     const opts: Partial<SafeNumberOptions> = {
       ifNotNumber: ifNotNumber,
@@ -83,7 +83,7 @@ export class NumberRatchet {
           rval = opts.ifNotNumber;
         } else {
           if (opts.preParseCharacterMapping && Object.keys(opts.preParseCharacterMapping).length > 0) {
-            let t2: string = '';
+            let t2 = '';
             for (let i = 0; i < test.length; i++) {
               const cr: string = test.charAt(i);
               t2 += opts.preParseCharacterMapping[cr] === undefined ? cr : opts.preParseCharacterMapping[cr];
@@ -193,7 +193,7 @@ export class NumberRatchet {
       rval.push(0);
     }
 
-    let loc: number = 0;
+    let loc = 0;
     let rem: number = items;
 
     while (rem > 0) {
@@ -206,7 +206,7 @@ export class NumberRatchet {
   }
 
   // Just creates an array of numbers between 2 bounds
-  public static createRange(minInclusive: number, maxExclusive: number, step: number = 1): number[] {
+  public static createRange(minInclusive: number, maxExclusive: number, step = 1): number[] {
     const rval: number[] = [];
     let val: number = minInclusive;
     while (val < maxExclusive) {

@@ -2,7 +2,7 @@ import { BuildInformation } from './build-information.js';
 
 export class RatchetInfo {
   // Empty constructor prevents instantiation
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {}
 
   public static buildInformation(): BuildInformation {

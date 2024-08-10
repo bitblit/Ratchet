@@ -38,7 +38,7 @@ export class ExpiringObject<T> {
   }
 
   private async defaultTimeRemainingMS(lastUpdatedEpochMS: number): Promise<number> {
-    let rval: number = 0;
+    let rval = 0;
     if (lastUpdatedEpochMS) {
       const ageMS: number = new Date().getTime() - lastUpdatedEpochMS;
       rval = Math.max(0, this._config.timeToLiveMS - ageMS);
@@ -46,7 +46,7 @@ export class ExpiringObject<T> {
     return rval;
   }
 
-  public update(newValue: T, doNotUpdateClock: boolean = false): void {
+  public update(newValue: T, doNotUpdateClock = false): void {
     this._cacheObject = newValue;
     if (!doNotUpdateClock) {
       this._lastUpdatedEpochMS = new Date().getTime();

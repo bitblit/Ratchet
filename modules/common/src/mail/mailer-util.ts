@@ -19,8 +19,8 @@ export class MailerUtil {
     const bccLine: string = !!rts.bccAddresses && rts.bccAddresses.length > 0 ? 'Bcc: ' + rts.bccAddresses.join(', ') + '\n' : '';
 
     const from: string = rts.fromAddress;
-    const boundary: string = 'NextPart';
-    const altBoundary: string = 'AltPart';
+    const boundary = 'NextPart';
+    const altBoundary = 'AltPart';
     let rawMail: string = 'From: ' + from + '\n';
     rawMail += toLine;
     rawMail += bccLine;
@@ -30,12 +30,12 @@ export class MailerUtil {
 
     rawMail += '\n\n--' + boundary + '\n';
     rawMail += 'Content-Type: multipart/alternative; boundary="' + altBoundary + '"\n';
-    if (!!StringRatchet.trimToNull(rts.htmlMessage)) {
+    if (StringRatchet.trimToNull(rts.htmlMessage)) {
       rawMail += '\n\n--' + altBoundary + '\n';
       rawMail += 'Content-Type: text/html; charset="UTF-8"\n\n';
       rawMail += rts.htmlMessage;
     }
-    if (!!StringRatchet.trimToNull(rts.txtMessage)) {
+    if (StringRatchet.trimToNull(rts.txtMessage)) {
       rawMail += '\n\n--' + altBoundary + '\n';
       rawMail += 'Content-Type: text/plain\n\n';
       rawMail += rts.txtMessage;

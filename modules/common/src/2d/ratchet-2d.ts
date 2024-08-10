@@ -6,7 +6,7 @@ import { BooleanRatchet } from '../lang/boolean-ratchet.js';
 
 export class Ratchet2d {
   // Empty constructor prevents instantiation
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {}
 
   public static translateToOriginVector(points: Point2d[]): Point2d {
@@ -160,7 +160,7 @@ export class Ratchet2d {
     return rval;
   }
 
-  public static rotateRightAboutOrigin90Degrees(points: Point2d[], times: number = 1): Point2d[] {
+  public static rotateRightAboutOrigin90Degrees(points: Point2d[], times = 1): Point2d[] {
     let rval: Point2d[] = null;
     let translate: Point2d = { x: 0, y: 0 };
     if (Ratchet2d.validPoints(points)) {

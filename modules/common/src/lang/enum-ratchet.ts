@@ -14,16 +14,16 @@ export class EnumRatchet {
     return rval;
   }
 
-  public static keyToEnum<T>(enumeration: any, val: string, caseSensitive: boolean = false): T {
+  public static keyToEnum<T>(enumeration: any, val: string, caseSensitive = false): T {
     const e: EnumWrapper = $enum(enumeration);
     let rval: T = null;
-    if (!!val) {
+    if (val) {
       rval = e.asValueOrDefault(val, null);
       if (!rval && !caseSensitive) {
         // Try other cases
         const keys: string[] = EnumRatchet.listEnumKeys(enumeration);
         const mKey: string = keys.find((k) => k.toUpperCase() === val.toUpperCase());
-        if (!!mKey) {
+        if (mKey) {
           rval = e.asValueOrDefault(mKey, null);
         }
       }

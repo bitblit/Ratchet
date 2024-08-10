@@ -9,7 +9,7 @@ import { SendEmailResult } from './send-email-result.js';
 import { expect, test, describe, beforeEach } from 'vitest';
 
 let mockSES;
-const smallImageBase64: string =
+const smallImageBase64 =
   'iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII';
 
 describe('#mailer', function () {

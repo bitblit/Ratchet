@@ -28,11 +28,6 @@
       "pre-commit": "pretty-quick --staged"
     }
   },
-  "prettier": {
-    "printWidth": 140,
-    "singleQuote": true,
-    "arrowParens": "always"
-  },
   "config": {},
   "repository": {
     "type": "git",

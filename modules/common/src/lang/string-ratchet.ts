@@ -36,7 +36,7 @@ export class StringRatchet {
   public static readonly CASE_INSENSITIVE_LATIN: string = StringRatchet.UPPER_CASE_LATIN + StringRatchet.LOWER_CASE_LATIN;
 
   public static stringIsInGivenAlphabet(input: string, alphabet: string): boolean {
-    let rval: boolean = false;
+    let rval = false;
     if (input && alphabet) {
       for (let i = 0; i < input.length && !rval; i++) {
         rval = alphabet.includes(input.charAt(i));
@@ -73,7 +73,7 @@ export class StringRatchet {
   }
 
   public static allUnique(input: string): boolean {
-    let rval: boolean = true;
+    let rval = true;
     if (input) {
       const check: Set<string> = new Set<string>();
       for (let i = 0; i < input.length && rval; i++) {
@@ -98,7 +98,7 @@ export class StringRatchet {
   }
 
   public static breakIntoBlocks(input: string, blockSize: number, separator: string): string {
-    let out: string = '';
+    let out = '';
     while (input.length > blockSize) {
       out = separator + input.substring(input.length - blockSize) + out;
       input = input.substring(0, input.length - blockSize);
@@ -112,7 +112,7 @@ export class StringRatchet {
     return out;
   }
 
-  public static createShortUid(blockSize: number = 0, uniquesPerSecond: number = 1000, radix: number = 36): string {
+  public static createShortUid(blockSize = 0, uniquesPerSecond = 1000, radix = 36): string {
     const currentEpoch: number = Math.floor(Date.now() / 1000);
     const asDecimal: number = parseInt(String(Math.floor(Math.random() * uniquesPerSecond)) + String(currentEpoch));
     const asHex: string = asDecimal.toString(radix);
@@ -158,7 +158,7 @@ export class StringRatchet {
   }
 
   // Converts anything that isn't a string to a string
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+   
   public static safeString(input: any): string {
     let rval: string = null;
     if (input != null) {
@@ -222,7 +222,7 @@ export class StringRatchet {
     return rval;
   }
 
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+   
   public static leadingZeros(inVal: any, size: number): string {
     const pad = '00000000000000000000000000000000000000000000000000';
     let negative = false;
@@ -288,7 +288,7 @@ export class StringRatchet {
     return rval;
   }
 
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+   
   public static csvSafe(input: any): string {
     let rval: string = StringRatchet.trimToEmpty(StringRatchet.safeString(input));
     rval.split('"').join('\\"');
@@ -324,7 +324,7 @@ export class StringRatchet {
   // javascript will do natively with backticks, but typesafe and can
   // be passed around.  Default template style is ${value} to match JS backticks
   // Note that any
-  public static simpleTemplateFill(template: string, fillers: Record<string, any>, errorOnMissingFiller:boolean = false, opener: string='${', closer:string='}'): string {
+  public static simpleTemplateFill(template: string, fillers: Record<string, any>, errorOnMissingFiller = false, opener='${', closer='}'): string {
     let rval: string = template;
     if (rval && fillers) {
       Object.keys(fillers).forEach(key=>{

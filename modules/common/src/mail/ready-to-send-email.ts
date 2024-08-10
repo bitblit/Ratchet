@@ -9,19 +9,19 @@ export interface ReadyToSendEmail {
    * @type {Array<string>}
    * @memberof ReadyToSendEmail
    */
-  destinationAddresses?: Array<string>;
+  destinationAddresses?: string[];
   /**
    *
    * @type {Array<string>}
    * @memberof ReadyToSendEmail
    */
-  bccAddresses?: Array<string>;
+  bccAddresses?: string[];
   /**
    *
    * @type {Array<EmailAttachment>}
    * @memberof ReadyToSendEmail
    */
-  attachments?: Array<EmailAttachment>;
+  attachments?: EmailAttachment[];
   /**
    *
    * @type {string}

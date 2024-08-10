@@ -25,7 +25,7 @@ describe('#parseBool', function () {
   });
 
   test('should xxx', function () {
-    const val: string = 'false';
+    const val = 'false';
     const r1: boolean = BooleanRatchet.parseBool(val);
     const r2: boolean = BooleanRatchet.intToBool(val);
 

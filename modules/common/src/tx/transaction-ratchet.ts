@@ -36,7 +36,7 @@ export class TransactionRatchet {
     const stepNames: string[] = steps.map((s, idx) => s.name || 'Step ' + idx);
 
     Logger.info('Beginning transaction of %d steps', steps.length);
-    let idx: number = 0;
+    let idx = 0;
     do {
       Logger.logByLevel(config.stepLogLevel, 'Processing step %d of %d (%s)', idx + 1, steps.length, stepNames[idx]);
       try {

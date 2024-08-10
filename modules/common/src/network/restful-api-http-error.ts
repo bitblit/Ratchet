@@ -11,7 +11,7 @@ import {NumberRatchet} from "../lang/number-ratchet.js";
  */
 export class RestfulApiHttpError<T = void> extends Error {
   private static readonly RATCHET_RESTFUL_API_HTTP_ERROR_FLAG_KEY: string = '__ratchetRestfulApiHttpErrorFlag';
-  private _httpStatusCode: number = 500;
+  private _httpStatusCode = 500;
   private _errors: string[];
   private _detailErrorCode: number;
   private _endUserErrors: string[];
@@ -26,7 +26,7 @@ export class RestfulApiHttpError<T = void> extends Error {
     this[RestfulApiHttpError.RATCHET_RESTFUL_API_HTTP_ERROR_FLAG_KEY] = true; // Just used to tell if one has been wrapped
   }
 
-  public static combineErrorStringsWithDefault(errors: string[], defMessage: string = 'Internal Server Error'): string {
+  public static combineErrorStringsWithDefault(errors: string[], defMessage = 'Internal Server Error'): string {
     return errors && errors.length > 0 ? errors.join(',') : defMessage;
   }
 
@@ -151,7 +151,7 @@ export class RestfulApiHttpError<T = void> extends Error {
   }
 
   public static errorIsX0x(errIn: Error, xClass: number): boolean {
-    let rval: boolean = false;
+    let rval = false;
     if (errIn && RestfulApiHttpError.objectIsRestfulApiHttpError(errIn)) {
       const err: RestfulApiHttpError = errIn as RestfulApiHttpError;
 

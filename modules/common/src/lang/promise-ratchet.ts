@@ -18,7 +18,7 @@ export class PromiseRatchet {
    * @param errEventNames Names of error events
    * @param rval Return value, if any
    */
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+   
   public static resolveOnEvent<T>(evtSrc: any, okEvtNames: string[], errEvtNames: string[] = [], rval: T = null): Promise<T> {
     if (!evtSrc || !okEvtNames || okEvtNames.length === 0 || !evtSrc['on']) {
       Promise.reject('Cannot continue - missing source object or name, or the object is not an event source');
@@ -31,7 +31,7 @@ export class PromiseRatchet {
         });
       });
 
-      if (!!errEvtNames) {
+      if (errEvtNames) {
         errEvtNames.forEach((e) => {
           evtSrc.on(e, (err) => {
             rej(err);
@@ -63,7 +63,7 @@ export class PromiseRatchet {
     Logger.silly('Finished wait of %d ms', time);
   }
 
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+   
   public static dumpResult(result: any, autoDebug = false): void {
     Logger.info('Success, result was : \n\n%s\n\n', JSON.stringify(result));
     if (autoDebug) {
@@ -72,7 +72,7 @@ export class PromiseRatchet {
     process.exit(0);
   }
 
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+   
   public static dumpError(err: any, autoDebug = false): void {
     Logger.warn('Failure, err was : \n\n%s\n\n  --  \n\n%s\n\n', JSON.stringify(err), String(err));
     console.trace();
@@ -82,7 +82,7 @@ export class PromiseRatchet {
     process.exit(1);
   }
 
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+   
   public static logErrorAndReturnNull(err: any, autoDebug = false): void {
     Logger.warn('Failure, err was : \n\n%s\n\n  --  \n\n%s\n\n', JSON.stringify(err), String(err));
     if (autoDebug) {
@@ -101,7 +101,7 @@ export class PromiseRatchet {
   // it is used as the "breakout" poison pill value
   public static async waitFor(
     testFunction: (n: number) => any,
-    expectedValue: any, // eslint-disable-line @typescript-eslint/explicit-module-boundary-types
+    expectedValue: any,  
     intervalMS: number,
     maxCycles: number,
     label = 'waitFor',
@@ -149,8 +149,8 @@ export class PromiseRatchet {
   public static async runBoundedParallel<T>(
     promiseFn: Function, // eslint-disable-line @typescript-eslint/ban-types
     params: any[][],
-    context: any, // eslint-disable-line @typescript-eslint/explicit-module-boundary-types
-    maxConcurrent: number = 1,
+    context: any,  
+    maxConcurrent = 1,
     logLevel: LoggerLevelName = LoggerLevelName.debug,
   ): Promise<T[]> {
     const sw: StopWatch = new StopWatch();
@@ -181,8 +181,8 @@ export class PromiseRatchet {
   public static async runBoundedParallelSingleParam<T>(
     promiseFn: Function, // eslint-disable-line @typescript-eslint/ban-types
     params: any[],
-    context: any, // eslint-disable-line @typescript-eslint/explicit-module-boundary-types
-    maxConcurrent: number = 1,
+    context: any,  
+    maxConcurrent = 1,
     logLevel: LoggerLevelName = LoggerLevelName.debug,
   ): Promise<T[]> {
     const wrappedParams: any[][] = ArrayRatchet.wrapElementsInArray(params);

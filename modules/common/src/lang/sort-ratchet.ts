@@ -15,7 +15,7 @@ import { NumberRatchet } from './number-ratchet.js';
 
 export class SortRatchet {
   // Empty constructor prevents instantiation
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {}
 
   public static sortNullToTop<T>(a: T, b: T, bothNonNullSort: (c: T, d: T) => number): number {

@@ -24,7 +24,7 @@ export class LoggerInstance {
   private _options: LoggerOptions;
 
   constructor(
-    private loggerInstanceName: string = 'default',
+    private loggerInstanceName = 'default',
     inOptions: LoggerOptions,
   ) {
     this.options = inOptions; // MUST use the setter here

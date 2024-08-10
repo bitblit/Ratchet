@@ -122,9 +122,7 @@ export class ArrayRatchet {
   }
 }
 
-export interface ComparisonFunction<T> {
-  (t1: T, t2: T): number;
-}
+export type ComparisonFunction<T> = (t1: T, t2: T) => number;
 
 export interface MatchReport<T> {
   matching: T[];

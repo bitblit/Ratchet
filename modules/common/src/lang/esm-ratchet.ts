@@ -28,7 +28,7 @@ export class EsmRatchet {
 
   public static async cachedTypedDynamicImport<T>(libPath: string, importName?: string, requiredKeys?: string[], swallowErrorIfMissing?: boolean): Promise<T> {
     const cacheKey: string = StringRatchet.trimToNull(importName) ? libPath+'__'+importName : libPath;
-    let rval: Promise<T> = EsmRatchet.DYNAMIC_IMPORT_CACHE.get(cacheKey) as Promise<T>;
+    let rval: Promise<T> = EsmRatchet.DYNAMIC_IMPORT_CACHE.get(cacheKey);
     if (!rval) {
       rval = EsmRatchet.typedDynamicImport<T>(libPath, importName, requiredKeys, swallowErrorIfMissing);
       if (rval) {

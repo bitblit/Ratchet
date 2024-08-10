@@ -2,7 +2,7 @@
 // https://medium.com/@naveenkumarasinghe/javascript-lost-in-binaries-buffer-blob-uint8array-arraybuffer-ed8d2b4de44a
 export class Uint8ArrayRatchet {
   // Empty constructor prevents instantiation
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {}
 
   // Taken from https://stackoverflow.com/questions/49129643/how-do-i-merge-an-array-of-uint8arrays
@@ -27,9 +27,9 @@ export class Uint8ArrayRatchet {
   }
 
   public static deepEqual(arr1: Uint8Array, arr2: Uint8Array): boolean {
-    let rval: boolean = false;
+    let rval = false;
     if (arr1 && arr2 && arr1.length === arr2.length) {
-      let mismatch: boolean = false;
+      let mismatch = false;
       for (let i = 0; i < arr1.length && !mismatch; i++) {
         mismatch = arr1[i] !== arr2[i];
       }

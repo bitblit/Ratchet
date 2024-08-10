@@ -37,7 +37,7 @@ export class Mailer<T, R> implements MailerLike<T, R> {
       ErrorRatchet.throwFormattedErr('Cannot use fill body if template renderer not set');
     }
     rts.htmlMessage = await this.config.templateRenderer.renderTemplate(htmlTemplateName, context, layoutName, partialNames);
-    rts.txtMessage = !!txtTemplateName ? await this.config.templateRenderer.renderTemplate(txtTemplateName, context) : null;
+    rts.txtMessage = txtTemplateName ? await this.config.templateRenderer.renderTemplate(txtTemplateName, context) : null;
     return rts;
   }
 

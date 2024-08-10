@@ -13,9 +13,9 @@ import { ErrorRatchet } from './error-ratchet.js';
 // https://gist.githubusercontent.com/enepomnyaschih/72c423f727d395eeaa09697058238727/raw/74d3cbf82481545bc26c104de2419f4ee30c7dd7/base64.js
 // Since native javascript handling is so poor
 export class Base64Ratchet {
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+   
   public static safeObjectToBase64JSON(input: any): any {
-    return !!input ? Base64Ratchet.generateBase64VersionOfString(JSON.stringify(input)) : null;
+    return input ? Base64Ratchet.generateBase64VersionOfString(JSON.stringify(input)) : null;
   }
 
   public static safeBase64JSONParse(input: string): any {
@@ -63,7 +63,7 @@ export class Base64Ratchet {
     }
   }
 
-  public static base64StringToString(input: string, encoding: string = 'utf8'): string {
+  public static base64StringToString(input: string, encoding = 'utf8'): string {
     return new TextDecoder(encoding).decode(Base64Ratchet.base64StringToUint8Array(input));
   }
 
@@ -170,7 +170,7 @@ export class Base64Ratchet {
   }
 
   public static uint8ArrayToBase64String(bytes: Uint8Array): string {
-    let result: string = '';
+    let result = '';
     let i: number;
     const l: number = bytes.length;
     for (i = 2; i < l; i += 3) {
