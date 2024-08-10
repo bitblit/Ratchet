@@ -2570,6 +2570,7 @@ __metadata:
   resolution: "@bitblit/ratchet-rdbms@workspace:modules/rdbms"
   dependencies:
     "@bitblit/ratchet-common": 0.0.0-snapshot
+    get-port: 7.1.0
     mysql2: 3.11.0
     promised-sqlite3: 2.1.0
     sqlite3: 5.1.7
@@ -2584,6 +2585,8 @@ __metadata:
     sqlstring: ^2.3.3
     tunnel-ssh: ^5.1.2
   dependenciesMeta:
+    get-port:
+      optional: true
     mysql2:
       optional: true
     promised-sqlite3:
@@ -7674,6 +7677,13 @@ __metadata:
     has-symbols: ^1.0.3
     hasown: ^2.0.0
   checksum: 414e3cdf2c203d1b9d7d33111df746a4512a1aa622770b361dadddf8ed0b5aeb26c560f49ca077e24bfafb0acb55ca908d1f709216ccba33ffc548ec8a79a951
+  languageName: node
+  linkType: hard
+
+"get-port@npm:7.1.0":
+  version: 7.1.0
+  resolution: "get-port@npm:7.1.0"
+  checksum: f4d23b43026124007663a899578cc87ff37bfcf645c5c72651e9810ebafc759857784e409fb8e0ada9b90e5c5db089b0ae2f5f6b49fba1ce2e0aff86094ab17d
   languageName: node
   linkType: hard
 
