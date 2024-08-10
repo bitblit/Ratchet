@@ -3,7 +3,6 @@
  */
 
 export * from './inbound/email-to-db-insert-processor.js';
-export * from './inbound/inbound-email-ratchet.spec.js';
 export * from './inbound/inbound-email-ratchet.js';
 export * from './inbound/parsed-email-processor.js';
 export * from './inbound/sample-email-processor.js';

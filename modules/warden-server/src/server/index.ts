@@ -3,7 +3,6 @@
  */
 
 export * from './warden-service-options.js';
-export * from './warden-service.spec.js';
 export * from './warden-service.js';
 export * from './provider/warden-default-send-magic-link-command-validator.js';
 export * from './provider/warden-default-user-decoration-provider.js';

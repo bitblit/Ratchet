@@ -1,9 +1,9 @@
-import { ExpiringCodeProvider } from "./expiring-code-provider.js";
-import { ExpiringCode } from "./expiring-code.js";
+import { ExpiringCodeProvider } from "../../expiring-code/expiring-code-provider.js";
+import { ExpiringCode } from "../../expiring-code/expiring-code.js";
 import { RequireRatchet } from "@bitblit/ratchet-common/lang/require-ratchet";
 import { Logger } from "@bitblit/ratchet-common/logger/logger";
 import { PutObjectOutput } from "@aws-sdk/client-s3";
-import { S3CacheRatchetLike } from "../s3/s3-cache-ratchet-like.js";
+import { S3CacheRatchetLike } from "../s3-cache-ratchet-like.js";
 
 /* An implementation that puts all the values in a single JSON file in S3
   This won't scale well at all for any kind of serious load, but is the easiest

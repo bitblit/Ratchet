@@ -26,5 +26,4 @@ export * from './model/warden-user-decoration.js';
 export * from './model/warden-web-authn-entry-summary.js';
 export * from './model/warden-web-authn-entry.js';
 export * from './model/warden-web-authn-transport-future-type.js';
-export * from './util/warden-utils.spec.js';
 export * from './util/warden-utils.js';

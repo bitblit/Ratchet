@@ -3,7 +3,5 @@
  */
 
 export * from './query-builder-result.js';
-export * from './query-builder.spec.js';
 export * from './query-builder.js';
-export * from './query-util.spec.js';
 export * from './query-util.js';

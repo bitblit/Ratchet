@@ -1,5 +1,3 @@
-import { DynamoRuntimeParameterProvider } from "./dynamo-runtime-parameter-provider.js";
-import { DynamoRatchet } from "../dynamodb/dynamo-ratchet.js";
 import { StoredRuntimeParameter } from "./stored-runtime-parameter.js";
 import { Logger } from "@bitblit/ratchet-common/logger/logger";
 import { LoggerLevelName } from "@bitblit/ratchet-common/logger/logger-level-name";
@@ -7,23 +5,18 @@ import { RuntimeParameterRatchet } from "./runtime-parameter-ratchet.js";
 import {
   GlobalVariableOverrideRuntimeParameterProvider
 } from "./global-variable-override-runtime-parameter-provider.js";
-import { beforeEach, describe, expect, test } from "vitest";
-import { mock, MockProxy } from "vitest-mock-extended";
+import { describe, expect, test } from "vitest";
+import { MemoryRuntimeParameterProvider } from "./memory-runtime-parameter-provider.js";
 
-let mockDynamoRatchet: MockProxy<DynamoRatchet>;
-const testEntry: StoredRuntimeParameter = { groupId: 'test', paramKey: 'test', paramValue: '15', ttlSeconds: 0.5 };
-const testEntry2: StoredRuntimeParameter = { groupId: 'test', paramKey: 'test1', paramValue: '"not-overridden"', ttlSeconds: 0.5 };
+const _testEntry: StoredRuntimeParameter = { groupId: 'test', paramKey: 'test', paramValue: '15', ttlSeconds: 0.5 };
+const _testEntry2: StoredRuntimeParameter = { groupId: 'test', paramKey: 'test1', paramValue: '"not-overridden"', ttlSeconds: 0.5 };
 
 describe('#globalVariableOverrideRuntimeParameterProvider', function () {
-  beforeEach(() => {
-    mockDynamoRatchet = mock<DynamoRatchet>();
-  });
 
   test('reads underlying entries', async () => {
     Logger.setLevel(LoggerLevelName.silly);
     //mockDynamoRatchet.fullyExecuteQuery.resolves([testEntry, testEntry2]);
-    mockDynamoRatchet.simpleGet.mockResolvedValue(testEntry2);
-    const drpp: DynamoRuntimeParameterProvider = new DynamoRuntimeParameterProvider(mockDynamoRatchet, 'test-table');
+    const drpp: MemoryRuntimeParameterProvider = new MemoryRuntimeParameterProvider();
     const er: GlobalVariableOverrideRuntimeParameterProvider = new GlobalVariableOverrideRuntimeParameterProvider(drpp, {
       globalTTL: 1,
       separator: '.',

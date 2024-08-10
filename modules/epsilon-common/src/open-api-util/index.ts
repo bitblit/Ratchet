@@ -3,7 +3,5 @@
  */
 
 export * from './open-api-doc-modifications.js';
-export * from './open-api-doc-modifier.spec.js';
 export * from './open-api-doc-modifier.js';
-export * from './yaml-combiner.spec.js';
 export * from './yaml-combiner.js';

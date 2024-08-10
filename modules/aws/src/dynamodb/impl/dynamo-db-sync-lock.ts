@@ -1,9 +1,9 @@
 import { RequireRatchet } from "@bitblit/ratchet-common/lang/require-ratchet";
 import { Logger } from "@bitblit/ratchet-common/logger/logger";
 import { StringRatchet } from "@bitblit/ratchet-common/lang/string-ratchet";
-import { DynamoRatchet } from "../dynamodb/dynamo-ratchet.js";
+import { DynamoRatchet } from "../dynamo-ratchet.js";
 import { DeleteCommandOutput, PutCommand, PutCommandOutput, ScanCommandInput } from "@aws-sdk/lib-dynamodb";
-import { SyncLockProvider } from "./sync-lock-provider.js";
+import { SyncLockProvider } from "../../sync-lock/sync-lock-provider.js";
 import { ConditionalCheckFailedException, ReturnConsumedCapacity } from "@aws-sdk/client-dynamodb";
 
 export class DynamoDbSyncLock implements SyncLockProvider {
@@ -33,7 +33,7 @@ export class DynamoDbSyncLock implements SyncLockProvider {
       };
 
       try {
-        const pio: PutCommandOutput = await this.ratchet.getDDB().send(new PutCommand(params));
+        const _pio: PutCommandOutput = await this.ratchet.getDDB().send(new PutCommand(params));
         rval = true;
       } catch (err) {
         if (err instanceof ConditionalCheckFailedException) {

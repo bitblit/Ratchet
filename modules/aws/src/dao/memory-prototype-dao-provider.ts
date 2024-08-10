@@ -1,6 +1,6 @@
 // Memory version for testing
-import { PrototypeDaoProvider } from "./prototype-dao-provider";
-import { PrototypeDaoDb } from "./prototype-dao-db";
+import { PrototypeDaoProvider } from "./prototype-dao-provider.js";
+import { PrototypeDaoDb } from "./prototype-dao-db.js";
 
 export class MemoryPrototypeDaoProvider implements PrototypeDaoProvider<any> {
 

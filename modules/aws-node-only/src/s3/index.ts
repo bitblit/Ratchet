@@ -3,10 +3,8 @@
  */
 
 export * from './s3-cache-to-local-disk-ratchet.js';
-export * from './s3-cache-to-local-dist-ratchet.spec.js';
 export * from './s3-synced-file/s3-synced-file-config-init-mode.js';
 export * from './s3-synced-file/s3-synced-file-config.js';
 export * from './s3-synced-file/s3-synced-file-optimization.js';
 export * from './s3-synced-file/s3-synced-file-remote-backup-mode.js';
-export * from './s3-synced-file/s3-synced-file.spec.js';
 export * from './s3-synced-file/s3-synced-file.js';

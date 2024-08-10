@@ -3,5 +3,4 @@
  */
 
 export * from './inter-api-entry.js';
-export * from './inter-api-util.spec.js';
 export * from './inter-api-util.js';

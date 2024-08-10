@@ -1,5 +1,5 @@
 import { DynamoDbSyncLock } from './dynamo-db-sync-lock.js';
-import { DynamoRatchet } from '../dynamodb/dynamo-ratchet.js';
+import { DynamoRatchet } from '../dynamo-ratchet.js';
 import { Logger } from '@bitblit/ratchet-common/logger/logger';
 
 import { beforeEach, describe, expect, test } from 'vitest';

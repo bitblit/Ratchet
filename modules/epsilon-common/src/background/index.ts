@@ -21,5 +21,4 @@ export * from './manager/abstract-background-manager.js';
 export * from './manager/aws-large-payload-s3-sqs-sns-background-manager.js';
 export * from './manager/aws-sqs-sns-background-manager.js';
 export * from './manager/background-manager-like.js';
-export * from './manager/background-manager.spec.js';
 export * from './manager/single-thread-local-background-manager.js';
