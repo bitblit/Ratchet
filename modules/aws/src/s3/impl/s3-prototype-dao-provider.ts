@@ -1,8 +1,8 @@
 import { RequireRatchet } from '@bitblit/ratchet-common/lang/require-ratchet';
 import { PutObjectOutput } from '@aws-sdk/client-s3';
-import { PrototypeDaoProvider } from './prototype-dao-provider.js';
-import { PrototypeDaoDb } from './prototype-dao-db.js';
-import { S3CacheRatchetLike } from '../s3/s3-cache-ratchet-like.js';
+import { PrototypeDaoProvider } from '../../dao/prototype-dao-provider.js';
+import { PrototypeDaoDb } from '../../dao/prototype-dao-db.js';
+import { S3CacheRatchetLike } from '../s3-cache-ratchet-like.js';
 
 /* An implementation that puts all the values in a single JSON file in S3
   This won't scale well at all for any kind of serious load, but is the easiest

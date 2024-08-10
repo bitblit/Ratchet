@@ -4,7 +4,7 @@ import { Plane2d } from './plane-2d.js';
 import { expect, test, describe } from 'vitest';
 
 describe('#ratchet2d', function () {
-  test('should check for valid planes', function () {
+  test('should check for valid planes', ()=> {
     expect(Ratchet2d.validPlane(null)).toEqual(false);
     expect(Ratchet2d.validPlane({ width: null, height: null })).toEqual(false);
     expect(Ratchet2d.validPlane({ width: 0, height: null })).toEqual(false);
@@ -12,7 +12,7 @@ describe('#ratchet2d', function () {
     expect(Ratchet2d.validPlane({ width: 1, height: 7 })).toEqual(true);
   });
 
-  test('should check for valid lines', function () {
+  test('should check for valid lines', ()=> {
     expect(Ratchet2d.validLine(null)).toEqual(false);
     expect(Ratchet2d.validLine({ p1: null, p2: null })).toEqual(false);
     expect(Ratchet2d.validLine({ p1: { x: null, y: 0 }, p2: null })).toEqual(false);
@@ -22,7 +22,7 @@ describe('#ratchet2d', function () {
     expect(Ratchet2d.validLine({ p1: { x: 0, y: 0 }, p2: { x: 27, y: 13 } })).toEqual(true);
   });
 
-  test('should transform points from one plane to another (scale)', function () {
+  test('should transform points from one plane to another (scale)', () => {
     const plane1: Plane2d = { height: 10, width: 10 };
     const plane2: Plane2d = { height: 100, width: 50 };
 
@@ -37,7 +37,7 @@ describe('#ratchet2d', function () {
     expect(out2.y).toEqual(p1.y);
   });
 
-  test('should transform points from one plane to another (mirror)', function () {
+  test('should transform points from one plane to another (mirror)', ()=> {
     const plane1: Plane2d = { height: 10, width: 10 };
     const plane2: Plane2d = { height: 10, width: 10, rightToLeft: true, topToBottom: true };
 
@@ -52,7 +52,7 @@ describe('#ratchet2d', function () {
     expect(out2.y).toEqual(p1.y);
   });
 
-  test('should check for containment', function () {
+  test('should check for containment', ()=> {
     const plane: Plane2d = {
       width: 100,
       height: 100,

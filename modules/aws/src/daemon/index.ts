@@ -7,6 +7,5 @@ export * from './daemon-process-create-options.js';
 export * from './daemon-process-state-public-token.js';
 export * from './daemon-process-state.js';
 export * from './daemon-stream-data-options.js';
-export * from './daemon-util.spec.js';
 export * from './daemon-util.js';
 export * from './daemon.js';

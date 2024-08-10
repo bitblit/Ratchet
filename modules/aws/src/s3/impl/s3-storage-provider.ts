@@ -3,10 +3,10 @@
   approach.
 */
 
-import { SimpleCacheObjectWrapper } from './simple-cache-object-wrapper.js';
-import { SimpleCacheStorageProvider } from './simple-cache-storage-provider.js';
+import { SimpleCacheObjectWrapper } from '../../cache/simple-cache-object-wrapper.js';
+import { SimpleCacheStorageProvider } from '../../cache/simple-cache-storage-provider.js';
 import { PutObjectOutput } from '@aws-sdk/client-s3';
-import { S3CacheRatchetLike } from '../s3/s3-cache-ratchet-like.js';
+import { S3CacheRatchetLike } from '../s3-cache-ratchet-like.js';
 import { RequireRatchet } from "@bitblit/ratchet-common/lang/require-ratchet";
 import { StringRatchet } from "@bitblit/ratchet-common/lang/string-ratchet";
 
@@ -45,7 +45,7 @@ export class S3StorageProvider implements SimpleCacheStorageProvider {
 
   public async clearCache(): Promise<number> {
     const keys: string[] = await this.s3CacheRatchet.directChildrenOfPrefix(this.keyToPath(''));
-    const removed: any[] = await Promise.all(keys.map((k) => this.removeFromCache(k)));
+    const _removed: any[] = await Promise.all(keys.map((k) => this.removeFromCache(k)));
     return keys.length;
   }
 
