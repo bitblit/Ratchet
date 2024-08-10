@@ -7,16 +7,24 @@ import { Logger } from '@bitblit/ratchet-common/logger/logger';
  * use it for something else
  */
 export class MemoryRuntimeParameterProvider implements RuntimeParameterProvider {
-  constructor(private data: Promise<Record<string, StoredRuntimeParameter>> = Promise.resolve({})) {}
+  private _data: Promise<Record<string, StoredRuntimeParameter>>;
+
+  constructor(private inData?: Promise<Record<string, StoredRuntimeParameter>>) {
+    if (inData) {
+      this._data = inData;
+    } else {
+      this._data = Promise.resolve({});
+    }
+  }
 
   public async readParameter(groupId: string, paramKey: string): Promise<StoredRuntimeParameter> {
     Logger.silly('Reading %s / %s from underlying db', groupId, paramKey);
-    const d: Record<string, StoredRuntimeParameter> = await this.data;
-    return d[groupId + '::' + paramKey];
+    const d: Record<string, StoredRuntimeParameter> = await this._data;
+    return d[groupId + '::' + paramKey] ?? null;
   }
 
   public async readAllParametersForGroup(groupId: string): Promise<StoredRuntimeParameter[]> {
-    const d: Record<string, StoredRuntimeParameter> = await this.data;
+    const d: Record<string, StoredRuntimeParameter> = await this._data;
     const out: StoredRuntimeParameter[] = [];
     Object.keys(d).forEach((k) => {
       if (k.startsWith(groupId)) {
@@ -26,9 +34,9 @@ export class MemoryRuntimeParameterProvider implements RuntimeParameterProvider 
     return out;
   }
 
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+   
   public async writeParameter(toStore: StoredRuntimeParameter): Promise<boolean> {
-    const d: Record<string, StoredRuntimeParameter> = await this.data;
+    const d: Record<string, StoredRuntimeParameter> = await this._data;
     d[toStore.groupId + '::' + toStore.paramKey] = toStore;
     return true;
   }

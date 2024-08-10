@@ -8,8 +8,8 @@ import {
 import { describe, expect, test } from "vitest";
 import { MemoryRuntimeParameterProvider } from "./memory-runtime-parameter-provider.js";
 
-const _testEntry: StoredRuntimeParameter = { groupId: 'test', paramKey: 'test', paramValue: '15', ttlSeconds: 0.5 };
-const _testEntry2: StoredRuntimeParameter = { groupId: 'test', paramKey: 'test1', paramValue: '"not-overridden"', ttlSeconds: 0.5 };
+const testEntry: StoredRuntimeParameter = { groupId: 'test', paramKey: 'test', paramValue: '15', ttlSeconds: 0.5 };
+const testEntry2: StoredRuntimeParameter = { groupId: 'test', paramKey: 'test1', paramValue: '"not-overridden"', ttlSeconds: 0.5 };
 
 describe('#globalVariableOverrideRuntimeParameterProvider', function () {
 
@@ -17,6 +17,8 @@ describe('#globalVariableOverrideRuntimeParameterProvider', function () {
     Logger.setLevel(LoggerLevelName.silly);
     //mockDynamoRatchet.fullyExecuteQuery.resolves([testEntry, testEntry2]);
     const drpp: MemoryRuntimeParameterProvider = new MemoryRuntimeParameterProvider();
+    await drpp.writeParameter(testEntry);
+    await drpp.writeParameter(testEntry2);
     const er: GlobalVariableOverrideRuntimeParameterProvider = new GlobalVariableOverrideRuntimeParameterProvider(drpp, {
       globalTTL: 1,
       separator: '.',
