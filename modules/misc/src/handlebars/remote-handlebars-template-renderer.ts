@@ -24,15 +24,15 @@ export class RemoteHandlebarsTemplateRenderer implements RatchetTemplateRenderer
 
   public async renderRemoteTemplate(templateName: string, inContext: any, layoutName: string = null): Promise<string> {
     const template: HandlebarsTemplateDelegate = await this.fetchTemplate(templateName);
-    const layoutText: string = !!layoutName ? await this.fetchTemplateText(layoutName) : null;
+    const layoutText: string = layoutName ? await this.fetchTemplateText(layoutName) : null;
 
-    if (!!layoutText) {
+    if (layoutText) {
       await layouts.register(handlebars);
       handlebars.registerPartial(layoutName, layoutText);
     }
 
     const context: any = inContext || {};
-    const result: string = !!template ? template(context) : null;
+    const result: string = template ? template(context) : null;
     return result;
   }
 
@@ -51,7 +51,7 @@ export class RemoteHandlebarsTemplateRenderer implements RatchetTemplateRenderer
       } else {
         Logger.debug('Cache miss for template : %s', templateName);
         const templateText: string = await this.fetchTemplateText(templateName);
-        if (!!templateText) {
+        if (templateText) {
           rval = handlebars.compile(templateText);
           if (!!this.cache && !!rval) {
             this.cache.set(templateName, rval);
