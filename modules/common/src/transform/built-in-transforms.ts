@@ -124,6 +124,8 @@ export class BuiltInTransforms {
           });
           if (rval != null) {
             value[newFieldName] = rval;
+            // Dynamic-safe(r) since we are outside the loop
+            // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
             oldFieldNamesInOrder.forEach((n) => delete value[n]);
           }
         }

@@ -97,32 +97,12 @@ export class RestfulApiHttpError<T = void> extends Error {
     return this._httpStatusCode;
   }
 
-  get errors(): string[] {
-    return this._errors;
-  }
-
-  get detailErrorCode(): number {
-    return this._detailErrorCode;
-  }
-
-  get endUserErrors(): string[] {
-    return this._endUserErrors;
-  }
-
-  get details(): T {
-    return this._details;
-  }
-
-  get requestId(): string {
-    return this._requestId;
-  }
-
-  get wrappedError(): Error {
-    return this._wrappedError;
-  }
-
   set httpStatusCode(value: number) {
     this._httpStatusCode = value || 500;
+  }
+
+  get errors(): string[] {
+    return this._errors;
   }
 
   set errors(value: string[]) {
@@ -130,20 +110,40 @@ export class RestfulApiHttpError<T = void> extends Error {
     this.message = RestfulApiHttpError.combineErrorStringsWithDefault(this._errors);
   }
 
+  get detailErrorCode(): number {
+    return this._detailErrorCode;
+  }
+
   set detailErrorCode(value: number) {
     this._detailErrorCode = value;
+  }
+
+  get endUserErrors(): string[] {
+    return this._endUserErrors;
   }
 
   set endUserErrors(value: string[]) {
     this._endUserErrors = value;
   }
 
+  get details(): T {
+    return this._details;
+  }
+
   set details(value: T) {
     this._details = value;
   }
 
+  get requestId(): string {
+    return this._requestId;
+  }
+
   set requestId(value: string) {
     this._requestId = value || "MISSING";
+  }
+
+  get wrappedError(): Error {
+    return this._wrappedError;
   }
 
   set wrappedError(value: Error) {

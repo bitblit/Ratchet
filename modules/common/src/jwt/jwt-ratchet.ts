@@ -211,6 +211,8 @@ export class JwtRatchet implements JwtRatchetLike {
   public static removeJwtFields(ob: any) {
     if (ob) {
       ['iss', 'sub', 'aud', 'exp', 'nbf', 'iat', 'jti'].forEach((k) => {
+        // This isn't really dynamic
+        // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
         delete ob[k];
       });
     }
@@ -218,6 +220,7 @@ export class JwtRatchet implements JwtRatchetLike {
 
   public static removeExpiredFlag(ob: any) {
     if (ob) {
+      // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
       delete ob[JwtRatchet.EXPIRED_FLAG_NAME];
     }
   }

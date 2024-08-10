@@ -15,10 +15,9 @@ export class PromiseRatchet {
    * the promise will reject when any of those events are fired
    * @param evtSrc Object that will fire the event
    * @param okEvtNames Names of the event that will be considered successes
-   * @param errEventNames Names of error events
+   * @param errEvtNames Names of error events
    * @param rval Return value, if any
    */
-   
   public static resolveOnEvent<T>(evtSrc: any, okEvtNames: string[], errEvtNames: string[] = [], rval: T = null): Promise<T> {
     if (!evtSrc || !okEvtNames || okEvtNames.length === 0 || !evtSrc['on']) {
       return Promise.reject('Cannot continue - missing source object or name, or the object is not an event source');

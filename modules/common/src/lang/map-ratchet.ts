@@ -125,7 +125,9 @@ export class MapRatchet {
 
   /*
     Mainly here to simplify sending objects to DynamoDB - recursively descend and clean up javascript objects, removing
-    any empty strings, nulls, etc
+    any empty strings, nulls, etc.
+
+    CAW 2024-08-09: Since DynamoClient has its own implementation of this now, better to use the marshaller over there instead
      */
   public static cleanup<T>(obj: T, stripZero = false, stripNull = true, stripUndefined = true, stripEmptyString = true): T {
     // See : https://stackoverflow.com/questions/286141/remove-blank-attributes-from-an-object-in-javascript
@@ -149,6 +151,8 @@ export class MapRatchet {
         (o[key] === '' && stripEmptyString) ||
         (o[key] === 0 && stripZero)
       ) {
+        // This actually IS a bad example of this, but the whole function is deprecated now
+        // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
         delete o[key]; // Delete undefined and null.
       } else {
         // Leave it alone

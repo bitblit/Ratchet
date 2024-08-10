@@ -103,8 +103,8 @@ export class TimeZoneRatchet {
    * Imagine a day cut into N 'slots', each slotWidthMS wide - then there are
    * 86,400,000 / slotWidthMS slots available, indexed from 0 on up.  This function
    * returns that index
-   * @param {number} slotWidthMs
-   * @returns {number} containing the current index
+   * @param timestamp Number of the epochMS to check
+   * @param slotWidthMs Number of the width of each slot in MS
    */
   public matchingTimeSlotIdx(timestamp: number, slotWidthMs: number): number {
     if (slotWidthMs < 1) {

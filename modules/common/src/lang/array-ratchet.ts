@@ -54,9 +54,9 @@ export class ArrayRatchet {
    * Given a sorted array of type T with a field named fieldName of type R, perform
    * binary search to find the top and bottom bounds and extract the result
    * @param input Array to select from
-   * @param fieldName Name of the field
-   * @param min min value of field to include
-   * @param max max value of field to include
+   * @param fieldDotPath Path of the field
+   * @param minInclusive min value of field to include
+   * @param maxExclusive max value of field to include
    */
   public static extractSubarrayFromSortedByNumberField<T>(
     input: T[],

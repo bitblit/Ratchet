@@ -51,8 +51,7 @@ export class TwilioRatchet {
     if (!!recipientPhoneNumbers && recipientPhoneNumbers.length > 0 && !!StringRatchet.trimToNull(message)) {
       Logger.info('Sending %s to %j', message, recipientPhoneNumbers);
 
-      for (let i = 0; i < recipientPhoneNumbers.length; i++) {
-        const phoneNumber: string = recipientPhoneNumbers[i];
+      for (const phoneNumber of recipientPhoneNumbers) {
         Logger.info('To: %s', phoneNumber);
 
         if (!TwilioRatchet.isValidE164Number(phoneNumber)) {

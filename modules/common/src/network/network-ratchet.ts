@@ -8,6 +8,10 @@ import { ParsedUrl } from '../lang/parsed-url.js';
 export class NetworkRatchet {
   private static LOCAL_IP: string = null;
 
+  // Prevent instantiation
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  private constructor() {}
+
   public static findLocalIp(useCache = true): Promise<string> {
     Logger.info('Attempting to find local IP (V 2)');
     if (NetworkRatchet.LOCAL_IP && useCache) {
@@ -26,10 +30,16 @@ export class NetworkRatchet {
               const addrs: any = Object.create(null);
               addrs['0.0.0.0'] = false;
 
+              // FF [and now Chrome!] needs a channel/stream to proceed
+              rtc.createDataChannel('', { reliable: false });
+              /*
+              CAW - leaving this here for historical reasons, but obviously
+              if (1 ||... is always true, so moving it up
               if (1 || window['mozRTCPeerConnection']) {
                 // FF [and now Chrome!] needs a channel/stream to proceed
                 rtc.createDataChannel('', { reliable: false });
               }
+               */
 
               rtc.onicecandidate = function (evt) {
                 // convert the candidate to SDP so we can run it through our general parser
@@ -66,19 +76,20 @@ export class NetworkRatchet {
   }
 
   // Break a url into a structure that is similar to what window.location returns
+  // @deprecated CAW 2024-08-09 : Here for backwards compatibility (Node did not used to have URL) - Just use new URL(x) now
   public static parseUrl(href: string): ParsedUrl {
-    const match = href.match(/^(https?\:)\/\/(([^:\/?#]*)(?:\:([0-9]+))?)([\/]{0,1}[^?#]*)(\?[^#]*|)(#.*|)$/);
+    const url: URL = new URL(href);
     const rval: ParsedUrl =
-      match &&
+      url &&
       ({
         href: href,
-        protocol: match[1],
-        host: match[2],
-        hostname: match[3],
-        port: match[4],
-        pathname: match[5],
-        search: match[6],
-        hash: match[7],
+        protocol: url.protocol,
+        host: url.host,
+        hostname: url.hostname,
+        port: url.port,
+        pathname: url.pathname,
+        search: url.search,
+        hash: url.hash
       } as ParsedUrl);
     return rval;
   }
