@@ -152,7 +152,7 @@ describe('#ratchet2d', function () {
     expect(r1.length).toEqual(6);
 
     // Full rotation should be the same
-    const r3: Point2d[] = Ratchet2d.rotateRightAboutOrigin90Degrees(points, 3);
+    const _r3: Point2d[] = Ratchet2d.rotateRightAboutOrigin90Degrees(points, 3);
     const r2: Point2d[] = Ratchet2d.rotateRightAboutOrigin90Degrees(points, 4);
     expect(r2.length).toEqual(6);
     expect(r2[0].x).toEqual(points[0].x);

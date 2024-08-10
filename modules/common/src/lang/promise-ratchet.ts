@@ -64,30 +64,21 @@ export class PromiseRatchet {
   }
 
    
-  public static dumpResult(result: any, autoDebug = false): void {
+  public static dumpResult(result: any): void {
     Logger.info('Success, result was : \n\n%s\n\n', JSON.stringify(result));
-    if (autoDebug) {
-      debugger; // After log so we already have the output
-    }
     process.exit(0);
   }
 
    
-  public static dumpError(err: any, autoDebug = false): void {
+  public static dumpError(err: any): void {
     Logger.warn('Failure, err was : \n\n%s\n\n  --  \n\n%s\n\n', JSON.stringify(err), String(err));
     console.trace();
-    if (autoDebug) {
-      debugger; // After log so we already have the output
-    }
     process.exit(1);
   }
 
    
-  public static logErrorAndReturnNull(err: any, autoDebug = false): void {
+  public static logErrorAndReturnNull(err: any): void {
     Logger.warn('Failure, err was : \n\n%s\n\n  --  \n\n%s\n\n', JSON.stringify(err), String(err));
-    if (autoDebug) {
-      debugger; // After log so we already have the output
-    }
     return null;
   }
 
