@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { RatchetCliHandler } from '../lib/index.mjs';
+import { RatchetCliHandler } from '../lib/cli/ratchet-cli-handler.js';
 
 try {
   //const RatchetCliHandler = await import('../dist/cli-bootstrap/ratchet-cli-handler.js');
