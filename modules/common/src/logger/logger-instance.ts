@@ -164,8 +164,8 @@ export class LoggerInstance {
       let msg: LogMessage = Object.assign({}, inMsg);
       // If there are any preprocessors, run them
       if (this._options.preProcessors?.length) {
-        for (let i = 0; i < this._options.preProcessors.length; i++) {
-          msg = this._options.preProcessors[i].process(msg);
+        for (const proc of this._options.preProcessors) {
+          msg = proc.process(msg);
         }
       }
       // Now, generate the actual string to log

@@ -8,7 +8,6 @@ import { TestMailSendingProvider } from "./test-mail-sending-provider.js";
 import { SendEmailResult } from "./send-email-result.js";
 import { describe, expect, test } from "vitest";
 
-let mockSES;
 const smallImageBase64 =
   'iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII';
 

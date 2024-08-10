@@ -115,8 +115,8 @@ export class PromiseRatchet {
     let curVal: any = null;
     try {
       curVal = testFunction(count);
-    } catch (_err) {
-      Logger.warn('%s: Caught error while waiting, giving up', label);
+    } catch (err) {
+      Logger.warn('%s: Caught error while waiting, giving up : %s', label, err);
       return false;
     }
 
@@ -138,7 +138,7 @@ export class PromiseRatchet {
   }
 
   public static async runBoundedParallel<T>(
-    promiseFn: Function,
+    promiseFn: (...args)=>Promise<T>,
     params: any[][],
     context: any,  
     maxConcurrent = 1,
@@ -170,7 +170,7 @@ export class PromiseRatchet {
   }
 
   public static async runBoundedParallelSingleParam<T>(
-    promiseFn: Function,
+    promiseFn: (...args)=>Promise<T>,
     params: any[],
     context: any,  
     maxConcurrent = 1,
@@ -180,13 +180,13 @@ export class PromiseRatchet {
     return PromiseRatchet.runBoundedParallel<T>(promiseFn, wrappedParams, context, maxConcurrent, logLevel);
   }
 
-  public static async asyncForEachSerial(array: any[], callback: Function): Promise<void> {
+  public static async asyncForEachSerial<T,R>(array: any[], callback: (val:T, idx: number, arr:T[])=>Promise<R>): Promise<void> {
     for (let index = 0; index < array.length; index++) {
       await callback(array[index], index, array);
     }
   }
 
-  public static async asyncForEachParallel(array: any[], callback: Function): Promise<void> {
+  public static async asyncForEachParallel<T>(array: T[], callback: (val:T, idx: number, arr:T[])=>Promise<any>): Promise<void> {
     const proms: Promise<any>[] = [];
 
     for (let index = 0; index < array.length; index++) {

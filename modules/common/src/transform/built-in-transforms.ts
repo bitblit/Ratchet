@@ -10,7 +10,7 @@ import { DateTime } from 'luxon';
 export class BuiltInTransforms {
   public static keysOnly(rule: TransformRule): TransformRule {
     return {
-      transform(value: any, _isKey: boolean, _context: any): any {
+      transform(value: any, isKey: boolean, context: any): any {
         return isKey ? rule.transform(value, isKey, context) : value;
       },
     } as TransformRule;
@@ -18,7 +18,7 @@ export class BuiltInTransforms {
 
   public static valuesOnly(rule: TransformRule): TransformRule {
     return {
-      transform(value: any, _isKey: boolean, _context: any): any {
+      transform(value: any, isKey: boolean, context: any): any {
         return !isKey ? rule.transform(value, isKey, context) : value;
       },
     } as TransformRule;

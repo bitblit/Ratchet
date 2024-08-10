@@ -60,7 +60,7 @@ export class StringRatchet {
     if (StringRatchet.trimToNull(val)) {
       try {
         rval = JSON.parse(val);
-      } catch (_err) {
+      } catch {//(err) {
         rval = null;
       }
     }

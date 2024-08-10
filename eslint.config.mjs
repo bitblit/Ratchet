@@ -12,6 +12,8 @@ export default tseslint.config(
   eslintConfigPrettier,
   {
     rules: {
+      // Ok, I'm a java-head, but I like the namespacing of static class wrappers
+      "@typescript-eslint/no-extraneous-class": "off",
       "@typescript-eslint/no-inferrable-types": "off",
       "@typescript-eslint/no-explicit-any": "off",
       "no-unused-vars": "off",
