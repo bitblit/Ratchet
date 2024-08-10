@@ -62,20 +62,17 @@ export class PromiseRatchet {
     Logger.silly('Finished wait of %d ms', time);
   }
 
-   
   public static dumpResult(result: any): void {
     Logger.info('Success, result was : \n\n%s\n\n', JSON.stringify(result));
     process.exit(0);
   }
 
-   
   public static dumpError(err: any): void {
     Logger.warn('Failure, err was : \n\n%s\n\n  --  \n\n%s\n\n', JSON.stringify(err), String(err));
     console.trace();
     process.exit(1);
   }
 
-   
   public static logErrorAndReturnNull(err: any): void {
     Logger.warn('Failure, err was : \n\n%s\n\n  --  \n\n%s\n\n', JSON.stringify(err), String(err));
     return null;
@@ -91,7 +88,7 @@ export class PromiseRatchet {
   // it is used as the "breakout" poison pill value
   public static async waitFor(
     testFunction: (n: number) => any,
-    expectedValue: any,  
+    expectedValue: any,
     intervalMS: number,
     maxCycles: number,
     label = 'waitFor',
@@ -137,9 +134,9 @@ export class PromiseRatchet {
   }
 
   public static async runBoundedParallel<T>(
-    promiseFn: (...args)=>Promise<T>,
+    promiseFn: (...args) => Promise<T>,
     params: any[][],
-    context: any,  
+    context: any,
     maxConcurrent = 1,
     logLevel: LoggerLevelName = LoggerLevelName.debug,
   ): Promise<T[]> {
@@ -169,9 +166,9 @@ export class PromiseRatchet {
   }
 
   public static async runBoundedParallelSingleParam<T>(
-    promiseFn: (...args)=>Promise<T>,
+    promiseFn: (...args) => Promise<T>,
     params: any[],
-    context: any,  
+    context: any,
     maxConcurrent = 1,
     logLevel: LoggerLevelName = LoggerLevelName.debug,
   ): Promise<T[]> {
@@ -179,13 +176,13 @@ export class PromiseRatchet {
     return PromiseRatchet.runBoundedParallel<T>(promiseFn, wrappedParams, context, maxConcurrent, logLevel);
   }
 
-  public static async asyncForEachSerial<T,R>(array: any[], callback: (val:T, idx: number, arr:T[])=>Promise<R>): Promise<void> {
+  public static async asyncForEachSerial<T, R>(array: any[], callback: (val: T, idx: number, arr: T[]) => Promise<R>): Promise<void> {
     for (let index = 0; index < array.length; index++) {
       await callback(array[index], index, array);
     }
   }
 
-  public static async asyncForEachParallel<T>(array: T[], callback: (val:T, idx: number, arr:T[])=>Promise<any>): Promise<void> {
+  public static async asyncForEachParallel<T>(array: T[], callback: (val: T, idx: number, arr: T[]) => Promise<any>): Promise<void> {
     const proms: Promise<any>[] = [];
 
     for (let index = 0; index < array.length; index++) {

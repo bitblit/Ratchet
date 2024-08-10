@@ -1,11 +1,10 @@
 import { JwtRatchet } from './jwt-ratchet.js';
 import { ExpiredJwtHandling } from './expired-jwt-handling.js';
 import { expect, test, describe } from 'vitest';
-import { JwtRatchetConfig } from "./jwt-ratchet-config.js";
+import { JwtRatchetConfig } from './jwt-ratchet-config.js';
 
 describe('#jwtRatchet', function () {
-
-  function createConfig() : JwtRatchetConfig {
+  function createConfig(): JwtRatchetConfig {
     const jwtRatchetConfig: JwtRatchetConfig = {
       encryptionKeyPromise: Promise.resolve('test1234'),
       decryptKeysPromise: Promise.resolve([]),
@@ -70,7 +69,7 @@ describe('#jwtRatchet', function () {
   test('should decode with a decode key', async () => {
     const oldCfg: JwtRatchetConfig = createConfig();
     oldCfg.encryptionKeyPromise = Promise.resolve('oldKey');
-    const newCfg: JwtRatchetConfig =createConfig();
+    const newCfg: JwtRatchetConfig = createConfig();
     newCfg.encryptionKeyPromise = Promise.resolve('newKey');
     newCfg.decryptKeysPromise = Promise.resolve(['oldKey']);
 

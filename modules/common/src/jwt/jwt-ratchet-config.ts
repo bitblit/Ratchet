@@ -1,4 +1,4 @@
-import { LoggerLevelName } from "../logger/logger-level-name.js";
+import { LoggerLevelName } from '../logger/logger-level-name.js';
 
 /**
  * Functions to help with creating and decoding JWTs
@@ -10,9 +10,9 @@ import { LoggerLevelName } from "../logger/logger-level-name.js";
  * that itself must be synchronous
  */
 export interface JwtRatchetConfig {
- encryptionKeyPromise: Promise<string | string[]>;
- decryptKeysPromise?: Promise<string[]>;
- jtiGenerator?: () => string;
- decryptOnlyKeyUseLogLevel?: LoggerLevelName;
- parseFailureLogLevel?: LoggerLevelName;
+  encryptionKeyPromise: Promise<string | string[]>;
+  decryptKeysPromise?: Promise<string[]>;
+  jtiGenerator?: () => string;
+  decryptOnlyKeyUseLogLevel?: LoggerLevelName;
+  parseFailureLogLevel?: LoggerLevelName;
 }

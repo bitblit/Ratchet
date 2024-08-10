@@ -2,9 +2,9 @@
     Functions for working with base64
 */
 
-import { Logger } from "../logger/logger.js";
-import { StringRatchet } from "./string-ratchet.js";
-import { ErrorRatchet } from "./error-ratchet.js";
+import { Logger } from '../logger/logger.js';
+import { StringRatchet } from './string-ratchet.js';
+import { ErrorRatchet } from './error-ratchet.js';
 
 // We use uint8 arrays in here because the default javascript handling of base64 encoding/decoding is
 // broken for anything that isn't a normal ascii string
@@ -13,7 +13,6 @@ import { ErrorRatchet } from "./error-ratchet.js";
 // https://gist.githubusercontent.com/enepomnyaschih/72c423f727d395eeaa09697058238727/raw/74d3cbf82481545bc26c104de2419f4ee30c7dd7/base64.js
 // Since native javascript handling is so poor
 export class Base64Ratchet {
-   
   public static safeObjectToBase64JSON(input: any): any {
     return input ? Base64Ratchet.generateBase64VersionOfString(JSON.stringify(input)) : null;
   }

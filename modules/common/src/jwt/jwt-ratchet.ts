@@ -1,13 +1,13 @@
-import { RequireRatchet } from "../lang/require-ratchet.js";
-import { Logger } from "../logger/logger.js";
-import { StringRatchet } from "../lang/string-ratchet.js";
-import { DurationRatchet } from "../lang/duration-ratchet.js";
-import { JwtTokenBase } from "./jwt-token-base.js";
-import { LoggerLevelName } from "../logger/logger-level-name.js";
-import { ExpiredJwtHandling } from "./expired-jwt-handling.js";
-import { JwtRatchetLike } from "./jwt-ratchet-like.js";
-import { JwtRatchetConfig } from "./jwt-ratchet-config.js";
-import jsonwebtoken from "jsonwebtoken";
+import { RequireRatchet } from '../lang/require-ratchet.js';
+import { Logger } from '../logger/logger.js';
+import { StringRatchet } from '../lang/string-ratchet.js';
+import { DurationRatchet } from '../lang/duration-ratchet.js';
+import { JwtTokenBase } from './jwt-token-base.js';
+import { LoggerLevelName } from '../logger/logger-level-name.js';
+import { ExpiredJwtHandling } from './expired-jwt-handling.js';
+import { JwtRatchetLike } from './jwt-ratchet-like.js';
+import { JwtRatchetConfig } from './jwt-ratchet-config.js';
+import jsonwebtoken from 'jsonwebtoken';
 
 /**
  * Functions to help with creating and decoding JWTs
@@ -21,8 +21,7 @@ import jsonwebtoken from "jsonwebtoken";
 export class JwtRatchet implements JwtRatchetLike {
   private static readonly EXPIRED_FLAG_NAME: string = '__jwtServiceExpiredFlag';
 
-  constructor(private cfg: JwtRatchetConfig
-  ) {
+  constructor(private cfg: JwtRatchetConfig) {
     RequireRatchet.notNullOrUndefined(cfg, 'config');
     RequireRatchet.notNullOrUndefined(cfg.encryptionKeyPromise, 'encryptionKeyPromise');
 
@@ -34,11 +33,11 @@ export class JwtRatchet implements JwtRatchetLike {
   public get copyConfig(): JwtRatchetConfig {
     const rval: JwtRatchetConfig = {
       encryptionKeyPromise: this.cfg.encryptionKeyPromise,
-      decryptKeysPromise : this.cfg.decryptKeysPromise,
-      jtiGenerator :this.cfg.jtiGenerator,
-      decryptOnlyKeyUseLogLevel : this.cfg.decryptOnlyKeyUseLogLevel,
-      parseFailureLogLevel :this.cfg.parseFailureLogLevel,
-    }
+      decryptKeysPromise: this.cfg.decryptKeysPromise,
+      jtiGenerator: this.cfg.jtiGenerator,
+      decryptOnlyKeyUseLogLevel: this.cfg.decryptOnlyKeyUseLogLevel,
+      parseFailureLogLevel: this.cfg.parseFailureLogLevel,
+    };
     return rval;
   }
 
@@ -202,7 +201,7 @@ export class JwtRatchet implements JwtRatchetLike {
   }
 
   // Helper method that reads the token without checking it, therefore the keys are not needed
-  public static async decodeTokenNoVerify<T extends JwtTokenBase>(token: string ): Promise<T> {
+  public static async decodeTokenNoVerify<T extends JwtTokenBase>(token: string): Promise<T> {
     const rval: T = jsonwebtoken.decode(token) as T;
     return rval;
   }

@@ -67,7 +67,6 @@ export class MapRatchet {
     return rval;
   }
 
-   
   public static findValue(toSearch: any, path: string[]): any {
     if (!path || path.length == 0) {
       return toSearch;
@@ -80,7 +79,6 @@ export class MapRatchet {
     }
   }
 
-   
   public static findValueDotPath(toSearch: any, dotPath: string): any {
     if (!dotPath || dotPath.length == 0) {
       return toSearch;
@@ -96,14 +94,13 @@ export class MapRatchet {
   // Ok so this does the dumbest possible deep compare, by converting
   // both objects to JSON and comparing strings.  Its slow and stupid
   // but its easy.
-   
+
   public static simpleDeepCompare(object1: any, object2: any): boolean {
     if (object1 == null && object2 == null) return true;
     if (object1 == null || object2 == null) return false;
     return JSON.stringify(object1) == JSON.stringify(object2);
   }
 
-   
   public static toKeyValueList(value: Record<string, any>): KeyValue<any>[] {
     const returnArray: KeyValue<any>[] = [];
 
@@ -162,7 +159,6 @@ export class MapRatchet {
     return o; // Return new object.
   }
 
-   
   public static extractValueFromMapIgnoreCase(src: any, key: string): any {
     let rval: any = null;
     if (src && key) {
@@ -180,7 +176,6 @@ export class MapRatchet {
     return rval;
   }
 
-   
   public static safeCallFunction(ob: any, fnName: string): boolean {
     let rval = false;
     if (!!ob && !!ob[fnName] && typeof ob[fnName] === 'function') {
@@ -194,7 +189,6 @@ export class MapRatchet {
     return rval;
   }
 
-   
   public static caseInsensitiveAccess<T>(ob: any, keyName: string): T {
     let rval: T = null;
 

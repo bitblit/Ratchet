@@ -71,8 +71,8 @@ export class TransactionRatchet {
     rval.finalState = rval.rollbackError
       ? TransactionFinalState.RollbackFailed
       : rval.error
-      ? TransactionFinalState.RolledBack
-      : TransactionFinalState.Success;
+        ? TransactionFinalState.RolledBack
+        : TransactionFinalState.Success;
     Logger.info('Transaction completed with status : %s', rval.finalState);
 
     if (config?.executeAfterRollback && rval.finalState !== TransactionFinalState.Success) {

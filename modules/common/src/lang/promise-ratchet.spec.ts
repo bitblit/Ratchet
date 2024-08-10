@@ -71,7 +71,7 @@ describe('#promiseRatchet', function () {
   test.skip('should run an async function as a for/each', async () => {
     Logger.setLevel(LoggerLevelName.debug);
     const elements: number[] = [1001, 1002, 2000];
-    const pfn: (v:any)=>Promise<void> = async (v) => {
+    const pfn: (v: any) => Promise<void> = async (v) => {
       Logger.info('Waiting %s', v);
       await PromiseRatchet.wait(v);
       Logger.info('Finished %s', v);

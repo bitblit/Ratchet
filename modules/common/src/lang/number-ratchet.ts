@@ -20,7 +20,6 @@ export class NumberRatchet {
     return v === null || v === undefined ? v : NumberRatchet.safeNumber(v.toFixed(placesAfterPoint));
   }
 
-   
   public static leadingZeros(val: any, size: number): string {
     const sVal = String(val);
     if (sVal.length < size) {
@@ -52,7 +51,7 @@ export class NumberRatchet {
   // useDefaultForNullAndUndefined flag, use it instead
   // I support both modes because some people consider "null/undefined" a valid value for
   // numbers and others don't!
-   
+
   public static safeNumber(input: any, ifNotNumber: number = null, useDefaultForNullAndUndefined?: boolean): number {
     const opts: Partial<SafeNumberOptions> = {
       ifNotNumber: ifNotNumber,

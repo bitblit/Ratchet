@@ -89,7 +89,7 @@ export class NetworkRatchet {
         port: url.port,
         pathname: url.pathname,
         search: url.search,
-        hash: url.hash
+        hash: url.hash,
       } as ParsedUrl);
     return rval;
   }

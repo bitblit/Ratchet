@@ -3,12 +3,10 @@
 */
 
 export class RequireRatchet {
-   
   public static isNullOrUndefined(ob: any): boolean {
     return Object.is(ob, null) || Object.is(ob, undefined);
   }
 
-   
   public static notNullOrUndefined(ob: any, name = 'object'): void {
     if (RequireRatchet.isNullOrUndefined(ob)) {
       throw new Error(name + ' may not be null or undefined');
@@ -27,7 +25,6 @@ export class RequireRatchet {
     }
   }
 
-   
   public static equal(ob1: any, ob2: any, message = 'Values must be equal'): void {
     if (ob1 !== ob2) {
       throw new Error(message);

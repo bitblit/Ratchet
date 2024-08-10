@@ -3,9 +3,9 @@
  */
 
 import url from 'url';
-import { ErrorRatchet } from "./error-ratchet.js";
-import { Logger } from "../logger/logger.js";
-import { StringRatchet } from "./string-ratchet.js";
+import { ErrorRatchet } from './error-ratchet.js';
+import { Logger } from '../logger/logger.js';
+import { StringRatchet } from './string-ratchet.js';
 
 export class EsmRatchet {
   private static readonly DYNAMIC_IMPORT_CACHE: Map<string, Promise<any>> = new Map<string, Promise<any>>();
@@ -26,8 +26,13 @@ export class EsmRatchet {
     return rval;
   }
 
-  public static async cachedTypedDynamicImport<T>(libPath: string, importName?: string, requiredKeys?: string[], swallowErrorIfMissing?: boolean): Promise<T> {
-    const cacheKey: string = StringRatchet.trimToNull(importName) ? libPath+'__'+importName : libPath;
+  public static async cachedTypedDynamicImport<T>(
+    libPath: string,
+    importName?: string,
+    requiredKeys?: string[],
+    swallowErrorIfMissing?: boolean,
+  ): Promise<T> {
+    const cacheKey: string = StringRatchet.trimToNull(importName) ? libPath + '__' + importName : libPath;
     let rval: Promise<T> = EsmRatchet.DYNAMIC_IMPORT_CACHE.get(cacheKey);
     if (!rval) {
       rval = EsmRatchet.typedDynamicImport<T>(libPath, importName, requiredKeys, swallowErrorIfMissing);
@@ -38,11 +43,15 @@ export class EsmRatchet {
     return rval;
   }
 
-
-  public static async typedDynamicImport<T>(libPath: string, importName?: string, requiredKeys?: string[], swallowErrorIfMissing?: boolean): Promise<T> {
+  public static async typedDynamicImport<T>(
+    libPath: string,
+    importName?: string,
+    requiredKeys?: string[],
+    swallowErrorIfMissing?: boolean,
+  ): Promise<T> {
     let rval: T;
     try {
-     rval = await import (libPath);
+      rval = await import(libPath);
     } catch (err) {
       if (swallowErrorIfMissing) {
         Logger.debug('Cannot find library %s but swallow specified, returning null', libPath);
@@ -61,11 +70,11 @@ export class EsmRatchet {
 
     if (requiredKeys?.length && rval) {
       const keys: string[] = Object.keys(rval);
-      requiredKeys.forEach(k=>{
+      requiredKeys.forEach((k) => {
         if (!keys.includes(k)) {
           throw ErrorRatchet.fErr('Failed to import "%s" - required keys are %j, but found %j', libPath, requiredKeys, keys);
         }
-      })
+      });
     }
     return rval;
   }

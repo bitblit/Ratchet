@@ -60,7 +60,8 @@ export class StringRatchet {
     if (StringRatchet.trimToNull(val)) {
       try {
         rval = JSON.parse(val);
-      } catch {//(err) {
+      } catch {
+        //(err) {
         rval = null;
       }
     }
@@ -158,7 +159,7 @@ export class StringRatchet {
   }
 
   // Converts anything that isn't a string to a string
-   
+
   public static safeString(input: any): string {
     let rval: string = null;
     if (input != null) {
@@ -222,7 +223,6 @@ export class StringRatchet {
     return rval;
   }
 
-   
   public static leadingZeros(inVal: any, size: number): string {
     const pad = '00000000000000000000000000000000000000000000000000';
     let negative = false;
@@ -288,7 +288,6 @@ export class StringRatchet {
     return rval;
   }
 
-   
   public static csvSafe(input: any): string {
     let rval: string = StringRatchet.trimToEmpty(StringRatchet.safeString(input));
     rval.split('"').join('\\"');
@@ -324,15 +323,21 @@ export class StringRatchet {
   // javascript will do natively with backticks, but typesafe and can
   // be passed around.  Default template style is ${value} to match JS backticks
   // Note that any
-  public static simpleTemplateFill(template: string, fillers: Record<string, any>, errorOnMissingFiller = false, opener='${', closer='}'): string {
+  public static simpleTemplateFill(
+    template: string,
+    fillers: Record<string, any>,
+    errorOnMissingFiller = false,
+    opener = '${',
+    closer = '}',
+  ): string {
     let rval: string = template;
     if (rval && fillers) {
-      Object.keys(fillers).forEach(key=>{
-        rval = rval.split(opener+key+closer).join(fillers[key]);
+      Object.keys(fillers).forEach((key) => {
+        rval = rval.split(opener + key + closer).join(fillers[key]);
       });
     }
-    if (errorOnMissingFiller && rval?.indexOf(opener)>=0) {
-      throw new Error('Template has unfilled variables:'+rval);
+    if (errorOnMissingFiller && rval?.indexOf(opener) >= 0) {
+      throw new Error('Template has unfilled variables:' + rval);
     }
     return rval;
   }

@@ -35,12 +35,10 @@ export class BooleanRatchet {
     return rval;
   }
 
-   
   public static parseBool(val: any): boolean {
     return val === true || (val !== null && val !== undefined && typeof val === 'string' && val.toLowerCase() === 'true');
   }
 
-   
   public static intToBool(val: any): boolean {
     if (val === null || val === undefined) {
       return false;
@@ -48,7 +46,6 @@ export class BooleanRatchet {
     return NumberRatchet.safeNumber(val) !== 0;
   }
 
-   
   public static boolToInt(val: any): number {
     return BooleanRatchet.parseBool(val) ? 1 : 0;
   }

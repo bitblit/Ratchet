@@ -1,5 +1,5 @@
-import util from "util";
-import { NumberRatchet } from "../lang/number-ratchet.js";
+import util from 'util';
+import { NumberRatchet } from '../lang/number-ratchet.js';
 
 /**
  * 2023-07-18 : I moved this class from Epsilon over to common because 1) It has no
@@ -10,7 +10,7 @@ import { NumberRatchet } from "../lang/number-ratchet.js";
  * throwing things across the http wire in restful apis.
  */
 export class RestfulApiHttpError<T = void> extends Error {
-  private static readonly RATCHET_RESTFUL_API_HTTP_ERROR_FLAG_KEY: string = "__ratchetRestfulApiHttpErrorFlag";
+  private static readonly RATCHET_RESTFUL_API_HTTP_ERROR_FLAG_KEY: string = '__ratchetRestfulApiHttpErrorFlag';
   private _httpStatusCode = 500;
   private _errors: string[];
   private _detailErrorCode: number;
@@ -26,8 +26,8 @@ export class RestfulApiHttpError<T = void> extends Error {
     this[RestfulApiHttpError.RATCHET_RESTFUL_API_HTTP_ERROR_FLAG_KEY] = true; // Just used to tell if one has been wrapped
   }
 
-  public static combineErrorStringsWithDefault(errors: string[], defMessage = "Internal Server Error"): string {
-    return errors && errors.length > 0 ? errors.join(",") : defMessage;
+  public static combineErrorStringsWithDefault(errors: string[], defMessage = 'Internal Server Error'): string {
+    return errors && errors.length > 0 ? errors.join(',') : defMessage;
   }
 
   public setFormattedErrorMessage(format: string, ...input: any[]): void {
@@ -106,7 +106,7 @@ export class RestfulApiHttpError<T = void> extends Error {
   }
 
   set errors(value: string[]) {
-    this._errors = value || ["Internal Server Error"];
+    this._errors = value || ['Internal Server Error'];
     this.message = RestfulApiHttpError.combineErrorStringsWithDefault(this._errors);
   }
 
@@ -139,7 +139,7 @@ export class RestfulApiHttpError<T = void> extends Error {
   }
 
   set requestId(value: string) {
-    this._requestId = value || "MISSING";
+    this._requestId = value || 'MISSING';
   }
 
   get wrappedError(): Error {

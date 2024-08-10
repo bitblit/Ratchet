@@ -1,7 +1,7 @@
-import { RequireRatchet } from "./require-ratchet.js";
-import { fail } from "assert";
-import { Logger } from "../logger/logger.js";
-import { describe, test } from "vitest";
+import { RequireRatchet } from './require-ratchet.js';
+import { fail } from 'assert';
+import { Logger } from '../logger/logger.js';
+import { describe, test } from 'vitest';
 
 describe('#standardCases', function () {
   test('should throw exception on null value', function () {

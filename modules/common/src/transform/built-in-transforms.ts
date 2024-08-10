@@ -103,11 +103,7 @@ export class BuiltInTransforms {
     } as TransformRule;
   }
 
-  public static concatenateToNewField(
-    newFieldName: string,
-    oldFieldNamesInOrder: string[],
-    abortIfFieldMissing = true,
-  ): TransformRule {
+  public static concatenateToNewField(newFieldName: string, oldFieldNamesInOrder: string[], abortIfFieldMissing = true): TransformRule {
     return {
       transform(value: any, _isKey: boolean, _context: any): any {
         if (typeof value == 'object') {

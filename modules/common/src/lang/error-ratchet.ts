@@ -6,7 +6,6 @@ import { Logger } from '../logger/logger.js';
 import util from 'util';
 
 export class ErrorRatchet {
-   
   public static safeStringifyErr(err: any, log = true): string {
     let rval = 'ERR WAS NULL';
     if (err) {
@@ -16,7 +15,7 @@ export class ErrorRatchet {
         try {
           rval = JSON.stringify(err);
         } catch (err2) {
-          Logger.error('Failed to json stringify: %s',err2);
+          Logger.error('Failed to json stringify: %s', err2);
           rval = String(err);
         }
       }
@@ -24,7 +23,7 @@ export class ErrorRatchet {
     if (log) {
       Logger.error('%s', rval, err);
     }
-    return rval; 
+    return rval;
   }
 
   // Mainly for Typescript 4.5+ where this is now any/unknown by default

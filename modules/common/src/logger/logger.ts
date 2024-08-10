@@ -83,7 +83,6 @@ export class Logger {
     return Logger.getLogger().recordMessageBuilder(msgBuild);
   }
 
-
   public static levelIsEnabled(level: LoggerLevelName): boolean {
     return Logger.getLogger().levelIsEnabled(level);
   }
