@@ -26,9 +26,9 @@ export interface S3LocationSyncRatchetConfig {
 }
 
 interface BucketCmpResult {
-  needCopy: Array<S3Object>;
-  existed: Array<S3Object>;
-  diff: Array<S3Object>;
+  needCopy: S3Object[];
+  existed: S3Object[];
+  diff: S3Object[];
 }
 
 interface S3Object {

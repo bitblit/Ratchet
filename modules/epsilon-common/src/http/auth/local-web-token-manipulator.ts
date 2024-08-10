@@ -106,7 +106,7 @@ export class LocalWebTokenManipulator<T extends JwtTokenBase> implements WebToke
     if (tokenString.toLowerCase().startsWith('bearer ')) {
       tokenString = tokenString.substring(7);
     }
-    const validated: T = !!tokenString ? await this.parseAndValidateJWTStringAsync(tokenString) : null;
+    const validated: T = tokenString ? await this.parseAndValidateJWTStringAsync(tokenString) : null;
     return validated;
   }
 }

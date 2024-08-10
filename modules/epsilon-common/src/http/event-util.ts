@@ -215,7 +215,7 @@ export class EventUtil {
 
   public static eventIsAGraphQLIntrospection(event: APIGatewayEvent): boolean {
     let rval: boolean = false;
-    if (!!event) {
+    if (event) {
       if (!!event.httpMethod && 'post' === event.httpMethod.toLowerCase()) {
         if (!!event.path && event.path.endsWith('/graphql')) {
           try {

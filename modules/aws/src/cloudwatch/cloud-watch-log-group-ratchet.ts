@@ -45,7 +45,7 @@ export class CloudWatchLogGroupRatchet {
       });
 
       params.nextToken = temp.nextToken;
-    } while (!!params.nextToken);
+    } while (params.nextToken);
 
     Logger.debug('Found %d total, returning', rval.length);
     return rval;

@@ -74,7 +74,7 @@ export class ResponseUtil {
     } as ProxyResult;
   }
 
-  // eslint-disable-next-line  @typescript-eslint/explicit-module-boundary-types
+   
   public static coerceToProxyResult(input: any): ProxyResult {
     let rval: ProxyResult = null;
 

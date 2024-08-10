@@ -33,7 +33,7 @@ export class SesMailSendingProvider implements MailSendingProvider<SendRawEmailC
     rawSendResult: SendRawEmailCommandOutput,
   ): Promise<CompleteMultipartUploadCommandOutput> {
     let rval: CompleteMultipartUploadCommandOutput = null;
-    if (!!this._archiveRatchet) {
+    if (this._archiveRatchet) {
       Logger.debug('Archiving outbound email to : %j', mail.destinationAddresses);
       let targetPath: string = StringRatchet.trimToEmpty(this.archivePrefix);
       if (!targetPath.endsWith('/')) {

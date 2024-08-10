@@ -36,7 +36,7 @@ export class SiteUploader {
     return inst.runPump();
   }
 
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+   
   findMatch(prefix: string, fileName: string, config: any): any {
     let found = null;
 
@@ -55,7 +55,7 @@ export class SiteUploader {
     return found;
   }
 
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+   
   findMime(fileName: string, config: any): string {
     let found = null;
 

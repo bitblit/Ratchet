@@ -73,7 +73,7 @@ export class CloudWatchMetricsRatchet {
       throw new Error('You must specify either a scan or a query');
     }
 
-    const cnt: DynamoCountResult = !!req.query
+    const cnt: DynamoCountResult = req.query
       ? await req.dynamoRatchet.fullyExecuteQueryCount(req.query)
       : await req.dynamoRatchet.fullyExecuteScanCount(req.scan);
 

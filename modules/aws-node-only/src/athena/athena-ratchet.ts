@@ -61,7 +61,7 @@ export class AthenaRatchet {
       next = await this.athena.send(new ListNamedQueriesCommand(params));
       rval = rval.concat(next.NamedQueryIds);
       params.NextToken = next.NextToken;
-    } while (!!params.NextToken);
+    } while (params.NextToken);
 
     return rval;
   }

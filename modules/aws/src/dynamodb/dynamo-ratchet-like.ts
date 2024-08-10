@@ -31,10 +31,10 @@ export interface DynamoRatchetLike {
   fetchFullObjectsMatchingKeysOnlyIndexQuery<T>(qry: QueryCommandInput, keyNames: string[], batchSize?: number): Promise<T[]>;
   fetchAllInBatches<T>(tableName: string, inKeys: any[], batchSize: number): Promise<T[]>;
   deleteAllInBatches(tableName: string, keys: any[], batchSize: number): Promise<number>;
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+   
   simplePut(tableName: string, value: any, autoRetryCount?: number): Promise<PutCommandOutput>;
   simplePutOnlyIfFieldIsNullOrUndefined(tableName: string, value: any, fieldName: string): Promise<boolean>;
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+   
   // This works like simplePut, but if a collision is detected it adjusts the object and tries writing again
   // The adjustment function MUST change one of the keys - otherwise this just runs forever (or until it hits "maxAdjusts")
   simplePutWithCollisionAvoidance<T>(
@@ -45,9 +45,9 @@ export interface DynamoRatchetLike {
     maxAdjusts?: number,
     autoRetryCount?: number,
   ): Promise<T>;
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+   
   simpleGet<T>(tableName: string, keys: any, autoRetryCount?: number): Promise<T>;
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+   
   simpleGetWithCounterDecrement<T>(
     tableName: string,
     keys: any,
@@ -55,8 +55,8 @@ export interface DynamoRatchetLike {
     deleteOnZero: boolean,
     autoRetryCount?: number,
   ): Promise<T>;
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+   
   simpleDelete(tableName: string, keys: any): Promise<DeleteCommandOutput>;
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+   
   atomicCounter(tableName: string, keys: any, counterFieldName: string, increment?: number): Promise<number>;
 }

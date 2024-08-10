@@ -12,7 +12,7 @@ export class AwsCredentialsRatchet {
   private constructor() {}
 
   public static applySetProfileEnvironmentalVariable(newProfile: string): void {
-    if (!!process.env) {
+    if (process.env) {
       if (StringRatchet.trimToNull(newProfile)) {
         process.env['AWS_PROFILE'] = newProfile;
       } else {

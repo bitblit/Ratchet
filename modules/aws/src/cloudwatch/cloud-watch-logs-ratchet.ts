@@ -149,7 +149,7 @@ export class CloudWatchLogsRatchet {
         });
 
         streamSearchParams['nextToken'] = streams.nextToken;
-      } while (!!streamSearchParams['nextToken']);
+      } while (streamSearchParams['nextToken']);
     } catch (err) {
       Logger.error('Error attempting to find oldest event in group : %s : %s', logGroupName, err, err);
     }
@@ -169,7 +169,7 @@ export class CloudWatchLogsRatchet {
       const res: DescribeLogGroupsCommandOutput = await this.cwLogs.send(new DescribeLogGroupsCommand(params));
       rval = rval.concat(res.logGroups);
       params.nextToken = res.nextToken;
-    } while (!!params.nextToken);
+    } while (params.nextToken);
 
     return rval;
   }
@@ -223,7 +223,7 @@ export class CloudWatchLogsRatchet {
 
   public async abortInsightsQuery(queryId: string): Promise<StopQueryCommandOutput> {
     let rval: StopQueryCommandOutput = null;
-    if (!!queryId) {
+    if (queryId) {
       rval = await this.cwLogs.send(new StopQueryCommand({ queryId: queryId }));
     }
     return rval;

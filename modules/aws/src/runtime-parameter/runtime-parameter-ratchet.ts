@@ -18,7 +18,7 @@ export class RuntimeParameterRatchet {
     let rval: T = null;
     const now: number = new Date().getTime();
     if (!forceFreshRead && !!cached) {
-      const oldest: number = !!cached.ttlSeconds ? now - cached.ttlSeconds * 1000 : 0;
+      const oldest: number = cached.ttlSeconds ? now - cached.ttlSeconds * 1000 : 0;
       if (cached.storedEpochMS > oldest) {
         Logger.silly('Fetched %s / %s from cache', groupId, paramKey);
         rval = JSON.parse(cached.paramValue);
@@ -26,7 +26,7 @@ export class RuntimeParameterRatchet {
     }
     if (!rval) {
       const temp: StoredRuntimeParameter = await this.readUnderlyingEntry(groupId, paramKey);
-      if (!!temp) {
+      if (temp) {
         this.addToCache(temp);
         rval = JSON.parse(temp.paramValue);
       }
@@ -55,7 +55,7 @@ export class RuntimeParameterRatchet {
     return this.provider.readAllParametersForGroup(groupId);
   }
 
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+   
   public async storeParameter(groupId: string, paramKey: string, paramValue: any, ttlSeconds: number): Promise<StoredRuntimeParameter> {
     const toStore: StoredRuntimeParameter = {
       groupId: groupId,
@@ -71,7 +71,7 @@ export class RuntimeParameterRatchet {
   }
 
   private addToCache(temp: StoredRuntimeParameter): void {
-    if (!!temp) {
+    if (temp) {
       const now: number = new Date().getTime();
       const toStore: CachedStoredRuntimeParameter = Object.assign({ storedEpochMS: now }, temp);
       this.cache.set(RuntimeParameterRatchet.toCacheStoreKey(temp.groupId, temp.paramKey), toStore);

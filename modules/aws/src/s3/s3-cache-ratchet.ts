@@ -169,7 +169,7 @@ export class S3CacheRatchet implements S3CacheRatchetLike {
   // Given new board data, write it to the S3 file and set the refresh flag appropriately
   public async writeObjectToCacheFile(
     key: string,
-    dataObject: any, // eslint-disable-line @typescript-eslint/explicit-module-boundary-types
+    dataObject: any,  
     template?: PutObjectCommandInput,
     bucket?: string,
   ): Promise<CompleteMultipartUploadCommandOutput> {

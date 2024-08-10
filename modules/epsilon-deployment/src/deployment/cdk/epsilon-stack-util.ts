@@ -10,8 +10,8 @@ export class EpsilonStackUtil {
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   private constructor() {}
 
-  public static toEnvironmentVariables(input: Record<string, any>[]): { [key: string]: string } {
-    const rval: { [key: string]: string } = {};
+  public static toEnvironmentVariables(input: Record<string, any>[]): Record<string, string> {
+    const rval: Record<string, string> = {};
     input.forEach((inval) => {
       Object.keys(inval).forEach((k) => {
         rval[k] = StringRatchet.safeString(inval[k]);

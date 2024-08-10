@@ -544,7 +544,7 @@ export class DynamoRatchet implements DynamoRatchetLike {
     return rval;
   }
 
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+   
   public async simplePut(tableName: string, value: Record<string, any>, autoRetryCount: number = 3): Promise<PutCommandOutput> {
     let rval: PutCommandOutput = null;
     let currentTry: number = 0;
@@ -609,7 +609,7 @@ export class DynamoRatchet implements DynamoRatchetLike {
     return rval;
   }
 
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+   
   // This works like simplePut, but if a collision is detected it adjusts the object and tries writing again
   // The adjustment function MUST change one of the keys - otherwise this just runs forever (or until it hits "maxAdjusts")
   public async simplePutWithCollisionAvoidance<T>(
@@ -683,7 +683,7 @@ export class DynamoRatchet implements DynamoRatchetLike {
     return pio ? (params.Item as T) : null;
   }
 
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+   
   public async simpleGet<T>(tableName: string, keys: Record<string, any>, autoRetryCount: number = 3): Promise<T> {
     let holder: GetCommandOutput = null;
     let currentTry: number = 0;
@@ -718,7 +718,7 @@ export class DynamoRatchet implements DynamoRatchetLike {
     return !!err && err instanceof ProvisionedThroughputExceededException;
   }
 
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+   
   public async simpleGetWithCounterDecrement<T>(
     tableName: string,
     keys: Record<string, any>,
@@ -776,7 +776,7 @@ export class DynamoRatchet implements DynamoRatchetLike {
     return rval;
   }
 
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+   
   public async simpleDelete(tableName: string, keys: Record<string, any>): Promise<DeleteCommandOutput> {
     const params: DeleteCommandInput = {
       TableName: tableName,
@@ -787,7 +787,7 @@ export class DynamoRatchet implements DynamoRatchetLike {
     return holder;
   }
 
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+   
   public async atomicCounter(tableName: string, keys: Record<string, any>, counterFieldName: string, increment = 1): Promise<number> {
     const update: UpdateCommandInput = {
       TableName: tableName,
@@ -810,9 +810,9 @@ export class DynamoRatchet implements DynamoRatchetLike {
   // Recursively Removes any empty strings in place
   // Here for backwards compatibility - really should just configure your document client the
   // way you want it instead
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+   
   public static cleanObject(ob: Record<string, any>): void {
-    if (!!ob) {
+    if (ob) {
       const rem: string[] = [];
       Object.keys(ob).forEach((k) => {
         const v: any = ob[k];

@@ -68,12 +68,12 @@ export class BackgroundHandler implements EpsilonLambdaEventHandler<SNSEvent> {
     return LambdaEventDetector.isValidSnsEvent(evt) && this.isBackgroundSNSEvent(evt);
   }
 
-  // eslint-disable-next-line  @typescript-eslint/explicit-module-boundary-types
+   
   public isBackgroundSNSEvent(event: any): boolean {
     return this.isBackgroundStartSnsEvent(event) || this.isBackgroundImmediateFireEvent(event);
   }
 
-  // eslint-disable-next-line  @typescript-eslint/explicit-module-boundary-types
+   
   public isBackgroundStartSnsEvent(event: any): boolean {
     let rval: boolean = false;
     if (event) {
@@ -85,15 +85,15 @@ export class BackgroundHandler implements EpsilonLambdaEventHandler<SNSEvent> {
     return rval;
   }
 
-  // eslint-disable-next-line  @typescript-eslint/explicit-module-boundary-types
+   
   public isBackgroundImmediateFireEvent(event: any): boolean {
     let rval: boolean = false;
 
-    if (!!event) {
+    if (event) {
       if (LambdaEventDetector.isSingleSnsEvent(event)) {
         const cast: SNSEvent = event as SNSEvent;
         const msg: string = cast.Records[0].Sns.Message;
-        if (!!StringRatchet.trimToNull(msg)) {
+        if (StringRatchet.trimToNull(msg)) {
           const parsed: any = JSON.parse(msg);
           rval = !!parsed && parsed['type'] === EpsilonConstants.BACKGROUND_SNS_IMMEDIATE_RUN_FLAG;
         }
@@ -102,15 +102,15 @@ export class BackgroundHandler implements EpsilonLambdaEventHandler<SNSEvent> {
     return rval;
   }
 
-  // eslint-disable-next-line  @typescript-eslint/explicit-module-boundary-types
+   
   public parseImmediateFireBackgroundEntry(event: any): InternalBackgroundEntry<any> {
     let rval: InternalBackgroundEntry<any> = null;
     try {
-      if (!!event) {
+      if (event) {
         if (LambdaEventDetector.isSingleSnsEvent(event)) {
           const cast: SNSEvent = event as SNSEvent;
           const msg: string = cast.Records[0].Sns.Message;
-          if (!!StringRatchet.trimToNull(msg)) {
+          if (StringRatchet.trimToNull(msg)) {
             const parsed: any = JSON.parse(msg);
             if (!!parsed && parsed['type'] === EpsilonConstants.BACKGROUND_SNS_IMMEDIATE_RUN_FLAG) {
               rval = parsed['backgroundEntry'];
@@ -149,12 +149,12 @@ export class BackgroundHandler implements EpsilonLambdaEventHandler<SNSEvent> {
    */
 
   // Either trigger a pull of the SQS queue, or process immediately
-  // eslint-disable-next-line  @typescript-eslint/explicit-module-boundary-types
+   
   public async processEvent(event: any, context: Context): Promise<ProxyResult> {
     let procd: number = null;
     if (!this.isBackgroundStartSnsEvent(event)) {
       const backgroundEntry: InternalBackgroundEntry<any> = this.parseImmediateFireBackgroundEntry(event);
-      if (!!backgroundEntry) {
+      if (backgroundEntry) {
         Logger.silly('Processing immediate fire event : %j', backgroundEntry);
         const result: boolean = await this.processSingleBackgroundEntry(backgroundEntry);
         Logger.silly('Result was : %s', result);

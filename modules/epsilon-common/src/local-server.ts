@@ -98,7 +98,7 @@ export class LocalServer {
 
     const reqTime: number = new Date().getTime();
     const formattedTime: string = DateTime.utc().toFormat('dd/MMM/yyyy:hh:mm:ss ZZ');
-    const queryStringParams: { [key: string]: string } = LocalServer.parseQueryParamsFromUrlString(path);
+    const queryStringParams: Record<string, string> = LocalServer.parseQueryParamsFromUrlString(path);
     const headers: any = Object.assign({}, request.headers);
     headers['X-Forwarded-Proto'] = 'http'; // This server is always unencrypted
 
@@ -193,8 +193,8 @@ export class LocalServer {
    * integration does.
    * Note that it does not URL decode the values.
    */
-  public static parseQueryParamsFromUrlString(urlString: string): { [key: string]: string } {
-    const rval: { [key: string]: string } = {};
+  public static parseQueryParamsFromUrlString(urlString: string): Record<string, string> {
+    const rval: Record<string, string> = {};
 
     const searchStringParts: string[] = urlString.split('?');
     if (searchStringParts.length < 2) {

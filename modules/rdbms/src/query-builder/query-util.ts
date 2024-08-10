@@ -87,7 +87,7 @@ export class QueryUtil {
 
   // Used by dbs like sqlite3 that want the prefix in the supplied record
   public static addPrefixToFieldNames(fields: Record<string, any>, prefix: string = ':'): Record<string, any> {
-    let rval: Record<string, any> = {};
+    const rval: Record<string, any> = {};
     Object.keys(fields).forEach(k=>{
       rval[prefix+k]=fields[k];
     });
@@ -98,7 +98,7 @@ export class QueryUtil {
   // If any supplied fields are null/undefined, replaces their variable in the source query
   // Needed by dbs like sqlite3 that dont handle null injection well
   public static replaceNullReplacementsInQuery(query: string, fields: Record<string, any>): string {
-    let rval: string = query;
+    const rval: string = query;
     Object.keys(fields).forEach(k=>{
       if (fields[k]===null || fields[k]===undefined) {
         rval.replaceAll(k, 'null');
@@ -110,7 +110,7 @@ export class QueryUtil {
   // Return a record that only contains fields that are actually used in the query
   public static removeUnusedFields(query: string, fields: Record<string, any>, prefix?:string): Record<string,any> {
     const usedFields: string[] = QueryUtil.extractUsedNamedParams(query);
-    let rval: Record<string,any> = {  };
+    const rval: Record<string,any> = {  };
     Object.keys(fields).forEach(k=>{
       if (usedFields.includes(k) || (prefix && usedFields.includes(prefix+k))) {
         rval[k]=fields[k];

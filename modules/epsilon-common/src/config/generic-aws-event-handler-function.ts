@@ -1,3 +1,1 @@
-export interface GenericAwsEventHandlerFunction<T> {
-  (event: T): Promise<void>;
-}
+export type GenericAwsEventHandlerFunction<T> = (event: T) => Promise<void>;

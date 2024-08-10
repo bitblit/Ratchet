@@ -75,7 +75,7 @@ export class PublishCiReleaseToSlack {
   public static async runFromCliArgs(args: string[]): Promise<string> {
     Logger.info('Running PublishCiReleaseToSlack from command line arguments');
     const hook: string = args?.length ? args[0] : null;
-    if (!!hook) {
+    if (hook) {
       return PublishCiReleaseToSlack.process(hook);
     } else {
       Logger.infoP('Usage : ratchet-publish-circle-ci-release-to-slack {hookUrl} ...');

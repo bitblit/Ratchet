@@ -204,9 +204,7 @@ export class CsvRatchet {
   }
 }
 
-interface ParseFunction<T> {
-  (row: any): T;
-}
+type ParseFunction<T> = (row: any) => T;
 
 export interface ComparisonResults {
   file1OnlyKeys: string[];

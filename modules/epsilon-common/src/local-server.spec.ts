@@ -3,7 +3,7 @@ import { expect, test, describe } from 'vitest';
 
 describe('#localServer', function () {
   test('should not URL decode query string parameters', async () => {
-    const queryParams: { [key: string]: string } = LocalServer.parseQueryParamsFromUrlString(
+    const queryParams: Record<string, string> = LocalServer.parseQueryParamsFromUrlString(
       'http://localhost?test=fish+chips&test2=chicken%2bbeef&test3=ketchup%20mustard&test4=&test5=cat=dog',
     );
 

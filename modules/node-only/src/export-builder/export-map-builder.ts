@@ -38,7 +38,7 @@ export class ExportMapBuilder {
     ];
 
     Logger.info('Using sourceRoot %s and targets %j', cfg.sourceRoot, cfg.targets);
-    let exports: Record<string, any> = {};
+    const exports: Record<string, any> = {};
     for (let i = 0; i < cfg.includes.length; i++) {
       ExportMapBuilder.processSingleFile(cfg.sourceRoot, cfg, exports);
     }
@@ -90,7 +90,7 @@ export class ExportMapBuilder {
   }
 
   private static processSingleFile(fileName: string, cfg: ExportMapBuilderConfig, inRecord: Record<string,any>): Record<string, any> {
-    let rval: Record<string, any> = Object.assign({}, inRecord ?? {});
+    const rval: Record<string, any> = Object.assign({}, inRecord ?? {});
     if (fs.existsSync(fileName)) {
       if (ExportMapBuilder.pathMatchesOneOfRegExp(fileName, cfg.includes)) {
         if (!ExportMapBuilder.pathMatchesOneOfRegExp(fileName, cfg.excludes)) {

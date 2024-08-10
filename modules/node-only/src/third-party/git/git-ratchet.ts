@@ -8,7 +8,7 @@ export class GitRatchet {
   private static readonly SPLIT_CHARACTER: string = '<##>';
   private static readonly PRETTY_FORMAT: string[] = ['%h', '%H', '%s', '%f', '%b', '%at', '%ct', '%an', '%ae', '%cn', '%ce', '%N', ''];
 
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+   
   public static async executeCommand(command: string, options: any): Promise<string> {
     let dst: string = EsmRatchet.fetchDirName(import.meta.url);
 
@@ -22,7 +22,7 @@ export class GitRatchet {
           rej('this does not look like a git repo');
         }
 
-        if (!!stderr) {
+        if (stderr) {
           rej(stderr);
         }
 

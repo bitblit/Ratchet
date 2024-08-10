@@ -256,7 +256,7 @@ export class QueryBuilder {
     const startSymbol = '<repeat';
     const endSymbol = '>';
 
-    // eslint-disable-next-line
+     
     while (true) {
       const startIndex = this.query?.indexOf(startSymbol);
       if (startIndex === -1 || !this.query || typeof startIndex !== 'number') {
@@ -328,7 +328,7 @@ export class QueryBuilder {
     const startSymbol = '[[';
     const endSymbol = ']]';
 
-    // eslint-disable-next-line
+     
     while (true) {
       const startIndex = this.query?.indexOf(startSymbol);
       if (startIndex == -1 || !this.query || typeof startIndex !== 'number') {
@@ -400,7 +400,7 @@ export class QueryBuilder {
     const startSymbol = '<<';
     const endSymbol = '>>';
 
-    // eslint-disable-next-line
+     
     while (true) {
       const startIndex = this.query?.indexOf(startSymbol);
       if (startIndex == -1 || !this.query || typeof startIndex !== 'number') {

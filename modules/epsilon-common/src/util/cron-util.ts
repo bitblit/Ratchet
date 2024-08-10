@@ -68,11 +68,11 @@ export class CronUtil {
   public static cronEntryName(entry: AbstractCronEntry, idx: number = null): string {
     RequireRatchet.notNullOrUndefined(entry);
     let rval: string = null;
-    if (!!entry) {
+    if (entry) {
       rval = entry.name;
       rval = rval || entry['backgroundTaskType'];
       if (!rval && !!entry['directHandler']) {
-        if (!!idx) {
+        if (idx) {
           rval = 'Direct Entry ' + idx;
         } else {
           rval = 'Direct Entry (No idx specified)';

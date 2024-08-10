@@ -1,5 +1,3 @@
 import { Context } from 'aws-lambda';
 
-export interface LoggingTraceIdGenerator {
-  (event?: any, context?: Context): string;
-}
+export type LoggingTraceIdGenerator = (event?: any, context?: Context) => string;

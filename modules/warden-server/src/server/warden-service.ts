@@ -345,7 +345,7 @@ export class WardenService {
     let rval: string = null;
     if (WardenUtils.validContact(contact)) {
       const old: WardenEntry = await this.opts.storageProvider.findEntryByContact(contact);
-      if (!!old) {
+      if (old) {
         ErrorRatchet.throwFormattedErr('Cannot create - account already exists for %j', contact);
       }
 

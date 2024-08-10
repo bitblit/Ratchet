@@ -9,7 +9,7 @@ import { EnvironmentServiceConfig } from "./environment-service-config.js";
  * Wraps up a EnvironmentServiceProvider and provides caching and retry-on-failure logic
  */
 export class EnvironmentService<T> {
-  private readPromiseCache: Map<string, Promise<any>> = new Map();
+  private readPromiseCache = new Map<string, Promise<any>>();
 
   public static defaultEnvironmentServiceConfig(): EnvironmentServiceConfig {
     const rval: EnvironmentServiceConfig = {

@@ -98,7 +98,7 @@ export class DynamoTableRatchet {
   public async waitForTableDelete(tableName: string): Promise<void> {
     let out: DescribeTableCommandOutput = await this.safeDescribeTable(tableName);
 
-    while (!!out) {
+    while (out) {
       Logger.silly('Table %s still exists, waiting 2 seconds (State is %s)', tableName, out.Table.TableStatus);
       await PromiseRatchet.wait(2000);
       out = await this.safeDescribeTable(tableName);

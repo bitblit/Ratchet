@@ -85,7 +85,7 @@ export class WardenMailerAndExpiringCodeRatchetSingleUseCodeProvider implements 
     const meta: Record<string, any> = Object.assign({}, metaIn || {}, { contact: loginContact });
     const encodedMeta: string = Base64Ratchet.safeObjectToBase64JSON(meta || {});
 
-    let landingUrlFilled: string = StringRatchet.simpleTemplateFill(landingUrl, {CODE: token.code, META: encodedMeta}, true,'{', '}');
+    const landingUrlFilled: string = StringRatchet.simpleTemplateFill(landingUrl, {CODE: token.code, META: encodedMeta}, true,'{', '}');
 
     const context: Record<string, string> = Object.assign({}, meta || {}, {
       landingUrl: landingUrlFilled,

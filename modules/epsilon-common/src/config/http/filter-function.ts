@@ -1,5 +1,3 @@
 import { FilterChainContext } from './filter-chain-context.js';
 
-export interface FilterFunction {
-  (fCtx: FilterChainContext): Promise<boolean>;
-}
+export type FilterFunction = (fCtx: FilterChainContext) => Promise<boolean>;

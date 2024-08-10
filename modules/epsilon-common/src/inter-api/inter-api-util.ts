@@ -12,7 +12,7 @@ import { ContextUtil } from "../util/context-util.js";
 import { BackgroundManagerLike } from "../background/manager/background-manager-like.js";
 
 export class InterApiUtil {
-  // eslint-disable-next-line  @typescript-eslint/explicit-module-boundary-types
+   
   public static isInterApiSnsEvent(event: any): boolean {
     return !!InterApiUtil.extractEntryFromEvent(event);
   }
@@ -20,11 +20,11 @@ export class InterApiUtil {
   public static extractEntryFromEvent(evt: SNSEvent): InterApiEntry<any> {
     let rval: InterApiEntry<any> = null;
 
-    if (!!evt) {
+    if (evt) {
       if (LambdaEventDetector.isSingleSnsEvent(evt)) {
         const cast: SNSEvent = evt as SNSEvent;
         const msg: string = cast.Records[0].Sns.Message;
-        if (!!StringRatchet.trimToNull(msg)) {
+        if (StringRatchet.trimToNull(msg)) {
           const parsed: any = JSON.parse(msg);
           if (!!parsed && parsed['type'] === EpsilonConstants.INTER_API_SNS_EVENT) {
             rval = parsed['interApiEvent'];

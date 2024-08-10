@@ -48,7 +48,7 @@ export class FilesToStaticClass {
     rval += '}; \n';
     rval += '}';
 
-    if (!!outFileName) {
+    if (outFileName) {
       Logger.info('Writing to %s', outFileName);
       fs.writeFileSync(outFileName, rval);
     }

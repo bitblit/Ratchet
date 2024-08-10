@@ -28,7 +28,7 @@ export class JwtRatchetLocalWebTokenManipulator<T extends JwtTokenBase> implemen
     if (tokenString.toLowerCase().startsWith('bearer ')) {
       tokenString = tokenString.substring(7);
     }
-    const validated: T = !!tokenString ? await this.jwtRatchet.decodeToken(tokenString, ExpiredJwtHandling.THROW_EXCEPTION) : null;
+    const validated: T = tokenString ? await this.jwtRatchet.decodeToken(tokenString, ExpiredJwtHandling.THROW_EXCEPTION) : null;
     return validated;
   }
 }

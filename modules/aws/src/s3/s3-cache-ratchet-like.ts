@@ -33,7 +33,7 @@ export interface S3CacheRatchetLike {
   removeCacheFile(key: string, bucket?: string): Promise<DeleteObjectCommandOutput>;
   writeObjectToCacheFile(
     key: string,
-    dataObject: any, // eslint-disable-line @typescript-eslint/explicit-module-boundary-types
+    dataObject: any,  
     template?: PutObjectCommandInput,
     bucket?: string,
   ): Promise<CompleteMultipartUploadCommandOutput>;

@@ -8,7 +8,7 @@ const fixed: FixedEnvironmentServiceProvider<any> = FixedEnvironmentServiceProvi
 describe('#environmentService', function () {
   test('should throw exception on missing environment values', async () => {
     try {
-      const es: EnvironmentService<any> = new EnvironmentService(fixed);
+      const es = new EnvironmentService<any>(fixed);
       const vals: any = await es.getConfig('i_do_not_exist');
       this.bail('Should not have returned a value');
     } catch (err) {
@@ -18,7 +18,7 @@ describe('#environmentService', function () {
   });
 
   test('should find a valid value', async () => {
-    const es: EnvironmentService<any> = new EnvironmentService(fixed);
+    const es = new EnvironmentService<any>(fixed);
     const vals: any = await es.getConfig('c');
     expect(vals).toBeTruthy();
   });

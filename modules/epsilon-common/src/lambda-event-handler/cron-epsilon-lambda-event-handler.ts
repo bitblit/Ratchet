@@ -57,8 +57,8 @@ export class CronEpsilonLambdaEventHandler implements EpsilonLambdaEventHandler<
     let rval: boolean = false;
     if (cronConfig && evt && evt.resources[0]) {
       // Run all the background ones
-      if (!!cronConfig.entries) {
-        if (!!background) {
+      if (cronConfig.entries) {
+        if (background) {
           const toEnqueue: BackgroundEntry<any>[] = [];
           for (let i = 0; i < cronConfig.entries.length; i++) {
             const smCronEntry: CronBackgroundEntry = cronConfig.entries[i];

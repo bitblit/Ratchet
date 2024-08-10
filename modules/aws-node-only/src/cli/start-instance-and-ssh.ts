@@ -51,8 +51,8 @@ export class StartInstanceAndSsh {
 
   public async run(): Promise<any> {
     //return new Promise<any>(async (res, rej) => {
-    let instance: Instance = await this.instanceUtil.startInstanceAndUploadPublicKeyFile(this.instanceId, this.publicKeyFile, this.instanceOsUser);
-    if (!!instance) {
+    const instance: Instance = await this.instanceUtil.startInstanceAndUploadPublicKeyFile(this.instanceId, this.publicKeyFile, this.instanceOsUser);
+    if (instance) {
         Logger.info('Instance IP address is %s', instance.PublicIpAddress);
         const ret: SpawnSyncReturns<Buffer> = spawnSync('ssh', [this.instanceOsUser + '@' + instance.PublicIpAddress], {
           stdio: 'inherit',

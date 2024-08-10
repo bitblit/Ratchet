@@ -18,7 +18,7 @@ export class GoogleWebTokenManipulator implements WebTokenManipulator<JwtTokenBa
     if (tokenString.toLowerCase().startsWith('bearer ')) {
       tokenString = tokenString.substring(7);
     }
-    const validated: JwtTokenBase = !!tokenString ? await this.parseAndValidateGoogleToken(tokenString, false) : null;
+    const validated: JwtTokenBase = tokenString ? await this.parseAndValidateGoogleToken(tokenString, false) : null;
     return validated;
   }
 

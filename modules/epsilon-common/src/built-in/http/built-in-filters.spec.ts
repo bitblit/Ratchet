@@ -5,7 +5,7 @@ import { FilterChainContext } from '../../config/http/filter-chain-context.js';
 
 describe('#uriDecodeQueryParams', function () {
   test('should not URL decode query string parameters', async () => {
-    const queryParams: { [key: string]: string } = {
+    const queryParams: Record<string, string> = {
       test: 'fish+chips',
       test2: 'chicken%2bbeef',
       test3: 'ketchup%20mustard',

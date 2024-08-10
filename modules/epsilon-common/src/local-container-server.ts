@@ -49,7 +49,7 @@ export class LocalContainerServer {
 
     Logger.logByLevel(logEventLevel, 'Processing event: %j', evt);
 
-    let respBodyText: string = null;
+    const respBodyText: string = null;
     let result: ProxyResult;
     if (evt.path == '/epsilon-poison-pill') {
       this.aborted = true;
