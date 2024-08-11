@@ -322,7 +322,6 @@ export class WardenUserService<T> {
     let rval: WardenLoginResults = null;
     try {
       // Add it to the list
-      //this.localStorageService.addCommonEmailAddress(emailAddress);
       const input: PublicKeyCredentialRequestOptionsJSON =
         await this.options.wardenClient.generateWebAuthnAuthenticationChallengeForUserId(userId);
       Logger.info('Got login challenge : %s', input);
@@ -335,7 +334,6 @@ export class WardenUserService<T> {
       };
       rval = await this.options.wardenClient.performLoginCmd(loginCmd);
       if (rval?.jwtToken) {
-        //TODO: this.localStorageService.setJwtToken(req.jwtToken);
         //rval = true;
       }
     } catch (err) {

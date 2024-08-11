@@ -207,7 +207,6 @@ export class WardenClient {
       };
       rval = await this.performLoginCmd(loginCmd);
       if (rval?.jwtToken) {
-        //TODO: this.localStorageService.setJwtToken(req.jwtToken);
         //rval = true;
       }
     } catch (err) {
