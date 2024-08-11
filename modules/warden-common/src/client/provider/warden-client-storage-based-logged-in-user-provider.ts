@@ -4,6 +4,7 @@ import { WardenLoggedInUserWrapper } from './warden-logged-in-user-wrapper.js';
 import { RequireRatchet } from '@bitblit/ratchet-common/lang/require-ratchet';
 import { ErrorRatchet } from '@bitblit/ratchet-common/lang/error-ratchet';
 import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet';
+import { Logger } from "@bitblit/ratchet-common/logger/logger";
 
 export class WardenClientStorageBasedLoggedInUserProvider<T> implements WardenLoggedInUserProvider<T> {
   constructor(private storageProv: Storage | (()=>Storage), private storageKey: string) {
@@ -26,7 +27,8 @@ export class WardenClientStorageBasedLoggedInUserProvider<T> implements WardenLo
       const rval: WardenLoggedInUserWrapper<T> = StringRatchet.trimToNull(asString) ? JSON.parse(asString) : null;
       return rval;
     } else {
-      throw ErrorRatchet.fErr('Cannot fetch yet - storage returning null');
+      Logger.debug('Tried to fetch logged in user before storage ready - returning null');
+      return null;
     }
   }
 
@@ -43,7 +45,7 @@ export class WardenClientStorageBasedLoggedInUserProvider<T> implements WardenLo
         storage.removeItem(this.storageKey);
       }
     } else {
-      throw ErrorRatchet.fErr('Cannot setLoggedInUserWrapper yet - storage returning null');
+      Logger.warn('Tried to set logged in user before storage was ready, ignoring : %j', wrapper);
     }
   }
 }
