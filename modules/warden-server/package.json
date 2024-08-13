@@ -50,6 +50,7 @@
     "@aws-sdk/client-ses": "3.624.0",
     "@bitblit/ratchet-aws": "0.0.0-snapshot",
     "@bitblit/ratchet-common": "0.0.0-snapshot",
+    "@bitblit/ratchet-node-only": "0.0.0-snapshot",
     "@bitblit/ratchet-warden-common": "0.0.0-snapshot",
     "@simplewebauthn/browser": "10.0.0",
     "@simplewebauthn/server": "10.0.1",

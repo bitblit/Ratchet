@@ -1,13 +1,13 @@
-import { RequireRatchet } from '../lang/require-ratchet.js';
-import { Logger } from '../logger/logger.js';
-import { StringRatchet } from '../lang/string-ratchet.js';
-import { DurationRatchet } from '../lang/duration-ratchet.js';
-import { JwtTokenBase } from './jwt-token-base.js';
-import { LoggerLevelName } from '../logger/logger-level-name.js';
-import { ExpiredJwtHandling } from './expired-jwt-handling.js';
 import { JwtRatchetLike } from './jwt-ratchet-like.js';
 import { JwtRatchetConfig } from './jwt-ratchet-config.js';
 import jsonwebtoken from 'jsonwebtoken';
+import { RequireRatchet } from "@bitblit/ratchet-common/lang/require-ratchet";
+import { StringRatchet } from "@bitblit/ratchet-common/lang/string-ratchet";
+import { LoggerLevelName } from "@bitblit/ratchet-common/logger/logger-level-name";
+import { Logger } from "@bitblit/ratchet-common/logger/logger";
+import { JwtPayloadExpirationRatchet } from "@bitblit/ratchet-common/jwt/jwt-payload-expiration-ratchet";
+import { JwtTokenBase } from "@bitblit/ratchet-common/jwt/jwt-token-base";
+import { ExpiredJwtHandling } from "@bitblit/ratchet-common/jwt/expired-jwt-handling";
 
 /**
  * Functions to help with creating and decoding JWTs
@@ -19,7 +19,6 @@ import jsonwebtoken from 'jsonwebtoken';
  * that itself must be synchronous
  */
 export class JwtRatchet implements JwtRatchetLike {
-  private static readonly EXPIRED_FLAG_NAME: string = '__jwtServiceExpiredFlag';
 
   constructor(private cfg: JwtRatchetConfig) {
     RequireRatchet.notNullOrUndefined(cfg, 'config');
@@ -59,10 +58,6 @@ export class JwtRatchet implements JwtRatchetLike {
 
   public get parseFailureLogLevel(): LoggerLevelName {
     return this.cfg.parseFailureLogLevel;
-  }
-
-  public static hasExpiredFlag(ob: any): boolean {
-    return ob && ob[JwtRatchet.EXPIRED_FLAG_NAME] === true;
   }
 
   public static async invalidSafeDecode<T>(
@@ -127,26 +122,7 @@ export class JwtRatchet implements JwtRatchetLike {
     }
 
     if (payload) {
-      const nowSeconds: number = Math.floor(Date.now() / 1000);
-      // A backwards compatibility hack since some of my old code used to incorrectly write the exp field in milliseconds
-      const expSeconds: number = payload?.exp && payload.exp > nowSeconds * 100 ? Math.floor(payload.exp / 1000) : payload?.exp;
-      const nbfSeconds: number = payload?.nbf && payload.nbf > nowSeconds * 100 ? Math.floor(payload.nbf / 1000) : payload?.nbf;
-
-      if ((expSeconds && nowSeconds >= expSeconds) || (nbfSeconds && nowSeconds <= nbfSeconds)) {
-        // Only do this if expiration is defined
-        const age: number = nowSeconds - expSeconds;
-        Logger.debug('JWT token expired or before NBF : on %d, %s ago', payload.exp, DurationRatchet.formatMsDuration(age * 1000));
-        switch (expiredHandling) {
-          case ExpiredJwtHandling.THROW_EXCEPTION:
-            throw new Error('JWT Token was expired');
-          case ExpiredJwtHandling.ADD_FLAG:
-            payload[JwtRatchet.EXPIRED_FLAG_NAME] = true;
-            break;
-          default:
-            payload = null;
-            break;
-        }
-      }
+      payload = JwtPayloadExpirationRatchet.processPayloadExpiration(payload, expiredHandling);
     } else {
       Logger.warn('Unable to parse a payload (Tried %j) from : %s', keysTried, payloadString);
     }
@@ -217,10 +193,16 @@ export class JwtRatchet implements JwtRatchetLike {
     }
   }
 
-  public static removeExpiredFlag(ob: any) {
-    if (ob) {
-      // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
-      delete ob[JwtRatchet.EXPIRED_FLAG_NAME];
-    }
+
+  public static hasExpiredFlag(ob: any): boolean {
+    // Delegate for backwards compatibility
+    return JwtPayloadExpirationRatchet.hasExpiredFlag(ob);
   }
+
+
+  public static removeExpiredFlag(ob: any) {
+    // Delegate for backwards compatibility
+    return JwtPayloadExpirationRatchet.removeExpiredFlag(ob);
+  }
+
 }

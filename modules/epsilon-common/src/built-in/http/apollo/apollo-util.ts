@@ -7,7 +7,7 @@ import { Logger } from '@bitblit/ratchet-common/logger/logger';
 import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet';
 import { JwtTokenBase } from '@bitblit/ratchet-common/jwt/jwt-token-base';
 import { MapRatchet } from '@bitblit/ratchet-common/lang/map-ratchet';
-import { JwtRatchetLike } from '@bitblit/ratchet-common/jwt/jwt-ratchet-like';
+import { JwtRatchetLike } from '@bitblit/ratchet-node-only/jwt/jwt-ratchet-like';
 import { ExpiredJwtHandling } from '@bitblit/ratchet-common/jwt/expired-jwt-handling';
 
 export class ApolloUtil {

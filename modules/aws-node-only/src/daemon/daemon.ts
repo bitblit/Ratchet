@@ -1,15 +1,15 @@
 import { DaemonProcessState } from './daemon-process-state.js';
-import { S3CacheRatchet } from '../s3/s3-cache-ratchet.js';
 import { DaemonProcessCreateOptions } from './daemon-process-create-options.js';
 import { DaemonUtil } from './daemon-util.js';
 import { DaemonLike } from './daemon-like.js';
 import { DaemonProcessStatePublicToken } from './daemon-process-state-public-token.js';
 import { S3Client } from '@aws-sdk/client-s3';
-import { S3CacheRatchetLike } from '../s3/s3-cache-ratchet-like.js';
-import { JwtRatchetLike } from '@bitblit/ratchet-common/jwt/jwt-ratchet-like';
 import { RequireRatchet } from '@bitblit/ratchet-common/lang/require-ratchet';
 import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet';
 import { Logger } from '@bitblit/ratchet-common/logger/logger';
+import { JwtRatchetLike } from "@bitblit/ratchet-node-only/jwt/jwt-ratchet-like";
+import { S3CacheRatchetLike } from "@bitblit/ratchet-aws/s3/s3-cache-ratchet-like";
+import { S3CacheRatchet } from "@bitblit/ratchet-aws/s3/s3-cache-ratchet";
 
 export class Daemon implements DaemonLike {
   public static DEFAULT_DEFAULT_GROUP: string = 'DEFAULT';
@@ -78,7 +78,7 @@ export class Daemon implements DaemonLike {
         const test: DaemonProcessState = original[i];
         const ageSeconds: number = (now - test.startedEpochMS) / 1000;
         if (ageSeconds > olderThanSeconds) {
-          const remove: any = await this.cache.removeCacheFile(this.keyToPath(test.id));
+          const _remove: any = await this.cache.removeCacheFile(this.keyToPath(test.id));
           removed.push(test);
         }
       }

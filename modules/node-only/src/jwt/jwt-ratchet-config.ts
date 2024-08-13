@@ -1,4 +1,4 @@
-import { LoggerLevelName } from '../logger/logger-level-name.js';
+import { LoggerLevelName } from "@bitblit/ratchet-common/logger/logger-level-name";
 
 /**
  * Functions to help with creating and decoding JWTs

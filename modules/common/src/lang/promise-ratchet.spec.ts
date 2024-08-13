@@ -68,8 +68,8 @@ describe('#promiseRatchet', function () {
     expect(results.length).toEqual(10);
   });
 
-  test('Validate runBoundedParallelSingleParam params', async()=>{
-    const inputSymbols: string[] = ['a','b','c'];
+  test('Validate runBoundedParallelSingleParam params', async () => {
+    const inputSymbols: string[] = ['a', 'b', 'c'];
 
     const output: boolean[] = await PromiseRatchet.runBoundedParallelSingleParam<boolean>(
       async (symbol) => {

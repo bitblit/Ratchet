@@ -49,15 +49,15 @@
   },
   "license": "Apache-2.0",
   "optionalDependencies": {
-    "jsonwebtoken": "9.0.2",
+    "jwt-decode": "4.0.0",
     "ts-enum-util": "4.1.0"
   },
   "peerDependencies": {
-    "jsonwebtoken": "^9.0.2",
+    "jwt-decode": "^4.0.0",
     "ts-enum-util": "^4.1.0"
   },
   "peerDependenciesMeta": {
-    "jsonwebtoken": {
+    "jwt-decode": {
       "optional": true
     },
     "ts-enum-util": {

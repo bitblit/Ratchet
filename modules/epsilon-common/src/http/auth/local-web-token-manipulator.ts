@@ -8,8 +8,8 @@ import { LoggerLevelName } from '@bitblit/ratchet-common/logger/logger-level-nam
 import { CommonJwtToken } from '@bitblit/ratchet-common/jwt/common-jwt-token';
 import { JwtTokenBase } from '@bitblit/ratchet-common/jwt/jwt-token-base';
 import { ExpiredJwtHandling } from '@bitblit/ratchet-common/jwt/expired-jwt-handling';
-import { JwtRatchet } from '@bitblit/ratchet-common/jwt/jwt-ratchet';
-import { JwtRatchetConfig } from '@bitblit/ratchet-common/jwt/jwt-ratchet-config';
+import { JwtRatchet } from '@bitblit/ratchet-node-only/jwt/jwt-ratchet';
+import { JwtRatchetConfig } from '@bitblit/ratchet-node-only/jwt/jwt-ratchet-config';
 
 /**
  * Service for handling jwt tokens

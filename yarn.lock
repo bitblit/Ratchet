@@ -2385,18 +2385,18 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@bitblit/ratchet-common@workspace:modules/common"
   dependencies:
-    jsonwebtoken: 9.0.2
+    jwt-decode: 4.0.0
     ts-enum-util: 4.1.0
   peerDependencies:
-    jsonwebtoken: ^9.0.2
+    jwt-decode: ^4.0.0
     ts-enum-util: ^4.1.0
   dependenciesMeta:
-    jsonwebtoken:
+    jwt-decode:
       optional: true
     ts-enum-util:
       optional: true
   peerDependenciesMeta:
-    jsonwebtoken:
+    jwt-decode:
       optional: true
     ts-enum-util:
       optional: true
@@ -2545,18 +2545,24 @@ __metadata:
   dependencies:
     "@bitblit/ratchet-common": 0.0.0-snapshot
     csv: 6.3.10
+    jsonwebtoken: 9.0.2
     rxjs: 7.8.1
   peerDependencies:
     "@bitblit/ratchet-common": 0.0.0-snapshot
     csv: ^6.3.9
+    jsonwebtoken: ^9.0.2
     rxjs: ^7.8.1
   dependenciesMeta:
     csv:
+      optional: true
+    jsonwebtoken:
       optional: true
     rxjs:
       optional: true
   peerDependenciesMeta:
     csv:
+      optional: true
+    jsonwebtoken:
       optional: true
     rxjs:
       optional: true
@@ -2635,6 +2641,7 @@ __metadata:
     "@aws-sdk/client-ses": 3.624.0
     "@bitblit/ratchet-aws": 0.0.0-snapshot
     "@bitblit/ratchet-common": 0.0.0-snapshot
+    "@bitblit/ratchet-node-only": 0.0.0-snapshot
     "@bitblit/ratchet-warden-common": 0.0.0-snapshot
     "@simplewebauthn/browser": 10.0.0
     "@simplewebauthn/server": 10.0.1
@@ -8704,6 +8711,13 @@ __metadata:
     jwa: ^1.4.1
     safe-buffer: ^5.0.1
   checksum: f0213fe5b79344c56cd443428d8f65c16bf842dc8cb8f5aed693e1e91d79c20741663ad6eff07a6d2c433d1831acc9814e8d7bada6a0471fbb91d09ceb2bf5c2
+  languageName: node
+  linkType: hard
+
+"jwt-decode@npm:4.0.0":
+  version: 4.0.0
+  resolution: "jwt-decode@npm:4.0.0"
+  checksum: 390e2edcb31a92e86c8cbdd1edeea4c0d62acd371f8a8f0a8878e499390c0ecf4c658b365c4e941e4ef37d0170e4ca650aaa49f99a45c0b9695a235b210154b0
   languageName: node
   linkType: hard
 

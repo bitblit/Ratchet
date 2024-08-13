@@ -1,6 +1,6 @@
 import { Logger } from '@bitblit/ratchet-common/logger/logger';
-import { DaemonProcessState } from '@bitblit/ratchet-aws/daemon/daemon-process-state';
-import { DaemonLike } from '@bitblit/ratchet-aws/daemon/daemon-like';
+import { DaemonProcessState } from '@bitblit/ratchet-aws-node-only/daemon/daemon-process-state';
+import { DaemonLike } from '@bitblit/ratchet-aws-node-only/daemon/daemon-like';
 import { DaemonAuthorizerFunction } from './daemon-authorizer-function.js';
 import { ExtendedAPIGatewayEvent } from '../../config/http/extended-api-gateway-event.js';
 import { NotFoundError } from '../../http/error/not-found-error.js';

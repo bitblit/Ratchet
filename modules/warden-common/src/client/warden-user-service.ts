@@ -1,6 +1,6 @@
 import { Logger } from '@bitblit/ratchet-common/logger/logger';
 import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet';
-import { JwtRatchet } from '@bitblit/ratchet-common/jwt/jwt-ratchet';
+import { JwtDecodeOnlyRatchet } from '@bitblit/ratchet-common/jwt/jwt-decode-only-ratchet';
 import { Subscription, timer } from 'rxjs';
 import { WardenUserServiceOptions } from './provider/warden-user-service-options.js';
 import { WardenLoggedInUserWrapper } from './provider/warden-logged-in-user-wrapper.js';
@@ -174,7 +174,7 @@ export class WardenUserService<T> {
     } else {
       Logger.info('updateLoggedInUserFromTokenString : %s', token);
 
-      const parsed: WardenJwtToken<T> = await JwtRatchet.decodeTokenNoVerify<WardenJwtToken<T>>(token);
+      const parsed: WardenJwtToken<T> = await JwtDecodeOnlyRatchet.decodeTokenNoVerify<WardenJwtToken<T>>(token);
       if (parsed) {
         rval = {
           userObject: parsed,
