@@ -9,7 +9,7 @@ import { WardenCommand } from '@bitblit/ratchet-warden-common/common/command/war
 import { WardenCommandResponse } from '@bitblit/ratchet-warden-common/common/command/warden-command-response';
 import { WardenLoginResults } from '@bitblit/ratchet-warden-common/common/model/warden-login-results';
 
-import { JwtRatchet } from '@bitblit/ratchet-common/jwt/jwt-ratchet';
+import { JwtRatchet } from '@bitblit/ratchet-node-only/jwt/jwt-ratchet';
 
 import { WardenUserDecorationProvider } from './provider/warden-user-decoration-provider.js';
 import { WardenSingleUseCodeProvider } from './provider/warden-single-use-code-provider.js';
