@@ -1,6 +1,6 @@
-import { LoggerLevelName } from "@bitblit/ratchet-common/logger/logger-level-name";
-import { JwtTokenBase } from "@bitblit/ratchet-common/jwt/jwt-token-base";
-import { ExpiredJwtHandling } from "@bitblit/ratchet-common/jwt/expired-jwt-handling";
+import { LoggerLevelName } from '@bitblit/ratchet-common/logger/logger-level-name';
+import { JwtTokenBase } from '@bitblit/ratchet-common/jwt/jwt-token-base';
+import { ExpiredJwtHandling } from '@bitblit/ratchet-common/jwt/expired-jwt-handling';
 
 /**
  * Classes implementing this interface have Functions to help with creating and decoding JWTs

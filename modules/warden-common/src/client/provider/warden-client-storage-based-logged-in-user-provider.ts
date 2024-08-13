@@ -4,10 +4,13 @@ import { WardenLoggedInUserWrapper } from './warden-logged-in-user-wrapper.js';
 import { RequireRatchet } from '@bitblit/ratchet-common/lang/require-ratchet';
 import { ErrorRatchet } from '@bitblit/ratchet-common/lang/error-ratchet';
 import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet';
-import { Logger } from "@bitblit/ratchet-common/logger/logger";
+import { Logger } from '@bitblit/ratchet-common/logger/logger';
 
 export class WardenClientStorageBasedLoggedInUserProvider<T> implements WardenLoggedInUserProvider<T> {
-  constructor(private storageProv: Storage | (()=>Storage), private storageKey: string) {
+  constructor(
+    private storageProv: Storage | (() => Storage),
+    private storageKey: string,
+  ) {
     RequireRatchet.notNullUndefinedOrOnlyWhitespaceString(this.storageKey, 'storageKey');
     RequireRatchet.notNullOrUndefined(this.storageProv, 'storageProv');
   }

@@ -13,8 +13,8 @@ import { Logger } from '@bitblit/ratchet-common/logger/logger';
 import { CsvRatchet } from '@bitblit/ratchet-node-only/csv/csv-ratchet';
 import { PromiseRatchet } from '@bitblit/ratchet-common/lang/promise-ratchet';
 import { LoggerLevelName } from '@bitblit/ratchet-common/logger/logger-level-name';
-import { S3CacheRatchetLike } from "@bitblit/ratchet-aws/s3/s3-cache-ratchet-like";
-import { S3CacheRatchet } from "@bitblit/ratchet-aws/s3/s3-cache-ratchet";
+import { S3CacheRatchetLike } from '@bitblit/ratchet-aws/s3/s3-cache-ratchet-like';
+import { S3CacheRatchet } from '@bitblit/ratchet-aws/s3/s3-cache-ratchet';
 
 let mockS3CR: MockProxy<S3CacheRatchetLike>;
 

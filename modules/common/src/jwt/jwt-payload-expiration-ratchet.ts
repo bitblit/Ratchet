@@ -1,7 +1,7 @@
-import { ExpiredJwtHandling } from "./expired-jwt-handling";
-import { JwtTokenBase } from "./jwt-token-base";
-import { Logger } from "../logger/logger";
-import { DurationRatchet } from "../lang/duration-ratchet";
+import { ExpiredJwtHandling } from './expired-jwt-handling.js';
+import { JwtTokenBase } from './jwt-token-base.js';
+import { Logger } from '../logger/logger.js';
+import { DurationRatchet } from '../lang/duration-ratchet.js';
 
 export class JwtPayloadExpirationRatchet {
   private static readonly EXPIRED_FLAG_NAME: string = '__jwtServiceExpiredFlag';
@@ -35,7 +35,6 @@ export class JwtPayloadExpirationRatchet {
   public static hasExpiredFlag(ob: any): boolean {
     return ob && ob[JwtPayloadExpirationRatchet.EXPIRED_FLAG_NAME] === true;
   }
-
 
   public static removeExpiredFlag(ob: any) {
     if (ob) {

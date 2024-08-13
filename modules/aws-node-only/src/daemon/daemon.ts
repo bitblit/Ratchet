@@ -7,9 +7,9 @@ import { S3Client } from '@aws-sdk/client-s3';
 import { RequireRatchet } from '@bitblit/ratchet-common/lang/require-ratchet';
 import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet';
 import { Logger } from '@bitblit/ratchet-common/logger/logger';
-import { JwtRatchetLike } from "@bitblit/ratchet-node-only/jwt/jwt-ratchet-like";
-import { S3CacheRatchetLike } from "@bitblit/ratchet-aws/s3/s3-cache-ratchet-like";
-import { S3CacheRatchet } from "@bitblit/ratchet-aws/s3/s3-cache-ratchet";
+import { JwtRatchetLike } from '@bitblit/ratchet-node-only/jwt/jwt-ratchet-like';
+import { S3CacheRatchetLike } from '@bitblit/ratchet-aws/s3/s3-cache-ratchet-like';
+import { S3CacheRatchet } from '@bitblit/ratchet-aws/s3/s3-cache-ratchet';
 
 export class Daemon implements DaemonLike {
   public static DEFAULT_DEFAULT_GROUP: string = 'DEFAULT';

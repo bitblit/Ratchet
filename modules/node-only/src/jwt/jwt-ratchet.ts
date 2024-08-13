@@ -1,13 +1,13 @@
 import { JwtRatchetLike } from './jwt-ratchet-like.js';
 import { JwtRatchetConfig } from './jwt-ratchet-config.js';
 import jsonwebtoken from 'jsonwebtoken';
-import { RequireRatchet } from "@bitblit/ratchet-common/lang/require-ratchet";
-import { StringRatchet } from "@bitblit/ratchet-common/lang/string-ratchet";
-import { LoggerLevelName } from "@bitblit/ratchet-common/logger/logger-level-name";
-import { Logger } from "@bitblit/ratchet-common/logger/logger";
-import { JwtPayloadExpirationRatchet } from "@bitblit/ratchet-common/jwt/jwt-payload-expiration-ratchet";
-import { JwtTokenBase } from "@bitblit/ratchet-common/jwt/jwt-token-base";
-import { ExpiredJwtHandling } from "@bitblit/ratchet-common/jwt/expired-jwt-handling";
+import { RequireRatchet } from '@bitblit/ratchet-common/lang/require-ratchet';
+import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet';
+import { LoggerLevelName } from '@bitblit/ratchet-common/logger/logger-level-name';
+import { Logger } from '@bitblit/ratchet-common/logger/logger';
+import { JwtPayloadExpirationRatchet } from '@bitblit/ratchet-common/jwt/jwt-payload-expiration-ratchet';
+import { JwtTokenBase } from '@bitblit/ratchet-common/jwt/jwt-token-base';
+import { ExpiredJwtHandling } from '@bitblit/ratchet-common/jwt/expired-jwt-handling';
 
 /**
  * Functions to help with creating and decoding JWTs
@@ -19,7 +19,6 @@ import { ExpiredJwtHandling } from "@bitblit/ratchet-common/jwt/expired-jwt-hand
  * that itself must be synchronous
  */
 export class JwtRatchet implements JwtRatchetLike {
-
   constructor(private cfg: JwtRatchetConfig) {
     RequireRatchet.notNullOrUndefined(cfg, 'config');
     RequireRatchet.notNullOrUndefined(cfg.encryptionKeyPromise, 'encryptionKeyPromise');
@@ -193,16 +192,13 @@ export class JwtRatchet implements JwtRatchetLike {
     }
   }
 
-
   public static hasExpiredFlag(ob: any): boolean {
     // Delegate for backwards compatibility
     return JwtPayloadExpirationRatchet.hasExpiredFlag(ob);
   }
 
-
   public static removeExpiredFlag(ob: any) {
     // Delegate for backwards compatibility
     return JwtPayloadExpirationRatchet.removeExpiredFlag(ob);
   }
-
 }
