@@ -2624,12 +2624,12 @@ __metadata:
     "@bitblit/ratchet-common": 0.0.0-snapshot
     "@simplewebauthn/browser": 10.0.0
     "@simplewebauthn/types": 10.0.0
-    jsonwebtoken: 9.0.2
+    jwt-decode: 4.0.0
   peerDependencies:
     "@bitblit/ratchet-common": ^0.0.0-snapshot
     "@simplewebauthn/browser": ^10.0.0
     "@simplewebauthn/types": ^10.0.0
-    jsonwebtoken: ^9.0.2
+    jwt-decode: ^4.0.0
   languageName: unknown
   linkType: soft
 
