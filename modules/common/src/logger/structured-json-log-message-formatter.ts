@@ -1,7 +1,7 @@
 import { LogMessage } from './log-message.js';
 import { LogMessageFormatter } from './log-message-formatter.js';
 import { LoggerMeta } from './logger-meta.js';
-import { StringRatchet } from "../lang/string-ratchet";
+import { StringRatchet } from "../lang/string-ratchet.js";
 
 export class StructuredJsonLogMessageFormatter implements LogMessageFormatter {
   public formatMessage(msg: LogMessage, meta: LoggerMeta): string {

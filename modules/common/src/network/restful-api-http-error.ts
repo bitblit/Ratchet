@@ -1,5 +1,5 @@
 import { NumberRatchet } from '../lang/number-ratchet.js';
-import { StringRatchet } from "../lang/string-ratchet";
+import { StringRatchet } from "../lang/string-ratchet.js";
 
 /**
  * 2023-07-18 : I moved this class from Epsilon over to common because 1) It has no
