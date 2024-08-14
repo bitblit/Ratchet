@@ -1,5 +1,5 @@
-import util from 'util';
 import { NumberRatchet } from '../lang/number-ratchet.js';
+import { StringRatchet } from "../lang/string-ratchet";
 
 /**
  * 2023-07-18 : I moved this class from Epsilon over to common because 1) It has no
@@ -31,7 +31,7 @@ export class RestfulApiHttpError<T = void> extends Error {
   }
 
   public setFormattedErrorMessage(format: string, ...input: any[]): void {
-    const msg: string = util.format(format, ...input);
+    const msg: string = StringRatchet.format(format, ...input);
     this.errors = [msg];
   }
 

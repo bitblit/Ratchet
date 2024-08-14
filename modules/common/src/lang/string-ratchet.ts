@@ -341,4 +341,57 @@ export class StringRatchet {
     }
     return rval;
   }
+
+  /**
+   * So this is a straightforward replace of util.format from NodeJS
+   * so that I don't need to bring in a polyfill.  It is lifted DIRECTLY
+   * from https://github.com/tmpfs/format-util .  License is MIT, see
+   * ReferencedLicences for details.
+   * All credit is due to that author for actually writing this thing.
+   * @param fmt String format to fill
+   * @param args any arguments to fill the format
+   */
+  public static format(fmt: string, ...args:any[]): string {
+    const re:RegExp = /(%?)(%([ojds]))/g;
+    if(args.length) {
+      fmt = fmt.replace(re, function(match, escaped, ptn, flag) {
+        let arg = args.shift();
+        switch(flag) {
+          case 'o':
+            if (Array.isArray(arg)) {
+              arg = JSON.stringify(arg);
+              break;
+            } else {
+              throw new Error('Cannot use o placeholder for argument of type '+typeof arg);
+            }
+          case 's':
+            arg = '' + arg;
+            break;
+          case 'd':
+            arg = Number(arg);
+            break;
+          case 'j':
+            arg = JSON.stringify(arg);
+            break;
+        }
+        if(!escaped) {
+          return arg;
+        }
+        args.unshift(arg);
+        return match;
+      })
+    }
+
+    // arguments remain after formatting
+    if(args.length) {
+      fmt += ' ' + args.join(' ');
+    }
+
+    // update escaped %% values
+    fmt = fmt.replace(/%{2,2}/g, '%');
+
+    return '' + fmt;
+  }
+
+
 }

@@ -1,4 +1,3 @@
-import util from 'util';
 
 export class EpsilonBackgroundProcessError<T = void> extends Error {
   private static readonly EPSILON_BACKGROUND_PROCESS_ERROR_FLAG_KEY: string = '__epsilonBackgroundProcessErrorFlag';

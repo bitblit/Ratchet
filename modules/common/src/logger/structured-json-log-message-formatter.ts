@@ -1,14 +1,14 @@
-import util from 'util';
 import { LogMessage } from './log-message.js';
 import { LogMessageFormatter } from './log-message-formatter.js';
 import { LoggerMeta } from './logger-meta.js';
+import { StringRatchet } from "../lang/string-ratchet";
 
 export class StructuredJsonLogMessageFormatter implements LogMessageFormatter {
   public formatMessage(msg: LogMessage, meta: LoggerMeta): string {
     let rval: string = null;
     if (msg) {
       const tmp: Record<any, any> = Object.assign({}, meta.options.globalVars || {}, msg.params || {});
-      tmp['msg'] = util.format(msg.messageSource, ...msg.subsVars);
+      tmp['msg'] = StringRatchet.format(msg.messageSource, ...msg.subsVars);
       tmp['utcDateTime'] = new Date(msg.timestamp).toISOString();
       tmp['logLevel'] = msg.lvl;
       if (meta.options.trace) {

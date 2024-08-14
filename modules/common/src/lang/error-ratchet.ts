@@ -3,7 +3,7 @@
 */
 
 import { Logger } from '../logger/logger.js';
-import util from 'util';
+import { StringRatchet } from "./string-ratchet";
 
 export class ErrorRatchet {
   public static safeStringifyErr(err: any, log = true): string {
@@ -40,7 +40,7 @@ export class ErrorRatchet {
   }
 
   public static fErr(format: string, ...input: any[]): Error {
-    const msg: string = util.format(format, ...input);
+    const msg: string = StringRatchet.format(format, ...input);
     return new Error(msg);
   }
 

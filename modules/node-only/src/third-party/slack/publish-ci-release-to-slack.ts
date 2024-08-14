@@ -1,6 +1,5 @@
 import { DateTime } from 'luxon';
 import fetch from 'cross-fetch';
-import util from 'util';
 import { GitCommitData, GitRatchet } from '../git/git-ratchet.js';
 import { CiRunInformation } from '../../ci/ci-run-information.js';
 import { CiRunInformationUtil } from '../../ci/ci-run-information-util.js';
@@ -36,7 +35,7 @@ export class PublishCiReleaseToSlack {
       );
     }
 
-    let message: string = util.format('%s performed release %s on %s at %s', userName, tag + ' ' + branch, projectName, localTime);
+    let message: string = StringRatchet.format('%s performed release %s on %s at %s', userName, tag + ' ' + branch, projectName, localTime);
     if (!!gitData && !!gitData.subject) {
       message += '\n\n' + gitData.subject;
     }
