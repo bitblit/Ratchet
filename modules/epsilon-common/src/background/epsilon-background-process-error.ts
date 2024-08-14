@@ -1,3 +1,4 @@
+import { StringRatchet } from "@bitblit/ratchet-common/lang/string-ratchet";
 
 export class EpsilonBackgroundProcessError<T = void> extends Error {
   private static readonly EPSILON_BACKGROUND_PROCESS_ERROR_FLAG_KEY: string = '__epsilonBackgroundProcessErrorFlag';
@@ -19,7 +20,7 @@ export class EpsilonBackgroundProcessError<T = void> extends Error {
   }
 
   public setFormattedErrorMessage(format: string, ...input: any[]): void {
-    const msg: string = util.format(format, ...input);
+    const msg: string = StringRatchet.format(format, ...input);
     this.errors = [msg];
   }
 
