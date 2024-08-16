@@ -70,6 +70,9 @@ export class ApolloFilter {
 
     if (options?.allowedHosts?.length) {
       const hostName: string = StringRatchet.trimToNull(MapRatchet.extractValueFromMapIgnoreCase(headerMap, 'host'));
+      if (!StringRatchet.trimToNull(hostName)) {
+        throw new UnauthorizedError('No host name found in headers : '+headerMap);
+      }
       const hostMatches: boolean = EventUtil.hostMatchesRegexInList(hostName, options.allowedHosts);
       if (!hostMatches) {
         throw new UnauthorizedError('Host does not match list : ' + hostName+ ' :: '+options.allowedHosts);
