@@ -2,11 +2,9 @@ import { BaseContext } from "@apollo/server";
 import { EpsilonLambdaApolloContextFunctionArgument } from "./epsilon-lambda-apollo-context-function-argument.js";
 import { EventUtil } from "../../../http/event-util.js";
 import { DefaultEpsilonApolloContext } from "./default-epsilon-apollo-context.js";
-import { UnauthorizedError } from "../../../http/error/unauthorized-error.js";
 import { Logger } from "@bitblit/ratchet-common/logger/logger";
 import { StringRatchet } from "@bitblit/ratchet-common/lang/string-ratchet";
 import { JwtTokenBase } from "@bitblit/ratchet-common/jwt/jwt-token-base";
-import { MapRatchet } from "@bitblit/ratchet-common/lang/map-ratchet";
 import { ExpiredJwtHandling } from "@bitblit/ratchet-common/jwt/expired-jwt-handling";
 import { EpsilonApolloContextBuilderOptions } from "./epsilon-apollo-context-builder-options";
 

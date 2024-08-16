@@ -17,8 +17,8 @@ import { ApolloUtil } from './apollo/apollo-util.js';
 import { EpsilonApolloCorsMethod } from './apollo/epsilon-apollo-cors-method.js';
 import { BuiltInFilters } from './built-in-filters.js';
 import { MapRatchet } from "@bitblit/ratchet-common/lang/map-ratchet";
-import { EventUtil } from "../../http/event-util";
-import { UnauthorizedError } from "../../http/error/unauthorized-error";
+import { EventUtil } from "../../http/event-util.js";
+import { UnauthorizedError } from "../../http/error/unauthorized-error.js";
 
 export class ApolloFilter {
   public static async handlePathWithApollo<T>(
