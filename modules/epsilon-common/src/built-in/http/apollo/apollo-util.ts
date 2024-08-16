@@ -9,6 +9,7 @@ import { JwtTokenBase } from '@bitblit/ratchet-common/jwt/jwt-token-base';
 import { MapRatchet } from '@bitblit/ratchet-common/lang/map-ratchet';
 import { JwtRatchetLike } from '@bitblit/ratchet-node-only/jwt/jwt-ratchet-like';
 import { ExpiredJwtHandling } from '@bitblit/ratchet-common/jwt/expired-jwt-handling';
+import { RequireRatchet } from "@bitblit/ratchet-common/lang/require-ratchet";
 
 export class ApolloUtil {
   // Prevent instantiation
@@ -47,6 +48,15 @@ export class ApolloUtil {
     args: EpsilonLambdaApolloContextFunctionArgument,
     jwt?: JwtRatchetLike,
   ): Promise<DefaultEpsilonApolloContext<any>> {
+    return ApolloUtil.hostFilteredEpsilonApolloContext(args, EventUtil.NON_ROUTABLE_REGEX, jwt);
+  }
+
+  public static async hostFilteredEpsilonApolloContext(
+    args: EpsilonLambdaApolloContextFunctionArgument,
+    hostRegexList: RegExp[],
+    jwt?: JwtRatchetLike,
+  ): Promise<DefaultEpsilonApolloContext<any>> {
+    RequireRatchet.notNullUndefinedOrEmptyArray(hostRegexList, 'hostRegex list may not be empty');
     const hostName: string = StringRatchet.trimToNull(MapRatchet.extractValueFromMapIgnoreCase(args.lambdaEvent.headers, 'host'));
     const hostIsLocalOrNotRoutableIP4: boolean = EventUtil.hostIsLocalOrNotRoutableIP4(hostName);
     if (!hostIsLocalOrNotRoutableIP4) {

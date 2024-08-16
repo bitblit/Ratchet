@@ -18,6 +18,13 @@ import { EnumRatchet } from '@bitblit/ratchet-common/lang/enum-ratchet';
  * Endpoints about the api itself
  */
 export class EventUtil {
+  public static readonly LOCAL_REGEX: RegExp[] = [new RegExp('^127\\.0\\.0\\.1(:\\d+)?$'),new RegExp('^localhost(:\\d+)?$')];
+  public static readonly NON_ROUTABLE_REGEX: RegExp[] = EventUtil.LOCAL_REGEX.concat([
+    new RegExp('^192\\.168\\.\\d+\\.\\d+(:\\d+)?$'),
+    new RegExp('^10\\.\\d+\\.\\d+\\.\\d+(:\\d+)?$'),
+    new RegExp('^172\\.16\\.\\d+\\.\\d+(:\\d+)?$'),
+]);
+
   // Prevent instantiation
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   private constructor() {}
@@ -243,33 +250,21 @@ export class EventUtil {
     return rval;
   }
 
-  public static hostIsLocal(host: string): boolean {
+  public static hostMatchesRegexInList(host: string, list: RegExp[], caseSensitive?:boolean): boolean {
     let rval: boolean = false;
-    if (StringRatchet.trimToNull(host)) {
-      host = host.includes(':') ? host.substring(0, host.indexOf(':')) : host;
-      host = host.toLowerCase();
-      if (host === 'localhost' || host === '127.0.0.1') {
-        rval = true;
-      }
+    if(StringRatchet.trimToNull(host) && list?.length) { // If not, cannot match by definition
+      const test: string = StringRatchet.trimToEmpty(caseSensitive ? host : host.toUpperCase());
+      rval = !!list.find(l=>test.match(l));
     }
     return rval;
   }
 
+
+  public static hostIsLocal(host: string): boolean {
+    return EventUtil.hostMatchesRegexInList(host, EventUtil.LOCAL_REGEX);
+  }
+
   public static hostIsLocalOrNotRoutableIP4(host: string): boolean {
-    let rval: boolean = false;
-    if (StringRatchet.trimToNull(host)) {
-      host = host.includes(':') ? host.substring(0, host.indexOf(':')) : host;
-      host = host.toLowerCase();
-      if (
-        host === 'localhost' ||
-        host === '127.0.0.1' ||
-        host.startsWith('192.168.') ||
-        host.startsWith('10.') ||
-        host.startsWith('172.16.')
-      ) {
-        rval = true;
-      }
-    }
-    return rval;
+    return EventUtil.hostMatchesRegexInList(host, EventUtil.NON_ROUTABLE_REGEX);
   }
 }
