@@ -55,10 +55,10 @@ export class SampleServerComponents {
     // Provide resolver functions for your schema fields
     const resolvers = {
       RootQueryType: {
-        serverMeta: async (root) => {
+        serverMeta: async (_root) => {
           return { version: 'A1', serverTime: new Date().toISOString() };
         },
-        forceTimeout: async (root) => {
+        forceTimeout: async (_root) => {
           // This will be longer than the max timeout
           await PromiseRatchet.wait(1000 * 60 * 30);
           return { placeholder: 'A1' };
@@ -145,7 +145,7 @@ export class SampleServerComponents {
     meta.timeoutMS = 10_000;
 
     ApolloFilter.addApolloFilterToList(meta.preFilters, new RegExp('.*graphql.*'), await SampleServerComponents.createSampleApollo(), {
-      context: (arg) => ApolloUtil.defaultEpsilonApolloContext(arg, tokenManipulator.jwtRatchet),
+      context: (arg) => ApolloUtil.defaultEpsilonApolloContext(arg, {jwtRatchet:tokenManipulator.jwtRatchet}),
       timeoutMS: 5_000,
       corsMethod: EpsilonApolloCorsMethod.All,
     });
