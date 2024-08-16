@@ -5,6 +5,7 @@ import { ProxyResult } from 'aws-lambda';
 
 export interface EpsilonLambdaApolloOptions<TContext extends BaseContext> {
   context?: ContextFunction<[EpsilonLambdaApolloContextFunctionArgument], TContext>;
+  allowedHosts?: RegExp[];
   timeoutMS?: number; // Max time to wait for apollo
   corsMethod?: EpsilonApolloCorsMethod;
   debugOutputCallback?: (resp: ProxyResult) => Promise<void>;

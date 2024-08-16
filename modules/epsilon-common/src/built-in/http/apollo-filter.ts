@@ -16,6 +16,9 @@ import { EpsilonLambdaApolloContextFunctionArgument } from './apollo/epsilon-lam
 import { ApolloUtil } from './apollo/apollo-util.js';
 import { EpsilonApolloCorsMethod } from './apollo/epsilon-apollo-cors-method.js';
 import { BuiltInFilters } from './built-in-filters.js';
+import { MapRatchet } from "@bitblit/ratchet-common/lang/map-ratchet";
+import { EventUtil } from "../../http/event-util";
+import { UnauthorizedError } from "../../http/error/unauthorized-error";
 
 export class ApolloFilter {
   public static async handlePathWithApollo<T>(
@@ -64,6 +67,15 @@ export class ApolloFilter {
     for (const headersKey in event.headers) {
       headerMap.set(headersKey, event.headers[headersKey]);
     }
+
+    if (options?.allowedHosts?.length) {
+      const hostName: string = StringRatchet.trimToNull(MapRatchet.extractValueFromMapIgnoreCase(headerMap, 'host'));
+      const hostMatches: boolean = EventUtil.hostMatchesRegexInList(hostName, options.allowedHosts);
+      if (!hostMatches) {
+        throw new UnauthorizedError('Host does not match list : ' + hostName+ ' :: '+options.allowedHosts);
+      }
+    }
+
     const eventMethod: string = StringRatchet.trimToEmpty(event.httpMethod).toUpperCase();
     let body: any = null;
     if (StringRatchet.trimToNull(event.body)) {

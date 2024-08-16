@@ -25,13 +25,6 @@ export class ApolloUtil {
     args: EpsilonLambdaApolloContextFunctionArgument,
     opts?: EpsilonApolloContextBuilderOptions
   ): Promise<DefaultEpsilonApolloContext<any>> {
-    if (opts?.allowedHosts?.length) {
-      const hostName: string = StringRatchet.trimToNull(MapRatchet.extractValueFromMapIgnoreCase(args.lambdaEvent.headers, 'host'));
-      const hostMatches: boolean = EventUtil.hostMatchesRegexInList(hostName, opts.allowedHosts);
-      if (!hostMatches) {
-        throw new UnauthorizedError('Host does not match list : ' + hostName+ ' :: '+opts.allowedHosts);
-      }
-    }
 
     const authTokenSt: string = EventUtil.extractBearerTokenFromEvent(args.lambdaEvent);
     let token: JwtTokenBase = null;
