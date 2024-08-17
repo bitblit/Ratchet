@@ -3215,7 +3215,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/jasmine@npm:~5.1.0":
+"@types/jasmine@npm:5.1.4":
   version: 5.1.4
   resolution: "@types/jasmine@npm:5.1.4"
   checksum: 1b2048d988077aee747a72fab31f4e0820f928c25e886ab91aa5a1ee2d4277655c22f81feed5d7b3b15cc61542878568a24b2381457eb21dfc84250c693f980a
@@ -3699,7 +3699,7 @@ __metadata:
     "@angular/platform-browser": 18.1.4
     "@angular/platform-browser-dynamic": 18.1.4
     "@angular/router": 18.1.4
-    "@types/jasmine": ~5.1.0
+    "@types/jasmine": 5.1.4
     jasmine-core: 5.2.0
     karma: 6.4.4
     karma-chrome-launcher: 3.2.0
