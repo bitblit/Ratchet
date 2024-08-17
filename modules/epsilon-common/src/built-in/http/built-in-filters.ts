@@ -102,6 +102,12 @@ export class BuiltInFilters {
     return true;
   }
 
+  /**
+   * Basically used to restrict a server to only running on an internal network (weakly, this isn't
+   * ironclad at ALL) examines the hostname header to see if what was requested matches a particular
+   * host
+   * @param hostnameRegExList
+   */
   public static createRestrictServerToHostNamesFilter(hostnameRegExList:RegExp[]): FilterFunction {
     RequireRatchet.notNullUndefinedOrEmptyArray(hostnameRegExList, 'hostnameRegExList');
     return async (fCtx: FilterChainContext)=>{

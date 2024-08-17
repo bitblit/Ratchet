@@ -253,8 +253,10 @@ export class EventUtil {
   public static hostMatchesRegexInList(host: string, list: RegExp[], caseSensitive?:boolean): boolean {
     let rval: boolean = false;
     if(StringRatchet.trimToNull(host) && list?.length) { // If not, cannot match by definition
-      const test: string = StringRatchet.trimToEmpty(caseSensitive ? host : host.toUpperCase());
+      const test: string = StringRatchet.trimToEmpty(caseSensitive ? host : host.toLowerCase());
       rval = !!list.find(l=>test.match(l));
+    } else {
+      Logger.warn('Not matching regex - either host or list is misconfigured : %s : %j', host, list);
     }
     return rval;
   }
