@@ -57,3 +57,12 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
+      - name: Install for angular libs
+        run: yarn install
+        shell: bash
+        working-directory: ./angular-modules
+
+      - name: Build  and publish angular libs
+        run: yarn build-and-publish-all
+        shell: bash
+        working-directory: ./angular-modules

@@ -1,10 +1,12 @@
 {
   "name": "angular-modules",
-  "version": "0.0.0",
+  "version": "0.0.0-snapshot",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "build-all": "ng build ratchet-angular-common && ng build ratchet-angular-warden",
+    "build-and-publish-all": "yarn build-all && cd dist/ratchet-angular-common &&  yarn npm publish --access public && cd ../ratchet-angular-warden &&   yarn npm publish --access public",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
