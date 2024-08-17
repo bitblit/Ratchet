@@ -9,7 +9,7 @@
     "primeng": "17.18.8"
   },
   "dependencies": {
-    "tslib": "^2.3.0"
+    "tslib": "2.6.3"
   },
   "sideEffects": false
 }
