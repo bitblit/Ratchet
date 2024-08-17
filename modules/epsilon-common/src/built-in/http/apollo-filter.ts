@@ -68,17 +68,6 @@ export class ApolloFilter {
       headerMap.set(headersKey, event.headers[headersKey]);
     }
 
-    if (options?.allowedHosts?.length) {
-      const hostName: string = StringRatchet.trimToNull(MapRatchet.extractValueFromMapIgnoreCase(headerMap, 'host'));
-      if (!StringRatchet.trimToNull(hostName)) {
-        throw new UnauthorizedError('No host name found in headers : '+headerMap);
-      }
-      const hostMatches: boolean = EventUtil.hostMatchesRegexInList(hostName, options.allowedHosts);
-      if (!hostMatches) {
-        throw new UnauthorizedError('Host does not match list : ' + hostName+ ' :: '+options.allowedHosts);
-      }
-    }
-
     const eventMethod: string = StringRatchet.trimToEmpty(event.httpMethod).toUpperCase();
     let body: any = null;
     if (StringRatchet.trimToNull(event.body)) {

@@ -9,6 +9,8 @@ import { ResponseUtil } from '../../http/response-util.js';
 import { FilterChainContext } from '../../config/http/filter-chain-context.js';
 import { MisconfiguredError } from '../../http/error/misconfigured-error.js';
 import { APIGatewayProxyResult } from 'aws-lambda';
+import { UnauthorizedError } from "../../http/error/unauthorized-error";
+import { RequireRatchet } from "@bitblit/ratchet-common/lang/require-ratchet";
 
 export class BuiltInFilters {
   public static readonly MAXIMUM_LAMBDA_BODY_SIZE_BYTES: number = 1024 * 1024 * 5 - 1024 * 100; // 5Mb - 100k buffer
@@ -99,6 +101,21 @@ export class BuiltInFilters {
     EventUtil.fixStillEncodedQueryParams(fCtx.event);
     return true;
   }
+
+  public static createRestrictServerToHostNamesFilter(hostnameRegExList:RegExp[]): FilterFunction {
+    RequireRatchet.notNullUndefinedOrEmptyArray(hostnameRegExList, 'hostnameRegExList');
+    return async (fCtx: FilterChainContext)=>{
+        const hostName: string = StringRatchet.trimToNull(MapRatchet.extractValueFromMapIgnoreCase(fCtx?.event?.headers, 'host'));
+        if (!StringRatchet.trimToNull(hostName)) {
+          throw new BadRequestError('No host name found in headers : '+JSON.stringify(fCtx?.event?.headers));
+        }
+        const hostMatches: boolean = EventUtil.hostMatchesRegexInList(hostName, hostnameRegExList);
+        if (!hostMatches) {
+          throw new BadRequestError('Host does not match list : ' + hostName+ ' :: '+hostnameRegExList);
+        }
+        return true;
+      }
+    }
 
   public static async disallowStringNullAsPathParameter(fCtx: FilterChainContext): Promise<boolean> {
     if (fCtx?.event?.pathParameters) {
