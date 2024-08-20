@@ -25,23 +25,22 @@ export class GraphqlRatchet {
   constructor(
     private queryProvider: GraphqlRatchetQueryProvider,
     private endpointProvider: GraphqlRatchetEndpointProvider,
-    private jwtTokenProvider: GraphqlRatchetJwtTokenProvider,
+    private jwtTokenProvider?: GraphqlRatchetJwtTokenProvider,
     private errorHandler: GraphqlRatchetErrorHandler = new DefaultGraphqlRatchetErrorHandler(),
   ) {
     RequireRatchet.notNullOrUndefined(queryProvider, 'queryProvider');
     RequireRatchet.notNullOrUndefined(endpointProvider, 'endpointProvider');
-    RequireRatchet.notNullOrUndefined(jwtTokenProvider, 'jwtTokenProvider');
+    //RequireRatchet.notNullOrUndefined(jwtTokenProvider, 'jwtTokenProvider');
     RequireRatchet.notNullOrUndefined(errorHandler, 'errorHandler');
     this.cachedEndpoint = this.endpointProvider.fetchGraphqlEndpoint();
   }
 
   private async fetchQueryText(qry: string): Promise<string> {
-    let rval: string = null;
     const text: string = await this.queryProvider.fetchQueryText(qry);
     if (!text) {
       Logger.warn('Could not find requested query : %s', qry);
     }
-    return rval;
+    return  text
   }
 
   private createAnonymousApi(): GraphQLClient {
@@ -52,7 +51,10 @@ export class GraphqlRatchet {
 
   private fetchApi(runAnonymous: boolean): GraphQLClient {
     let rval: GraphQLClient = null;
-    const jwtToken: string = this.jwtTokenProvider.fetchJwtToken();
+    if (!runAnonymous && !this.jwtTokenProvider) {
+      throw ErrorRatchet.fErr('If no jwtTokenProvider is set, you must run anonymous');
+    }
+    const jwtToken: string = runAnonymous?null:this.jwtTokenProvider.fetchJwtToken();
     this.checkIfEndpointChanged(); // Always check for cache invalidation first...
     Logger.info('Fetch auth client %s', StringRatchet.obscure(StringRatchet.trimToEmpty(jwtToken), 2, 2));
 

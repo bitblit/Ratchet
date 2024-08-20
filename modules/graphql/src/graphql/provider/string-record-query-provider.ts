@@ -8,7 +8,7 @@ export class StringRecordQueryProvider implements GraphqlRatchetQueryProvider {
     inFiles: Record<string, string>,
     private autoPrefix: string = '',
     private autoSuffix: string = '',
-    private caseSensitive: boolean,
+    private caseSensitive?: boolean,
   ) {
     if (inFiles) {
       if (caseSensitive) {
