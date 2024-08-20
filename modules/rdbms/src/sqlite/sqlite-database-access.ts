@@ -1,4 +1,3 @@
-import { AsyncDatabase } from 'promised-sqlite3';
 import { Logger } from '@bitblit/ratchet-common/logger/logger';
 import { ErrorRatchet } from '@bitblit/ratchet-common/lang/error-ratchet';
 import SqlString from 'sqlstring';
@@ -8,15 +7,18 @@ import { ModifyResults } from '../model/modify-results.js';
 import { RequestResults } from '../model/request-results.js';
 import { QueryUtil } from '../query-builder/query-util.js';
 import { SqliteConnectionConfigFlag } from './model/sqlite-connection-config-flag.js';
+import DatabaseConstructor, { Database, RunResult, Statement } from "better-sqlite3";
+import { NumberRatchet } from "@bitblit/ratchet-common/lang/number-ratchet";
+import { QueryAndParams } from "./model/query-and-params";
 
 export class SqliteDatabaseAccess implements DatabaseAccess {
   constructor(
-    private conn: AsyncDatabase,
+    private conn: Database,
     private flags: SqliteConnectionConfigFlag[],
     private extraConfig: Record<string, any>,
   ) {}
 
-  get connection(): AsyncDatabase {
+  get connection(): Database {
     return this.conn;
   }
 
@@ -26,7 +28,7 @@ export class SqliteDatabaseAccess implements DatabaseAccess {
 
   async close(): Promise<boolean> {
     try {
-      await this.conn.close();
+      this.conn.close();
       return true;
     } catch (err) {
       Logger.error('Failed to close : %s', err, err);
@@ -59,14 +61,16 @@ export class SqliteDatabaseAccess implements DatabaseAccess {
   }
 
   async modify(query: string, fields: Record<string, any>): Promise<RequestResults<ModifyResults>> {
-    const out: RequestResults<any> = await this.query<any>(query, fields);
-    Logger.debug('Modify returned %j', out);
-    const val: any[] = await this.conn.all<any>('SELECT changes() as changedRows, last_insert_rowid() as insertId;');
+    const qap: QueryAndParams = this.preprocessQuery({query: query, params: fields});
+
+    const stmt: Statement = this.conn.prepare(qap.query);
+    const tmp: RunResult = stmt.run(qap.params);
+
     const update: ModifyResults = {
-      changedRows: val[0]['changedRows'],
-      insertId: val[0]['insertId'],
+      changedRows: tmp.changes,
+      insertId: NumberRatchet.safeNumber(tmp.lastInsertRowid),
       fieldCount: undefined,
-      affectedRows: val[0]['changedRows'],
+      affectedRows: tmp.changes,
       info: undefined,
       serverStatus: undefined,
       warningStatus: undefined,
@@ -78,30 +82,49 @@ export class SqliteDatabaseAccess implements DatabaseAccess {
     return res;
   }
 
-  async query<S>(inQuery: string, inFields: Record<string, any>): Promise<RequestResults<S>> {
+  preprocessQuery(qap: QueryAndParams): QueryAndParams {
+    const rval: QueryAndParams = Object.assign(qap);
+
     // First, rename all the fields to add the prefix
-    const fields: Record<string, any> = QueryUtil.addPrefixToFieldNames(inFields, ':');
+    const tmp: Record<string, any> = QueryUtil.addPrefixToFieldNames(rval.params, ':');
     // Then, replace any null params
-    let query: string = QueryUtil.replaceNullReplacementsInQuery(inQuery, fields);
+    rval.query = QueryUtil.replaceNullReplacementsInQuery(rval.query, tmp);
     // Then, remove any unused params from the fields
-    const slFields: Record<string, any> = QueryUtil.removeUnusedFields(query, fields);
+    rval.params = QueryUtil.removeUnusedFields(rval.query, rval.params, ':');
 
     // If any of the fields are an array, do a direct replacement since sqlite don't like that
-    Object.keys(slFields).forEach((k) => {
-      const val: any = slFields[k];
+    Object.keys(tmp).forEach((k) => {
+      const val: any = tmp[k];
       if (Array.isArray(val)) {
         const escaped: string = this.escape(val);
-        query = query.replaceAll(k, escaped);
-        delete slFields[k]; // this prolly wont work
+        rval.query = rval.query.replaceAll(k, escaped);
+        delete rval.params[k.substring(1)]; // this prolly wont work
       }
     });
 
     // Finally, apply flags
     if ((this.flags || []).includes(SqliteConnectionConfigFlag.AlwaysCollateNoCase)) {
-      query += ' COLLATE NOCASE';
+      rval.query += ' COLLATE NOCASE';
     }
 
-    const res: S[] = await this.conn.all<S>(query, slFields);
+    /*
+    const tmp: Record<string,any> = {};
+    Object.keys(rval.params).forEach( k=>{
+      tmp[k.substring(1)] = rval.params[k];
+    });
+    rval.params = tmp;
+
+     */
+
+    return rval;
+  }
+
+  async query<S>(inQuery: string, inFields: Record<string, any>): Promise<RequestResults<S>> {
+
+    const qap: QueryAndParams = this.preprocessQuery({query: inQuery, params: inFields});
+
+    const stmt: Statement = this.conn.prepare(qap.query);
+    const res: S[] = stmt.all(qap.params) as S[];
 
     const rval: RequestResults<S> = {
       results: res as S,

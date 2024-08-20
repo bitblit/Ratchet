@@ -33,7 +33,36 @@ describe('sqlite-database-access', () => {
 
     expect(res).not.toBeNull;
   });
-  test('handles apostrophes in multi-value inserts', async () => {
+
+  test.skip('runs test query', async () => {
+    // Memory database
+    const prov: SqliteStyleConnectionProvider = new SqliteStyleConnectionProvider(() => {
+      return Promise.resolve({
+        dbList: [
+          {
+            label: 'test',
+          },
+        ],
+      });
+    });
+    const ns: NamedParameterDatabaseService = new NamedParameterDatabaseService({
+      serviceName: 'Test',
+      queryProvider: new SimpleQueryTextProvider({
+        create: 'create table testable (val varchar(255))',
+        singleIns: 'insert into testable (val) values (:val)',
+        counter: 'select count(1) as cnt from testable',
+        multi: 'insert into testable (val) values :multiVal',
+      }),
+      connectionProvider: prov,
+      queryDefaults: { databaseName: 'test', timeoutMS: 20_000 },
+      longQueryTimeMs: 8_500,
+    });
+    const val: any = await ns.testConnection(true);
+    Logger.info('Val was : %j', val);
+
+  });
+
+    test('handles apostrophes in multi-value inserts', async () => {
     // Memory database
     const prov: SqliteStyleConnectionProvider = new SqliteStyleConnectionProvider(() => {
       return Promise.resolve({

@@ -1,4 +1,3 @@
-import { AsyncDatabase } from 'promised-sqlite3';
 
 import { RequireRatchet } from '@bitblit/ratchet-common/lang/require-ratchet';
 import { Logger } from '@bitblit/ratchet-common/logger/logger';
@@ -16,6 +15,7 @@ import { SqliteConnectionConfigFlag } from './model/sqlite-connection-config-fla
 import { FetchRemoteMode } from './model/fetch-remote-mode.js';
 import { BackupResult } from '@bitblit/ratchet-common/network/remote-file-sync/backup-result';
 import { FileTransferResult } from '@bitblit/ratchet-common/network/remote-file-sync/file-transfer-result';
+import DatabaseConstructor, { Database, RunResult, Statement } from "better-sqlite3";
 
 export class SqliteRemoteSyncDatabaseAccess implements DatabaseAccess {
   private cacheDb: Promise<SqliteDatabaseAccess>;
@@ -42,11 +42,13 @@ export class SqliteRemoteSyncDatabaseAccess implements DatabaseAccess {
 
   public changeFlushRemoteMode(newMode: FlushRemoteMode): void {
     RequireRatchet.notNullOrUndefined(newMode, 'newMode');
+    Logger.info('Changing flush remote mode from %s to %s', this.cfg.flushRemoteMode, newMode);
     this.cfg.flushRemoteMode = newMode;
   }
 
   public changeFetchRemoteMode(newMode: FetchRemoteMode): void {
     RequireRatchet.notNullOrUndefined(newMode, 'newMode');
+    Logger.info('Changing fetch remote mode from %s to %s', this.cfg.fetchRemoteMode, newMode);
     this.cfg.fetchRemoteMode = newMode;
   }
 
@@ -76,7 +78,7 @@ export class SqliteRemoteSyncDatabaseAccess implements DatabaseAccess {
         ? await this.cfg.remoteFileSync.fetchRemoteToLocal()
         : await this.cfg.remoteFileSync.sendLocalToRemote();
       Logger.info('Returned %s - reopening', result);
-      const newDb: AsyncDatabase = await AsyncDatabase.open(this.cfg.remoteFileSync.localFileName);
+      const newDb: Database = new DatabaseConstructor(this.cfg.remoteFileSync.localFileName);
       rval = new SqliteDatabaseAccess(newDb, this.flags, this.extraConfig);
       Logger.info('closeSyncReopen took %s', sw.dump());
     } else {
@@ -91,7 +93,7 @@ export class SqliteRemoteSyncDatabaseAccess implements DatabaseAccess {
     Logger.info('Pulling file local');
     await this.cfg.remoteFileSync.fetchRemoteToLocal();
     Logger.info('Creating database');
-    const db: AsyncDatabase = await AsyncDatabase.open(this.cfg.remoteFileSync.localFileName);
+    const db: Database = new DatabaseConstructor(this.cfg.remoteFileSync.localFileName);
     const rval: SqliteDatabaseAccess = new SqliteDatabaseAccess(db, this.flags, this.extraConfig);
     return rval;
   }
@@ -119,7 +121,7 @@ export class SqliteRemoteSyncDatabaseAccess implements DatabaseAccess {
     return SqlString.format('?', value);
     //return StringRatchet.safeString(value);
   }
-
+ 
   async onRequestSuccessOnly(type: DatabaseRequestType): Promise<void> {
     if (type === DatabaseRequestType.Modify && this.cfg.flushRemoteMode === FlushRemoteMode.Auto) {
       Logger.info('Successful modification with auto mode - flushing remote');
