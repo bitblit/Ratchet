@@ -16,12 +16,7 @@
     }
   },
   "contributors": [
-    "Christopher Weiss <bitblit@gmail.com>",
-    "William Weiss <npm@codification.org>",
-    "Austin Grantham <agrantham@algidious.com>",
-    "Lucas Myers <veganbeef@protonmail.com>",
-    "Joel Flint <joel@stimulimedia.net>",
-    "Bilal Shahid <bshahid@adomni.com>"
+    "Christopher Weiss <bitblit@gmail.com>"
   ],
   "husky": {
     "hooks": {
@@ -51,13 +46,13 @@
   },
   "license": "Apache-2.0",
   "dependencies": {
-    "@apollo/client": "3.11.4",
     "@bitblit/ratchet-common": "0.0.0-snapshot",
-    "graphql": "16.9.0"
+    "graphql": "16.9.0",
+    "graphql-request": "7.1.0"
   },
   "peerDependencies": {
-    "@apollo/client": "^3.11.4",
     "@bitblit/ratchet-common": "0.0.0-snapshot",
-    "graphql": "^16.8.2"
+    "graphql": "^16.8.2",
+    "graphql-request": "^7.1.0"
   }
 }
