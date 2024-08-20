@@ -118,8 +118,13 @@ export class GraphqlRatchet {
         Logger.debug('API fetched for %s, fetching gql', queryName);
         const gql: string = await this.fetchQueryText(queryName);
         Logger.debug('API and GQL fetched for %s - running %s %s', queryName, gql, api);
-        rval = await api.request<T>(gql, variables);
+        const newValues: any = await api.request(gql, variables);
 
+        const keys: string[] = Object.keys(newValues.data);
+        if (keys.length !== 1) {
+          ErrorRatchet.throwFormattedErr('Unexpected number of keys : %s : %j', keys.length, keys);
+        }
+        rval = newValues.data[keys[0]];
         Logger.silly('Query returned: %j', rval);
         /*
         const keys: string[] = Object.keys(newValues.data);
@@ -147,7 +152,13 @@ export class GraphqlRatchet {
       if (api) {
         const gql: string = await this.fetchQueryText(queryName);
         Logger.debug('API and GQL fetched for %s - running %s %s', queryName, gql, api);
-        rval = await api.request<T>(gql, variables);
+        const newValues: any = await api.request(gql, variables);
+
+        const keys: string[] = Object.keys(newValues.data);
+        if (keys.length !== 1) {
+          ErrorRatchet.throwFormattedErr('Unexpected number of keys : %s : %j', keys.length, keys);
+        }
+        rval = newValues.data[keys[0]];
 
         Logger.silly('Mutate returned: %j', rval);
         /*
