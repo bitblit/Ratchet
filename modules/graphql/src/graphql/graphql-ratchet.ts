@@ -108,10 +108,9 @@ export class GraphqlRatchet {
     this.cachedEndpoint = null;
   }
 
-  public static extractSingleValueFromResponse<T>(resp: any): T {
-    const data: any = resp?.data;
+  public static extractSingleValueFromResponse<T>(data: any): T {
     if (!data) {
-      throw ErrorRatchet.fErr('Could not find key "data" in : %j', resp);
+      throw ErrorRatchet.fErr('Could not find response in : %j', data);
     }
     const keys: string[] = Object.keys(data);
     if (keys.length !== 1) {
