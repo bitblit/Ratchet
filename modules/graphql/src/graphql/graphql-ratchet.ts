@@ -1,5 +1,3 @@
-// CAW: 2022-08-24 : You must import from @apollo/client/core instead of @apollo/client if you don't wanna drag in React...
-// They are gonna fix this in v4 :https://github.com/apollographql/apollo-client/issues/8190
 import { GraphqlRatchetEndpointProvider } from './provider/graphql-ratchet-endpoint-provider.js';
 import { GraphqlRatchetJwtTokenProvider } from './provider/graphql-ratchet-jwt-token-provider.js';
 import { GraphqlRatchetQueryProvider } from './provider/graphql-ratchet-query-provider.js';
@@ -110,6 +108,19 @@ export class GraphqlRatchet {
     this.cachedEndpoint = null;
   }
 
+  public static extractSingleValueFromResponse<T>(resp: any): T {
+    const data: any = resp?.data;
+    if (!data) {
+      throw ErrorRatchet.fErr('Could not find key "data" in : %j', resp);
+    }
+    const keys: string[] = Object.keys(data);
+    if (keys.length !== 1) {
+      ErrorRatchet.throwFormattedErr('Unexpected number of keys : %s : %j', keys.length, keys);
+    }
+    const rval: T = data[keys[0]];
+    return rval;
+  }
+
   public async executeQuery<T>(queryName: string, variables: Record<string, any>, runAnonymous: boolean = false): Promise<T> {
     let rval: T = null;
     try {
@@ -119,21 +130,8 @@ export class GraphqlRatchet {
         const gql: string = await this.fetchQueryText(queryName);
         Logger.debug('API and GQL fetched for %s - running %s %s', queryName, gql, api);
         const newValues: any = await api.request(gql, variables);
-
-        const keys: string[] = Object.keys(newValues.data);
-        if (keys.length !== 1) {
-          ErrorRatchet.throwFormattedErr('Unexpected number of keys : %s : %j', keys.length, keys);
-        }
-        rval = newValues.data[keys[0]];
+        rval = GraphqlRatchet.extractSingleValueFromResponse(newValues);
         Logger.silly('Query returned: %j', rval);
-        /*
-        const keys: string[] = Object.keys(newValues.data);
-        if (keys.length !== 1) {
-          ErrorRatchet.throwFormattedErr('Unexpected number of keys : %s : %j', keys.length, keys);
-        }
-        rval = newValues.data[keys[0]];
-
-         */
       } else {
         ErrorRatchet.throwFormattedErr('Cannot run - no api fetched');
       }
@@ -153,28 +151,8 @@ export class GraphqlRatchet {
         const gql: string = await this.fetchQueryText(queryName);
         Logger.debug('API and GQL fetched for %s - running %s %s', queryName, gql, api);
         const newValues: any = await api.request(gql, variables);
-
-        const keys: string[] = Object.keys(newValues.data);
-        if (keys.length !== 1) {
-          ErrorRatchet.throwFormattedErr('Unexpected number of keys : %s : %j', keys.length, keys);
-        }
-        rval = newValues.data[keys[0]];
-
+        rval = GraphqlRatchet.extractSingleValueFromResponse(newValues);
         Logger.silly('Mutate returned: %j', rval);
-        /*
-        const newValues: FetchResult<T> = await api.mutate<any>({
-          mutation: GQL,
-          variables: variables,
-          fetchPolicy: 'no-cache',
-        });
-
-        const keys: string[] = Object.keys(newValues.data);
-        if (keys.length !== 1) {
-          ErrorRatchet.throwFormattedErr('Unexpected number of keys : %s : %j', keys.length, keys);
-        }
-        rval = newValues.data[keys[0]];
-
-         */
       } else {
         ErrorRatchet.throwFormattedErr('Cannot run - no api fetched');
       }
