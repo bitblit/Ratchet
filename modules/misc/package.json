@@ -10,7 +10,7 @@
   ],
   "exports": {
     "./package.json": "./package.json",
-    "./sobol": "./lib/sobol/generated/index.mjs",
+    "./sobol": "./lib/sobol/generated/index.js",
     "./*": {
       "import": "./lib/*.js",
       "types": "./lib/*.d.ts"
