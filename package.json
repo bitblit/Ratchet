@@ -214,6 +214,7 @@
     "hosted-git-info": "^6.1.1",
     "json5": "^1.0.2",
     "lodash": "^4.17.21",
+    "micromatch": "^4.0.8",
     "minimist": "^1.2.8",
     "mixme": "^0.5.9",
     "node-fetch": "^2.6.7",
