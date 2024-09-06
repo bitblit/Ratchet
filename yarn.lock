@@ -2448,7 +2448,7 @@ __metadata:
     constructs: 10.3.0
   peerDependencies:
     "@bitblit/ratchet-common": 0.0.0-snapshot
-    aws-cdk-lib: ^2.151.0
+    aws-cdk-lib: ^2.155.0
     constructs: ^10.3.0
   languageName: unknown
   linkType: soft
@@ -2557,7 +2557,7 @@ __metadata:
     tunnel-ssh: 5.1.2
   peerDependencies:
     "@bitblit/ratchet-common": 0.0.0-snapshot
-    better-sqlite3: ^11.1.2
+    better-sqlite3: ^11.2.1
     get-port: ^7.1.0
     mysql2: ^3.11.1
     sqlstring: ^2.3.3
@@ -2574,11 +2574,11 @@ __metadata:
     tunnel-ssh:
       optional: true
   peerDependenciesMeta:
+    better-sqlite3:
+      optional: true
+    get-port:
+      optional: true
     mysql2:
-      optional: true
-    promised-sqlite3:
-      optional: true
-    sqlite3:
       optional: true
     sqlstring:
       optional: true
@@ -2634,6 +2634,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@bitblit/ratchet@workspace:."
   dependencies:
+    "@aws-sdk/client-sts": 3.624.0
     "@eslint/js": 9.9.1
     "@rollup/plugin-terser": 0.4.4
     "@rollup/plugin-typescript": 11.1.6
