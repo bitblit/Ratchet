@@ -2634,7 +2634,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@bitblit/ratchet@workspace:."
   dependencies:
-    "@aws-sdk/client-sts": 3.624.0
     "@eslint/js": 9.9.1
     "@rollup/plugin-terser": 0.4.4
     "@rollup/plugin-typescript": 11.1.6
