@@ -166,7 +166,7 @@ export class S3SyncedFile implements RemoteFileSyncLike {
         }
         const out: CompleteMultipartUploadCommandOutput = await this.config.s3CacheRatchetLike.writeStreamToCacheFile(
           this.config.s3Path,
-          fs.readFileSync(this._localFileName),
+          fs.createReadStream(this._localFileName),
         );
         Logger.silly('SendLocalToRemote: %j', out);
 
