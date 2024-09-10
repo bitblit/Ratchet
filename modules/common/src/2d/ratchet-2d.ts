@@ -3,7 +3,7 @@ import { Plane2d } from './plane-2d.js';
 import { Line2d } from './line-2d.js';
 import { PolyLine2d } from './poly-line-2d.js';
 import { BooleanRatchet } from '../lang/boolean-ratchet.js';
-import { ErrorRatchet } from "../lang/error-ratchet";
+import { ErrorRatchet } from "../lang/error-ratchet.js";
 
 export class Ratchet2d {
   // Prevent instantiation
