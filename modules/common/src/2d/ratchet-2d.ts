@@ -3,6 +3,7 @@ import { Plane2d } from './plane-2d.js';
 import { Line2d } from './line-2d.js';
 import { PolyLine2d } from './poly-line-2d.js';
 import { BooleanRatchet } from '../lang/boolean-ratchet.js';
+import { ErrorRatchet } from "../lang/error-ratchet";
 
 export class Ratchet2d {
   // Prevent instantiation
@@ -290,4 +291,20 @@ export class Ratchet2d {
       return curveDef[idx].y + yAdd;
     }
   }
+
+  public static midPoint(src: Point2d, other: Point2d): Point2d {
+    return Ratchet2d.pointAtPercentDistance(src, other, 0.5);
+  }
+
+  public static pointAtPercentDistance(src: Point2d, other: Point2d, percent: number): Point2d {
+    if (percent < 0 || percent > 1) {
+      throw ErrorRatchet.fErr('Percent must be between 0 and 1, but was %d', percent);
+    }
+
+    const deltaX: number = other.x - src.x;
+    const deltaY: number = other.y - src.y;
+    return {x:src.x + deltaX * percent, y:src.y + deltaY * percent};
+  }
+
+
 }

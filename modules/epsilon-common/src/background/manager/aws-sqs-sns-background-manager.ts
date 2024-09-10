@@ -102,7 +102,7 @@ export class AwsSqsSnsBackgroundManager extends AbstractBackgroundManager {
       Logger.debug('Background guid %s Wrote message : %s to SNS : %s', rval, msg, snsId);
       return rval;
     } catch (err) {
-      Logger.error('Failed to fireImmediateProcessRequest : %s', err, err);
+      Logger.error('Failed to fireImmediateProcessRequest : SQS: %s SNS: %s :', this?._awsConfig?.queueUrl, this?._awsConfig?.notificationArn, err, err);
       throw new Error('Failed to fireImmediateProcessRequest : : ' + err['code'] + ' : ' + err['name']);
     }
   }
@@ -113,7 +113,7 @@ export class AwsSqsSnsBackgroundManager extends AbstractBackgroundManager {
       Logger.info('Fire start processing request (remote)');
       rval = await this.writeMessageToSnsTopic(EpsilonConstants.BACKGROUND_SNS_START_MARKER);
     } catch (err) {
-      Logger.error('Failed to fireStartProcessingRequest : %s', err, err);
+      Logger.error('Failed to fireStartProcessingRequest : SQS: %s SNS: %s :', this?._awsConfig?.queueUrl, this?._awsConfig?.notificationArn, err, err);
     }
     return rval;
   }
