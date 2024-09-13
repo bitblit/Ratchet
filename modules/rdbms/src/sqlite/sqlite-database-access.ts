@@ -86,11 +86,13 @@ export class SqliteDatabaseAccess implements DatabaseAccess {
     const rval: QueryAndParams = Object.assign(qap);
 
     // First, rename all the fields to add the prefix
-    const tmp: Record<string, any> = QueryUtil.addPrefixToFieldNames(rval.params, ':');
+    let tmp: Record<string, any> = QueryUtil.addPrefixToFieldNames(rval.params, ':');
     // Then, replace any null params
     rval.query = QueryUtil.replaceNullReplacementsInQuery(rval.query, tmp);
     // Then, remove any unused params from the fields
     rval.params = QueryUtil.removeUnusedFields(rval.query, rval.params, ':');
+    tmp = QueryUtil.removeUnusedFields(rval.query, tmp); // And the prefixed version
+    // CAW 2024-09-13 - This seems convoluted, can probably clean it a bit
 
     // If any of the fields are an array, do a direct replacement since sqlite don't like that
     Object.keys(tmp).forEach((k) => {
@@ -106,15 +108,6 @@ export class SqliteDatabaseAccess implements DatabaseAccess {
     if ((this.flags || []).includes(SqliteConnectionConfigFlag.AlwaysCollateNoCase)) {
       rval.query += ' COLLATE NOCASE';
     }
-
-    /*
-    const tmp: Record<string,any> = {};
-    Object.keys(rval.params).forEach( k=>{
-      tmp[k.substring(1)] = rval.params[k];
-    });
-    rval.params = tmp;
-
-     */
 
     return rval;
   }

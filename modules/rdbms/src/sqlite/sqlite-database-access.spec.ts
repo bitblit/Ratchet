@@ -8,6 +8,15 @@ import { ModifyResults } from '../model/modify-results.js';
 import { RequestResults } from '../model/request-results.js';
 
 describe('sqlite-database-access', () => {
+
+  const testQueries:SimpleQueryTextProvider = new SimpleQueryTextProvider({
+    create: 'create table testable (val varchar(255))',
+    singleIns: 'insert into testable (val) values (:val)',
+    csvIns: 'insert into testable (val) values (:valCsv)',
+    counter: 'select count(1) as cnt from testable',
+    multi: 'insert into testable (val) values :multiVal',
+  });
+
   test.skip('builds filtered', async () => {
     const prov: SqliteStyleConnectionProvider = new SqliteStyleConnectionProvider(() => {
       return Promise.resolve({
@@ -47,12 +56,7 @@ describe('sqlite-database-access', () => {
     });
     const ns: NamedParameterDatabaseService = new NamedParameterDatabaseService({
       serviceName: 'Test',
-      queryProvider: new SimpleQueryTextProvider({
-        create: 'create table testable (val varchar(255))',
-        singleIns: 'insert into testable (val) values (:val)',
-        counter: 'select count(1) as cnt from testable',
-        multi: 'insert into testable (val) values :multiVal',
-      }),
+      queryProvider: testQueries,
       connectionProvider: prov,
       queryDefaults: { databaseName: 'test', timeoutMS: 20_000 },
       longQueryTimeMs: 8_500,
@@ -61,6 +65,47 @@ describe('sqlite-database-access', () => {
     Logger.info('Val was : %j', val);
 
   });
+
+
+  test('handles path with sub', async () => {
+    // Memory database
+    const prov: SqliteStyleConnectionProvider = new SqliteStyleConnectionProvider(() => {
+      return Promise.resolve({
+        dbList: [
+          {
+            label: 'test',
+          },
+        ],
+      });
+    });
+    const ns: NamedParameterDatabaseService = new NamedParameterDatabaseService({
+      serviceName: 'Test',
+      queryProvider: testQueries,
+      connectionProvider: prov,
+      queryDefaults: { databaseName: 'test', timeoutMS: 20_000 },
+      longQueryTimeMs: 8_500,
+    });
+
+    // Create a table
+    const createRes: any = await ns.executeUpdateOrInsertByName('create');
+
+    const myOb: Record<string,any> = {
+      val: ['t1','t2']
+    };
+
+    // Test insert
+    const singleIns: ModifyResults = await ns.buildAndExecuteUpdateOrInsert(
+      ns.queryBuilder('csvIns').withParams(myOb).withParam('valCsv', myOb['val'].join(','))
+    );
+    expect(singleIns.affectedRows).toBeGreaterThan(0);
+
+    const singleCount: RequestResults<any> = await ns.executeQueryByNameSingle('counter', {});
+
+    expect(singleCount['cnt']).toEqual(1);
+
+    Logger.info('Get: %j', singleCount);
+  }, 30_000);
+
 
     test('handles apostrophes in multi-value inserts', async () => {
     // Memory database
@@ -75,12 +120,7 @@ describe('sqlite-database-access', () => {
     });
     const ns: NamedParameterDatabaseService = new NamedParameterDatabaseService({
       serviceName: 'Test',
-      queryProvider: new SimpleQueryTextProvider({
-        create: 'create table testable (val varchar(255))',
-        singleIns: 'insert into testable (val) values (:val)',
-        counter: 'select count(1) as cnt from testable',
-        multi: 'insert into testable (val) values :multiVal',
-      }),
+      queryProvider: testQueries,
       connectionProvider: prov,
       queryDefaults: { databaseName: 'test', timeoutMS: 20_000 },
       longQueryTimeMs: 8_500,
