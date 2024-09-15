@@ -33,6 +33,10 @@ export class GraphqlRatchet {
     this.cachedEndpoint = this.endpointProvider.fetchGraphqlEndpoint();
   }
 
+  public currentAuthToken(): string {
+    return this?.jwtTokenProvider?.fetchJwtToken();
+  }
+
   private async fetchQueryText(qry: string): Promise<string> {
     const text: string = await this.queryProvider.fetchQueryText(qry);
     if (!text) {
