@@ -1,14 +1,15 @@
-import { GraphqlRatchetEndpointProvider } from './provider/graphql-ratchet-endpoint-provider.js';
-import { GraphqlRatchetJwtTokenProvider } from './provider/graphql-ratchet-jwt-token-provider.js';
-import { GraphqlRatchetQueryProvider } from './provider/graphql-ratchet-query-provider.js';
-import { GraphqlRatchetErrorHandler } from './provider/graphql-ratchet-error-handler.js';
-import { DefaultGraphqlRatchetErrorHandler } from './provider/default-graphql-ratchet-error-handler.js';
+import { GraphqlRatchetEndpointProvider } from "./provider/graphql-ratchet-endpoint-provider.js";
+import { GraphqlRatchetJwtTokenProvider } from "./provider/graphql-ratchet-jwt-token-provider.js";
+import { GraphqlRatchetQueryProvider } from "./provider/graphql-ratchet-query-provider.js";
+import { GraphqlRatchetErrorHandler } from "./provider/graphql-ratchet-error-handler.js";
+import { DefaultGraphqlRatchetErrorHandler } from "./provider/default-graphql-ratchet-error-handler.js";
 
-import { RequireRatchet } from '@bitblit/ratchet-common/lang/require-ratchet';
-import { Logger } from '@bitblit/ratchet-common/logger/logger';
-import { ErrorRatchet } from '@bitblit/ratchet-common/lang/error-ratchet';
-import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet';
-import { GraphQLClient, RequestDocument } from 'graphql-request';
+import { RequireRatchet } from "@bitblit/ratchet-common/lang/require-ratchet";
+import { Logger } from "@bitblit/ratchet-common/logger/logger";
+import { ErrorRatchet } from "@bitblit/ratchet-common/lang/error-ratchet";
+import { StringRatchet } from "@bitblit/ratchet-common/lang/string-ratchet";
+import { GraphQLClient } from "graphql-request";
+import { AuthorizationStyle } from "./authorization-style";
 
 /**
  * This is a very simplistic client for non-cache use cases, etc.  For more
@@ -51,16 +52,17 @@ export class GraphqlRatchet {
     return rval;
   }
 
-  private fetchApi(runAnonymous: boolean): GraphQLClient {
+  private fetchApi(authStyle: AuthorizationStyle): GraphQLClient {
     let rval: GraphQLClient = null;
-    if (!runAnonymous && !this.jwtTokenProvider) {
-      throw ErrorRatchet.fErr('If no jwtTokenProvider is set, you must run anonymous');
+    const jwtToken: string = authStyle===AuthorizationStyle.AlwaysAnonymous ? null : StringRatchet.trimToNull(this?.jwtTokenProvider?.fetchJwtToken());
+    if (authStyle===AuthorizationStyle.TokenRequired && !jwtToken) {
+      throw ErrorRatchet.fErr('No token provided, auth style is TokenRequired');
     }
-    const jwtToken: string = runAnonymous?null:this.jwtTokenProvider.fetchJwtToken();
+
     this.checkIfEndpointChanged(); // Always check for cache invalidation first...
     Logger.info('Fetch auth client %s', StringRatchet.obscure(StringRatchet.trimToEmpty(jwtToken), 2, 2));
 
-    if (StringRatchet.trimToNull(jwtToken)) {
+    if (jwtToken) {
       Logger.debug('Fetching authd api');
       if (!this.clientCache.has(jwtToken)) {
         const newValue: GraphQLClient = this.createAuthApi(jwtToken);
@@ -72,17 +74,13 @@ export class GraphqlRatchet {
       rval = this.clientCache.get(jwtToken);
     } else {
       Logger.debug('Fetching unauthd ap');
-      if (runAnonymous) {
-        if (!this.noAuthClient) {
-          this.noAuthClient = this.createAnonymousApi();
-        } else {
-          Logger.debug('Fetching anonymous client from cache');
-        }
-        rval = this.noAuthClient;
+      if (!this.noAuthClient) {
+        this.noAuthClient = this.createAnonymousApi();
       } else {
-        ErrorRatchet.throwFormattedErr('Cannot fetch api - no token and runAnonymous is set to %s : -%s-', runAnonymous, jwtToken);
+        Logger.debug('Fetching anonymous client from cache');
       }
-    }
+      rval = this.noAuthClient;
+  }
     Logger.debug('FetchApi returning %s', rval);
     return rval;
   }
@@ -124,10 +122,10 @@ export class GraphqlRatchet {
     return rval;
   }
 
-  public async executeQuery<T>(queryName: string, variables: Record<string, any>, runAnonymous: boolean = false): Promise<T> {
+  public async executeQuery<T>(queryName: string, variables: Record<string, any>, authStyle: AuthorizationStyle = AuthorizationStyle.TokenRequired): Promise<T> {
     let rval: T = null;
     try {
-      const api: GraphQLClient = this.fetchApi(runAnonymous);
+      const api: GraphQLClient = this.fetchApi(authStyle);
       if (api) {
         Logger.debug('API fetched for %s, fetching gql', queryName);
         const gql: string = await this.fetchQueryText(queryName);
@@ -139,16 +137,16 @@ export class GraphqlRatchet {
         ErrorRatchet.throwFormattedErr('Cannot run - no api fetched');
       }
     } catch (err) {
-      Logger.silly('Exception caught in executeQuery : %s %s %j %s', err, queryName, variables, runAnonymous, err);
-      this.errorHandler.handleError(err, queryName, variables, runAnonymous);
+      Logger.silly('Exception caught in executeQuery : %s %s %j %s', err, queryName, variables, authStyle, err);
+      this.errorHandler.handleError(err, queryName, variables, authStyle);
     }
     return rval;
   }
 
-  public async executeMutate<T>(queryName: string, variables: any, runAnonymous: boolean = false): Promise<T> {
+  public async executeMutate<T>(queryName: string, variables: any, authStyle: AuthorizationStyle = AuthorizationStyle.TokenRequired): Promise<T> {
     Logger.info('Mutate : %s : %j', queryName, variables);
     let rval: T = null;
-    const api: GraphQLClient = this.fetchApi(runAnonymous);
+    const api: GraphQLClient = this.fetchApi(authStyle);
     try {
       if (api) {
         const gql: string = await this.fetchQueryText(queryName);
@@ -160,7 +158,7 @@ export class GraphqlRatchet {
         ErrorRatchet.throwFormattedErr('Cannot run - no api fetched');
       }
     } catch (err) {
-      this.errorHandler.handleError(err, queryName, variables, runAnonymous);
+      this.errorHandler.handleError(err, queryName, variables, authStyle);
     }
 
     return rval;
