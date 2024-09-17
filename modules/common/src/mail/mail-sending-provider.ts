@@ -11,6 +11,9 @@ import { ResolvedReadyToSendEmail } from './resolved-ready-to-send-email.js';
  * Params:
  * ses: AWS SES handler, properly configured
  * defaultSendingAddress:
+ *
+ * T is the object returned by the Mail sender when you send an email
+ * R is the object returned by the Mail archiver when you archive an email
  */
 export interface MailSendingProvider<T, R> {
   sendEmail(mail: ResolvedReadyToSendEmail): Promise<T>;

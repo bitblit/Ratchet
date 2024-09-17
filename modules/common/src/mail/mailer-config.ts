@@ -3,6 +3,9 @@ import { RatchetTemplateRenderer } from '../template/ratchet-template-renderer.j
 
 /**
  * Configuration options for generic mailer
+ *
+ * T is the object returned by the Mail sender when you send an email
+ * R is the object returned by the Mail archiver when you archive an email
  */
 export interface MailerConfig<T, R> {
   // The thing that actually sends the email
