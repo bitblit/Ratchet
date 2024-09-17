@@ -100,9 +100,9 @@
     "@aws-sdk/s3-request-presigner": "^3.651.1",
     "@aws-sdk/types": "^3.649.0",
     "@bitblit/ratchet-common": "0.0.0-snapshot",
-    "@smithy/abort-controller": "^3.1.1",
-    "@smithy/smithy-client": "^3.1.12",
-    "@smithy/util-waiter": "^3.1.2"
+    "@smithy/abort-controller": "^3.1.4",
+    "@smithy/smithy-client": "^3.3.2",
+    "@smithy/util-waiter": "^3.1.5"
   },
   "peerDependenciesMeta": {
     "@aws-sdk/client-athena": {

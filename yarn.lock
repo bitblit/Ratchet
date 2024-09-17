@@ -2142,9 +2142,9 @@ __metadata:
     "@aws-sdk/types": ^3.649.0
     "@bitblit/ratchet-aws": 0.0.0-snapshot
     "@bitblit/ratchet-common": 0.0.0-snapshot
-    "@smithy/abort-controller": ^3.1.1
-    "@smithy/smithy-client": ^3.1.12
-    "@smithy/util-waiter": ^3.1.2
+    "@smithy/abort-controller": ^3.1.4
+    "@smithy/smithy-client": ^3.3.2
+    "@smithy/util-waiter": ^3.1.5
     mailparser: ^3.7.1
     mime-types: ^2.1.35
     tmp: ^0.2.3
@@ -2258,9 +2258,9 @@ __metadata:
     "@aws-sdk/s3-request-presigner": ^3.651.1
     "@aws-sdk/types": ^3.649.0
     "@bitblit/ratchet-common": 0.0.0-snapshot
-    "@smithy/abort-controller": ^3.1.1
-    "@smithy/smithy-client": ^3.1.12
-    "@smithy/util-waiter": ^3.1.2
+    "@smithy/abort-controller": ^3.1.4
+    "@smithy/smithy-client": ^3.3.2
+    "@smithy/util-waiter": ^3.1.5
   dependenciesMeta:
     "@aws-sdk/client-athena":
       optional: true
@@ -2390,7 +2390,7 @@ __metadata:
   peerDependencies:
     "@bitblit/ratchet-common": 0.0.0-snapshot
     canvas: ^2.11.2
-    echarts: ^5.5.0
+    echarts: ^5.5.1
   languageName: unknown
   linkType: soft
 
@@ -2430,7 +2430,7 @@ __metadata:
     "@bitblit/ratchet-common": 0.0.0-snapshot
     "@bitblit/ratchet-misc": 0.0.0-snapshot
     "@bitblit/ratchet-node-only": 0.0.0-snapshot
-    graphql: ^16.8.1
+    graphql: ^16.9.0
   peerDependenciesMeta:
     "@apollo/server":
       optional: true
@@ -2452,7 +2452,7 @@ __metadata:
     constructs: 10.3.0
   peerDependencies:
     "@bitblit/ratchet-common": 0.0.0-snapshot
-    aws-cdk-lib: ^2.155.0
+    aws-cdk-lib: ^2.158.0
     constructs: ^10.3.0
   languageName: unknown
   linkType: soft
@@ -2466,7 +2466,7 @@ __metadata:
     graphql-request: 7.1.0
   peerDependencies:
     "@bitblit/ratchet-common": 0.0.0-snapshot
-    graphql: ^16.8.2
+    graphql: ^16.9.0
     graphql-request: ^7.1.0
   languageName: unknown
   linkType: soft
@@ -2526,7 +2526,7 @@ __metadata:
     rxjs: 7.8.1
   peerDependencies:
     "@bitblit/ratchet-common": 0.0.0-snapshot
-    csv: ^6.3.9
+    csv: ^6.3.10
     jsonwebtoken: ^9.0.2
     rxjs: ^7.8.1
   dependenciesMeta:
@@ -2561,9 +2561,9 @@ __metadata:
     tunnel-ssh: 5.1.2
   peerDependencies:
     "@bitblit/ratchet-common": 0.0.0-snapshot
-    better-sqlite3: ^11.2.1
+    better-sqlite3: ^11.3.0
     get-port: ^7.1.0
-    mysql2: ^3.11.1
+    mysql2: ^3.11.3
     sqlstring: ^2.3.3
     tunnel-ssh: ^5.1.2
   dependenciesMeta:
