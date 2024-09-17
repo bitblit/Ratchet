@@ -3,91 +3,48 @@
  * with your own.
  */
 
-import { Logger } from '@bitblit/ratchet-common/logger/logger';
-import { ErrorRatchet } from '@bitblit/ratchet-common/lang/error-ratchet';
-import { PromiseRatchet } from '@bitblit/ratchet-common/lang/promise-ratchet';
-import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet';
-import { LoggerLevelName } from '@bitblit/ratchet-common/logger/logger-level-name';
-import { NumberRatchet } from '@bitblit/ratchet-common/lang/number-ratchet';
-import { JwtTokenBase } from '@bitblit/ratchet-common/jwt/jwt-token-base';
-import { BooleanRatchet } from '@bitblit/ratchet-common/lang/boolean-ratchet';
-import { ApolloServer } from '@apollo/server';
-import { gql } from 'graphql-tag';
-import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
-import { EpsilonGlobalHandler } from '../epsilon-global-handler.js';
-import { AuthorizerFunction } from '../config/http/authorizer-function.js';
-import { HandlerFunction } from '../config/http/handler-function.js';
-import { BuiltInHandlers } from '../built-in/http/built-in-handlers.js';
-import { HttpConfig } from '../config/http/http-config.js';
-import { LocalWebTokenManipulator } from '../http/auth/local-web-token-manipulator.js';
-import { BackgroundConfig } from '../config/background/background-config.js';
-import { EchoProcessor } from '../built-in/background/echo-processor.js';
-import { NoOpProcessor } from '../built-in/background/no-op-processor.js';
-import { SampleDelayProcessor } from '../built-in/background/sample-delay-processor.js';
-import { LogAndEnqueueEchoProcessor } from '../built-in/background/log-and-enqueue-echo-processor.js';
-import { EpsilonConfig } from '../config/epsilon-config.js';
-import { EpsilonInstance } from '../epsilon-instance.js';
-import { EpsilonConfigParser } from '../util/epsilon-config-parser.js';
-import { RouterUtil } from '../http/route/router-util.js';
-import { SampleInputValidatedProcessor } from '../built-in/background/sample-input-validated-processor.js';
-import { HttpProcessingConfig } from '../config/http/http-processing-config.js';
-import { BuiltInAuthorizers } from '../built-in/http/built-in-authorizers.js';
-import { ApolloFilter } from '../built-in/http/apollo-filter.js';
-import { SampleInputValidatedProcessorData } from '../built-in/background/sample-input-validated-processor-data.js';
-import { BuiltInFilters } from '../built-in/http/built-in-filters.js';
-import { LogMessageBackgroundErrorProcessor } from '../built-in/background/log-message-background-error-processor.js';
-import { SingleThreadLocalBackgroundManager } from '../background/manager/single-thread-local-background-manager.js';
-import { BackgroundManagerLike } from '../background/manager/background-manager-like.js';
-import { SampleServerStaticFiles } from './sample-server-static-files.js';
-import { ApolloUtil } from '../built-in/http/apollo/apollo-util.js';
-import { EpsilonApolloCorsMethod } from '../built-in/http/apollo/epsilon-apollo-cors-method.js';
+import { ErrorRatchet } from "@bitblit/ratchet-common/lang/error-ratchet";
+import { StringRatchet } from "@bitblit/ratchet-common/lang/string-ratchet";
+import { LoggerLevelName } from "@bitblit/ratchet-common/logger/logger-level-name";
+import { NumberRatchet } from "@bitblit/ratchet-common/lang/number-ratchet";
+import { JwtTokenBase } from "@bitblit/ratchet-common/jwt/jwt-token-base";
+import { BooleanRatchet } from "@bitblit/ratchet-common/lang/boolean-ratchet";
+import { EpsilonGlobalHandler } from "../epsilon-global-handler.js";
+import { AuthorizerFunction } from "../config/http/authorizer-function.js";
+import { HandlerFunction } from "../config/http/handler-function.js";
+import { BuiltInHandlers } from "../built-in/http/built-in-handlers.js";
+import { HttpConfig } from "../config/http/http-config.js";
+import { LocalWebTokenManipulator } from "../http/auth/local-web-token-manipulator.js";
+import { BackgroundConfig } from "../config/background/background-config.js";
+import { EchoProcessor } from "../built-in/background/echo-processor.js";
+import { NoOpProcessor } from "../built-in/background/no-op-processor.js";
+import { SampleDelayProcessor } from "../built-in/background/sample-delay-processor.js";
+import { LogAndEnqueueEchoProcessor } from "../built-in/background/log-and-enqueue-echo-processor.js";
+import { EpsilonConfig } from "../config/epsilon-config.js";
+import { EpsilonInstance } from "../epsilon-instance.js";
+import { EpsilonConfigParser } from "../util/epsilon-config-parser.js";
+import { RouterUtil } from "../http/route/router-util.js";
+import { SampleInputValidatedProcessor } from "../built-in/background/sample-input-validated-processor.js";
+import { HttpProcessingConfig } from "../config/http/http-processing-config.js";
+import { BuiltInAuthorizers } from "../built-in/http/built-in-authorizers.js";
+import { SampleInputValidatedProcessorData } from "../built-in/background/sample-input-validated-processor-data.js";
+import { BuiltInFilters } from "../built-in/http/built-in-filters.js";
+import { LogMessageBackgroundErrorProcessor } from "../built-in/background/log-message-background-error-processor.js";
+import { SingleThreadLocalBackgroundManager } from "../background/manager/single-thread-local-background-manager.js";
+import { BackgroundManagerLike } from "../background/manager/background-manager-like.js";
+import { SampleServerStaticFiles } from "./sample-server-static-files.js";
 
 export class SampleServerComponents {
   // Prevent instantiation
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   private constructor() {}
 
-  public static async createSampleApollo(): Promise<ApolloServer> {
-    const gqlString: string = SampleServerStaticFiles.SAMPLE_SERVER_GRAPHQL;
-    Logger.silly('Creating apollo from : %s', gqlString);
-    const typeDefs = gql(gqlString);
-
-    // Provide resolver functions for your schema fields
-    const resolvers = {
-      RootQueryType: {
-        serverMeta: async (_root) => {
-          return { version: 'A1', serverTime: new Date().toISOString() };
-        },
-        forceTimeout: async (_root) => {
-          // This will be longer than the max timeout
-          await PromiseRatchet.wait(1000 * 60 * 30);
-          return { placeholder: 'A1' };
-        },
-      },
-    };
-
-    const server: ApolloServer = new ApolloServer({
-      introspection: true,
-      typeDefs,
-      resolvers,
-      plugins: [
-        /*
-        // Install a landing page plugin based on NODE_ENV
-        process.env.NODE_ENV === 'production'
-          ? ApolloServerPluginLandingPageProductionDefault({
-              graphRef: 'my-graph-id@my-graph-variant',
-              footer: false,
-            })
-          : ApolloServerPluginLandingPageLocalDefault({ footer: false }),
-
-           */
-        ApolloServerPluginLandingPageLocalDefault({ footer: false }),
-      ],
-    });
-    // Need the server started before we start processing...
-    await server.start();
-
-    return server;
+  public static createSampleTokenManipulator(): LocalWebTokenManipulator<JwtTokenBase> {
+    const tokenManipulator: LocalWebTokenManipulator<JwtTokenBase> = new LocalWebTokenManipulator(['abcd1234'], 'sample.erigir.com')
+      .withParseFailureLogLevel(LoggerLevelName.debug)
+      .withExtraDecryptionKeys(['abcdefabcdef'])
+      .withOldKeyUseLogLevel(LoggerLevelName.info);
+    return tokenManipulator;
   }
 
   // Functions below here are for using as samples
@@ -134,33 +91,9 @@ export class SampleServerComponents {
 
       return parsed;
     });
-    // GraphQL endpoints are handled by filter and aren't in the OpenAPI spec so no need to wire them here
 
-    const tokenManipulator: LocalWebTokenManipulator<JwtTokenBase> = new LocalWebTokenManipulator(['abcd1234'], 'sample.erigir.com')
-      .withParseFailureLogLevel(LoggerLevelName.debug)
-      .withExtraDecryptionKeys(['abcdefabcdef'])
-      .withOldKeyUseLogLevel(LoggerLevelName.info);
-
-    const meta: HttpProcessingConfig = RouterUtil.defaultHttpMetaProcessingConfigWithAuthenticationHeaderParsing(tokenManipulator);
+    const meta: HttpProcessingConfig = RouterUtil.defaultHttpMetaProcessingConfigWithAuthenticationHeaderParsing(SampleServerComponents.createSampleTokenManipulator());
     meta.timeoutMS = 10_000;
-
-    ApolloFilter.addApolloFilterToList(meta.preFilters, new RegExp('.*graphql.*'), await SampleServerComponents.createSampleApollo(), {
-      context: (arg) => ApolloUtil.defaultEpsilonApolloContext(arg, {jwtRatchet:tokenManipulator.jwtRatchet}),
-      timeoutMS: 5_000,
-      corsMethod: EpsilonApolloCorsMethod.All,
-    });
-
-    /*
-
-
-        {
-      cors: {
-        origin: '*',
-        credentials: true,
-      },
-    } as CreateHandlerOptions);
-    
-     */
     meta.errorFilters.push((fCtx) => BuiltInFilters.secureOutboundServerErrorForProduction(fCtx, 'Clean Internal Server Error', 500));
 
     const preFiltersAllowingNull: HttpProcessingConfig = Object.assign({}, meta);
