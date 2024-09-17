@@ -50,9 +50,9 @@
     "@bitblit/ratchet-common": "0.0.0-snapshot"
   },
   "optionalDependencies": {
-    "better-sqlite3": "11.2.1",
+    "better-sqlite3": "11.3.0",
     "get-port": "7.1.0",
-    "mysql2": "3.11.0",
+    "mysql2": "3.11.3",
     "sqlstring": "2.3.3",
     "tunnel-ssh": "5.1.2"
   },
