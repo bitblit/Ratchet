@@ -15,6 +15,74 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@angular/common@npm:18.2.4":
+  version: 18.2.4
+  resolution: "@angular/common@npm:18.2.4"
+  dependencies:
+    tslib: ^2.3.0
+  peerDependencies:
+    "@angular/core": 18.2.4
+    rxjs: ^6.5.3 || ^7.4.0
+  checksum: b002aa3953b4fb49a3039b8d6e8051d67a7ef150fa8082e808c9d7392abb02d3d27e0fee1a4daba3adefb5b1bb719c97ce03f702d8cdd298f11b80cadffcd94e
+  languageName: node
+  linkType: hard
+
+"@angular/compiler@npm:18.2.4":
+  version: 18.2.4
+  resolution: "@angular/compiler@npm:18.2.4"
+  dependencies:
+    tslib: ^2.3.0
+  peerDependencies:
+    "@angular/core": 18.2.4
+  peerDependenciesMeta:
+    "@angular/core":
+      optional: true
+  checksum: f98e4a05637790d4ed7c5eb07a5f2fa1625f019522f2ebbb7104a5d9f2a8b60a66149e4c1a008d74b1e2052dfb762a2c72aa3c142906059b9d762515a1caac6f
+  languageName: node
+  linkType: hard
+
+"@angular/core@npm:18.2.4":
+  version: 18.2.4
+  resolution: "@angular/core@npm:18.2.4"
+  dependencies:
+    tslib: ^2.3.0
+  peerDependencies:
+    rxjs: ^6.5.3 || ^7.4.0
+    zone.js: ~0.14.10
+  checksum: 013fa7cbc18e60a4556cef18ff3bb879764c1fc0709d3cc9203a7f961a8430c564c2ab41da0ae4529450681be18c704a2f8c35c21b8c911595c5f0b5f3142e1b
+  languageName: node
+  linkType: hard
+
+"@angular/platform-browser-dynamic@npm:18.2.4":
+  version: 18.2.4
+  resolution: "@angular/platform-browser-dynamic@npm:18.2.4"
+  dependencies:
+    tslib: ^2.3.0
+  peerDependencies:
+    "@angular/common": 18.2.4
+    "@angular/compiler": 18.2.4
+    "@angular/core": 18.2.4
+    "@angular/platform-browser": 18.2.4
+  checksum: 2d092261a0d46af9bba27cf32433db0d83b08378c399d8d849b57fe41410d5af4a58e88aedc32bd0d1e2ebd56d911fa29c02cd373f8bd73ef3b435f5153cb499
+  languageName: node
+  linkType: hard
+
+"@angular/platform-browser@npm:18.2.4":
+  version: 18.2.4
+  resolution: "@angular/platform-browser@npm:18.2.4"
+  dependencies:
+    tslib: ^2.3.0
+  peerDependencies:
+    "@angular/animations": 18.2.4
+    "@angular/common": 18.2.4
+    "@angular/core": 18.2.4
+  peerDependenciesMeta:
+    "@angular/animations":
+      optional: true
+  checksum: 8b376848ad9726dd9b8550b857f44e0be69ea46de94d263916d67aa2a499b3600c02c5e8298cefac531cb083e99255e1bcc2f51013e7aa7392e269d80623d7d4
+  languageName: node
+  linkType: hard
+
 "@apollo/cache-control-types@npm:^1.0.3":
   version: 1.0.3
   resolution: "@apollo/cache-control-types@npm:1.0.3"
@@ -2118,6 +2186,27 @@ __metadata:
   checksum: 850f9305536d0f2bd13e9e0881cb5f02e4f93fad1189f7b2d4bebf694e3206924eadee1068130d43c11b750efcc9405f88a8e42ef098b6d75239c0f047de1a27
   languageName: node
   linkType: hard
+
+"@bitblit/ratchet-acute-common@workspace:modules/acute-common":
+  version: 0.0.0-use.local
+  resolution: "@bitblit/ratchet-acute-common@workspace:modules/acute-common"
+  dependencies:
+    "@angular/common": 18.2.4
+    "@angular/compiler": 18.2.4
+    "@angular/core": 18.2.4
+    "@angular/platform-browser": 18.2.4
+    "@angular/platform-browser-dynamic": 18.2.4
+    "@bitblit/ratchet-common": 0.0.0-snapshot
+    primeflex: 3.3.1
+    primeicons: 7.0.0
+    primeng: 17.18.10
+    rxjs: 7.8.1
+    ts-loader: 9.5.1
+    zone.js: 0.15.0
+  peerDependencies:
+    "@bitblit/ratchet-common": 0.0.0-snapshot
+  languageName: unknown
+  linkType: soft
 
 "@bitblit/ratchet-aws-node-only@workspace:modules/aws-node-only":
   version: 0.0.0-use.local
@@ -6766,6 +6855,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"enhanced-resolve@npm:^5.0.0":
+  version: 5.17.1
+  resolution: "enhanced-resolve@npm:5.17.1"
+  dependencies:
+    graceful-fs: ^4.2.4
+    tapable: ^2.2.0
+  checksum: 4bc38cf1cea96456f97503db7280394177d1bc46f8f87c267297d04f795ac5efa81e48115a2f5b6273c781027b5b6bfc5f62b54df629e4d25fa7001a86624f59
+  languageName: node
+  linkType: hard
+
 "entities@npm:^1.1.1, entities@npm:~1.1.1":
   version: 1.1.2
   resolution: "entities@npm:1.1.2"
@@ -7851,7 +7950,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"graceful-fs@npm:^4.1.2, graceful-fs@npm:^4.1.6, graceful-fs@npm:^4.2.0, graceful-fs@npm:^4.2.2, graceful-fs@npm:^4.2.6":
+"graceful-fs@npm:^4.1.2, graceful-fs@npm:^4.1.6, graceful-fs@npm:^4.2.0, graceful-fs@npm:^4.2.2, graceful-fs@npm:^4.2.4, graceful-fs@npm:^4.2.6":
   version: 4.2.11
   resolution: "graceful-fs@npm:4.2.11"
   checksum: ac85f94da92d8eb6b7f5a8b20ce65e43d66761c55ce85ac96df6865308390da45a8d3f0296dd3a663de65d30ba497bd46c696cc1e248c72b13d6d567138a4fc7
@@ -9437,6 +9536,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"micromatch@npm:^4.0.0":
+  version: 4.0.8
+  resolution: "micromatch@npm:4.0.8"
+  dependencies:
+    braces: ^3.0.3
+    picomatch: ^2.3.1
+  checksum: 79920eb634e6f400b464a954fcfa589c4e7c7143209488e44baf627f9affc8b1e306f41f4f0deedde97e69cb725920879462d3e750ab3bd3c1aed675bb3a8966
+  languageName: node
+  linkType: hard
+
 "micromatch@npm:^4.0.2, micromatch@npm:^4.0.4":
   version: 4.0.7
   resolution: "micromatch@npm:4.0.7"
@@ -10510,6 +10619,35 @@ __metadata:
   languageName: node
   linkType: hard
 
+"primeflex@npm:3.3.1":
+  version: 3.3.1
+  resolution: "primeflex@npm:3.3.1"
+  checksum: 3811f48d9b453141a13bdbfb17f272d01a0bb02fc507d4b77dcd5471feccd4d9e80f10f67dfdfc8571672a568c1aadf03179dd6a4d8536b3f60f7fa060e5bfad
+  languageName: node
+  linkType: hard
+
+"primeicons@npm:7.0.0":
+  version: 7.0.0
+  resolution: "primeicons@npm:7.0.0"
+  checksum: bb7c2fa71d1039f58e52b7ffaa08936c8fc1b10cf462aa2bd769fb16ebd68094a5f0eb51cc362bf49e48392b2fbc2c0754175a72830db800572e64b69c06a03b
+  languageName: node
+  linkType: hard
+
+"primeng@npm:17.18.10":
+  version: 17.18.10
+  resolution: "primeng@npm:17.18.10"
+  dependencies:
+    tslib: ^2.3.0
+  peerDependencies:
+    "@angular/common": ^17.0.0 || ^18.0.0
+    "@angular/core": ^17.0.0 || ^18.0.0
+    "@angular/forms": ^17.0.0 || ^18.0.0
+    rxjs: ^6.0.0 || ^7.8.1
+    zone.js: ~0.14.0
+  checksum: 11178650b7c755fa4b28988669beb68f777d660cbed464039c00922bd96b7f9a54dbfe041f4c462e999e2233a7436699354981ed1cc93fcf788097a0d4baeb45
+  languageName: node
+  linkType: hard
+
 "printj@npm:^1.3.1":
   version: 1.3.1
   resolution: "printj@npm:1.3.1"
@@ -11531,6 +11669,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"source-map@npm:^0.7.4":
+  version: 0.7.4
+  resolution: "source-map@npm:0.7.4"
+  checksum: 01cc5a74b1f0e1d626a58d36ad6898ea820567e87f18dfc9d24a9843a351aaa2ec09b87422589906d6ff1deed29693e176194dc88bcae7c9a852dc74b311dbf5
+  languageName: node
+  linkType: hard
+
 "space-separated-tokens@npm:^2.0.0":
   version: 2.0.2
   resolution: "space-separated-tokens@npm:2.0.2"
@@ -11888,6 +12033,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"tapable@npm:^2.2.0":
+  version: 2.2.1
+  resolution: "tapable@npm:2.2.1"
+  checksum: 3b7a1b4d86fa940aad46d9e73d1e8739335efd4c48322cb37d073eb6f80f5281889bf0320c6d8ffcfa1a0dd5bfdbd0f9d037e252ef972aca595330538aac4d51
+  languageName: node
+  linkType: hard
+
 "tar-fs@npm:^2.0.0":
   version: 2.1.1
   resolution: "tar-fs@npm:2.1.1"
@@ -12121,6 +12273,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"ts-loader@npm:9.5.1":
+  version: 9.5.1
+  resolution: "ts-loader@npm:9.5.1"
+  dependencies:
+    chalk: ^4.1.0
+    enhanced-resolve: ^5.0.0
+    micromatch: ^4.0.0
+    semver: ^7.3.4
+    source-map: ^0.7.4
+  peerDependencies:
+    typescript: "*"
+    webpack: ^5.0.0
+  checksum: 7cf396e656d905388ea2a9b5e82f16d3c955fda8d3df2fbf219f4bee16ff50a3c995c44ae3e584634e9443f056cec70bb3151add3917ffb4588ecd7394bac0ec
+  languageName: node
+  linkType: hard
+
 "ts-node@npm:10.9.2":
   version: 10.9.2
   resolution: "ts-node@npm:10.9.2"
@@ -12200,6 +12368,13 @@ __metadata:
   version: 1.14.1
   resolution: "tslib@npm:1.14.1"
   checksum: dbe628ef87f66691d5d2959b3e41b9ca0045c3ee3c7c7b906cc1e328b39f199bb1ad9e671c39025bd56122ac57dfbf7385a94843b1cc07c60a4db74795829acd
+  languageName: node
+  linkType: hard
+
+"tslib@npm:^2.3.0":
+  version: 2.7.0
+  resolution: "tslib@npm:2.7.0"
+  checksum: 1606d5c89f88d466889def78653f3aab0f88692e80bb2066d090ca6112ae250ec1cfa9dbfaab0d17b60da15a4186e8ec4d893801c67896b277c17374e36e1d28
   languageName: node
   linkType: hard
 
@@ -13011,6 +13186,13 @@ __metadata:
   version: 3.23.8
   resolution: "zod@npm:3.23.8"
   checksum: 15949ff82118f59c893dacd9d3c766d02b6fa2e71cf474d5aa888570c469dbf5446ac5ad562bb035bf7ac9650da94f290655c194f4a6de3e766f43febd432c5c
+  languageName: node
+  linkType: hard
+
+"zone.js@npm:0.15.0":
+  version: 0.15.0
+  resolution: "zone.js@npm:0.15.0"
+  checksum: 8cb8f99c0aa18dfc684b891576d9400385da94a342128ee998accf23cbd21d5e7d9e7a76e623872eb7a300a6d388c181dde575f39d2d9bf46d0af2310024e605
   languageName: node
   linkType: hard
 

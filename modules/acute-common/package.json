@@ -1,0 +1,51 @@
+{
+  "name": "@bitblit/ratchet-acute-common",
+  "version": "0.0.0-snapshot",
+  "description": "Library for using angular",
+  "type": "module",
+  "files": [
+    "lib/**",
+    "bin/**"
+  ],
+  "exports": {
+    "./package.json": "./package.json",
+    "./*": {
+      "import": "./lib/*.js",
+      "types": "./lib/*.d.ts"
+    }
+  },
+  "contributors": [
+    "Christopher Weiss <bitblit@gmail.com>"
+  ],
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
+  },
+  "prettier": {
+    "printWidth": 140,
+    "singleQuote": true,
+    "arrowParens": "always"
+  },
+  "config": {},
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@angular/common": "18.2.4",
+    "@angular/compiler": "18.2.4",
+    "@angular/core": "18.2.4",
+    "@angular/platform-browser": "18.2.4",
+    "@angular/platform-browser-dynamic": "18.2.4",
+    "@bitblit/ratchet-common": "0.0.0-snapshot",
+    "primeflex": "3.3.1",
+    "primeicons": "7.0.0",
+    "primeng": "17.18.10",
+    "rxjs": "7.8.1",
+    "zone.js": "0.15.0"
+  },
+  "peerDependencies": {
+    "@bitblit/ratchet-common": "0.0.0-snapshot"
+  },
+  "devDependencies": {
+    "ts-loader": "9.5.1"
+  }
+}
