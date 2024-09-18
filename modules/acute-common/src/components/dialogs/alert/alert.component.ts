@@ -6,7 +6,7 @@ import {AsyncPipe} from "@angular/common";
 
 @Component({
   selector: 'app-alert',
-  templateUrl: './alert.component.html',
+  template: '<div><pre>{{cfg.data.message | async}}</pre></div>',
   standalone: true,
   imports: [AsyncPipe]
 })
