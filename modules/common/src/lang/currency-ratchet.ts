@@ -1,4 +1,4 @@
-import { NumberRange } from "./number-range.js";
+import { Range } from "./range";
 
 export class CurrencyRatchet {
   // Prevent instantiation
@@ -25,7 +25,7 @@ export class CurrencyRatchet {
     return rval;
   }
 
-  public static dollarFormatRange(range: NumberRange): string {
+  public static dollarFormatNumberRange(range: Range<number>): string {
     let rval: string = 'N/A';
     if (range) {
       rval = range.low ? CurrencyRatchet.dollarFormat(range.low) : ' ^ ';
@@ -35,7 +35,7 @@ export class CurrencyRatchet {
     return rval;
   }
 
-  public static percentFormatRange(range: NumberRange): string {
+  public static percentFormatNumberRange(range: Range<number>): string {
     let rval: string = 'N/A';
     if (range) {
       rval = range.low ? CurrencyRatchet.pctFormatted(range.low) : ' ^ ';
