@@ -41,7 +41,7 @@
   "config": {},
   "repository": {
     "type": "git",
-    "url": "https://github.com/bitblit/Ratchet"
+    "url": "git+https://github.com/bitblit/Ratchet"
   },
   "keywords": [
     "wrench",
