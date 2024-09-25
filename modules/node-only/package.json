@@ -15,8 +15,8 @@
   "exports": {
     "./package.json": "./package.json",
     "./*": {
-      "import": "./lib/*.js",
-      "types": "./lib/*.d.ts"
+      "types": "./lib/*.d.ts",
+      "import": "./lib/*.js"
     }
   },
   "contributors": [

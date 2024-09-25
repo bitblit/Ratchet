@@ -15,8 +15,8 @@
   "exports": {
     "./package.json": "./package.json",
     "./*": {
-      "import": "./lib/*.js",
-      "types": "./lib/*.d.ts"
+      "types": "./lib/*.d.ts",
+      "import": "./lib/*.js"
     }
   },
   "contributors": [
@@ -41,7 +41,7 @@
   "config": {},
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bitblit/Ratchet"
+    "url": "git+https://github.com/bitblit/Ratchet.git"
   },
   "keywords": [
     "wrench",
