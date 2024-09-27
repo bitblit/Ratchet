@@ -32,7 +32,7 @@ jobs:
         shell: bash
 
       - name: Test
-        run: yarn test
+        run: yarn test-coverage
         shell: bash
 
       - uses: ./.github/workflows/actions/upload-code-coverage

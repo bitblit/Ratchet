@@ -35,7 +35,7 @@ jobs:
       - name: Run Tests (Conditionally)
         if: env.SKIP_TESTS != 'true'
         run: |
-          yarn test
+          yarn test-coverage
         shell: bash
 
       - uses: ./.github/workflows/actions/upload-code-coverage
