@@ -30,6 +30,8 @@ jobs:
         shell: bash
 
       - uses: ./.github/workflows/actions/upload-code-coverage
+        with:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
       - name: Uploading artifacts
         uses: actions/upload-artifact@v4
