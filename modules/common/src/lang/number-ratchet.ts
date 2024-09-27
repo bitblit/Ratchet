@@ -4,6 +4,7 @@
 
 import { Logger } from '../logger/logger.js';
 import { RequireRatchet } from './require-ratchet.js';
+import { Range } from "./range";
 
 export class NumberRatchet {
   private static MAX_LEADING_ZEROS_FORMAT_LENGTH = 1000; // Because really, why?
@@ -212,6 +213,26 @@ export class NumberRatchet {
       rval.push(val);
       val += step;
     }
+    return rval;
+  }
+
+
+  public static percentFormatNumberRange(range: Range<number>): string {
+    let rval: string = 'N/A';
+    if (range) {
+      rval = range.low ? NumberRatchet.pctFormatted(range.low) : ' ^ ';
+      rval += ' - ';
+      rval += range.high ? NumberRatchet.pctFormatted(range.high) : ' ^ ';
+    }
+    return rval;
+  }
+
+
+  public static pctFormatted(pct: number, fractionDigits: number = 2): string {
+    const rval: string =
+      pct === null || pct === undefined
+        ? 'Null'
+        : pct.toLocaleString('en-US', { minimumFractionDigits: fractionDigits, maximumFractionDigits: fractionDigits }) + '%';
     return rval;
   }
 }

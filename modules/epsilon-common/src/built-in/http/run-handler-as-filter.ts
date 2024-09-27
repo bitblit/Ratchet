@@ -8,10 +8,10 @@ import { ExtendedAPIGatewayEvent } from '../../config/http/extended-api-gateway-
 import { RequestTimeoutError } from '../../http/error/request-timeout-error.js';
 import { ResponseUtil } from '../../http/response-util.js';
 import { NotFoundError } from '../../http/error/not-found-error.js';
-import { RouteAndParse } from '../../http/web-handler.js';
 import { NullReturnedObjectHandling } from '../../config/http/null-returned-object-handling.js';
 import { FilterFunction } from '../../config/http/filter-function.js';
 import { FilterChainContext } from '../../config/http/filter-chain-context.js';
+import { RouteAndParse } from "../../http/route/route-and-parse.js";
 
 export class RunHandlerAsFilter {
   public static async runHandler(fCtx: FilterChainContext, rm: RouteAndParse): Promise<boolean> {

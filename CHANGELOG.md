@@ -18,6 +18,22 @@ package without knowing why it is alpha you'll get exactly what you deserve.
 
 ## In Flight
 
+## [5.0.x]
+### Added
+- Echarts module
+- GraphQL module
+- RDBMS module (Including SQLite support)
+- Warden modules for SimpleWebAuthn
+- Added support for Brevo email system
+- Added support for Sobol API (may remove later as it seems a dead branch)
+- 
+
+### Changed
+- Major change : Moved to monorepo, incorporated epsilon into ratchet repo
+- Moved around a lot of files to remove node-only dependencies in stuff that could be used in the browser, especially 
+removing dependencies on buffer, node style streams and crypto library.
+- Refactored Mailer to allow configurable email systems
+
 ## [4.0.x]
 ### Added
 - Memory based sync lock implementation to simplify testing
@@ -26,7 +42,7 @@ package without knowing why it is alpha you'll get exactly what you deserve.
 - Switched to AWS Library V3.x since they are now deprecating the 2.x one.  This has a number of backwards incompatibilities,
 and I took the opportunity to clean up some API inconsistencies since it was going to be broken anyway.  This version
 uses the AWS-preferred method of sending command objects to a more generic HTTP client, and also uses the AWS provided
-mock library instead of mocking everything manually with Jest (for non-AWS stuff, Jest mocks are still used).  This handles
+mock library instead of mocking everything manually with ViTest (for non-AWS stuff, Jest mocks are still used).  This handles
 some issues with type overloading in the AWS library itself.
 - Moved most of the AWS classes into sub-folders for better organization
 - Changed StopWatch pretty significantly to always start a default timer, and remove the need for that parameter

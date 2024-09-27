@@ -427,7 +427,7 @@ export class WardenService {
       throw ErrorRatchet.fErr('Cannot generateWebAuthnRegistrationChallengeForLoggedInUser - no user %s / %s', userId, origin);
     }
     if (!entry?.webAuthnAuthenticators?.length) {
-      Logger.info('Entry has no webAuthnAuthenticators entry');
+      Logger.info('Entry has no webAuthnAuthenticators');
       entry.webAuthnAuthenticators = []; // Just in case
     }
     const options = await generateRegistrationOptions({

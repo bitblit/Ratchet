@@ -10,8 +10,11 @@ import { CronBackgroundEntry } from '../config/cron/cron-background-entry.js';
 import { CronUtil } from '../util/cron-util.js';
 import { BackgroundManagerLike } from '../background/manager/background-manager-like.js';
 import { LambdaEventDetector } from '@bitblit/ratchet-aws/lambda/lambda-event-detector';
+import { DateTime } from 'luxon';
 
 export class CronEpsilonLambdaEventHandler implements EpsilonLambdaEventHandler<ScheduledEvent> {
+  public static readonly CRON_EVENT_TIMESTAMP_MISMATCH_MAX_THRESHOLD_MINUTES = 5;
+
   constructor(private _epsilon: EpsilonInstance) {}
 
   public extractLabel(evt: ScheduledEvent, context: Context): string {
@@ -59,10 +62,12 @@ export class CronEpsilonLambdaEventHandler implements EpsilonLambdaEventHandler<
       // Run all the background ones
       if (cronConfig.entries) {
         if (background) {
+          const cronTimestampEpochMS = CronEpsilonLambdaEventHandler.getCronTimeToUse(evt);
+
           const toEnqueue: BackgroundEntry<any>[] = [];
           for (let i = 0; i < cronConfig.entries.length; i++) {
             const smCronEntry: CronBackgroundEntry = cronConfig.entries[i];
-            if (CronUtil.eventMatchesEntry(evt, smCronEntry, cronConfig)) {
+            if (CronUtil.eventMatchesEntry(evt, smCronEntry, cronConfig, cronTimestampEpochMS)) {
               Logger.info('CRON Firing : %s', CronUtil.cronEntryName(smCronEntry));
 
               const backgroundEntry: BackgroundEntry<any> = {
@@ -87,6 +92,42 @@ export class CronEpsilonLambdaEventHandler implements EpsilonLambdaEventHandler<
         }
       }
     }
+    return rval;
+  }
+
+
+  private static getCronTimeToUse(evt?: ScheduledEvent, currentTimestampEpochMS: number = new Date().getTime()): number {
+    let rval = currentTimestampEpochMS;
+
+    if (!evt?.time) {
+      return rval;
+    }
+
+    try {
+      const dateTimeOfEvent = DateTime.fromISO(evt.time);
+      if (!dateTimeOfEvent.isValid) {
+        throw new Error('Invalid date');
+      }
+      rval = dateTimeOfEvent.toMillis();
+      if (isNaN(rval)) {
+        throw new Error('Invalid date');
+      }
+    } catch (err) {
+      Logger.warn('Could not parse event time : %s, using system time instead', evt.time);
+      return rval;
+    }
+
+    if (
+      Math.abs(rval - currentTimestampEpochMS) >
+      CronEpsilonLambdaEventHandler.CRON_EVENT_TIMESTAMP_MISMATCH_MAX_THRESHOLD_MINUTES * 60 * 1000
+    ) {
+      Logger.warn(
+        'Event time and current time mismatch by more than %d minutes, using current time instead',
+        CronEpsilonLambdaEventHandler.CRON_EVENT_TIMESTAMP_MISMATCH_MAX_THRESHOLD_MINUTES,
+      );
+      rval = currentTimestampEpochMS;
+    }
+
     return rval;
   }
 }

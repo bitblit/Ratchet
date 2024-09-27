@@ -2,7 +2,6 @@ import { RequireRatchet } from '@bitblit/ratchet-common/lang/require-ratchet';
 import { Logger } from '@bitblit/ratchet-common/logger/logger';
 import { ErrorRatchet } from '@bitblit/ratchet-common/lang/error-ratchet';
 import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet';
-import { AsyncDatabase } from 'promised-sqlite3';
 import fs from 'fs';
 import { SqliteDatabaseAccess } from './sqlite-database-access.js';
 import { SqliteRemoteSyncDatabaseAccess } from './sqlite-remote-sync-database-access.js';
@@ -10,6 +9,7 @@ import { DatabaseAccessProvider } from '../model/database-access-provider.js';
 import { DatabaseAccess } from '../model/database-access.js';
 import { DatabaseConfigList } from '../model/database-config-list.js';
 import { SqliteConnectionConfig } from './model/sqlite-connection-config.js';
+import DatabaseConstructor, { Database, RunResult, Statement } from "better-sqlite3";
 
 /**
  */
@@ -118,11 +118,11 @@ export class SqliteStyleConnectionProvider implements DatabaseAccessProvider {
         if (!fs.existsSync(dbCfg.localFile.filePath)) {
           throw ErrorRatchet.fErr('Requested file does not exist : %s', dbCfg.localFile.filePath);
         }
-        const db: AsyncDatabase = await AsyncDatabase.open(dbCfg.localFile.filePath);
+        const db: Database = new DatabaseConstructor(dbCfg.localFile.filePath);
         rval = new SqliteDatabaseAccess(db, dbCfg.flags, _additionalConfig);
       } else {
         Logger.info('Neither remote nor local file specified, using memory');
-        const db: AsyncDatabase = await AsyncDatabase.open(':memory:');
+        const db: Database = new DatabaseConstructor(':memory:');
         rval = new SqliteDatabaseAccess(db, dbCfg.flags, _additionalConfig);
       }
     } catch (err) {

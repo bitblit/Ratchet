@@ -11,8 +11,8 @@
   "exports": {
     "./package.json": "./package.json",
     "./*": {
-      "import": "./lib/*.js",
-      "types": "./lib/*.d.ts"
+      "types": "./lib/*.d.ts",
+      "import": "./lib/*.js"
     }
   },
   "contributors": [
@@ -50,30 +50,31 @@
     "@bitblit/ratchet-common": "0.0.0-snapshot"
   },
   "optionalDependencies": {
+    "better-sqlite3": "11.3.0",
     "get-port": "7.1.0",
-    "mysql2": "3.11.0",
-    "promised-sqlite3": "2.1.0",
-    "sqlite3": "5.1.7",
+    "mysql2": "3.11.3",
     "sqlstring": "2.3.3",
     "tunnel-ssh": "5.1.2"
   },
   "peerDependencies": {
     "@bitblit/ratchet-common": "0.0.0-snapshot",
+    "better-sqlite3": "^11.3.0",
     "get-port": "^7.1.0",
-    "mysql2": "^3.11.1",
-    "promised-sqlite3": "2.1.0",
-    "sqlite3": "^5.1.7",
+    "mysql2": "^3.11.3",
     "sqlstring": "^2.3.3",
     "tunnel-ssh": "^5.1.2"
   },
+  "devDependencies": {
+    "@types/better-sqlite3": "7.6.11"
+  },
   "peerDependenciesMeta": {
+    "better-sqlite3": {
+      "optional": true
+    },
+    "get-port": {
+      "optional": true
+    },
     "mysql2": {
-      "optional": true
-    },
-    "promised-sqlite3": {
-      "optional": true
-    },
-    "sqlite3": {
       "optional": true
     },
     "sqlstring": {

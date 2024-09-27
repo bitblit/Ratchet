@@ -342,6 +342,23 @@ export class StringRatchet {
     return rval;
   }
 
+  public static circSafeJsonStringify(input: any): string {
+    let rval: string = null;
+    try {
+      rval = JSON.stringify(input);
+    } catch (err) {
+      if (err instanceof TypeError) {
+        let lines: string[] = err.message.split('\n').map(s=>StringRatchet.trimToNull(s)).filter(s=>!!s);
+        lines = lines.filter(s=>s.startsWith('-->') || s.startsWith('---'));
+
+        rval = 'Cannot stringify - object contains circular reference : '+lines.join(', ');
+      } else {
+        throw err;
+      }
+    }
+    return rval;
+  }
+
   /**
    * So this is a straightforward replace of util.format from NodeJS
    * so that I don't need to bring in a polyfill.  It is lifted DIRECTLY
@@ -359,7 +376,7 @@ export class StringRatchet {
         switch(flag) {
           case 'o':
             if (Array.isArray(arg)) {
-              arg = JSON.stringify(arg);
+              arg = StringRatchet.circSafeJsonStringify(arg);
               break;
             } else {
               throw new Error('Cannot use o placeholder for argument of type '+typeof arg);
@@ -371,7 +388,7 @@ export class StringRatchet {
             arg = Number(arg);
             break;
           case 'j':
-            arg = JSON.stringify(arg);
+            arg = StringRatchet.circSafeJsonStringify(arg);
             break;
         }
         if(!escaped) {
