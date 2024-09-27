@@ -12,8 +12,8 @@
     "./package.json": "./package.json",
     "./sobol": "./lib/sobol/generated/index.js",
     "./*": {
-      "import": "./lib/*.js",
-      "types": "./lib/*.d.ts"
+      "types": "./lib/*.d.ts",
+      "import": "./lib/*.js"
     }
   },
   "contributors": [
@@ -88,7 +88,7 @@
     }
   },
   "devDependencies": {
-    "@openapitools/openapi-generator-cli": "2.13.5",
+    "@openapitools/openapi-generator-cli": "2.13.9",
     "openapi3-ts": "4.4.0",
     "shx": "0.3.4"
   }

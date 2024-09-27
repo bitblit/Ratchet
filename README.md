@@ -11,38 +11,26 @@ am doing them here.
 
 You may wish to read [the changelog](CHANGELOG.md)
 
-This library is my first attempt to publish to NPM. I make no guarantees other than the standard one I make for all
-my libraries - that I will always rev the major version number if I do something that is not backwards compatible. As
-I improve this paragraph should go away.
+
+### Coming from @bitblit/ratchet or @bitblit/epsilon?
+Those libraries are the previous versions of this code before I moved to a mono-repo build process, and split the
+libaries to be more clear which things are usable on node-only vs usable on both node and browser.  In general, packages
+like @bitblit/ratchet/common are now @bitblit/ratchet-common, etc.  Version 4.1.106 of @bitblit/ratchet and 4.1.100
+of @bitblit/epsilon are expected to be the final releases of those branches.
 
 
 ## Installation
 
-`yarn install @bitblit/ratchet`
+For example, 
+`yarn install @bitblit/ratchet-common`
 
 ## Usage
 
 TBD
 
 ### Barrel Files And Modular Architecture
-Every Ratchet library (eg, @bitblit/ratchet-aws, @bitblit/ratchet-graphql) are developed roughly around a central
-theme.  However, within a given library, since these are utilites, there are often multiple products, which themselves
-depend on other products... and it is likely that you won't really want to use ALL the products.  For example, most users 
-of the ratchet-aws library won't use ALL the features in AWS.  So I don't want to create a top level barrel file
-since that defeats the purpose of tree-shaking and peer (transitive) dependencies.  On the other hand, barrel files
-DO come in handy for keeping import statements clean.  So, in these libraries I take the following approach:
-
-* The library is _conceptually_ related.  
-* The first level folders of a library are dependency separated.  The barrel file is at this level
-
-If you choose to not use the barrel file, of course, that is your option.
-
-This also means that in general, if there are 2 ways to organize files, and one would cause a dependency explosion,
-I'll choose the other.  So you'll often see cases where the interface defining a feature is in one folder, and the
-implementation that depends on a particular library is in a different one.  Eg, "DatabaseAccess" is in the top-level
-model folder, and "MysqlStyleDatabaseAccess" is in the mysql folder, so that people not using mysql don't have to import
-it.
-
+Although I hate the import pollution, I have gradually been dragged to the belief that barrel files are an
+antipattern in Typescript given how much they mess up tree shaking, etc.  I finally removed them entirely.
 
 ## Utilities and Stuff
 ### Daemon
@@ -130,7 +118,7 @@ because I am lazy and because that is where AWS releases the new stuff first. Be
 while my code allows you to override the region, I always set a biased default. If you don't like that... sorry?
 
 Since AWS version 3 has broken out all the services into separate libraries, there can be issues if you have
-libraries with different versions since they depends on different versions of the '@aws-sdk/types' library.  Therefor,
+libraries with different versions since they depend on different versions of the '@aws-sdk/types' library.  Therefor,
 Ratchet when upgraded ships with the most recent version of AWS libraries that ALL the dependant libraries support,
 so that we don't get weird matching issues.  See https://github.com/m-radzikowski/aws-sdk-client-mock/issues/10
 for background if you care.
@@ -165,7 +153,8 @@ use it, you'll need to include *js-yaml* and *swagger-model-validator*.
 
 # Testing
 
-Ha! No, seriously - all testing is done using Jest.  To run them:
+Ha! No, seriously - all testing is done using ViTest (I moved from Jest when it became clear that 
+it didn't support ESM well and had no intentions to anytime soon).  To run them:
 
 `yarn test`
 
@@ -202,25 +191,6 @@ Pull requests are welcome, although I'm not sure why you'd be interested!
 
 ## Notes on ECMAScript Modules
 
-CAW 2022-03-22 : It is my full intention to convert Ratchet (and my other NodeJS libraries) to ECMAScript
-modules.  However, I have lots of other things to do besides getting that mess working when Typescript
-doesn't support it cleanly yet.  [Support was pulled from Typescript 4.5](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-5.html#esm-nodejs)
-but as soon as it is supported it'll be on the top of my list of changes.
-
-CAW 2022-09-05 : Took another multi-week run at making this an ECMAScript module.  It is actually kinda amazing that
-a full 7 years after this spec came out support is STILL so weak across the ecosystem for it.  Typescript has 
-issues unless you use some hacks (e.g., default Typescript imports are extensionless, but ECMAScript REQUIRES an extension
-on the imports.  Default ESLint hates this).   Jest works, but only with some hacks ("cross-env NODE_OPTIONS=--experimental-vm-modules jest").  
-Barrel files still a huge mess to try to make tree shaking working cleanly downstream.  Barrelsby won't put extensions
-on the index files so that's a SED hack, and then unless you wanna completely destroy tree shaking you better list every
-folder separately in the "exports" section of the package.json file.  
-
-Worst of all, the Typescript infrastructure is such that if I make Ratchet ESM-only (as opposed to a dual-built ESM and 
-CJS module) then everything downstream of it (notably Epsilon and ALL my various projects which use Ratchet, which is 
-to say all of them) must also be ESM only.  Given that Neon uses Ratchet, and that everything up until this point has 
-been incredibly fragile, I'm going to commit everything I have into a branch (cw/feat/esm) and push it, and then put 
-it back on the shelf for 6 months to age.  We'll see how it looks then - until then, I'm not willing to take on that 
-much risk just to get rid of a warning in my Angular builds.
-
-If I was primarily a front-end, non-webpack guy the value would be higher since getting rid of sync imports is huge,
-but given that I'm a 92% Node / 8% web guy, this is still way too far out on the value chain for me.
+Ratchet is now ESM only.  As a former Java guy who is jealous of how well that module system was ready to go
+in version 1.0.2 in 1995 (!!!) I find Javascript's module system to be a wretched hive of scum and villainy,
+but what can you do, other than use the current best available?
