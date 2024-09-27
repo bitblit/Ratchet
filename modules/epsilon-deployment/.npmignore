@@ -1,0 +1,11 @@
+circle.yml
+gulpfile.js
+tslint.json
+.idea
+*.iml
+node_modules
+npm-debug.log
+cw-test.ts
+typings
+*.bak
+*.spec.*

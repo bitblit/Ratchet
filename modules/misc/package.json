@@ -1,0 +1,95 @@
+{
+  "name": "@bitblit/ratchet-misc",
+  "version": "0.0.0-snapshot",
+  "description": "Ratchet miscellaneous tooling that requires smallish dependant libraries",
+  "sideEffects": false,
+  "type": "module",
+  "files": [
+    "lib/**",
+    "bin/**"
+  ],
+  "exports": {
+    "./package.json": "./package.json",
+    "./sobol": "./lib/sobol/generated/index.js",
+    "./*": {
+      "types": "./lib/*.d.ts",
+      "import": "./lib/*.js"
+    }
+  },
+  "contributors": [
+    "Christopher Weiss <bitblit@gmail.com>"
+  ],
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
+  },
+  "prettier": {
+    "printWidth": 140,
+    "singleQuote": true,
+    "arrowParens": "always"
+  },
+  "config": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bitblit/Ratchet"
+  },
+  "keywords": [
+    "wrench",
+    "utility"
+  ],
+  "bugs": {
+    "url": "https://github.com/bitblit/Ratchet/issues"
+  },
+  "homepage": "https://github.com/bitblit/Ratchet#readme",
+  "engines": {
+    "node": ">=14.18"
+  },
+  "scripts": {
+    "cleanup-brevo-open-api-files": "yarn shx rm -Rf src/brevo/generated",
+    "regenerate-brevo-open-api-files": "yarn cleanup-brevo-open-api-files && yarn openapi-generator-cli generate -i brevo-open-api-spec-2024-02-14.yaml -g typescript-fetch -o ./src/brevo/generated --additional-properties=supportsES6=true,withInterfaces=true,stringEnums=true,importFileExtension=.js && rm src/brevo/generated/apis/index.ts && rm src/brevo/generated/index.ts",
+    "cleanup-sobol-open-api-files": "yarn shx rm -Rf src/sobol/generated",
+    "regenerate-sobol-open-api-files": "yarn cleanup-sobol-open-api-files && yarn openapi-generator-cli generate -i sobol_io_v1_2024_04_10_fixed.json -g typescript-fetch -o ./src/sobol/generated --global-property=apis --global-property=models --global-property=supportingFiles --additional-properties=supportsES6=true,enumPropertyNaming=original,withInterfaces=true,stringEnums=true,importFileExtension=.js,modelPropertyNaming=original"
+  },
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@bitblit/ratchet-common": "0.0.0-snapshot"
+  },
+  "optionalDependencies": {
+    "handlebars": "4.7.8",
+    "handlebars-layouts": "3.1.4",
+    "js-yaml": "4.1.0",
+    "rxjs": "7.8.1",
+    "swagger-model-validator": "3.0.21"
+  },
+  "peerDependencies": {
+    "@bitblit/ratchet-common": "0.0.0-snapshot",
+    "handlebars": "^4.7.8",
+    "handlebars-layouts": "^3.1.4",
+    "js-yaml": "^4.1.0",
+    "rxjs": "^7.8.1",
+    "swagger-model-validator": "^3.0.21"
+  },
+  "peerDependenciesMeta": {
+    "handlebars": {
+      "optional": true
+    },
+    "handlebars-layouts": {
+      "optional": true
+    },
+    "js-yaml": {
+      "optional": true
+    },
+    "rxjs": {
+      "optional": true
+    },
+    "swagger-model-validator": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@openapitools/openapi-generator-cli": "2.13.5",
+    "openapi3-ts": "4.4.0",
+    "shx": "0.3.4"
+  }
+}

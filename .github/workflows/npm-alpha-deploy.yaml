@@ -17,13 +17,25 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Configure environment
         uses: ./.github/workflows/actions/build-env-setup
+        with:
+          NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      - name: Build, Test, Package
-        run: yarn prepare-to-publish
+      - name: Clean
+        run: yarn clean
+        shell: bash
+
+      - name: Build
+        run: yarn build
+        shell: bash
+
+      - name: Run Tests (Conditionally)
+        if: env.SKIP_TESTS != 'true'
+        run: |
+          yarn test
         shell: bash
 
       - name: Upload coverage reports to Codecov
@@ -31,12 +43,16 @@ jobs:
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
-      - name: Apply CI vars
-        run: yarn apply-ci-vars
+      - name: Apply Github Info
+        run: yarn apply-github-info
+        shell: bash
+
+      - name: Set Codependency versions
+        run: yarn set-codependencies-alpha
         shell: bash
 
       - name: Deploy to NPMJS
-        run: yarn publish --no-git-tag-version --non-interactive --new-version 4.1.$GITHUB_RUN_NUMBER-alpha dist
+        run: yarn publish-alpha
         shell: bash
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

@@ -1,0 +1,95 @@
+{
+  "name": "@bitblit/ratchet-node-only",
+  "version": "0.0.0-snapshot",
+  "description": "Ratchet tools for use on node-only",
+  "note-on-side-effects": "Technically the entries in 'bin' below might be side effects, but they are called explicitly",
+  "sideEffects": false,
+  "bin": {
+    "ratchet-cli": "./bin/cli.js"
+  },
+  "type": "module",
+  "files": [
+    "lib/**",
+    "bin/**"
+  ],
+  "exports": {
+    "./package.json": "./package.json",
+    "./*": {
+      "types": "./lib/*.d.ts",
+      "import": "./lib/*.js"
+    }
+  },
+  "contributors": [
+    "Christopher Weiss <bitblit@gmail.com>",
+    "William Weiss <npm@codification.org>",
+    "Austin Grantham <agrantham@algidious.com>",
+    "Lucas Myers <veganbeef@protonmail.com>",
+    "Joel Flint <joel@stimulimedia.net>",
+    "Bilal Shahid <bshahid@adomni.com>"
+  ],
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
+  },
+  "prettier": {
+    "printWidth": 140,
+    "singleQuote": true,
+    "arrowParens": "always"
+  },
+  "config": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bitblit/Ratchet"
+  },
+  "keywords": [
+    "wrench",
+    "utility"
+  ],
+  "bugs": {
+    "url": "https://github.com/bitblit/Ratchet/issues"
+  },
+  "homepage": "https://github.com/bitblit/Ratchet#readme",
+  "engines": {
+    "node": ">=14.18"
+  },
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@bitblit/ratchet-common": "0.0.0-snapshot"
+  },
+  "optionalDependencies": {
+    "cheerio": "1.0.0",
+    "csv": "6.3.10",
+    "jsonwebtoken": "9.0.2",
+    "rxjs": "7.8.1",
+    "warc": "1.0.1"
+  },
+  "peerDependencies": {
+    "@bitblit/ratchet-common": "0.0.0-snapshot",
+    "cheerio": "^1.0.0",
+    "csv": "^6.3.10",
+    "jsonwebtoken": "^9.0.2",
+    "rxjs": "^7.8.1",
+    "warc": "^1.0.1"
+  },
+  "peerDependenciesMeta": {
+    "cheerio": {
+      "optional": true
+    },
+    "csv": {
+      "optional": true
+    },
+    "jsonwebtoken": {
+      "optional": true
+    },
+    "rxjs": {
+      "optional": true
+    },
+    "warc": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@types/cheerio": "0.22.35"
+  }
+}

@@ -1,0 +1,67 @@
+{
+  "name": "@bitblit/ratchet-common",
+  "version": "0.0.0-snapshot",
+  "description": "Common tools for general use",
+  "type": "module",
+  "files": [
+    "lib/**",
+    "bin/**"
+  ],
+  "exports": {
+    "./package.json": "./package.json",
+    "./*": {
+      "types": "./lib/*.d.ts",
+      "import": "./lib/*.js"
+    }
+  },
+  "contributors": [
+    "Christopher Weiss <bitblit@gmail.com>",
+    "William Weiss <npm@codification.org>",
+    "Austin Grantham <agrantham@algidious.com>",
+    "Lucas Myers <veganbeef@protonmail.com>",
+    "Joel Flint <joel@stimulimedia.net>",
+    "Bilal Shahid <bshahid@adomni.com>",
+    "Benn Linger <benn@bennlinger.com>"
+  ],
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
+  },
+  "config": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bitblit/Ratchet.git"
+  },
+  "scripts": {
+    "t": "yarn mod:test"
+  },
+  "keywords": [
+    "wrench",
+    "utility"
+  ],
+  "bugs": {
+    "url": "https://github.com/bitblit/Ratchet/issues"
+  },
+  "homepage": "https://github.com/bitblit/Ratchet#readme",
+  "engines": {
+    "node": ">=14.18"
+  },
+  "license": "Apache-2.0",
+  "optionalDependencies": {
+    "jwt-decode": "4.0.0",
+    "ts-enum-util": "4.1.0"
+  },
+  "peerDependencies": {
+    "jwt-decode": "^4.0.0",
+    "ts-enum-util": "^4.1.0"
+  },
+  "peerDependenciesMeta": {
+    "jwt-decode": {
+      "optional": true
+    },
+    "ts-enum-util": {
+      "optional": true
+    }
+  }
+}

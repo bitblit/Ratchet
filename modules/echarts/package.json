@@ -1,0 +1,42 @@
+{
+  "name": "@bitblit/ratchet-echarts",
+  "version": "0.0.0-snapshot",
+  "description": "Library for using echarts on Node",
+  "type": "module",
+  "files": [
+    "lib/**",
+    "bin/**"
+  ],
+  "exports": {
+    "./package.json": "./package.json",
+    "./*": {
+      "types": "./lib/*.d.ts",
+      "import": "./lib/*.js"
+    }
+  },
+  "contributors": [
+    "Christopher Weiss <bitblit@gmail.com>"
+  ],
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
+  },
+  "prettier": {
+    "printWidth": 140,
+    "singleQuote": true,
+    "arrowParens": "always"
+  },
+  "config": {},
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@bitblit/ratchet-common": "0.0.0-snapshot",
+    "canvas": "2.11.2",
+    "echarts": "5.5.1"
+  },
+  "peerDependencies": {
+    "@bitblit/ratchet-common": "0.0.0-snapshot",
+    "canvas": "^2.11.2",
+    "echarts": "^5.5.1"
+  }
+}

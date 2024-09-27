@@ -1,0 +1,64 @@
+{
+  "name": "@bitblit/ratchet-epsilon-deployment",
+  "version": "0.0.0-snapshot",
+  "description": "Epsilon CDK extensions to simplify deployment",
+  "sideEffects": false,
+  "type": "module",
+  "files": [
+    "lib/**",
+    "bin/**"
+  ],
+  "exports": {
+    "./package.json": "./package.json",
+    "./*": {
+      "types": "./lib/*.d.ts",
+      "import": "./lib/*.js"
+    }
+  },
+  "contributors": [
+    "Christopher Weiss <bitblit@gmail.com>",
+    "Benn Linger <benn@bennlinger.com>",
+    "Lucas Myers <veganbeef@protonmail.com>",
+    "Zach Herridge"
+  ],
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
+  },
+  "prettier": {
+    "printWidth": 140,
+    "singleQuote": true,
+    "arrowParens": "always"
+  },
+  "config": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bitblit/Ratchet"
+  },
+  "keywords": [
+    "epsilon",
+    "lambda",
+    "api gateway"
+  ],
+  "bugs": {
+    "url": "https://github.com/bitblit/Ratchet/issues"
+  },
+  "homepage": "https://github.com/bitblit/Ratchet#readme",
+  "engines": {
+    "node": ">=14.18"
+  },
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@bitblit/ratchet-aws": "0.0.0-snapshot",
+    "@bitblit/ratchet-common": "0.0.0-snapshot",
+    "@bitblit/ratchet-epsilon-common": "0.0.0-snapshot",
+    "aws-cdk-lib": "2.158.0",
+    "constructs": "10.3.0"
+  },
+  "peerDependencies": {
+    "@bitblit/ratchet-common": "0.0.0-snapshot",
+    "aws-cdk-lib": "^2.158.0",
+    "constructs": "^10.3.0"
+  }
+}

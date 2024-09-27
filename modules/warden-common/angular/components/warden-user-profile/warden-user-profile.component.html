@@ -1,0 +1,43 @@
+<mat-card>
+  <mat-card-title id="warden-user-profile-main-title">
+    User profile : {{user.userObject.loginData.userLabel}}
+  </mat-card-title>
+  <mat-card-content id="warden-user-profile-content">
+    <div id="warden-user-profile-user-id-section">
+      ID: {{user.userObject.loginData.userId}}
+    </div>
+    <div id="warden-user-profile-full-name-section">
+      Full Name: {{user.userObject.loginData.userLabel}}
+    </div>
+    <div id="warden-user-profile-contacts-section">
+      <h3>Contacts</h3>
+      <ul>
+        <li *ngFor="let cm of user.userObject.loginData.contactMethods">
+          <button mat-icon-button matTooltip="Remove contact method {{cm.value}}" (click)="removeContact(cm)"><mat-icon>delete_forever</mat-icon></button>
+          {{cm.type}} : {{cm.value}}</li>
+      </ul>
+    </div>
+    <div *ngIf="user?.userObject?.loginData?.webAuthnAuthenticatorIds?.length" id="warden-user-profile-web-authn-section">
+      <h3>Web Authenticators</h3>
+      <ul>
+        <li *ngFor="let waa of user.userObject.loginData.webAuthnAuthenticatorIds">
+          <button mat-icon-button matTooltip="Remove web auth {{waa}}" (click)="removeWebAuthn(waa)"><mat-icon>delete_forever</mat-icon></button>
+          {{waa}}
+        </li>
+      </ul>
+    </div>
+
+    <div id="warden-user-profile-add-new-section">
+      <button mat-icon-button matTooltip="Add a new contact method" (click)="addContact()"><mat-icon>person_add_outline</mat-icon></button>
+      <button mat-icon-button matTooltip="Add this device as an authenticator" (click)="addWebAuthnDevice()"><mat-icon>enhanced_encryption</mat-icon></button>
+    </div>
+
+    <div id="warden-user-profile-roles-section">
+      Roles: {{user.userObject.roles}}
+    </div>
+
+    <div id="warden-user-profile-time-remaining-section">
+      Time (MS) left in token : {{timeLeftMS}} <button (click)="refreshToken()">Refresh</button>
+    </div>
+  </mat-card-content>
+</mat-card>

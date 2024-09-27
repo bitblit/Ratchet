@@ -18,6 +18,22 @@ package without knowing why it is alpha you'll get exactly what you deserve.
 
 ## In Flight
 
+## [4.0.x]
+### Added
+- Memory based sync lock implementation to simplify testing
+
+### Changed
+- Switched to AWS Library V3.x since they are now deprecating the 2.x one.  This has a number of backwards incompatibilities,
+and I took the opportunity to clean up some API inconsistencies since it was going to be broken anyway.  This version
+uses the AWS-preferred method of sending command objects to a more generic HTTP client, and also uses the AWS provided
+mock library instead of mocking everything manually with Jest (for non-AWS stuff, Jest mocks are still used).  This handles
+some issues with type overloading in the AWS library itself.
+- Moved most of the AWS classes into sub-folders for better organization
+- Changed StopWatch pretty significantly to always start a default timer, and remove the need for that parameter
+
+### Removed
+- Removed the DynamicImportRatchet - it didn't end up doing what I wanted, and just made Angular whine all the time
+
 ## [3.2.x] - 2023-02-16
 
 ### Added
@@ -184,12 +200,12 @@ package without knowing why it is alpha you'll get exactly what you deserve.
 
 ## [0.7.x] - 2020-05-04
 ### Changed
-- Breaking change to Mailer (switch to config object, add allowedDestinationEmails handling)
+- Breaking change to SesMailSendingProvider (switch to config object, add allowedDestinationEmails handling)
 - Removed Gulp for security reasons.
 
 ## [0.6.x] - 2020-04-22
 ### Changed
--Breaking change to Mailer (adding Handlebars layouts)
+-Breaking change to SesMailSendingProvider (adding Handlebars layouts)
 
 ## [0.5.x] - 2019-10-19
 ### Changed

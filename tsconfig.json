@@ -1,34 +1,43 @@
 {
   "compilerOptions": {
-    "target": "es6",
-    "module": "commonjs",
     "declaration": true,
-    "sourceMap": true,
-    "outDir": "./dist",
+    "importHelpers": true,
+    "module": "ESNext",
+    "noEmitHelpers": true,
+    "target": "ESNext",
     "strict": true,
-
+    "sourceMap": true,
+    "baseUrl": ".",
+    "downlevelIteration": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "esModuleInterop": true,
+    "incremental": false,
+    "moduleResolution": "bundler",
+    "noFallthroughCasesInSwitch": true,
+    "preserveConstEnums": true,
+    "removeComments": true,
     "resolveJsonModule": true,
-    "moduleResolution": "node",
+    "useUnknownInCatchVariables": false,
     "noImplicitAny": false,
     "noUnusedLocals": false,
     "noImplicitThis": false,
     "strictNullChecks": false,
     "skipLibCheck": true,
     "noImplicitReturns": true,
-    "preserveConstEnums": true,
     "forceConsistentCasingInFileNames": true,
+    "paths": {
+      "@bitblit/ratchet-*": ["modules/"]
+    },
     "lib": ["esnext", "dom"]
   },
+  "include": ["modules/"],
+  "exclude": ["node_modules/", "**/*.spec.ts"],
   "typedocOptions": {
     "entryPointStrategy": "expand",
     "entryPoints": ["src"],
     "out": "artifacts/typedocs"
   },
-  "include": ["src/**/*.ts"],
-  "exclude": ["node_modules", "build"],
   "types": ["typePatches"],
   "CAW_NOTES": "Set noImplicitAny, noImplicitThis and noUnusedLocals back to true at some point"
 }

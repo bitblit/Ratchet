@@ -1,0 +1,183 @@
+{
+  "name": "@bitblit/ratchet-aws",
+  "version": "0.0.0-snapshot",
+  "description": "Common tools for use with AWS browser and node",
+  "sideEffects": false,
+  "type": "module",
+  "files": [
+    "lib/**",
+    "bin/**"
+  ],
+  "exports": {
+    "./package.json": "./package.json",
+    "./*": {
+      "types": "./lib/*.d.ts",
+      "import": "./lib/*.js"
+    }
+  },
+  "contributors": [
+    "Christopher Weiss <bitblit@gmail.com>",
+    "William Weiss <npm@codification.org>",
+    "Austin Grantham <agrantham@algidious.com>",
+    "Lucas Myers <veganbeef@protonmail.com>",
+    "Joel Flint <joel@stimulimedia.net>",
+    "Bilal Shahid <bshahid@adomni.com>"
+  ],
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
+  },
+  "prettier": {
+    "printWidth": 140,
+    "singleQuote": true,
+    "arrowParens": "always"
+  },
+  "config": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bitblit/Ratchet.git"
+  },
+  "keywords": [
+    "wrench",
+    "utility"
+  ],
+  "bugs": {
+    "url": "https://github.com/bitblit/Ratchet/issues"
+  },
+  "homepage": "https://github.com/bitblit/Ratchet#readme",
+  "engines": {
+    "node": ">=14.18"
+  },
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@bitblit/ratchet-common": "0.0.0-snapshot"
+  },
+  "optionalDependencies": {
+    "@aws-sdk/client-athena": "3.651.1",
+    "@aws-sdk/client-batch": "3.651.1",
+    "@aws-sdk/client-cloudwatch": "3.651.1",
+    "@aws-sdk/client-cloudwatch-logs": "3.651.1",
+    "@aws-sdk/client-dynamodb": "3.651.1",
+    "@aws-sdk/client-ec2": "3.651.1",
+    "@aws-sdk/client-ec2-instance-connect": "3.651.1",
+    "@aws-sdk/client-ecr": "3.651.1",
+    "@aws-sdk/client-lambda": "3.651.1",
+    "@aws-sdk/client-route-53": "3.651.1",
+    "@aws-sdk/client-s3": "3.651.1",
+    "@aws-sdk/client-ses": "3.651.1",
+    "@aws-sdk/client-sns": "3.651.1",
+    "@aws-sdk/client-ssm": "3.651.1",
+    "@aws-sdk/client-sts": "3.651.1",
+    "@aws-sdk/credential-providers": "3.651.1",
+    "@aws-sdk/lib-dynamodb": "3.651.1",
+    "@aws-sdk/lib-storage": "3.651.1",
+    "@aws-sdk/s3-request-presigner": "3.651.1",
+    "@aws-sdk/types": "3.649.0",
+    "@smithy/abort-controller": "3.1.4",
+    "@smithy/smithy-client": "3.3.2",
+    "@smithy/util-waiter": "3.1.5"
+  },
+  "peerDependencies": {
+    "@aws-sdk/client-athena": "^3.651.1",
+    "@aws-sdk/client-batch": "^3.651.1",
+    "@aws-sdk/client-cloudwatch": "^3.651.1",
+    "@aws-sdk/client-cloudwatch-logs": "^3.651.1",
+    "@aws-sdk/client-dynamodb": "^3.651.1",
+    "@aws-sdk/client-ec2": "^3.651.1",
+    "@aws-sdk/client-ec2-instance-connect": "^3.651.1",
+    "@aws-sdk/client-ecr": "^3.651.1",
+    "@aws-sdk/client-lambda": "^3.651.1",
+    "@aws-sdk/client-route-53": "^3.651.1",
+    "@aws-sdk/client-s3": "^3.651.1",
+    "@aws-sdk/client-ses": "^3.651.1",
+    "@aws-sdk/client-sns": "^3.651.1",
+    "@aws-sdk/client-ssm": "^3.651.1",
+    "@aws-sdk/client-sts": "^3.651.1",
+    "@aws-sdk/credential-providers": "^3.651.1",
+    "@aws-sdk/lib-dynamodb": "^3.651.1",
+    "@aws-sdk/lib-storage": "^3.651.1",
+    "@aws-sdk/s3-request-presigner": "^3.651.1",
+    "@aws-sdk/types": "^3.649.0",
+    "@bitblit/ratchet-common": "0.0.0-snapshot",
+    "@smithy/abort-controller": "^3.1.4",
+    "@smithy/smithy-client": "^3.3.2",
+    "@smithy/util-waiter": "^3.1.5"
+  },
+  "peerDependenciesMeta": {
+    "@aws-sdk/client-athena": {
+      "optional": true
+    },
+    "@aws-sdk/client-batch": {
+      "optional": true
+    },
+    "@aws-sdk/client-cloudwatch": {
+      "optional": true
+    },
+    "@aws-sdk/client-cloudwatch-logs": {
+      "optional": true
+    },
+    "@aws-sdk/client-dynamodb": {
+      "optional": true
+    },
+    "@aws-sdk/client-ec2": {
+      "optional": true
+    },
+    "@aws-sdk/client-ec2-instance-connect": {
+      "optional": true
+    },
+    "@aws-sdk/client-ecr": {
+      "optional": true
+    },
+    "@aws-sdk/client-lambda": {
+      "optional": true
+    },
+    "@aws-sdk/client-route-53": {
+      "optional": true
+    },
+    "@aws-sdk/client-s3": {
+      "optional": true
+    },
+    "@aws-sdk/client-ses": {
+      "optional": true
+    },
+    "@aws-sdk/client-sns": {
+      "optional": true
+    },
+    "@aws-sdk/client-ssm": {
+      "optional": true
+    },
+    "@aws-sdk/client-sts": {
+      "optional": true
+    },
+    "@aws-sdk/credential-providers": {
+      "optional": true
+    },
+    "@aws-sdk/lib-dynamodb": {
+      "optional": true
+    },
+    "@aws-sdk/lib-storage": {
+      "optional": true
+    },
+    "@aws-sdk/s3-request-presigner": {
+      "optional": true
+    },
+    "@aws-sdk/types": {
+      "optional": true
+    },
+    "@smithy/abort-controller": {
+      "optional": true
+    },
+    "@smithy/smithy-client": {
+      "optional": true
+    },
+    "@smithy/util-waiter": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@bitblit/ratchet-node-only": "0.0.0-snapshot",
+    "@types/aws-lambda": "8.10.145",
+    "aws-sdk-client-mock": "4.0.1"
+  }
+}

@@ -1,0 +1,131 @@
+{
+  "name": "@bitblit/ratchet-aws-node-only",
+  "version": "0.0.0-snapshot",
+  "description": "Common tools for use with AWS (Node only)",
+  "note-on-side-effects": "Technically the entries in 'bin' below might be side effects, but they are called explicitly",
+  "sideEffects": false,
+  "bin": {
+    "ratchet-aws-cli": "./bin/cli.js"
+  },
+  "type": "module",
+  "files": [
+    "lib/**",
+    "bin/**"
+  ],
+  "exports": {
+    "./package.json": "./package.json",
+    "./*": {
+      "types": "./lib/*.d.ts",
+      "import": "./lib/*.js"
+    }
+  },
+  "contributors": [
+    "Christopher Weiss <bitblit@gmail.com>",
+    "William Weiss <npm@codification.org>",
+    "Austin Grantham <agrantham@algidious.com>",
+    "Lucas Myers <veganbeef@protonmail.com>",
+    "Joel Flint <joel@stimulimedia.net>",
+    "Bilal Shahid <bshahid@adomni.com>",
+    "Adam King <adamdentonking@gmail.com>"
+  ],
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
+  },
+  "prettier": {
+    "printWidth": 140,
+    "singleQuote": true,
+    "arrowParens": "always"
+  },
+  "config": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bitblit/Ratchet.git"
+  },
+  "keywords": [
+    "wrench",
+    "utility"
+  ],
+  "bugs": {
+    "url": "https://github.com/bitblit/Ratchet/issues"
+  },
+  "homepage": "https://github.com/bitblit/Ratchet#readme",
+  "engines": {
+    "node": ">=14.18"
+  },
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@bitblit/ratchet-aws": "0.0.0-snapshot",
+    "@bitblit/ratchet-common": "0.0.0-snapshot"
+  },
+  "optionalDependencies": {
+    "@aws-sdk/client-athena": "3.651.1",
+    "@aws-sdk/client-sts": "3.651.1",
+    "@aws-sdk/types": "3.649.0",
+    "@smithy/abort-controller": "3.1.4",
+    "@smithy/smithy-client": "3.3.2",
+    "@smithy/util-waiter": "3.1.5",
+    "mailparser": "3.7.1",
+    "mime-types": "2.1.35",
+    "tmp": "0.2.3",
+    "unzipper": "0.12.3",
+    "walk": "2.3.15"
+  },
+  "peerDependencies": {
+    "@aws-sdk/client-athena": "^3.651.1",
+    "@aws-sdk/client-sts": "^3.651.1",
+    "@aws-sdk/types": "^3.649.0",
+    "@bitblit/ratchet-aws": "0.0.0-snapshot",
+    "@bitblit/ratchet-common": "0.0.0-snapshot",
+    "@smithy/abort-controller": "^3.1.4",
+    "@smithy/smithy-client": "^3.3.2",
+    "@smithy/util-waiter": "^3.1.5",
+    "mailparser": "^3.7.1",
+    "mime-types": "^2.1.35",
+    "tmp": "^0.2.3",
+    "unzipper": "^0.12.3",
+    "walk": "^2.3.15"
+  },
+  "peerDependenciesMeta": {
+    "@aws-sdk/client-athena": {
+      "optional": true
+    },
+    "@aws-sdk/client-sts": {
+      "optional": true
+    },
+    "@aws-sdk/types": {
+      "optional": true
+    },
+    "@bitblit/ratchet-aws": {
+      "optional": true
+    },
+    "@bitblit/ratchet-common": {
+      "optional": true
+    },
+    "@smithy/abort-controller": {
+      "optional": true
+    },
+    "@smithy/smithy-client": {
+      "optional": true
+    },
+    "@smithy/util-waiter": {
+      "optional": true
+    },
+    "mailparser": {
+      "optional": true
+    },
+    "mime-types": {
+      "optional": true
+    },
+    "tmp": {
+      "optional": true
+    },
+    "unzipper": {
+      "optional": true
+    },
+    "walk": {
+      "optional": true
+    }
+  }
+}
