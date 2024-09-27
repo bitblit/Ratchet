@@ -79,7 +79,12 @@
   "resolutions": {
     "semver": "^7.5.2",
     "@smithy/types": "^2.3.3",
-    "@babel/traverse": "^7.23.2"
+    "@babel/traverse": "^7.23.2",
+    "rollup": "^4.22.4",
+    "body-parser": "^1.20.3",
+    "path-to-regexp": "^0.1.10",
+    "sanitize-html": "^2.12.1",
+    "nth-check": "^2.0.1"
   },
   "devDependencies": {
     "@eslint/js": "9.11.1",
