@@ -8,86 +8,17 @@ inputs:
 runs:
   using: "composite"
   steps:
+    - shell: bash
+      run: pwd
+
+    - shell: bash
+      run: ls
+
     - name: Upload aws to Codecov
       uses: codecov/codecov-action@v3
       env:
         CODECOV_TOKEN: ${{ inputs.CODECOV_TOKEN }}
       with:
-        files: ./modules/aws/artifacts/coverage/coverage-final.json
-
-    - name: Upload aws-node-only to Codecov
-      uses: codecov/codecov-action@v3
-      env:
-        CODECOV_TOKEN: ${{ inputs.CODECOV_TOKEN }}
-      with:
-        files: ./modules/aws-node-only/artifacts/coverage/coverage-final.json
-
-    - name: Upload common to Codecov
-      uses: codecov/codecov-action@v3
-      env:
-        CODECOV_TOKEN: ${{ inputs.CODECOV_TOKEN }}
-      with:
-        files: ./modules/common/artifacts/coverage/coverage-final.json
-
-    - name: Upload echarts to Codecov
-      uses: codecov/codecov-action@v3
-      env:
-        CODECOV_TOKEN: ${{ inputs.CODECOV_TOKEN }}
-      with:
-        files: ./modules/echarts/artifacts/coverage/coverage-final.json
-
-    - name: Upload epsilon-common to Codecov
-      uses: codecov/codecov-action@v3
-      env:
-        CODECOV_TOKEN: ${{ inputs.CODECOV_TOKEN }}
-      with:
-        files: ./modules/epsilon-common/artifacts/coverage/coverage-final.json
-
-    - name: Upload epsilon-deployment to Codecov
-      uses: codecov/codecov-action@v3
-      env:
-        CODECOV_TOKEN: ${{ inputs.CODECOV_TOKEN }}
-      with:
-        files: ./modules/epsilon-deployment/artifacts/coverage/coverage-final.json
-
-    - name: Upload graphql to Codecov
-      uses: codecov/codecov-action@v3
-      env:
-        CODECOV_TOKEN: ${{ inputs.CODECOV_TOKEN }}
-      with:
-        files: ./modules/graphql/artifacts/coverage/coverage-final.json
-
-    - name: Upload misc to Codecov
-      uses: codecov/codecov-action@v3
-      env:
-        CODECOV_TOKEN: ${{ inputs.CODECOV_TOKEN }}
-      with:
-        files: ./modules/misc/artifacts/coverage/coverage-final.json
-
-    - name: Upload node-only to Codecov
-      uses: codecov/codecov-action@v3
-      env:
-        CODECOV_TOKEN: ${{ inputs.CODECOV_TOKEN }}
-      with:
-        files: ./modules/node-only/artifacts/coverage/coverage-final.json
-
-    - name: Upload rdbms to Codecov
-      uses: codecov/codecov-action@v3
-      env:
-        CODECOV_TOKEN: ${{ inputs.CODECOV_TOKEN }}
-      with:
-        files: ./modules/rdbms/artifacts/coverage/coverage-final.json
-
-    - name: Upload warden-common to Codecov
-      uses: codecov/codecov-action@v3
-      env:
-        CODECOV_TOKEN: ${{ inputs.CODECOV_TOKEN }}
-      with:
-        files: ./modules/warden-common/artifacts/coverage/coverage-final.json
-
-    - name: Upload warden-server to Codecov
-      uses: codecov/codecov-action@v3
-      env:
-        CODECOV_TOKEN: ${{ inputs.CODECOV_TOKEN }}
-      with:
-        files: ./modules/warden-server/artifacts/coverage/coverage-final.json
+        files:
+          - ./modules/aws/artifacts/coverage/coverage-final.json
+          - ./modules/aws-node-only/artifacts/coverage/coverage-final.json
