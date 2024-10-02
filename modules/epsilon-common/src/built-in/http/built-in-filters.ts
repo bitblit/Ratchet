@@ -11,6 +11,7 @@ import { MisconfiguredError } from '../../http/error/misconfigured-error.js';
 import { APIGatewayProxyResult } from 'aws-lambda';
 import { UnauthorizedError } from "../../http/error/unauthorized-error";
 import { RequireRatchet } from "@bitblit/ratchet-common/lang/require-ratchet";
+import { EpsilonCorsApproach } from "../../config/http/epsilon-cors-approach";
 
 export class BuiltInFilters {
   public static readonly MAXIMUM_LAMBDA_BODY_SIZE_BYTES: number = 1024 * 1024 * 5 - 1024 * 100; // 5Mb - 100k buffer
@@ -236,13 +237,13 @@ export class BuiltInFilters {
     return true;
   }
 
-  public static async autoRespondToOptionsRequestWithCors(fCtx: FilterChainContext): Promise<boolean> {
+  public static async autoRespondToOptionsRequestWithCors(fCtx: FilterChainContext, corsMethod:EpsilonCorsApproach = EpsilonCorsApproach.Reflective): Promise<boolean> {
     if (StringRatchet.trimToEmpty(fCtx?.event?.httpMethod).toLowerCase() === 'options') {
       fCtx.result = {
         statusCode: 200,
-        body: '{"cors":true, "m":2}',
+        body: '{"cors":true, "m":3}',
       };
-      await BuiltInFilters.addAllowReflectionCORSHeaders(fCtx);
+      await BuiltInFilters.addCorsHeadersDynamically(fCtx, corsMethod);
       return false;
     } else {
       return true;
@@ -277,4 +278,23 @@ export class BuiltInFilters {
     }
     return true;
   }
+
+  public static async addCorsHeadersDynamically(fCtx: FilterChainContext, corsMethod:EpsilonCorsApproach): Promise<void>
+  {
+    if (corsMethod) {
+      switch (corsMethod) {
+        case EpsilonCorsApproach.All:
+          await BuiltInFilters.addAllowEverythingCORSHeaders(fCtx);
+          break;
+        case EpsilonCorsApproach.Reflective:
+          await BuiltInFilters.addAllowReflectionCORSHeaders(fCtx);
+          break;
+        default: // Also NONE
+        // Do nothing
+      }
+    }  else {
+      Logger.warn('Called add CORS headers dynamically but no type supplied, using NONE');
+    }
+  }
+
 }
