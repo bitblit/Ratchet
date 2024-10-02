@@ -16,7 +16,7 @@ import { ApolloFilter } from "../built-in/http/apollo-filter.js";
 import { SampleServerStaticFiles } from "./sample-server-static-files.js";
 import { ApolloUtil } from "../built-in/http/apollo/apollo-util.js";
 import { SampleServerComponents } from "./sample-server-components";
-import { EpsilonCorsApproach } from "../config/http/epsilon-cors-approach";
+import { EpsilonCorsApproach } from "../config/http/epsilon-cors-approach.js";
 
 export class SampleServerComponentsWithApollo{
   // Prevent instantiation

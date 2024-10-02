@@ -11,7 +11,7 @@ import { MisconfiguredError } from '../../http/error/misconfigured-error.js';
 import { APIGatewayProxyResult } from 'aws-lambda';
 import { UnauthorizedError } from "../../http/error/unauthorized-error";
 import { RequireRatchet } from "@bitblit/ratchet-common/lang/require-ratchet";
-import { EpsilonCorsApproach } from "../../config/http/epsilon-cors-approach";
+import { EpsilonCorsApproach } from "../../config/http/epsilon-cors-approach.js";
 
 export class BuiltInFilters {
   public static readonly MAXIMUM_LAMBDA_BODY_SIZE_BYTES: number = 1024 * 1024 * 5 - 1024 * 100; // 5Mb - 100k buffer
