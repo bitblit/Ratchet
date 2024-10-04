@@ -111,7 +111,7 @@ export class EpsilonApiStack extends Stack {
         securityGroups: props.lambdaSecurityGroupIds.map((sgId, index) =>
           SecurityGroup.fromSecurityGroupId(this, `SecurityGroup${index}`, `sg-${sgId}`),
         ),
-        serviceRole: Role.fromRoleArn(this, `${id}ServiceRole`, 'arn:aws:iam::' + props.env.account + ':role/AWSBatchServiceRole'),
+        //serviceRole: Role.fromRoleArn(this, `${id}ServiceRole`, 'arn:aws:iam::' + props.env.account + ':role/AWSBatchServiceRole'),
         spot: false,
         terminateOnUpdate: false,
         updateTimeout: Duration.hours(4),
