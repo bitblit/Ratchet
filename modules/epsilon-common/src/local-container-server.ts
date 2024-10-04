@@ -7,6 +7,8 @@ import { Logger } from '@bitblit/ratchet-common/logger/logger';
 import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet';
 import { LoggerLevelName } from '@bitblit/ratchet-common/logger/logger-level-name';
 import { CliRatchet } from '@bitblit/ratchet-node-only/cli/cli-ratchet';
+import { LocalServerOptions } from "./config/local-server/local-server-options.js";
+import { LocalServerHttpMethodHandling } from "./config/local-server/local-server-http-method-handling.js";
 
 /**
  * A simplistic server for testing your lambdas-in-container locally
@@ -14,11 +16,16 @@ import { CliRatchet } from '@bitblit/ratchet-node-only/cli/cli-ratchet';
 export class LocalContainerServer {
   private server: Server;
   private aborted: boolean = false;
+  private options: LocalServerOptions;
 
   constructor(
     private port: number = 8889,
     private containerUrl: string = 'http://localhost:9000/2015-03-31/functions/function/invocations',
-  ) {}
+  ) {
+    this.options = {
+      methodHandling: LocalServerHttpMethodHandling.Uppercase
+    };
+  }
 
   public async runServer(): Promise<boolean> {
     return new Promise<boolean>((res, rej) => {
@@ -47,7 +54,7 @@ export class LocalContainerServer {
         return 300000;
       },
     } as Context; //TBD
-    const evt: APIGatewayEvent = await LocalServer.messageToApiGatewayEvent(request, context);
+    const evt: APIGatewayEvent = await LocalServer.messageToApiGatewayEvent(request, context, this.options);
     const logEventLevel: LoggerLevelName = EventUtil.eventIsAGraphQLIntrospection(evt) ? LoggerLevelName.silly : LoggerLevelName.info;
 
     Logger.logByLevel(logEventLevel, 'Processing event: %j', evt);
@@ -60,15 +67,9 @@ export class LocalContainerServer {
     } else {
       try {
         const postResp: Response = await fetch(this.containerUrl, { method: 'POST', body: JSON.stringify(evt) });
-        response.statusCode = postResp.status;
-        postResp.headers.forEach((value, name) => {
-          response.setHeader(name, value);
-        });
-        // TODO: set headers
-        const body: ArrayBuffer = await postResp.arrayBuffer();
-        response.end(new Uint8Array(body));
-
-        return true;
+        const postProxy: ProxyResult = await postResp.json();
+        const written: boolean = await LocalServer.writeProxyResultToServerResponse(postProxy, response, logEventLevel);
+        return written;
       } catch (err) {
         Logger.error('Failed: %s : Body was %s Response was : %j', err, respBodyText, result, err);
         return '{"bad":true}';

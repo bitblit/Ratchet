@@ -12,18 +12,25 @@ import { EpsilonGlobalHandler } from './epsilon-global-handler.js';
 import { LocalServerCert } from './local-server-cert.js';
 import { SampleServerComponents } from './sample/sample-server-components.js';
 import { LocalWebTokenManipulator } from './http/auth/local-web-token-manipulator.js';
+import { LocalServerOptions } from "./config/local-server/local-server-options.js";
+import { LocalServerHttpMethodHandling } from "./config/local-server/local-server-http-method-handling.js";
 
 /**
  * A simplistic server for testing your lambdas locally
  */
 export class LocalServer {
   private server: Server;
+  private options: LocalServerOptions;
 
   constructor(
     private globalHandler: EpsilonGlobalHandler,
     private port: number = 8888,
     private https: boolean = false,
-  ) {}
+  ) {
+    this.options = {
+      methodHandling: LocalServerHttpMethodHandling.Lowercase
+    };
+  }
 
   async runServer(): Promise<boolean> {
     return new Promise<boolean>((res, rej) => {
@@ -64,7 +71,7 @@ export class LocalServer {
         return 300000;
       },
     } as Context; //TBD
-    const evt: APIGatewayEvent = await LocalServer.messageToApiGatewayEvent(request, context);
+    const evt: APIGatewayEvent = await LocalServer.messageToApiGatewayEvent(request, context, this.options);
     const logEventLevel: LoggerLevelName = EventUtil.eventIsAGraphQLIntrospection(evt) ? LoggerLevelName.silly : LoggerLevelName.info;
 
     if (evt.path == '/epsilon-poison-pill') {
@@ -90,7 +97,7 @@ export class LocalServer {
     });
   }
 
-  public static async messageToApiGatewayEvent(request: IncomingMessage, context: Context): Promise<APIGatewayEvent> {
+  public static async messageToApiGatewayEvent(request: IncomingMessage, context: Context, options: LocalServerOptions): Promise<APIGatewayEvent> {
     const bodyString: string = await LocalServer.bodyAsBase64String(request);
     const stageIdx: number = request.url.indexOf('/', 1);
     const stage: string = request.url.substring(1, stageIdx);
@@ -102,13 +109,18 @@ export class LocalServer {
     const headers: any = Object.assign({}, request.headers);
     headers['X-Forwarded-Proto'] = 'http'; // This server is always unencrypted
 
+    // Some want one way, some want the other!
+    let targetMethod: string = StringRatchet.trimToEmpty(request.method);
+    targetMethod = options?.methodHandling === LocalServerHttpMethodHandling.Lowercase ? targetMethod.toLowerCase() : targetMethod;
+    targetMethod = options?.methodHandling === LocalServerHttpMethodHandling.Uppercase ? targetMethod.toUpperCase() : targetMethod;
+
     const rval: APIGatewayEvent = {
       body: bodyString,
       multiValueHeaders: {},
       multiValueQueryStringParameters: {},
       resource: '/{proxy+}',
       path: request.url,
-      httpMethod: request.method.toLowerCase(),
+      httpMethod: targetMethod,
       isBase64Encoded: true,
       queryStringParameters: queryStringParams,
       pathParameters: {
