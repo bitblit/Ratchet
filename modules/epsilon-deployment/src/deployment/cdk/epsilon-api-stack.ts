@@ -107,7 +107,7 @@ export class EpsilonApiStack extends Stack {
         computeEnvironmentName: id + 'ComputeEnv',
         enabled: true,
         maxvCpus: 16,
-        replaceComputeEnvironment: false,
+        replaceComputeEnvironment: props.replaceBatchComputeEnvironment ?? false,
         securityGroups: props.lambdaSecurityGroupIds.map((sgId, index) =>
           SecurityGroup.fromSecurityGroupId(this, `SecurityGroup${index}`, `sg-${sgId}`),
         ),

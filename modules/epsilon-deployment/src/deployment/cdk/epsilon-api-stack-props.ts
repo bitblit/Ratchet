@@ -24,4 +24,6 @@ export interface EpsilonApiStackProps extends StackProps {
 
   webTimeoutSeconds?: number;
   backgroundTimeoutSeconds?: number;
+
+  replaceBatchComputeEnvironment?: boolean;
 }
