@@ -39,7 +39,7 @@ export class EpsilonSimpleLambdaCloudfrontDistributionStack extends Stack {
       sslSupportMethod: props.sslMethod ?? SSLMethod.SNI,
     };
 
-    const dist: Distribution = new Distribution(this, id + 'CloudfrontDistro', distributionProps);
+    const dist: Distribution = new Distribution(scope, id + 'CloudfrontDistro', distributionProps);
 
     // Have to be able to skip this since SOME people don't do DNS in Route53
     if (props?.route53Handling === EpsilonRoute53Handling.Update) {
@@ -51,7 +51,7 @@ export class EpsilonSimpleLambdaCloudfrontDistributionStack extends Stack {
             target: {
               aliasTarget: new CloudFrontTarget(dist),
             },
-            zone: HostedZone.fromLookup(this, id, { domainName: EpsilonStackUtil.extractApexDomain(props.domainNames[i]) }),
+            zone: HostedZone.fromLookup(scope, id, { domainName: EpsilonStackUtil.extractApexDomain(props.domainNames[i]) }),
           });
         }
       }
