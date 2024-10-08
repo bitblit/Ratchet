@@ -4,6 +4,7 @@ import { Effect, PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { Topic } from 'aws-cdk-lib/aws-sns';
 import { Queue } from 'aws-cdk-lib/aws-sqs';
 import { EpsilonApiStackProps } from './epsilon-api-stack-props.js';
+import { ErrorRatchet } from "@bitblit/ratchet-common/lib/lang/error-ratchet";
 
 export class EpsilonStackUtil {
   // Prevent instantiation
@@ -115,4 +116,13 @@ export class EpsilonStackUtil {
     EpsilonStackUtil.ALLOW_ECR,
     EpsilonStackUtil.ALLOW_RESTRICTED_LOGS,
   ].concat(EpsilonStackUtil.ALLOW_FARGATE_SECRET_READING);
+
+
+  public static extractApexDomain(domainName: string): string {
+    const pieces: string[] = StringRatchet.trimToEmpty(domainName).split('.');
+    if (pieces.length < 2) {
+      ErrorRatchet.throwFormattedErr('Not a valid domain name : %s', domainName);
+    }
+    return pieces[pieces.length - 2] + '.' + pieces[pieces.length - 1];
+  }
 }

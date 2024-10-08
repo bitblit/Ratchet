@@ -18,11 +18,12 @@ import {
 import { HostedZone, RecordSet, RecordType } from 'aws-cdk-lib/aws-route53';
 import { CloudFrontTarget } from 'aws-cdk-lib/aws-route53-targets';
 import { BucketDeployment, Source } from 'aws-cdk-lib/aws-s3-deployment';
-import { EpsilonWebsiteStackProps, EpsilonWebsiteStackPropsRoute53Handling } from './epsilon-website-stack-props.js';
+import { EpsilonWebsiteStackProps } from './epsilon-website-stack-props.js';
 import { ErrorRatchet } from '@bitblit/ratchet-common/lang/error-ratchet';
-import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet';
 import { BucketAndSourceConfiguration } from './bucket-and-source-configuration.js';
 import { EpsilonWebsiteCacheBehavior } from './epsilon-website-cache-behavior.js';
+import { EpsilonStackUtil } from "./epsilon-stack-util.js";
+import { EpsilonRoute53Handling } from "./epsilon-route-53-handling";
 
 export class EpsilonWebsiteStack extends Stack {
   constructor(scope: Construct, id: string, props?: EpsilonWebsiteStackProps) {
@@ -213,7 +214,7 @@ export class EpsilonWebsiteStack extends Stack {
     const cloudfrontDistro: CloudFrontWebDistribution = new CloudFrontWebDistribution(this, id + 'CloudfrontDistro', distributionProps);
 
     // Have to be able to skip this since SOME people don't do DNS in Route53
-    if (props?.route53Handling === EpsilonWebsiteStackPropsRoute53Handling.Update) {
+    if (props?.route53Handling === EpsilonRoute53Handling.Update) {
       if (props?.cloudFrontDomainNames?.length) {
         for (let i = 0; i < props.cloudFrontDomainNames.length; i++) {
           const domain = new RecordSet(this, id + 'DomainName-' + props.cloudFrontDomainNames[i], {
@@ -222,7 +223,7 @@ export class EpsilonWebsiteStack extends Stack {
             target: {
               aliasTarget: new CloudFrontTarget(cloudfrontDistro),
             },
-            zone: HostedZone.fromLookup(this, id, { domainName: EpsilonWebsiteStack.extractApexDomain(props.cloudFrontDomainNames[i]) }),
+            zone: HostedZone.fromLookup(this, id, { domainName: EpsilonStackUtil.extractApexDomain(props.cloudFrontDomainNames[i]) }),
           });
         }
       }
@@ -237,11 +238,4 @@ export class EpsilonWebsiteStack extends Stack {
     });
   }
 
-  public static extractApexDomain(domainName: string): string {
-    const pieces: string[] = StringRatchet.trimToEmpty(domainName).split('.');
-    if (pieces.length < 2) {
-      ErrorRatchet.throwFormattedErr('Not a valid domain name : %s', domainName);
-    }
-    return pieces[pieces.length - 2] + '.' + pieces[pieces.length - 1];
-  }
 }
