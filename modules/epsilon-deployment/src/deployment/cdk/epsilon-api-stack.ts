@@ -1,7 +1,7 @@
 import { Duration, Lazy, Size, Stack } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import { DockerImageCode, DockerImageFunction, FunctionUrl, FunctionUrlAuthType, HttpMethod } from 'aws-cdk-lib/aws-lambda';
-import { ManagedPolicy, PolicyDocument, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
+import { ManagedPolicy, PolicyDocument, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { Topic } from 'aws-cdk-lib/aws-sns';
 import { Queue } from 'aws-cdk-lib/aws-sqs';
 import { LambdaSubscription } from 'aws-cdk-lib/aws-sns-subscriptions';
@@ -32,6 +32,7 @@ export class EpsilonApiStack extends Stack {
   private webHandler: DockerImageFunction;
   private backgroundHandler: DockerImageFunction;
 
+  public webFunctionUrl: FunctionUrl;
   public apiDomain: string;
 
   constructor(scope: Construct, id: string, props?: EpsilonApiStackProps) {
@@ -209,7 +210,7 @@ export class EpsilonApiStack extends Stack {
         rule.addTarget(new LambdaFunction(this.webHandler));
       }
 
-      const fnUrl: FunctionUrl = this.webHandler.addFunctionUrl({
+      this.webFunctionUrl = this.webHandler.addFunctionUrl({
         authType: FunctionUrlAuthType.NONE,
         cors: {
           allowedOrigins: ['*'],
@@ -221,7 +222,7 @@ export class EpsilonApiStack extends Stack {
 
       this.apiDomain = Lazy.uncachedString({
         produce: (context) => {
-          const resolved = context.resolve(fnUrl.url);
+          const resolved = context.resolve(this.webFunctionUrl.url);
           return { 'Fn::Select': [2, { 'Fn::Split': ['/', resolved] }] } as any;
         },
       });
