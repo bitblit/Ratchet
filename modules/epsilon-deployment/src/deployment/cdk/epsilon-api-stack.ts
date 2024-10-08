@@ -230,6 +230,11 @@ export class EpsilonApiStack extends Stack {
           return { 'Fn::Select': [2, { 'Fn::Split': ['/', resolved] }] } as any;
         },
       });
+
+      if (props.autoCloudfrontDistribution) {
+        const distroProps: EpsilonSimpleLambdaCloudfrontDistributionStackProps = Object.assign({}, {lambdaFunctionDomain: this.webFunctionUrl}, props.autoCloudfrontDistribution);
+        new EpsilonSimpleLambdaCloudfrontDistributionStack(this, id+'ApiCloudfrontDisto', distroProps);
+      }
     }
 
     if (!disabledFeatures.includes(EpsilonApiStackFeature.BackgroundLambda)) {
@@ -255,9 +260,5 @@ export class EpsilonApiStack extends Stack {
       rule.addTarget(new LambdaFunction(this.backgroundHandler));
     }
 
-    if (props.autoCloudfrontDistribution) {
-      const distroProps: EpsilonSimpleLambdaCloudfrontDistributionStackProps = Object.assign({}, {lambdaFunctionDomain: this.webFunctionUrl}, props.autoCloudfrontDistribution);
-      new EpsilonSimpleLambdaCloudfrontDistributionStack(this, id+'ApiCloudfrontDisto', distroProps);
-    }
   }
 }
