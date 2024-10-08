@@ -232,8 +232,9 @@ export class EpsilonApiStack extends Stack {
       });
 
       if (props.autoCloudfrontDistribution) {
-        const distroProps: EpsilonSimpleLambdaCloudfrontDistributionStackProps = Object.assign({}, {lambdaFunctionDomain: this.webFunctionUrl}, props.autoCloudfrontDistribution);
-        new EpsilonSimpleLambdaCloudfrontDistributionStack(this, id+'ApiCloudfrontDisto', distroProps);
+        const distroPropsCopy: EpsilonSimpleLambdaCloudfrontDistributionStackProps = Object.assign({}, props.autoCloudfrontDistribution);
+        distroPropsCopy.lambdaFunctionDomain = this.webFunctionUrl;
+        new EpsilonSimpleLambdaCloudfrontDistributionStack(this, id+'ApiCloudfrontDistro', distroPropsCopy);
       }
     }
 
