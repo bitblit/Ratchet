@@ -27,6 +27,10 @@ import { SecurityGroup, Subnet, SubnetSelection, Vpc } from "aws-cdk-lib/aws-ec2
 
 import { ContainerImage } from 'aws-cdk-lib/aws-ecs';
 import { EpsilonApiStackFeature } from './epsilon-api-stack-feature.js';
+import {
+  EpsilonSimpleLambdaCloudfrontDistributionStackProps
+} from "./epsilon-simple-lambda-cloudfront-distribution-stack-props";
+import { EpsilonSimpleLambdaCloudfrontDistributionStack } from "./epsilon-simple-lambda-cloudfront-distribution-stack";
 
 export class EpsilonApiStack extends Stack {
   private webHandler: DockerImageFunction;
@@ -249,6 +253,11 @@ export class EpsilonApiStack extends Stack {
         schedule: Schedule.rate(Duration.minutes(1)),
       });
       rule.addTarget(new LambdaFunction(this.backgroundHandler));
+    }
+
+    if (props.autoCloudfrontDistribution) {
+      const distroProps: EpsilonSimpleLambdaCloudfrontDistributionStackProps = Object.assign({}, {lambdaFunctionDomain: this.webFunctionUrl}, props.autoCloudfrontDistribution);
+      new EpsilonSimpleLambdaCloudfrontDistributionStack(this, id+'ApiCloudfrontDisto', distroProps);
     }
   }
 }

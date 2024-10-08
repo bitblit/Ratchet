@@ -4,7 +4,7 @@ import { Effect, PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { Topic } from 'aws-cdk-lib/aws-sns';
 import { Queue } from 'aws-cdk-lib/aws-sqs';
 import { EpsilonApiStackProps } from './epsilon-api-stack-props.js';
-import { ErrorRatchet } from "@bitblit/ratchet-common/lib/lang/error-ratchet";
+import { ErrorRatchet } from "@bitblit/ratchet-common/lang/error-ratchet";
 
 export class EpsilonStackUtil {
   // Prevent instantiation

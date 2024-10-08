@@ -41,7 +41,6 @@ export class EpsilonSimpleLambdaCloudfrontDistributionStack extends Stack {
 
     const dist: Distribution = new Distribution(this, id + 'CloudfrontDistro', distributionProps);
 
-
     // Have to be able to skip this since SOME people don't do DNS in Route53
     if (props?.route53Handling === EpsilonRoute53Handling.Update) {
       if (props?.domainNames?.length) {
