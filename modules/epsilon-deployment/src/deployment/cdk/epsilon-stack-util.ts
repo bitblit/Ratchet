@@ -142,7 +142,7 @@ export class EpsilonStackUtil {
         accessControlAllowOrigins: ['*'],
         accessControlExposeHeaders: [],
         accessControlMaxAge: Duration.seconds(600),
-        originOverride: false,
+        originOverride: false, // Use the origin values, if any
       },
       customHeadersBehavior: {
         customHeaders: [
