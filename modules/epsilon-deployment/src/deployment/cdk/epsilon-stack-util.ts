@@ -136,9 +136,9 @@ export class EpsilonStackUtil {
       comment: 'Policy allowing passthru for CORS headers',
       corsBehavior:
         {
-        accessControlAllowCredentials: true,
+        accessControlAllowCredentials: false,
         accessControlAllowHeaders: ['*'],
-        accessControlAllowMethods: ['GET', 'POST'],
+        accessControlAllowMethods: ['*'],
         accessControlAllowOrigins: ['*'],
         accessControlExposeHeaders: [],
         accessControlMaxAge: Duration.seconds(600),
