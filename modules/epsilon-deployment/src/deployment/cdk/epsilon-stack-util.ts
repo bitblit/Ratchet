@@ -5,6 +5,9 @@ import { Topic } from 'aws-cdk-lib/aws-sns';
 import { Queue } from 'aws-cdk-lib/aws-sqs';
 import { EpsilonApiStackProps } from './epsilon-api-stack-props.js';
 import { ErrorRatchet } from "@bitblit/ratchet-common/lang/error-ratchet";
+import { HeadersFrameOption, HeadersReferrerPolicy, ResponseHeadersPolicy } from "aws-cdk-lib/aws-cloudfront";
+import { Construct } from "constructs";
+import { Duration } from "aws-cdk-lib";
 
 export class EpsilonStackUtil {
   // Prevent instantiation
@@ -124,5 +127,40 @@ export class EpsilonStackUtil {
       ErrorRatchet.throwFormattedErr('Not a valid domain name : %s', domainName);
     }
     return pieces[pieces.length - 2] + '.' + pieces[pieces.length - 1];
+  }
+
+  public static createForwardCorsPolicy(app: Construct, id: string, xssReportUri: string): ResponseHeadersPolicy {
+    // Creating a custom response headers policy -- all parameters optional
+    const rval: ResponseHeadersPolicy = new ResponseHeadersPolicy(app, id, {
+      responseHeadersPolicyName: id+'CustomCloudfrontPolicy',
+      comment: 'Policy allowing passthru for CORS headers',
+      corsBehavior:
+        {
+        accessControlAllowCredentials: true,
+        accessControlAllowHeaders: ['*'],
+        accessControlAllowMethods: ['GET', 'POST'],
+        accessControlAllowOrigins: ['*'],
+        accessControlExposeHeaders: [],
+        accessControlMaxAge: Duration.seconds(600),
+        originOverride: false,
+      },
+      customHeadersBehavior: {
+        customHeaders: [
+          //{ header: 'X-Amz-Date', value: 'some-value', override: true },
+          //{ header: 'X-Amz-Security-Token', value: 'some-value', override: false },
+        ],
+      },
+      securityHeadersBehavior: {
+        contentSecurityPolicy: { contentSecurityPolicy: 'default-src https:;', override: true },
+        contentTypeOptions: { override: true },
+        frameOptions: { frameOption: HeadersFrameOption.DENY, override: true },
+        referrerPolicy: { referrerPolicy: HeadersReferrerPolicy.NO_REFERRER, override: true },
+        strictTransportSecurity: { accessControlMaxAge: Duration.seconds(600), includeSubdomains: true, override: true },
+        xssProtection: { protection: true, modeBlock: false, reportUri: xssReportUri, override: true },
+      },
+      removeHeaders: ['Server'],
+      serverTimingSamplingRate: 50,
+    });
+    return rval;
   }
 }

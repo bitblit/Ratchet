@@ -29,7 +29,7 @@ export class EpsilonSimpleLambdaCloudfrontDistributionStack extends Stack {
       viewerProtocolPolicy: props.protocolPolicy ?? ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
       cachePolicy: props.cachePolicy ?? CachePolicy.CACHING_DISABLED,
       allowedMethods: props.allowedMethods ?? AllowedMethods.ALLOW_ALL,
-      responseHeadersPolicy: props.responseHeadersPolicy ?? ResponseHeadersPolicy.CORS_ALLOW_ALL_ORIGINS_WITH_PREFLIGHT_AND_SECURITY_HEADERS
+      responseHeadersPolicy: props.responseHeadersPolicy ?? EpsilonStackUtil.createForwardCorsPolicy(scope, id, 'https://test.com/report-xss')
     };
 
     const httpsCertificate: ICertificate = Certificate.fromCertificateArn(this, id + 'HttpsCert', props.httpsCertArn);
