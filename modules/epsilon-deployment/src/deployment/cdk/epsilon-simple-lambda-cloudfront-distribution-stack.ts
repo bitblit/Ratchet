@@ -1,10 +1,11 @@
 import { Stack } from "aws-cdk-lib";
 import { Construct } from "constructs";
 import {
+  AllowedMethods,
   BehaviorOptions,
   CachePolicy, Distribution,
   DistributionProps,
-  PriceClass,
+  PriceClass, ResponseHeadersPolicy,
   SSLMethod,
   ViewerProtocolPolicy
 } from "aws-cdk-lib/aws-cloudfront";
@@ -26,7 +27,9 @@ export class EpsilonSimpleLambdaCloudfrontDistributionStack extends Stack {
       origin: new FunctionUrlOrigin(props.lambdaFunctionDomain),
       compress: true,
       viewerProtocolPolicy: props.protocolPolicy ?? ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
-      cachePolicy: props.cachePolicy ?? CachePolicy.CACHING_DISABLED
+      cachePolicy: props.cachePolicy ?? CachePolicy.CACHING_DISABLED,
+      allowedMethods: props.allowedMethods ?? AllowedMethods.ALLOW_ALL,
+      responseHeadersPolicy: props.responseHeadersPolicy ?? ResponseHeadersPolicy.CORS_ALLOW_ALL_ORIGINS_WITH_PREFLIGHT_AND_SECURITY_HEADERS
     };
 
     const httpsCertificate: ICertificate = Certificate.fromCertificateArn(this, id + 'HttpsCert', props.httpsCertArn);

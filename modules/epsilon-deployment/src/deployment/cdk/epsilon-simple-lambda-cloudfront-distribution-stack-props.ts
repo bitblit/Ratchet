@@ -1,5 +1,12 @@
 import { StackProps } from "aws-cdk-lib";
-import { ICachePolicy, PriceClass, SSLMethod, ViewerProtocolPolicy } from "aws-cdk-lib/aws-cloudfront";
+import {
+  AllowedMethods,
+  ICachePolicy,
+  IResponseHeadersPolicy,
+  PriceClass,
+  SSLMethod,
+  ViewerProtocolPolicy
+} from "aws-cdk-lib/aws-cloudfront";
 import { FunctionUrl } from "aws-cdk-lib/aws-lambda";
 import { EpsilonRoute53Handling } from "./epsilon-route-53-handling";
 
@@ -12,4 +19,7 @@ export interface EpsilonSimpleLambdaCloudfrontDistributionStackProps extends Sta
   priceClass?: PriceClass;
   sslMethod?: SSLMethod;
   route53Handling?: EpsilonRoute53Handling;
+  allowedMethods?: AllowedMethods;
+  responseHeadersPolicy?: IResponseHeadersPolicy;
+
 }
