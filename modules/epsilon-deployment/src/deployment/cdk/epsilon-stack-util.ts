@@ -131,7 +131,7 @@ export class EpsilonStackUtil {
 
   public static createForwardCorsPolicy(app: Construct, id: string, xssReportUri: string): ResponseHeadersPolicy {
     // Creating a custom response headers policy -- all parameters optional
-    const rval: ResponseHeadersPolicy = new ResponseHeadersPolicy(app, id+'CloudfrontResponseHeadersPolicy', {
+    const rval: ResponseHeadersPolicy = new ResponseHeadersPolicy(app, id+'CFRespHeadersPolicy', {
       responseHeadersPolicyName: id+'CustomCloudfrontPolicy',
       comment: 'Policy allowing passthru for CORS headers',
       corsBehavior:
