@@ -4,7 +4,7 @@ import {
   AllowedMethods,
   BehaviorOptions,
   CachePolicy, Distribution,
-  DistributionProps,
+  DistributionProps, IResponseHeadersPolicy,
   PriceClass, ResponseHeadersPolicy,
   SSLMethod,
   ViewerProtocolPolicy
@@ -23,13 +23,20 @@ export class EpsilonSimpleLambdaCloudfrontDistributionStack extends Stack {
   constructor(scope: Construct, id: string, props?: EpsilonSimpleLambdaCloudfrontDistributionStackProps) {
     super(scope, id, props);
 
+    let policy: IResponseHeadersPolicy = ResponseHeadersPolicy.CORS_ALLOW_ALL_ORIGINS_WITH_PREFLIGHT_AND_SECURITY_HEADERS;
+    if (props.responseHeadersPolicy) {
+      policy = props.responseHeadersPolicy;
+    } else if (props.responseHeadersPolicyId) {
+      policy = ResponseHeadersPolicy.fromResponseHeadersPolicyId(scope, id+'RespHeaderPolicy', props.responseHeadersPolicyId);
+    }
+
     const behavior: BehaviorOptions = {
       origin: new FunctionUrlOrigin(props.lambdaFunctionDomain),
       compress: true,
       viewerProtocolPolicy: props.protocolPolicy ?? ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
       cachePolicy: props.cachePolicy ?? CachePolicy.CACHING_DISABLED,
       allowedMethods: props.allowedMethods ?? AllowedMethods.ALLOW_ALL,
-      responseHeadersPolicy: props.responseHeadersPolicy ?? ResponseHeadersPolicy.CORS_ALLOW_ALL_ORIGINS_WITH_PREFLIGHT_AND_SECURITY_HEADERS
+      responseHeadersPolicy: policy
     };
 
     const httpsCertificate: ICertificate = Certificate.fromCertificateArn(this, id + 'HttpsCert', props.httpsCertArn);

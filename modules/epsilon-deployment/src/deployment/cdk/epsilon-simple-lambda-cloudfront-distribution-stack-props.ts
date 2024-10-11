@@ -21,5 +21,6 @@ export interface EpsilonSimpleLambdaCloudfrontDistributionStackProps extends Sta
   route53Handling?: EpsilonRoute53Handling;
   allowedMethods?: AllowedMethods;
   responseHeadersPolicy?: IResponseHeadersPolicy;
+  responseHeadersPolicyId?: string;
 
 }
