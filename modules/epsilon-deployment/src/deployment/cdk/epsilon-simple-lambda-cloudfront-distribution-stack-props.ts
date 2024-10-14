@@ -9,6 +9,7 @@ import {
 } from "aws-cdk-lib/aws-cloudfront";
 import { FunctionUrl } from "aws-cdk-lib/aws-lambda";
 import { EpsilonRoute53Handling } from "./epsilon-route-53-handling";
+import { Construct } from "constructs";
 
 export interface EpsilonSimpleLambdaCloudfrontDistributionStackProps extends StackProps {
   lambdaFunctionDomain: FunctionUrl;
@@ -20,7 +21,5 @@ export interface EpsilonSimpleLambdaCloudfrontDistributionStackProps extends Sta
   sslMethod?: SSLMethod;
   route53Handling?: EpsilonRoute53Handling;
   allowedMethods?: AllowedMethods;
-  responseHeadersPolicy?: IResponseHeadersPolicy;
-  responseHeadersPolicyId?: string;
-
+  responseHeadersPolicyCreator?: (scope: Construct, id: string)=>IResponseHeadersPolicy;
 }

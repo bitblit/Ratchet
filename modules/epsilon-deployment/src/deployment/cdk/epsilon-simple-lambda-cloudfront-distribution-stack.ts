@@ -24,10 +24,8 @@ export class EpsilonSimpleLambdaCloudfrontDistributionStack extends Stack {
     super(scope, id, props);
 
     let policy: IResponseHeadersPolicy = ResponseHeadersPolicy.CORS_ALLOW_ALL_ORIGINS_WITH_PREFLIGHT_AND_SECURITY_HEADERS;
-    if (props.responseHeadersPolicy) {
-      policy = props.responseHeadersPolicy;
-    } else if (props.responseHeadersPolicyId) {
-      policy = ResponseHeadersPolicy.fromResponseHeadersPolicyId(scope, id+'RespHeaderPolicy', props.responseHeadersPolicyId);
+    if (props.responseHeadersPolicyCreator) {
+      policy = props.responseHeadersPolicyCreator(this, id);
     }
 
     const behavior: BehaviorOptions = {
