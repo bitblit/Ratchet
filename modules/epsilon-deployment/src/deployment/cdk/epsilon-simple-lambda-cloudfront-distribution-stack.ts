@@ -25,7 +25,7 @@ export class EpsilonSimpleLambdaCloudfrontDistributionStack extends Stack {
 
     let policy: IResponseHeadersPolicy = ResponseHeadersPolicy.CORS_ALLOW_ALL_ORIGINS_WITH_PREFLIGHT_AND_SECURITY_HEADERS;
     if (props.responseHeadersPolicyCreator) {
-      policy = props.responseHeadersPolicyCreator(this, id);
+      policy = props.responseHeadersPolicyCreator(scope, id);
     }
 
     const behavior: BehaviorOptions = {
@@ -37,7 +37,7 @@ export class EpsilonSimpleLambdaCloudfrontDistributionStack extends Stack {
       responseHeadersPolicy: policy
     };
 
-    const httpsCertificate: ICertificate = Certificate.fromCertificateArn(this, id + 'HttpsCert', props.httpsCertArn);
+    const httpsCertificate: ICertificate = Certificate.fromCertificateArn(scope, id + 'HttpsCert', props.httpsCertArn);
 
     const distributionProps: DistributionProps = {
       defaultBehavior: behavior,
