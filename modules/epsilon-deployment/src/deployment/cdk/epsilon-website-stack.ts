@@ -16,18 +16,20 @@ import {
 } from "aws-cdk-lib/aws-cloudfront";
 import { HostedZone, RecordSet, RecordType } from "aws-cdk-lib/aws-route53";
 import { CloudFrontTarget } from "aws-cdk-lib/aws-route53-targets";
-import { BucketDeployment, Source } from "aws-cdk-lib/aws-s3-deployment";
+import { BucketDeployment, ISource, Source } from "aws-cdk-lib/aws-s3-deployment";
 import { EpsilonWebsiteStackProps } from "./epsilon-website-stack-props.js";
 import { EpsilonStackUtil } from "./epsilon-stack-util.js";
 import { EpsilonRoute53Handling } from "./epsilon-route-53-handling";
 import { FunctionUrlOrigin, S3BucketOrigin } from "aws-cdk-lib/aws-cloudfront-origins";
 import { Certificate, ICertificate } from "aws-cdk-lib/aws-certificatemanager";
+import { Logger } from "@bitblit/ratchet-common/logger/logger";
+import { as } from "vitest/dist/chunks/reporters.DAfKSDh5";
 
 export class EpsilonWebsiteStack extends Stack {
   constructor(scope: Construct, id: string, props?: EpsilonWebsiteStackProps) {
     super(scope, id, props);
 
-    // const originAccessId: OriginAccessIdentity = new OriginAccessIdentity(this, id + 'OriginAccessId');
+    const originAccessId: OriginAccessIdentity = new OriginAccessIdentity(this, id + 'OriginAccessId');
 
     const websiteBucket: Bucket = new Bucket(this, id + 'DeployBucket', {
       bucketName: props.targetBucketName,
@@ -45,7 +47,7 @@ export class EpsilonWebsiteStack extends Stack {
     });
 
     const defaultBehavior: BehaviorOptions = {
-      origin: S3BucketOrigin.withBucketDefaults(websiteBucket), //  new FunctionUrlOrigin(props.lambdaFunctionDomain),
+      origin: S3BucketOrigin.withOriginAccessIdentity(websiteBucket, {originAccessIdentity:originAccessId}), //  new FunctionUrlOrigin(props.lambdaFunctionDomain),
       compress: true,
       viewerProtocolPolicy: ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
       cachePolicy: cachePolicy,
@@ -99,7 +101,7 @@ export class EpsilonWebsiteStack extends Stack {
       });
 
       const behaviorOptions: BehaviorOptions = {
-        origin: S3BucketOrigin.withBucketDefaults(nextBucket),
+        origin: S3BucketOrigin.withOriginAccessIdentity(nextBucket, {originAccessIdentity:originAccessId}),
         compress: true,
         viewerProtocolPolicy: ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
         cachePolicy: cachePolicy,
@@ -128,10 +130,13 @@ export class EpsilonWebsiteStack extends Stack {
       }
     }
 
+    const assetSources: ISource[] = props.pathsToAssets.map((inPath) => Source.asset(path.resolve(inPath)));
+    Logger.info('Found %d asset sources to push to S3', assetSources.length);
+
     // Sync files to the S3 Bucket
     //  [Source.asset(path.resolve('../website/dist'))],
     new BucketDeployment(this, id + 'SiteDeploy', {
-      sources: props.pathsToAssets.map((inPath) => Source.asset(path.resolve(inPath))),
+      sources: assetSources,
       destinationBucket: websiteBucket,
       distribution: cloudfrontDistro,
       distributionPaths: ['/*'], //'/locales/*', '/index.html', '/manifest.webmanifest', '/service-worker.js']
