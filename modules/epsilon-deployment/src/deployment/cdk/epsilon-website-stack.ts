@@ -27,7 +27,7 @@ export class EpsilonWebsiteStack extends Stack {
   constructor(scope: Construct, id: string, props?: EpsilonWebsiteStackProps) {
     super(scope, id, props);
 
-    const originAccessId: OriginAccessIdentity = new OriginAccessIdentity(this, id + 'OriginAccessId');
+    // const originAccessId: OriginAccessIdentity = new OriginAccessIdentity(this, id + 'OriginAccessId');
 
     const websiteBucket: Bucket = new Bucket(this, id + 'DeployBucket', {
       bucketName: props.targetBucketName,
@@ -52,7 +52,7 @@ export class EpsilonWebsiteStack extends Stack {
       allowedMethods: AllowedMethods.ALLOW_GET_HEAD_OPTIONS,
     };
 
-    const httpsCertificate: ICertificate = Certificate.fromCertificateArn(scope, id + 'HttpsCert', props.cloudFrontHttpsCertificateArn);
+    const httpsCertificate: ICertificate = Certificate.fromCertificateArn(this, id + 'HttpsCert', props.cloudFrontHttpsCertificateArn);
 
     const distributionProps: DistributionProps = {
       defaultBehavior: defaultBehavior,
