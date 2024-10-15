@@ -23,7 +23,6 @@ import { EpsilonRoute53Handling } from "./epsilon-route-53-handling";
 import { FunctionUrlOrigin, S3BucketOrigin } from "aws-cdk-lib/aws-cloudfront-origins";
 import { Certificate, ICertificate } from "aws-cdk-lib/aws-certificatemanager";
 import { Logger } from "@bitblit/ratchet-common/logger/logger";
-import { as } from "vitest/dist/chunks/reporters.DAfKSDh5";
 
 export class EpsilonWebsiteStack extends Stack {
   constructor(scope: Construct, id: string, props?: EpsilonWebsiteStackProps) {
