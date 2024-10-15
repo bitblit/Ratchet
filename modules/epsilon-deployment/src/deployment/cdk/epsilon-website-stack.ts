@@ -38,7 +38,7 @@ export class EpsilonWebsiteStack extends Stack {
       encryption: BucketEncryption.S3_MANAGED,
     });
 
-    const cachePolicy: CachePolicy = new CachePolicy(scope, id+'ShortCachePolicy', {
+    const cachePolicy: CachePolicy = new CachePolicy(this, id+'ShortCachePolicy', {
       defaultTtl: Duration.seconds(1),
       maxTtl: Duration.seconds(1),
       minTtl: Duration.seconds(1),
