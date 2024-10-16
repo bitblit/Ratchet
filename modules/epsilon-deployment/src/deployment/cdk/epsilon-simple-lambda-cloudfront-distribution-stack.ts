@@ -4,7 +4,7 @@ import {
   AllowedMethods,
   BehaviorOptions,
   CachePolicy, Distribution,
-  DistributionProps, IResponseHeadersPolicy,
+  DistributionProps, IResponseHeadersPolicy, OriginRequestPolicy,
   PriceClass, ResponseHeadersPolicy,
   SSLMethod,
   ViewerProtocolPolicy
@@ -34,6 +34,7 @@ export class EpsilonSimpleLambdaCloudfrontDistributionStack extends Stack {
       viewerProtocolPolicy: props.protocolPolicy ?? ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
       cachePolicy: props.cachePolicy ?? CachePolicy.CACHING_DISABLED,
       allowedMethods: props.allowedMethods ?? AllowedMethods.ALLOW_ALL,
+      originRequestPolicy: OriginRequestPolicy.ALL_VIEWER_EXCEPT_HOST_HEADER,
       responseHeadersPolicy: policy
     };
 
