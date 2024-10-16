@@ -1,15 +1,15 @@
-import { RequireRatchet } from '@bitblit/ratchet-common/lang/require-ratchet';
-import { Logger } from '@bitblit/ratchet-common/logger/logger';
-import { ErrorRatchet } from '@bitblit/ratchet-common/lang/error-ratchet';
-import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet';
-import fs from 'fs';
-import { SqliteDatabaseAccess } from './sqlite-database-access.js';
-import { SqliteRemoteSyncDatabaseAccess } from './sqlite-remote-sync-database-access.js';
-import { DatabaseAccessProvider } from '../model/database-access-provider.js';
-import { DatabaseAccess } from '../model/database-access.js';
-import { DatabaseConfigList } from '../model/database-config-list.js';
-import { SqliteConnectionConfig } from './model/sqlite-connection-config.js';
-import DatabaseConstructor, { Database, RunResult, Statement } from "better-sqlite3";
+import { RequireRatchet } from "@bitblit/ratchet-common/lang/require-ratchet";
+import { Logger } from "@bitblit/ratchet-common/logger/logger";
+import { ErrorRatchet } from "@bitblit/ratchet-common/lang/error-ratchet";
+import { StringRatchet } from "@bitblit/ratchet-common/lang/string-ratchet";
+import fs from "fs";
+import { SqliteDatabaseAccess } from "./sqlite-database-access.js";
+import { SqliteRemoteSyncDatabaseAccess } from "./sqlite-remote-sync-database-access.js";
+import { DatabaseAccessProvider } from "../model/database-access-provider.js";
+import { DatabaseAccess } from "../model/database-access.js";
+import { DatabaseConfigList } from "../model/database-config-list.js";
+import { SqliteConnectionConfig } from "./model/sqlite-connection-config.js";
+import DatabaseConstructor, { Database } from "better-sqlite3";
 
 /**
  */
@@ -170,8 +170,8 @@ export class SqliteStyleConnectionProvider implements DatabaseAccessProvider {
       if (cfg.localFile && !StringRatchet.trimToNull(cfg.localFile.filePath)) {
         rval.push('Localfile provided but filepath is not');
       }
-      if (cfg.remoteFileSync && !cfg.remoteFileSync.remoteFileSync) {
-        rval.push('remoteFileSync provided but remoteFileSync value within is not');
+      if (cfg.remoteFileSync && !cfg.remoteFileSync.remoteFileTracker) {
+        rval.push('remoteFileTracker provided but remoteFileTracker value within is not');
       }
       rval.push(StringRatchet.trimToNull(cfg.label) ? null : 'label is required and non-empty');
     }
