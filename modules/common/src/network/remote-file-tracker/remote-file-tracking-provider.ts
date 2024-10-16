@@ -5,7 +5,7 @@
 import { RemoteStatusData } from "./remote-status-data.js";
 import { RemoteStatusDataAndContent } from "./remote-status-data-and-content.js";
 import { FileTransferResult } from "./file-transfer-result.js";
-import { RemoteFileTrackerPushOptions } from "./remote-file-tracker-push-options";
+import { RemoteFileTrackerPushOptions } from "./remote-file-tracker-push-options.js";
 
 export interface RemoteFileTrackingProvider<KeyType> {
   readRemoteStatus(key: KeyType): Promise<RemoteStatusData<KeyType>>;

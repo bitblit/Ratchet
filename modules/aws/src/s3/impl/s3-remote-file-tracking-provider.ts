@@ -13,7 +13,7 @@ import {
 } from "@bitblit/ratchet-common/network/remote-file-tracker/remote-file-tracking-provider";
 import { StringRatchet } from "@bitblit/ratchet-common/lang/string-ratchet";
 import { RemoteStatusData } from "@bitblit/ratchet-common/network/remote-file-tracker/remote-status-data";
-import { S3RemoteFileTrackingProviderOptions } from "./s3-remote-file-tracking-provider-options";
+import { S3RemoteFileTrackingProviderOptions } from "./s3-remote-file-tracking-provider-options.js";
 import {
   RemoteStatusDataAndContent
 } from "@bitblit/ratchet-common/network/remote-file-tracker/remote-status-data-and-content";

@@ -6,7 +6,7 @@ import { Logger } from "../../logger/logger.js";
 import { RemoteFileTrackerOptions } from "./remote-file-tracker-options.js";
 import { RequireRatchet } from "../../lang/require-ratchet.js";
 import { RemoteFileTrackerPushOptions } from "./remote-file-tracker-push-options.js";
-import { WebStreamRatchet } from "../../lang/web-stream-ratchet";
+import { WebStreamRatchet } from "../../lang/web-stream-ratchet.js";
 
 export class RemoteFileTracker<KeyType> {
   // Updated every type you sync or pull

@@ -1,11 +1,11 @@
 import { beforeEach, describe, expect, test } from "vitest";
 import { S3RemoteFileTrackingProvider } from "./s3-remote-file-tracking-provider.js";
 import { mock, MockProxy } from "vitest-mock-extended";
-import { S3CacheRatchetLike } from "../s3-cache-ratchet-like";
-import { S3CacheRatchet } from "../s3-cache-ratchet";
+import { S3CacheRatchetLike } from "../s3-cache-ratchet-like.js";
+import { S3CacheRatchet } from "../s3-cache-ratchet.js";
 import { S3Client } from "@aws-sdk/client-s3";
-import { S3RemoteFileTrackingProviderOptions } from "./s3-remote-file-tracking-provider-options";
-import { AwsCredentialsRatchet } from "../../iam/aws-credentials-ratchet";
+import { S3RemoteFileTrackingProviderOptions } from "./s3-remote-file-tracking-provider-options.js";
+import { AwsCredentialsRatchet } from "../../iam/aws-credentials-ratchet.js";
 import { RemoteFileTracker } from "@bitblit/ratchet-common/network/remote-file-tracker/remote-file-tracker";
 import {
   RemoteStatusDataAndContent
