@@ -1,7 +1,7 @@
 import { Duration, Lazy, Size, Stack } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import { DockerImageCode, DockerImageFunction, FunctionUrl, FunctionUrlAuthType, HttpMethod } from 'aws-cdk-lib/aws-lambda';
-import { ManagedPolicy, PolicyDocument, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
+import { ManagedPolicy, PolicyDocument, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { Topic } from 'aws-cdk-lib/aws-sns';
 import { Queue } from 'aws-cdk-lib/aws-sqs';
 import { LambdaSubscription } from 'aws-cdk-lib/aws-sns-subscriptions';
@@ -27,11 +27,16 @@ import { SecurityGroup, Subnet, SubnetSelection, Vpc } from "aws-cdk-lib/aws-ec2
 
 import { ContainerImage } from 'aws-cdk-lib/aws-ecs';
 import { EpsilonApiStackFeature } from './epsilon-api-stack-feature.js';
+import {
+  EpsilonSimpleLambdaCloudfrontDistributionStackProps
+} from "./epsilon-simple-lambda-cloudfront-distribution-stack-props";
+import { EpsilonSimpleLambdaCloudfrontDistributionStack } from "./epsilon-simple-lambda-cloudfront-distribution-stack";
 
 export class EpsilonApiStack extends Stack {
   private webHandler: DockerImageFunction;
   private backgroundHandler: DockerImageFunction;
 
+  public webFunctionUrl: FunctionUrl;
   public apiDomain: string;
 
   constructor(scope: Construct, id: string, props?: EpsilonApiStackProps) {
@@ -107,16 +112,17 @@ export class EpsilonApiStack extends Stack {
         computeEnvironmentName: id + 'ComputeEnv',
         enabled: true,
         maxvCpus: 16,
-        replaceComputeEnvironment: false,
+        replaceComputeEnvironment: props.replaceBatchComputeEnvironment ?? false,
         securityGroups: props.lambdaSecurityGroupIds.map((sgId, index) =>
           SecurityGroup.fromSecurityGroupId(this, `SecurityGroup${index}`, `sg-${sgId}`),
         ),
-        serviceRole: Role.fromRoleArn(this, `${id}ServiceRole`, 'arn:aws:iam::' + props.env.account + ':role/AWSBatchServiceRole'),
+        serviceRole: Role.fromRoleArn(this, `${id}ServiceRole`, 'arn:aws:iam::' + props.env.account + ':role/aws-service-role/batch.amazonaws.com/AWSServiceRoleForBatch') ,
+        //Role.fromRoleArn(this, `${id}ServiceRole`, 'arn:aws:iam::' + props.env.account + ':role/AWSBatchServiceRole'),
         spot: false,
         terminateOnUpdate: false,
         updateTimeout: Duration.hours(4),
         updateToLatestImageVersion: true,
-        vpcSubnets: subnetSelection
+        vpcSubnets: subnetSelection,
         //vpcSubnets: subnetSelection,
       };
 
@@ -208,7 +214,7 @@ export class EpsilonApiStack extends Stack {
         rule.addTarget(new LambdaFunction(this.webHandler));
       }
 
-      const fnUrl: FunctionUrl = this.webHandler.addFunctionUrl({
+      this.webFunctionUrl = this.webHandler.addFunctionUrl({
         authType: FunctionUrlAuthType.NONE,
         cors: {
           allowedOrigins: ['*'],
@@ -220,10 +226,16 @@ export class EpsilonApiStack extends Stack {
 
       this.apiDomain = Lazy.uncachedString({
         produce: (context) => {
-          const resolved = context.resolve(fnUrl.url);
+          const resolved = context.resolve(this.webFunctionUrl.url);
           return { 'Fn::Select': [2, { 'Fn::Split': ['/', resolved] }] } as any;
         },
       });
+
+      if (props.autoCloudfrontDistribution) {
+        const distroPropsCopy: EpsilonSimpleLambdaCloudfrontDistributionStackProps = Object.assign({}, props.autoCloudfrontDistribution);
+        distroPropsCopy.lambdaFunctionDomain = this.webFunctionUrl;
+        new EpsilonSimpleLambdaCloudfrontDistributionStack(this, id+'ApiCloudfrontDistro', distroPropsCopy);
+      }
     }
 
     if (!disabledFeatures.includes(EpsilonApiStackFeature.BackgroundLambda)) {
@@ -248,5 +260,6 @@ export class EpsilonApiStack extends Stack {
       });
       rule.addTarget(new LambdaFunction(this.backgroundHandler));
     }
+
   }
 }

@@ -63,4 +63,27 @@ export class WebStreamRatchet {
     );
     return rval;
   }
+
+
+  public static uint8ArrayToWebReadableStream(input: Uint8Array): ReadableStream {
+    //if (typeof ReadableStream !== 'undefined') {
+    //  ErrorRatchet.throwFormattedErr('ReadableStream not supported on this platform');
+    // }
+
+    const rval: ReadableStream = new ReadableStream<Uint8Array>(
+      {
+        start(controller) {
+          if (input) {
+            controller.enqueue(input); // May as well write it all
+          }
+          controller.close();
+          return null;
+        },
+      },
+      {
+        highWaterMark: input ? input.length : null,
+      },
+    );
+    return rval;
+  }
 }

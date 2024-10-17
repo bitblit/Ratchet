@@ -26,12 +26,11 @@ jobs:
         shell: bash
 
       - name: Test
-        run: yarn test
+        run: yarn test-coverage
         shell: bash
 
-      - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@v3
-        env:
+      - uses: ./.github/workflows/actions/upload-code-coverage
+        with:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
       - name: Uploading artifacts

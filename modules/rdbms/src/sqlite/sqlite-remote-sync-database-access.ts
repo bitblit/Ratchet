@@ -1,21 +1,22 @@
-
-import { RequireRatchet } from '@bitblit/ratchet-common/lang/require-ratchet';
-import { Logger } from '@bitblit/ratchet-common/logger/logger';
-import { ErrorRatchet } from '@bitblit/ratchet-common/lang/error-ratchet';
-import { StopWatch } from '@bitblit/ratchet-common/lang/stop-watch';
-import SqlString from 'sqlstring';
-import { SqliteDatabaseAccess } from './sqlite-database-access.js';
-import { DatabaseAccess } from '../model/database-access.js';
-import { DatabaseRequestType } from '../model/database-request-type.js';
-import { RequestResults } from '../model/request-results.js';
-import { ModifyResults } from '../model/modify-results.js';
-import { SqliteRemoteFileSyncConfig } from './model/sqlite-remote-file-sync-config.js';
-import { FlushRemoteMode } from './model/flush-remote-mode.js';
-import { SqliteConnectionConfigFlag } from './model/sqlite-connection-config-flag.js';
-import { FetchRemoteMode } from './model/fetch-remote-mode.js';
-import { BackupResult } from '@bitblit/ratchet-common/network/remote-file-sync/backup-result';
-import { FileTransferResult } from '@bitblit/ratchet-common/network/remote-file-sync/file-transfer-result';
-import DatabaseConstructor, { Database, RunResult, Statement } from "better-sqlite3";
+import { RequireRatchet } from "@bitblit/ratchet-common/lang/require-ratchet";
+import { Logger } from "@bitblit/ratchet-common/logger/logger";
+import { ErrorRatchet } from "@bitblit/ratchet-common/lang/error-ratchet";
+import SqlString from "sqlstring";
+import { SqliteDatabaseAccess } from "./sqlite-database-access.js";
+import { DatabaseAccess } from "../model/database-access.js";
+import { DatabaseRequestType } from "../model/database-request-type.js";
+import { RequestResults } from "../model/request-results.js";
+import { ModifyResults } from "../model/modify-results.js";
+import { SqliteRemoteFileSyncConfig } from "./model/sqlite-remote-file-sync-config.js";
+import { FlushRemoteMode } from "./model/flush-remote-mode.js";
+import { SqliteConnectionConfigFlag } from "./model/sqlite-connection-config-flag.js";
+import { FetchRemoteMode } from "./model/fetch-remote-mode.js";
+import DatabaseConstructor, { Database } from "better-sqlite3";
+import {
+  RemoteStatusDataAndContent
+} from "@bitblit/ratchet-common/network/remote-file-tracker/remote-status-data-and-content";
+import { RemoteFileTracker } from "@bitblit/ratchet-common/network/remote-file-tracker/remote-file-tracker";
+import { RemoteStatusData } from "@bitblit/ratchet-common/network/remote-file-tracker/remote-status-data";
 
 export class SqliteRemoteSyncDatabaseAccess implements DatabaseAccess {
   private cacheDb: Promise<SqliteDatabaseAccess>;
@@ -36,10 +37,6 @@ export class SqliteRemoteSyncDatabaseAccess implements DatabaseAccess {
     return this.cacheDb;
   }
 
-  public async backupRemoteNow(): Promise<BackupResult> {
-    return this.cfg.remoteFileSync.backupRemote();
-  }
-
   public changeFlushRemoteMode(newMode: FlushRemoteMode): void {
     RequireRatchet.notNullOrUndefined(newMode, 'newMode');
     Logger.info('Changing flush remote mode from %s to %s', this.cfg.flushRemoteMode, newMode);
@@ -54,46 +51,32 @@ export class SqliteRemoteSyncDatabaseAccess implements DatabaseAccess {
 
   public async flushLocalToRemote(): Promise<void> {
     Logger.info('Flushing to remote (Flush mode is %s)', this.cfg.flushRemoteMode);
-    this.cacheDb = this.closeSyncReopen(this.db(), false);
-    await this.cacheDb;
+    const access: SqliteDatabaseAccess = await this.db();
+    const asBuffer: Buffer = access.connection.serialize({});
+    const result: RemoteStatusData<any>= await this.cfg.remoteFileTracker.pushUint8ArrayToRemote(asBuffer, {force: false, backup: true});
+    Logger.info('Result is %j', result);
   }
 
-  public async reloadRemoteToLocal(): Promise<void> {
+  public async reloadRemoteToLocalIfNeeded(): Promise<SqliteDatabaseAccess> {
     Logger.info('Reloading remote to local (Fetch mode is %s)', this.cfg.fetchRemoteMode);
-    this.cacheDb = this.closeSyncReopen(this.db(), true);
-    await this.cacheDb;
-  }
-
-  private async closeSyncReopen(oldDbProm: Promise<SqliteDatabaseAccess>, remoteToLocal: boolean): Promise<SqliteDatabaseAccess> {
-    const sw: StopWatch = new StopWatch();
-    const db: SqliteDatabaseAccess = await oldDbProm;
-    const takeAction: boolean = await (remoteToLocal ? this.cfg.remoteFileSync.wouldFetch : this.cfg.remoteFileSync.wouldPush);
-    let rval: SqliteDatabaseAccess;
-
-    if (takeAction) {
-      Logger.info('Closing database for sync');
-      await db.close();
-      Logger.info('Remote sync : %s', remoteToLocal ? 'remoteToLocal' : 'localToRemote');
-      const result: FileTransferResult = remoteToLocal
-        ? await this.cfg.remoteFileSync.fetchRemoteToLocal()
-        : await this.cfg.remoteFileSync.sendLocalToRemote();
-      Logger.info('Returned %s - reopening', result);
-      const newDb: Database = new DatabaseConstructor(this.cfg.remoteFileSync.localFileName);
-      rval = new SqliteDatabaseAccess(newDb, this.flags, this.extraConfig);
-      Logger.info('closeSyncReopen took %s', sw.dump());
+    const needed: boolean = await this.cfg.remoteFileTracker.modifiedSinceLastSync();
+    if (needed) {
+      Logger.info('Reloading, remote is newer');
+      this.cacheDb = this.createDb(); // The old one is a memory db, just let it get garbage collected?
+      await this.cacheDb; // We want to pause in this case
     } else {
-      Logger.info('Skipping close/sync/open - no change detected');
-      rval = db;
+      Logger.info('Skipping - remote is not modified');
     }
-
-    return rval;
+    return this.cacheDb;
   }
 
   private async createDb(): Promise<SqliteDatabaseAccess> {
     Logger.info('Pulling file local');
-    await this.cfg.remoteFileSync.fetchRemoteToLocal();
+    const data: RemoteStatusDataAndContent<any> = await this.cfg.remoteFileTracker.pullRemoteData();
+    const asBuffer: Buffer = Buffer.from(await RemoteFileTracker.dataAsUint8Array(data));
+    Logger.info('Got data %j %d', data.status, asBuffer.length);
     Logger.info('Creating database');
-    const db: Database = new DatabaseConstructor(this.cfg.remoteFileSync.localFileName);
+    const db: Database = new DatabaseConstructor(asBuffer);
     const rval: SqliteDatabaseAccess = new SqliteDatabaseAccess(db, this.flags, this.extraConfig);
     return rval;
   }
@@ -142,7 +125,7 @@ export class SqliteRemoteSyncDatabaseAccess implements DatabaseAccess {
   public async preQuery(): Promise<void> {
     if (this?.cfg?.fetchRemoteMode === FetchRemoteMode.EveryQuery) {
       Logger.debug('EveryQuery mode - checking remote');
-      await this.reloadRemoteToLocal();
+      await this.reloadRemoteToLocalIfNeeded();
     }
   }
 
