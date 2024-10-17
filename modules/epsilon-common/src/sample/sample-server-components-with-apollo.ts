@@ -15,8 +15,8 @@ import { EpsilonConfig } from "../config/epsilon-config.js";
 import { ApolloFilter } from "../built-in/http/apollo-filter.js";
 import { SampleServerStaticFiles } from "./sample-server-static-files.js";
 import { ApolloUtil } from "../built-in/http/apollo/apollo-util.js";
-import { EpsilonApolloCorsMethod } from "../built-in/http/apollo/epsilon-apollo-cors-method.js";
 import { SampleServerComponents } from "./sample-server-components";
+import { EpsilonCorsApproach } from "../config/http/epsilon-cors-approach.js";
 
 export class SampleServerComponentsWithApollo{
   // Prevent instantiation
@@ -73,7 +73,7 @@ export class SampleServerComponentsWithApollo{
     ApolloFilter.addApolloFilterToList(cfg.httpConfig.defaultMetaHandling.preFilters, new RegExp('.*graphql.*'), await SampleServerComponentsWithApollo.createSampleApollo(), {
       context: (arg) => ApolloUtil.defaultEpsilonApolloContext(arg, {jwtRatchet:SampleServerComponents.createSampleTokenManipulator().jwtRatchet}),
       timeoutMS: 5_000,
-      corsMethod: EpsilonApolloCorsMethod.All,
+      corsMethod: EpsilonCorsApproach.All,
     });
 
     return cfg;

@@ -4,6 +4,10 @@ import { Effect, PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { Topic } from 'aws-cdk-lib/aws-sns';
 import { Queue } from 'aws-cdk-lib/aws-sqs';
 import { EpsilonApiStackProps } from './epsilon-api-stack-props.js';
+import { ErrorRatchet } from "@bitblit/ratchet-common/lang/error-ratchet";
+import { HeadersFrameOption, HeadersReferrerPolicy, ResponseHeadersPolicy } from "aws-cdk-lib/aws-cloudfront";
+import { Construct } from "constructs";
+import { Duration } from "aws-cdk-lib";
 
 export class EpsilonStackUtil {
   // Prevent instantiation
@@ -115,4 +119,48 @@ export class EpsilonStackUtil {
     EpsilonStackUtil.ALLOW_ECR,
     EpsilonStackUtil.ALLOW_RESTRICTED_LOGS,
   ].concat(EpsilonStackUtil.ALLOW_FARGATE_SECRET_READING);
+
+
+  public static extractApexDomain(domainName: string): string {
+    const pieces: string[] = StringRatchet.trimToEmpty(domainName).split('.');
+    if (pieces.length < 2) {
+      ErrorRatchet.throwFormattedErr('Not a valid domain name : %s', domainName);
+    }
+    return pieces[pieces.length - 2] + '.' + pieces[pieces.length - 1];
+  }
+
+  public static createForwardCorsPolicy(app: Construct, id: string, xssReportUri: string): ResponseHeadersPolicy {
+    // Creating a custom response headers policy -- all parameters optional
+    const rval: ResponseHeadersPolicy = new ResponseHeadersPolicy(app, id+'CFRespHeadersPolicy', {
+      responseHeadersPolicyName: id+'CustomCloudfrontPolicy',
+      comment: 'Policy allowing passthru for CORS headers',
+      corsBehavior:
+        {
+        accessControlAllowCredentials: false,
+        accessControlAllowHeaders: ['*'],
+        accessControlAllowMethods: ['*'],
+        accessControlAllowOrigins: ['*'],
+        accessControlExposeHeaders: [],
+        accessControlMaxAge: Duration.seconds(600),
+        originOverride: false, // Use the origin values, if any
+      },
+      customHeadersBehavior: {
+        customHeaders: [
+          //{ header: 'X-Amz-Date', value: 'some-value', override: true },
+          //{ header: 'X-Amz-Security-Token', value: 'some-value', override: false },
+        ],
+      },
+      securityHeadersBehavior: {
+        contentSecurityPolicy: { contentSecurityPolicy: 'default-src https:;', override: true },
+        contentTypeOptions: { override: true },
+        frameOptions: { frameOption: HeadersFrameOption.DENY, override: true },
+        referrerPolicy: { referrerPolicy: HeadersReferrerPolicy.NO_REFERRER, override: true },
+        strictTransportSecurity: { accessControlMaxAge: Duration.seconds(600), includeSubdomains: true, override: true },
+        xssProtection: { protection: true, modeBlock: false, reportUri: xssReportUri, override: true },
+      },
+      removeHeaders: ['Server'],
+      serverTimingSamplingRate: 50,
+    });
+    return rval;
+  }
 }
