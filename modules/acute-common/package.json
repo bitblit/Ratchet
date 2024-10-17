@@ -1,10 +1,11 @@
 {
-  "name": "@bitblit/ratchet-acute-common",
+  "name": "@bitblit/ngx-acute-common",
   "version": "0.0.0-snapshot",
   "description": "Library for using angular",
   "main": "lib/my-angular-library.cjs.js",
   "module": "lib/my-angular-library.esm.js",
   "browser": "lib/my-angular-library.umd.js",
+  "types": "lib/index.d.ts",
   "contributors": [
     "Christopher Weiss <bitblit@gmail.com>"
   ],
@@ -20,9 +21,6 @@
   },
   "config": {},
   "license": "Apache-2.0",
-  "scripts": {
-    "x": "echo go"
-  },
   "dependencies": {
     "@angular/animations": "18.2.8",
     "@angular/common": "18.2.8",
@@ -31,12 +29,13 @@
     "@angular/forms": "18.2.8",
     "@angular/platform-browser": "18.2.8",
     "@angular/platform-browser-dynamic": "18.2.8",
+    "@angular/router": "18.2.8",
     "@bitblit/ratchet-common": "0.0.0-snapshot",
     "primeflex": "3.3.1",
     "primeicons": "7.0.0",
     "primeng": "17.18.11",
     "rxjs": "7.8.1",
-    "zone.js": "0.15.0"
+    "zone.js": "0.14.10"
   },
   "peerDependencies": {
     "@angular/animations": "^18.2.8",
@@ -46,6 +45,7 @@
     "@angular/forms": "^18.2.8",
     "@angular/platform-browser": "^18.2.8",
     "@angular/platform-browser-dynamic": "^18.2.8",
+    "@angular/router": "^18.2.8",
     "@bitblit/ratchet-common": "0.0.0-snapshot",
     "primeflex": "3.3.1",
     "primeicons": "7.0.0",

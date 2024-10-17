@@ -1,0 +1,9 @@
+<div>
+  <div style="display: flex; flex-direction: column; justify-content: center">
+    <h4>{{cfg.data.message | async}}</h4>
+    <p-progressSpinner styleClass="w-2rem h-2rem" strokeWidth="5" fill="var(--surface-ground)" animationDuration=".8s"></p-progressSpinner>
+    <div *ngIf="cfg.data.subMessage">
+      {{cfg.data.subMessage}}
+    </div>
+  </div>
+</div>

@@ -24,8 +24,8 @@
   ],
   "scripts": {
     "clean": "wsrun mod:clean",
-    "build": "wsrun --report  --serial --fast-exit --exclude @bitblit/ratchet-acute-common mod:build && echo Building Angular && yarn build-rollups && echo Completed full build",
-    "build-rollups": "wsrun --report --serial --fast-exit --package @bitblit/ratchet-acute-common -c mod:rollup-build",
+    "build": "wsrun --report  --serial --fast-exit --exclude @bitblit/ngx-acute-common mod:build && echo Building Angular && yarn build-rollups && echo Completed full build",
+    "build-rollups": "wsrun --report --serial --fast-exit --package @bitblit/ngx-acute-common -c mod:rollup-build",
     "lint": "wsrun --serial mod:lint",
     "lint-fix": "wsrun --serial mod:lint-fix",
     "test": "echo Starting full test && wsrun --fast-exit mod:test",

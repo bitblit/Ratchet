@@ -37,6 +37,7 @@ export default {
     "@angular/forms",
     "@angular/platform-browser",
     "@angular/platform-browser-dynamic",
+    "@angular/router",
     "@bitblit/ratchet-common",
     "primeflex",
     "primeicons",

@@ -108,6 +108,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@angular/router@npm:18.2.8":
+  version: 18.2.8
+  resolution: "@angular/router@npm:18.2.8"
+  dependencies:
+    tslib: ^2.3.0
+  peerDependencies:
+    "@angular/common": 18.2.8
+    "@angular/core": 18.2.8
+    "@angular/platform-browser": 18.2.8
+    rxjs: ^6.5.3 || ^7.4.0
+  checksum: 1f910fe4bfec1f1ebd194a944f61a546be6da00c8935dca1c0ab5fb07e3d12a13a21196794c7c56ad5e2fbc02c5a4bd0e122726f83ca7e6a63d7b2dce157a792
+  languageName: node
+  linkType: hard
+
 "@apollo/cache-control-types@npm:^1.0.3":
   version: 1.0.3
   resolution: "@apollo/cache-control-types@npm:1.0.3"
@@ -2217,9 +2231,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@bitblit/ratchet-acute-common@workspace:modules/acute-common":
+"@bitblit/ngx-acute-common@workspace:modules/acute-common":
   version: 0.0.0-use.local
-  resolution: "@bitblit/ratchet-acute-common@workspace:modules/acute-common"
+  resolution: "@bitblit/ngx-acute-common@workspace:modules/acute-common"
   dependencies:
     "@angular/animations": 18.2.8
     "@angular/common": 18.2.8
@@ -2228,12 +2242,13 @@ __metadata:
     "@angular/forms": 18.2.8
     "@angular/platform-browser": 18.2.8
     "@angular/platform-browser-dynamic": 18.2.8
+    "@angular/router": 18.2.8
     "@bitblit/ratchet-common": 0.0.0-snapshot
     primeflex: 3.3.1
     primeicons: 7.0.0
     primeng: 17.18.11
     rxjs: 7.8.1
-    zone.js: 0.15.0
+    zone.js: 0.14.10
   peerDependencies:
     "@angular/animations": ^18.2.8
     "@angular/common": ^18.2.8
@@ -2242,6 +2257,7 @@ __metadata:
     "@angular/forms": ^18.2.8
     "@angular/platform-browser": ^18.2.8
     "@angular/platform-browser-dynamic": ^18.2.8
+    "@angular/router": ^18.2.8
     "@bitblit/ratchet-common": 0.0.0-snapshot
     primeflex: 3.3.1
     primeicons: 7.0.0
@@ -13200,10 +13216,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zone.js@npm:0.15.0":
-  version: 0.15.0
-  resolution: "zone.js@npm:0.15.0"
-  checksum: 8cb8f99c0aa18dfc684b891576d9400385da94a342128ee998accf23cbd21d5e7d9e7a76e623872eb7a300a6d388c181dde575f39d2d9bf46d0af2310024e605
+"zone.js@npm:0.14.10":
+  version: 0.14.10
+  resolution: "zone.js@npm:0.14.10"
+  checksum: ba1dc7258d1d81f4783df6fce9c92a6dfea21275ed557312a407a982e9fb8330c4c136f30e6258d07e5a0628d0251eab8f9b544e2c027705f48e5c254ad7a009
   languageName: node
   linkType: hard
 
