@@ -5,7 +5,7 @@ import {BehaviorSubject} from 'rxjs';
 import {AsyncPipe} from "@angular/common";
 
 @Component({
-  selector: 'app-alert',
+  selector: 'ngx-acute-common-alert',
   template: '<div><pre>{{cfg.data.message | async}}</pre></div>',
   standalone: true,
   imports: [AsyncPipe]
