@@ -5,6 +5,7 @@ import angular from 'rollup-plugin-angular';
 import  terser  from '@rollup/plugin-terser';
 import json from '@rollup/plugin-json';
 import pkg from './package.json' assert { type: 'json' };
+import angularAotPlugin from '@bitblit/ratchet-node-only/third-party/angular/angular-aot-rollup-plugin';
 
 export default {
   input: 'src/index.ts', // Entry point for your library
@@ -30,18 +31,11 @@ export default {
     //  browser: true, // Resolves third-party libraries in node_modules
     //}),
     json(),
+    angularAotPlugin(),
     //commonjs(),  // Convert CommonJS modules to ES6
-    angular(),   // Handles Angular HTML templates and styles
+    //angular(),   // Handles Angular HTML templates and styles
     typescript({  // Compile TypeScript
       tsconfig: './tsconfig.json',
-      useTsconfigDeclarationDir: true,
-      // Enable declaration of class metadata
-      tsconfigOverride: {
-        compilerOptions: {
-          emitDecoratorMetadata: true,  // Ensure metadata is emitted
-          experimentalDecorators: true
-        }
-      }
     }),
     //terser(),    // Minify the bundle
   ]
