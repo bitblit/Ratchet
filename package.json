@@ -25,6 +25,7 @@
   "scripts": {
     "clean": "wsrun mod:clean",
     "build": "wsrun --report  --serial --fast-exit --exclude @bitblit/ngx-acute-common mod:build && echo Building Angular && yarn build-rollups && echo Completed full build",
+    "build-ng": "wsrun --report --serial --fast-exit --package @bitblit/ngx-acute-common -c mod:ng-build",
     "build-rollups": "wsrun --report --serial --fast-exit --package @bitblit/ngx-acute-common -c mod:rollup-build",
     "lint": "wsrun --serial mod:lint",
     "lint-fix": "wsrun --serial mod:lint-fix",
@@ -38,6 +39,7 @@
     "mod:raw-tsc": "cd $INIT_CWD && tsc",
     "mod:generate-barrels": "cd $INIT_CWD && barrelsby -e \".*\\.spec\\.ts\" --delete -d src -l below -q && cd $INIT_CWD && fix-esm-import-path src && rm -f src/brevo/index.ts",
     "mod:build": "cd $INIT_CWD && yarn mod:clean && cd $INIT_CWD && tsc",
+    "mod:ng-build": "cd $INIT_CWD && yarn mod:clean && cd $INIT_CWD && npx ngc",
     "mod:rollup-build": "cd $INIT_CWD && yarn mod:clean && cd $INIT_CWD && rollup -c ./rollup.config.mjs",
     "_mod:build": "cd $INIT_CWD && yarn mod:clean && yarn mod:generate-barrels && cd $INIT_CWD && tsc",
     "_rollup_mod:build": "cd $INIT_CWD && yarn mod:clean && yarn mod:generate-barrels && cd $INIT_CWD && rollup -c ../../rollup.global.config.mjs && echo Finished build",

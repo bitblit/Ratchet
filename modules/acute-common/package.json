@@ -2,8 +2,10 @@
   "name": "@bitblit/ngx-acute-common",
   "version": "0.0.0-snapshot",
   "description": "Library for using angular",
-  "module": "lib/esm2022/ngx-acute-common.mjs",
-  "types": "lib/esm2022/index.d.ts",
+  "module": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "_module": "lib/esm2022/ngx-acute-common.mjs",
+  "_types": "lib/esm2022/index.d.ts",
   "files": [
     "lib/**",
     "bin/**"
