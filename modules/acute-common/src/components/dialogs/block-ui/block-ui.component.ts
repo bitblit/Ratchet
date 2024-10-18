@@ -1,15 +1,11 @@
-import {Component} from '@angular/core';
-import {DialogService, DynamicDialogConfig, DynamicDialogRef} from 'primeng/dynamicdialog';
-import {BehaviorSubject} from 'rxjs';
-import {Logger} from '@bitblit/ratchet-common/logger/logger';
-import {AsyncPipe, NgIf} from "@angular/common";
-import {ProgressSpinnerModule} from "primeng/progressspinner";
+import { Component } from "@angular/core";
+import { DialogService, DynamicDialogConfig, DynamicDialogRef } from "primeng/dynamicdialog";
+import { BehaviorSubject } from "rxjs";
+import { Logger } from "@bitblit/ratchet-common/logger/logger";
 
 @Component({
   selector: 'ngx-acute-common-block-ui',
   templateUrl: './block-ui.component.html',
-  standalone: true,
-  imports: [NgIf, AsyncPipe, ProgressSpinnerModule]
 })
 export class BlockUiComponent {
   constructor(

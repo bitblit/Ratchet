@@ -1,7 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import {CurrencyRatchet} from "@bitblit/ratchet-common/lang/currency-ratchet";
 
-@Pipe({ name: 'acuteDollars', standalone: true })
+@Pipe({ name: 'acuteDollars'})
 export class DollarFormattedPipe implements PipeTransform {
   transform(input: number): string {
     const rval: string =
