@@ -30,11 +30,18 @@ export default {
     //  browser: true, // Resolves third-party libraries in node_modules
     //}),
     json(),
-    commonjs(),  // Convert CommonJS modules to ES6
+    //commonjs(),  // Convert CommonJS modules to ES6
     angular(),   // Handles Angular HTML templates and styles
     typescript({  // Compile TypeScript
       tsconfig: './tsconfig.json',
-
+      useTsconfigDeclarationDir: true,
+      // Enable declaration of class metadata
+      tsconfigOverride: {
+        compilerOptions: {
+          emitDecoratorMetadata: true,  // Ensure metadata is emitted
+          experimentalDecorators: true
+        }
+      }
     }),
     //terser(),    // Minify the bundle
   ]

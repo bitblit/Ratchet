@@ -2,7 +2,10 @@
   "compilerOptions": {
     "baseUrl": ".",
     "rootDir": "src",
-    "stripInternal": true
+    "outDir": "lib",
+    "stripInternal": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
   },
   "extends": "../../tsconfig.json",
   "include": ["src/"]
