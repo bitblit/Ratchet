@@ -2,10 +2,8 @@
   "name": "@bitblit/ngx-acute-common",
   "version": "0.0.0-snapshot",
   "description": "Library for using angular",
-  "main": "lib/my-angular-library.cjs.js",
-  "module": "lib/my-angular-library.esm.js",
-  "browser": "lib/my-angular-library.umd.js",
-  "types": "lib/index.d.ts",
+  "module": "lib/esm2022/ngx-acute-common.mjs",
+  "types": "lib/esm2022/index.d.ts",
   "files": [
     "lib/**",
     "bin/**"
@@ -56,8 +54,5 @@
     "primeng": "17.18.11",
     "rxjs": "7.8.1",
     "zone.js": "0.14.10"
-  },
-  "devDependencies": {
-    "@angular/compiler-cli": "^18.2.8"
   }
 }

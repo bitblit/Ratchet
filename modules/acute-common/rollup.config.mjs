@@ -10,26 +10,8 @@ export default {
   input: 'src/index.ts', // Entry point for your library
   output: [
     {
-      file: pkg.main,  // Output for CommonJS
-      format: 'cjs',
-      sourcemap: true,
-    },
-    {
       file: pkg.module,  // Output for ESModule
-      format: 'es',
-      sourcemap: true,
-    },
-    {
-      file: pkg.browser,  // UMD output for browsers
-      format: 'umd',
-      name: 'AcuteCommon',
-      globals: {
-        '@angular/core': 'ng.core',
-        '@angular/common': 'ng.common',
-        '@angular/forms': 'ng.forms',
-        '@angular/animations': 'ng.animations',
-        'rxjs': 'rxjs',
-      },
+      format: 'esm',
       sourcemap: true,
     }
   ],
@@ -44,15 +26,16 @@ export default {
     "primeng",
     "zone.js",'rxjs'],  // Externals, you don’t bundle Angular and RxJS
   plugins: [
-    resolve({
-      browser: true, // Resolves third-party libraries in node_modules
-    }),
+    //resolve({
+    //  browser: true, // Resolves third-party libraries in node_modules
+    //}),
     json(),
     commonjs(),  // Convert CommonJS modules to ES6
     angular(),   // Handles Angular HTML templates and styles
     typescript({  // Compile TypeScript
       tsconfig: './tsconfig.json',
+
     }),
-    terser(),    // Minify the bundle
+    //terser(),    // Minify the bundle
   ]
 };
