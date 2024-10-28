@@ -2516,14 +2516,14 @@ __metadata:
     rxjs: 7.8.1
     zone.js: 0.14.10
   peerDependencies:
-    "@angular/animations": ^18.2.8
-    "@angular/common": ^18.2.8
-    "@angular/compiler": ^18.2.8
-    "@angular/core": ^18.2.8
-    "@angular/forms": ^18.2.8
-    "@angular/platform-browser": ^18.2.8
-    "@angular/platform-browser-dynamic": ^18.2.8
-    "@angular/router": ^18.2.8
+    "@angular/animations": ^18.2.9
+    "@angular/common": ^18.2.9
+    "@angular/compiler": ^18.2.9
+    "@angular/core": ^18.2.9
+    "@angular/forms": ^18.2.9
+    "@angular/platform-browser": ^18.2.9
+    "@angular/platform-browser-dynamic": ^18.2.9
+    "@angular/router": ^18.2.9
     "@bitblit/ratchet-common": 0.0.0-snapshot
     primeflex: 3.3.1
     primeicons: 7.0.0
@@ -2551,14 +2551,14 @@ __metadata:
     unzipper: 0.12.3
     walk: 2.3.15
   peerDependencies:
-    "@aws-sdk/client-athena": ^3.666.0
-    "@aws-sdk/client-sts": ^3.666.0
-    "@aws-sdk/types": ^3.664.0
+    "@aws-sdk/client-athena": ^3.679.0
+    "@aws-sdk/client-sts": ^3.679.0
+    "@aws-sdk/types": ^3.679.0
     "@bitblit/ratchet-aws": 0.0.0-snapshot
     "@bitblit/ratchet-common": 0.0.0-snapshot
-    "@smithy/abort-controller": ^3.1.5
-    "@smithy/smithy-client": ^3.4.0
-    "@smithy/util-waiter": ^3.1.6
+    "@smithy/abort-controller": ^3.1.7
+    "@smithy/smithy-client": ^3.4.2
+    "@smithy/util-waiter": ^3.1.7
     mailparser: ^3.7.1
     mime-types: ^2.1.35
     tmp: ^0.2.3
@@ -2866,8 +2866,8 @@ __metadata:
     constructs: 10.4.2
   peerDependencies:
     "@bitblit/ratchet-common": 0.0.0-snapshot
-    aws-cdk-lib: ^2.161.1
-    constructs: ^10.3.0
+    aws-cdk-lib: ^2.164.1
+    constructs: ^10.4.2
   languageName: unknown
   linkType: soft
 
@@ -2988,7 +2988,7 @@ __metadata:
     tunnel-ssh: 5.1.2
   peerDependencies:
     "@bitblit/ratchet-common": 0.0.0-snapshot
-    better-sqlite3: ^11.3.0
+    better-sqlite3: ^11.5.0
     get-port: ^7.1.0
     mysql2: ^3.11.3
     sqlstring: ^2.3.3
@@ -3028,8 +3028,8 @@ __metadata:
     jwt-decode: 4.0.0
   peerDependencies:
     "@bitblit/ratchet-common": ^0.0.0-snapshot
-    "@simplewebauthn/browser": ^10.0.0
-    "@simplewebauthn/types": ^10.0.0
+    "@simplewebauthn/browser": ^11.0.0
+    "@simplewebauthn/types": ^11.0.0
     jwt-decode: ^4.0.0
   languageName: unknown
   linkType: soft
@@ -3049,14 +3049,14 @@ __metadata:
     "@simplewebauthn/types": 11.0.0
     jsonwebtoken: 9.0.2
   peerDependencies:
-    "@aws-sdk/client-s3": ^3.666.0
-    "@aws-sdk/client-ses": ^3.666.0
+    "@aws-sdk/client-s3": ^3.679.0
+    "@aws-sdk/client-ses": ^3.679.0
     "@bitblit/ratchet-aws": 0.0.0-snapshot
     "@bitblit/ratchet-common": 0.0.0-snapshot
     "@bitblit/ratchet-warden-common": 0.0.0-snapshot
-    "@simplewebauthn/browser": ^10.0.0
-    "@simplewebauthn/server": ^10.0.1
-    "@simplewebauthn/types": ^10.0.0
+    "@simplewebauthn/browser": ^11.0.0
+    "@simplewebauthn/server": ^11.0.0
+    "@simplewebauthn/types": ^11.0.0
     jsonwebtoken: ^9.0.2
   languageName: unknown
   linkType: soft
