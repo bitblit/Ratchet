@@ -11,7 +11,6 @@ import {
 } from '@simplewebauthn/server';
 import {
   AuthenticationResponseJSON,
-  AuthenticatorDevice,
   AuthenticatorTransportFuture,
   PublicKeyCredentialCreationOptionsJSON,
   PublicKeyCredentialRequestOptionsJSON,
@@ -501,11 +500,11 @@ export class WardenService {
           origin: origin,
           applicationName: applicationName || 'Unknown Application',
           deviceLabel: deviceLabel || 'Unknown Device',
-          counter: verification.registrationInfo.counter,
+          counter: verification.registrationInfo.credential.counter,
           credentialBackedUp: verification.registrationInfo.credentialBackedUp,
           credentialDeviceType: verification.registrationInfo.credentialDeviceType,
-          credentialIdBase64: verification.registrationInfo.credentialID,
-          credentialPublicKeyBase64: Base64Ratchet.uint8ArrayToBase64UrlString(verification.registrationInfo.credentialPublicKey),
+          credentialIdBase64: verification.registrationInfo.credential.id,
+          credentialPublicKeyBase64: Base64Ratchet.uint8ArrayToBase64UrlString(verification.registrationInfo.credential.publicKey),
           //transports: TBD
         };
 
@@ -652,18 +651,16 @@ export class WardenService {
       throw ErrorRatchet.fErr('Could not find authenticator %s (%s) for user %s (avail were : %j)', data.id, data.id, user.userId, allIds);
     }
 
-    const authenticator: AuthenticatorDevice = {
-      counter: auth.counter,
-      credentialID: auth.credentialIdBase64,
-      credentialPublicKey: Base64Ratchet.base64UrlStringToBytes(auth.credentialPublicKeyBase64),
-    };
-
     const vrOpts: VerifyAuthenticationResponseOpts = {
       response: data,
       expectedChallenge,
       expectedOrigin: origin,
       expectedRPID: rpID,
-      authenticator,
+      credential: {
+        counter: auth.counter,
+        id: auth.credentialIdBase64,
+        publicKey: Base64Ratchet.base64UrlStringToBytes(auth.credentialPublicKeyBase64),
+      }
     };
 
     const verification: VerifiedAuthenticationResponse = await verifyAuthenticationResponse(vrOpts);

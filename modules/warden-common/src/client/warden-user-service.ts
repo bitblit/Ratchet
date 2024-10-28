@@ -11,13 +11,13 @@ import { WardenLoginRequest } from '../common/model/warden-login-request.js';
 
 import {
   AuthenticationResponseJSON,
-  PublicKeyCredentialCreationOptionsJSON,
-  PublicKeyCredentialRequestOptionsJSON,
   RegistrationResponseJSON,
 } from '@simplewebauthn/types';
 import { WardenEntrySummary } from '../common/model/warden-entry-summary.js';
 import { startAuthentication, startRegistration } from '@simplewebauthn/browser';
 import { WardenUtils } from '../common/util/warden-utils.js';
+import { StartRegistrationOpts } from "@simplewebauthn/browser/dist/types/methods/startRegistration";
+import { StartAuthenticationOpts } from "@simplewebauthn/browser/dist/types/methods/startAuthentication";
 
 /**
  * A service that handles logging in, saving the current user, watching
@@ -277,7 +277,7 @@ export class WardenUserService<T> {
   }
 
   public async saveCurrentDeviceAsWebAuthnForCurrentUser(): Promise<WardenEntrySummary> {
-    const input: PublicKeyCredentialCreationOptionsJSON =
+    const input: StartRegistrationOpts =
       await this.options.wardenClient.generateWebAuthnRegistrationChallengeForLoggedInUser();
 
     const creds: RegistrationResponseJSON = await startRegistration(input);
@@ -322,7 +322,7 @@ export class WardenUserService<T> {
     let rval: WardenLoginResults = null;
     try {
       // Add it to the list
-      const input: PublicKeyCredentialRequestOptionsJSON =
+      const input: StartAuthenticationOpts =
         await this.options.wardenClient.generateWebAuthnAuthenticationChallengeForUserId(userId);
       Logger.info('Got login challenge : %s', input);
       const creds: AuthenticationResponseJSON = await startAuthentication(input);

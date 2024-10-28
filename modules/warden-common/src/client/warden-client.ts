@@ -9,8 +9,6 @@ import { Logger } from '@bitblit/ratchet-common/logger/logger';
 import { ErrorRatchet } from '@bitblit/ratchet-common/lang/error-ratchet';
 import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet';
 import {
-  PublicKeyCredentialCreationOptionsJSON,
-  PublicKeyCredentialRequestOptionsJSON,
   RegistrationResponseJSON,
 } from '@simplewebauthn/types';
 import { WardenLoginResults } from '../common/model/warden-login-results.js';
@@ -20,6 +18,8 @@ import { WardenEntrySummary } from '../common/model/warden-entry-summary.js';
 import { WardenContactType } from '../common/model/warden-contact-type.js';
 import { AddWebAuthnRegistrationToLoggedInUser } from '../common/command/add-web-authn-registration-to-logged-in-user.js';
 import { SendMagicLink } from '../common/command/send-magic-link.js';
+import { StartRegistrationOpts } from "@simplewebauthn/browser/dist/types/methods/startRegistration";
+import { StartAuthenticationOpts } from "@simplewebauthn/browser/dist/types/methods/startAuthentication";
 
 export class WardenClient {
   constructor(
@@ -94,22 +94,22 @@ export class WardenClient {
     return this.sendMagicLinkRaw(cmd);
   }
 
-  public async generateWebAuthnAuthenticationChallengeForUserId(userId: string): Promise<PublicKeyCredentialRequestOptionsJSON> {
+  public async generateWebAuthnAuthenticationChallengeForUserId(userId: string): Promise<StartAuthenticationOpts> {
     const cmd: WardenCommand = {
       generateWebAuthnAuthenticationChallengeForUserId: userId,
     };
     const rval: WardenCommandResponse = await this.exchangeCommand(cmd);
-    const parsed: PublicKeyCredentialRequestOptionsJSON = JSON.parse(rval.generateWebAuthnAuthenticationChallengeForUserId.dataAsJson);
+    const parsed: StartAuthenticationOpts = JSON.parse(rval.generateWebAuthnAuthenticationChallengeForUserId.dataAsJson);
     return parsed;
   }
 
-  public async generateWebAuthnRegistrationChallengeForLoggedInUser(): Promise<PublicKeyCredentialCreationOptionsJSON> {
+  public async generateWebAuthnRegistrationChallengeForLoggedInUser(): Promise<StartRegistrationOpts> {
     const cmd: WardenCommand = {
       generateWebAuthnRegistrationChallengeForLoggedInUser: true,
     };
     const rval: WardenCommandResponse = await this.exchangeCommand(cmd);
     //Logger.info('generateWebAuthnRegistrationChallengeForLoggedInUser: %j', rval);
-    const parsed: PublicKeyCredentialCreationOptionsJSON = JSON.parse(rval.generateWebAuthnRegistrationChallengeForLoggedInUser.dataAsJson);
+    const parsed: StartRegistrationOpts = JSON.parse(rval.generateWebAuthnRegistrationChallengeForLoggedInUser.dataAsJson);
     return parsed;
   }
 
