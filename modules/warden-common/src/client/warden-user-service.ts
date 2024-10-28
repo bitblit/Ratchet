@@ -326,8 +326,8 @@ export class WardenUserService<T> {
         await this.options.wardenClient.generateWebAuthnAuthenticationChallengeForUserId(userId);
       const input: StartAuthenticationOpts = {
         optionsJSON: resp,
-        useBrowserAutofill: true,
-        verifyBrowserAutofillInput: true
+        useBrowserAutofill: false,
+        verifyBrowserAutofillInput: false
       };
       Logger.info('Got login challenge : %j', input);
       const creds: AuthenticationResponseJSON = await startAuthentication(input);
