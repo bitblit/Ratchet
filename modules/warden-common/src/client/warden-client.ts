@@ -9,8 +9,9 @@ import { Logger } from '@bitblit/ratchet-common/logger/logger';
 import { ErrorRatchet } from '@bitblit/ratchet-common/lang/error-ratchet';
 import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet';
 import {
-  RegistrationResponseJSON,
-} from '@simplewebauthn/types';
+  PublicKeyCredentialRequestOptionsJSON,
+  RegistrationResponseJSON
+} from "@simplewebauthn/types";
 import { WardenLoginResults } from '../common/model/warden-login-results.js';
 import { WardenLoginRequest } from '../common/model/warden-login-request.js';
 import { WardenClientCurrentLoggedInJwtTokenProvider } from './provider/warden-client-current-logged-in-jwt-token-provider.js';
@@ -94,12 +95,12 @@ export class WardenClient {
     return this.sendMagicLinkRaw(cmd);
   }
 
-  public async generateWebAuthnAuthenticationChallengeForUserId(userId: string): Promise<StartAuthenticationOpts> {
+  public async generateWebAuthnAuthenticationChallengeForUserId(userId: string): Promise<PublicKeyCredentialRequestOptionsJSON> {
     const cmd: WardenCommand = {
       generateWebAuthnAuthenticationChallengeForUserId: userId,
     };
     const rval: WardenCommandResponse = await this.exchangeCommand(cmd);
-    const parsed: StartAuthenticationOpts = JSON.parse(rval.generateWebAuthnAuthenticationChallengeForUserId.dataAsJson);
+    const parsed: PublicKeyCredentialRequestOptionsJSON = JSON.parse(rval.generateWebAuthnAuthenticationChallengeForUserId.dataAsJson);
     return parsed;
   }
 

@@ -10,9 +10,9 @@ import { WardenLoginResults } from '../common/model/warden-login-results.js';
 import { WardenLoginRequest } from '../common/model/warden-login-request.js';
 
 import {
-  AuthenticationResponseJSON,
-  RegistrationResponseJSON,
-} from '@simplewebauthn/types';
+  AuthenticationResponseJSON, PublicKeyCredentialRequestOptionsJSON,
+  RegistrationResponseJSON
+} from "@simplewebauthn/types";
 import { WardenEntrySummary } from '../common/model/warden-entry-summary.js';
 import { startAuthentication, startRegistration } from '@simplewebauthn/browser';
 import { WardenUtils } from '../common/util/warden-utils.js';
@@ -322,9 +322,14 @@ export class WardenUserService<T> {
     let rval: WardenLoginResults = null;
     try {
       // Add it to the list
-      const input: StartAuthenticationOpts =
+      const resp: PublicKeyCredentialRequestOptionsJSON =
         await this.options.wardenClient.generateWebAuthnAuthenticationChallengeForUserId(userId);
-      Logger.info('Got login challenge : %s', input);
+      const input: StartAuthenticationOpts = {
+        optionsJSON: resp,
+        useBrowserAutofill: true,
+        verifyBrowserAutofillInput: true
+      };
+      Logger.info('Got login challenge : %j', input);
       const creds: AuthenticationResponseJSON = await startAuthentication(input);
       Logger.info('Got creds: %j', creds);
 
