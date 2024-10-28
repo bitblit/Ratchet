@@ -1,4 +1,4 @@
-import { EpsilonServerMode } from "../config/espilon-server-mode";
+import { EpsilonServerMode } from "../config/espilon-server-mode.js";
 import { StringRatchet } from "@bitblit/ratchet-common/lang/string-ratchet";
 import { RequireRatchet } from "@bitblit/ratchet-common/lang/require-ratchet";
 import { MapRatchet } from "@bitblit/ratchet-common/lang/map-ratchet";

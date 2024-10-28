@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
-import { EpsilonServerMode } from "../config/espilon-server-mode";
-import { EpsilonServerUtil } from "./epsilon-server-util";
+import { EpsilonServerMode } from "../config/espilon-server-mode.js";
+import { EpsilonServerUtil } from "./epsilon-server-util.js";
 
 describe('#epsilonServerUtil', function () {
   test('should extract server type', async () => {
