@@ -69,10 +69,10 @@ export class LocalFileServer {
   }
 
   async requestHandler(request: IncomingMessage, response: ServerResponse): Promise<any> {
-    let reqPath: string = request.url.includes('?') ? request.url.substring(0, request.url.indexOf('?')) : request.url;
-    let filePath: string = path.join(this.fileRoot, reqPath);
+    const reqPath: string = request.url.includes('?') ? request.url.substring(0, request.url.indexOf('?')) : request.url;
+    const filePath: string = path.join(this.fileRoot, reqPath);
     if (fs.existsSync(filePath)) {
-      let stats: fs.Stats = fs.statSync(filePath);
+      const stats: fs.Stats = fs.statSync(filePath);
       if (stats.isFile()) {
         let mimetype: string = mime.contentType(filePath);
         if (mimetype === 'video/mp2t') {

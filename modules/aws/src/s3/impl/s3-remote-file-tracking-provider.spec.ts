@@ -29,7 +29,7 @@ describe('#S3RemoteFileTrackingProvider', () => {
     };
 
     const svc: S3RemoteFileTrackingProvider = new S3RemoteFileTrackingProvider(testOpts);
-    const obj: RemoteFileTracker<string> = new RemoteFileTracker({
+    const obj = new RemoteFileTracker<string>({
       key: 'test.txt',
       provider: svc,
     });

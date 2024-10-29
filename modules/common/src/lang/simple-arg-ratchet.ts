@@ -9,14 +9,14 @@ export class SimpleArgRatchet {
   private constructor() {}
 
   public static parseArgs(args: string[], validArgNames: string[]): Record<string, string[]> {
-    let rval: Record<string, string[]> = {};
+    const rval: Record<string, string[]> = {};
     if (args?.length) {
       if (args.length % 2 !== 0) {
         throw ErrorRatchet.fErr('Invalid arguments, all args must take the form --a b, but there were an odd number of arguments');
       }
       for (let i = 0; i < args.length; i += 2) {
         let key: string = args[i];
-        let value: string = args[i + 1];
+        const value: string = args[i + 1];
         if (!key.startsWith('--')) {
           throw ErrorRatchet.fErr('Argument %s does not take the form --x', key);
         }
@@ -32,8 +32,8 @@ export class SimpleArgRatchet {
   }
 
   public static parseSingleArgs(args: string[], validArgNames: string[]): Record<string, string> {
-    let tmp: Record<string, string[]> = SimpleArgRatchet.parseArgs(args, validArgNames);
-    let rval: Record<string, string> = {};
+    const tmp: Record<string, string[]> = SimpleArgRatchet.parseArgs(args, validArgNames);
+    const rval: Record<string, string> = {};
     Object.keys(tmp).forEach((k) => {
       const v: string[] = tmp[k];
       if (v.length > 1) {

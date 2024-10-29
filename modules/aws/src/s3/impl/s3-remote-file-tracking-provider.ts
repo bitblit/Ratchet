@@ -84,7 +84,7 @@ export class S3RemoteFileTrackingProvider implements RemoteFileTrackingProvider<
     RequireRatchet.notNullOrUndefined(src, 'src');
     RequireRatchet.notNullOrUndefined(key, 'key');
     RequireRatchet.notNullOrUndefined(opts, 'opts');
-    let rval: FileTransferResult = {
+    const rval: FileTransferResult = {
       type: null,
       error: null,
       bytesTransferred: null,
