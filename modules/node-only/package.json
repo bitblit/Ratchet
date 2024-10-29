@@ -64,18 +64,18 @@
     "cheerio": "1.0.0",
     "csv": "6.3.10",
     "jsonwebtoken": "9.0.2",
+    "mime-types": "3.0.0",
     "rxjs": "7.8.1",
-    "warc": "1.0.1",
-    "mime-types": "3.0.0"
+    "warc": "1.0.1"
   },
   "peerDependencies": {
     "@bitblit/ratchet-common": "0.0.0-snapshot",
     "cheerio": "^1.0.0",
     "csv": "^6.3.10",
     "jsonwebtoken": "^9.0.2",
+    "mime-types": "3.0.0",
     "rxjs": "^7.8.1",
-    "warc": "^1.0.1",
-    "mime-types": "3.0.0"
+    "warc": "^1.0.1"
   },
   "peerDependenciesMeta": {
     "cheerio": {
@@ -87,13 +87,13 @@
     "jsonwebtoken": {
       "optional": true
     },
+    "mime-types": {
+      "optional": true
+    },
     "rxjs": {
       "optional": true
     },
     "warc": {
-      "optional": true
-    },
-    "mime-types": {
       "optional": true
     }
   },

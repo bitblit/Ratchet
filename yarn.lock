@@ -2834,7 +2834,6 @@ __metadata:
     js-yaml: 4.1.0
     jwks-rsa: 3.1.0
     luxon: 3.5.0
-    mime-types: 3.0.0
     route-parser: 0.0.5
     rxjs: 7.8.1
     strip-js: 1.2.0
@@ -2940,6 +2939,7 @@ __metadata:
     cheerio: 1.0.0
     csv: 6.3.10
     jsonwebtoken: 9.0.2
+    mime-types: 3.0.0
     rxjs: 7.8.1
     warc: 1.0.1
   peerDependencies:
@@ -2947,6 +2947,7 @@ __metadata:
     cheerio: ^1.0.0
     csv: ^6.3.10
     jsonwebtoken: ^9.0.2
+    mime-types: 3.0.0
     rxjs: ^7.8.1
     warc: ^1.0.1
   dependenciesMeta:
@@ -2955,6 +2956,8 @@ __metadata:
     csv:
       optional: true
     jsonwebtoken:
+      optional: true
+    mime-types:
       optional: true
     rxjs:
       optional: true
@@ -2966,6 +2969,8 @@ __metadata:
     csv:
       optional: true
     jsonwebtoken:
+      optional: true
+    mime-types:
       optional: true
     rxjs:
       optional: true
