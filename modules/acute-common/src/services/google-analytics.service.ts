@@ -19,7 +19,7 @@ export class GoogleAnalyticsService {
 
     // dynamically add analytics scripts to document head
     try {
-      const url:string = 'https://www.googletagmanager.com/gtag/js?id=';
+      const url: string = 'https://www.googletagmanager.com/gtag/js?id=';
       const gTagScript = document.createElement('script');
       gTagScript.async = true;
       const tagId: string = GoogleAnalyticsService.IS_PROD ? 'G-7D5BBK4K8X' : null;

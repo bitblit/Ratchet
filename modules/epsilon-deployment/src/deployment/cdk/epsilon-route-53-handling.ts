@@ -4,5 +4,4 @@ export const EpsilonRoute53Handling = {
   Update: 'Update',
   DoNotUpdate: 'DoNotUpdate',
 };
-export type EpsilonRoute53Handling =
-  (typeof EpsilonRoute53Handling)[keyof typeof EpsilonRoute53Handling];
+export type EpsilonRoute53Handling = (typeof EpsilonRoute53Handling)[keyof typeof EpsilonRoute53Handling];

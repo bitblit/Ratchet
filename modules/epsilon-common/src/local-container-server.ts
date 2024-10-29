@@ -7,8 +7,8 @@ import { Logger } from '@bitblit/ratchet-common/logger/logger';
 import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet';
 import { LoggerLevelName } from '@bitblit/ratchet-common/logger/logger-level-name';
 import { CliRatchet } from '@bitblit/ratchet-node-only/cli/cli-ratchet';
-import { LocalServerOptions } from "./config/local-server/local-server-options.js";
-import { LocalServerHttpMethodHandling } from "./config/local-server/local-server-http-method-handling.js";
+import { LocalServerOptions } from './config/local-server/local-server-options.js';
+import { LocalServerHttpMethodHandling } from './config/local-server/local-server-http-method-handling.js';
 
 /**
  * A simplistic server for testing your lambdas-in-container locally
@@ -23,7 +23,7 @@ export class LocalContainerServer {
     private containerUrl: string = 'http://localhost:9000/2015-03-31/functions/function/invocations',
   ) {
     this.options = {
-      methodHandling: LocalServerHttpMethodHandling.Uppercase
+      methodHandling: LocalServerHttpMethodHandling.Uppercase,
     };
   }
 

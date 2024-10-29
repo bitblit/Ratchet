@@ -111,8 +111,8 @@ export class StopWatch {
   }
 
   public dumpExpectedByIdx(idx: number, total: number, name?: string, shortForm?: boolean): string {
-    RequireRatchet.true(idx>0 && idx<total, 'IDX must be >=0 and less than total');
-    return this.dumpExpected(idx/total, name, shortForm);
+    RequireRatchet.true(idx > 0 && idx < total, 'IDX must be >=0 and less than total');
+    return this.dumpExpected(idx / total, name, shortForm);
   }
 
   public dumpExpected(pctComplete: number, name?: string, shortForm?: boolean): string {
@@ -129,10 +129,10 @@ export class StopWatch {
         rval += (cleanName || 'Default') + ' ';
         const remainMS: number = this.expectedRemainingMS(pctComplete, cleanName);
         const elapsedMS: number = this.elapsedMS(cleanName);
-        const expectedTotalMS: number = elapsedMS+remainMS;
-        if (remainMS===0) {
+        const expectedTotalMS: number = elapsedMS + remainMS;
+        if (remainMS === 0) {
           rval += 'completed in ' + DurationRatchet.formatMsDuration(elapsedMS, !shortForm);
-        } else if (remainMS>0) {
+        } else if (remainMS > 0) {
           rval +=
             'running for ' +
             DurationRatchet.formatMsDuration(elapsedMS, !shortForm) +
@@ -140,7 +140,7 @@ export class StopWatch {
             DurationRatchet.formatMsDuration(remainMS, !shortForm) +
             ' remaining';
         } else {
-          throw new Error('Cannot happen - had negative remaining time : '+remainMS);
+          throw new Error('Cannot happen - had negative remaining time : ' + remainMS);
         }
       }
     }
@@ -148,8 +148,8 @@ export class StopWatch {
   }
 
   public expectedRemainingMSByIdx(idx: number, total: number, name?: string): number {
-    RequireRatchet.true(idx>0 && idx<total, 'IDX must be >=0 and less than total');
-    return this.expectedRemainingMS(idx/total,name);
+    RequireRatchet.true(idx > 0 && idx < total, 'IDX must be >=0 and less than total');
+    return this.expectedRemainingMS(idx / total, name);
   }
 
   public expectedRemainingMS(pctComplete: number, name?: string): number {

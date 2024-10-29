@@ -12,7 +12,7 @@ export default function angularAotPlugin() {
       } catch (error) {
         this.error('AOT Compilation failed.');
       }
-    }
+    },
   };
 }
 

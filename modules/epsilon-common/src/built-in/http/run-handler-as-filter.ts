@@ -11,7 +11,7 @@ import { NotFoundError } from '../../http/error/not-found-error.js';
 import { NullReturnedObjectHandling } from '../../config/http/null-returned-object-handling.js';
 import { FilterFunction } from '../../config/http/filter-function.js';
 import { FilterChainContext } from '../../config/http/filter-chain-context.js';
-import { RouteAndParse } from "../../http/route/route-and-parse.js";
+import { RouteAndParse } from '../../http/route/route-and-parse.js';
 
 export class RunHandlerAsFilter {
   public static async runHandler(fCtx: FilterChainContext, rm: RouteAndParse): Promise<boolean> {

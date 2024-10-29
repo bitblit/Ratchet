@@ -2,7 +2,7 @@ import { Context, ProxyResult } from 'aws-lambda';
 import { ExtendedAPIGatewayEvent } from './extended-api-gateway-event.js';
 import { ModelValidator } from '@bitblit/ratchet-misc/model-validator/model-validator';
 import { AuthorizerFunction } from './authorizer-function.js';
-import { RouteAndParse } from "../../http/route/route-and-parse";
+import { RouteAndParse } from '../../http/route/route-and-parse';
 
 export interface FilterChainContext {
   event: ExtendedAPIGatewayEvent;

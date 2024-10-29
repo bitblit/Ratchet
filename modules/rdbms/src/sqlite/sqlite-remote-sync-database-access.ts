@@ -1,22 +1,20 @@
-import { RequireRatchet } from "@bitblit/ratchet-common/lang/require-ratchet";
-import { Logger } from "@bitblit/ratchet-common/logger/logger";
-import { ErrorRatchet } from "@bitblit/ratchet-common/lang/error-ratchet";
-import SqlString from "sqlstring";
-import { SqliteDatabaseAccess } from "./sqlite-database-access.js";
-import { DatabaseAccess } from "../model/database-access.js";
-import { DatabaseRequestType } from "../model/database-request-type.js";
-import { RequestResults } from "../model/request-results.js";
-import { ModifyResults } from "../model/modify-results.js";
-import { SqliteRemoteFileSyncConfig } from "./model/sqlite-remote-file-sync-config.js";
-import { FlushRemoteMode } from "./model/flush-remote-mode.js";
-import { SqliteConnectionConfigFlag } from "./model/sqlite-connection-config-flag.js";
-import { FetchRemoteMode } from "./model/fetch-remote-mode.js";
-import DatabaseConstructor, { Database } from "better-sqlite3";
-import {
-  RemoteStatusDataAndContent
-} from "@bitblit/ratchet-common/network/remote-file-tracker/remote-status-data-and-content";
-import { RemoteFileTracker } from "@bitblit/ratchet-common/network/remote-file-tracker/remote-file-tracker";
-import { RemoteStatusData } from "@bitblit/ratchet-common/network/remote-file-tracker/remote-status-data";
+import { RequireRatchet } from '@bitblit/ratchet-common/lang/require-ratchet';
+import { Logger } from '@bitblit/ratchet-common/logger/logger';
+import { ErrorRatchet } from '@bitblit/ratchet-common/lang/error-ratchet';
+import SqlString from 'sqlstring';
+import { SqliteDatabaseAccess } from './sqlite-database-access.js';
+import { DatabaseAccess } from '../model/database-access.js';
+import { DatabaseRequestType } from '../model/database-request-type.js';
+import { RequestResults } from '../model/request-results.js';
+import { ModifyResults } from '../model/modify-results.js';
+import { SqliteRemoteFileSyncConfig } from './model/sqlite-remote-file-sync-config.js';
+import { FlushRemoteMode } from './model/flush-remote-mode.js';
+import { SqliteConnectionConfigFlag } from './model/sqlite-connection-config-flag.js';
+import { FetchRemoteMode } from './model/fetch-remote-mode.js';
+import DatabaseConstructor, { Database } from 'better-sqlite3';
+import { RemoteStatusDataAndContent } from '@bitblit/ratchet-common/network/remote-file-tracker/remote-status-data-and-content';
+import { RemoteFileTracker } from '@bitblit/ratchet-common/network/remote-file-tracker/remote-file-tracker';
+import { RemoteStatusData } from '@bitblit/ratchet-common/network/remote-file-tracker/remote-status-data';
 
 export class SqliteRemoteSyncDatabaseAccess implements DatabaseAccess {
   private cacheDb: Promise<SqliteDatabaseAccess>;
@@ -53,7 +51,7 @@ export class SqliteRemoteSyncDatabaseAccess implements DatabaseAccess {
     Logger.info('Flushing to remote (Flush mode is %s)', this.cfg.flushRemoteMode);
     const access: SqliteDatabaseAccess = await this.db();
     const asBuffer: Buffer = access.connection.serialize({});
-    const result: RemoteStatusData<any>= await this.cfg.remoteFileTracker.pushUint8ArrayToRemote(asBuffer, {force: false, backup: true});
+    const result: RemoteStatusData<any> = await this.cfg.remoteFileTracker.pushUint8ArrayToRemote(asBuffer, { force: false, backup: true });
     Logger.info('Result is %j', result);
   }
 

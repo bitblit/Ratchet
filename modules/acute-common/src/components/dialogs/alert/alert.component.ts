@@ -1,16 +1,14 @@
-import {Component} from '@angular/core';
-import {DialogService, DynamicDialogConfig, DynamicDialogRef} from 'primeng/dynamicdialog';
-import {Logger} from '@bitblit/ratchet-common/logger/logger';
-import {BehaviorSubject} from 'rxjs';
-import { AsyncPipe } from "@angular/common";
+import { Component } from '@angular/core';
+import { DialogService, DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { Logger } from '@bitblit/ratchet-common/logger/logger';
+import { BehaviorSubject } from 'rxjs';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
-  selector: "ngx-acute-common-alert",
-  template: "<div><pre>{{cfg.data.message | async}}</pre></div>",
+  selector: 'ngx-acute-common-alert',
+  template: '<div><pre>{{cfg.data.message | async}}</pre></div>',
   standalone: true,
-  imports: [
-    AsyncPipe
-  ]
+  imports: [AsyncPipe],
 })
 export class AlertComponent {
   constructor(

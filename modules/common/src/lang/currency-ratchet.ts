@@ -1,10 +1,9 @@
-import { Range } from "./range";
+import { Range } from './range';
 
 export class CurrencyRatchet {
   // Prevent instantiation
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   private constructor() {}
-
 
   public static centToDollarFormat(cents: number, fractionDigits: number = 2): string {
     return CurrencyRatchet.dollarFormat(cents / 100);
@@ -27,5 +26,4 @@ export class CurrencyRatchet {
     }
     return rval;
   }
-
 }

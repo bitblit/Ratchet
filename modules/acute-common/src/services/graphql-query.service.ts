@@ -3,10 +3,10 @@ import { DialogService } from 'primeng/dynamicdialog';
 import { MessageService } from 'primeng/api';
 import { Logger } from '@bitblit/ratchet-common/logger/logger';
 import { GraphqlRatchet } from '@bitblit/ratchet-graphql/graphql/graphql-ratchet';
-import { BlockUiComponent } from "../components/dialogs/block-ui/block-ui.component";
-import {AuthorizationStyle} from "@bitblit/ratchet-graphql/graphql/authorization-style";
+import { BlockUiComponent } from '../components/dialogs/block-ui/block-ui.component';
+import { AuthorizationStyle } from '@bitblit/ratchet-graphql/graphql/authorization-style';
 
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class GraphqlQueryService {
   constructor(
     private graphqlRatchet: GraphqlRatchet,
@@ -14,7 +14,10 @@ export class GraphqlQueryService {
     private messageService: MessageService,
   ) {}
 
-  public async executeQuery<T>(queryName: string, variables: any,     authStyle: AuthorizationStyle = AuthorizationStyle.TokenRequired
+  public async executeQuery<T>(
+    queryName: string,
+    variables: any,
+    authStyle: AuthorizationStyle = AuthorizationStyle.TokenRequired,
   ): Promise<T | null> {
     let rval: T | null = null;
     this.messageService.add({ severity: 'info', summary: 'Running query', detail: queryName, life: 3000 });
@@ -35,7 +38,7 @@ export class GraphqlQueryService {
     blockMessage: string,
     queryName: string,
     variables: any,
-    authStyle: AuthorizationStyle = AuthorizationStyle.TokenRequired
+    authStyle: AuthorizationStyle = AuthorizationStyle.TokenRequired,
   ): Promise<T | null> {
     let rval: T | null = null;
     this.messageService.add({ severity: 'info', summary: 'Running query', detail: queryName, life: 3000 });
@@ -57,8 +60,10 @@ export class GraphqlQueryService {
     return rval;
   }
 
-
-  public async executeMutate<T>(queryName: string, variables: any,     authStyle: AuthorizationStyle = AuthorizationStyle.TokenRequired
+  public async executeMutate<T>(
+    queryName: string,
+    variables: any,
+    authStyle: AuthorizationStyle = AuthorizationStyle.TokenRequired,
   ): Promise<T | null> {
     let rval: T | null = null;
     this.messageService.add({ severity: 'info', summary: 'Running query', detail: queryName, life: 3000 });
@@ -80,8 +85,7 @@ export class GraphqlQueryService {
     blockMessage: string,
     queryName: string,
     variables: any,
-    authStyle: AuthorizationStyle = AuthorizationStyle.TokenRequired
-
+    authStyle: AuthorizationStyle = AuthorizationStyle.TokenRequired,
   ): Promise<T | null> {
     let rval: T | null = null;
     this.messageService.add({ severity: 'info', summary: 'Running query', detail: queryName, life: 3000 });

@@ -6,19 +6,19 @@
  * apollo-server if they aren't gonna do graphql
  */
 
-import { Logger } from "@bitblit/ratchet-common/logger/logger";
-import { PromiseRatchet } from "@bitblit/ratchet-common/lang/promise-ratchet";
-import { ApolloServer } from "@apollo/server";
-import { gql } from "graphql-tag";
-import { ApolloServerPluginLandingPageLocalDefault } from "@apollo/server/plugin/landingPage/default";
-import { EpsilonConfig } from "../config/epsilon-config.js";
-import { ApolloFilter } from "../built-in/http/apollo-filter.js";
-import { SampleServerStaticFiles } from "./sample-server-static-files.js";
-import { ApolloUtil } from "../built-in/http/apollo/apollo-util.js";
-import { SampleServerComponents } from "./sample-server-components";
-import { EpsilonCorsApproach } from "../config/http/epsilon-cors-approach.js";
+import { Logger } from '@bitblit/ratchet-common/logger/logger';
+import { PromiseRatchet } from '@bitblit/ratchet-common/lang/promise-ratchet';
+import { ApolloServer } from '@apollo/server';
+import { gql } from 'graphql-tag';
+import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
+import { EpsilonConfig } from '../config/epsilon-config.js';
+import { ApolloFilter } from '../built-in/http/apollo-filter.js';
+import { SampleServerStaticFiles } from './sample-server-static-files.js';
+import { ApolloUtil } from '../built-in/http/apollo/apollo-util.js';
+import { SampleServerComponents } from './sample-server-components';
+import { EpsilonCorsApproach } from '../config/http/epsilon-cors-approach.js';
 
-export class SampleServerComponentsWithApollo{
+export class SampleServerComponentsWithApollo {
   // Prevent instantiation
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   private constructor() {}
@@ -70,13 +70,18 @@ export class SampleServerComponentsWithApollo{
   public static async createSampleEpsilonConfig(label: string): Promise<EpsilonConfig> {
     const cfg: EpsilonConfig = await SampleServerComponents.createSampleEpsilonConfig(label);
 
-    ApolloFilter.addApolloFilterToList(cfg.httpConfig.defaultMetaHandling.preFilters, new RegExp('.*graphql.*'), await SampleServerComponentsWithApollo.createSampleApollo(), {
-      context: (arg) => ApolloUtil.defaultEpsilonApolloContext(arg, {jwtRatchet:SampleServerComponents.createSampleTokenManipulator().jwtRatchet}),
-      timeoutMS: 5_000,
-      corsMethod: EpsilonCorsApproach.All,
-    });
+    ApolloFilter.addApolloFilterToList(
+      cfg.httpConfig.defaultMetaHandling.preFilters,
+      new RegExp('.*graphql.*'),
+      await SampleServerComponentsWithApollo.createSampleApollo(),
+      {
+        context: (arg) =>
+          ApolloUtil.defaultEpsilonApolloContext(arg, { jwtRatchet: SampleServerComponents.createSampleTokenManipulator().jwtRatchet }),
+        timeoutMS: 5_000,
+        corsMethod: EpsilonCorsApproach.All,
+      },
+    );
 
     return cfg;
   }
-
 }

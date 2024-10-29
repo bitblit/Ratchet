@@ -9,9 +9,9 @@ import { ResponseUtil } from '../../http/response-util.js';
 import { FilterChainContext } from '../../config/http/filter-chain-context.js';
 import { MisconfiguredError } from '../../http/error/misconfigured-error.js';
 import { APIGatewayProxyResult } from 'aws-lambda';
-import { UnauthorizedError } from "../../http/error/unauthorized-error";
-import { RequireRatchet } from "@bitblit/ratchet-common/lang/require-ratchet";
-import { EpsilonCorsApproach } from "../../config/http/epsilon-cors-approach.js";
+import { UnauthorizedError } from '../../http/error/unauthorized-error';
+import { RequireRatchet } from '@bitblit/ratchet-common/lang/require-ratchet';
+import { EpsilonCorsApproach } from '../../config/http/epsilon-cors-approach.js';
 
 export class BuiltInFilters {
   public static readonly MAXIMUM_LAMBDA_BODY_SIZE_BYTES: number = 1024 * 1024 * 5 - 1024 * 100; // 5Mb - 100k buffer
@@ -109,20 +109,20 @@ export class BuiltInFilters {
    * host
    * @param hostnameRegExList
    */
-  public static createRestrictServerToHostNamesFilter(hostnameRegExList:RegExp[]): FilterFunction {
+  public static createRestrictServerToHostNamesFilter(hostnameRegExList: RegExp[]): FilterFunction {
     RequireRatchet.notNullUndefinedOrEmptyArray(hostnameRegExList, 'hostnameRegExList');
-    return async (fCtx: FilterChainContext)=>{
-        const hostName: string = StringRatchet.trimToNull(MapRatchet.extractValueFromMapIgnoreCase(fCtx?.event?.headers, 'host'));
-        if (!StringRatchet.trimToNull(hostName)) {
-          throw new BadRequestError('No host name found in headers : '+JSON.stringify(fCtx?.event?.headers));
-        }
-        const hostMatches: boolean = EventUtil.hostMatchesRegexInList(hostName, hostnameRegExList);
-        if (!hostMatches) {
-          throw new BadRequestError('Host does not match list : ' + hostName+ ' :: '+hostnameRegExList);
-        }
-        return true;
+    return async (fCtx: FilterChainContext) => {
+      const hostName: string = StringRatchet.trimToNull(MapRatchet.extractValueFromMapIgnoreCase(fCtx?.event?.headers, 'host'));
+      if (!StringRatchet.trimToNull(hostName)) {
+        throw new BadRequestError('No host name found in headers : ' + JSON.stringify(fCtx?.event?.headers));
       }
-    }
+      const hostMatches: boolean = EventUtil.hostMatchesRegexInList(hostName, hostnameRegExList);
+      if (!hostMatches) {
+        throw new BadRequestError('Host does not match list : ' + hostName + ' :: ' + hostnameRegExList);
+      }
+      return true;
+    };
+  }
 
   public static async disallowStringNullAsPathParameter(fCtx: FilterChainContext): Promise<boolean> {
     if (fCtx?.event?.pathParameters) {
@@ -237,7 +237,10 @@ export class BuiltInFilters {
     return true;
   }
 
-  public static async autoRespondToOptionsRequestWithCors(fCtx: FilterChainContext, corsMethod:EpsilonCorsApproach = EpsilonCorsApproach.Reflective): Promise<boolean> {
+  public static async autoRespondToOptionsRequestWithCors(
+    fCtx: FilterChainContext,
+    corsMethod: EpsilonCorsApproach = EpsilonCorsApproach.Reflective,
+  ): Promise<boolean> {
     if (StringRatchet.trimToEmpty(fCtx?.event?.httpMethod).toLowerCase() === 'options') {
       fCtx.result = {
         statusCode: 200,
@@ -279,8 +282,7 @@ export class BuiltInFilters {
     return true;
   }
 
-  public static async addCorsHeadersDynamically(fCtx: FilterChainContext, corsMethod:EpsilonCorsApproach): Promise<void>
-  {
+  public static async addCorsHeadersDynamically(fCtx: FilterChainContext, corsMethod: EpsilonCorsApproach): Promise<void> {
     if (corsMethod) {
       switch (corsMethod) {
         case EpsilonCorsApproach.All:
@@ -292,9 +294,8 @@ export class BuiltInFilters {
         default: // Also NONE
         // Do nothing
       }
-    }  else {
+    } else {
       Logger.warn('Called add CORS headers dynamically but no type supplied, using NONE');
     }
   }
-
 }

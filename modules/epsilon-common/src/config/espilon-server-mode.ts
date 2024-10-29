@@ -5,6 +5,6 @@ export const EpsilonServerMode = {
   QA: 'QA',
   Red: 'Red',
   Blue: 'Blue',
-  Green: 'Green'
+  Green: 'Green',
 };
 export type EpsilonServerMode = (typeof EpsilonServerMode)[keyof typeof EpsilonServerMode];

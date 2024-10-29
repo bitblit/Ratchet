@@ -5,7 +5,7 @@ import { TestErrorServer } from '../sample/test-error-server.js';
 import { LocalContainerServer } from '../local-container-server.js';
 import { RatchetEpsilonCommonInfo } from '../build/ratchet-epsilon-common-info.js';
 import { LocalServer } from '../local-server.js';
-import { LocalFileServer } from "../local-file-server.js";
+import { LocalFileServer } from '../local-file-server.js';
 
 export class RatchetCliHandler extends AbstractRatchetCliHandler {
   fetchHandlerMap(): Record<string, any> {

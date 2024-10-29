@@ -8,8 +8,7 @@ import { ModifyResults } from '../model/modify-results.js';
 import { RequestResults } from '../model/request-results.js';
 
 describe('sqlite-database-access', () => {
-
-  const testQueries:SimpleQueryTextProvider = new SimpleQueryTextProvider({
+  const testQueries: SimpleQueryTextProvider = new SimpleQueryTextProvider({
     create: 'create table testable (val varchar(255))',
     singleIns: 'insert into testable (val) values (:val)',
     csvIns: 'insert into testable (val) values (:valCsv)',
@@ -63,9 +62,7 @@ describe('sqlite-database-access', () => {
     });
     const val: any = await ns.testConnection(true);
     Logger.info('Val was : %j', val);
-
   });
-
 
   test('handles path with sub', async () => {
     // Memory database
@@ -89,13 +86,13 @@ describe('sqlite-database-access', () => {
     // Create a table
     const createRes: any = await ns.executeUpdateOrInsertByName('create');
 
-    const myOb: Record<string,any> = {
-      val: ['t1','t2']
+    const myOb: Record<string, any> = {
+      val: ['t1', 't2'],
     };
 
     // Test insert
     const singleIns: ModifyResults = await ns.buildAndExecuteUpdateOrInsert(
-      ns.queryBuilder('csvIns').withParams(myOb).withParam('valCsv', myOb['val'].join(','))
+      ns.queryBuilder('csvIns').withParams(myOb).withParam('valCsv', myOb['val'].join(',')),
     );
     expect(singleIns.affectedRows).toBeGreaterThan(0);
 
@@ -106,8 +103,7 @@ describe('sqlite-database-access', () => {
     Logger.info('Get: %j', singleCount);
   }, 30_000);
 
-
-    test('handles apostrophes in multi-value inserts', async () => {
+  test('handles apostrophes in multi-value inserts', async () => {
     // Memory database
     const prov: SqliteStyleConnectionProvider = new SqliteStyleConnectionProvider(() => {
       return Promise.resolve({

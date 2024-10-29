@@ -200,14 +200,13 @@ describe('#createShortUid', function () {
   });
 });
 
-
 describe('#circSafeFormat', function () {
   test('should format correctly when contents are circular', function () {
     const testOb: any = {
       a: 1,
-      b: 2
+      b: 2,
     };
-    testOb['c']=testOb;
+    testOb['c'] = testOb;
     const out: string = StringRatchet.format('This is a test : %j', testOb);
     expect(out).not.toBeNull;
   });

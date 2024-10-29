@@ -3,7 +3,7 @@
 */
 
 import { Logger } from '../logger/logger.js';
-import { StringRatchet } from "./string-ratchet.js";
+import { StringRatchet } from './string-ratchet.js';
 
 export class ErrorRatchet {
   public static safeStringifyErr(err: any, log = true): string {

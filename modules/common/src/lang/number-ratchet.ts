@@ -4,7 +4,7 @@
 
 import { Logger } from '../logger/logger.js';
 import { RequireRatchet } from './require-ratchet.js';
-import { Range } from "./range";
+import { Range } from './range';
 
 export class NumberRatchet {
   private static MAX_LEADING_ZEROS_FORMAT_LENGTH = 1000; // Because really, why?
@@ -216,7 +216,6 @@ export class NumberRatchet {
     return rval;
   }
 
-
   public static percentFormatNumberRange(range: Range<number>): string {
     let rval: string = 'N/A';
     if (range) {
@@ -226,7 +225,6 @@ export class NumberRatchet {
     }
     return rval;
   }
-
 
   public static pctFormatted(pct: number, fractionDigits: number = 2): string {
     const rval: string =

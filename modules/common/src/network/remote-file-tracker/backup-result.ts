@@ -2,5 +2,5 @@ export enum BackupResult {
   Success = 'Success',
   Error = 'Error',
   NotSupported = 'NotSupported',
-  NotRequested = 'NotRequested'
+  NotRequested = 'NotRequested',
 }

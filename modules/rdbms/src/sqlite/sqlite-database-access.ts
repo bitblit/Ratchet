@@ -7,9 +7,9 @@ import { ModifyResults } from '../model/modify-results.js';
 import { RequestResults } from '../model/request-results.js';
 import { QueryUtil } from '../query-builder/query-util.js';
 import { SqliteConnectionConfigFlag } from './model/sqlite-connection-config-flag.js';
-import DatabaseConstructor, { Database, RunResult, Statement } from "better-sqlite3";
-import { NumberRatchet } from "@bitblit/ratchet-common/lang/number-ratchet";
-import { QueryAndParams } from "./model/query-and-params";
+import DatabaseConstructor, { Database, RunResult, Statement } from 'better-sqlite3';
+import { NumberRatchet } from '@bitblit/ratchet-common/lang/number-ratchet';
+import { QueryAndParams } from './model/query-and-params';
 
 export class SqliteDatabaseAccess implements DatabaseAccess {
   constructor(
@@ -61,7 +61,7 @@ export class SqliteDatabaseAccess implements DatabaseAccess {
   }
 
   async modify(query: string, fields: Record<string, any>): Promise<RequestResults<ModifyResults>> {
-    const qap: QueryAndParams = this.preprocessQuery({query: query, params: fields});
+    const qap: QueryAndParams = this.preprocessQuery({ query: query, params: fields });
 
     const stmt: Statement = this.conn.prepare(qap.query);
     const tmp: RunResult = stmt.run(qap.params);
@@ -113,8 +113,7 @@ export class SqliteDatabaseAccess implements DatabaseAccess {
   }
 
   async query<S>(inQuery: string, inFields: Record<string, any>): Promise<RequestResults<S>> {
-
-    const qap: QueryAndParams = this.preprocessQuery({query: inQuery, params: inFields});
+    const qap: QueryAndParams = this.preprocessQuery({ query: inQuery, params: inFields });
 
     const stmt: Statement = this.conn.prepare(qap.query);
     const res: S[] = stmt.all(qap.params) as S[];

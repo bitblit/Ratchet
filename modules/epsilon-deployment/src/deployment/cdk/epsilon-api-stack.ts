@@ -23,14 +23,12 @@ import {
   JobQueue,
   JobQueueProps,
 } from 'aws-cdk-lib/aws-batch';
-import { SecurityGroup, Subnet, SubnetSelection, Vpc } from "aws-cdk-lib/aws-ec2";
+import { SecurityGroup, Subnet, SubnetSelection, Vpc } from 'aws-cdk-lib/aws-ec2';
 
 import { ContainerImage } from 'aws-cdk-lib/aws-ecs';
 import { EpsilonApiStackFeature } from './epsilon-api-stack-feature.js';
-import {
-  EpsilonSimpleLambdaCloudfrontDistributionStackProps
-} from "./epsilon-simple-lambda-cloudfront-distribution-stack-props";
-import { EpsilonSimpleLambdaCloudfrontDistributionStack } from "./epsilon-simple-lambda-cloudfront-distribution-stack";
+import { EpsilonSimpleLambdaCloudfrontDistributionStackProps } from './epsilon-simple-lambda-cloudfront-distribution-stack-props';
+import { EpsilonSimpleLambdaCloudfrontDistributionStack } from './epsilon-simple-lambda-cloudfront-distribution-stack';
 
 export class EpsilonApiStack extends Stack {
   private webHandler: DockerImageFunction;
@@ -102,7 +100,7 @@ export class EpsilonApiStack extends Stack {
       });
 
       const subnetSelection: SubnetSelection = {
-        subnets: props.vpcSubnetAttributes.map((subnetAttr, index) => Subnet.fromSubnetAttributes(this,`VpcSubnet${index}`,subnetAttr   ))
+        subnets: props.vpcSubnetAttributes.map((subnetAttr, index) => Subnet.fromSubnetAttributes(this, `VpcSubnet${index}`, subnetAttr)),
       };
 
       // Created AWSServiceBatchRole
@@ -116,7 +114,11 @@ export class EpsilonApiStack extends Stack {
         securityGroups: props.lambdaSecurityGroupIds.map((sgId, index) =>
           SecurityGroup.fromSecurityGroupId(this, `SecurityGroup${index}`, `sg-${sgId}`),
         ),
-        serviceRole: Role.fromRoleArn(this, `${id}ServiceRole`, 'arn:aws:iam::' + props.env.account + ':role/aws-service-role/batch.amazonaws.com/AWSServiceRoleForBatch') ,
+        serviceRole: Role.fromRoleArn(
+          this,
+          `${id}ServiceRole`,
+          'arn:aws:iam::' + props.env.account + ':role/aws-service-role/batch.amazonaws.com/AWSServiceRoleForBatch',
+        ),
         //Role.fromRoleArn(this, `${id}ServiceRole`, 'arn:aws:iam::' + props.env.account + ':role/AWSBatchServiceRole'),
         spot: false,
         terminateOnUpdate: false,
@@ -234,7 +236,7 @@ export class EpsilonApiStack extends Stack {
       if (props.autoCloudfrontDistribution) {
         const distroPropsCopy: EpsilonSimpleLambdaCloudfrontDistributionStackProps = Object.assign({}, props.autoCloudfrontDistribution);
         distroPropsCopy.lambdaFunctionDomain = this.webFunctionUrl;
-        new EpsilonSimpleLambdaCloudfrontDistributionStack(this, id+'ApiCloudfrontDistro', distroPropsCopy);
+        new EpsilonSimpleLambdaCloudfrontDistributionStack(this, id + 'ApiCloudfrontDistro', distroPropsCopy);
       }
     }
 
@@ -260,6 +262,5 @@ export class EpsilonApiStack extends Stack {
       });
       rule.addTarget(new LambdaFunction(this.backgroundHandler));
     }
-
   }
 }

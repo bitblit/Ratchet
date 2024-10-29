@@ -4,10 +4,10 @@ import { Effect, PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { Topic } from 'aws-cdk-lib/aws-sns';
 import { Queue } from 'aws-cdk-lib/aws-sqs';
 import { EpsilonApiStackProps } from './epsilon-api-stack-props.js';
-import { ErrorRatchet } from "@bitblit/ratchet-common/lang/error-ratchet";
-import { HeadersFrameOption, HeadersReferrerPolicy, ResponseHeadersPolicy } from "aws-cdk-lib/aws-cloudfront";
-import { Construct } from "constructs";
-import { Duration } from "aws-cdk-lib";
+import { ErrorRatchet } from '@bitblit/ratchet-common/lang/error-ratchet';
+import { HeadersFrameOption, HeadersReferrerPolicy, ResponseHeadersPolicy } from 'aws-cdk-lib/aws-cloudfront';
+import { Construct } from 'constructs';
+import { Duration } from 'aws-cdk-lib';
 
 export class EpsilonStackUtil {
   // Prevent instantiation
@@ -120,7 +120,6 @@ export class EpsilonStackUtil {
     EpsilonStackUtil.ALLOW_RESTRICTED_LOGS,
   ].concat(EpsilonStackUtil.ALLOW_FARGATE_SECRET_READING);
 
-
   public static extractApexDomain(domainName: string): string {
     const pieces: string[] = StringRatchet.trimToEmpty(domainName).split('.');
     if (pieces.length < 2) {
@@ -131,11 +130,10 @@ export class EpsilonStackUtil {
 
   public static createForwardCorsPolicy(app: Construct, id: string, xssReportUri: string): ResponseHeadersPolicy {
     // Creating a custom response headers policy -- all parameters optional
-    const rval: ResponseHeadersPolicy = new ResponseHeadersPolicy(app, id+'CFRespHeadersPolicy', {
-      responseHeadersPolicyName: id+'CustomCloudfrontPolicy',
+    const rval: ResponseHeadersPolicy = new ResponseHeadersPolicy(app, id + 'CFRespHeadersPolicy', {
+      responseHeadersPolicyName: id + 'CustomCloudfrontPolicy',
       comment: 'Policy allowing passthru for CORS headers',
-      corsBehavior:
-        {
+      corsBehavior: {
         accessControlAllowCredentials: false,
         accessControlAllowHeaders: ['*'],
         accessControlAllowMethods: ['*'],

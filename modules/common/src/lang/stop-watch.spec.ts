@@ -1,7 +1,7 @@
 import { StopWatch } from './stop-watch.js';
 import { PromiseRatchet } from './promise-ratchet.js';
 import { expect, test, describe } from 'vitest';
-import { Logger } from "../logger/logger.js";
+import { Logger } from '../logger/logger.js';
 
 describe('#elapsedMS', function () {
   test('should calculate elapsed MS correctly', async () => {
@@ -35,19 +35,18 @@ describe('#elapsedMS', function () {
     expect(out).toContain('Overall');
   });
 
-
   test('should calc expected', async () => {
     const sw: StopWatch = new StopWatch();
 
-    for (let i=0;i<10;i++) {
-      const elapsedTenths: number = Math.floor(sw.elapsedMS()/100);
-      const expectedTenths: number = Math.floor(sw.expectedRemainingMS(i/10)/100);
-      if (i>0) {
+    for (let i = 0; i < 10; i++) {
+      const elapsedTenths: number = Math.floor(sw.elapsedMS() / 100);
+      const expectedTenths: number = Math.floor(sw.expectedRemainingMS(i / 10) / 100);
+      if (i > 0) {
         expect(elapsedTenths).toEqual(i);
-        expect(expectedTenths).toEqual(10-i);
+        expect(expectedTenths).toEqual(10 - i);
       }
       //Logger.info('%d elapsed %d expected -- %s', elapsedTenths, expectedTenths);
-      await PromiseRatchet.wait(100)
+      await PromiseRatchet.wait(100);
     }
   });
 });

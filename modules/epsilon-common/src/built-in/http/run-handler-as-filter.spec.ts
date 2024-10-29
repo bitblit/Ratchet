@@ -7,7 +7,7 @@ import { ExtendedAPIGatewayEvent } from '../../config/http/extended-api-gateway-
 import { RouterUtil } from '../../http/route/router-util.js';
 import { expect, test, describe, vi, beforeEach } from 'vitest';
 import { mock, MockProxy } from 'vitest-mock-extended';
-import { RouteAndParse } from "../../http/route/route-and-parse";
+import { RouteAndParse } from '../../http/route/route-and-parse';
 
 describe('#routerUtilApplyOpenApiDoc', function () {
   test('should find the most specific route and the least specific', async () => {

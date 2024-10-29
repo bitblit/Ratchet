@@ -12,11 +12,11 @@ import { CommonCrawlFetchOptions } from './model/common-crawl-fetch-options.js';
 import { DomainIndexEntryRaw } from './model/domain-index-entry-raw.js';
 import { IndexEntryRaw } from './model/index-entry-raw.js';
 import { WarcEntryRaw } from './model/warc-entry-raw.js';
-import { ErrorRatchet } from "@bitblit/ratchet-common/lang/error-ratchet";
-import { NodeStreamRatchet } from "../../stream/node-stream-ratchet";
-import { Logger } from "@bitblit/ratchet-common/logger/logger";
-import { PromiseRatchet } from "@bitblit/ratchet-common/lang/promise-ratchet";
-import { StopWatch } from "@bitblit/ratchet-common/lang/stop-watch";
+import { ErrorRatchet } from '@bitblit/ratchet-common/lang/error-ratchet';
+import { NodeStreamRatchet } from '../../stream/node-stream-ratchet';
+import { Logger } from '@bitblit/ratchet-common/logger/logger';
+import { PromiseRatchet } from '@bitblit/ratchet-common/lang/promise-ratchet';
+import { StopWatch } from '@bitblit/ratchet-common/lang/stop-watch';
 
 /**
  * A very early take to simplify accessing and using the common crawl

@@ -1,3 +1,3 @@
 export interface GoogleAnalyticsConfig {
-    tagId: ()=>string | string;
+  tagId: () => string | string;
 }

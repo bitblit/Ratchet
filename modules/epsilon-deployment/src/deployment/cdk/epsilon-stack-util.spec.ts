@@ -1,5 +1,5 @@
-import { describe, expect, test } from "vitest";
-import { EpsilonStackUtil } from "./epsilon-stack-util.js";
+import { describe, expect, test } from 'vitest';
+import { EpsilonStackUtil } from './epsilon-stack-util.js';
 
 describe('#EpsilonStackUtil', function () {
   test('should extract apex domains', async () => {

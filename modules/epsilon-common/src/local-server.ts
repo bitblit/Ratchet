@@ -12,8 +12,8 @@ import { EpsilonGlobalHandler } from './epsilon-global-handler.js';
 import { LocalServerCert } from './local-server-cert.js';
 import { SampleServerComponents } from './sample/sample-server-components.js';
 import { LocalWebTokenManipulator } from './http/auth/local-web-token-manipulator.js';
-import { LocalServerOptions } from "./config/local-server/local-server-options.js";
-import { LocalServerHttpMethodHandling } from "./config/local-server/local-server-http-method-handling.js";
+import { LocalServerOptions } from './config/local-server/local-server-options.js';
+import { LocalServerHttpMethodHandling } from './config/local-server/local-server-http-method-handling.js';
 
 /**
  * A simplistic server for testing your lambdas locally
@@ -28,7 +28,7 @@ export class LocalServer {
     private https: boolean = false,
   ) {
     this.options = {
-      methodHandling: LocalServerHttpMethodHandling.Lowercase
+      methodHandling: LocalServerHttpMethodHandling.Lowercase,
     };
   }
 
@@ -97,7 +97,11 @@ export class LocalServer {
     });
   }
 
-  public static async messageToApiGatewayEvent(request: IncomingMessage, context: Context, options: LocalServerOptions): Promise<APIGatewayEvent> {
+  public static async messageToApiGatewayEvent(
+    request: IncomingMessage,
+    context: Context,
+    options: LocalServerOptions,
+  ): Promise<APIGatewayEvent> {
     const bodyString: string = await LocalServer.bodyAsBase64String(request);
     const stageIdx: number = request.url.indexOf('/', 1);
     const stage: string = request.url.substring(1, stageIdx);

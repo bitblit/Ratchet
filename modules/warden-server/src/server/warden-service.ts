@@ -660,7 +660,7 @@ export class WardenService {
         counter: auth.counter,
         id: auth.credentialIdBase64,
         publicKey: Base64Ratchet.base64UrlStringToBytes(auth.credentialPublicKeyBase64),
-      }
+      },
     };
 
     const verification: VerifiedAuthenticationResponse = await verifyAuthenticationResponse(vrOpts);

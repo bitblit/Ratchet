@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 
 // Taken from https://juristr.com/blog/2016/09/ng2-get-window-ref/
 // Here to make transition to Angular Universal later easier
@@ -17,7 +17,7 @@ function getWindow(): any {
   }
 }
 
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class WindowRefService {
   public nativeWindow(): Window {
     return getWindow();

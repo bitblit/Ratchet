@@ -1,10 +1,8 @@
 import { StackProps } from 'aws-cdk-lib';
 import { PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { EpsilonApiStackFeature } from './epsilon-api-stack-feature.js';
-import { SubnetAttributes } from "aws-cdk-lib/aws-ec2";
-import {
-  EpsilonSimpleLambdaCloudfrontDistributionStackProps
-} from "./epsilon-simple-lambda-cloudfront-distribution-stack-props";
+import { SubnetAttributes } from 'aws-cdk-lib/aws-ec2';
+import { EpsilonSimpleLambdaCloudfrontDistributionStackProps } from './epsilon-simple-lambda-cloudfront-distribution-stack-props';
 
 export interface EpsilonApiStackProps extends StackProps {
   batchInstancesEc2KeyPairName?: string;

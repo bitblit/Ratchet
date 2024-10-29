@@ -1,7 +1,7 @@
-import { Bucket, BucketEncryption } from "aws-cdk-lib/aws-s3";
-import { Duration, Stack } from "aws-cdk-lib";
-import { Construct } from "constructs";
-import path from "path";
+import { Bucket, BucketEncryption } from 'aws-cdk-lib/aws-s3';
+import { Duration, Stack } from 'aws-cdk-lib';
+import { Construct } from 'constructs';
+import path from 'path';
 import {
   AllowedMethods,
   BehaviorOptions,
@@ -12,17 +12,17 @@ import {
   PriceClass,
   ResponseHeadersPolicy,
   SSLMethod,
-  ViewerProtocolPolicy
-} from "aws-cdk-lib/aws-cloudfront";
-import { HostedZone, RecordSet, RecordType } from "aws-cdk-lib/aws-route53";
-import { CloudFrontTarget } from "aws-cdk-lib/aws-route53-targets";
-import { BucketDeployment, ISource, Source } from "aws-cdk-lib/aws-s3-deployment";
-import { EpsilonWebsiteStackProps } from "./epsilon-website-stack-props.js";
-import { EpsilonStackUtil } from "./epsilon-stack-util.js";
-import { EpsilonRoute53Handling } from "./epsilon-route-53-handling";
-import { FunctionUrlOrigin, S3BucketOrigin } from "aws-cdk-lib/aws-cloudfront-origins";
-import { Certificate, ICertificate } from "aws-cdk-lib/aws-certificatemanager";
-import { Logger } from "@bitblit/ratchet-common/logger/logger";
+  ViewerProtocolPolicy,
+} from 'aws-cdk-lib/aws-cloudfront';
+import { HostedZone, RecordSet, RecordType } from 'aws-cdk-lib/aws-route53';
+import { CloudFrontTarget } from 'aws-cdk-lib/aws-route53-targets';
+import { BucketDeployment, ISource, Source } from 'aws-cdk-lib/aws-s3-deployment';
+import { EpsilonWebsiteStackProps } from './epsilon-website-stack-props.js';
+import { EpsilonStackUtil } from './epsilon-stack-util.js';
+import { EpsilonRoute53Handling } from './epsilon-route-53-handling';
+import { FunctionUrlOrigin, S3BucketOrigin } from 'aws-cdk-lib/aws-cloudfront-origins';
+import { Certificate, ICertificate } from 'aws-cdk-lib/aws-certificatemanager';
+import { Logger } from '@bitblit/ratchet-common/logger/logger';
 
 export class EpsilonWebsiteStack extends Stack {
   constructor(scope: Construct, id: string, props?: EpsilonWebsiteStackProps) {
@@ -39,14 +39,14 @@ export class EpsilonWebsiteStack extends Stack {
       encryption: BucketEncryption.S3_MANAGED,
     });
 
-    const cachePolicy: CachePolicy = new CachePolicy(this, id+'ShortCachePolicy', {
+    const cachePolicy: CachePolicy = new CachePolicy(this, id + 'ShortCachePolicy', {
       defaultTtl: Duration.seconds(1),
       maxTtl: Duration.seconds(1),
       minTtl: Duration.seconds(1),
     });
 
     const defaultBehavior: BehaviorOptions = {
-      origin: S3BucketOrigin.withOriginAccessIdentity(websiteBucket, {originAccessIdentity:originAccessId}), //  new FunctionUrlOrigin(props.lambdaFunctionDomain),
+      origin: S3BucketOrigin.withOriginAccessIdentity(websiteBucket, { originAccessIdentity: originAccessId }), //  new FunctionUrlOrigin(props.lambdaFunctionDomain),
       compress: true,
       viewerProtocolPolicy: ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
       cachePolicy: cachePolicy,
@@ -80,14 +80,16 @@ export class EpsilonWebsiteStack extends Stack {
     };
 
     // Add api sources, if any
-    (props.apiMappings || []).forEach(s=>{
+    (props.apiMappings || []).forEach((s) => {
       const next: BehaviorOptions = {
         origin: new FunctionUrlOrigin(s.lambdaFunctionUrl),
         compress: true,
         viewerProtocolPolicy: ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
         cachePolicy: CachePolicy.CACHING_DISABLED,
         allowedMethods: AllowedMethods.ALLOW_ALL,
-        responseHeadersPolicy: s.responseHeadersPolicyCreator ? s.responseHeadersPolicyCreator(scope, id) : ResponseHeadersPolicy.CORS_ALLOW_ALL_ORIGINS_WITH_PREFLIGHT_AND_SECURITY_HEADERS
+        responseHeadersPolicy: s.responseHeadersPolicyCreator
+          ? s.responseHeadersPolicyCreator(scope, id)
+          : ResponseHeadersPolicy.CORS_ALLOW_ALL_ORIGINS_WITH_PREFLIGHT_AND_SECURITY_HEADERS,
       };
       distributionProps.additionalBehaviors[s.pathPattern] = next;
     });
@@ -100,7 +102,7 @@ export class EpsilonWebsiteStack extends Stack {
       });
 
       const behaviorOptions: BehaviorOptions = {
-        origin: S3BucketOrigin.withOriginAccessIdentity(nextBucket, {originAccessIdentity:originAccessId}),
+        origin: S3BucketOrigin.withOriginAccessIdentity(nextBucket, { originAccessIdentity: originAccessId }),
         compress: true,
         viewerProtocolPolicy: ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
         cachePolicy: cachePolicy,
@@ -141,5 +143,4 @@ export class EpsilonWebsiteStack extends Stack {
       distributionPaths: ['/*'], //'/locales/*', '/index.html', '/manifest.webmanifest', '/service-worker.js']
     });
   }
-
 }

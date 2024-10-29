@@ -3,36 +3,36 @@
  * with your own.
  */
 
-import { ErrorRatchet } from "@bitblit/ratchet-common/lang/error-ratchet";
-import { StringRatchet } from "@bitblit/ratchet-common/lang/string-ratchet";
-import { LoggerLevelName } from "@bitblit/ratchet-common/logger/logger-level-name";
-import { NumberRatchet } from "@bitblit/ratchet-common/lang/number-ratchet";
-import { JwtTokenBase } from "@bitblit/ratchet-common/jwt/jwt-token-base";
-import { BooleanRatchet } from "@bitblit/ratchet-common/lang/boolean-ratchet";
-import { EpsilonGlobalHandler } from "../epsilon-global-handler.js";
-import { AuthorizerFunction } from "../config/http/authorizer-function.js";
-import { HandlerFunction } from "../config/http/handler-function.js";
-import { BuiltInHandlers } from "../built-in/http/built-in-handlers.js";
-import { HttpConfig } from "../config/http/http-config.js";
-import { LocalWebTokenManipulator } from "../http/auth/local-web-token-manipulator.js";
-import { BackgroundConfig } from "../config/background/background-config.js";
-import { EchoProcessor } from "../built-in/background/echo-processor.js";
-import { NoOpProcessor } from "../built-in/background/no-op-processor.js";
-import { SampleDelayProcessor } from "../built-in/background/sample-delay-processor.js";
-import { LogAndEnqueueEchoProcessor } from "../built-in/background/log-and-enqueue-echo-processor.js";
-import { EpsilonConfig } from "../config/epsilon-config.js";
-import { EpsilonInstance } from "../epsilon-instance.js";
-import { EpsilonConfigParser } from "../util/epsilon-config-parser.js";
-import { RouterUtil } from "../http/route/router-util.js";
-import { SampleInputValidatedProcessor } from "../built-in/background/sample-input-validated-processor.js";
-import { HttpProcessingConfig } from "../config/http/http-processing-config.js";
-import { BuiltInAuthorizers } from "../built-in/http/built-in-authorizers.js";
-import { SampleInputValidatedProcessorData } from "../built-in/background/sample-input-validated-processor-data.js";
-import { BuiltInFilters } from "../built-in/http/built-in-filters.js";
-import { LogMessageBackgroundErrorProcessor } from "../built-in/background/log-message-background-error-processor.js";
-import { SingleThreadLocalBackgroundManager } from "../background/manager/single-thread-local-background-manager.js";
-import { BackgroundManagerLike } from "../background/manager/background-manager-like.js";
-import { SampleServerStaticFiles } from "./sample-server-static-files.js";
+import { ErrorRatchet } from '@bitblit/ratchet-common/lang/error-ratchet';
+import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet';
+import { LoggerLevelName } from '@bitblit/ratchet-common/logger/logger-level-name';
+import { NumberRatchet } from '@bitblit/ratchet-common/lang/number-ratchet';
+import { JwtTokenBase } from '@bitblit/ratchet-common/jwt/jwt-token-base';
+import { BooleanRatchet } from '@bitblit/ratchet-common/lang/boolean-ratchet';
+import { EpsilonGlobalHandler } from '../epsilon-global-handler.js';
+import { AuthorizerFunction } from '../config/http/authorizer-function.js';
+import { HandlerFunction } from '../config/http/handler-function.js';
+import { BuiltInHandlers } from '../built-in/http/built-in-handlers.js';
+import { HttpConfig } from '../config/http/http-config.js';
+import { LocalWebTokenManipulator } from '../http/auth/local-web-token-manipulator.js';
+import { BackgroundConfig } from '../config/background/background-config.js';
+import { EchoProcessor } from '../built-in/background/echo-processor.js';
+import { NoOpProcessor } from '../built-in/background/no-op-processor.js';
+import { SampleDelayProcessor } from '../built-in/background/sample-delay-processor.js';
+import { LogAndEnqueueEchoProcessor } from '../built-in/background/log-and-enqueue-echo-processor.js';
+import { EpsilonConfig } from '../config/epsilon-config.js';
+import { EpsilonInstance } from '../epsilon-instance.js';
+import { EpsilonConfigParser } from '../util/epsilon-config-parser.js';
+import { RouterUtil } from '../http/route/router-util.js';
+import { SampleInputValidatedProcessor } from '../built-in/background/sample-input-validated-processor.js';
+import { HttpProcessingConfig } from '../config/http/http-processing-config.js';
+import { BuiltInAuthorizers } from '../built-in/http/built-in-authorizers.js';
+import { SampleInputValidatedProcessorData } from '../built-in/background/sample-input-validated-processor-data.js';
+import { BuiltInFilters } from '../built-in/http/built-in-filters.js';
+import { LogMessageBackgroundErrorProcessor } from '../built-in/background/log-message-background-error-processor.js';
+import { SingleThreadLocalBackgroundManager } from '../background/manager/single-thread-local-background-manager.js';
+import { BackgroundManagerLike } from '../background/manager/background-manager-like.js';
+import { SampleServerStaticFiles } from './sample-server-static-files.js';
 
 export class SampleServerComponents {
   // Prevent instantiation
@@ -92,7 +92,9 @@ export class SampleServerComponents {
       return parsed;
     });
 
-    const meta: HttpProcessingConfig = RouterUtil.defaultHttpMetaProcessingConfigWithAuthenticationHeaderParsing(SampleServerComponents.createSampleTokenManipulator());
+    const meta: HttpProcessingConfig = RouterUtil.defaultHttpMetaProcessingConfigWithAuthenticationHeaderParsing(
+      SampleServerComponents.createSampleTokenManipulator(),
+    );
     meta.timeoutMS = 10_000;
     meta.errorFilters.push((fCtx) => BuiltInFilters.secureOutboundServerErrorForProduction(fCtx, 'Clean Internal Server Error', 500));
 

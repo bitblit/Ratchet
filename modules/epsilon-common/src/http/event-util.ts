@@ -18,12 +18,12 @@ import { EnumRatchet } from '@bitblit/ratchet-common/lang/enum-ratchet';
  * Endpoints about the api itself
  */
 export class EventUtil {
-  public static readonly LOCAL_REGEX: RegExp[] = [new RegExp('^127\\.0\\.0\\.1(:\\d+)?$'),new RegExp('^localhost(:\\d+)?$')];
+  public static readonly LOCAL_REGEX: RegExp[] = [new RegExp('^127\\.0\\.0\\.1(:\\d+)?$'), new RegExp('^localhost(:\\d+)?$')];
   public static readonly NON_ROUTABLE_REGEX: RegExp[] = EventUtil.LOCAL_REGEX.concat([
     new RegExp('^192\\.168\\.\\d+\\.\\d+(:\\d+)?$'),
     new RegExp('^10\\.\\d+\\.\\d+\\.\\d+(:\\d+)?$'),
     new RegExp('^172\\.16\\.\\d+\\.\\d+(:\\d+)?$'),
-]);
+  ]);
 
   // Prevent instantiation
   // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -250,17 +250,17 @@ export class EventUtil {
     return rval;
   }
 
-  public static hostMatchesRegexInList(host: string, list: RegExp[], caseSensitive?:boolean): boolean {
+  public static hostMatchesRegexInList(host: string, list: RegExp[], caseSensitive?: boolean): boolean {
     let rval: boolean = false;
-    if(StringRatchet.trimToNull(host) && list?.length) { // If not, cannot match by definition
+    if (StringRatchet.trimToNull(host) && list?.length) {
+      // If not, cannot match by definition
       const test: string = StringRatchet.trimToEmpty(caseSensitive ? host : host.toLowerCase());
-      rval = !!list.find(l=>test.match(l));
+      rval = !!list.find((l) => test.match(l));
     } else {
       Logger.warn('Not matching regex - either host or list is misconfigured : %s : %j', host, list);
     }
     return rval;
   }
-
 
   public static hostIsLocal(host: string): boolean {
     return EventUtil.hostMatchesRegexInList(host, EventUtil.LOCAL_REGEX);

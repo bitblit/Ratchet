@@ -10,7 +10,7 @@ import { SQSClient } from '@aws-sdk/client-sqs';
 import { SNSClient } from '@aws-sdk/client-sns';
 import { expect, test, describe, vi, beforeEach } from 'vitest';
 import { mock, MockProxy } from 'vitest-mock-extended';
-import { DateTime } from "luxon";
+import { DateTime } from 'luxon';
 
 // jest.mock('@bitblit/background');
 
@@ -65,7 +65,6 @@ describe('#cronEpsilonLambdaEventHandler', function () {
     expect(res).toBeTruthy();
   }, 500);
 });
-
 
 describe('cronEpsilonLambdaEventHandler.getCronTimeToUse', () => {
   const currentTimestampEpochMS = new Date().getTime();

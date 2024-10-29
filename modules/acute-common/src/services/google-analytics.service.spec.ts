@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { beforeEach, describe, expect, test } from 'vitest';
 
-import {GraphqlQueryService} from "./graphql-query.service";
+import { GraphqlQueryService } from './graphql-query.service';
 
 describe('GraphqlQueryService', () => {
   let service: GraphqlQueryService;

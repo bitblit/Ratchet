@@ -1,17 +1,16 @@
 import { Injectable } from '@angular/core';
 import { Logger } from '@bitblit/ratchet-common/logger/logger';
 
-
 export function storageFinder(): Storage | null {
   if (typeof window !== 'undefined') {
-    if (typeof window.localStorage !=='undefined') {
+    if (typeof window.localStorage !== 'undefined') {
       return window.localStorage;
     }
   }
   return null;
 }
 
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class LocalStorageService<T> {
   private static readonly APP_NAME: string = 'Scribe';
 
@@ -20,7 +19,7 @@ export class LocalStorageService<T> {
   }
 
   public clear(): void {
-    this.update({ } as T );
+    this.update({} as T);
   }
 
   public update(value: T): T {
@@ -46,5 +45,4 @@ export class LocalStorageService<T> {
       return {} as T;
     }
   }
-
 }

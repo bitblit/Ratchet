@@ -1,15 +1,13 @@
-import { beforeEach, describe, expect, test } from "vitest";
-import { S3RemoteFileTrackingProvider } from "./s3-remote-file-tracking-provider.js";
-import { mock, MockProxy } from "vitest-mock-extended";
-import { S3CacheRatchetLike } from "../s3-cache-ratchet-like.js";
-import { S3CacheRatchet } from "../s3-cache-ratchet.js";
-import { S3Client } from "@aws-sdk/client-s3";
-import { S3RemoteFileTrackingProviderOptions } from "./s3-remote-file-tracking-provider-options.js";
-import { AwsCredentialsRatchet } from "../../iam/aws-credentials-ratchet.js";
-import { RemoteFileTracker } from "@bitblit/ratchet-common/network/remote-file-tracker/remote-file-tracker";
-import {
-  RemoteStatusDataAndContent
-} from "@bitblit/ratchet-common/lib/network/remote-file-tracker/remote-status-data-and-content";
+import { beforeEach, describe, expect, test } from 'vitest';
+import { S3RemoteFileTrackingProvider } from './s3-remote-file-tracking-provider.js';
+import { mock, MockProxy } from 'vitest-mock-extended';
+import { S3CacheRatchetLike } from '../s3-cache-ratchet-like.js';
+import { S3CacheRatchet } from '../s3-cache-ratchet.js';
+import { S3Client } from '@aws-sdk/client-s3';
+import { S3RemoteFileTrackingProviderOptions } from './s3-remote-file-tracking-provider-options.js';
+import { AwsCredentialsRatchet } from '../../iam/aws-credentials-ratchet.js';
+import { RemoteFileTracker } from '@bitblit/ratchet-common/network/remote-file-tracker/remote-file-tracker';
+import { RemoteStatusDataAndContent } from '@bitblit/ratchet-common/lib/network/remote-file-tracker/remote-status-data-and-content';
 
 let mockS3Ratchet: MockProxy<S3CacheRatchetLike>;
 
@@ -20,7 +18,6 @@ describe('#S3RemoteFileTrackingProvider', () => {
   });
 
   test.skip('Should save/load files', async () => {
-
     AwsCredentialsRatchet.applySetProfileEnvironmentalVariable('erigir');
     const ratchet: S3CacheRatchetLike = new S3CacheRatchet(new S3Client({ region: 'us-east-1' }), 'erigir-backup');
     // setup initial state
@@ -28,16 +25,14 @@ describe('#S3RemoteFileTrackingProvider', () => {
 
     const testOpts: S3RemoteFileTrackingProviderOptions = {
       //s3CacheRatchet: mockS3Ratchet
-      s3CacheRatchet:ratchet
+      s3CacheRatchet: ratchet,
     };
 
     const svc: S3RemoteFileTrackingProvider = new S3RemoteFileTrackingProvider(testOpts);
-    const obj: RemoteFileTracker<string> = new RemoteFileTracker(
-      {
-        key: 'test.txt',
-        provider: svc
-      }
-    );
+    const obj: RemoteFileTracker<string> = new RemoteFileTracker({
+      key: 'test.txt',
+      provider: svc,
+    });
 
     expect(obj.remoteStatusData).toBeNull;
     await obj.sync();
@@ -58,7 +53,7 @@ describe('#S3RemoteFileTrackingProvider', () => {
 
     expect(data.startsWith('This is a test')).toBeTruthy;
 
-    const pushRes: any = await obj.pushStringToRemote('Local-Test', {force: false, backup: true});
+    const pushRes: any = await obj.pushStringToRemote('Local-Test', { force: false, backup: true });
     expect(pushRes).not.toBeNull;
 
     const raw2: RemoteStatusDataAndContent<string> = await obj.pullRemoteData();
@@ -66,7 +61,5 @@ describe('#S3RemoteFileTrackingProvider', () => {
     const data2: string = await RemoteFileTracker.dataAsString(raw2);
     expect(data2).not.toBeNull;
     expect(data2).toEqual('Local-Test');
-
   }, 300_000);
 });
-

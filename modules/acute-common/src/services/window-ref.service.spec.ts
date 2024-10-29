@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { beforeEach, describe, expect, test } from 'vitest';
 
-import {WindowRefService} from "./window-ref.service";
+import { WindowRefService } from './window-ref.service';
 
 describe('WindowRefService', () => {
   let service: WindowRefService;

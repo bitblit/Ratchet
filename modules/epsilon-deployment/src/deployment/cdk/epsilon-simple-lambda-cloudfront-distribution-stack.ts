@@ -1,23 +1,25 @@
-import { Stack } from "aws-cdk-lib";
-import { Construct } from "constructs";
+import { Stack } from 'aws-cdk-lib';
+import { Construct } from 'constructs';
 import {
   AllowedMethods,
   BehaviorOptions,
-  CachePolicy, Distribution,
-  DistributionProps, IResponseHeadersPolicy, OriginRequestPolicy,
-  PriceClass, ResponseHeadersPolicy,
+  CachePolicy,
+  Distribution,
+  DistributionProps,
+  IResponseHeadersPolicy,
+  OriginRequestPolicy,
+  PriceClass,
+  ResponseHeadersPolicy,
   SSLMethod,
-  ViewerProtocolPolicy
-} from "aws-cdk-lib/aws-cloudfront";
-import { FunctionUrlOrigin } from "aws-cdk-lib/aws-cloudfront-origins";
-import {
-  EpsilonSimpleLambdaCloudfrontDistributionStackProps
-} from "./epsilon-simple-lambda-cloudfront-distribution-stack-props";
-import { Certificate, ICertificate } from "aws-cdk-lib/aws-certificatemanager";
-import { HostedZone, RecordSet, RecordType } from "aws-cdk-lib/aws-route53";
-import { CloudFrontTarget } from "aws-cdk-lib/aws-route53-targets";
-import { EpsilonRoute53Handling } from "./epsilon-route-53-handling";
-import { EpsilonStackUtil } from "./epsilon-stack-util";
+  ViewerProtocolPolicy,
+} from 'aws-cdk-lib/aws-cloudfront';
+import { FunctionUrlOrigin } from 'aws-cdk-lib/aws-cloudfront-origins';
+import { EpsilonSimpleLambdaCloudfrontDistributionStackProps } from './epsilon-simple-lambda-cloudfront-distribution-stack-props';
+import { Certificate, ICertificate } from 'aws-cdk-lib/aws-certificatemanager';
+import { HostedZone, RecordSet, RecordType } from 'aws-cdk-lib/aws-route53';
+import { CloudFrontTarget } from 'aws-cdk-lib/aws-route53-targets';
+import { EpsilonRoute53Handling } from './epsilon-route-53-handling';
+import { EpsilonStackUtil } from './epsilon-stack-util';
 
 export class EpsilonSimpleLambdaCloudfrontDistributionStack extends Stack {
   constructor(scope: Construct, id: string, props?: EpsilonSimpleLambdaCloudfrontDistributionStackProps) {
@@ -35,7 +37,7 @@ export class EpsilonSimpleLambdaCloudfrontDistributionStack extends Stack {
       cachePolicy: props.cachePolicy ?? CachePolicy.CACHING_DISABLED,
       allowedMethods: props.allowedMethods ?? AllowedMethods.ALLOW_ALL,
       originRequestPolicy: OriginRequestPolicy.ALL_VIEWER_EXCEPT_HOST_HEADER,
-      responseHeadersPolicy: policy
+      responseHeadersPolicy: policy,
     };
 
     const httpsCertificate: ICertificate = Certificate.fromCertificateArn(scope, id + 'HttpsCert', props.httpsCertArn);
@@ -65,6 +67,5 @@ export class EpsilonSimpleLambdaCloudfrontDistributionStack extends Stack {
         }
       }
     }
-
   }
 }

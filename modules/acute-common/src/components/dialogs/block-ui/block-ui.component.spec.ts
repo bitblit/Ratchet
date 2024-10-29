@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { beforeEach, describe, expect, test } from 'vitest';
 
-import {BlockUiComponent} from "./block-ui.component";
+import { BlockUiComponent } from './block-ui.component';
 
 describe('BlockUiComponent', () => {
   let component: BlockUiComponent;
@@ -9,9 +9,8 @@ describe('BlockUiComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [BlockUiComponent]
-    })
-    .compileComponents();
+      imports: [BlockUiComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(BlockUiComponent);
     component = fixture.componentInstance;

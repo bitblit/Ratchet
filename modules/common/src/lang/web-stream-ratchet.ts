@@ -64,7 +64,6 @@ export class WebStreamRatchet {
     return rval;
   }
 
-
   public static uint8ArrayToWebReadableStream(input: Uint8Array): ReadableStream {
     //if (typeof ReadableStream !== 'undefined') {
     //  ErrorRatchet.throwFormattedErr('ReadableStream not supported on this platform');

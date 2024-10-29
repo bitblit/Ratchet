@@ -1,12 +1,12 @@
-import { BaseContext } from "@apollo/server";
-import { EpsilonLambdaApolloContextFunctionArgument } from "./epsilon-lambda-apollo-context-function-argument.js";
-import { EventUtil } from "../../../http/event-util.js";
-import { DefaultEpsilonApolloContext } from "./default-epsilon-apollo-context.js";
-import { Logger } from "@bitblit/ratchet-common/logger/logger";
-import { StringRatchet } from "@bitblit/ratchet-common/lang/string-ratchet";
-import { JwtTokenBase } from "@bitblit/ratchet-common/jwt/jwt-token-base";
-import { ExpiredJwtHandling } from "@bitblit/ratchet-common/jwt/expired-jwt-handling";
-import { EpsilonApolloContextBuilderOptions } from "./epsilon-apollo-context-builder-options";
+import { BaseContext } from '@apollo/server';
+import { EpsilonLambdaApolloContextFunctionArgument } from './epsilon-lambda-apollo-context-function-argument.js';
+import { EventUtil } from '../../../http/event-util.js';
+import { DefaultEpsilonApolloContext } from './default-epsilon-apollo-context.js';
+import { Logger } from '@bitblit/ratchet-common/logger/logger';
+import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet';
+import { JwtTokenBase } from '@bitblit/ratchet-common/jwt/jwt-token-base';
+import { ExpiredJwtHandling } from '@bitblit/ratchet-common/jwt/expired-jwt-handling';
+import { EpsilonApolloContextBuilderOptions } from './epsilon-apollo-context-builder-options';
 
 export class ApolloUtil {
   // Prevent instantiation
@@ -21,9 +21,8 @@ export class ApolloUtil {
 
   public static async defaultEpsilonApolloContext(
     args: EpsilonLambdaApolloContextFunctionArgument,
-    opts?: EpsilonApolloContextBuilderOptions
+    opts?: EpsilonApolloContextBuilderOptions,
   ): Promise<DefaultEpsilonApolloContext<any>> {
-
     const authTokenSt: string = EventUtil.extractBearerTokenFromEvent(args.lambdaEvent);
     let token: JwtTokenBase = null;
     if (StringRatchet.trimToNull(authTokenSt) && opts?.jwtRatchet) {
@@ -41,5 +40,4 @@ export class ApolloUtil {
     };
     return rval;
   }
-
 }

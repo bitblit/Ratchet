@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
-@Pipe({ name: 'acuteTiming'  , standalone: true})
+@Pipe({ name: 'acuteTiming', standalone: true })
 export class TimingPipe implements PipeTransform {
   transform(time: number): string {
     if (time) {

@@ -95,7 +95,6 @@ export class CronEpsilonLambdaEventHandler implements EpsilonLambdaEventHandler<
     return rval;
   }
 
-
   private static getCronTimeToUse(evt?: ScheduledEvent, currentTimestampEpochMS: number = new Date().getTime()): number {
     let rval = currentTimestampEpochMS;
 

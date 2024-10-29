@@ -348,10 +348,13 @@ export class StringRatchet {
       rval = JSON.stringify(input);
     } catch (err) {
       if (err instanceof TypeError) {
-        let lines: string[] = err.message.split('\n').map(s=>StringRatchet.trimToNull(s)).filter(s=>!!s);
-        lines = lines.filter(s=>s.startsWith('-->') || s.startsWith('---'));
+        let lines: string[] = err.message
+          .split('\n')
+          .map((s) => StringRatchet.trimToNull(s))
+          .filter((s) => !!s);
+        lines = lines.filter((s) => s.startsWith('-->') || s.startsWith('---'));
 
-        rval = 'Cannot stringify - object contains circular reference : '+lines.join(', ');
+        rval = 'Cannot stringify - object contains circular reference : ' + lines.join(', ');
       } else {
         throw err;
       }
@@ -368,18 +371,18 @@ export class StringRatchet {
    * @param fmt String format to fill
    * @param args any arguments to fill the format
    */
-  public static format(fmt: string, ...args:any[]): string {
-    const re:RegExp = /(%?)(%([ojds]))/g;
-    if(args.length) {
-      fmt = fmt.replace(re, function(match, escaped, ptn, flag) {
+  public static format(fmt: string, ...args: any[]): string {
+    const re: RegExp = /(%?)(%([ojds]))/g;
+    if (args.length) {
+      fmt = fmt.replace(re, function (match, escaped, ptn, flag) {
         let arg = args.shift();
-        switch(flag) {
+        switch (flag) {
           case 'o':
             if (Array.isArray(arg)) {
               arg = StringRatchet.circSafeJsonStringify(arg);
               break;
             } else {
-              throw new Error('Cannot use o placeholder for argument of type '+typeof arg);
+              throw new Error('Cannot use o placeholder for argument of type ' + typeof arg);
             }
           case 's':
             arg = '' + arg;
@@ -391,16 +394,16 @@ export class StringRatchet {
             arg = StringRatchet.circSafeJsonStringify(arg);
             break;
         }
-        if(!escaped) {
+        if (!escaped) {
           return arg;
         }
         args.unshift(arg);
         return match;
-      })
+      });
     }
 
     // arguments remain after formatting
-    if(args.length) {
+    if (args.length) {
       fmt += ' ' + args.join(' ');
     }
 
@@ -409,6 +412,4 @@ export class StringRatchet {
 
     return '' + fmt;
   }
-
-
 }

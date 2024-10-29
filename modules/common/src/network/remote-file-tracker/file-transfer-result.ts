@@ -1,5 +1,5 @@
-import { FileTransferResultType } from "./file-transfer-result-type.js";
-import { BackupResult } from "./backup-result.js";
+import { FileTransferResultType } from './file-transfer-result-type.js';
+import { BackupResult } from './backup-result.js';
 
 export interface FileTransferResult {
   type: FileTransferResultType;
