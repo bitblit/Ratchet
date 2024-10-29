@@ -131,6 +131,10 @@ export class GraphqlRatchet {
         const gql: string = await this.fetchQueryText(queryName);
         Logger.debug('API and GQL fetched for %s - running %s %s', queryName, gql, api);
         const newValues: any = await api.request(gql, variables);
+        if (newValues['errors']) {
+          // Convert graphql errors into errors
+          this.errorHandler.handleError(newValues['errors'],queryName, variables, authStyle);
+        }
         rval = GraphqlRatchet.extractSingleValueFromResponse(newValues);
         Logger.silly('Query returned: %j', rval);
       } else {
@@ -152,6 +156,10 @@ export class GraphqlRatchet {
         const gql: string = await this.fetchQueryText(queryName);
         Logger.debug('API and GQL fetched for %s - running %s %s', queryName, gql, api);
         const newValues: any = await api.request(gql, variables);
+        if (newValues['errors']) {
+          // Convert graphql errors into errors
+          this.errorHandler.handleError(newValues['errors'],queryName, variables, authStyle);
+        }
         rval = GraphqlRatchet.extractSingleValueFromResponse(newValues);
         Logger.silly('Mutate returned: %j', rval);
       } else {
