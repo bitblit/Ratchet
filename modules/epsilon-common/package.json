@@ -39,6 +39,8 @@
   "scripts": {
     "run-local-container-server": "yarn mod:build && node bin/cli.js run-local-container-server",
     "run-build-sample-server": "yarn mod:build && node bin/cli.js run-sample-local-server",
+    "run-file-server": "node bin/cli.js run-file-server",
+    "run-a": "yarn mod:build && yarn run-file-server --root c:/ --https true",
     "run-sample-server": "node bin/cli.js run-sample-local-server",
     "run-test-error-server": "yarn mod:build && node bin/cli.js run-test-error-server",
     "run-batch-sample-server": "yarn mod:build && node bin/cli.js run-sample-local-batch-server",
@@ -79,6 +81,7 @@
     "js-yaml": "4.1.0",
     "jwks-rsa": "3.1.0",
     "luxon": "3.5.0",
+    "mime-types": "3.0.0",
     "route-parser": "0.0.5",
     "rxjs": "7.8.1",
     "strip-js": "1.2.0",
