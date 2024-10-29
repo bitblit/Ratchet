@@ -9,11 +9,11 @@ import https from 'https';
 import { DateTime } from 'luxon';
 import { EventUtil } from './http/event-util.js';
 import { EpsilonGlobalHandler } from './epsilon-global-handler.js';
-import { LocalServerCert } from './local-server-cert.js';
 import { SampleServerComponents } from './sample/sample-server-components.js';
 import { LocalWebTokenManipulator } from './http/auth/local-web-token-manipulator.js';
 import { LocalServerOptions } from './config/local-server/local-server-options.js';
 import { LocalServerHttpMethodHandling } from './config/local-server/local-server-http-method-handling.js';
+import { LocalServerCert } from "@bitblit/ratchet-node-only/http/local-server-cert";
 
 /**
  * A simplistic server for testing your lambdas locally
@@ -85,7 +85,7 @@ export class LocalServer {
   }
 
   public static async bodyAsBase64String(request: IncomingMessage): Promise<string> {
-    return new Promise<string>((res, rej) => {
+    return new Promise<string>((res, _rej) => {
       const body = [];
       request.on('data', (chunk) => {
         body.push(chunk);
@@ -231,7 +231,7 @@ export class LocalServer {
     return rval;
   }
 
-  public static async runSampleBatchOnlyServerFromCliArgs(args: string[]): Promise<void> {
+  public static async runSampleBatchOnlyServerFromCliArgs(_args: string[]): Promise<void> {
     Logger.setLevel(LoggerLevelName.debug);
     const handler: EpsilonGlobalHandler = await SampleServerComponents.createSampleBatchOnlyEpsilonGlobalHandler(
       'SampleBatchOnlyLocalServer-' + Date.now(),
@@ -241,7 +241,7 @@ export class LocalServer {
     Logger.info('Res was : %s', res);
   }
 
-  public static async runSampleLocalServerFromCliArgs(args: string[]): Promise<void> {
+  public static async runSampleLocalServerFromCliArgs(_args: string[]): Promise<void> {
     Logger.setLevel(LoggerLevelName.debug);
     const localTokenHandler: LocalWebTokenManipulator<JwtTokenBase> = new LocalWebTokenManipulator<JwtTokenBase>(
       ['abcd1234'],

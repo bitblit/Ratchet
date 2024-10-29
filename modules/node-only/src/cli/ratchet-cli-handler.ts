@@ -5,6 +5,7 @@ import { PublishCiReleaseToSlack } from '../third-party/slack/publish-ci-release
 import { AbstractRatchetCliHandler } from './abstract-ratchet-cli-handler.js';
 import { UniqueFileRename } from '../files/unique-file-rename.js';
 import { BuildInformation } from '@bitblit/ratchet-common/build/build-information';
+import { LocalFileServer } from "../http/local-file-server.js";
 
 export class RatchetCliHandler extends AbstractRatchetCliHandler {
   fetchHandlerMap(): Record<string, any> {
@@ -13,6 +14,7 @@ export class RatchetCliHandler extends AbstractRatchetCliHandler {
       'files-to-static-class': FilesToStaticClass.runFromCliArgs,
       'publish-ci-release-to-slack': PublishCiReleaseToSlack.runFromCliArgs,
       'unique-file-rename': UniqueFileRename.runFromCliArgs,
+      'run-file-server': LocalFileServer.runLocalFileServerFromCliArgs,
     };
   }
 

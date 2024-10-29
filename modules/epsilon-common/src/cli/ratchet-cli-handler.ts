@@ -5,13 +5,11 @@ import { TestErrorServer } from '../sample/test-error-server.js';
 import { LocalContainerServer } from '../local-container-server.js';
 import { RatchetEpsilonCommonInfo } from '../build/ratchet-epsilon-common-info.js';
 import { LocalServer } from '../local-server.js';
-import { LocalFileServer } from '../local-file-server.js';
 
 export class RatchetCliHandler extends AbstractRatchetCliHandler {
   fetchHandlerMap(): Record<string, any> {
     return {
       'run-background-process': RunBackgroundProcessFromCommandLine.runFromCliArgs,
-      'run-file-server': LocalFileServer.runLocalFileServerFromCliArgs,
       'run-test-error-server': TestErrorServer.runFromCliArgs,
       'run-local-container-server': LocalContainerServer.runFromCliArgs,
       'run-sample-local-server': LocalServer.runSampleLocalServerFromCliArgs,
