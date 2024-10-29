@@ -48,7 +48,7 @@ export class GraphqlRatchet {
 
   private createAnonymousApi(): GraphQLClient {
     Logger.info('Creating anonymous GraphQLClient');
-    const rval: GraphQLClient = new GraphQLClient(this.cachedEndpoint, {errorPolicy: 'all'});
+    const rval: GraphQLClient = new GraphQLClient(this.cachedEndpoint, {errorPolicy: 'none'});
     return rval;
   }
 
@@ -89,7 +89,7 @@ export class GraphqlRatchet {
     Logger.info('Creating a new authenticated api for %s : %s', this.cachedEndpoint, StringRatchet.obscure(jwtToken, 2, 2));
     RequireRatchet.notNullUndefinedOrOnlyWhitespaceString(jwtToken, 'jwtToken');
     Logger.info('Creating auth apollo client %s', StringRatchet.obscure(jwtToken, 2, 2));
-    const rval: GraphQLClient = new GraphQLClient(this.cachedEndpoint, {errorPolicy: 'all', headers: {authorization: `Bearer ${jwtToken}`}});
+    const rval: GraphQLClient = new GraphQLClient(this.cachedEndpoint, {errorPolicy: 'none', headers: {authorization: `Bearer ${jwtToken}`}});
     return rval;
   }
 
@@ -131,10 +131,6 @@ export class GraphqlRatchet {
         const gql: string = await this.fetchQueryText(queryName);
         Logger.debug('API and GQL fetched for %s - running %s %s', queryName, gql, api);
         const newValues: any = await api.request(gql, variables);
-        if (newValues['errors']) {
-          // Convert graphql errors into errors
-          this.errorHandler.handleError(newValues['errors'],queryName, variables, authStyle);
-        }
         rval = GraphqlRatchet.extractSingleValueFromResponse(newValues);
         Logger.silly('Query returned: %j', rval);
       } else {
@@ -156,10 +152,6 @@ export class GraphqlRatchet {
         const gql: string = await this.fetchQueryText(queryName);
         Logger.debug('API and GQL fetched for %s - running %s %s', queryName, gql, api);
         const newValues: any = await api.request(gql, variables);
-        if (newValues['errors']) {
-          // Convert graphql errors into errors
-          this.errorHandler.handleError(newValues['errors'],queryName, variables, authStyle);
-        }
         rval = GraphqlRatchet.extractSingleValueFromResponse(newValues);
         Logger.silly('Mutate returned: %j', rval);
       } else {
