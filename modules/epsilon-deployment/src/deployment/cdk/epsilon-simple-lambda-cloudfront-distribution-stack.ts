@@ -55,14 +55,14 @@ export class EpsilonSimpleLambdaCloudfrontDistributionStack extends Stack {
     // Have to be able to skip this since SOME people don't do DNS in Route53
     if (props?.route53Handling === EpsilonRoute53Handling.Update) {
       if (props?.domainNames?.length) {
-        for (let i = 0; i < props.domainNames.length; i++) {
-          const domain = new RecordSet(this, id + 'DomainName-' + props.domainNames[i], {
+        for (const dn of props.domainNames) {
+          const _domain: RecordSet = new RecordSet(this, id + 'DomainName-' + dn, {
             recordType: RecordType.A,
-            recordName: props.domainNames[i],
+            recordName: dn,
             target: {
               aliasTarget: new CloudFrontTarget(dist),
             },
-            zone: HostedZone.fromLookup(scope, id, { domainName: EpsilonStackUtil.extractApexDomain(props.domainNames[i]) }),
+            zone: HostedZone.fromLookup(scope, id+'HostZone-'+dn, { domainName: EpsilonStackUtil.extractApexDomain(dn) }),
           });
         }
       }
