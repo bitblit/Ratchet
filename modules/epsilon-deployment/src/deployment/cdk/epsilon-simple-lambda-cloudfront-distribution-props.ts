@@ -11,7 +11,7 @@ import { FunctionUrl } from 'aws-cdk-lib/aws-lambda';
 import { EpsilonRoute53Handling } from './epsilon-route-53-handling';
 import { Construct } from 'constructs';
 
-export interface EpsilonSimpleLambdaCloudfrontDistributionStackProps extends StackProps {
+export interface EpsilonSimpleLambdaCloudfrontDistributionProps extends StackProps {
   lambdaFunctionDomain: FunctionUrl;
   httpsCertArn: string;
   domainNames: string[];

@@ -27,8 +27,11 @@ import { SecurityGroup, Subnet, SubnetSelection, Vpc } from 'aws-cdk-lib/aws-ec2
 
 import { ContainerImage } from 'aws-cdk-lib/aws-ecs';
 import { EpsilonApiStackFeature } from './epsilon-api-stack-feature.js';
-import { EpsilonSimpleLambdaCloudfrontDistributionStackProps } from './epsilon-simple-lambda-cloudfront-distribution-stack-props';
-import { EpsilonSimpleLambdaCloudfrontDistributionStack } from './epsilon-simple-lambda-cloudfront-distribution-stack';
+import { EpsilonSimpleLambdaCloudfrontDistributionProps } from './epsilon-simple-lambda-cloudfront-distribution-props';
+import { EpsilonSimpleLambdaCloudfrontDistribution } from './epsilon-simple-lambda-cloudfront-distribution';
+import { EpsilonRoute53Handling } from "./epsilon-route-53-handling";
+import { HostedZone, RecordSet, RecordType } from "aws-cdk-lib/aws-route53";
+import { CloudFrontTarget } from "aws-cdk-lib/aws-route53-targets";
 
 export class EpsilonApiStack extends Stack {
   private webHandler: DockerImageFunction;
@@ -234,9 +237,25 @@ export class EpsilonApiStack extends Stack {
       });
 
       if (props.autoCloudfrontDistribution) {
-        const distroPropsCopy: EpsilonSimpleLambdaCloudfrontDistributionStackProps = Object.assign({}, props.autoCloudfrontDistribution);
+        const distroPropsCopy: EpsilonSimpleLambdaCloudfrontDistributionProps = Object.assign({}, props.autoCloudfrontDistribution);
         distroPropsCopy.lambdaFunctionDomain = this.webFunctionUrl;
-        new EpsilonSimpleLambdaCloudfrontDistributionStack(scope, id + 'DirectApiCloudfrontDistro', distroPropsCopy);
+        const dist = new EpsilonSimpleLambdaCloudfrontDistribution(scope, id + 'DirectApiCloudfrontDistro', distroPropsCopy);
+        // Have to be able to skip this since SOME people don't do DNS in Route53
+        if (props?.autoCloudfrontDistribution.route53Handling === EpsilonRoute53Handling.Update) {
+          if (props?.autoCloudfrontDistribution.domainNames?.length) {
+            for (const dn of props.autoCloudfrontDistribution.domainNames) {
+              const _domain: RecordSet = new RecordSet(scope, id + 'DomainName-' + dn, {
+                recordType: RecordType.A,
+                recordName: dn,
+                target: {
+                  aliasTarget: new CloudFrontTarget(dist),
+                },
+                zone: HostedZone.fromLookup(scope, id+'HostZone-'+dn, { domainName: EpsilonStackUtil.extractApexDomain(dn) }),
+              });
+            }
+          }
+        }
+
       }
     }
 
