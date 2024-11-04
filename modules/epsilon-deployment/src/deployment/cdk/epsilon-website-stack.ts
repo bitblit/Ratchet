@@ -28,9 +28,9 @@ export class EpsilonWebsiteStack extends Stack {
   constructor(scope: Construct, id: string, props?: EpsilonWebsiteStackProps) {
     super(scope, id, props);
 
-    const originAccessId: OriginAccessIdentity = new OriginAccessIdentity(scope, id + 'OriginAccessId');
+    const originAccessId: OriginAccessIdentity = new OriginAccessIdentity(this, id + 'OriginAccessId');
 
-    const websiteBucket: Bucket = new Bucket(scope, id + 'DeployBucket', {
+    const websiteBucket: Bucket = new Bucket(this, id + 'DeployBucket', {
       bucketName: props.targetBucketName,
       //removalPolicy: RemovalPolicy.DESTROY,
       //autoDeleteObjects: true,
@@ -39,7 +39,7 @@ export class EpsilonWebsiteStack extends Stack {
       encryption: BucketEncryption.S3_MANAGED,
     });
 
-    const cachePolicy: CachePolicy = new CachePolicy(scope, id + 'ShortCachePolicy', {
+    const cachePolicy: CachePolicy = new CachePolicy(this, id + 'ShortCachePolicy', {
       defaultTtl: Duration.seconds(1),
       maxTtl: Duration.seconds(1),
       minTtl: Duration.seconds(1),
@@ -53,7 +53,7 @@ export class EpsilonWebsiteStack extends Stack {
       allowedMethods: AllowedMethods.ALLOW_GET_HEAD_OPTIONS,
     };
 
-    const httpsCertificate: ICertificate = Certificate.fromCertificateArn(scope, id + 'HttpsCert', props.cloudFrontHttpsCertificateArn);
+    const httpsCertificate: ICertificate = Certificate.fromCertificateArn(this, id + 'HttpsCert', props.cloudFrontHttpsCertificateArn);
 
     const distributionProps: DistributionProps = {
       defaultBehavior: defaultBehavior,
@@ -88,7 +88,7 @@ export class EpsilonWebsiteStack extends Stack {
         cachePolicy: CachePolicy.CACHING_DISABLED,
         allowedMethods: AllowedMethods.ALLOW_ALL,
         responseHeadersPolicy: s.responseHeadersPolicyCreator
-          ? s.responseHeadersPolicyCreator(scope, id)
+          ? s.responseHeadersPolicyCreator(this, id)
           : ResponseHeadersPolicy.CORS_ALLOW_ALL_ORIGINS_WITH_PREFLIGHT_AND_SECURITY_HEADERS,
       };
       distributionProps.additionalBehaviors[s.pathPattern] = next;
@@ -113,19 +113,19 @@ export class EpsilonWebsiteStack extends Stack {
     });
 
     // Create the distro
-    const cloudfrontDistro: Distribution = new Distribution(scope, id + 'CloudfrontDistro', distributionProps);
+    const cloudfrontDistro: Distribution = new Distribution(this, id + 'CloudfrontDistro', distributionProps);
 
     // Have to be able to skip this since SOME people don't do DNS in Route53
     if (props?.route53Handling === EpsilonRoute53Handling.Update) {
       if (props?.cloudFrontDomainNames?.length) {
         for (let i = 0; i < props.cloudFrontDomainNames.length; i++) {
-          const _domain: RecordSet = new RecordSet(scope, id + 'DomainName-' + props.cloudFrontDomainNames[i], {
+          const _domain: RecordSet = new RecordSet(this, id + 'DomainName-' + props.cloudFrontDomainNames[i], {
             recordType: RecordType.A,
             recordName: props.cloudFrontDomainNames[i],
             target: {
               aliasTarget: new CloudFrontTarget(cloudfrontDistro),
             },
-            zone: HostedZone.fromLookup(scope, id, { domainName: EpsilonStackUtil.extractApexDomain(props.cloudFrontDomainNames[i]) }),
+            zone: HostedZone.fromLookup(this, id, { domainName: EpsilonStackUtil.extractApexDomain(props.cloudFrontDomainNames[i]) }),
           });
         }
       }
@@ -136,7 +136,7 @@ export class EpsilonWebsiteStack extends Stack {
 
     // Sync files to the S3 Bucket
     //  [Source.asset(path.resolve('../website/dist'))],
-    new BucketDeployment(scope, id + 'SiteDeploy', {
+    new BucketDeployment(this, id + 'SiteDeploy', {
       sources: assetSources,
       destinationBucket: websiteBucket,
       distribution: cloudfrontDistro,
