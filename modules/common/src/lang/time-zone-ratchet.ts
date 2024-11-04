@@ -28,6 +28,10 @@ export class TimeZoneRatchet {
     return Math.round(dt.toMillis() / 1000);
   }
 
+  public nowEpochSeconds(): number {
+    return  Math.floor(DateTime.local().setZone(this.timezoneIanaName).toSeconds());
+  }
+
   // Returns midnight in the current timezone in epoch seconds
   public startOfTodayEpochSeconds(): number {
     const startOfToday = this.toEpochSeconds(
