@@ -15,7 +15,7 @@ import {
 import { FunctionUrlOrigin } from "aws-cdk-lib/aws-cloudfront-origins";
 import {
   EpsilonSimpleLambdaCloudfrontDistributionProps
-} from "./epsilon-simple-lambda-cloudfront-distribution-props";
+} from "./epsilon-simple-lambda-cloudfront-distribution-props.js";
 import { Certificate, ICertificate } from "aws-cdk-lib/aws-certificatemanager";
 
 export class EpsilonSimpleLambdaCloudfrontDistribution extends Distribution {

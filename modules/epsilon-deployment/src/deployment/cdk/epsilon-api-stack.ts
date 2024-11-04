@@ -239,18 +239,18 @@ export class EpsilonApiStack extends Stack {
       if (props.autoCloudfrontDistribution) {
         const distroPropsCopy: EpsilonSimpleLambdaCloudfrontDistributionProps = Object.assign({}, props.autoCloudfrontDistribution);
         distroPropsCopy.lambdaFunctionDomain = this.webFunctionUrl;
-        const dist = new EpsilonSimpleLambdaCloudfrontDistribution(scope, id + 'DirectApiCloudfrontDistro', distroPropsCopy);
+        const dist = new EpsilonSimpleLambdaCloudfrontDistribution(this, id + 'DirectApiCloudfrontDistro', distroPropsCopy);
         // Have to be able to skip this since SOME people don't do DNS in Route53
         if (props?.autoCloudfrontDistribution.route53Handling === EpsilonRoute53Handling.Update) {
           if (props?.autoCloudfrontDistribution.domainNames?.length) {
             for (const dn of props.autoCloudfrontDistribution.domainNames) {
-              const _domain: RecordSet = new RecordSet(scope, id + 'DomainName-' + dn, {
+              const _domain: RecordSet = new RecordSet(this, id + 'DomainName-' + dn, {
                 recordType: RecordType.A,
                 recordName: dn,
                 target: {
                   aliasTarget: new CloudFrontTarget(dist),
                 },
-                zone: HostedZone.fromLookup(scope, id+'HostZone-'+dn, { domainName: EpsilonStackUtil.extractApexDomain(dn) }),
+                zone: HostedZone.fromLookup(this, id+'HostZone-'+dn, { domainName: EpsilonStackUtil.extractApexDomain(dn) }),
               });
             }
           }
