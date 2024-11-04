@@ -12,6 +12,7 @@ export default tseslint.config(
   {
     rules: {
       // Ok, I'm a java-head, but I like the namespacing of static class wrappers
+      "@typescript-eslint/no-re": "off",
       "@typescript-eslint/no-extraneous-class": "off",
       "@typescript-eslint/no-inferrable-types": "off",
       "@typescript-eslint/no-explicit-any": "off",

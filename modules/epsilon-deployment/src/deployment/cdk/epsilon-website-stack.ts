@@ -1,5 +1,5 @@
 import { Bucket, BucketEncryption } from 'aws-cdk-lib/aws-s3';
-import { Duration, RemovalPolicy, Stack } from "aws-cdk-lib";
+import { CfnOutput, Duration, RemovalPolicy, Stack } from "aws-cdk-lib";
 import { Construct } from 'constructs';
 import path from 'path';
 import {
@@ -28,8 +28,7 @@ export class EpsilonWebsiteStack extends Stack {
   constructor(scope: Construct, id: string, props?: EpsilonWebsiteStackProps) {
     super(scope, id, props);
 
-    const originAccessId: OriginAccessIdentity = new OriginAccessIdentity(this, id + 'OriginAccessId');
-
+    // Create the bucket to hold the SPA
     const websiteBucket: Bucket = new Bucket(this, id + 'DeployBucket', {
       bucketName: props.targetBucketName,
       removalPolicy: props.retainWebsiteBucketOnDestroy ? undefined : RemovalPolicy.DESTROY,
@@ -38,7 +37,10 @@ export class EpsilonWebsiteStack extends Stack {
       publicReadAccess: false,
       encryption: BucketEncryption.S3_MANAGED,
     });
-
+    // Create the access id for that bucket
+    //const originAccessId: OriginAccessIdentity = new OriginAccessIdentity(this, id + 'OriginAccessId');
+    //websiteBucket.grantRead(originAccessId);
+    // Cache policy for that bucket
     const cachePolicy: CachePolicy = new CachePolicy(this, id + 'ShortCachePolicy', {
       defaultTtl: Duration.seconds(1),
       maxTtl: Duration.seconds(1),
@@ -46,7 +48,7 @@ export class EpsilonWebsiteStack extends Stack {
     });
 
     const defaultBehavior: BehaviorOptions = {
-      origin: S3BucketOrigin.withOriginAccessIdentity(websiteBucket, { originAccessIdentity: originAccessId }), //  new FunctionUrlOrigin(props.lambdaFunctionDomain),
+      origin: S3BucketOrigin.withOriginAccessControl(websiteBucket), //  new FunctionUrlOrigin(props.lambdaFunctionDomain),
       compress: true,
       viewerProtocolPolicy: ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
       cachePolicy: cachePolicy,
@@ -102,7 +104,7 @@ export class EpsilonWebsiteStack extends Stack {
       });
 
       const behaviorOptions: BehaviorOptions = {
-        origin: S3BucketOrigin.withOriginAccessIdentity(nextBucket, { originAccessIdentity: originAccessId }),
+        origin: S3BucketOrigin.withOriginAccessControl(nextBucket),
         compress: true,
         viewerProtocolPolicy: ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
         cachePolicy: cachePolicy,
@@ -114,20 +116,21 @@ export class EpsilonWebsiteStack extends Stack {
 
     // Create the distro
     const cloudfrontDistro: Distribution = new Distribution(this, id + 'CloudfrontDistro', distributionProps);
+    new CfnOutput(this, 'DistributionUrl', { value: 'https://' + cloudfrontDistro.domainName });
 
     // Have to be able to skip this since SOME people don't do DNS in Route53
     if (props?.route53Handling === EpsilonRoute53Handling.Update) {
       if (props?.cloudFrontDomainNames?.length) {
-        for (let i = 0; i < props.cloudFrontDomainNames.length; i++) {
-          const _domain: RecordSet = new RecordSet(this, id + 'DomainName-' + props.cloudFrontDomainNames[i], {
+        props.cloudFrontDomainNames.forEach((dn, _idx)=>{
+          const _domain: RecordSet = new RecordSet(this, id + 'DomainName-' + dn, {
             recordType: RecordType.A,
-            recordName: props.cloudFrontDomainNames[i],
+            recordName: dn,
             target: {
               aliasTarget: new CloudFrontTarget(cloudfrontDistro),
             },
-            zone: HostedZone.fromLookup(this, id, { domainName: EpsilonStackUtil.extractApexDomain(props.cloudFrontDomainNames[i]) }),
+            zone: HostedZone.fromLookup(this, id, { domainName: EpsilonStackUtil.extractApexDomain(dn) }),
           });
-        }
+        });
       }
     }
 
