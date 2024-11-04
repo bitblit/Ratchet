@@ -15,4 +15,5 @@ export interface EpsilonWebsiteStackProps extends StackProps {
   simpleAdditionalMappings?: SimpleAdditionalS3WebsiteMapping[];
   websiteCacheBehavior?: EpsilonWebsiteCacheBehavior;
   websiteBehaviorOverride?: Behavior[];
+  retainWebsiteBucketOnDestroy?: boolean;
 }

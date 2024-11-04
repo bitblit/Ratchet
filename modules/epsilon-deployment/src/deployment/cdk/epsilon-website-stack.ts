@@ -1,5 +1,5 @@
 import { Bucket, BucketEncryption } from 'aws-cdk-lib/aws-s3';
-import { Duration, Stack } from 'aws-cdk-lib';
+import { Duration, RemovalPolicy, Stack } from "aws-cdk-lib";
 import { Construct } from 'constructs';
 import path from 'path';
 import {
@@ -32,8 +32,8 @@ export class EpsilonWebsiteStack extends Stack {
 
     const websiteBucket: Bucket = new Bucket(this, id + 'DeployBucket', {
       bucketName: props.targetBucketName,
-      //removalPolicy: RemovalPolicy.DESTROY,
-      //autoDeleteObjects: true,
+      removalPolicy: props.retainWebsiteBucketOnDestroy ? undefined : RemovalPolicy.DESTROY,
+      autoDeleteObjects: !props.retainWebsiteBucketOnDestroy,
       versioned: false,
       publicReadAccess: false,
       encryption: BucketEncryption.S3_MANAGED,
