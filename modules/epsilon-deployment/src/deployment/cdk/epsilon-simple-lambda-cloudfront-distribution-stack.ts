@@ -56,7 +56,7 @@ export class EpsilonSimpleLambdaCloudfrontDistributionStack extends Stack {
     if (props?.route53Handling === EpsilonRoute53Handling.Update) {
       if (props?.domainNames?.length) {
         for (const dn of props.domainNames) {
-          const _domain: RecordSet = new RecordSet(this, id + 'DomainName-' + dn, {
+          const _domain: RecordSet = new RecordSet(scope, id + 'DomainName-' + dn, {
             recordType: RecordType.A,
             recordName: dn,
             target: {
