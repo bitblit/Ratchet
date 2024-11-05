@@ -8,7 +8,6 @@ import {
   CachePolicy,
   Distribution,
   DistributionProps,
-  OriginAccessIdentity,
   PriceClass,
   ResponseHeadersPolicy,
   SSLMethod,
