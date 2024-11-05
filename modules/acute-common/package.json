@@ -4,12 +4,21 @@
   "description": "Library for using angular",
   "module": "lib/index.js",
   "types": "lib/index.d.ts",
-  "_module": "lib/esm2022/ngx-acute-common.mjs",
-  "_types": "lib/esm2022/index.d.ts",
   "files": [
     "lib/**",
     "bin/**"
   ],
+  "exports": {
+    "./package.json": {
+      "default": "./package.json"
+    },
+    ".": {
+      "types": "./lib/index.d.ts",
+      "esm2022": "./lib/index.js",
+      "esm": "./lib/index.js",
+      "default": "./lib/index.js"
+    }
+  },
   "contributors": [
     "Christopher Weiss <bitblit@gmail.com>"
   ],
