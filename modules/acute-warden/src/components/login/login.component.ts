@@ -1,10 +1,9 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, Input, OnInit } from "@angular/core";
 import {ActivatedRoute, Router, RouterModule} from '@angular/router';
 
 import {Logger} from '@bitblit/ratchet-common/logger/logger';
 import {WardenClient} from "@bitblit/ratchet-warden-common/client/warden-client";
 import {WardenUserService} from "@bitblit/ratchet-warden-common/client/warden-user-service";
-import {No} from "@bitblit/ratchet-common/lang/no";
 import {StringRatchet} from "@bitblit/ratchet-common/lang/string-ratchet";
 import {WardenContact} from "@bitblit/ratchet-warden-common/common/model/warden-contact";
 import {
@@ -22,6 +21,7 @@ import {FieldsetModule} from "primeng/fieldset";
 import { AlertComponent, WindowRefService } from "@bitblit/ngx-acute-common";
 import {DialogService} from "primeng/dynamicdialog";
 import { InputTextModule } from "primeng/inputtext";
+import { RequireRatchet } from "@bitblit/ratchet-common/lang/require-ratchet";
 
 
 @Component({
@@ -31,6 +31,8 @@ import { InputTextModule } from "primeng/inputtext";
   imports: [ButtonModule, RouterModule, FormsModule, CommonModule, CardModule, TooltipModule, ButtonModule, FieldsetModule, InputTextModule]
 })
 export class LoginComponent implements OnInit {
+  @Input() public postLoginUrl: string;
+
   public showCodeCard: boolean = false;
 
   public verificationCode: string;
@@ -43,7 +45,6 @@ export class LoginComponent implements OnInit {
     private router: Router,
     public userService: WardenUserService<any>,
     public wardenClient: WardenClient,
-    private win: WindowRefService,
     private dlgService: DialogService,
 
   ) {
@@ -72,11 +73,8 @@ export class LoginComponent implements OnInit {
     }
   }
   ngOnInit(): void {
-    Logger.info('ngi: %j', this.route.queryParamMap);
-  }
-
-  public goToDashboard(): void {
-    this.router.navigate(['/secure/dashboard']).then(No.op);
+    //Logger.info('ngi: %j', this.route.queryParamMap);
+    RequireRatchet.notNullUndefinedOrOnlyWhitespaceString(this.postLoginUrl, 'postLoginUrl may not be empty');
   }
 
   public async sendCodeToNewContact(value: string): Promise<void> {
@@ -122,11 +120,8 @@ export class LoginComponent implements OnInit {
       { type: WardenUtils.stringToContactType(input), value: input },
       verificationCode,
     );
-
-    //alert('Got : ' + JSON.stringify(val));
-    //const val: boolean = await this.userService.executeValidationTokenBasedLogin(emailAddress, verificationCode);
     if (val) {
-      await this.router.navigate(['/secure/dashboard']);
+      await this.router.navigate([this.postLoginUrl]);
     }
   }
 
@@ -137,24 +132,8 @@ export class LoginComponent implements OnInit {
     //AlertComponent.showAlert(this.dd, 'Got : ' + JSON.stringify(val));
     //const val: boolean = await this.userService.executeValidationTokenBasedLogin(emailAddress, verificationCode);
     if (val) {
-      await this.router.navigate(['/secure/dashboard']);
+      await this.router.navigate([this.postLoginUrl]);
     }
-  }
-
-  public async sendMagicLink(contact: WardenContact): Promise<void> {
-    const loc: Location = this.win.nativeWindow().location;
-
-    let curUrl: string = loc.toString();
-    curUrl = curUrl.indexOf('?') > -1 ? curUrl.substring(0, curUrl.indexOf('?')) : curUrl;
-    let landingUrl: string = curUrl.split('public/login').join('public/magic-lander');
-    landingUrl += '?code={CODE}&meta={META}';
-    const meta: Record<string, string> = {
-      redirect: '/secure/dashboard',
-    };
-
-    const sent: boolean = await this.wardenClient.sendMagicLink(contact, landingUrl, meta);
-
-    Logger.info('Sent was %s : %s', sent, landingUrl);
   }
 
   public removeSingleLogin(userId: string): void {

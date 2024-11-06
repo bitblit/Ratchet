@@ -27,8 +27,7 @@ import { InputTextModule } from "primeng/inputtext";
 export class CreateUserComponent implements OnInit {
   public form: FormGroup;
 
-  // Only email until I can get twilio working again (2023-10-11)
-  public userContactTypes: string[] = [StringRatchet.safeString(WardenContactType.EmailAddress)]; //EnumRatchet.listEnumKeys(WardenContactType);
+  public userContactTypes: string[] = EnumRatchet.listEnumKeys(WardenContactType);
 
   constructor(
     private route: ActivatedRoute,
@@ -51,9 +50,6 @@ export class CreateUserComponent implements OnInit {
     return this.form.controls[name];
   }
 
-  public go(): void {
-    Logger.info('Errors: %j : %j : %j', this.form.errors, this.f('userContactValue').errors, this.f('userContactValue').dirty);
-  }
   ngOnInit(): void {
     Logger.info('ngi: %j', this.route.queryParamMap);
   }

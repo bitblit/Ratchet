@@ -1,12 +1,33 @@
-<div class="simpleEvenlySpacedRow">
-  <p-card header="User Profile">
-    <div>
-      <ul *ngIf="userService.isLoggedIn()">
-        <li>{{ userService.fetchLoggedInUserObject().name }}</li>
-        <li>{{ userService.fetchLoggedInUserObject().email }}</li>
-        <li>{{userService.fetchLoggedInUserObject() | json}}</li>
+
+<p-card header="User profile : {{user.userObject.loginData.userLabel}}">
+  <div>
+    ID: {{user.userObject.loginData.userId}} <br />
+    Full Name: {{user.userObject.loginData.userLabel}} <br />
+    <h3>Contacts</h3>
+    <ul>
+      <li *ngFor="let cm of user.userObject.loginData.contactMethods">
+        <p-button icon="pi pi-trash" pTooltip="Remove contact method {{cm.value}}" (click)="removeContact(cm)"></p-button>
+        {{cm.type}} : {{cm.value}}</li>
+    </ul>
+    <ng-container *ngIf="user?.userObject?.loginData?.webAuthnAuthenticatorSummaries?.length">
+      <h3>Web Authenticators</h3>
+      <ul>
+        <li *ngFor="let waa of user.userObject.loginData.webAuthnAuthenticatorSummaries">
+          <p-button icon="pi pi-trash" pTooltip="Remove web auth {{webAuthLabel(waa)}}" (click)="removeWebAuthn(waa)"></p-button>
+          {{webAuthLabel(waa)}}
+        </li>
       </ul>
-      <p-button (click)="performLogout()" label="Logout"></p-button>
+    </ng-container>
+
+    <div style="display:flex; flex-direction: row">
+      <p-button icon="pi pi-user" pTooltip="Add a new contact method" (click)="addContact()" icon="pi pi-user-plus"></p-button>
+      <p-button icon="pi pi-lock" pTooltip="Add this device as an authenticator" (click)="addWebAuthnDevice()"></p-button>
     </div>
-  </p-card>
-</div>
+
+    <br />
+    Roles: {{user.userObject.roles}} <br />
+    <hr />
+
+    Time (MS) left in token : {{timeLeftMS}} <button (click)="refreshToken()">Refresh</button>
+  </div>
+</p-card>
