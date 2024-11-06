@@ -17,12 +17,12 @@ import {TooltipModule} from "primeng/tooltip";
 
 @Component({
   selector: 'ngx-acute-warden-user-profile',
-  templateUrl: './user-profile.component.html',
+  templateUrl: './acute-user-profile.component.html',
   standalone: true,
   imports: [ButtonModule, CardModule, CommonModule, TooltipModule],
 
 })
-export class UserProfileComponent {
+export class AcuteUserProfileComponent {
   public user: WardenLoggedInUserWrapper<any>;
   public timeLeftMS: string;
 
@@ -31,7 +31,7 @@ export class UserProfileComponent {
     private userService: WardenUserService<any>,
     private userProvider: WardenDelegatingCurrentUserProvidingUserServiceEventProcessingProvider<any>,
   ) {
-    Logger.info('Construct UserProfileComponent');
+    Logger.info('Construct AcuteUserProfileComponent');
     this.updateData();
     this.userProvider.currentUserSubject.subscribe((_val) => {
       this.updateData();

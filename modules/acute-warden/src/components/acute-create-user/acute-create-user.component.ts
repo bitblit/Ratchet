@@ -20,11 +20,11 @@ import { InputTextModule } from "primeng/inputtext";
 
 @Component({
   selector: 'ngx-acute-warden-create-user',
-  templateUrl: './create-user.component.html',
+  templateUrl: './acute-create-user.component.html',
   standalone: true,
   imports: [MessagesModule, RouterModule, FormsModule, ReactiveFormsModule, CommonModule, CardModule, ButtonModule, DropdownModule, Ripple, InputTextModule]
 })
-export class CreateUserComponent implements OnInit {
+export class AcuteCreateUserComponent implements OnInit {
   public form: FormGroup;
 
   public userContactTypes: string[] = EnumRatchet.listEnumKeys(WardenContactType);

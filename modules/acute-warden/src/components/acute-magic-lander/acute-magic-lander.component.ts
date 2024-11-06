@@ -16,11 +16,11 @@ import { ButtonDirective } from "primeng/button";
 
 @Component({
   selector: 'ngx-acute-warden-magic-lander',
-  templateUrl: './magic-lander.component.html',
+  templateUrl: './acute-magic-lander.component.html',
   standalone: true,
   imports: [CardModule, RouterModule, FormsModule, CommonModule, CardModule, ButtonDirective]
 })
-export class MagicLanderComponent implements OnInit {
+export class AcuteMagicLanderComponent implements OnInit {
   public currentStatus: string = 'Starting up...';
   public showLoginButton: boolean = false;
 

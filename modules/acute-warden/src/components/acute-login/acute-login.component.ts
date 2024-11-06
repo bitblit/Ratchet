@@ -26,11 +26,11 @@ import { RequireRatchet } from "@bitblit/ratchet-common/lang/require-ratchet";
 
 @Component({
   selector: 'ngx-acute-warden-login',
-  templateUrl: './login.component.html',
+  templateUrl: './acute-login.component.html',
   standalone: true,
   imports: [ButtonModule, RouterModule, FormsModule, CommonModule, CardModule, TooltipModule, ButtonModule, FieldsetModule, InputTextModule]
 })
-export class LoginComponent implements OnInit {
+export class AcuteLoginComponent implements OnInit {
   @Input() public postLoginUrl: string;
 
   public showCodeCard: boolean = false;
