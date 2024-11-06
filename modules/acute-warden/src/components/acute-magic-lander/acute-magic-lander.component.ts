@@ -1,8 +1,7 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, Input, OnInit } from "@angular/core";
 import {ActivatedRoute, Router, RouterModule} from '@angular/router';
 
 import {Logger} from '@bitblit/ratchet-common/logger/logger';
-import {WardenClient} from "@bitblit/ratchet-warden-common/client/warden-client";
 import {WardenUserService} from "@bitblit/ratchet-warden-common/client/warden-user-service";
 import {No} from "@bitblit/ratchet-common/lang/no";
 import {StringRatchet} from "@bitblit/ratchet-common/lang/string-ratchet";
@@ -13,6 +12,7 @@ import {CardModule} from "primeng/card";
 import {FormsModule} from "@angular/forms";
 import {CommonModule} from "@angular/common";
 import { ButtonDirective } from "primeng/button";
+import { RequireRatchet } from "@bitblit/ratchet-common/lang/require-ratchet";
 
 @Component({
   selector: 'ngx-acute-warden-magic-lander',
@@ -21,6 +21,8 @@ import { ButtonDirective } from "primeng/button";
   imports: [CardModule, RouterModule, FormsModule, CommonModule, CardModule, ButtonDirective]
 })
 export class AcuteMagicLanderComponent implements OnInit {
+  @Input() public directLoginUrl: string;
+
   public currentStatus: string = 'Starting up...';
   public showLoginButton: boolean = false;
 
@@ -31,6 +33,7 @@ export class AcuteMagicLanderComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    RequireRatchet.notNullUndefinedOrOnlyWhitespaceString(this.directLoginUrl, 'directLoginUrl may not be empty');
     this.currentStatus = 'Parsing parameters...';
     const codeString: string = StringRatchet.trimToNull(this.route.snapshot.queryParamMap.get('code'));
     const metaString: string = this.route.snapshot.queryParamMap.get('meta');
