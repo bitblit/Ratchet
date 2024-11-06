@@ -1,7 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { Logger } from '@bitblit/ratchet-common/logger/logger';
 
-@Pipe({ name: 'ngx-acute-map-values', standalone: true })
+@Pipe({ name: 'ngxAcuteMapValues', standalone: true })
 export class MapValuesPipe implements PipeTransform {
   transform(value: any, args?: any[]): any[] {
     const returnArray = [];

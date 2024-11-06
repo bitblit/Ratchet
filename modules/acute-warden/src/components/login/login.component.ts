@@ -18,7 +18,7 @@ import {CommonModule} from "@angular/common";
 import {CardModule} from "primeng/card";
 import {TooltipModule} from "primeng/tooltip";
 import {FieldsetModule} from "primeng/fieldset";
-import { AlertComponent, WindowRefService } from "@bitblit/ngx-acute-common";
+import { AlertComponent } from "@bitblit/ngx-acute-common";
 import {DialogService} from "primeng/dynamicdialog";
 import { InputTextModule } from "primeng/inputtext";
 import { RequireRatchet } from "@bitblit/ratchet-common/lang/require-ratchet";
