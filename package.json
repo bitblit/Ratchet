@@ -24,7 +24,7 @@
   ],
   "scripts": {
     "clean": "wsrun mod:clean",
-    "build": "wsrun --report  --serial --fast-exit --exclude @bitblit/ngx-acute-common mod:build && echo Building Angular && yarn build-rollups && echo Completed full build",
+    "build": "wsrun --report  --serial --fast-exit --exclude @bitblit/ngx-acute-common mod:build && echo Building Angular && yarn build-ng && echo Completed full build",
     "build-ng": "wsrun --report --serial --fast-exit --package @bitblit/ngx-acute-common -c mod:ng-build",
     "build-rollups": "wsrun --report --serial --fast-exit --package @bitblit/ngx-acute-common -c mod:rollup-build",
     "lint": "wsrun --serial mod:lint",
