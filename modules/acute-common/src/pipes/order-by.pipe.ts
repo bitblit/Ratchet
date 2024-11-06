@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
-@Pipe({ name: 'acuteOrderBy', pure: false, standalone: true })
+@Pipe({ name: 'ngx-acute-order-by', pure: false, standalone: true })
 export class OrderByPipe implements PipeTransform {
   static _orderByComparator(a: any, b: any): number {
     if (isNaN(parseFloat(a)) || !isFinite(a) || isNaN(parseFloat(b)) || !isFinite(b)) {

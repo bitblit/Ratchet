@@ -1,0 +1,12 @@
+<div class="simpleEvenlySpacedRow">
+  <p-card header="User Profile">
+    <div>
+      <ul *ngIf="userService.isLoggedIn()">
+        <li>{{ userService.fetchLoggedInUserObject().name }}</li>
+        <li>{{ userService.fetchLoggedInUserObject().email }}</li>
+        <li>{{userService.fetchLoggedInUserObject() | json}}</li>
+      </ul>
+      <p-button (click)="performLogout()" label="Logout"></p-button>
+    </div>
+  </p-card>
+</div>

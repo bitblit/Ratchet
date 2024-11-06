@@ -1,0 +1,76 @@
+<div style="display: flex; flex-direction: column; justify-content: center">
+    <div style="display: flex; flex-direction: row; justify-content: center">
+
+        <p-card *ngIf="!showCodeCard" header="ParaTrade">
+            <div>
+                <p-fieldset legend="New Login">
+                    <div style="display: flex; flex-direction: row; justify-content: space-between; gap: 5px">
+                        <input class="p-inputtext rounded-input" [(ngModel)]="newContactValue" id="newContactValue"
+                               pInputText style="width: 100%"
+                               placeholder="Your Email or Phone" type="text">
+                        <p-button icon="pi pi-envelope" (click)="sendCodeToNewContact(newContactValue)"
+                                  pTooltip="Send code">
+                        </p-button>
+                    </div>
+                    <span *ngIf="contactValueInvalidAndDirty()" style="color:red">Valid email or phone number required</span>
+                </p-fieldset>
+
+                <hr  *ngIf="hasRecentLogins" />
+
+                <p-fieldset  *ngIf="hasRecentLogins" legend="Previous Logins">
+                    <div *ngFor="let lg of recentLogins; trackBy:userById">
+
+                        <p-fieldset [legend]="lg.user.userLabel">
+
+
+                            <p-button *ngIf="lg?.user?.webAuthnAuthenticatorSummaries?.length" icon="pi pi-lock-open"
+                                      (click)="processWebAuthnLogin(lg.user.userId)" pTooltip="Send WebAuthn" label="Authenticate by device (WebAuthn)">
+                            </p-button>
+
+                            <div *ngFor="let e of lg.user.contactMethods; trackBy:contactByName" style="display: flex; flex-direction: row; gap: 5px">
+
+                                <p-button *ngIf="e.type==='EmailAddress'" icon="pi pi-sign-in"
+                                          (click)="sendCodeToContact(e)" label="Send magic link via email to {{e.value}}"></p-button>
+                                <p-button *ngIf="e.type==='TextCapablePhoneNumber'" icon="pi pi-sign-in"
+                                          (click)="sendCodeToContact(e)" label="Send magic link via text message to {{e.value}}"></p-button>
+                                <p-button icon="pi pi-delete-left"
+                                          (click)="removeSingleLogin(lg.user.userId)" label="Forget {{e.value}}"></p-button>
+                            </div>
+                        </p-fieldset>
+                    </div>
+
+                    <hr/>
+                    <button pButton icon="pi pi-ban" label="Clear Saved Logins" (click)="clearSavedLogins()" style="margin-top: 10px"></button>
+
+                </p-fieldset>
+
+
+            </div>
+        </p-card>
+
+        <p-card *ngIf="showCodeCard" header="ParaTrade Authorization Code">
+
+            <p-fieldset legend="Email">
+                <div style="display: flex; flex-direction: column; min-width: 100%; justify-content: center; align-items: center; gap: 10px">
+                    <div>Code sent to <span style="font-weight: bolder">{{waitingContact.value}}</span></div>
+                    <input type="hidden" class="p-inputtext rounded-input" [(ngModel)]="waitingContact.value" id="waitingContactValue" readonly="true">
+                    <input class="p-inputtext rounded-input" [(ngModel)]="verificationCode" type="text" id="verificationCode"
+                           placeholder="Enter the code from your email" style="width: 100%">
+
+                    <div style="display: flex; flex-direction: row; justify-content: space-between; gap: 5px">
+                        <p-button (click)="submitVerificationCode(waitingContact.value, verificationCode)"
+                                  label="Submit code">
+                        </p-button>
+
+                        <p-button (click)="toggleCard(true)" label="Cancel"></p-button>
+
+                    </div>
+                </div>
+            </p-fieldset>
+
+        </p-card>
+
+
+    </div>
+</div>
+
