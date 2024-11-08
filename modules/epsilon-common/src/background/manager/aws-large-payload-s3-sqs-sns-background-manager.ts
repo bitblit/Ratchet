@@ -74,7 +74,7 @@ export class AwsLargePayloadS3SqsSnsBackgroundManager extends AwsSqsSnsBackgroun
     return s3FilePath;
   }
 
-  public async modify<T>(entry: InternalBackgroundEntry<T>): Promise<InternalBackgroundEntry<T>> {
+  public async modifyPayloadPreProcess<T>(entry: InternalBackgroundEntry<T>): Promise<InternalBackgroundEntry<T>> {
     if (entry?.meta?.[AwsLargePayloadS3SqsSnsBackgroundManager.LARGE_MESSAGE_S3_PATH_META_KEY]) {
       Logger.silly('Restoring large data from %s', entry.meta[AwsLargePayloadS3SqsSnsBackgroundManager.LARGE_MESSAGE_S3_PATH_META_KEY]);
       const parsed: T = await this._s3.fetchCacheFileAsObject<T>(
