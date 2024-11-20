@@ -9,7 +9,7 @@ import { LoggerLevelName } from '@bitblit/ratchet-common/logger/logger-level-nam
 import { CliRatchet } from '@bitblit/ratchet-node-only/cli/cli-ratchet';
 import { LocalServerOptions } from './config/local-server/local-server-options.js';
 import { LocalServerHttpMethodHandling } from './config/local-server/local-server-http-method-handling.js';
-import { BackgroundEntry } from "./background/background-entry";
+import { BackgroundEntry } from "./background/background-entry.js";
 
 /**
  * A simplistic server for testing your lambdas-in-container locally

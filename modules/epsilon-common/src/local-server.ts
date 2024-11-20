@@ -14,11 +14,10 @@ import { LocalWebTokenManipulator } from './http/auth/local-web-token-manipulato
 import { LocalServerOptions } from './config/local-server/local-server-options.js';
 import { LocalServerHttpMethodHandling } from './config/local-server/local-server-http-method-handling.js';
 import { LocalServerCert } from "@bitblit/ratchet-node-only/http/local-server-cert";
-import { EpsilonConstants } from "./epsilon-constants";
-import { InternalBackgroundEntry } from "./background/internal-background-entry";
-import { ContextUtil } from "./util/context-util";
-import { AbstractBackgroundManager } from "./background/manager/abstract-background-manager";
-import { BackgroundEntry } from "./background/background-entry";
+import { EpsilonConstants } from "./epsilon-constants.js";
+import { InternalBackgroundEntry } from "./background/internal-background-entry.js";
+import { AbstractBackgroundManager } from "./background/manager/abstract-background-manager.js";
+import { BackgroundEntry } from "./background/background-entry.js";
 import { ErrorRatchet } from "@bitblit/ratchet-common/lang/error-ratchet";
 
 /**
