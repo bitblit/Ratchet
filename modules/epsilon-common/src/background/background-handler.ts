@@ -51,7 +51,11 @@ export class BackgroundHandler implements EpsilonLambdaEventHandler<SNSEvent> {
     }
   }
 
-  public extractLabel(evt: SNSEvent, context: Context): string {
+  public get validProcessorNames(): string[] {
+    return this.processors ? Array.from(this.processors.keys()) : [];
+  }
+
+  public extractLabel(evt: SNSEvent, _context: Context): string {
     let rval: string = null;
     if (this.isBackgroundStartSnsEvent(evt)) {
       rval = 'BG:START-EVT';
@@ -146,7 +150,7 @@ export class BackgroundHandler implements EpsilonLambdaEventHandler<SNSEvent> {
 
   // Either trigger a pull of the SQS queue, or process immediately
 
-  public async processEvent(event: any, context: Context): Promise<ProxyResult> {
+  public async processEvent(event: any, _context: Context): Promise<ProxyResult> {
     let procd: number = null;
     if (!this.isBackgroundStartSnsEvent(event)) {
       const backgroundEntry: InternalBackgroundEntry<any> = this.parseImmediateFireBackgroundEntry(event);

@@ -57,7 +57,7 @@ export class Daemon implements DaemonLike {
   }
 
   public async start(options: DaemonProcessCreateOptions): Promise<DaemonProcessState> {
-    options.group = options.group || this._defaultGroup;
+    options.group ??= this._defaultGroup;
     const path: string = this.generatePath(options.group);
     const key: string = this.pathToKey(path);
     return DaemonUtil.start(this.cache, key, path, options);

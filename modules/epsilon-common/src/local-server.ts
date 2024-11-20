@@ -74,10 +74,67 @@ export class LocalServer {
     const evt: APIGatewayEvent = await LocalServer.messageToApiGatewayEvent(request, context, this.options);
     const logEventLevel: LoggerLevelName = EventUtil.eventIsAGraphQLIntrospection(evt) ? LoggerLevelName.silly : LoggerLevelName.info;
 
-    if (evt.path == '/epsilon-poison-pill') {
-      this.server.close();
+    if (evt.path.startsWith('/epsilon-poison-pill')) {
+      this.server.close(()=>{
+        Logger.info('Server closed');
+      });
       return true;
-    } else {
+    } else if (evt.path.startsWith('/epsilon-background-launcher')) {
+      Logger.info('Showing background launcher page');
+      const names: string[] = this.globalHandler.epsilon.backgroundHandler.validProcessorNames;
+      let html: string = '<html><head><title>Epsilon BG Launcher</title></head><body><div>';
+      html+='<h1>Epsilon Background Launcher</h1><form method="GET" action="/epsilon-background-trigger">';
+      html+='<div style="display: flex; flex-direction: column">';
+      html+='<label for="task">Task Name</label><select id="task" name="task">'
+      names.forEach(n=>{
+        html+=`<option value="${n}">${n}</option>`;
+      })
+      html+='</select>';
+      html+='<label for="dataJson">Data JSON</label><textarea id="dataJson" name="dataJson">{}</textarea>';
+      html+='<label for="metaJson">Meta JSON</label><textarea id="metaJson" name="metaJson">{}</textarea>';
+      html+='<input type="submit" value="Submit">';
+      html+='</div></form></div></body></html>';
+
+      // Shows a simple page for launching background tasks
+      response.end(html);
+      return true;
+    } else if (evt.path.startsWith('/epsilon-background-trigger')) {
+      Logger.info('Running background trigger');
+      // Fires off the event as a SNS event instead of a HTTP event
+      const taskName: string = StringRatchet.trimToNull(evt.queryStringParameters['task']);
+      let dataJson: string = StringRatchet.trimToNull(evt.queryStringParameters['dataJson']);
+      let metaJson: string = StringRatchet.trimToNull(evt.queryStringParameters['metaJson']);
+      dataJson = dataJson ? decodeURI(dataJson) : dataJson;
+      metaJson = metaJson ? decodeURI(metaJson) : metaJson;
+      let error: string = '';
+
+      error += taskName ? '' : 'No task provided';
+      let data: any = null;
+      let meta: any = null;
+      try {
+        if (dataJson) {
+          data =JSON.parse(dataJson)
+        }
+      } catch (err) {
+        error += 'Data is not valid JSON : '+err;
+      }
+      try {
+        if (metaJson) {
+          meta = JSON.parse(metaJson)
+        }
+      } catch (err) {
+        error += 'Meta is not valid JSON : '+err;
+      }
+
+      if (error.length>0) {
+        response.end(`<html><body>BG TRIGGER FAILED : Error : ${error} : task : ${taskName} : data: ${dataJson} : meta: ${metaJson}</body></html>`);
+      } else {
+        const processed: boolean = await this.globalHandler.processSingleBackgroundByParts(taskName, data);
+        response.end(`<html><body>BG TRIGGER VALID, returned ${processed} : task : ${taskName} : data: ${dataJson} : meta: ${metaJson}</body></html>`);
+      }
+      return true;
+    }
+    else {
       const result: ProxyResult = await this.globalHandler.lambdaHandler(evt, context);
       const written: boolean = await LocalServer.writeProxyResultToServerResponse(result, response, logEventLevel);
       return written;

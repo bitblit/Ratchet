@@ -32,7 +32,7 @@ export class DaemonUtil {
     options: DaemonProcessCreateOptions,
   ): Promise<DaemonProcessState> {
     try {
-      options.meta = options.meta || {};
+      options.meta ??= {};
 
       Logger.info('Starting daemon, key: %s, options: %j', s3Key, options);
       const now: number = new Date().getTime();
