@@ -86,23 +86,10 @@ export class LocalServer {
       });
       return true;
     } else if (evt.path.startsWith('/epsilon-background-launcher')) {
+      // Shows a simple page for launching background tasks
       Logger.info('Showing background launcher page');
       const names: string[] = this.globalHandler.epsilon.backgroundHandler.validProcessorNames;
-      let html: string = '<html><head><title>Epsilon BG Launcher</title></head><body><div>';
-      html+='<h1>Epsilon Background Launcher</h1><form method="GET" action="/epsilon-background-trigger">';
-      html+='<div style="display: flex; flex-direction: column">';
-      html+='<label for="task">Task Name</label><select id="task" name="task">'
-      names.forEach(n=>{
-        html+=`<option value="${n}">${n}</option>`;
-      })
-      html+='</select>';
-      html+='<label for="dataJson">Data JSON</label><textarea id="dataJson" name="dataJson">{}</textarea>';
-      html+='<label for="metaJson">Meta JSON</label><textarea id="metaJson" name="metaJson">{}</textarea>';
-      html+='<input type="submit" value="Submit">';
-      html+='</div></form></div></body></html>';
-
-      // Shows a simple page for launching background tasks
-      response.end(html);
+      response.end(LocalServer.buildBackgroundTriggerFormHtml(names));
       return true;
     } else if (evt.path.startsWith('/epsilon-background-trigger')) {
       Logger.info('Running background trigger');
@@ -370,5 +357,26 @@ export class LocalServer {
     const testServer: LocalServer = new LocalServer(handler, 8888, true);
     const res: boolean = await testServer.runServer();
     Logger.info('Res was : %s', res);
+  }
+
+  public static buildBackgroundTriggerFormHtml(names?: string[]): string {
+    let html: string = '<html><head><title>Epsilon BG Launcher</title></head><body><div>';
+    html+='<h1>Epsilon Background Launcher</h1><form method="GET" action="/epsilon-background-trigger">';
+    html+='<div style="display: flex; flex-direction: column">';
+    if (names) {
+      html+='<label for="task">Task Name</label><select id="task" name="task">'
+      names.forEach(n=>{
+        html+=`<option value="${n}">${n}</option>`;
+      })
+      html+='</select>';
+    } else {
+      html+='<label for="task">Task Name</label><input type="text" id="task" name="task"></input>';
+    }
+    html+='<label for="dataJson">Data JSON</label><textarea id="dataJson" name="dataJson">{}</textarea>';
+    html+='<label for="metaJson">Meta JSON</label><textarea id="metaJson" name="metaJson">{}</textarea>';
+    html+='<input type="submit" value="Submit">';
+    html+='</div></form></div></body></html>';
+
+    return html;
   }
 }

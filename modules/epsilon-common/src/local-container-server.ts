@@ -65,6 +65,11 @@ export class LocalContainerServer {
     if (evt.path == '/epsilon-poison-pill') {
       this.aborted = true;
       return true;
+    }  else if (evt.path.startsWith('/epsilon-background-launcher')) {
+      // Shows a simple page for launching background tasks
+      Logger.info('Showing background launcher page');
+      response.end(LocalServer.buildBackgroundTriggerFormHtml());
+      return true;
     } else if (evt.path.startsWith('/epsilon-background-trigger')) {
       Logger.info('Running background trigger');
         try {
@@ -91,11 +96,11 @@ export class LocalContainerServer {
     }
   }
 
-  public static async runFromCliArgs(args: string[]): Promise<void> {
+  public static async runFromCliArgs(_args: string[]): Promise<void> {
     try {
       Logger.setLevel(LoggerLevelName.debug);
       Logger.debug('Running local container server : %j', process?.argv);
-      const postArgs: string[] = CliRatchet.argsAfterCommand(['run-local-container-server']);
+      const _postArgs: string[] = CliRatchet.argsAfterCommand(['run-local-container-server']);
       const testServer: LocalContainerServer = new LocalContainerServer();
       await testServer.runServer();
       Logger.info('Got res server');
