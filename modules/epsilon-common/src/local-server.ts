@@ -1,4 +1,4 @@
-import { APIGatewayEvent, Context, ProxyResult } from 'aws-lambda';
+import { APIGatewayEvent, Context, ProxyResult, SNSEvent } from "aws-lambda";
 import { Logger } from '@bitblit/ratchet-common/logger/logger';
 import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet';
 import { LoggerLevelName } from '@bitblit/ratchet-common/logger/logger-level-name';
@@ -14,6 +14,12 @@ import { LocalWebTokenManipulator } from './http/auth/local-web-token-manipulato
 import { LocalServerOptions } from './config/local-server/local-server-options.js';
 import { LocalServerHttpMethodHandling } from './config/local-server/local-server-http-method-handling.js';
 import { LocalServerCert } from "@bitblit/ratchet-node-only/http/local-server-cert";
+import { EpsilonConstants } from "./epsilon-constants";
+import { InternalBackgroundEntry } from "./background/internal-background-entry";
+import { ContextUtil } from "./util/context-util";
+import { AbstractBackgroundManager } from "./background/manager/abstract-background-manager";
+import { BackgroundEntry } from "./background/background-entry";
+import { ErrorRatchet } from "@bitblit/ratchet-common/lang/error-ratchet";
 
 /**
  * A simplistic server for testing your lambdas locally
@@ -100,37 +106,12 @@ export class LocalServer {
       return true;
     } else if (evt.path.startsWith('/epsilon-background-trigger')) {
       Logger.info('Running background trigger');
-      // Fires off the event as a SNS event instead of a HTTP event
-      const taskName: string = StringRatchet.trimToNull(evt.queryStringParameters['task']);
-      let dataJson: string = StringRatchet.trimToNull(evt.queryStringParameters['dataJson']);
-      let metaJson: string = StringRatchet.trimToNull(evt.queryStringParameters['metaJson']);
-      dataJson = dataJson ? decodeURI(dataJson) : dataJson;
-      metaJson = metaJson ? decodeURI(metaJson) : metaJson;
-      let error: string = '';
-
-      error += taskName ? '' : 'No task provided';
-      let data: any = null;
-      let meta: any = null;
       try {
-        if (dataJson) {
-          data =JSON.parse(dataJson)
-        }
+        const entry: BackgroundEntry<any> = LocalServer.parseEpsilonBackgroundTriggerAsTask(evt);
+        const processed: boolean = await this.globalHandler.processSingleBackgroundEntry(entry);
+        response.end(`<html><body>BG TRIGGER VALID, returned ${processed} : task : ${entry.type} : data: ${entry.data}</body></html>`);
       } catch (err) {
-        error += 'Data is not valid JSON : '+err;
-      }
-      try {
-        if (metaJson) {
-          meta = JSON.parse(metaJson)
-        }
-      } catch (err) {
-        error += 'Meta is not valid JSON : '+err;
-      }
-
-      if (error.length>0) {
-        response.end(`<html><body>BG TRIGGER FAILED : Error : ${error} : task : ${taskName} : data: ${dataJson} : meta: ${metaJson}</body></html>`);
-      } else {
-        const processed: boolean = await this.globalHandler.processSingleBackgroundByParts(taskName, data);
-        response.end(`<html><body>BG TRIGGER VALID, returned ${processed} : task : ${taskName} : data: ${dataJson} : meta: ${metaJson}</body></html>`);
+        response.end(`<html><body>BG TRIGGER FAILED : Error : ${err}</body></html>`);
       }
       return true;
     }
@@ -139,6 +120,45 @@ export class LocalServer {
       const written: boolean = await LocalServer.writeProxyResultToServerResponse(result, response, logEventLevel);
       return written;
     }
+  }
+
+  public static parseEpsilonBackgroundTriggerAsTask(evt: APIGatewayEvent): BackgroundEntry<any> {
+    Logger.info('Running background trigger');
+    // Fires off the event as a SNS event instead of a HTTP event
+    const taskName: string = StringRatchet.trimToNull(evt.queryStringParameters['task']);
+    let dataJson: string = StringRatchet.trimToNull(evt.queryStringParameters['dataJson']);
+    let metaJson: string = StringRatchet.trimToNull(evt.queryStringParameters['metaJson']);
+    dataJson = dataJson ? decodeURI(dataJson) : dataJson;
+    metaJson = metaJson ? decodeURI(metaJson) : metaJson;
+    let error: string = '';
+
+    error += taskName ? '' : 'No task provided';
+    let data: any = null;
+    let _meta: any = null;
+    try {
+      if (dataJson) {
+        data =JSON.parse(dataJson)
+      }
+    } catch (err) {
+      error += 'Data is not valid JSON : '+err;
+    }
+    try {
+      if (metaJson) {
+        _meta = JSON.parse(metaJson)
+      }
+    } catch (err) {
+      error += 'Meta is not valid JSON : '+err;
+    }
+
+    if (error.length>0) {
+      throw ErrorRatchet.throwFormattedErr('Errors %j', error);
+    }
+    const rval: BackgroundEntry<any> = {
+      type: taskName,
+      data: data,
+      //meta: meta
+    }
+    return rval;
   }
 
   public static async bodyAsBase64String(request: IncomingMessage): Promise<string> {
@@ -225,6 +245,45 @@ export class LocalServer {
       },
     };
 
+    return rval;
+  }
+
+  public static createBackgroundSNSEvent(
+    entry: BackgroundEntry<any>
+  ): SNSEvent {
+    const internal: InternalBackgroundEntry<any> = Object.assign({}, entry, {
+      createdEpochMS: new Date().getTime(),
+      guid: AbstractBackgroundManager.generateBackgroundGuid(),
+      traceId: 'FAKE-TRACE-'+StringRatchet.createType4Guid(),
+      traceDepth: 1
+    });
+    const toWrite: any = {
+      type: EpsilonConstants.BACKGROUND_SNS_IMMEDIATE_RUN_FLAG,
+      backgroundEntry: internal
+    };
+
+    const rval: SNSEvent = {
+      Records: [
+        {
+          "EventVersion": "1.0",
+          "EventSubscriptionArn": "arn:aws:sns:us-east-1:123456789012:sns-lambda:21be56ed-a058-49f5-8c98-aedd2564c486",
+          "EventSource": "aws:sns",
+          "Sns": {
+            "SignatureVersion": "1",
+            "Timestamp": "2019-01-02T12:45:07.000Z",
+            "Signature": "tcc6faL2yUC6dgZdmrwh1Y4cGa/ebXEkAi6RibDsvpi+tE/1+82j...65r==",
+            "SigningCertUrl": "https://sns.us-east-1.amazonaws.com/SimpleNotificationService-ac565b8b1a6c5d002d285f9598aa1d9b.pem",
+            "MessageId": "95df01b4-ee98-5cb9-9903-4c221d41eb5e",
+            "Message": JSON.stringify(toWrite),
+            "MessageAttributes": {},
+            "Type": "Notification",
+            "UnsubscribeUrl": "https://sns.us-east-1.amazonaws.com/?Action=Unsubscribe&amp;SubscriptionArn=arn:aws:sns:us-east-1:123456789012:test-lambda:21be56ed-a058-49f5-8c98-aedd2564c486",
+            "TopicArn": "arn:aws:sns:us-east-1:123456789012:sns-lambda",
+            "Subject": "EpsilonBackgroundInvoke"
+          }
+        }
+      ]
+    };
     return rval;
   }
 
