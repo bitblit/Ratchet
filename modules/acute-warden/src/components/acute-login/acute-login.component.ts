@@ -22,13 +22,14 @@ import { AlertComponent } from "@bitblit/ngx-acute-common";
 import {DialogService} from "primeng/dynamicdialog";
 import { InputTextModule } from "primeng/inputtext";
 import { RequireRatchet } from "@bitblit/ratchet-common/lang/require-ratchet";
+import { InputOtpModule } from "primeng/inputotp";
 
 
 @Component({
   selector: 'ngx-acute-warden-login',
   templateUrl: './acute-login.component.html',
   standalone: true,
-  imports: [ButtonModule, RouterModule, FormsModule, CommonModule, CardModule, TooltipModule, ButtonModule, FieldsetModule, InputTextModule]
+  imports: [ButtonModule, RouterModule, FormsModule, CommonModule, CardModule, TooltipModule, ButtonModule, FieldsetModule, InputTextModule, InputOtpModule]
 })
 export class AcuteLoginComponent implements OnInit {
   @Input() public postLoginUrl: string;
