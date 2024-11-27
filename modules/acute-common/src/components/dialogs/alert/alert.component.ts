@@ -12,7 +12,6 @@ import { AsyncPipe } from '@angular/common';
 })
 export class AlertComponent {
   constructor(
-    private dialogService: DialogService,
     public cfg: DynamicDialogConfig,
     protected ref: DynamicDialogRef,
   ) {

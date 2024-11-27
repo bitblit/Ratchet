@@ -96,7 +96,7 @@ export class EpsilonWebsiteStack extends Stack {
     });
 
     // Add extra bucket mappings, if any
-    // Any extra buckets are assumed to have been created outside of Epsilon, so they are imported not created
+    // They are assumed to have been created outside of Epsilon, so they are imported not created
     (props.simpleAdditionalMappings || []).forEach((eb) => {
       const nextBucket = Bucket.fromBucketAttributes(this, eb.bucketName + 'ImportedBucket', {
         bucketName: eb.bucketName,

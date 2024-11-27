@@ -255,7 +255,6 @@ export class EpsilonApiStack extends Stack {
             }
           }
         }
-
       }
     }
 
