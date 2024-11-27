@@ -54,14 +54,12 @@
                 <div style="display: flex; flex-direction: column; min-width: 100%; justify-content: center; align-items: center; gap: 10px">
                     <div>Code sent to <span style="font-weight: bolder">{{waitingContact.value}}</span></div>
                     <input type="hidden" class="p-inputtext rounded-input" [(ngModel)]="waitingContact.value" id="waitingContactValue" readonly="true">
-                    <p-inputOtp [(ngModel)]="verificationCode" id="verificationCode" style="width: 100%" [length]="6">
+                    <p-inputOtp [(ngModel)]="verificationCode" id="verificationCode" style="width: 100%" [length]="6" />
                     <div style="display: flex; flex-direction: row; justify-content: space-between; gap: 5px">
                         <p-button (click)="submitVerificationCode(waitingContact.value, verificationCode)"
                                   label="Submit code">
                         </p-button>
-
                         <p-button (click)="toggleCard(true)" label="Cancel"></p-button>
-
                     </div>
                 </div>
             </p-fieldset>
