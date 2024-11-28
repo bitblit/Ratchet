@@ -36,7 +36,7 @@ import {ToolbarModule} from "primeng/toolbar";
   standalone: true,
   imports: [ButtonModule, RouterModule, FormsModule, CommonModule, CardModule, TooltipModule, ButtonModule, FieldsetModule, InputTextModule, InputOtpModule, AccordionModule, TabViewModule, SplitButtonModule, InputGroupModule, ToolbarModule]
 })
-export class T1Component implements AfterViewChecked {
+export class AcuteLoginComponent implements AfterViewChecked {
   @Input() public applicationName: string;
   @Input() public helperText: string;
 

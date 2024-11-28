@@ -4,8 +4,23 @@
 
 import { Logger } from '../logger/logger.js';
 import { StringRatchet } from './string-ratchet.js';
+import { ErrorHandlingApproach } from "./error-handling-approach.js";
+import { LoggerLevelName } from "../logger/logger-level-name.js";
 
 export class ErrorRatchet {
+  public static handleErrorByApproach(err: any, approach: ErrorHandlingApproach, level: LoggerLevelName = LoggerLevelName.error, formatMsg:string = 'Error: %s') {
+    if (err && approach) {
+      if (approach===ErrorHandlingApproach.LogAndSwallow || approach===ErrorHandlingApproach.LogAndPassThru) {
+        Logger.logByLevel(level, formatMsg,err,err);
+      }
+      if (approach===ErrorHandlingApproach.PassThru || approach===ErrorHandlingApproach.LogAndPassThru) {
+        throw err;
+      }
+    } else {
+      Logger.error('Cannot handle error %s - %s, missing either error or approach',err,approach);
+    }
+  }
+
   public static safeStringifyErr(err: any, log = true): string {
     let rval = 'ERR WAS NULL';
     if (err) {
