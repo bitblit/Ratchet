@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from "@angular/core";
+import {AfterViewChecked, Component, Input} from "@angular/core";
 import {ActivatedRoute, Router, RouterModule} from '@angular/router';
 
 import {Logger} from '@bitblit/ratchet-common/logger/logger';
@@ -18,26 +18,33 @@ import {CommonModule} from "@angular/common";
 import {CardModule} from "primeng/card";
 import {TooltipModule} from "primeng/tooltip";
 import {FieldsetModule} from "primeng/fieldset";
-import { AlertComponent } from "@bitblit/ngx-acute-common";
+import {AlertComponent} from "@bitblit/ngx-acute-common";
 import {DialogService} from "primeng/dynamicdialog";
-import { InputTextModule } from "primeng/inputtext";
-import { RequireRatchet } from "@bitblit/ratchet-common/lang/require-ratchet";
-import { InputOtpModule } from "primeng/inputotp";
+import {InputTextModule} from "primeng/inputtext";
+import {RequireRatchet} from "@bitblit/ratchet-common/lang/require-ratchet";
+import {InputOtpModule} from "primeng/inputotp";
+import {AccordionModule} from "primeng/accordion";
+import {TabViewModule} from "primeng/tabview";
+import {SplitButtonModule} from "primeng/splitbutton";
+import {InputGroupModule} from "primeng/inputgroup";
+import {ToolbarModule} from "primeng/toolbar";
 
 
 @Component({
   selector: 'ngx-acute-warden-login',
   templateUrl: './acute-login.component.html',
   standalone: true,
-  imports: [ButtonModule, RouterModule, FormsModule, CommonModule, CardModule, TooltipModule, ButtonModule, FieldsetModule, InputTextModule, InputOtpModule]
+  imports: [ButtonModule, RouterModule, FormsModule, CommonModule, CardModule, TooltipModule, ButtonModule, FieldsetModule, InputTextModule, InputOtpModule, AccordionModule, TabViewModule, SplitButtonModule, InputGroupModule, ToolbarModule]
 })
-export class AcuteLoginComponent implements OnInit {
-  @Input() public postLoginUrl: string;
+export class T1Component implements AfterViewChecked {
+  @Input() public applicationName: string;
+  @Input() public helperText: string;
 
-  public showCodeCard: boolean = false;
+  @Input() public postLoginUrl: string;
 
   public verificationCode: string;
   public waitingContact: WardenContact;
+  public showCodePage: boolean = false;
 
   public newContactValue: string;
 
@@ -65,7 +72,8 @@ export class AcuteLoginComponent implements OnInit {
   }
 
   public get recentLogins(): WardenRecentLoginDescriptor[] {
-    return this.userService?.serviceOptions?.recentLoginProvider?.fetchAllLogins() || [];
+    const rval: WardenRecentLoginDescriptor[] =  this.userService?.serviceOptions?.recentLoginProvider?.fetchAllLogins() || [];
+    return rval;
   }
 
   public clearSavedLogins(): void {
@@ -73,7 +81,8 @@ export class AcuteLoginComponent implements OnInit {
       this.userService.serviceOptions.recentLoginProvider.clearAllLogins();
     }
   }
-  ngOnInit(): void {
+
+  ngAfterViewChecked(): void {
     //Logger.info('ngi: %j', this.route.queryParamMap);
     RequireRatchet.notNullUndefinedOrOnlyWhitespaceString(this.postLoginUrl, 'postLoginUrl may not be empty');
   }
@@ -93,7 +102,7 @@ export class AcuteLoginComponent implements OnInit {
         this.waitingContact = { type: ct, value: value };
         const val: boolean = await this.userService.sendExpiringCode(this.waitingContact);
         if (val) {
-          this.showCodeCard = true;
+          this.showCodePage = true;
         } else {
           AlertComponent.showAlert(this.dlgService, 'Failed to send code');
         }
@@ -102,13 +111,14 @@ export class AcuteLoginComponent implements OnInit {
   }
 
   public async sendCodeToContact(contact: WardenContact): Promise<void> {
+    Logger.info('Send code to contact %j', contact);
     if (contact && StringRatchet.trimToNull(contact.value) && contact.type) {
       this.waitingContact = contact;
       const val: boolean = await this.userService.sendExpiringCode(contact);
       if (val) {
-        this.showCodeCard = true;
+        this.showCodePage = true;
       } else {
-        alert('Failed to send code');
+        AlertComponent.showAlert(this.dlgService, 'Failed to send code');
       }
     } else {
       Logger.info('Failed to send code to contact : %j', contact);
@@ -123,17 +133,18 @@ export class AcuteLoginComponent implements OnInit {
     );
     if (val) {
       await this.router.navigate([this.postLoginUrl]);
+    } else {
+      AlertComponent.showAlert(this.dlgService, 'Code submission failed');
     }
   }
 
   public async processWebAuthnLogin(userId: string): Promise<void> {
     Logger.info('processWebAuthnLogin: %s', userId);
     const val: WardenLoggedInUserWrapper<any> = await this.userService.executeWebAuthnBasedLogin(userId);
-
-    //AlertComponent.showAlert(this.dd, 'Got : ' + JSON.stringify(val));
-    //const val: boolean = await this.userService.executeValidationTokenBasedLogin(emailAddress, verificationCode);
     if (val) {
       await this.router.navigate([this.postLoginUrl]);
+    } else {
+      AlertComponent.showAlert(this.dlgService, 'Web authentication method failed');
     }
   }
 
@@ -141,14 +152,8 @@ export class AcuteLoginComponent implements OnInit {
     this.userService.serviceOptions.recentLoginProvider.removeUser(userId);
   }
 
-  public toggleCard(clearCode: boolean): void {
-    this.showCodeCard = !this.showCodeCard;
-    if (clearCode) {
-      this.verificationCode = null;
-    }
+  public contactValueInvalidAndDirty(): boolean {
+    return StringRatchet.trimToNull(this.newContactValue) && !WardenUtils.stringIsPhoneNumber(this.newContactValue) && !WardenUtils.stringIsEmailAddress(this.newContactValue);
   }
 
-  public contactValueInvalidAndDirty(): boolean {
-    return StringRatchet.trimToNull(this.newContactValue) && !WardenUtils.stringIsPhoneNumber(this.newContactValue);
-  }
 }

@@ -1,72 +1,69 @@
-<div style="display: flex; flex-direction: column; justify-content: center">
-    <div style="display: flex; flex-direction: row; justify-content: center">
+<div style="display: flex; flex-direction: column; margin: 10px; padding: 2px; align-content: center; justify-content: center">
+  <div style="display: flex; flex-direction: column; align-content: center; justify-content: center; margin: 1em; gap: 2px">
+    <div class="text-3xl font-bold text-center text-primary" *ngIf="applicationName">{{applicationName}}</div>
+    <div class="text-base font-italic text-center text-secondary"  *ngIf="helperText">{{helperText}}</div>
+  </div>
 
-        <p-card *ngIf="!showCodeCard" header="ParaTrade">
-            <div>
-                <p-fieldset legend="New Login">
-                    <div style="display: flex; flex-direction: row; justify-content: space-between; gap: 5px">
-                        <input class="p-inputtext rounded-input" [(ngModel)]="newContactValue" id="newContactValue"
-                               pInputText style="width: 100%"
-                               placeholder="Your Email or Phone" type="text">
-                        <p-button icon="pi pi-envelope" (click)="sendCodeToNewContact(newContactValue)"
-                                  pTooltip="Send code">
-                        </p-button>
-                    </div>
-                    <span *ngIf="contactValueInvalidAndDirty()" style="color:red">Valid email or phone number required</span>
-                </p-fieldset>
+  <div *ngIf="!showCodePage">
 
-                <hr  *ngIf="hasRecentLogins" />
+    <!--<button pButton icon="pi pi-ban" label="Clear Saved Logins" (click)="clearSavedLogins()" style="margin-top: 10px"></button>-->
 
-                <p-fieldset  *ngIf="hasRecentLogins" legend="Previous Logins">
-                    <div *ngFor="let lg of recentLogins; trackBy:userById">
-
-                        <p-fieldset [legend]="lg.user.userLabel">
-
-
-                            <p-button *ngIf="lg?.user?.webAuthnAuthenticatorSummaries?.length" icon="pi pi-lock-open"
-                                      (click)="processWebAuthnLogin(lg.user.userId)" pTooltip="Send WebAuthn" label="Authenticate by device (WebAuthn)">
-                            </p-button>
-
-                            <div *ngFor="let e of lg.user.contactMethods; trackBy:contactByName" style="display: flex; flex-direction: row; gap: 5px">
-
-                                <p-button *ngIf="e.type==='EmailAddress'" icon="pi pi-sign-in"
-                                          (click)="sendCodeToContact(e)" label="Send magic link via email to {{e.value}}"></p-button>
-                                <p-button *ngIf="e.type==='TextCapablePhoneNumber'" icon="pi pi-sign-in"
-                                          (click)="sendCodeToContact(e)" label="Send magic link via text message to {{e.value}}"></p-button>
-                                <p-button icon="pi pi-delete-left"
-                                          (click)="removeSingleLogin(lg.user.userId)" label="Forget {{e.value}}"></p-button>
-                            </div>
-                        </p-fieldset>
-                    </div>
-
-                    <hr/>
-                    <button pButton icon="pi pi-ban" label="Clear Saved Logins" (click)="clearSavedLogins()" style="margin-top: 10px"></button>
-
-                </p-fieldset>
-
-
-            </div>
-        </p-card>
-
-        <p-card *ngIf="showCodeCard" header="ParaTrade Authorization Code">
-
-            <p-fieldset legend="Email">
-                <div style="display: flex; flex-direction: column; min-width: 100%; justify-content: center; align-items: center; gap: 10px">
-                    <div>Code sent to <span style="font-weight: bolder">{{waitingContact.value}}</span></div>
-                    <input type="hidden" class="p-inputtext rounded-input" [(ngModel)]="waitingContact.value" id="waitingContactValue" readonly="true">
-                    <p-inputOtp [(ngModel)]="verificationCode" id="verificationCode" style="width: 100%" [length]="6" />
-                    <div style="display: flex; flex-direction: row; justify-content: space-between; gap: 5px">
-                        <p-button (click)="submitVerificationCode(waitingContact.value, verificationCode)"
-                                  label="Submit code">
-                        </p-button>
-                        <p-button (click)="toggleCard(true)" label="Cancel"></p-button>
-                    </div>
-                </div>
-            </p-fieldset>
-
-        </p-card>
-
-
+    <div style="display: flex; flex-direction: column">
+      <div style="display: flex; flex-direction: row; justify-content: space-between; gap: 5px">
+        <input class="p-inputtext rounded-input" [(ngModel)]="newContactValue" id="newContactValue"
+               pInputText style="width: 100%"
+               placeholder="Your Email or Text-Capable Phone" type="text">
+        <p-button icon="pi pi-envelope" (click)="sendCodeToNewContact(newContactValue)"
+                  pTooltip="Send code" [disabled]="contactValueInvalidAndDirty()">
+        </p-button>
+      </div>
+      <span *ngIf="contactValueInvalidAndDirty()" style="color:red">Valid email or phone number required</span>
     </div>
-</div>
 
+    <div style="display:flex;flex-direction: row; justify-content: space-around; margin: 2em;" *ngIf="hasRecentLogins">
+      <div>-----</div>
+      <div class="text-lg font-italic">Or select a previously used method</div>
+      <div>-----</div>
+    </div>
+
+    <div *ngFor="let lg of recentLogins; trackBy:userById">
+      <div style="display: flex; flex-direction: row; justify-content: space-between;">
+        <h3 class="p-toolbar-start">{{lg.user.userLabel}}</h3>
+        <div class="p-toolbar-center" style="display:flex;flex-direction: row; gap: 1em">
+          <p-button *ngIf="lg?.user?.webAuthnAuthenticatorSummaries?.length" icon="pi pi-lock-open"
+                    (click)="processWebAuthnLogin(lg.user.userId)" pTooltip="Authenticate by device (WebAuthn)">
+          </p-button>
+          <div *ngFor="let e of lg.user.contactMethods; trackBy:contactByName" style="display: flex; flex-direction: row; gap: 5px">
+
+            <p-button *ngIf="e.type==='EmailAddress'" icon="pi pi-envelope"
+                      (click)="sendCodeToContact(e)" pTooltip="{{e.value}}"></p-button>
+            <p-button *ngIf="e.type==='TextCapablePhoneNumber'" icon="pi pi-mobile"
+                      (click)="sendCodeToContact(e)" pTooltip="{{e.value}}"></p-button>
+          </div>
+        </div>
+
+        <div class="p-toolbar-end">
+          <p-button icon="pi pi-delete-left" severity="danger"
+                    (click)="removeSingleLogin(lg.user.userId)" pTooltip="Forget {{lg.user.userLabel}}"></p-button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="showCodePage">
+    <p-fieldset legend="One-Time Code">
+      <div style="display: flex; flex-direction: column; min-width: 100%; justify-content: center; align-items: center; gap: 10px">
+        <div>Enter the code sent to <span style="font-weight: bolder">{{waitingContact.value}}</span></div>
+        <input type="hidden" class="p-inputtext rounded-input" [(ngModel)]="waitingContact.value" id="waitingContactValue" readonly="true">
+        <p-inputOtp [(ngModel)]="verificationCode" id="verificationCode" [length]="6" />
+        <div style="display: flex; flex-direction: row; justify-content: space-between; gap: 5px">
+          <p-button (click)="submitVerificationCode(waitingContact.value, verificationCode)"
+                    label="Submit code">
+          </p-button>
+          <p-button (click)="verificationCode=null;showCodePage=false" label="Cancel"></p-button>
+        </div>
+      </div>
+    </p-fieldset>
+  </div>
+
+</div>
