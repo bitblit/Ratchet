@@ -37,4 +37,13 @@ export class Uint8ArrayRatchet {
     }
     return rval;
   }
+
+
+  // Taken from https://stackoverflow.com/a/22114687
+  public static deepCopy(src:Uint8Array): Uint8Array  {
+    const tmp:ArrayBuffer = new ArrayBuffer(src.byteLength);
+    const dst: Uint8Array = new Uint8Array(tmp);
+    dst.set(new Uint8Array(src));
+    return dst;
+  }
 }
