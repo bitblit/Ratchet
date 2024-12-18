@@ -28,7 +28,7 @@ export class AcuteUserProfileComponent {
 
   constructor(
     private router: Router,
-    private userService: WardenUserService<any>,
+    public userService: WardenUserService<any>,
     private userProvider: WardenDelegatingCurrentUserProvidingUserServiceEventProcessingProvider<any>,
   ) {
     Logger.info('Construct AcuteUserProfileComponent');
@@ -36,6 +36,10 @@ export class AcuteUserProfileComponent {
     this.userProvider.currentUserSubject.subscribe((_val) => {
       this.updateData();
     });
+  }
+  public toggleStayLoggedIn(): void {
+    Logger.info('Toggling stay logged in (currently %s before toggle)', this.userService.autoRefreshEnabled);
+    this.userService.autoRefreshEnabled = !this.userService.autoRefreshEnabled;
   }
 
   private updateData(): void {

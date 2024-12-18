@@ -86,7 +86,7 @@ export class WardenUserService<T> {
 
   public async checkForAutoLogoutOrRefresh(t: number): Promise<void> {
     Logger.debug('Checking for auto-logout or refresh : %s', t);
-    // This code will cause an auto-logout if the token is already expired, but not if its CLOSE to expiration
+    // This code will cause an auto-logout if the token is already expired, but not if it is CLOSE to expiration
     const current: WardenLoggedInUserWrapper<T> = this.fetchLoggedInUserWrapper();
     if (current) {
       const thresholdSeconds: number = this.options.autoLoginHandlingThresholdSeconds || 10; // Default to 10 seconds

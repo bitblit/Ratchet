@@ -120,6 +120,15 @@ export class ArrayRatchet {
     }
     return rval;
   }
+
+  public static shuffleInPlace(array: any[]):void {
+    if (array?.length) { // Ignore nulls and non-arrays
+      for (let i = array.length - 1; i >= 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+    }
+  }
 }
 
 export type ComparisonFunction<T> = (t1: T, t2: T) => number;
