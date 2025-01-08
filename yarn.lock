@@ -1637,19 +1637,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@aws-sdk/lib-dynamodb@npm:3.724.0":
-  version: 3.724.0
-  resolution: "@aws-sdk/lib-dynamodb@npm:3.724.0"
+"@aws-sdk/lib-dynamodb@npm:3.723.0":
+  version: 3.723.0
+  resolution: "@aws-sdk/lib-dynamodb@npm:3.723.0"
   dependencies:
     "@aws-sdk/core": 3.723.0
-    "@aws-sdk/util-dynamodb": 3.724.0
+    "@aws-sdk/util-dynamodb": 3.723.0
     "@smithy/core": ^3.0.0
     "@smithy/smithy-client": ^4.0.0
     "@smithy/types": ^4.0.0
     tslib: ^2.6.2
   peerDependencies:
-    "@aws-sdk/client-dynamodb": ^3.724.0
-  checksum: 6dff215c206871a3bcf92496148e41ad49b74490f425903724f1b168cd4c7ca4477ad7472a20025666efcf6abb26a9a28abcfafc60827f707f2b6021188b39a4
+    "@aws-sdk/client-dynamodb": ^3.723.0
+  checksum: 3a3da1d4c2196808cd1792c4da05a793edd48a53af18a9c651c8d0597a8b2af8ccc2e0ac6a3a809a63d148353bde1b3a6e8fbeaa5e4d025c73d7295ac7ac48aa
   languageName: node
   linkType: hard
 
@@ -1955,14 +1955,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@aws-sdk/util-dynamodb@npm:3.724.0":
-  version: 3.724.0
-  resolution: "@aws-sdk/util-dynamodb@npm:3.724.0"
+"@aws-sdk/util-dynamodb@npm:3.723.0":
+  version: 3.723.0
+  resolution: "@aws-sdk/util-dynamodb@npm:3.723.0"
   dependencies:
     tslib: ^2.6.2
   peerDependencies:
-    "@aws-sdk/client-dynamodb": ^3.724.0
-  checksum: daa5b71a85080cb030983c1f8c810c301d3cd2ba50b2c7066b7df9088478f99a3c178e6dd7f49a6289675be5005808d34bf67c5c4c7a1826bf3bfcfb656e30c5
+    "@aws-sdk/client-dynamodb": ^3.723.0
+  checksum: a21aacc55a65ba2773606d8d3b7f307480868273521d1e917da537749146bae0f5525cfa4526b8f62d8768a63599a0cf5a9fb706684b178057ea3430a9ddecf9
   languageName: node
   linkType: hard
 
@@ -2647,7 +2647,7 @@ __metadata:
     "@aws-sdk/client-ssm": 3.723.0
     "@aws-sdk/client-sts": 3.723.0
     "@aws-sdk/credential-providers": 3.723.0
-    "@aws-sdk/lib-dynamodb": 3.724.0
+    "@aws-sdk/lib-dynamodb": 3.723.0
     "@aws-sdk/lib-storage": 3.723.0
     "@aws-sdk/s3-request-presigner": 3.723.0
     "@aws-sdk/types": 3.723.0
