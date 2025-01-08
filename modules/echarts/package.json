@@ -31,12 +31,12 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@bitblit/ratchet-common": "0.0.0-snapshot",
-    "canvas": "2.11.2",
-    "echarts": "5.5.1"
+    "canvas": "3.0.1",
+    "echarts": "5.6.0"
   },
   "peerDependencies": {
     "@bitblit/ratchet-common": "0.0.0-snapshot",
-    "canvas": "^2.11.2",
-    "echarts": "^5.5.1"
+    "canvas": "^3.0.1",
+    "echarts": "^5.6.0"
   }
 }

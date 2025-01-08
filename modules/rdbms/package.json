@@ -50,22 +50,22 @@
     "@bitblit/ratchet-common": "0.0.0-snapshot"
   },
   "optionalDependencies": {
-    "better-sqlite3": "11.5.0",
+    "better-sqlite3": "11.7.2",
     "get-port": "7.1.0",
-    "mysql2": "3.11.3",
+    "mysql2": "3.12.0",
     "sqlstring": "2.3.3",
-    "tunnel-ssh": "5.1.2"
+    "tunnel-ssh": "5.2.0"
   },
   "peerDependencies": {
     "@bitblit/ratchet-common": "0.0.0-snapshot",
-    "better-sqlite3": "^11.5.0",
+    "better-sqlite3": "^11.7.2",
     "get-port": "^7.1.0",
-    "mysql2": "^3.11.3",
+    "mysql2": "^3.12.0",
     "sqlstring": "^2.3.3",
-    "tunnel-ssh": "^5.1.2"
+    "tunnel-ssh": "^5.2.0"
   },
   "devDependencies": {
-    "@types/better-sqlite3": "7.6.11"
+    "@types/better-sqlite3": "7.6.12"
   },
   "peerDependenciesMeta": {
     "better-sqlite3": {

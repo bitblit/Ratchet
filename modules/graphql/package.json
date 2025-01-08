@@ -47,12 +47,12 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@bitblit/ratchet-common": "0.0.0-snapshot",
-    "graphql": "16.9.0",
-    "graphql-request": "7.1.0"
+    "graphql": "16.10.0",
+    "graphql-request": "7.1.2"
   },
   "peerDependencies": {
     "@bitblit/ratchet-common": "0.0.0-snapshot",
-    "graphql": "^16.9.0",
-    "graphql-request": "^7.1.0"
+    "graphql": "^16.10.0",
+    "graphql-request": "^7.1.2"
   }
 }
