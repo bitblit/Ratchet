@@ -22,7 +22,6 @@ export class PromiseRatchet {
     if (!evtSrc || !okEvtNames || okEvtNames.length === 0 || !evtSrc['on']) {
       return Promise.reject('Cannot continue - missing source object or name, or the object is not an event source');
     }
-
     return new Promise<T>((res, rej) => {
       okEvtNames.forEach((e) => {
         evtSrc.on(e, () => {
