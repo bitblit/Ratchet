@@ -211,3 +211,10 @@ describe('#circSafeFormat', function () {
     expect(out).not.toBeNull;
   });
 });
+
+describe('substring finder', ()=>{
+  test('should detect substring', ()=>{
+    expect(StringRatchet.longestNonOverlappingRepeatingSubstring('abc123abc')).toEqual('abc');
+    expect(StringRatchet.longestNonOverlappingRepeatingSubstring('abc123456')).toEqual(null);
+  });
+});
