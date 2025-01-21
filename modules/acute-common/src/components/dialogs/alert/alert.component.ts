@@ -3,6 +3,7 @@ import { DialogService, DynamicDialogConfig, DynamicDialogRef } from 'primeng/dy
 import { Logger } from '@bitblit/ratchet-common/logger/logger';
 import { BehaviorSubject } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
+import { ButtonModule } from "primeng/button";
 
 @Component({
   selector: 'ngx-acute-common-alert',
@@ -12,7 +13,7 @@ import { AsyncPipe } from '@angular/common';
     '<p-button label="Ok" severity="primary" (click)="ref.close()" />' +
     '</div></div>',
   standalone: true,
-  imports: [AsyncPipe],
+  imports: [AsyncPipe, ButtonModule],
 })
 export class AlertComponent {
   constructor(
