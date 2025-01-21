@@ -6,7 +6,11 @@ import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'ngx-acute-common-alert',
-  template: '<div><pre>{{cfg.data.message | async}}</pre></div>',
+  template: '<div style="display: flex; flex-direction:column; width: 33vw; max-height: 25vh; gap: 5px">' +
+    '<pre style="width: 30vw; max-height: 80%;white-space: pre-wrap">{{cfg.data.message | async}}</pre>' +
+    '<div style="display:flex; flex-direction: row; justify-content: flex-end">' +
+    '<p-button label="Ok" severity="primary" (click)="ref.close()" />' +
+    '</div></div>',
   standalone: true,
   imports: [AsyncPipe],
 })
@@ -15,7 +19,7 @@ export class AlertComponent {
     public cfg: DynamicDialogConfig,
     protected ref: DynamicDialogRef,
   ) {
-    Logger.info('Creating with %j', this.cfg);
+    Logger.info('Creating AlertComponent with %j', this.cfg);
   }
 
   public static showAlert(dialogSvc: DialogService, message: BehaviorSubject<string> | string, title: string = 'Alert'): DynamicDialogRef {
@@ -26,6 +30,9 @@ export class AlertComponent {
         message: message instanceof BehaviorSubject ? message : new BehaviorSubject<string>(message),
       },
       header: title,
+      modal: true,
+      maximizable: false,
+      position: 'top'
     });
     return dlg;
   }
