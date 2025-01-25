@@ -22,26 +22,26 @@ export class CiRunInformationUtil {
 
   public static createDefaultCircleCiRunInformation(timezone = CiRunInformationUtil.DEFAULT_TIME_ZONE): CiRunInformation {
     const rval: CiRunInformation = {
-      buildNumber: GlobalRatchet.fetchGlobalVar('CIRCLE_BUILD_NUM'),
-      branch: GlobalRatchet.fetchGlobalVar('CIRCLE_BRANCH'),
-      tag: GlobalRatchet.fetchGlobalVar('CIRCLE_TAG'),
-      commitHash: GlobalRatchet.fetchGlobalVar('CIRCLE_SHA1'),
+      buildNumber: GlobalRatchet.fetchGlobalEnvVar('CIRCLE_BUILD_NUM'),
+      branch: GlobalRatchet.fetchGlobalEnvVar('CIRCLE_BRANCH'),
+      tag: GlobalRatchet.fetchGlobalEnvVar('CIRCLE_TAG'),
+      commitHash: GlobalRatchet.fetchGlobalEnvVar('CIRCLE_SHA1'),
       localTime: DateTime.local().setZone(timezone).toFormat(CiRunInformationUtil.DEFAULT_TIME_FORMAT),
-      userName: GlobalRatchet.fetchGlobalVar('CIRCLE_USERNAME'),
-      projectName: GlobalRatchet.fetchGlobalVar('CIRCLE_PROJECT_REPONAME'),
+      userName: GlobalRatchet.fetchGlobalEnvVar('CIRCLE_USERNAME'),
+      projectName: GlobalRatchet.fetchGlobalEnvVar('CIRCLE_PROJECT_REPONAME'),
     };
     return rval;
   }
 
   public static createDefaultGithubActionsRunInformation(timezone = CiRunInformationUtil.DEFAULT_TIME_ZONE): CiRunInformation {
     const rval: CiRunInformation = {
-      buildNumber: GlobalRatchet.fetchGlobalVar('GITHUB_RUN_NUMBER'),
-      branch: GlobalRatchet.fetchGlobalVar('GITHUB_REF_NAME'),
-      tag: GlobalRatchet.fetchGlobalVar('GITHUB_REF_NAME'),
-      commitHash: GlobalRatchet.fetchGlobalVar('GITHUB_SHA'),
+      buildNumber: GlobalRatchet.fetchGlobalEnvVar('GITHUB_RUN_NUMBER'),
+      branch: GlobalRatchet.fetchGlobalEnvVar('GITHUB_REF_NAME'),
+      tag: GlobalRatchet.fetchGlobalEnvVar('GITHUB_REF_NAME'),
+      commitHash: GlobalRatchet.fetchGlobalEnvVar('GITHUB_SHA'),
       localTime: DateTime.local().setZone(timezone).toFormat(CiRunInformationUtil.DEFAULT_TIME_FORMAT),
-      userName: GlobalRatchet.fetchGlobalVar('GITHUB_ACTOR'),
-      projectName: GlobalRatchet.fetchGlobalVar('GITHUB_REPOSITORY'),
+      userName: GlobalRatchet.fetchGlobalEnvVar('GITHUB_ACTOR'),
+      projectName: GlobalRatchet.fetchGlobalEnvVar('GITHUB_REPOSITORY'),
     };
     return rval;
   }

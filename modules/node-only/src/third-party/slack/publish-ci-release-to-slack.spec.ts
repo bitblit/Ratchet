@@ -16,12 +16,12 @@ describe('#publishCircleCiReleaseToSlack', function () {
   });
 
   test.skip('should not fail if in a circle ci environment', async () => {
-    GlobalRatchet.setGlobalVar('CIRCLE_BUILD_NUM', '1');
-    GlobalRatchet.setGlobalVar('CIRCLE_BRANCH', 'B');
-    GlobalRatchet.setGlobalVar('CIRCLE_TAG', 'T');
-    GlobalRatchet.setGlobalVar('CIRCLE_SHA1', 'S');
-    GlobalRatchet.setGlobalVar('CIRCLE_USERNAME', 'cweiss');
-    GlobalRatchet.setGlobalVar('CIRCLE_PROJECT_REPONAME', 'tester');
+    GlobalRatchet.setGlobalEnvVar('CIRCLE_BUILD_NUM', '1');
+    GlobalRatchet.setGlobalEnvVar('CIRCLE_BRANCH', 'B');
+    GlobalRatchet.setGlobalEnvVar('CIRCLE_TAG', 'T');
+    GlobalRatchet.setGlobalEnvVar('CIRCLE_SHA1', 'S');
+    GlobalRatchet.setGlobalEnvVar('CIRCLE_USERNAME', 'cweiss');
+    GlobalRatchet.setGlobalEnvVar('CIRCLE_PROJECT_REPONAME', 'tester');
 
     const result: string = await PublishCiReleaseToSlack.process('slackUrlHere');
     expect(result).toEqual('ok');

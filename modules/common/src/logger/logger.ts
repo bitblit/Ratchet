@@ -7,6 +7,7 @@ import { LoggerLevelName } from './logger-level-name.js';
 import { LoggerRingBuffer } from './logger-ring-buffer.js';
 import { LogMessageBuilder } from './log-message-builder.js';
 import { LoggerOutputFunction } from './logger-output-function.js';
+import { GlobalRatchet } from "../lang/global-ratchet";
 
 /**
  * Class to simplify logging across both browsers and node (especially lambda)
@@ -20,7 +21,6 @@ import { LoggerOutputFunction } from './logger-output-function.js';
 
 export class Logger {
   private static LOGGER_INSTANCE_MAP_GLOBAL_KEY = 'RATCHET_GLOBAL_LOGGER_MAP_V01';
-  private static GLOBAL_PROVIDER: Record<string, any> = process || global || window;
   //private static LOGGER_INSTANCES: Map<string, LoggerInstance> = new Map<string, LoggerInstance>();
   private static DEFAULT_OPTIONS: LoggerOptions = {
     initialLevel: LoggerLevelName.info,
@@ -45,13 +45,11 @@ export class Logger {
   }
 
   private static loggerInstances(): Map<string, LoggerInstance> {
-    if (!Logger.GLOBAL_PROVIDER) {
-      throw new Error('Cannot create logger - could not find a global provider');
-    }
-    let rval: Map<string, LoggerInstance> = Logger.GLOBAL_PROVIDER[Logger.LOGGER_INSTANCE_MAP_GLOBAL_KEY];
+    GlobalRatchet.fetchGlobalVarsRecord(false); // Will throw an exception if global cant setup
+    let rval: Map<string, LoggerInstance> = GlobalRatchet.fetchGlobalVar(Logger.LOGGER_INSTANCE_MAP_GLOBAL_KEY);
     if (!rval) {
       rval = new Map<string, LoggerInstance>();
-      Logger.GLOBAL_PROVIDER[Logger.LOGGER_INSTANCE_MAP_GLOBAL_KEY] = rval;
+      GlobalRatchet.setGlobalVar(Logger.LOGGER_INSTANCE_MAP_GLOBAL_KEY, rval);
     }
     return rval;
   }

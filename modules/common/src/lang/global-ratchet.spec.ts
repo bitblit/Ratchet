@@ -8,10 +8,10 @@ describe('#globalRatchet', function () {
     const tester2: string = StringRatchet.createType4Guid();
     process.env['GLOBALTEST'] = tester;
 
-    const value: string = GlobalRatchet.fetchGlobalVar('GLOBALTEST');
+    const value: string = GlobalRatchet.fetchGlobalEnvVar('GLOBALTEST');
     expect(value).toEqual(tester);
-    GlobalRatchet.setGlobalVar('GLOBALTEST', tester2);
-    const value2: string = GlobalRatchet.fetchGlobalVar('GLOBALTEST');
+    GlobalRatchet.setGlobalEnvVar('GLOBALTEST', tester2);
+    const value2: string = GlobalRatchet.fetchGlobalEnvVar('GLOBALTEST');
     expect(value2).toEqual(tester2);
   });
 });

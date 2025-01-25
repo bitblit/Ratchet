@@ -20,10 +20,10 @@ describe('#applyCiEnvVariablesToFiles', function () {
   });
 
   test('should not fail if in a ci environment', async () => {
-    GlobalRatchet.setGlobalVar('CIRCLE_BUILD_NUM', '1');
-    GlobalRatchet.setGlobalVar('CIRCLE_BRANCH', 'B');
-    GlobalRatchet.setGlobalVar('CIRCLE_TAG', 'T');
-    GlobalRatchet.setGlobalVar('CIRCLE_SHA1', 'S');
+    GlobalRatchet.setGlobalEnvVar('CIRCLE_BUILD_NUM', '1');
+    GlobalRatchet.setGlobalEnvVar('CIRCLE_BRANCH', 'B');
+    GlobalRatchet.setGlobalEnvVar('CIRCLE_TAG', 'T');
+    GlobalRatchet.setGlobalEnvVar('CIRCLE_SHA1', 'S');
 
     const result: number = await ApplyCiEnvVariablesToFiles.process([], CiRunInformationUtil.createDefaultCircleCiRunInformation());
     expect(result).toEqual(0);
