@@ -1036,6 +1036,70 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@aws-sdk/client-s3@npm:3.734.0":
+  version: 3.734.0
+  resolution: "@aws-sdk/client-s3@npm:3.734.0"
+  dependencies:
+    "@aws-crypto/sha1-browser": 5.2.0
+    "@aws-crypto/sha256-browser": 5.2.0
+    "@aws-crypto/sha256-js": 5.2.0
+    "@aws-sdk/core": 3.734.0
+    "@aws-sdk/credential-provider-node": 3.734.0
+    "@aws-sdk/middleware-bucket-endpoint": 3.734.0
+    "@aws-sdk/middleware-expect-continue": 3.734.0
+    "@aws-sdk/middleware-flexible-checksums": 3.734.0
+    "@aws-sdk/middleware-host-header": 3.734.0
+    "@aws-sdk/middleware-location-constraint": 3.734.0
+    "@aws-sdk/middleware-logger": 3.734.0
+    "@aws-sdk/middleware-recursion-detection": 3.734.0
+    "@aws-sdk/middleware-sdk-s3": 3.734.0
+    "@aws-sdk/middleware-ssec": 3.734.0
+    "@aws-sdk/middleware-user-agent": 3.734.0
+    "@aws-sdk/region-config-resolver": 3.734.0
+    "@aws-sdk/signature-v4-multi-region": 3.734.0
+    "@aws-sdk/types": 3.734.0
+    "@aws-sdk/util-endpoints": 3.734.0
+    "@aws-sdk/util-user-agent-browser": 3.734.0
+    "@aws-sdk/util-user-agent-node": 3.734.0
+    "@aws-sdk/xml-builder": 3.734.0
+    "@smithy/config-resolver": ^4.0.1
+    "@smithy/core": ^3.1.1
+    "@smithy/eventstream-serde-browser": ^4.0.1
+    "@smithy/eventstream-serde-config-resolver": ^4.0.1
+    "@smithy/eventstream-serde-node": ^4.0.1
+    "@smithy/fetch-http-handler": ^5.0.1
+    "@smithy/hash-blob-browser": ^4.0.1
+    "@smithy/hash-node": ^4.0.1
+    "@smithy/hash-stream-node": ^4.0.1
+    "@smithy/invalid-dependency": ^4.0.1
+    "@smithy/md5-js": ^4.0.1
+    "@smithy/middleware-content-length": ^4.0.1
+    "@smithy/middleware-endpoint": ^4.0.2
+    "@smithy/middleware-retry": ^4.0.3
+    "@smithy/middleware-serde": ^4.0.1
+    "@smithy/middleware-stack": ^4.0.1
+    "@smithy/node-config-provider": ^4.0.1
+    "@smithy/node-http-handler": ^4.0.2
+    "@smithy/protocol-http": ^5.0.1
+    "@smithy/smithy-client": ^4.1.2
+    "@smithy/types": ^4.1.0
+    "@smithy/url-parser": ^4.0.1
+    "@smithy/util-base64": ^4.0.0
+    "@smithy/util-body-length-browser": ^4.0.0
+    "@smithy/util-body-length-node": ^4.0.0
+    "@smithy/util-defaults-mode-browser": ^4.0.3
+    "@smithy/util-defaults-mode-node": ^4.0.3
+    "@smithy/util-endpoints": ^3.0.1
+    "@smithy/util-middleware": ^4.0.1
+    "@smithy/util-retry": ^4.0.1
+    "@smithy/util-stream": ^4.0.2
+    "@smithy/util-utf8": ^4.0.0
+    "@smithy/util-waiter": ^4.0.2
+    tslib: ^2.6.2
+  checksum: ac6065b43fbc78530aa0227524a5ca6d98048b3ab9493c403ee4de8760baca1491b0b390e93ed7e56c19cfedb599e0c1899d2ea842a72219ead46b44b03ffa09
+  languageName: node
+  linkType: hard
+
 "@aws-sdk/client-s3@npm:3.735.0":
   version: 3.735.0
   resolution: "@aws-sdk/client-s3@npm:3.735.0"
@@ -1586,9 +1650,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@aws-sdk/lib-storage@npm:3.735.0":
-  version: 3.735.0
-  resolution: "@aws-sdk/lib-storage@npm:3.735.0"
+"@aws-sdk/lib-storage@npm:3.734.0":
+  version: 3.734.0
+  resolution: "@aws-sdk/lib-storage@npm:3.734.0"
   dependencies:
     "@smithy/abort-controller": ^4.0.1
     "@smithy/middleware-endpoint": ^4.0.2
@@ -1598,8 +1662,8 @@ __metadata:
     stream-browserify: 3.0.0
     tslib: ^2.6.2
   peerDependencies:
-    "@aws-sdk/client-s3": ^3.735.0
-  checksum: 5cf666fd829eb5dd9f760a849cadd738986a29589383803e48669947224fd79673d6d03e7e83208ba0cb33cb93f945d3cfb12ebe74034095eab02139221c5589
+    "@aws-sdk/client-s3": ^3.734.0
+  checksum: 444755242611acb19f9725f82670a600f1c6bda50a771e28ef7a140dd24762a479e1d31692c410b9dd0dd372c7f6722e8af07fab53180a2be38881e84b031516
   languageName: node
   linkType: hard
 
@@ -1641,6 +1705,27 @@ __metadata:
     "@smithy/types": ^4.1.0
     tslib: ^2.6.2
   checksum: 424ad0fecdd903d3f5d7695bc46b246359c1808e99c2fb00427430777cc16110072c1dff35a44ff6b7f597a3ea6df2658fc0f8c972456e7e4684abd7fe83865c
+  languageName: node
+  linkType: hard
+
+"@aws-sdk/middleware-flexible-checksums@npm:3.734.0":
+  version: 3.734.0
+  resolution: "@aws-sdk/middleware-flexible-checksums@npm:3.734.0"
+  dependencies:
+    "@aws-crypto/crc32": 5.2.0
+    "@aws-crypto/crc32c": 5.2.0
+    "@aws-crypto/util": 5.2.0
+    "@aws-sdk/core": 3.734.0
+    "@aws-sdk/types": 3.734.0
+    "@smithy/is-array-buffer": ^4.0.0
+    "@smithy/node-config-provider": ^4.0.1
+    "@smithy/protocol-http": ^5.0.1
+    "@smithy/types": ^4.1.0
+    "@smithy/util-middleware": ^4.0.1
+    "@smithy/util-stream": ^4.0.2
+    "@smithy/util-utf8": ^4.0.0
+    tslib: ^2.6.2
+  checksum: ee069dfd1c480a5200f0e425e014a8cdb55948d8d7b4a733ecaf988a03875be495bac14812c8d3f3bb6a2a59f3e5a904af67ad54b62d56205c2e5ca760edc10b
   languageName: node
   linkType: hard
 
@@ -1860,9 +1945,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@aws-sdk/s3-request-presigner@npm:3.735.0":
-  version: 3.735.0
-  resolution: "@aws-sdk/s3-request-presigner@npm:3.735.0"
+"@aws-sdk/s3-request-presigner@npm:3.734.0":
+  version: 3.734.0
+  resolution: "@aws-sdk/s3-request-presigner@npm:3.734.0"
   dependencies:
     "@aws-sdk/signature-v4-multi-region": 3.734.0
     "@aws-sdk/types": 3.734.0
@@ -1872,7 +1957,7 @@ __metadata:
     "@smithy/smithy-client": ^4.1.2
     "@smithy/types": ^4.1.0
     tslib: ^2.6.2
-  checksum: 943964969146417e956c53e6314e4e1906f0fb85302b766d9a6f25c84af0e5dbd0e85c838789e4287b394d8d3b75b1786beb62ded93490255511c04b82eada1e
+  checksum: 02983465c4f2d8f23dc719eb10a43e0ef3d7312376e80816370f3120f237f2f585edad5ba9ecb2c931c440bd923728c6b72bc76c9d01e23a0e5a34c7d3aa7c3d
   languageName: node
   linkType: hard
 
@@ -2543,9 +2628,9 @@ __metadata:
     unzipper: 0.12.3
     walk: 2.3.15
   peerDependencies:
-    "@aws-sdk/client-athena": ^3.723.0
-    "@aws-sdk/client-sts": ^3.723.0
-    "@aws-sdk/types": ^3.723.0
+    "@aws-sdk/client-athena": ^3.734.0
+    "@aws-sdk/client-sts": ^3.734.0
+    "@aws-sdk/types": ^3.734.0
     "@bitblit/ratchet-aws": 0.0.0-snapshot
     "@bitblit/ratchet-common": 0.0.0-snapshot
     "@smithy/abort-controller": ^4.0.0
@@ -2625,15 +2710,15 @@ __metadata:
     "@aws-sdk/client-ecr": 3.734.0
     "@aws-sdk/client-lambda": 3.734.0
     "@aws-sdk/client-route-53": 3.734.0
-    "@aws-sdk/client-s3": 3.735.0
+    "@aws-sdk/client-s3": 3.734.0
     "@aws-sdk/client-ses": 3.734.0
     "@aws-sdk/client-sns": 3.734.0
     "@aws-sdk/client-ssm": 3.735.0
     "@aws-sdk/client-sts": 3.734.0
     "@aws-sdk/credential-providers": 3.734.0
     "@aws-sdk/lib-dynamodb": 3.734.0
-    "@aws-sdk/lib-storage": 3.735.0
-    "@aws-sdk/s3-request-presigner": 3.735.0
+    "@aws-sdk/lib-storage": 3.734.0
+    "@aws-sdk/s3-request-presigner": 3.734.0
     "@aws-sdk/types": 3.734.0
     "@bitblit/ratchet-common": 0.0.0-snapshot
     "@bitblit/ratchet-node-only": 0.0.0-snapshot
@@ -2644,25 +2729,25 @@ __metadata:
     aws-sdk-client-mock: 4.1.0
   peerDependencies:
     "@aws-sdk/client-athena": ^3.723.0
-    "@aws-sdk/client-batch": ^3.723.0
-    "@aws-sdk/client-cloudwatch": ^3.723.0
-    "@aws-sdk/client-cloudwatch-logs": ^3.723.0
-    "@aws-sdk/client-dynamodb": ^3.723.0
-    "@aws-sdk/client-ec2": ^3.723.0
-    "@aws-sdk/client-ec2-instance-connect": ^3.723.0
-    "@aws-sdk/client-ecr": ^3.723.0
-    "@aws-sdk/client-lambda": ^3.723.0
-    "@aws-sdk/client-route-53": ^3.723.0
-    "@aws-sdk/client-s3": ^3.723.0
-    "@aws-sdk/client-ses": ^3.723.0
-    "@aws-sdk/client-sns": ^3.723.0
-    "@aws-sdk/client-ssm": ^3.723.0
-    "@aws-sdk/client-sts": ^3.723.0
-    "@aws-sdk/credential-providers": ^3.723.0
-    "@aws-sdk/lib-dynamodb": ^3.723.0
-    "@aws-sdk/lib-storage": ^3.723.0
-    "@aws-sdk/s3-request-presigner": ^3.723.0
-    "@aws-sdk/types": ^3.723.0
+    "@aws-sdk/client-batch": ^3.734.0
+    "@aws-sdk/client-cloudwatch": ^3.734.0
+    "@aws-sdk/client-cloudwatch-logs": ^3.734.0
+    "@aws-sdk/client-dynamodb": ^3.734.0
+    "@aws-sdk/client-ec2": ^3.734.0
+    "@aws-sdk/client-ec2-instance-connect": ^3.734.0
+    "@aws-sdk/client-ecr": ^3.734.0
+    "@aws-sdk/client-lambda": ^3.734.0
+    "@aws-sdk/client-route-53": ^3.734.0
+    "@aws-sdk/client-s3": ^3.734.0
+    "@aws-sdk/client-ses": ^3.734.0
+    "@aws-sdk/client-sns": ^3.734.0
+    "@aws-sdk/client-ssm": ^3.734.0
+    "@aws-sdk/client-sts": ^3.734.0
+    "@aws-sdk/credential-providers": ^3.734.0
+    "@aws-sdk/lib-dynamodb": ^3.734.0
+    "@aws-sdk/lib-storage": ^3.734.0
+    "@aws-sdk/s3-request-presigner": ^3.734.0
+    "@aws-sdk/types": ^3.734.0
     "@bitblit/ratchet-common": 0.0.0-snapshot
     "@smithy/abort-controller": ^4.0.0
     "@smithy/smithy-client": ^4.0.0
@@ -2795,7 +2880,7 @@ __metadata:
     echarts: 5.6.0
   peerDependencies:
     "@bitblit/ratchet-common": 0.0.0-snapshot
-    canvas: ^3.0.1
+    canvas: ^3.1.0
     echarts: ^5.6.0
   languageName: unknown
   linkType: soft
@@ -2858,7 +2943,7 @@ __metadata:
     constructs: 10.4.2
   peerDependencies:
     "@bitblit/ratchet-common": 0.0.0-snapshot
-    aws-cdk-lib: ^2.175.1
+    aws-cdk-lib: ^2.176.0
     constructs: ^10.4.2
   languageName: unknown
   linkType: soft
@@ -2986,7 +3071,7 @@ __metadata:
     tunnel-ssh: 5.2.0
   peerDependencies:
     "@bitblit/ratchet-common": 0.0.0-snapshot
-    better-sqlite3: ^11.7.2
+    better-sqlite3: ^11.8.1
     get-port: ^7.1.0
     mysql2: ^3.12.0
     sqlstring: ^2.3.3
@@ -3025,7 +3110,7 @@ __metadata:
     jwt-decode: 4.0.0
   peerDependencies:
     "@bitblit/ratchet-common": ^0.0.0-snapshot
-    "@simplewebauthn/browser": ^11.0.0
+    "@simplewebauthn/browser": ^13.1.0
     jwt-decode: ^4.0.0
   languageName: unknown
   linkType: soft
@@ -3034,7 +3119,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@bitblit/ratchet-warden-server@workspace:modules/warden-server"
   dependencies:
-    "@aws-sdk/client-s3": 3.735.0
+    "@aws-sdk/client-s3": 3.734.0
     "@aws-sdk/client-ses": 3.734.0
     "@bitblit/ratchet-aws": 0.0.0-snapshot
     "@bitblit/ratchet-common": 0.0.0-snapshot
@@ -3049,8 +3134,8 @@ __metadata:
     "@bitblit/ratchet-aws": 0.0.0-snapshot
     "@bitblit/ratchet-common": 0.0.0-snapshot
     "@bitblit/ratchet-warden-common": 0.0.0-snapshot
-    "@simplewebauthn/browser": ^11.0.0
-    "@simplewebauthn/server": ^11.0.0
+    "@simplewebauthn/browser": ^13.1.0
+    "@simplewebauthn/server": ^13.1.0
     jsonwebtoken: ^9.0.2
   languageName: unknown
   linkType: soft

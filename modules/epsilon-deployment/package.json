@@ -58,7 +58,7 @@
   },
   "peerDependencies": {
     "@bitblit/ratchet-common": "0.0.0-snapshot",
-    "aws-cdk-lib": "^2.175.1",
+    "aws-cdk-lib": "^2.176.0",
     "constructs": "^10.4.2"
   }
 }
