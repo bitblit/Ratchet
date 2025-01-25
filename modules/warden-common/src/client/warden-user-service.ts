@@ -1,20 +1,25 @@
-import { Logger } from '@bitblit/ratchet-common/logger/logger';
-import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet';
-import { JwtDecodeOnlyRatchet } from '@bitblit/ratchet-common/jwt/jwt-decode-only-ratchet';
-import { Subscription, timer } from 'rxjs';
-import { WardenUserServiceOptions } from './provider/warden-user-service-options.js';
-import { WardenLoggedInUserWrapper } from './provider/warden-logged-in-user-wrapper.js';
-import { WardenContact } from '../common/model/warden-contact.js';
-import { WardenJwtToken } from '../common/model/warden-jwt-token.js';
-import { WardenLoginResults } from '../common/model/warden-login-results.js';
-import { WardenLoginRequest } from '../common/model/warden-login-request.js';
+import { Logger } from "@bitblit/ratchet-common/logger/logger";
+import { StringRatchet } from "@bitblit/ratchet-common/lang/string-ratchet";
+import { JwtDecodeOnlyRatchet } from "@bitblit/ratchet-common/jwt/jwt-decode-only-ratchet";
+import { Subscription, timer } from "rxjs";
+import { WardenUserServiceOptions } from "./provider/warden-user-service-options.js";
+import { WardenLoggedInUserWrapper } from "./provider/warden-logged-in-user-wrapper.js";
+import { WardenContact } from "../common/model/warden-contact.js";
+import { WardenJwtToken } from "../common/model/warden-jwt-token.js";
+import { WardenLoginResults } from "../common/model/warden-login-results.js";
+import { WardenLoginRequest } from "../common/model/warden-login-request.js";
 
-import { AuthenticationResponseJSON, PublicKeyCredentialRequestOptionsJSON, RegistrationResponseJSON } from '@simplewebauthn/types';
-import { WardenEntrySummary } from '../common/model/warden-entry-summary.js';
-import { startAuthentication, startRegistration } from '@simplewebauthn/browser';
-import { WardenUtils } from '../common/util/warden-utils.js';
-import { StartRegistrationOpts } from '@simplewebauthn/browser/dist/types/methods/startRegistration';
-import { StartAuthenticationOpts } from '@simplewebauthn/browser/dist/types/methods/startAuthentication';
+import {
+  AuthenticationResponseJSON,
+  PublicKeyCredentialRequestOptionsJSON,
+  RegistrationResponseJSON,
+  startAuthentication,
+  StartAuthenticationOpts,
+  startRegistration,
+  StartRegistrationOpts
+} from "@simplewebauthn/browser";
+import { WardenEntrySummary } from "../common/model/warden-entry-summary.js";
+import { WardenUtils } from "../common/util/warden-utils.js";
 
 /**
  * A service that handles logging in, saving the current user, watching

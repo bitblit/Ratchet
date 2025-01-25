@@ -29,18 +29,25 @@ export class ContextUtil {
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   private constructor() {}
 
-  public static initContext(epsilon: EpsilonInstance, evt: any, ctx: Context, processLabel: string): void {
-    const cd: ContextGlobalData = {
-      epsilonInstance: epsilon,
-      context: ctx,
-      event: evt,
+  private static fetchContextData(): ContextGlobalData {
+    return GlobalRatchet.fetchGlobalVar(ContextUtil.CONTEXT_DATA_GLOBAL_NAME, {
+      epsilonInstance: null,
+      context: null,
+      event: null,
       logVariables: {},
-      processLabel: processLabel,
+      processLabel: 'UNSET',
+      overrideTraceDepth: null,
+      overrideTraceId: null
+    });
+  }
 
-      overrideTraceId: undefined,
-      overrideTraceDepth: undefined
-    }
-    GlobalRatchet.setGlobalVar(ContextUtil.CONTEXT_DATA_GLOBAL_NAME, cd);
+
+  public static initContext(epsilon: EpsilonInstance, evt: any, ctx: Context, processLabel: string): void {
+    const cd: ContextGlobalData = ContextUtil.fetchContextData();
+    cd.epsilonInstance= epsilon;
+    cd.context= ctx;
+    cd.event= evt;
+    cd.processLabel= processLabel;
   }
 
   public static clearContext() {
@@ -48,7 +55,7 @@ export class ContextUtil {
   }
 
   public static setOverrideTrace(traceId: string, traceDepth: number): void {
-    const cd: ContextGlobalData = GlobalRatchet.fetchGlobalVar(ContextUtil.CONTEXT_DATA_GLOBAL_NAME);
+    const cd: ContextGlobalData = ContextUtil.fetchContextData();
     cd.overrideTraceId = traceId || cd.overrideTraceId;
     cd.overrideTraceDepth = traceDepth || cd.overrideTraceDepth;
   }
@@ -81,12 +88,12 @@ export class ContextUtil {
   }
 
   public static setProcessLabel(processLabel: string): void {
-    const cd: ContextGlobalData = GlobalRatchet.fetchGlobalVar(ContextUtil.CONTEXT_DATA_GLOBAL_NAME);
+    const cd: ContextGlobalData = ContextUtil.fetchContextData();
     cd.processLabel = processLabel;
   }
 
   public static currentRequestId(): string {
-    const cd: ContextGlobalData = GlobalRatchet.fetchGlobalVar(ContextUtil.CONTEXT_DATA_GLOBAL_NAME);
+    const cd: ContextGlobalData = ContextUtil.fetchContextData();
     return cd?.context?.awsRequestId;
   }
 
@@ -95,29 +102,29 @@ export class ContextUtil {
   }
 
   public static remainingTimeMS(): number {
-    const cd: ContextGlobalData = GlobalRatchet.fetchGlobalVar(ContextUtil.CONTEXT_DATA_GLOBAL_NAME);
+    const cd: ContextGlobalData = ContextUtil.fetchContextData();
     return cd?.context?.getRemainingTimeInMillis();
   }
 
   public static currentProcessLabel(): string {
-    const cd: ContextGlobalData = GlobalRatchet.fetchGlobalVar(ContextUtil.CONTEXT_DATA_GLOBAL_NAME);
+    const cd: ContextGlobalData = ContextUtil.fetchContextData();
     return cd?.processLabel  || 'unset';
   }
 
   private static traceHeaderName(): string {
-    const cd: ContextGlobalData = GlobalRatchet.fetchGlobalVar(ContextUtil.CONTEXT_DATA_GLOBAL_NAME);
+    const cd: ContextGlobalData = ContextUtil.fetchContextData();
     const headerName: string = cd?.epsilonInstance?.config?.loggerConfig?.traceHeaderName || 'X-TRACE-ID';
     return headerName;
   }
 
   private static traceDepthHeaderName(): string {
-    const cd: ContextGlobalData = GlobalRatchet.fetchGlobalVar(ContextUtil.CONTEXT_DATA_GLOBAL_NAME);
+    const cd: ContextGlobalData = ContextUtil.fetchContextData();
     const headerName: string = cd?.epsilonInstance?.config?.loggerConfig?.traceDepthHeaderName || 'X-TRACE-DEPTH';
     return headerName;
   }
 
   public static currentTraceId(): string {
-    const cd: ContextGlobalData = GlobalRatchet.fetchGlobalVar(ContextUtil.CONTEXT_DATA_GLOBAL_NAME);
+    const cd: ContextGlobalData = ContextUtil.fetchContextData();
 
     const traceFn: LoggingTraceIdGenerator =
       cd?.epsilonInstance?.config?.loggerConfig?.traceIdGenerator || ContextUtil.defaultedCurrentRequestId;
@@ -129,7 +136,7 @@ export class ContextUtil {
   }
 
   public static currentTraceDepth(): number {
-    const cd: ContextGlobalData = GlobalRatchet.fetchGlobalVar(ContextUtil.CONTEXT_DATA_GLOBAL_NAME);
+    const cd: ContextGlobalData = ContextUtil.fetchContextData();
 
     const caller: number = cd?.overrideTraceDepth ||
       NumberRatchet.safeNumber(cd?.event?.headers?.[ContextUtil.traceDepthHeaderName()]) ||
@@ -138,17 +145,17 @@ export class ContextUtil {
   }
 
   public static addLogVariable(name: string, val: string | number | boolean): void {
-    const cd: ContextGlobalData = GlobalRatchet.fetchGlobalVar(ContextUtil.CONTEXT_DATA_GLOBAL_NAME);
+    const cd: ContextGlobalData = ContextUtil.fetchContextData();
     cd.logVariables[name] = val;
   }
 
   public static fetchLogVariable(name: string): string | number | boolean {
-    const cd: ContextGlobalData = GlobalRatchet.fetchGlobalVar(ContextUtil.CONTEXT_DATA_GLOBAL_NAME);
+    const cd: ContextGlobalData = ContextUtil.fetchContextData();
     return cd?.logVariables?.[name];
   }
 
   public static fetchLogVariables(): Record<string, string | number | boolean> {
-    const cd: ContextGlobalData = GlobalRatchet.fetchGlobalVar(ContextUtil.CONTEXT_DATA_GLOBAL_NAME);
+    const cd: ContextGlobalData = ContextUtil.fetchContextData();
     return Object.assign({}, cd?.logVariables || {});
   }
 }

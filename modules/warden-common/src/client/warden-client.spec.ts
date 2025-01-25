@@ -4,7 +4,7 @@ import { WardenCommandExchangeProvider } from './provider/warden-command-exchang
 import { WardenClientCurrentLoggedInJwtTokenProvider } from './provider/warden-client-current-logged-in-jwt-token-provider.js';
 import { WardenCommand } from '../common/command/warden-command.js';
 import { WardenCommandResponse } from '../common/command/warden-command-response.js';
-import { expect, test, describe, vi, beforeEach } from 'vitest';
+import { expect, test, describe, beforeEach } from 'vitest';
 import { mock, MockProxy } from 'vitest-mock-extended';
 
 let mockCommandExchangeProvider: MockProxy<WardenCommandExchangeProvider>;

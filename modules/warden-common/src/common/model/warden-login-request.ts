@@ -1,5 +1,5 @@
 import { WardenContact } from './warden-contact.js';
-import { AuthenticationResponseJSON } from '@simplewebauthn/types';
+import { AuthenticationResponseJSON } from '@simplewebauthn/browser';
 
 export interface WardenLoginRequest {
   userId?: string;

@@ -88,7 +88,7 @@
     }
   },
   "devDependencies": {
-    "@openapitools/openapi-generator-cli": "2.15.3",
+    "@openapitools/openapi-generator-cli": "2.16.2",
     "openapi3-ts": "4.4.0",
     "shx": "0.3.4"
   }

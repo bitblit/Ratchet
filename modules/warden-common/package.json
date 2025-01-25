@@ -47,16 +47,12 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@bitblit/ratchet-common": "0.0.0-snapshot",
-    "@simplewebauthn/browser": "11.0.0",
+    "@simplewebauthn/browser": "13.1.0",
     "jwt-decode": "4.0.0"
   },
   "peerDependencies": {
     "@bitblit/ratchet-common": "^0.0.0-snapshot",
     "@simplewebauthn/browser": "^11.0.0",
-    "@simplewebauthn/types": "^11.0.0",
     "jwt-decode": "^4.0.0"
-  },
-  "devDependencies": {
-    "@simplewebauthn/types": "11.0.0"
   }
 }

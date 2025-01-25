@@ -15,7 +15,7 @@ import {
   PublicKeyCredentialCreationOptionsJSON,
   PublicKeyCredentialRequestOptionsJSON,
   RegistrationResponseJSON,
-} from '@simplewebauthn/types';
+} from '@simplewebauthn/server';
 import { WardenServiceOptions } from './warden-service-options.js';
 import { WardenContact } from '@bitblit/ratchet-warden-common/common/model/warden-contact';
 import { WardenCustomTemplateDescriptor } from '@bitblit/ratchet-warden-common/common/command/warden-custom-template-descriptor';

@@ -1,23 +1,29 @@
 //    Service for interacting with positions for a given user
-import { WardenCommand } from '../common/command/warden-command.js';
-import { WardenContact } from '../common/model/warden-contact.js';
-import { WardenCommandExchangeProvider } from './provider/warden-command-exchange-provider.js';
-import { WardenCommandResponse } from '../common/command/warden-command-response.js';
+import { WardenCommand } from "../common/command/warden-command.js";
+import { WardenContact } from "../common/model/warden-contact.js";
+import { WardenCommandExchangeProvider } from "./provider/warden-command-exchange-provider.js";
+import { WardenCommandResponse } from "../common/command/warden-command-response.js";
 
-import { RequireRatchet } from '@bitblit/ratchet-common/lang/require-ratchet';
-import { Logger } from '@bitblit/ratchet-common/logger/logger';
-import { ErrorRatchet } from '@bitblit/ratchet-common/lang/error-ratchet';
-import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet';
-import { PublicKeyCredentialRequestOptionsJSON, RegistrationResponseJSON } from '@simplewebauthn/types';
-import { WardenLoginResults } from '../common/model/warden-login-results.js';
-import { WardenLoginRequest } from '../common/model/warden-login-request.js';
-import { WardenClientCurrentLoggedInJwtTokenProvider } from './provider/warden-client-current-logged-in-jwt-token-provider.js';
-import { WardenEntrySummary } from '../common/model/warden-entry-summary.js';
-import { WardenContactType } from '../common/model/warden-contact-type.js';
-import { AddWebAuthnRegistrationToLoggedInUser } from '../common/command/add-web-authn-registration-to-logged-in-user.js';
-import { SendMagicLink } from '../common/command/send-magic-link.js';
-import { StartRegistrationOpts } from '@simplewebauthn/browser/dist/types/methods/startRegistration';
-import { StartAuthenticationOpts } from '@simplewebauthn/browser/dist/types/methods/startAuthentication';
+import { RequireRatchet } from "@bitblit/ratchet-common/lang/require-ratchet";
+import { Logger } from "@bitblit/ratchet-common/logger/logger";
+import { ErrorRatchet } from "@bitblit/ratchet-common/lang/error-ratchet";
+import { StringRatchet } from "@bitblit/ratchet-common/lang/string-ratchet";
+import {
+  PublicKeyCredentialRequestOptionsJSON,
+  RegistrationResponseJSON,
+  StartRegistrationOpts
+} from "@simplewebauthn/browser";
+import { WardenLoginResults } from "../common/model/warden-login-results.js";
+import { WardenLoginRequest } from "../common/model/warden-login-request.js";
+import {
+  WardenClientCurrentLoggedInJwtTokenProvider
+} from "./provider/warden-client-current-logged-in-jwt-token-provider.js";
+import { WardenEntrySummary } from "../common/model/warden-entry-summary.js";
+import { WardenContactType } from "../common/model/warden-contact-type.js";
+import {
+  AddWebAuthnRegistrationToLoggedInUser
+} from "../common/command/add-web-authn-registration-to-logged-in-user.js";
+import { SendMagicLink } from "../common/command/send-magic-link.js";
 
 export class WardenClient {
   constructor(
