@@ -1,9 +1,8 @@
-import { ApplyCiEnvVariablesToFiles } from './apply-ci-env-variables-to-files.js';
-import { CiRunInformationUtil } from './ci-run-information-util.js';
-import { expect, test, describe, vi, beforeEach } from 'vitest';
-import { mock, MockProxy } from 'vitest-mock-extended';
-import { Logger } from '@bitblit/ratchet-common/logger/logger';
-import { GlobalRatchet } from '@bitblit/ratchet-common/lang/global-ratchet';
+import { ApplyCiEnvVariablesToFiles } from "./apply-ci-env-variables-to-files.js";
+import { CiRunInformationUtil } from "./ci-run-information-util.js";
+import { describe, expect, test } from "vitest";
+import { Logger } from "@bitblit/ratchet-common/logger/logger";
+import { GlobalRatchet } from "@bitblit/ratchet-common/lang/global-ratchet";
 
 describe('#applyCiEnvVariablesToFiles', function () {
   test.skip('should fail if not in a ci environment', async () => {

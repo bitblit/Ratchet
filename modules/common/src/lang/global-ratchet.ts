@@ -35,9 +35,14 @@ export class GlobalRatchet {
     return rval;
   }
 
-  public static fetchGlobalVar<T>(key: string): T {
+  public static fetchGlobalVar<T>(key: string, defValue?: T): T {
     const rec: Record<string,any> = GlobalRatchet.fetchGlobalVarsRecord(false);
-    return rec[key];
+    let rval: T = rec[key];
+    if (!rval && defValue) {
+      rec[key]=defValue;
+      rval = defValue;
+    }
+    return rval;
   }
 
 
