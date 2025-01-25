@@ -7,7 +7,7 @@ import { LoggingTraceIdGenerator } from '../config/logging-trace-id-generator.js
 //import { BuiltInTraceIdGenerators } from '../built-in/built-in-trace-id-generators.js';
 import { InternalBackgroundEntry } from '../background/internal-background-entry.js';
 import { InterApiEntry } from '../inter-api/inter-api-entry.js';
-import { ContextGlobalData } from "./context-global-data";
+import { ContextGlobalData } from "./context-global-data.js";
 import { GlobalRatchet } from "@bitblit/ratchet-common/lang/global-ratchet";
 
 // This class serves as a static holder for the AWS Lambda context, and also adds some
