@@ -5,6 +5,7 @@ import { PromiseRatchet } from '@bitblit/ratchet-common/lang/promise-ratchet';
 import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet';
 import { GetParameterCommand, GetParameterCommandOutput, ParameterNotFound, SSMClient } from '@aws-sdk/client-ssm';
 import { EnvironmentServiceProvider } from './environment-service-provider.js';
+import { ExpiredTokenException } from "@aws-sdk/client-sts";
 
 /**
  * Service for reading environmental variables
@@ -37,6 +38,9 @@ export class SsmEnvironmentServiceProvider<T> implements EnvironmentServiceProvi
       if (err instanceof ParameterNotFound) {
         const errMsg: string = Logger.warn('AWS could not find parameter %s - are you using the right AWS key?', name);
         throw new Error(errMsg);
+      } else if (err instanceof ExpiredTokenException) {
+        Logger.warn('Token is expired - should trying auto-refresh');
+        throw err;
       } else if ((ErrorRatchet.safeStringifyErr(err) || '').toLowerCase().indexOf('throttl') > -1) {
         // CAW 2023-10-26 : Ok, so in AWS Sdk v3 there is no ThrottlingException for SSM (although there
         // are for other services like Route53...) so maybe they just don't throw this any more but that
