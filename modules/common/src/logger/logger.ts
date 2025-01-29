@@ -32,7 +32,7 @@ export class Logger {
     preProcessors: [],
   };
 
-  public static applyDefaultsToOptions(input?: LoggerOptions): LoggerOptions {
+  public static applyDefaultsToOptions(input?: Partial<LoggerOptions>): LoggerOptions {
     const rval: LoggerOptions = input || {};
     rval.initialLevel = rval.initialLevel ?? Logger.DEFAULT_OPTIONS.initialLevel;
     rval.formatType = rval.formatType ?? Logger.DEFAULT_OPTIONS.formatType;
@@ -122,8 +122,8 @@ export class Logger {
   }
 
   public static ringBufferOnlyMode(ringBufferSize: number = 1000): void {
-    Logger.getLogger().ringBuffer.bufferSize=ringBufferSize;
-    Logger.getLogger().options.outputFunction=LoggerOutputFunction.Disabled;
+    const newOptions: LoggerOptions = Logger.applyDefaultsToOptions({ringBufferSize: ringBufferSize, outputFunction: LoggerOutputFunction.Disabled});
+    Logger.changeDefaultOptions(newOptions, true);
   }
 
   public static getOptions(): LoggerOptions {
