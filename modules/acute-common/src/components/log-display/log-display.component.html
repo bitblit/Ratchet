@@ -1,0 +1,23 @@
+<p-drawer [(visible)]="visible" header="Logs" position="full">
+  <div style="display:flex; flex-direction: row">
+    <p-button (click)="refresh()" label="Refresh"></p-button>
+    <div>Updated {{formatTime(updatedEpoch)}}</div>
+  </div>
+  <p-table [value]="snap | async">
+    <ng-template pTemplate="header">
+      <tr>
+        <th pSortableColumn="timestamp">Timestamp  <p-sortIcon field="timestamp" /></th>
+        <th>Level</th>
+        <th>Message</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-element>
+      <tr>
+        <td>{{formatTime(element.timestamp)}}</td>
+        <td>{{element.lvl}}</td>
+        <td>{{format(element)}}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</p-drawer>
+<p-button (click)="open()" [icon]="buttonIcon" [hidden]="!displayShowIcon"/>

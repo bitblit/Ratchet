@@ -1,5 +1,7 @@
 export * from './build/ngx-acute-common-info';
 
+export * from './components/log-display/log-display.component';
+
 export * from './components/dialogs/alert/alert.component';
 export * from './components/dialogs/block-ui/block-ui.component';
 
