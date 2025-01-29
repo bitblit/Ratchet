@@ -12,6 +12,7 @@ import { LogMessageBuilder } from './log-message-builder.js';
 import { LogMessageProcessor } from './log-message-processor.js';
 import { StringRatchet } from '../lang/string-ratchet.js';
 import { LoggerMeta } from './logger-meta.js';
+import { SingleLineNoLevelLogMessageFormatter } from "./single-line-no-level-log-message-formatter";
 
 export class LoggerInstance {
   private _guid: number = Math.floor(Math.random() * 1_000_000);
@@ -96,6 +97,9 @@ export class LoggerInstance {
         break;
       case LogMessageFormatType.StructuredJson:
         this._formatter = new StructuredJsonLogMessageFormatter();
+        break;
+      case LogMessageFormatType.SingleLineNoLevel:
+        this._formatter = new SingleLineNoLevelLogMessageFormatter();
         break;
       default:
         this._formatter = new ClassicSingleLineLogMessageFormatter();

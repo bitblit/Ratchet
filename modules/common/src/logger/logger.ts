@@ -65,6 +65,7 @@ export class Logger {
     }
   }
 
+
   public static getLogger(loggerName = 'default', inOptions?: LoggerOptions): LoggerInstance {
     let inst: LoggerInstance = Logger.loggerInstances().get(loggerName);
     if (!inst) {
@@ -122,7 +123,7 @@ export class Logger {
   }
 
   public static ringBufferOnlyMode(ringBufferSize: number = 1000): void {
-    const newOptions: LoggerOptions = Logger.applyDefaultsToOptions({ringBufferSize: ringBufferSize, outputFunction: LoggerOutputFunction.Disabled});
+    const newOptions: LoggerOptions = Logger.applyDefaultsToOptions({ringBufferSize: ringBufferSize, outputFunction: LoggerOutputFunction.Disabled, formatType: LogMessageFormatType.SingleLineNoLevel});
     Logger.changeDefaultOptions(newOptions, true);
   }
 

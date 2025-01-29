@@ -2,7 +2,7 @@
 
 export const LogMessageFormatType = {
   ClassicSingleLine: 'ClassicSingleLine',
-
+  SingleLineNoLevel: 'SingleLineNoLevel',
   StructuredJson: 'StructuredJson',
 
   None: 'None',
