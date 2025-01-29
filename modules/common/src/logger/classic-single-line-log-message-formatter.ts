@@ -9,10 +9,10 @@ export class ClassicSingleLineLogMessageFormatter implements LogMessageFormatter
 
     if (msg) {
       tmp = '';
-      tmp += meta.options.trace ? meta.options.trace + ' ' : '';
+      tmp += meta?.options?.trace ? meta.options.trace + ' ' : '';
 
       tmp += '[' + msg.lvl + '] ';
-      tmp += StringRatchet.format(msg.messageSource, ...msg.subsVars);
+      tmp += StringRatchet.format(msg.messageSource, ...(msg.subsVars || []));
     }
     return tmp;
   }
