@@ -6,6 +6,24 @@ import { NumberRatchet } from './number-ratchet.js';
 */
 
 export class DurationRatchet {
+  public static thinFormatMsDuration(ms: number, includeMS = false): string {
+    const rem_ms = Math.floor(ms % 1000);
+    const seconds = Math.floor(ms / 1000) % 60;
+    const minutes = Math.floor(ms / (1000 * 60)) % 60;
+    const hours = Math.floor(ms / (1000 * 60 * 60)) % 24;
+    const days = Math.floor(ms / (1000 * 60 * 60 * 24));
+
+    const f = NumberRatchet.leadingZeros;
+    let rval:string = hours>0 ? f(hours, 2) + 'h' : '';
+    rval+= minutes>0 ?  f(minutes, 2) + 'm' : '';
+    rval += includeMS ? f(seconds, 2) + '.' + f(rem_ms, 3) + 's' : f(seconds, 2) + 's';
+    if (days > 0) {
+      rval = days + 'd' + rval;
+    }
+    return rval;
+  }
+
+
   public static formatMsDuration(ms: number, includeMS = false): string {
     const rem_ms = Math.floor(ms % 1000);
     const seconds = Math.floor(ms / 1000) % 60;
