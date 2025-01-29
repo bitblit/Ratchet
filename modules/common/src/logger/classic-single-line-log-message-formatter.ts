@@ -12,7 +12,7 @@ export class ClassicSingleLineLogMessageFormatter implements LogMessageFormatter
       tmp += meta?.options?.trace ? meta.options.trace + ' ' : '';
 
       tmp += '[' + msg.lvl + '] ';
-      tmp += StringRatchet.format(msg.messageSource, ...(msg.subsVars || []));
+      tmp += StringRatchet.format(msg?.messageSource ?? '', ...(msg.subsVars || []));
     }
     return tmp;
   }
