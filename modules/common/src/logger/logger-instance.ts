@@ -12,7 +12,7 @@ import { LogMessageBuilder } from './log-message-builder.js';
 import { LogMessageProcessor } from './log-message-processor.js';
 import { StringRatchet } from '../lang/string-ratchet.js';
 import { LoggerMeta } from './logger-meta.js';
-import { SingleLineNoLevelLogMessageFormatter } from "./single-line-no-level-log-message-formatter";
+import { SingleLineNoLevelLogMessageFormatter } from "./single-line-no-level-log-message-formatter.js";
 
 export class LoggerInstance {
   private _guid: number = Math.floor(Math.random() * 1_000_000);
