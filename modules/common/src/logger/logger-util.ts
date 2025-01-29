@@ -13,7 +13,16 @@ export class LoggerUtil {
 
   public static handlerFunctionMap(outputFn: LoggerOutputFunction = LoggerOutputFunction.Console): Map<LoggerLevelName, (...any) => void> {
     const output: Map<LoggerLevelName, (...any) => void> = new Map<LoggerLevelName, (...any) => void>();
-    if (outputFn === LoggerOutputFunction.StdOut) {
+    if (outputFn === LoggerOutputFunction.Disabled) {
+      // Disables ALL logger functionality
+      const disabled: (...any) => void = (_chunk, _cb) => {/*do nothing*/};
+      output.set(LoggerLevelName.error, disabled);
+      output.set(LoggerLevelName.warn, disabled);
+      output.set(LoggerLevelName.info, disabled);
+      output.set(LoggerLevelName.verbose, disabled);
+      output.set(LoggerLevelName.debug, disabled);
+      output.set(LoggerLevelName.silly, disabled);
+    } else if (outputFn === LoggerOutputFunction.StdOut) {
       if (!process?.stdout?.write) {
         throw new Error('Cannot use standard out - process.stdout.write not found');
       }

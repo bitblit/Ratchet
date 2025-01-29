@@ -121,6 +121,11 @@ export class Logger {
     Logger.getLogger().level = newLevel;
   }
 
+  public static ringBufferOnlyMode(ringBufferSize: number = 1000): void {
+    Logger.getLogger().ringBuffer.bufferSize=ringBufferSize;
+    Logger.getLogger().options.outputFunction=LoggerOutputFunction.Disabled;
+  }
+
   public static getOptions(): LoggerOptions {
     return Logger.getLogger().options;
   }
