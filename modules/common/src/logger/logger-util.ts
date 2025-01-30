@@ -60,4 +60,8 @@ export class LoggerUtil {
     return LoggerUtil.LOG_LEVELS_IN_ORDER.indexOf(targetLevel);
   }
 
+  public static indexToLevel(idx:number ): LoggerLevelName {
+    return idx>=0 && idx<LoggerUtil.LOG_LEVELS_IN_ORDER.length ? LoggerUtil.LOG_LEVELS_IN_ORDER[idx] : null;
+  }
+
 }
