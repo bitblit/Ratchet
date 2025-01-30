@@ -51,8 +51,13 @@ export class LoggerUtil {
   }
 
   public static levelIsEnabled(targetLevel: LoggerLevelName, currentEnabled: LoggerLevelName): boolean {
-    const idxTarget: number = LoggerUtil.LOG_LEVELS_IN_ORDER.indexOf(targetLevel);
-    const lvl: number = LoggerUtil.LOG_LEVELS_IN_ORDER.indexOf(currentEnabled);
+    const idxTarget: number = LoggerUtil.loggerLevelIndex(targetLevel);
+    const lvl: number = LoggerUtil.loggerLevelIndex(currentEnabled);
     return idxTarget > -1 && lvl > -1 && lvl >= idxTarget;
   }
+
+  public static loggerLevelIndex(targetLevel: LoggerLevelName): number {
+    return LoggerUtil.LOG_LEVELS_IN_ORDER.indexOf(targetLevel);
+  }
+
 }
