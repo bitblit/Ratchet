@@ -1,7 +1,7 @@
 import { ErrorRatchet } from './error-ratchet.js';
 import { StringRatchet } from './string-ratchet.js';
 import { Uint8ArrayRatchet } from './uint-8-array-ratchet.js';
-import { Logger } from "../logger/logger";
+import { Logger } from "../logger/logger.js";
 
 /**
  * This class is specifically for dealing with web streams, NOT
