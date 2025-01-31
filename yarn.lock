@@ -1308,9 +1308,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@aws-sdk/client-ssm@npm:3.735.0":
-  version: 3.735.0
-  resolution: "@aws-sdk/client-ssm@npm:3.735.0"
+"@aws-sdk/client-ssm@npm:3.734.0":
+  version: 3.734.0
+  resolution: "@aws-sdk/client-ssm@npm:3.734.0"
   dependencies:
     "@aws-crypto/sha256-browser": 5.2.0
     "@aws-crypto/sha256-js": 5.2.0
@@ -1354,7 +1354,7 @@ __metadata:
     "@types/uuid": ^9.0.1
     tslib: ^2.6.2
     uuid: ^9.0.1
-  checksum: 9f5ee35b2ba376df4f178a96fd44e1475d8c3640c86bba8cc51242f6d1ef6e2ed955555e5fe97de5ae7cae7f1d52954e3b5363e475d679e5574644fa066bfde7
+  checksum: 875b5932184c24d4d4a51838b4a933a530a88cf87fbd821581332a14adc96b694dedbdff7f0eb8387dd6c3d800b3f502919c222a6658f504621473d4c79122e6
   languageName: node
   linkType: hard
 
@@ -2713,7 +2713,7 @@ __metadata:
     "@aws-sdk/client-s3": 3.734.0
     "@aws-sdk/client-ses": 3.734.0
     "@aws-sdk/client-sns": 3.734.0
-    "@aws-sdk/client-ssm": 3.735.0
+    "@aws-sdk/client-ssm": 3.734.0
     "@aws-sdk/client-sts": 3.734.0
     "@aws-sdk/credential-providers": 3.734.0
     "@aws-sdk/lib-dynamodb": 3.734.0
@@ -2728,7 +2728,7 @@ __metadata:
     "@types/aws-lambda": 8.10.147
     aws-sdk-client-mock: 4.1.0
   peerDependencies:
-    "@aws-sdk/client-athena": ^3.723.0
+    "@aws-sdk/client-athena": ^3.734.0
     "@aws-sdk/client-batch": ^3.734.0
     "@aws-sdk/client-cloudwatch": ^3.734.0
     "@aws-sdk/client-cloudwatch-logs": ^3.734.0

@@ -5,9 +5,9 @@ import { AwsCredentialsRatchet } from "../iam/aws-credentials-ratchet";
 
 
 describe('#ssmEnvironmentService', function () {
-  test.skip('should throw exception on missing environment values', async () => {
-    const profile: string = 'tmp'; // erigir
-    const config: string='cfg';//BellaLinguaConfiguration
+  test('should throw exception on missing environment values', async () => {
+    const profile: string = 'pluma';
+    const config: string='PlumaConfiguration';
       AwsCredentialsRatchet.applySetProfileEnvironmentalVariable(profile);
       const environmentService: EnvironmentService<any> = new EnvironmentService<any>(new SsmEnvironmentServiceProvider(), {
         maxRetries: 5,

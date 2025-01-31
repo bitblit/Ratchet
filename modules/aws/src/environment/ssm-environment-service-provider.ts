@@ -38,8 +38,8 @@ export class SsmEnvironmentServiceProvider<T> implements EnvironmentServiceProvi
       if (err instanceof ParameterNotFound) {
         const errMsg: string = Logger.warn('AWS could not find parameter %s - are you using the right AWS key?', name);
         throw new Error(errMsg);
-      } else if (err instanceof ExpiredTokenException) {
-        Logger.warn('Token is expired - should trying auto-refresh');
+      } else if (err.name==='CredentialsProviderError') {
+        Logger.warn('Token is expired - if on SSO cli try "aws sso login"');
         throw err;
       } else if ((ErrorRatchet.safeStringifyErr(err) || '').toLowerCase().indexOf('throttl') > -1) {
         // CAW 2023-10-26 : Ok, so in AWS Sdk v3 there is no ThrottlingException for SSM (although there
@@ -63,7 +63,7 @@ export class SsmEnvironmentServiceProvider<T> implements EnvironmentServiceProvi
         throw err;
       }
     } else {
-      ErrorRatchet.throwFormattedErr('Could not find system parameter with name : %s in this account', name);
+      throw ErrorRatchet.fErr('Could not find system parameter with name : %s in this account', name);
     }
     return rval;
   }
