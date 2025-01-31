@@ -7,7 +7,7 @@ import { ModifyResults } from '../model/modify-results.js';
 import { RequestResults } from '../model/request-results.js';
 import { QueryUtil } from '../query-builder/query-util.js';
 import { SqliteConnectionConfigFlag } from './model/sqlite-connection-config-flag.js';
-import DatabaseConstructor, { Database, RunResult, Statement } from 'better-sqlite3';
+import { Database, RunResult, Statement } from 'better-sqlite3';
 import { NumberRatchet } from '@bitblit/ratchet-common/lang/number-ratchet';
 import { QueryAndParams } from './model/query-and-params';
 

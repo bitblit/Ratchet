@@ -1,11 +1,13 @@
 import { describe, expect, test } from 'vitest';
 import { SqliteStyleConnectionProvider } from './sqlite-style-connection-provider.js';
-import * as path from 'node:path';
 import { NamedParameterDatabaseService } from '../service/named-parameter-database-service.js';
 import { Logger } from '@bitblit/ratchet-common/logger/logger';
 import { SimpleQueryTextProvider } from '../model/simple-query-text-provider.js';
 import { ModifyResults } from '../model/modify-results.js';
 import { RequestResults } from '../model/request-results.js';
+import fs from 'fs';
+import { ErrorRatchet } from "@bitblit/ratchet-common/lang/error-ratchet";
+import path from 'path';
 
 describe('sqlite-database-access', () => {
   const testQueries: SimpleQueryTextProvider = new SimpleQueryTextProvider({
@@ -18,11 +20,18 @@ describe('sqlite-database-access', () => {
 
   test.skip('builds filtered', async () => {
     const prov: SqliteStyleConnectionProvider = new SqliteStyleConnectionProvider(() => {
+      const pth: string = path.resolve(path.join(process.env['SQLITE_HOME'], 'ratchet-test.db'),);
+      if (!fs.existsSync(pth)) {
+        throw ErrorRatchet.fErr('Cannot find file %s', pth);
+      }
+
       return Promise.resolve({
         dbList: [
           {
             label: 'test',
-            filePath: path.join(process.env['SQLITE_HOME'], 'ratchet-test.db'),
+            localFile: {
+              filePath: pth
+            }
           },
         ],
       });

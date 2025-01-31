@@ -71,7 +71,10 @@ export class SqliteRemoteSyncDatabaseAccess implements DatabaseAccess {
   private async createDb(): Promise<SqliteDatabaseAccess> {
     Logger.info('Pulling file local');
     const data: RemoteStatusDataAndContent<any> = await this.cfg.remoteFileTracker.pullRemoteData();
-    const asBuffer: Buffer = Buffer.from(await RemoteFileTracker.dataAsUint8Array(data));
+    Logger.info('Reading file as array');
+    const uint: Uint8Array = await RemoteFileTracker.dataAsUint8Array(data);
+    Logger.info('Converting to buffer (%d bytes)', uint.length);
+    const asBuffer: Buffer = Buffer.from(uint);
     Logger.info('Got data %j %d', data.status, asBuffer.length);
     Logger.info('Creating database');
     const db: Database = new DatabaseConstructor(asBuffer);

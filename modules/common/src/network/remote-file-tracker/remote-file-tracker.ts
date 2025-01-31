@@ -49,6 +49,8 @@ export class RemoteFileTracker<KeyType> {
     let rval: Uint8Array = null;
     if (data?.content) {
       rval = await WebStreamRatchet.webReadableStreamToUint8Array(data.content);
+    } else {
+      Logger.warn('Was unable to read as array since content is missing');
     }
     return rval;
   }
