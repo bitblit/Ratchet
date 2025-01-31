@@ -15,6 +15,7 @@ import { DurationRatchet } from "@bitblit/ratchet-common/lang/duration-ratchet";
 import { LoggerUtil } from "@bitblit/ratchet-common/logger/logger-util";
 import { SelectButton } from "primeng/selectbutton";
 import { FormsModule } from "@angular/forms";
+import { LoggerLevelName } from "@bitblit/ratchet-common/logger/logger-level-name";
 
 @Component({
   selector: 'ngx-acute-common-log-display',
