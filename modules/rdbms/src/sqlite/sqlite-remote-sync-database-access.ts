@@ -72,6 +72,7 @@ export class SqliteRemoteSyncDatabaseAccess implements DatabaseAccess {
     Logger.info('Pulling file local');
     const data: RemoteStatusDataAndContent<any> = await this.cfg.remoteFileTracker.pullRemoteData();
     Logger.info('Reading file as array');
+
     const uint: Uint8Array = await RemoteFileTracker.dataAsUint8Array(data);
     Logger.info('Converting to buffer (%d bytes)', uint.length);
     const asBuffer: Buffer = Buffer.from(uint);

@@ -37,7 +37,7 @@ export class WebStreamRatchet {
     );
     try {
       Logger.debug('Starting pipe');
-      await stream.pipeTo(writer);
+      await stream.pipeTo(writer, {preventAbort: true, preventCancel: true, preventClose: true})
       Logger.debug('Completed pipe');
       return Uint8ArrayRatchet.mergeArrays(out);
     } catch(err) {
