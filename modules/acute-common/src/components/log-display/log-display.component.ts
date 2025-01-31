@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import { Component, HostListener, Input } from "@angular/core";
 import {Router} from '@angular/router';
 import {CardModule} from "primeng/card";
 import {ButtonModule} from "primeng/button";
