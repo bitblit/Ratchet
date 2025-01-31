@@ -1,7 +1,7 @@
-<p-drawer [(visible)]="visible" header="Logs" position="full">
-  <div style="display:flex; flex-direction: row">
-    <p-button (click)="refresh()" label="Refresh"></p-button>
-    <div>Updated {{formatTime(updatedEpoch)}}</div>
+<p-drawer [(visible)]="visible" header="Logs (Updated {{formatTime(updatedEpoch)}}, Recording down to {{levelLogged()}})" position="full">
+  <div style="display:flex; flex-direction: row; justify-content: start; gap: 5vw">
+    <p-button (click)="refresh()" pTooltip="Refresh" icon="pi pi-refresh"></p-button>
+    <p-select-button [options]="levelFilterOptions" [(ngModel)]="levelFilterIdx" (onChange)="refresh()"></p-select-button>
   </div>
   <p-table [value]="snap | async">
     <ng-template pTemplate="header">
