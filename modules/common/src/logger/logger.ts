@@ -122,8 +122,9 @@ export class Logger {
     Logger.getLogger().level = newLevel;
   }
 
-  public static ringBufferOnlyMode(ringBufferSize: number = 1000): void {
-    const newOptions: LoggerOptions = Logger.applyDefaultsToOptions({ringBufferSize: ringBufferSize, outputFunction: LoggerOutputFunction.Disabled, formatType: LogMessageFormatType.SingleLineNoLevel});
+  // Defaulting to silly because it'll typically be post-filtered
+  public static ringBufferOnlyMode(ringBufferSize: number = 1000, initialLevel: LoggerLevelName = LoggerLevelName.silly): void {
+    const newOptions: LoggerOptions = Logger.applyDefaultsToOptions({ringBufferSize: ringBufferSize, outputFunction: LoggerOutputFunction.Disabled, formatType: LogMessageFormatType.SingleLineNoLevel, initialLevel: initialLevel});
     Logger.changeDefaultOptions(newOptions, true);
   }
 
