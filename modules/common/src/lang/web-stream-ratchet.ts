@@ -1,6 +1,7 @@
 import { ErrorRatchet } from './error-ratchet.js';
 import { StringRatchet } from './string-ratchet.js';
 import { Uint8ArrayRatchet } from './uint-8-array-ratchet.js';
+import { Logger } from "../logger/logger";
 
 /**
  * This class is specifically for dealing with web streams, NOT
@@ -34,8 +35,16 @@ export class WebStreamRatchet {
         size: () => 1,
       },
     );
-    await stream.pipeTo(writer);
-    return Uint8ArrayRatchet.mergeArrays(out);
+    try {
+      Logger.debug('Starting pipe');
+      await stream.pipeTo(writer);
+      Logger.debug('Completed pipe');
+      return Uint8ArrayRatchet.mergeArrays(out);
+    } catch(err) {
+      Logger.error('Caught error while trying to convert to array : %s',err,err);
+      throw err;
+    }
+
   }
   public static async webReadableStreamToString(stream: ReadableStream): Promise<string> {
     const buf: Uint8Array = await WebStreamRatchet.webReadableStreamToUint8Array(stream);
