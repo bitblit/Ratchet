@@ -94,12 +94,16 @@ export class SqliteDatabaseAccess implements DatabaseAccess {
     tmp = QueryUtil.removeUnusedFields(rval.query, tmp); // And the prefixed version
     // CAW 2024-09-13 - This seems convoluted, can probably clean it a bit
 
-    // If any of the fields are an array, do a direct replacement since sqlite don't like that
+    // If any of the fields are an array or boolean, do a direct replacement since sqlite don't like that
     Object.keys(tmp).forEach((k) => {
       const val: any = tmp[k];
       if (Array.isArray(val)) {
         const escaped: string = this.escape(val);
         rval.query = rval.query.replaceAll(k, escaped);
+        delete rval.params[k.substring(1)]; // this prolly wont work
+      } else if (typeof val === 'boolean') {
+        const strVal: string = val ? 'true':'false';
+        rval.query = rval.query.replaceAll(k, strVal);
         delete rval.params[k.substring(1)]; // this prolly wont work
       }
     });
