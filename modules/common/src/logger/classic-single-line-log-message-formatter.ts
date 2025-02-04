@@ -4,9 +4,6 @@ import { LoggerMeta } from './logger-meta.js';
 import { StringRatchet } from '../lang/string-ratchet.js';
 
 export class ClassicSingleLineLogMessageFormatter implements LogMessageFormatter {
-
-
-
   public formatMessage(msg: LogMessage, meta: LoggerMeta): string {
     let tmp: string = null;
 

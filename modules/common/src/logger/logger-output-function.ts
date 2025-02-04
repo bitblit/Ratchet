@@ -4,7 +4,7 @@ export const LoggerOutputFunction = {
   Console: 'Console',
   ConsoleNoDebug: 'ConsoleNoDebug',
   StdOut: 'StdOut',
-  Disabled: 'Disabled'
+  Disabled: 'Disabled',
 };
 
 export type LoggerOutputFunction = (typeof LoggerOutputFunction)[keyof typeof LoggerOutputFunction];

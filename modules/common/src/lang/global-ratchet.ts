@@ -7,7 +7,7 @@
 import { ErrorRatchet } from './error-ratchet.js';
 import { RequireRatchet } from './require-ratchet.js';
 import { Logger } from '../logger/logger.js';
-import { StringRatchet } from "./string-ratchet";
+import { StringRatchet } from './string-ratchet';
 
 export class GlobalRatchet {
   // Prevent instantiation
@@ -36,21 +36,19 @@ export class GlobalRatchet {
   }
 
   public static fetchGlobalVar<T>(key: string, defValue?: T): T {
-    const rec: Record<string,any> = GlobalRatchet.fetchGlobalVarsRecord(false);
+    const rec: Record<string, any> = GlobalRatchet.fetchGlobalVarsRecord(false);
     let rval: T = rec[key];
     if (!rval && defValue) {
-      rec[key]=defValue;
+      rec[key] = defValue;
       rval = defValue;
     }
     return rval;
   }
 
-
   public static setGlobalVar(key: string, val: any): void {
-    const rec: Record<string,any> = GlobalRatchet.fetchGlobalVarsRecord(false);
-    rec[key]=val;
+    const rec: Record<string, any> = GlobalRatchet.fetchGlobalVarsRecord(false);
+    rec[key] = val;
   }
-
 
   // This is meant to handle faking env vars (basically string-> string) in the context of a browser, polyfills, etc
   public static fetchGlobalEnvVarRecord(returnNullOnNone?: boolean): Record<string, any> {

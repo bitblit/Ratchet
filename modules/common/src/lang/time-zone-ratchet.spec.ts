@@ -13,7 +13,7 @@ describe('#currentHour', function () {
 
 describe('#startOfTodayEpochSeconds', function () {
   test('should never be more than now or more than 86400 seconds in the past', function () {
-    const now: number = tz.nowEpochSeconds();//  Math.floor(new Date().getTime() / 1000);
+    const now: number = tz.nowEpochSeconds(); //  Math.floor(new Date().getTime() / 1000);
     const start: number = tz.startOfTodayEpochSeconds();
     const result: number = now - start;
     expect(result).toBeGreaterThanOrEqual(0);

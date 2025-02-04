@@ -1,24 +1,24 @@
-import { Component, Input, OnInit } from "@angular/core";
-import {ActivatedRoute, Router, RouterModule} from '@angular/router';
+import { Component, Input, OnInit } from '@angular/core';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 
-import {Logger} from '@bitblit/ratchet-common/logger/logger';
-import {WardenUserService} from "@bitblit/ratchet-warden-common/client/warden-user-service";
-import {No} from "@bitblit/ratchet-common/lang/no";
-import {StringRatchet} from "@bitblit/ratchet-common/lang/string-ratchet";
-import {Base64Ratchet} from "@bitblit/ratchet-common/lang/base64-ratchet";
-import {WardenContact} from "@bitblit/ratchet-warden-common/common/model/warden-contact";
-import {WardenLoggedInUserWrapper} from "@bitblit/ratchet-warden-common/client/provider/warden-logged-in-user-wrapper";
-import {CardModule} from "primeng/card";
-import {FormsModule} from "@angular/forms";
-import {CommonModule} from "@angular/common";
-import { ButtonDirective } from "primeng/button";
-import { RequireRatchet } from "@bitblit/ratchet-common/lang/require-ratchet";
+import { Logger } from '@bitblit/ratchet-common/logger/logger';
+import { WardenUserService } from '@bitblit/ratchet-warden-common/client/warden-user-service';
+import { No } from '@bitblit/ratchet-common/lang/no';
+import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet';
+import { Base64Ratchet } from '@bitblit/ratchet-common/lang/base64-ratchet';
+import { WardenContact } from '@bitblit/ratchet-warden-common/common/model/warden-contact';
+import { WardenLoggedInUserWrapper } from '@bitblit/ratchet-warden-common/client/provider/warden-logged-in-user-wrapper';
+import { CardModule } from 'primeng/card';
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { ButtonDirective } from 'primeng/button';
+import { RequireRatchet } from '@bitblit/ratchet-common/lang/require-ratchet';
 
 @Component({
   selector: 'ngx-acute-warden-magic-lander',
   templateUrl: './acute-magic-lander.component.html',
   standalone: true,
-  imports: [CardModule, RouterModule, FormsModule, CommonModule, CardModule, ButtonDirective]
+  imports: [CardModule, RouterModule, FormsModule, CommonModule, CardModule, ButtonDirective],
 })
 export class AcuteMagicLanderComponent implements OnInit {
   @Input() public directLoginUrl: string;

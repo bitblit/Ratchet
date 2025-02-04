@@ -417,35 +417,27 @@ export class StringRatchet {
   // and non-overlapping substring using memoization
   // Ripped from https://www.geeksforgeeks.org/longest-repeating-and-non-overlapping-substring/
   // Some updates added to show types
-  public static findSuffix(i:number, j:number, s:string, memo:number[][]) {
-
+  public static findSuffix(i: number, j: number, s: string, memo: number[][]) {
     // base case
-    if (j === s.length)
-      return 0;
+    if (j === s.length) return 0;
 
     // return memoized value
-    if (memo[i][j] !== -1)
-      return memo[i][j];
+    if (memo[i][j] !== -1) return memo[i][j];
 
     // if characters match
     if (s[i] === s[j]) {
-      memo[i][j]
-        = 1
-        + Math.min(StringRatchet.findSuffix(i + 1, j + 1, s, memo),
-          j - i - 1);
-    }
-    else {
+      memo[i][j] = 1 + Math.min(StringRatchet.findSuffix(i + 1, j + 1, s, memo), j - i - 1);
+    } else {
       memo[i][j] = 0;
     }
 
     return memo[i][j];
   }
 
-  public static longestNonOverlappingRepeatingSubstring(s:string):string|null {
-    const n:number = s.length;
+  public static longestNonOverlappingRepeatingSubstring(s: string): string | null {
+    const n: number = s.length;
 
-    const memo:number[][]
-      = Array.from({length : n}, () => Array(n).fill(-1));
+    const memo: number[][] = Array.from({ length: n }, () => Array(n).fill(-1));
 
     // find length of non-overlapping
     // substrings for all pairs (i, j)
@@ -455,7 +447,7 @@ export class StringRatchet {
       }
     }
 
-    let ans = "";
+    let ans = '';
     let ansLen = 0;
 
     // If length of suffix is greater
@@ -471,5 +463,4 @@ export class StringRatchet {
 
     return ansLen > 0 ? ans : null;
   }
-
 }

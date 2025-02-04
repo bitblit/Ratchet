@@ -1,15 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import {Router, RouterModule} from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { Logger } from '@bitblit/ratchet-common/logger/logger';
-import {FormsModule} from "@angular/forms";
-import {CommonModule} from "@angular/common";
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'ngx-acute-common-dynamic-404-helper',
   templateUrl: './dynamic-404-helper.component.html',
   standalone: true,
-  imports:  [RouterModule, FormsModule, CommonModule],
-
+  imports: [RouterModule, FormsModule, CommonModule],
 })
 export class Dynamic404HelperComponent implements OnInit {
   redirectState: string = null;

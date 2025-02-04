@@ -6,4 +6,3 @@ export * from './components/acute-magic-lander/acute-magic-lander.component';
 export * from './components/acute-user-profile/acute-user-profile.component';
 
 export * from './services/warden-adapter.service';
-

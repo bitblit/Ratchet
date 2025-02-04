@@ -7,7 +7,7 @@ import { LoggerLevelName } from './logger-level-name.js';
 import { LoggerRingBuffer } from './logger-ring-buffer.js';
 import { LogMessageBuilder } from './log-message-builder.js';
 import { LoggerOutputFunction } from './logger-output-function.js';
-import { GlobalRatchet } from "../lang/global-ratchet.js";
+import { GlobalRatchet } from '../lang/global-ratchet.js';
 
 /**
  * Class to simplify logging across both browsers and node (especially lambda)
@@ -64,7 +64,6 @@ export class Logger {
       Array.from(Logger.loggerInstances().values()).forEach((li) => (li.options = input));
     }
   }
-
 
   public static getLogger(loggerName = 'default', inOptions?: LoggerOptions): LoggerInstance {
     let inst: LoggerInstance = Logger.loggerInstances().get(loggerName);
@@ -124,7 +123,12 @@ export class Logger {
 
   // Defaulting to silly because it'll typically be post-filtered
   public static ringBufferOnlyMode(ringBufferSize: number = 1000, initialLevel: LoggerLevelName = LoggerLevelName.silly): void {
-    const newOptions: LoggerOptions = Logger.applyDefaultsToOptions({ringBufferSize: ringBufferSize, outputFunction: LoggerOutputFunction.Disabled, formatType: LogMessageFormatType.SingleLineNoLevel, initialLevel: initialLevel});
+    const newOptions: LoggerOptions = Logger.applyDefaultsToOptions({
+      ringBufferSize: ringBufferSize,
+      outputFunction: LoggerOutputFunction.Disabled,
+      formatType: LogMessageFormatType.SingleLineNoLevel,
+      initialLevel: initialLevel,
+    });
     Logger.changeDefaultOptions(newOptions, true);
   }
 

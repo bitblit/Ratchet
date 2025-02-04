@@ -1,29 +1,39 @@
-import { Component, HostListener, Input } from "@angular/core";
-import {Router} from '@angular/router';
-import {CardModule} from "primeng/card";
-import {ButtonModule} from "primeng/button";
-import {TooltipModule} from "primeng/tooltip";
-import {DividerModule} from "primeng/divider";
-import {InputTextModule} from "primeng/inputtext";
-import {Drawer} from "primeng/drawer";
-import {TableModule} from "primeng/table";
-import {BehaviorSubject} from "rxjs";
-import {AsyncPipe} from "@angular/common";
-import { LogMessage } from "@bitblit/ratchet-common/logger/log-message";
-import { Logger } from "@bitblit/ratchet-common/logger/logger";
-import { DurationRatchet } from "@bitblit/ratchet-common/lang/duration-ratchet";
-import { LoggerUtil } from "@bitblit/ratchet-common/logger/logger-util";
-import { SelectButton } from "primeng/selectbutton";
-import { FormsModule } from "@angular/forms";
-import { LoggerLevelName } from "@bitblit/ratchet-common/logger/logger-level-name";
+import { Component, HostListener, Input } from '@angular/core';
+import { Router } from '@angular/router';
+import { CardModule } from 'primeng/card';
+import { ButtonModule } from 'primeng/button';
+import { TooltipModule } from 'primeng/tooltip';
+import { DividerModule } from 'primeng/divider';
+import { InputTextModule } from 'primeng/inputtext';
+import { Drawer } from 'primeng/drawer';
+import { TableModule } from 'primeng/table';
+import { BehaviorSubject } from 'rxjs';
+import { AsyncPipe } from '@angular/common';
+import { LogMessage } from '@bitblit/ratchet-common/logger/log-message';
+import { Logger } from '@bitblit/ratchet-common/logger/logger';
+import { DurationRatchet } from '@bitblit/ratchet-common/lang/duration-ratchet';
+import { LoggerUtil } from '@bitblit/ratchet-common/logger/logger-util';
+import { SelectButton } from 'primeng/selectbutton';
+import { FormsModule } from '@angular/forms';
+import { LoggerLevelName } from '@bitblit/ratchet-common/logger/logger-level-name';
 
 @Component({
   selector: 'ngx-acute-common-log-display',
   templateUrl: './log-display.component.html',
   styleUrls: [],
   standalone: true,
-  imports: [CardModule, ButtonModule, TooltipModule, DividerModule, InputTextModule, Drawer, TableModule, AsyncPipe, SelectButton, FormsModule]
-
+  imports: [
+    CardModule,
+    ButtonModule,
+    TooltipModule,
+    DividerModule,
+    InputTextModule,
+    Drawer,
+    TableModule,
+    AsyncPipe,
+    SelectButton,
+    FormsModule,
+  ],
 })
 export class LogDisplayComponent {
   @Input() public buttonIcon: string = 'pi pi-arrow-up';
@@ -34,15 +44,13 @@ export class LogDisplayComponent {
   public updatedEpoch: number;
 
   public levelFilterIdx: number = LoggerUtil.loggerLevelIndex(LoggerLevelName.info);
-  public levelFilterOptions: any[]
+  public levelFilterOptions: any[];
 
-  constructor(
-    public router: Router,
-  ) {
+  constructor(public router: Router) {
     const loggerLevel: number = LoggerUtil.loggerLevelIndex(Logger.getLevel());
     this.levelFilterOptions = [];
-    for (let i=0;i<=loggerLevel;i++) {
-      this.levelFilterOptions.push({label: LoggerUtil.indexToLevel(i), value: i});
+    for (let i = 0; i <= loggerLevel; i++) {
+      this.levelFilterOptions.push({ label: LoggerUtil.indexToLevel(i), value: i });
     }
   }
 
@@ -59,7 +67,6 @@ export class LogDisplayComponent {
     }
   }
 
-
   public levelLoggedIdx(): number {
     return LoggerUtil.loggerLevelIndex(Logger.getLevel());
   }
@@ -75,11 +82,12 @@ export class LogDisplayComponent {
 
   public fetchMessagesCopy(): LogMessage[] {
     let rval: LogMessage[] = Object.assign([], Logger.getRingBuffer().getMessages().reverse());
-    rval = rval.filter(r=>{return LoggerUtil.levelIsEnabled(r.lvl, this.levelFilter())})
+    rval = rval.filter((r) => {
+      return LoggerUtil.levelIsEnabled(r.lvl, this.levelFilter());
+    });
 
     return rval;
   }
-
 
   public refresh(): void {
     this.snap.next(this.fetchMessagesCopy());
@@ -87,7 +95,7 @@ export class LogDisplayComponent {
   }
 
   public formatTime(tm: number): string {
-    const rval: string = new Date(tm).toLocaleTimeString()+ '   (' + DurationRatchet.thinFormatMsDuration(Date.now() - tm) +' ago)';
+    const rval: string = new Date(tm).toLocaleTimeString() + '   (' + DurationRatchet.thinFormatMsDuration(Date.now() - tm) + ' ago)';
     return rval;
   }
 
@@ -103,7 +111,7 @@ export class LogDisplayComponent {
 
   @HostListener('document:keypress', ['$event'])
   systemKeypress(evt: KeyboardEvent) {
-    if (this.hotkeyEnabled && evt.code === 'KeyL' && evt.ctrlKey  && evt.shiftKey) {
+    if (this.hotkeyEnabled && evt.code === 'KeyL' && evt.ctrlKey && evt.shiftKey) {
       if (this.visible) {
         this.visible = false;
       } else {
@@ -111,5 +119,4 @@ export class LogDisplayComponent {
       }
     }
   }
-
 }

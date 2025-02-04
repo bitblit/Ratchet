@@ -1,4 +1,4 @@
-import { APIGatewayEvent, Context, ProxyResult, SNSEvent } from "aws-lambda";
+import { APIGatewayEvent, Context, ProxyResult, SNSEvent } from 'aws-lambda';
 import http, { IncomingMessage, Server, ServerResponse } from 'http';
 import { EventUtil } from './http/event-util.js';
 import fetch from 'cross-fetch';
@@ -9,7 +9,7 @@ import { LoggerLevelName } from '@bitblit/ratchet-common/logger/logger-level-nam
 import { CliRatchet } from '@bitblit/ratchet-node-only/cli/cli-ratchet';
 import { LocalServerOptions } from './config/local-server/local-server-options.js';
 import { LocalServerHttpMethodHandling } from './config/local-server/local-server-http-method-handling.js';
-import { BackgroundEntry } from "./background/background-entry.js";
+import { BackgroundEntry } from './background/background-entry.js';
 
 /**
  * A simplistic server for testing your lambdas-in-container locally
@@ -65,25 +65,25 @@ export class LocalContainerServer {
     if (evt.path == '/epsilon-poison-pill') {
       this.aborted = true;
       return true;
-    }  else if (evt.path.startsWith('/epsilon-background-launcher')) {
+    } else if (evt.path.startsWith('/epsilon-background-launcher')) {
       // Shows a simple page for launching background tasks
       Logger.info('Showing background launcher page');
       response.end(LocalServer.buildBackgroundTriggerFormHtml());
       return true;
     } else if (evt.path.startsWith('/epsilon-background-trigger')) {
       Logger.info('Running background trigger');
-        try {
-          const bgEntry: BackgroundEntry<any> = LocalServer.parseEpsilonBackgroundTriggerAsTask(evt);
-          const snsEvent: SNSEvent = LocalServer.createBackgroundSNSEvent(bgEntry);
-          const postResp: Response = await fetch(this.containerUrl, { method: 'POST', body: JSON.stringify(snsEvent) });
-          const postProxy: ProxyResult = await postResp.json();
-          const written: boolean = await LocalServer.writeProxyResultToServerResponse(postProxy, response, logEventLevel);
-          return written;
-        } catch (err) {
-          response.end(`<html><body>BG TRIGGER FAILED : Error : ${err}</body></html>`);
-          return true;
-        }
-   } else {
+      try {
+        const bgEntry: BackgroundEntry<any> = LocalServer.parseEpsilonBackgroundTriggerAsTask(evt);
+        const snsEvent: SNSEvent = LocalServer.createBackgroundSNSEvent(bgEntry);
+        const postResp: Response = await fetch(this.containerUrl, { method: 'POST', body: JSON.stringify(snsEvent) });
+        const postProxy: ProxyResult = await postResp.json();
+        const written: boolean = await LocalServer.writeProxyResultToServerResponse(postProxy, response, logEventLevel);
+        return written;
+      } catch (err) {
+        response.end(`<html><body>BG TRIGGER FAILED : Error : ${err}</body></html>`);
+        return true;
+      }
+    } else {
       try {
         const postResp: Response = await fetch(this.containerUrl, { method: 'POST', body: JSON.stringify(evt) });
         const postProxy: ProxyResult = await postResp.json();

@@ -1,5 +1,5 @@
 import { Bucket, BucketEncryption } from 'aws-cdk-lib/aws-s3';
-import { CfnOutput, Duration, RemovalPolicy, Stack } from "aws-cdk-lib";
+import { CfnOutput, Duration, RemovalPolicy, Stack } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import path from 'path';
 import {
@@ -120,7 +120,7 @@ export class EpsilonWebsiteStack extends Stack {
     // Have to be able to skip this since SOME people don't do DNS in Route53
     if (props?.route53Handling === EpsilonRoute53Handling.Update) {
       if (props?.cloudFrontDomainNames?.length) {
-        props.cloudFrontDomainNames.forEach((dn, _idx)=>{
+        props.cloudFrontDomainNames.forEach((dn, _idx) => {
           const _domain: RecordSet = new RecordSet(this, id + 'DomainName-' + dn, {
             recordType: RecordType.A,
             recordName: dn,

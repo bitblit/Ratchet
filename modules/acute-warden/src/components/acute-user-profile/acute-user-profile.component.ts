@@ -8,19 +8,18 @@ import { WardenDelegatingCurrentUserProvidingUserServiceEventProcessingProvider 
 import { WardenUserService } from '@bitblit/ratchet-warden-common/client/warden-user-service';
 import { No } from '@bitblit/ratchet-common/lang/no';
 import { DurationRatchet } from '@bitblit/ratchet-common/lang/duration-ratchet';
-import {WardenLoggedInUserWrapper} from "@bitblit/ratchet-warden-common/client/provider/warden-logged-in-user-wrapper";
-import {WardenWebAuthnEntrySummary} from "@bitblit/ratchet-warden-common/common/model/warden-web-authn-entry-summary";
-import {ButtonModule} from "primeng/button";
-import {CardModule} from "primeng/card";
-import {CommonModule} from "@angular/common";
-import {TooltipModule} from "primeng/tooltip";
+import { WardenLoggedInUserWrapper } from '@bitblit/ratchet-warden-common/client/provider/warden-logged-in-user-wrapper';
+import { WardenWebAuthnEntrySummary } from '@bitblit/ratchet-warden-common/common/model/warden-web-authn-entry-summary';
+import { ButtonModule } from 'primeng/button';
+import { CardModule } from 'primeng/card';
+import { CommonModule } from '@angular/common';
+import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
   selector: 'ngx-acute-warden-user-profile',
   templateUrl: './acute-user-profile.component.html',
   standalone: true,
   imports: [ButtonModule, CardModule, CommonModule, TooltipModule],
-
 })
 export class AcuteUserProfileComponent {
   public user: WardenLoggedInUserWrapper<any>;

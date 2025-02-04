@@ -1,4 +1,4 @@
-import { Construct } from "constructs";
+import { Construct } from 'constructs';
 import {
   AllowedMethods,
   BehaviorOptions,
@@ -10,17 +10,14 @@ import {
   PriceClass,
   ResponseHeadersPolicy,
   SSLMethod,
-  ViewerProtocolPolicy
-} from "aws-cdk-lib/aws-cloudfront";
-import { FunctionUrlOrigin } from "aws-cdk-lib/aws-cloudfront-origins";
-import {
-  EpsilonSimpleLambdaCloudfrontDistributionProps
-} from "./epsilon-simple-lambda-cloudfront-distribution-props.js";
-import { Certificate, ICertificate } from "aws-cdk-lib/aws-certificatemanager";
+  ViewerProtocolPolicy,
+} from 'aws-cdk-lib/aws-cloudfront';
+import { FunctionUrlOrigin } from 'aws-cdk-lib/aws-cloudfront-origins';
+import { EpsilonSimpleLambdaCloudfrontDistributionProps } from './epsilon-simple-lambda-cloudfront-distribution-props.js';
+import { Certificate, ICertificate } from 'aws-cdk-lib/aws-certificatemanager';
 
 export class EpsilonSimpleLambdaCloudfrontDistribution extends Distribution {
   constructor(scope: Construct, id: string, props?: EpsilonSimpleLambdaCloudfrontDistributionProps) {
-
     let policy: IResponseHeadersPolicy = ResponseHeadersPolicy.CORS_ALLOW_ALL_ORIGINS_WITH_PREFLIGHT_AND_SECURITY_HEADERS;
     if (props.responseHeadersPolicyCreator) {
       policy = props.responseHeadersPolicyCreator(scope, id);
@@ -47,6 +44,5 @@ export class EpsilonSimpleLambdaCloudfrontDistribution extends Distribution {
     };
 
     super(scope, id + 'CloudfrontDistro', distributionProps);
-
   }
 }

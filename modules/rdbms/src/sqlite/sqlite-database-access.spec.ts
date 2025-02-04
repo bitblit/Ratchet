@@ -6,7 +6,7 @@ import { SimpleQueryTextProvider } from '../model/simple-query-text-provider.js'
 import { ModifyResults } from '../model/modify-results.js';
 import { RequestResults } from '../model/request-results.js';
 import fs from 'fs';
-import { ErrorRatchet } from "@bitblit/ratchet-common/lang/error-ratchet";
+import { ErrorRatchet } from '@bitblit/ratchet-common/lang/error-ratchet';
 import path from 'path';
 
 describe('sqlite-database-access', () => {
@@ -20,7 +20,7 @@ describe('sqlite-database-access', () => {
 
   test.skip('builds filtered', async () => {
     const prov: SqliteStyleConnectionProvider = new SqliteStyleConnectionProvider(() => {
-      const pth: string = path.resolve(path.join(process.env['SQLITE_HOME'], 'ratchet-test.db'),);
+      const pth: string = path.resolve(path.join(process.env['SQLITE_HOME'], 'ratchet-test.db'));
       if (!fs.existsSync(pth)) {
         throw ErrorRatchet.fErr('Cannot find file %s', pth);
       }
@@ -30,8 +30,8 @@ describe('sqlite-database-access', () => {
           {
             label: 'test',
             localFile: {
-              filePath: pth
-            }
+              filePath: pth,
+            },
           },
         ],
       });

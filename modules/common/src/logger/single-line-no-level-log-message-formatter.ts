@@ -5,7 +5,6 @@ import { StringRatchet } from '../lang/string-ratchet.js';
 
 // Used when the output will be put into a table with the other fields separate
 export class SingleLineNoLevelLogMessageFormatter implements LogMessageFormatter {
-
   public formatMessage(msg: LogMessage, meta: LoggerMeta): string {
     let tmp: string = null;
 

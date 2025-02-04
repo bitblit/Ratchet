@@ -2,7 +2,7 @@ import * as TunnelSsh from 'tunnel-ssh';
 import { Logger } from '@bitblit/ratchet-common/logger/logger';
 import { SshTunnelContainer } from '../model/ssh/ssh-tunnel-container.js';
 import { SshTunnelConfig } from '../model/ssh/ssh-tunnel-config.js';
-import { ForwardOptions, ServerOptions, TunnelOptions } from "tunnel-ssh";
+import { ForwardOptions, ServerOptions, TunnelOptions } from 'tunnel-ssh';
 
 export class SshTunnelService {
   public async shutdown(ssh: SshTunnelContainer): Promise<boolean> {
@@ -27,14 +27,14 @@ export class SshTunnelService {
     dstPort: number,
     localPort: number,
   ): Promise<SshTunnelContainer> {
-    const tunnelOptions:TunnelOptions = {
+    const tunnelOptions: TunnelOptions = {
       autoClose: true,
-      reconnectOnError: true
+      reconnectOnError: true,
     };
-    const serverOptions:ServerOptions = {
+    const serverOptions: ServerOptions = {
       port: localPort,
     };
-    const forwardOptions:ForwardOptions = {
+    const forwardOptions: ForwardOptions = {
       srcAddr: 'localhost', //'0.0.0.0',
       srcPort: localPort,
       dstAddr: dstHost,

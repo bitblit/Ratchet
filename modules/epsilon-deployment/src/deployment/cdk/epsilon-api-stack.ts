@@ -29,9 +29,9 @@ import { ContainerImage } from 'aws-cdk-lib/aws-ecs';
 import { EpsilonApiStackFeature } from './epsilon-api-stack-feature.js';
 import { EpsilonSimpleLambdaCloudfrontDistributionProps } from './epsilon-simple-lambda-cloudfront-distribution-props';
 import { EpsilonSimpleLambdaCloudfrontDistribution } from './epsilon-simple-lambda-cloudfront-distribution';
-import { EpsilonRoute53Handling } from "./epsilon-route-53-handling";
-import { HostedZone, RecordSet, RecordType } from "aws-cdk-lib/aws-route53";
-import { CloudFrontTarget } from "aws-cdk-lib/aws-route53-targets";
+import { EpsilonRoute53Handling } from './epsilon-route-53-handling';
+import { HostedZone, RecordSet, RecordType } from 'aws-cdk-lib/aws-route53';
+import { CloudFrontTarget } from 'aws-cdk-lib/aws-route53-targets';
 
 export class EpsilonApiStack extends Stack {
   private webHandler: DockerImageFunction;
@@ -250,7 +250,7 @@ export class EpsilonApiStack extends Stack {
                 target: {
                   aliasTarget: new CloudFrontTarget(dist),
                 },
-                zone: HostedZone.fromLookup(this, id+'HostZone-'+dn, { domainName: EpsilonStackUtil.extractApexDomain(dn) }),
+                zone: HostedZone.fromLookup(this, id + 'HostZone-' + dn, { domainName: EpsilonStackUtil.extractApexDomain(dn) }),
               });
             }
           }

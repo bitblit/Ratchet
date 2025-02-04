@@ -1,6 +1,5 @@
 <div class="container">
-
-  <div class="row" *ngIf="redirectState!=='REDIR'">
+  <div class="row" *ngIf="redirectState !== 'REDIR'">
     <div class="col-sm-2">
       <h3>Page Not Found</h3>
     </div>
@@ -10,7 +9,7 @@
     </div>
   </div>
 
-  <div class="row" *ngIf="redirectState==='REDIR'">
+  <div class="row" *ngIf="redirectState === 'REDIR'">
     <div class="col-sm-2">
       <h3>Redirecting</h3>
     </div>
@@ -18,5 +17,4 @@
       <p>Sending you to the new version of that page...</p>
     </div>
   </div>
-
 </div>

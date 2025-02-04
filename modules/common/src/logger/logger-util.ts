@@ -15,7 +15,9 @@ export class LoggerUtil {
     const output: Map<LoggerLevelName, (...any) => void> = new Map<LoggerLevelName, (...any) => void>();
     if (outputFn === LoggerOutputFunction.Disabled) {
       // Disables ALL logger functionality
-      const disabled: (...any) => void = (_chunk, _cb) => {/*do nothing*/};
+      const disabled: (...any) => void = (_chunk, _cb) => {
+        /*do nothing*/
+      };
       output.set(LoggerLevelName.error, disabled);
       output.set(LoggerLevelName.warn, disabled);
       output.set(LoggerLevelName.info, disabled);
@@ -60,8 +62,7 @@ export class LoggerUtil {
     return LoggerUtil.LOG_LEVELS_IN_ORDER.indexOf(targetLevel);
   }
 
-  public static indexToLevel(idx:number ): LoggerLevelName {
-    return idx>=0 && idx<LoggerUtil.LOG_LEVELS_IN_ORDER.length ? LoggerUtil.LOG_LEVELS_IN_ORDER[idx] : null;
+  public static indexToLevel(idx: number): LoggerLevelName {
+    return idx >= 0 && idx < LoggerUtil.LOG_LEVELS_IN_ORDER.length ? LoggerUtil.LOG_LEVELS_IN_ORDER[idx] : null;
   }
-
 }

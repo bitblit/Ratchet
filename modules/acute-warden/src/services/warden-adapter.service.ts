@@ -1,16 +1,19 @@
-import {Injectable} from '@angular/core';
-import {Logger} from '@bitblit/ratchet-common/logger/logger';
-import {No} from "@bitblit/ratchet-common/lang/no";
-import {Router} from '@angular/router';
+import { Injectable } from '@angular/core';
+import { Logger } from '@bitblit/ratchet-common/logger/logger';
+import { No } from '@bitblit/ratchet-common/lang/no';
+import { Router } from '@angular/router';
 import { WardenUserServiceEventProcessingProvider } from '@bitblit/ratchet-warden-common/client/provider/warden-user-service-event-processing-provider';
 import { WardenLoggedInUserWrapper } from '@bitblit/ratchet-warden-common/client/provider/warden-logged-in-user-wrapper';
-import { WardenContact } from "@bitblit/ratchet-warden-common/common/model/warden-contact";
-import { RequireRatchet } from "@bitblit/ratchet-common/lang/require-ratchet";
-import { WardenClient } from "@bitblit/ratchet-warden-common/client/warden-client";
+import { WardenContact } from '@bitblit/ratchet-warden-common/common/model/warden-contact';
+import { RequireRatchet } from '@bitblit/ratchet-common/lang/require-ratchet';
+import { WardenClient } from '@bitblit/ratchet-warden-common/client/warden-client';
 
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class WardenAdapterService implements WardenUserServiceEventProcessingProvider<any> {
-  constructor(public router: Router, public wardenClient: WardenClient) {}
+  constructor(
+    public router: Router,
+    public wardenClient: WardenClient,
+  ) {}
 
   public onAutomaticLogout(): void {
     // Make sure we leave
@@ -40,10 +43,10 @@ export class WardenAdapterService implements WardenUserServiceEventProcessingPro
     const mUrl: URL = new URL(magicLanderUrl);
     const param: URLSearchParams = new URLSearchParams(mUrl.search);
     if (!param.has('code')) {
-      param.set('code','{CODE}');
+      param.set('code', '{CODE}');
     }
     if (!param.has('meta')) {
-      param.set('meta','{META}');
+      param.set('meta', '{META}');
     }
 
     mUrl.search = param.toString();

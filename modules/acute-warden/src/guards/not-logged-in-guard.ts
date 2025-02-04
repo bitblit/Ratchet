@@ -1,10 +1,10 @@
-import {Injectable} from '@angular/core';
-import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot} from '@angular/router';
-import {Observable} from 'rxjs';
+import { Injectable } from '@angular/core';
+import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router';
+import { Observable } from 'rxjs';
 
-import {Logger} from '@bitblit/ratchet-common/logger/logger';
-import {WardenUserService} from "@bitblit/ratchet-warden-common/client/warden-user-service";
-import {No} from "@bitblit/ratchet-common/lang/no";
+import { Logger } from '@bitblit/ratchet-common/logger/logger';
+import { WardenUserService } from '@bitblit/ratchet-warden-common/client/warden-user-service';
+import { No } from '@bitblit/ratchet-common/lang/no';
 
 @Injectable()
 export class NotLoggedInGuard implements CanActivate {

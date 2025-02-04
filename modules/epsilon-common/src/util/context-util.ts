@@ -7,8 +7,8 @@ import { LoggingTraceIdGenerator } from '../config/logging-trace-id-generator.js
 //import { BuiltInTraceIdGenerators } from '../built-in/built-in-trace-id-generators.js';
 import { InternalBackgroundEntry } from '../background/internal-background-entry.js';
 import { InterApiEntry } from '../inter-api/inter-api-entry.js';
-import { ContextGlobalData } from "./context-global-data.js";
-import { GlobalRatchet } from "@bitblit/ratchet-common/lang/global-ratchet";
+import { ContextGlobalData } from './context-global-data.js';
+import { GlobalRatchet } from '@bitblit/ratchet-common/lang/global-ratchet';
 
 // This class serves as a static holder for the AWS Lambda context, and also adds some
 // simple helper functions
@@ -37,17 +37,16 @@ export class ContextUtil {
       logVariables: {},
       processLabel: 'UNSET',
       overrideTraceDepth: null,
-      overrideTraceId: null
+      overrideTraceId: null,
     });
   }
 
-
   public static initContext(epsilon: EpsilonInstance, evt: any, ctx: Context, processLabel: string): void {
     const cd: ContextGlobalData = ContextUtil.fetchContextData();
-    cd.epsilonInstance= epsilon;
-    cd.context= ctx;
-    cd.event= evt;
-    cd.processLabel= processLabel;
+    cd.epsilonInstance = epsilon;
+    cd.context = ctx;
+    cd.event = evt;
+    cd.processLabel = processLabel;
   }
 
   public static clearContext() {
@@ -108,7 +107,7 @@ export class ContextUtil {
 
   public static currentProcessLabel(): string {
     const cd: ContextGlobalData = ContextUtil.fetchContextData();
-    return cd?.processLabel  || 'unset';
+    return cd?.processLabel || 'unset';
   }
 
   private static traceHeaderName(): string {
@@ -128,19 +127,15 @@ export class ContextUtil {
 
     const traceFn: LoggingTraceIdGenerator =
       cd?.epsilonInstance?.config?.loggerConfig?.traceIdGenerator || ContextUtil.defaultedCurrentRequestId;
-    const traceId: string =
-      cd?.overrideTraceId ||
-      cd?.event?.headers?.[ContextUtil.traceHeaderName()] ||
-      traceFn(cd?.event, cd?.context);
+    const traceId: string = cd?.overrideTraceId || cd?.event?.headers?.[ContextUtil.traceHeaderName()] || traceFn(cd?.event, cd?.context);
     return traceId;
   }
 
   public static currentTraceDepth(): number {
     const cd: ContextGlobalData = ContextUtil.fetchContextData();
 
-    const caller: number = cd?.overrideTraceDepth ||
-      NumberRatchet.safeNumber(cd?.event?.headers?.[ContextUtil.traceDepthHeaderName()]) ||
-      1;
+    const caller: number =
+      cd?.overrideTraceDepth || NumberRatchet.safeNumber(cd?.event?.headers?.[ContextUtil.traceDepthHeaderName()]) || 1;
     return caller;
   }
 

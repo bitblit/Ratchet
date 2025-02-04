@@ -102,7 +102,7 @@ export class SqliteDatabaseAccess implements DatabaseAccess {
         rval.query = rval.query.replaceAll(k, escaped);
         delete rval.params[k.substring(1)]; // this prolly wont work
       } else if (typeof val === 'boolean') {
-        const strVal: string = val ? 'true':'false';
+        const strVal: string = val ? 'true' : 'false';
         rval.query = rval.query.replaceAll(k, strVal);
         delete rval.params[k.substring(1)]; // this prolly wont work
       }

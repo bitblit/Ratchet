@@ -29,7 +29,7 @@ export class TimeZoneRatchet {
   }
 
   public nowEpochSeconds(): number {
-    return  Math.floor(DateTime.local().setZone(this.timezoneIanaName).toSeconds());
+    return Math.floor(DateTime.local().setZone(this.timezoneIanaName).toSeconds());
   }
 
   // Returns midnight in the current timezone in epoch seconds

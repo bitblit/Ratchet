@@ -3,11 +3,12 @@ import { DialogService, DynamicDialogConfig, DynamicDialogRef } from 'primeng/dy
 import { Logger } from '@bitblit/ratchet-common/logger/logger';
 import { BehaviorSubject } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
-import { ButtonModule } from "primeng/button";
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'ngx-acute-common-alert',
-  template: '<div style="display: flex; flex-direction:column; width: 33vw; max-height: 25vh; gap: 5px">' +
+  template:
+    '<div style="display: flex; flex-direction:column; width: 33vw; max-height: 25vh; gap: 5px">' +
     '<pre style="width: 30vw; max-height: 80%;white-space: pre-wrap">{{cfg.data.message | async}}</pre>' +
     '<div style="display:flex; flex-direction: row; justify-content: flex-end">' +
     '<p-button label="Ok" severity="primary" (click)="ref.close()" />' +
@@ -33,7 +34,7 @@ export class AlertComponent {
       header: title,
       modal: true,
       maximizable: false,
-      position: 'top'
+      position: 'top',
     });
     return dlg;
   }

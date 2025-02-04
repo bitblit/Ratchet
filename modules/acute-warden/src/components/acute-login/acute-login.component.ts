@@ -1,40 +1,53 @@
-import {AfterViewChecked, Component, Input} from "@angular/core";
-import {ActivatedRoute, Router, RouterModule} from '@angular/router';
+import { AfterViewChecked, Component, Input } from '@angular/core';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 
-import {Logger} from '@bitblit/ratchet-common/logger/logger';
-import {WardenClient} from "@bitblit/ratchet-warden-common/client/warden-client";
-import {WardenUserService} from "@bitblit/ratchet-warden-common/client/warden-user-service";
-import {StringRatchet} from "@bitblit/ratchet-common/lang/string-ratchet";
-import {WardenContact} from "@bitblit/ratchet-warden-common/common/model/warden-contact";
-import {
-  WardenRecentLoginDescriptor
-} from "@bitblit/ratchet-warden-common/client/provider/warden-recent-login-descriptor";
-import {WardenUtils} from "@bitblit/ratchet-warden-common/common/util/warden-utils";
-import {WardenContactType} from "@bitblit/ratchet-warden-common/common/model/warden-contact-type";
-import {WardenLoggedInUserWrapper} from "@bitblit/ratchet-warden-common/client/provider/warden-logged-in-user-wrapper";
-import {ButtonModule} from "primeng/button";
-import {FormsModule} from "@angular/forms";
-import {CommonModule} from "@angular/common";
-import {CardModule} from "primeng/card";
-import {TooltipModule} from "primeng/tooltip";
-import {FieldsetModule} from "primeng/fieldset";
-import {AlertComponent} from "@bitblit/ngx-acute-common";
-import {DialogService} from "primeng/dynamicdialog";
-import {InputTextModule} from "primeng/inputtext";
-import {RequireRatchet} from "@bitblit/ratchet-common/lang/require-ratchet";
-import {InputOtpModule} from "primeng/inputotp";
-import {AccordionModule} from "primeng/accordion";
-import {TabViewModule} from "primeng/tabview";
-import {SplitButtonModule} from "primeng/splitbutton";
-import {InputGroupModule} from "primeng/inputgroup";
-import {ToolbarModule} from "primeng/toolbar";
-
+import { Logger } from '@bitblit/ratchet-common/logger/logger';
+import { WardenClient } from '@bitblit/ratchet-warden-common/client/warden-client';
+import { WardenUserService } from '@bitblit/ratchet-warden-common/client/warden-user-service';
+import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet';
+import { WardenContact } from '@bitblit/ratchet-warden-common/common/model/warden-contact';
+import { WardenRecentLoginDescriptor } from '@bitblit/ratchet-warden-common/client/provider/warden-recent-login-descriptor';
+import { WardenUtils } from '@bitblit/ratchet-warden-common/common/util/warden-utils';
+import { WardenContactType } from '@bitblit/ratchet-warden-common/common/model/warden-contact-type';
+import { WardenLoggedInUserWrapper } from '@bitblit/ratchet-warden-common/client/provider/warden-logged-in-user-wrapper';
+import { ButtonModule } from 'primeng/button';
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { CardModule } from 'primeng/card';
+import { TooltipModule } from 'primeng/tooltip';
+import { FieldsetModule } from 'primeng/fieldset';
+import { AlertComponent } from '@bitblit/ngx-acute-common';
+import { DialogService } from 'primeng/dynamicdialog';
+import { InputTextModule } from 'primeng/inputtext';
+import { RequireRatchet } from '@bitblit/ratchet-common/lang/require-ratchet';
+import { InputOtpModule } from 'primeng/inputotp';
+import { AccordionModule } from 'primeng/accordion';
+import { TabViewModule } from 'primeng/tabview';
+import { SplitButtonModule } from 'primeng/splitbutton';
+import { InputGroupModule } from 'primeng/inputgroup';
+import { ToolbarModule } from 'primeng/toolbar';
 
 @Component({
   selector: 'ngx-acute-warden-login',
   templateUrl: './acute-login.component.html',
   standalone: true,
-  imports: [ButtonModule, RouterModule, FormsModule, CommonModule, CardModule, TooltipModule, ButtonModule, FieldsetModule, InputTextModule, InputOtpModule, AccordionModule, TabViewModule, SplitButtonModule, InputGroupModule, ToolbarModule]
+  imports: [
+    ButtonModule,
+    RouterModule,
+    FormsModule,
+    CommonModule,
+    CardModule,
+    TooltipModule,
+    ButtonModule,
+    FieldsetModule,
+    InputTextModule,
+    InputOtpModule,
+    AccordionModule,
+    TabViewModule,
+    SplitButtonModule,
+    InputGroupModule,
+    ToolbarModule,
+  ],
 })
 export class AcuteLoginComponent implements AfterViewChecked {
   @Input() public applicationName: string;
@@ -54,7 +67,6 @@ export class AcuteLoginComponent implements AfterViewChecked {
     public userService: WardenUserService<any>,
     public wardenClient: WardenClient,
     private dlgService: DialogService,
-
   ) {
     Logger.info('Found %s recent logins', this.recentLogins.length);
   }
@@ -72,7 +84,7 @@ export class AcuteLoginComponent implements AfterViewChecked {
   }
 
   public get recentLogins(): WardenRecentLoginDescriptor[] {
-    const rval: WardenRecentLoginDescriptor[] =  this.userService?.serviceOptions?.recentLoginProvider?.fetchAllLogins() || [];
+    const rval: WardenRecentLoginDescriptor[] = this.userService?.serviceOptions?.recentLoginProvider?.fetchAllLogins() || [];
     return rval;
   }
 
@@ -153,7 +165,10 @@ export class AcuteLoginComponent implements AfterViewChecked {
   }
 
   public contactValueInvalidAndDirty(): boolean {
-    return StringRatchet.trimToNull(this.newContactValue) && !WardenUtils.stringIsPhoneNumber(this.newContactValue) && !WardenUtils.stringIsEmailAddress(this.newContactValue);
+    return (
+      StringRatchet.trimToNull(this.newContactValue) &&
+      !WardenUtils.stringIsPhoneNumber(this.newContactValue) &&
+      !WardenUtils.stringIsEmailAddress(this.newContactValue)
+    );
   }
-
 }

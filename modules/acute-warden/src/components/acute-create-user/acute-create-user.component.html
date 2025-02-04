@@ -1,37 +1,38 @@
 <div class="row">
-    <p-card header="Create User">
-        <form  [formGroup]="form">
-        <div style="display: flex; flex-direction: column">
-            <div class="p-inputgroup">
-                <label class="p-inputgroup-addon">Contact Type</label>
-                <p-dropdown [options]="userContactTypes" formControlName="userContactType"
-                            id="userContactType"
-                            [style]="{'min-width':'50%'}"></p-dropdown>
-            </div>
-            <div class="p-inputgroup">
-                <span class="p-inputgroup-addon">Contact</span>
-                <input pInputText formControlName="userContactValue" placeholder="e.g., test@test.com" id="userContactValue"
-                >
-                <ng-container *ngIf="f('userContactValue').dirty">
-                    <span style="color:red" *ngIf="f('userContactValue').errors?.['required']">Contact is Required</span>
-                    <span style="color:red" *ngIf="f('userContactValue').errors?.['email']">Please enter a valid email address</span>
-                </ng-container>
-            </div>
-            <div class="p-inputgroup">
-                <span class="p-inputgroup-addon">Full name</span>
-                <input pInputText formControlName="userFullName" id="userFullName" placeholder="e.g., Tom Smith">
-                <ng-container *ngIf="f('userFullName').dirty">
-                    <span style="color:red" *ngIf="f('userFullName').errors?.['required']">Full name is Required</span>
-                    <span style="color:red" *ngIf="f('userFullName').errors?.['minlength']">Please enter a longer name</span>
-                    <span style="color:red" *ngIf="f('userFullName').errors?.['maxlength']">Please enter a shorter name</span>
-                </ng-container>
-            </div>
+  <p-card header="Create User">
+    <form [formGroup]="form">
+      <div style="display: flex; flex-direction: column">
+        <div class="p-inputgroup">
+          <label class="p-inputgroup-addon">Contact Type</label>
+          <p-dropdown
+            [options]="userContactTypes"
+            formControlName="userContactType"
+            id="userContactType"
+            [style]="{ 'min-width': '50%' }"
+          ></p-dropdown>
         </div>
-        <div>
-            <p-button pRipple styleClass="p-button-raised" (click)="createUser()">Create user</p-button>
-            <p-button pRipple styleClass="p-button-raised" routerLink="/public/login">Cancel</p-button>
+        <div class="p-inputgroup">
+          <span class="p-inputgroup-addon">Contact</span>
+          <input pInputText formControlName="userContactValue" placeholder="e.g., test@test.com" id="userContactValue" />
+          <ng-container *ngIf="f('userContactValue').dirty">
+            <span style="color: red" *ngIf="f('userContactValue').errors?.['required']">Contact is Required</span>
+            <span style="color: red" *ngIf="f('userContactValue').errors?.['email']">Please enter a valid email address</span>
+          </ng-container>
         </div>
-        </form>
-    </p-card>
-
+        <div class="p-inputgroup">
+          <span class="p-inputgroup-addon">Full name</span>
+          <input pInputText formControlName="userFullName" id="userFullName" placeholder="e.g., Tom Smith" />
+          <ng-container *ngIf="f('userFullName').dirty">
+            <span style="color: red" *ngIf="f('userFullName').errors?.['required']">Full name is Required</span>
+            <span style="color: red" *ngIf="f('userFullName').errors?.['minlength']">Please enter a longer name</span>
+            <span style="color: red" *ngIf="f('userFullName').errors?.['maxlength']">Please enter a shorter name</span>
+          </ng-container>
+        </div>
+      </div>
+      <div>
+        <p-button pRipple styleClass="p-button-raised" (click)="createUser()">Create user</p-button>
+        <p-button pRipple styleClass="p-button-raised" routerLink="/public/login">Cancel</p-button>
+      </div>
+    </form>
+  </p-card>
 </div>

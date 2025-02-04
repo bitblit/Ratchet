@@ -1,13 +1,13 @@
-import { Injectable } from "@angular/core";
-import { DialogService } from "primeng/dynamicdialog";
-import { MessageService } from "primeng/api";
-import { Logger } from "@bitblit/ratchet-common/logger/logger";
-import { GraphqlRatchet } from "@bitblit/ratchet-graphql/graphql/graphql-ratchet";
-import { BlockUiComponent } from "../components/dialogs/block-ui/block-ui.component";
-import { AuthorizationStyle } from "@bitblit/ratchet-graphql/graphql/authorization-style";
-import { ErrorHandlingApproach } from "@bitblit/ratchet-common/lang/error-handling-approach";
-import { ErrorRatchet } from "@bitblit/ratchet-common/lang/error-ratchet";
-import { LoggerLevelName } from "@bitblit/ratchet-common/logger/logger-level-name";
+import { Injectable } from '@angular/core';
+import { DialogService } from 'primeng/dynamicdialog';
+import { MessageService } from 'primeng/api';
+import { Logger } from '@bitblit/ratchet-common/logger/logger';
+import { GraphqlRatchet } from '@bitblit/ratchet-graphql/graphql/graphql-ratchet';
+import { BlockUiComponent } from '../components/dialogs/block-ui/block-ui.component';
+import { AuthorizationStyle } from '@bitblit/ratchet-graphql/graphql/authorization-style';
+import { ErrorHandlingApproach } from '@bitblit/ratchet-common/lang/error-handling-approach';
+import { ErrorRatchet } from '@bitblit/ratchet-common/lang/error-ratchet';
+import { LoggerLevelName } from '@bitblit/ratchet-common/logger/logger-level-name';
 
 @Injectable({ providedIn: 'root' })
 export class GraphqlQueryService {
@@ -21,7 +21,7 @@ export class GraphqlQueryService {
     queryName: string,
     variables: any,
     authStyle: AuthorizationStyle = AuthorizationStyle.TokenRequired,
-    errorHandling: ErrorHandlingApproach = ErrorHandlingApproach.LogAndPassThru
+    errorHandling: ErrorHandlingApproach = ErrorHandlingApproach.LogAndPassThru,
   ): Promise<T | null> {
     let rval: T | null = null;
     this.messageService.add({ severity: 'info', summary: 'Running query', detail: queryName, life: 3000 });
@@ -43,7 +43,7 @@ export class GraphqlQueryService {
     queryName: string,
     variables: any,
     authStyle: AuthorizationStyle = AuthorizationStyle.TokenRequired,
-    errorHandling: ErrorHandlingApproach = ErrorHandlingApproach.LogAndPassThru
+    errorHandling: ErrorHandlingApproach = ErrorHandlingApproach.LogAndPassThru,
   ): Promise<T | null> {
     let rval: T | null = null;
     this.messageService.add({ severity: 'info', summary: 'Running query', detail: queryName, life: 3000 });
@@ -69,7 +69,7 @@ export class GraphqlQueryService {
     queryName: string,
     variables: any,
     authStyle: AuthorizationStyle = AuthorizationStyle.TokenRequired,
-    errorHandling: ErrorHandlingApproach = ErrorHandlingApproach.LogAndPassThru
+    errorHandling: ErrorHandlingApproach = ErrorHandlingApproach.LogAndPassThru,
   ): Promise<T | null> {
     let rval: T | null = null;
     this.messageService.add({ severity: 'info', summary: 'Running query', detail: queryName, life: 3000 });
@@ -92,7 +92,7 @@ export class GraphqlQueryService {
     queryName: string,
     variables: any,
     authStyle: AuthorizationStyle = AuthorizationStyle.TokenRequired,
-    errorHandling: ErrorHandlingApproach = ErrorHandlingApproach.LogAndPassThru
+    errorHandling: ErrorHandlingApproach = ErrorHandlingApproach.LogAndPassThru,
   ): Promise<T | null> {
     let rval: T | null = null;
     this.messageService.add({ severity: 'info', summary: 'Running query', detail: queryName, life: 3000 });

@@ -5,7 +5,7 @@ import { PromiseRatchet } from '@bitblit/ratchet-common/lang/promise-ratchet';
 import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet';
 import { GetParameterCommand, GetParameterCommandOutput, ParameterNotFound, SSMClient } from '@aws-sdk/client-ssm';
 import { EnvironmentServiceProvider } from './environment-service-provider.js';
-import { ExpiredTokenException } from "@aws-sdk/client-sts";
+import { ExpiredTokenException } from '@aws-sdk/client-sts';
 
 /**
  * Service for reading environmental variables
@@ -38,7 +38,7 @@ export class SsmEnvironmentServiceProvider<T> implements EnvironmentServiceProvi
       if (err instanceof ParameterNotFound) {
         const errMsg: string = Logger.warn('AWS could not find parameter %s - are you using the right AWS key?', name);
         throw new Error(errMsg);
-      } else if (err.name==='CredentialsProviderError') {
+      } else if (err.name === 'CredentialsProviderError') {
         Logger.warn('Token is expired - if on SSO cli try "aws sso login"');
         throw err;
       } else if ((ErrorRatchet.safeStringifyErr(err) || '').toLowerCase().indexOf('throttl') > -1) {
