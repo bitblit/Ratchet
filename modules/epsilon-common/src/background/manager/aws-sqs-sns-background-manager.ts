@@ -42,9 +42,7 @@ export class AwsSqsSnsBackgroundManager extends AbstractBackgroundManager {
     }
   }
 
-  public get backgroundManagerName(): string {
-    return 'AwsSqsSnsBackgroundManager';
-  }
+  public readonly backgroundManagerName: string = 'AwsSqsSnsBackgroundManager';
 
   public get awsConfig(): BackgroundAwsConfig {
     return this._awsConfig;

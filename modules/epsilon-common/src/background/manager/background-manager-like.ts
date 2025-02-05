@@ -11,7 +11,7 @@ import { Subject } from 'rxjs';
  */
 export interface BackgroundManagerLike {
   // Used in info dumps and logging
-  get backgroundManagerName(): string;
+  backgroundManagerName: string;
   // If the class defines this, other classes can register to be notified the instant anything arrives in the queue
   immediateProcessQueue?(): Subject<InternalBackgroundEntry<any>>;
   // Wraps up an entry

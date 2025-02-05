@@ -40,9 +40,7 @@ export class AwsLargePayloadS3SqsSnsBackgroundManager extends AwsSqsSnsBackgroun
     }
   }
 
-  public get backgroundManagerName(): string {
-    return 'AwsLargePayloadS3SqsSnsBackgroundManager';
-  }
+  public readonly backgroundManagerName: string = 'AwsLargePayloadS3SqsSnsBackgroundManager';
 
   public get s3(): S3CacheRatchetLike {
     return this._s3;

@@ -20,7 +20,7 @@ export abstract class AbstractBackgroundManager implements BackgroundManagerLike
   abstract fireImmediateProcessRequest<T>(entry: BackgroundEntry<T>): Promise<string>;
   abstract fireStartProcessingRequest(): Promise<string>;
   abstract fetchApproximateNumberOfQueueEntries(): Promise<number>;
-  abstract get backgroundManagerName(): string;
+  abstract backgroundManagerName: string;
   abstract takeEntryFromBackgroundQueue(): Promise<InternalBackgroundEntry<any>[]>;
 
   public createEntry<T>(type: string, data?: T): BackgroundEntry<T> {

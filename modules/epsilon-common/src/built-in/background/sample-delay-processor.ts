@@ -4,9 +4,7 @@ import { BackgroundProcessor } from '../../config/background/background-processo
 import { BackgroundManagerLike } from '../../background/manager/background-manager-like.js';
 
 export class SampleDelayProcessor implements BackgroundProcessor<any> {
-  public get typeName(): string {
-    return 'EpsilonSampleDelay';
-  }
+  public readonly typeName: string = 'EpsilonSampleDelay';
 
   public async handleEvent(_data: any, _mgr?: BackgroundManagerLike): Promise<void> {
     const delayMS: number = Math.floor(Math.random() * 5000);

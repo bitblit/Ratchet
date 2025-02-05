@@ -14,9 +14,7 @@ import { AbstractBackgroundManager } from './abstract-background-manager.js';
 export class SingleThreadLocalBackgroundManager extends AbstractBackgroundManager {
   private _localBus: Subject<InternalBackgroundEntry<any>> = new Subject<InternalBackgroundEntry<any>>();
 
-  public get backgroundManagerName(): string {
-    return 'SingleThreadLocalBackgroundManager';
-  }
+  public readonly backgroundManagerName: string = 'SingleThreadLocalBackgroundManager';
 
   // Super constructor automatically called
   public immediateProcessQueue?(): Subject<InternalBackgroundEntry<any>> {

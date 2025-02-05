@@ -5,29 +5,17 @@ export class EpsilonBuildProperties {
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   private constructor() {}
 
-  public static get buildVersion(): string {
-    return 'LOCAL-SNAPSHOT';
+  public readonly buildVersion: string = 'LOCAL-SNAPSHOT';
+
+  public readonly buildHash: string = 'LOCAL-HASH';
+
+  public readonly buildBranch: string = 'LOCAL-BRANCH';
+
+  public readonly buildTag: string = 'LOCAL-TAG';
+
+  public get buildBranchOrTag(): string {
+    return StringRatchet.trimToNull(this.buildBranch) ? 'BRANCH:' + this.buildBranch : 'TAG:' + this.buildTag;
   }
 
-  public static get buildHash(): string {
-    return 'LOCAL-HASH';
-  }
-
-  public static get buildBranch(): string {
-    return 'LOCAL-BRANCH';
-  }
-
-  public static get buildTag(): string {
-    return 'LOCAL-TAG';
-  }
-
-  public static get buildBranchOrTag(): string {
-    return StringRatchet.trimToNull(EpsilonBuildProperties.buildBranch)
-      ? 'BRANCH:' + EpsilonBuildProperties.buildBranch
-      : 'TAG:' + EpsilonBuildProperties.buildTag;
-  }
-
-  public static get buildTime(): string {
-    return 'LOCAL-TIME';
-  }
+  public readonly buildTime: string = 'LOCAL-TIME';
 }

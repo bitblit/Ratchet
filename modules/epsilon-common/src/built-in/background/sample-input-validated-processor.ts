@@ -4,15 +4,11 @@ import { SampleInputValidatedProcessorData } from './sample-input-validated-proc
 import { BackgroundManagerLike } from '../../background/manager/background-manager-like.js';
 
 export class SampleInputValidatedProcessor implements BackgroundProcessor<SampleInputValidatedProcessorData> {
-  public get typeName(): string {
-    return 'EpsilonSampleInputValidated';
-  }
+  public readonly typeName: string = 'EpsilonSampleInputValidated';
 
   public async handleEvent(data: SampleInputValidatedProcessorData, _mgr?: BackgroundManagerLike): Promise<void> {
     Logger.info('Running SampleInputValidatedProcessor, data was : %j', data);
   }
 
-  public get dataSchemaName(): string {
-    return 'BackgroundSampleInputValidatedProcessorData';
-  }
+  public readonly dataSchemaName: string = 'BackgroundSampleInputValidatedProcessorData';
 }

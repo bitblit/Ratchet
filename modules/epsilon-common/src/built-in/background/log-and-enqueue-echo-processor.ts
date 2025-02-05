@@ -4,13 +4,11 @@ import { EchoProcessor } from './echo-processor.js';
 import { BackgroundManagerLike } from '../../background/manager/background-manager-like.js';
 
 export class LogAndEnqueueEchoProcessor implements BackgroundProcessor<any> {
-  public get typeName(): string {
-    return 'EpsilonLogAndEnqueueEcho';
-  }
+  public readonly typeName: string = 'EpsilonLogAndEnqueueEcho';
 
   public async handleEvent(data: any, cfg: BackgroundManagerLike): Promise<void> {
     Logger.info('LogAndEnqueueEchoProcessor : %j', data);
-    await cfg.fireImmediateProcessRequestByParts(EchoProcessor.TYPE_NAME, { upstream: data });
+    await cfg.fireImmediateProcessRequestByParts(EchoProcessor.ECHO_PROCESSOR_TYPE_NAME, { upstream: data });
     Logger.info('Completed : LogAndEnqueueEchoProcessor');
   }
 }
