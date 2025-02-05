@@ -102,10 +102,12 @@ export class SqliteDatabaseAccess implements DatabaseAccess {
       if (Array.isArray(val)) {
         const escaped: string = this.escape(val);
         rval.query = rval.query.replaceAll(k, escaped);
+        //eslint-disable-next-line @typescript-eslint/no-dynamic-delete
         delete rval.params[k.substring(1)]; // this prolly wont work
       } else if (typeof val === 'boolean') {
         const strVal: string = val ? 'true' : 'false';
         rval.query = rval.query.replaceAll(k, strVal);
+        //eslint-disable-next-line @typescript-eslint/no-dynamic-delete
         delete rval.params[k.substring(1)]; // this prolly wont work
       }
     });

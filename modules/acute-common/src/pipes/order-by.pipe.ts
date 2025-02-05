@@ -40,9 +40,9 @@ export class OrderByPipe implements PipeTransform {
       //Loop over property of the array in order and sort
       return input.sort(function (a: any, b: any) {
         for (const cEntry of config) {
-        //for (let i: number = 0; i < config.length; i++) {
+          //for (let i: number = 0; i < config.length; i++) {
           const desc = cEntry.substr(0, 1) == '-';
-          const property = cEntry.substr(0, 1) == '+' || cEntry.substr(0, 1) == '-' ?cEntry.substr(1) : cEntry;
+          const property = cEntry.substr(0, 1) == '+' || cEntry.substr(0, 1) == '-' ? cEntry.substr(1) : cEntry;
 
           const comparison = !desc
             ? OrderByPipe._orderByComparator(a[property], b[property])

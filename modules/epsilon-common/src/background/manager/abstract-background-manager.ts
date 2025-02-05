@@ -57,7 +57,7 @@ export abstract class AbstractBackgroundManager implements BackgroundManagerLike
   public async addEntriesToQueue(entries: BackgroundEntry<any>[], fireStartMessage?: boolean): Promise<string[]> {
     const rval: string[] = [];
     for (const eVal of entries) {
-    //for (let i = 0; i < entries.length; i++) {
+      //for (let i = 0; i < entries.length; i++) {
       try {
         // Always defer the fire to after the last enqueue
         const tmp: string = await this.addEntryToQueue(eVal, false);

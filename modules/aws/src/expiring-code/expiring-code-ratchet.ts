@@ -17,8 +17,8 @@ export class ExpiringCodeRatchet {
     RequireRatchet.notNullOrUndefined(params.alphabet, 'params.alphabet');
 
     let code: string = '';
-    
-    for (let i = 0; i < params.length; i++) {
+
+    while (code.length < params.length) {
       code += params.alphabet.charAt(Math.floor(params.alphabet.length * Math.random()));
     }
 

@@ -184,7 +184,7 @@ export class DynamoRatchet implements DynamoRatchetLike {
         qry,
       );
       for (const qri of qryResults.Items) {
-      //for (let i = 0; i < qryResults.Items.length; i++) {
+        //for (let i = 0; i < qryResults.Items.length; i++) {
         await proc(qri as T);
         cnt++;
       }
@@ -198,7 +198,7 @@ export class DynamoRatchet implements DynamoRatchetLike {
         qry['ExclusiveStartKey'] = qryResults.LastEvaluatedKey;
         qryResults = await this.throughputSafeScanOrQuery<QueryCommandInput, QueryCommandOutput>((o) => this.queryPromise(o), qry);
         for (const qri of qryResults.Items) {
-        //for (let i = 0; i < qryResults.Items.length; i++) {
+          //for (let i = 0; i < qryResults.Items.length; i++) {
           await proc(qri as T);
           cnt++;
         }
@@ -296,7 +296,7 @@ export class DynamoRatchet implements DynamoRatchetLike {
         scan,
       );
       for (const qri of qryResults.Items) {
-      //for (let i = 0; i < qryResults.Items.length; i++) {
+        //for (let i = 0; i < qryResults.Items.length; i++) {
         await proc(qri as T);
         cnt++;
       }
@@ -306,7 +306,7 @@ export class DynamoRatchet implements DynamoRatchetLike {
         scan['ExclusiveStartKey'] = qryResults.LastEvaluatedKey;
         qryResults = await this.throughputSafeScanOrQuery<ScanCommandInput, ScanCommandOutput>((o) => this.scanPromise(o), scan);
         for (const qri of qryResults.Items) {
-        //for (let i = 0; i < qryResults.Items.length; i++) {
+          //for (let i = 0; i < qryResults.Items.length; i++) {
           await proc(qri as T);
           cnt++;
         }
@@ -822,6 +822,7 @@ export class DynamoRatchet implements DynamoRatchetLike {
       });
       Logger.silly('Removing keys : %j', rem);
       rem.forEach((k) => {
+        //eslint-disable-next-line @typescript-eslint/no-dynamic-delete
         delete ob[k];
       });
     }

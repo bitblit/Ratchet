@@ -28,7 +28,7 @@ export class UniqueFileRename {
 
     const contFiles: string[] = fs.readdirSync(inFolder);
     for (const cFile of contFiles) {
-    //for (let i = 0; i < contFiles.length; i++) {
+      //for (let i = 0; i < contFiles.length; i++) {
       const full: string = path.join(inFolder, cFile);
       const s2: Stats = fs.statSync(full);
       if (s2.isFile()) {

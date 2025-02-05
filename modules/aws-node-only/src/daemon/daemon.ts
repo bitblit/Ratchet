@@ -75,7 +75,7 @@ export class Daemon implements DaemonLike {
       const now: number = new Date().getTime();
       const removed: DaemonProcessState[] = [];
       for (const test of original) {
-      //for (let i = 0; i < original.length; i++) {
+        //for (let i = 0; i < original.length; i++) {
         //const test: DaemonProcessState = original[i];
         const ageSeconds: number = (now - test.startedEpochMS) / 1000;
         if (ageSeconds > olderThanSeconds) {

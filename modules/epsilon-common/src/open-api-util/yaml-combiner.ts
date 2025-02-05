@@ -16,7 +16,7 @@ export class YamlCombiner {
 
     let allElements: any = {};
     for (const fName of files) {
-    //for (let i = 0; i < files.length; i++) {
+      //for (let i = 0; i < files.length; i++) {
       const fileContents: string = fs.readFileSync(fName).toString();
       const openApi: any = yaml.load(fileContents);
       allElements = Object.assign(allElements, openApi);

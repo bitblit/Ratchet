@@ -22,10 +22,7 @@ export class GoogleWebTokenManipulator implements WebTokenManipulator<JwtTokenBa
     return validated;
   }
 
-  public async parseAndValidateGoogleToken(
-    googleToken: string,
-    allowExpired: boolean = false,
-  ): Promise<JwtTokenBase> {
+  public async parseAndValidateGoogleToken(googleToken: string, allowExpired: boolean = false): Promise<JwtTokenBase> {
     Logger.debug('Auth : %s', StringRatchet.obscure(googleToken, 4));
 
     // First decode so we can get the keys

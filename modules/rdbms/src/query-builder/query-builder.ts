@@ -87,6 +87,7 @@ export class QueryBuilder {
   }
 
   public removeParam(key: string): QueryBuilder {
+    //eslint-disable-next-line @typescript-eslint/no-dynamic-delete
     delete this.namedParams[key];
     return this;
   }

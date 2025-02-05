@@ -10,12 +10,6 @@ export default tseslint.config(
   ...tseslint.configs.stylistic,
   eslintConfigPrettier,
   {
-    "files": ["*.test.js"],
-    "rules": {
-      "no-unused-expressions": "off"
-    }
-  },
-  {
     rules: {
       // Ok, I'm a java-head, but I like the namespacing of static class wrappers
       "@typescript-eslint/no-re": "off",
@@ -26,6 +20,12 @@ export default tseslint.config(
         "argsIgnorePattern": "^_",
         "varsIgnorePattern": "^_"
       }],
+    }
+  },
+  {
+    files: ["**/*.spec.ts"],
+    rules: {
+      "@typescript-eslint/no-unused-expressions": "off", // Since 'expect' looks like this
     }
   }
 );

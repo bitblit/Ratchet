@@ -71,7 +71,7 @@ export class AthenaRatchet {
     const ids: string[] = await this.fetchQueryIds();
     Logger.debug('Finding %d items', ids.length);
     for (const id of ids) {
-    //for (let i = 0; i < ids.length; i++) {
+      //for (let i = 0; i < ids.length; i++) {
       const params = {
         NamedQueryId: id,
       };

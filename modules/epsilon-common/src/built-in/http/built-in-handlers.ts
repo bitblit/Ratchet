@@ -13,14 +13,14 @@ import { NotImplemented } from '../../http/error/not-implemented.js';
 import { MisconfiguredError } from '../../http/error/misconfigured-error.js';
 
 export class BuiltInHandlers {
-  public static async expectedHandledByFilter(evt: ExtendedAPIGatewayEvent, flag?: string): Promise<any> {
+  public static async expectedHandledByFilter(evt: ExtendedAPIGatewayEvent, _flag?: string): Promise<any> {
     throw new MisconfiguredError().withFormattedErrorMessage(
       'Should not happen - it was expected that route %s would be handled by a filter',
       evt.path,
     );
   }
 
-  public static async handleNotImplemented(evt: ExtendedAPIGatewayEvent, flag?: string): Promise<any> {
+  public static async handleNotImplemented(evt: ExtendedAPIGatewayEvent, _flag?: string): Promise<any> {
     Logger.info('A request was made to %s with body %j - not yet implemented', evt.path, evt.body);
 
     const rval: any = {

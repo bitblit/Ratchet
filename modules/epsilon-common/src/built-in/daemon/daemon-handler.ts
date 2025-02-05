@@ -71,7 +71,7 @@ export class DaemonHandler {
     const keys: DaemonProcessState[] = await this.daemon.list(group);
     const allowed: DaemonProcessState[] = [];
     for (const kVal of keys) {
-    //for (let i = 0; i < keys.length; i++) {
+      //for (let i = 0; i < keys.length; i++) {
       const canRead: boolean = await this.config.authorizer(evt, kVal);
       if (canRead) {
         allowed.push(kVal);

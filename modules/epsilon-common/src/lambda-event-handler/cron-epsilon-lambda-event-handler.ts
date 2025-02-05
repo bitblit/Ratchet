@@ -6,7 +6,6 @@ import { EpsilonInstance } from '../epsilon-instance.js';
 import { CronConfig } from '../config/cron/cron-config.js';
 import { BackgroundHandler } from '../background/background-handler.js';
 import { BackgroundEntry } from '../background/background-entry.js';
-import { CronBackgroundEntry } from '../config/cron/cron-background-entry.js';
 import { CronUtil } from '../util/cron-util.js';
 import { BackgroundManagerLike } from '../background/manager/background-manager-like.js';
 import { LambdaEventDetector } from '@bitblit/ratchet-aws/lambda/lambda-event-detector';
@@ -66,7 +65,7 @@ export class CronEpsilonLambdaEventHandler implements EpsilonLambdaEventHandler<
 
           const toEnqueue: BackgroundEntry<any>[] = [];
           for (const smCronEntry of cronConfig.entries) {
-          //for (let i = 0; i < cronConfig.entries.length; i++) {
+            //for (let i = 0; i < cronConfig.entries.length; i++) {
             //const smCronEntry: CronBackgroundEntry = cronConfig.entries[i];
             if (CronUtil.eventMatchesEntry(evt, smCronEntry, cronConfig, cronTimestampEpochMS)) {
               Logger.info('CRON Firing : %s', CronUtil.cronEntryName(smCronEntry));

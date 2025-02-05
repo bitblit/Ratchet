@@ -82,7 +82,7 @@ export class CloudWatchLogsRatchet {
     let waitPer = 10;
 
     for (const rStream of removedStreams) {
-    //for (let i = 0; i < removedStreams.length; i++) {
+      //for (let i = 0; i < removedStreams.length; i++) {
       const delParams = {
         logGroupName: logGroupName,
         logStreamName: rStream.logStreamName,

@@ -153,8 +153,8 @@ export class S3LocationSyncRatchet {
     let cmpResult: BucketCmpResult = await this.compareSrcAndDst();
 
     if (cmpResult.needCopy.length > 0 || cmpResult.diff.length > 0) {
-      await PromiseRatchet.runBoundedParallelSingleParam<void>(cp, cmpResult.needCopy, this, this.config.maxNumThreads);
-      await PromiseRatchet.runBoundedParallelSingleParam<void>(cp, cmpResult.diff, this, this.config.maxNumThreads);
+      await PromiseRatchet.runBoundedParallelSingleParam<any>(cp, cmpResult.needCopy, this, this.config.maxNumThreads);
+      await PromiseRatchet.runBoundedParallelSingleParam<any>(cp, cmpResult.diff, this, this.config.maxNumThreads);
 
       Logger.info('Verifying...');
       cmpResult = await this.compareSrcAndDst();

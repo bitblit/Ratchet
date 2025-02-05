@@ -81,6 +81,7 @@ export class AwsLargePayloadS3SqsSnsBackgroundManager extends AwsSqsSnsBackgroun
         entry.meta[AwsLargePayloadS3SqsSnsBackgroundManager.LARGE_MESSAGE_S3_PATH_META_KEY],
       );
       entry.data = parsed;
+      //eslint-disable-next-line @typescript-eslint/no-dynamic-delete
       delete entry.meta[AwsLargePayloadS3SqsSnsBackgroundManager.LARGE_MESSAGE_S3_PATH_META_KEY];
     }
     return entry;

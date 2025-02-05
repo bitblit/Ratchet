@@ -7,7 +7,6 @@ import {
   GetQueueAttributesCommandOutput,
   GetQueueAttributesRequest,
   GetQueueAttributesResult,
-  Message,
   ReceiveMessageCommand,
   ReceiveMessageCommandOutput,
   SendMessageCommand,
@@ -173,8 +172,9 @@ export class AwsSqsSnsBackgroundManager extends AbstractBackgroundManager {
 
     const message: ReceiveMessageCommandOutput = await this.sqs.send(new ReceiveMessageCommand(params));
     if (message && message.Messages && message.Messages.length > 0) {
-      for (let i = 0; i < message.Messages.length; i++) {
-        const m: Message = message.Messages[i];
+      for (const m of message.Messages) {
+        //for (let i = 0; i < message.Messages.length; i++) {
+        //const m: Message = message.Messages[i];
         try {
           const parsedBody: InternalBackgroundEntry<any> = JSON.parse(m.Body);
           if (!parsedBody.type) {
@@ -191,7 +191,7 @@ export class AwsSqsSnsBackgroundManager extends AbstractBackgroundManager {
           const delResult: DeleteMessageCommandOutput = await this.sqs.send(new DeleteMessageCommand(delParams));
           Logger.silly('Delete result : %j', delResult);
         } catch (err) {
-          Logger.warn('Error parsing message, dropping : %j', m);
+          Logger.warn('Error parsing message, dropping : %j', m, err);
         }
       }
     } else {

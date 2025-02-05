@@ -22,6 +22,7 @@ export class RetryProcessor implements BackgroundProcessor<any> {
     const tryNumber: number =
       data && data[RetryProcessor.RETRY_FIELD_NAME] ? NumberRatchet.safeNumber(data[RetryProcessor.RETRY_FIELD_NAME]) : 1;
     const dataCopy: any = data ? Object.assign({}, data) : null;
+    //eslint-disable-next-line @typescript-eslint/no-dynamic-delete
     delete dataCopy[RetryProcessor.RETRY_FIELD_NAME];
     Logger.info('RetryProcessor : %s : Try %d of %d', this.delegate.typeName, tryNumber, this.opts.retryCount);
     try {

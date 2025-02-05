@@ -46,11 +46,14 @@ export class DynamoDbStorageProvider implements SimpleCacheStorageProvider {
 
   public cleanDynamoFieldsFromObjectInPlace(rval: any): void {
     if (rval) {
+      //eslint-disable-next-line @typescript-eslint/no-dynamic-delete
       delete rval[this.opts.hashKeyName];
       if (this.opts.rangeKeyName) {
+        //eslint-disable-next-line @typescript-eslint/no-dynamic-delete
         delete rval[this.opts.rangeKeyName];
       }
       if (this.opts.dynamoExpiresColumnName) {
+        //eslint-disable-next-line @typescript-eslint/no-dynamic-delete
         delete rval[this.opts.dynamoExpiresColumnName];
       }
     }

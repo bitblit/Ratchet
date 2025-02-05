@@ -191,7 +191,7 @@ export class BackgroundHandler implements EpsilonLambdaEventHandler<SNSEvent> {
     // only be one per pull anyway
     Logger.info('Found %d entries - processing', entries.length);
     for (const e of entries) {
-    //for (let i = 0; i < entries.length; i++) {
+      //for (let i = 0; i < entries.length; i++) {
       //const e: InternalBackgroundEntry<any> = entries[i];
       const result: boolean = await this.processSingleBackgroundEntry(e);
       rval += result ? 1 : 0;

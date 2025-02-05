@@ -3,7 +3,7 @@ import { DialogService, DynamicDialogConfig, DynamicDialogRef } from 'primeng/dy
 import { Logger } from '@bitblit/ratchet-common/logger/logger';
 import { BehaviorSubject } from 'rxjs';
 import { ButtonModule } from 'primeng/button';
-import { AsyncPipe } from "@angular/common";
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'ngx-acute-common-alert',
