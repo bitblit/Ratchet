@@ -11,9 +11,8 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime.js';
 import type { GetWebhook } from './GetWebhook.js';
-import { GetWebhookFromJSON, GetWebhookFromJSONTyped, GetWebhookToJSON } from './GetWebhook.js';
+import { GetWebhookFromJSON, GetWebhookToJSON } from './GetWebhook.js';
 
 /**
  *

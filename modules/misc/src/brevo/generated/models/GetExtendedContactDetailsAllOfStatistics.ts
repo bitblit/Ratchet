@@ -11,29 +11,25 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime.js';
+import { exists } from '../runtime.js';
 import type { GetExtendedContactDetailsAllOfStatisticsClicked } from './GetExtendedContactDetailsAllOfStatisticsClicked.js';
 import {
   GetExtendedContactDetailsAllOfStatisticsClickedFromJSON,
-  GetExtendedContactDetailsAllOfStatisticsClickedFromJSONTyped,
   GetExtendedContactDetailsAllOfStatisticsClickedToJSON,
 } from './GetExtendedContactDetailsAllOfStatisticsClicked.js';
 import type { GetExtendedContactDetailsAllOfStatisticsMessagesSent } from './GetExtendedContactDetailsAllOfStatisticsMessagesSent.js';
 import {
   GetExtendedContactDetailsAllOfStatisticsMessagesSentFromJSON,
-  GetExtendedContactDetailsAllOfStatisticsMessagesSentFromJSONTyped,
   GetExtendedContactDetailsAllOfStatisticsMessagesSentToJSON,
 } from './GetExtendedContactDetailsAllOfStatisticsMessagesSent.js';
 import type { GetExtendedContactDetailsAllOfStatisticsOpened } from './GetExtendedContactDetailsAllOfStatisticsOpened.js';
 import {
   GetExtendedContactDetailsAllOfStatisticsOpenedFromJSON,
-  GetExtendedContactDetailsAllOfStatisticsOpenedFromJSONTyped,
   GetExtendedContactDetailsAllOfStatisticsOpenedToJSON,
 } from './GetExtendedContactDetailsAllOfStatisticsOpened.js';
 import type { GetExtendedContactDetailsAllOfStatisticsUnsubscriptions } from './GetExtendedContactDetailsAllOfStatisticsUnsubscriptions.js';
 import {
   GetExtendedContactDetailsAllOfStatisticsUnsubscriptionsFromJSON,
-  GetExtendedContactDetailsAllOfStatisticsUnsubscriptionsFromJSONTyped,
   GetExtendedContactDetailsAllOfStatisticsUnsubscriptionsToJSON,
 } from './GetExtendedContactDetailsAllOfStatisticsUnsubscriptions.js';
 

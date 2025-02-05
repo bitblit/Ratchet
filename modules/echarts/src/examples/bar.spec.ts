@@ -1,8 +1,7 @@
 import { EChartsOption } from 'echarts';
 import { EChartRatchet } from '../common/echart-ratchet.js';
 import { LabelOption } from 'echarts/types/src/util/types.js';
-import { expect, test, describe, vi, beforeEach } from 'vitest';
-import { mock, MockProxy } from 'vitest-mock-extended';
+import { describe, expect, test } from 'vitest';
 
 const labelRight: LabelOption = {
   position: 'right',

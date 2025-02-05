@@ -1,5 +1,5 @@
 import { TimeoutToken } from './timeout-token.js';
-import { expect, test, describe } from 'vitest';
+import { describe, expect, test } from 'vitest';
 
 describe('#timeoutToken', function () {
   test('should return the correct value for isTimeoutToken', function () {

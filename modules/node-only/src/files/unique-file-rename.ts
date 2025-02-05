@@ -27,13 +27,14 @@ export class UniqueFileRename {
     }
 
     const contFiles: string[] = fs.readdirSync(inFolder);
-    for (let i = 0; i < contFiles.length; i++) {
-      const full: string = path.join(inFolder, contFiles[i]);
+    for (const cFile of contFiles) {
+    //for (let i = 0; i < contFiles.length; i++) {
+      const full: string = path.join(inFolder, cFile);
       const s2: Stats = fs.statSync(full);
       if (s2.isFile()) {
         const newNamePart: string = Date.now() + '_' + rval;
-        const idx: number = contFiles[i].lastIndexOf('.');
-        const newName: string = idx > -1 ? newNamePart + contFiles[i].substring(idx) : newNamePart;
+        const idx: number = cFile.lastIndexOf('.');
+        const newName: string = idx > -1 ? newNamePart + cFile.substring(idx) : newNamePart;
         const newFull: string = path.join(inFolder, newName);
         if (dryRun) {
           Logger.info('Would have renamed %s to %s', full, newFull);

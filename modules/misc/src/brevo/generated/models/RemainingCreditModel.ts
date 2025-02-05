@@ -11,19 +11,10 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime.js';
 import type { RemainingCreditModelChild } from './RemainingCreditModelChild.js';
-import {
-  RemainingCreditModelChildFromJSON,
-  RemainingCreditModelChildFromJSONTyped,
-  RemainingCreditModelChildToJSON,
-} from './RemainingCreditModelChild.js';
+import { RemainingCreditModelChildFromJSON, RemainingCreditModelChildToJSON } from './RemainingCreditModelChild.js';
 import type { RemainingCreditModelReseller } from './RemainingCreditModelReseller.js';
-import {
-  RemainingCreditModelResellerFromJSON,
-  RemainingCreditModelResellerFromJSONTyped,
-  RemainingCreditModelResellerToJSON,
-} from './RemainingCreditModelReseller.js';
+import { RemainingCreditModelResellerFromJSON, RemainingCreditModelResellerToJSON } from './RemainingCreditModelReseller.js';
 
 /**
  *

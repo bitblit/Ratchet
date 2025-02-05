@@ -11,13 +11,9 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime.js';
+import { exists } from '../runtime.js';
 import type { GetReportsReportsInner } from './GetReportsReportsInner.js';
-import {
-  GetReportsReportsInnerFromJSON,
-  GetReportsReportsInnerFromJSONTyped,
-  GetReportsReportsInnerToJSON,
-} from './GetReportsReportsInner.js';
+import { GetReportsReportsInnerFromJSON, GetReportsReportsInnerToJSON } from './GetReportsReportsInner.js';
 
 /**
  *

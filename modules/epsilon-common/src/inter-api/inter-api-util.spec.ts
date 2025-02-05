@@ -5,12 +5,12 @@ import { InterApiConfig } from '../config/inter-api/inter-api-config.js';
 import { BackgroundManagerLike } from '../background/manager/background-manager-like.js';
 import { SNSClient } from '@aws-sdk/client-sns';
 import { SQSClient } from '@aws-sdk/client-sqs';
-import { expect, test, describe, vi, beforeEach } from 'vitest';
-import { mock, MockProxy } from 'vitest-mock-extended';
+import { beforeEach, describe, expect, test } from 'vitest';
+import { mock } from 'vitest-mock-extended';
 
 describe('#interApiUtil', function () {
-  let mockSns;
-  let mockSqs;
+  let _mockSns;
+  let _mockSqs;
   let mockBgMgr;
 
   const evt: SNSEvent = {
@@ -39,8 +39,8 @@ describe('#interApiUtil', function () {
   };
 
   beforeEach(() => {
-    mockSns = mock<SNSClient>();
-    mockSqs = mock<SQSClient>();
+    _mockSns = mock<SNSClient>();
+    _mockSqs = mock<SQSClient>();
     mockBgMgr = mock<BackgroundManagerLike>(); //new AwsSqsSnsBackgroundManager({} as BackgroundAwsConfig, mockSqs, mockSns);
   });
 

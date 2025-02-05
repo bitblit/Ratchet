@@ -15,9 +15,10 @@ import { EpsilonGlobalHandler } from '../epsilon-global-handler.js';
 import { BackgroundManagerLike } from '../background/manager/background-manager-like.js';
 
 export class EpsilonConfigParser {
-  // Prevent instantiation
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  constructor() {}
+  // eslint-disable-next-line @typescript-eslint/no-useless-constructor
+  constructor() {
+    // Prevent instantiation
+  }
 
   public static epsilonConfigToEpsilonGlobalHandler(
     config: EpsilonConfig,

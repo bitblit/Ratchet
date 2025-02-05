@@ -1,5 +1,5 @@
 import { JwtRatchet } from './jwt-ratchet.js';
-import { expect, test, describe } from 'vitest';
+import { describe, expect, test } from 'vitest';
 import { JwtRatchetConfig } from './jwt-ratchet-config.js';
 import { ExpiredJwtHandling } from '@bitblit/ratchet-common/jwt/expired-jwt-handling';
 

@@ -3,7 +3,7 @@ import fs from 'fs';
 import { NumberRatchet } from './number-ratchet.js';
 import path from 'path';
 import { EsmRatchet } from './esm-ratchet.js';
-import { expect, test, describe } from 'vitest';
+import { describe, expect, test } from 'vitest';
 
 describe('#geolocationRatchet', function () {
   test('should canonicalize', function () {

@@ -13,7 +13,7 @@ export class NotLoggedInGuard implements CanActivate {
     private router: Router,
   ) {}
 
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
+  canActivate(route: ActivatedRouteSnapshot, _state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
     Logger.info('--- %j', route.queryParamMap);
     if (route.queryParamMap.get('logout') === 'true') {
       Logger.info('Logging out...');

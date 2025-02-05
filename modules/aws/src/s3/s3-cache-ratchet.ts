@@ -359,7 +359,7 @@ export class S3CacheRatchet implements S3CacheRatchetLike {
   public async quietCopyFile(srcKey: string, dstKey: string, srcBucket: string = null, dstBucket: string = null): Promise<boolean> {
     let rval: boolean = false;
     try {
-      const tmp: CopyObjectCommandOutput = await this.copyFile(srcKey, dstKey, srcBucket, dstBucket);
+      const _tmp: CopyObjectCommandOutput = await this.copyFile(srcKey, dstKey, srcBucket, dstBucket);
       rval = true;
     } catch (err) {
       Logger.silly('Failed to copy file in S3 : %s', err);

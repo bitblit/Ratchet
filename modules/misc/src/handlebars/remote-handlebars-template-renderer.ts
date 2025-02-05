@@ -3,8 +3,8 @@ import fetch from 'cross-fetch';
 import { Logger } from '@bitblit/ratchet-common/logger/logger';
 import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet';
 import layouts from 'handlebars-layouts';
-import Template = Handlebars.Template;
 import { RatchetTemplateRenderer } from '@bitblit/ratchet-common/template/ratchet-template-renderer';
+import Template = Handlebars.Template;
 
 /**
  */

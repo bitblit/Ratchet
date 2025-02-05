@@ -1,7 +1,7 @@
 import { CloudWatchLogsClient, DescribeLogStreamsCommand, DescribeLogStreamsCommandOutput } from '@aws-sdk/client-cloudwatch-logs';
 import { CloudWatchLogGroupRatchet } from './cloud-watch-log-group-ratchet.js';
 import { mockClient } from 'aws-sdk-client-mock';
-import { expect, test, describe, vi, beforeEach } from 'vitest';
+import { beforeEach, describe, expect, test } from 'vitest';
 
 let mockCW;
 

@@ -3,7 +3,7 @@
   approach.
 */
 
-import { PutCommandOutput, ScanCommandInput, QueryCommandInput } from '@aws-sdk/lib-dynamodb';
+import { PutCommandOutput, QueryCommandInput, ScanCommandInput } from '@aws-sdk/lib-dynamodb';
 import { SimpleCacheObjectWrapper } from '../../cache/simple-cache-object-wrapper.js';
 import { SimpleCacheStorageProvider } from '../../cache/simple-cache-storage-provider.js';
 import { DynamoRatchet } from '../dynamo-ratchet.js';

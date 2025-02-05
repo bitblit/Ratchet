@@ -25,7 +25,7 @@ export class DynamoExpiringCodeProvider implements ExpiringCodeProvider {
     return output && output.ConsumedCapacity.CapacityUnits > 0;
   }
 
-  public async createTableIfMissing(dtr: DynamoTableRatchet): Promise<any> {
+  public async createTableIfMissing(_dtr: DynamoTableRatchet): Promise<any> {
     return null; // TODO: Impl
   }
 }

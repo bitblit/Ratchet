@@ -30,7 +30,7 @@ export class SesMailSendingProvider implements MailSendingProvider<SendRawEmailC
 
   public async archiveEmail(
     mail: ResolvedReadyToSendEmail,
-    rawSendResult: SendRawEmailCommandOutput,
+    _rawSendResult: SendRawEmailCommandOutput,
   ): Promise<CompleteMultipartUploadCommandOutput> {
     let rval: CompleteMultipartUploadCommandOutput = null;
     if (this._archiveRatchet) {

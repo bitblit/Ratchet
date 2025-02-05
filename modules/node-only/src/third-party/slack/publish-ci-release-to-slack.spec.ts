@@ -1,13 +1,12 @@
 import { PublishCiReleaseToSlack } from './publish-ci-release-to-slack.js';
-import { expect, test, describe, vi, beforeEach } from 'vitest';
-import { mock, MockProxy } from 'vitest-mock-extended';
+import { describe, expect, test } from 'vitest';
 import { Logger } from '@bitblit/ratchet-common/logger/logger';
 import { GlobalRatchet } from '@bitblit/ratchet-common/lang/global-ratchet';
 
 describe('#publishCircleCiReleaseToSlack', function () {
   test.skip('should fail if not in a circle ci environment', async () => {
     try {
-      const result: string = await PublishCiReleaseToSlack.process('https://testslack.erigir.com');
+      const _result: string = await PublishCiReleaseToSlack.process('https://testslack.erigir.com');
       this.bail();
     } catch (err) {
       Logger.debug('Caught expected error : %s', err);

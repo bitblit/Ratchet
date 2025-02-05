@@ -11,13 +11,13 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime.js';
+import { mapValues } from '../runtime.js';
 import type { GetCampaignStats } from './GetCampaignStats.js';
-import { GetCampaignStatsFromJSON, GetCampaignStatsFromJSONTyped, GetCampaignStatsToJSON } from './GetCampaignStats.js';
+import { GetCampaignStatsFromJSON, GetCampaignStatsToJSON } from './GetCampaignStats.js';
 import type { GetDeviceBrowserStats } from './GetDeviceBrowserStats.js';
-import { GetDeviceBrowserStatsFromJSON, GetDeviceBrowserStatsFromJSONTyped, GetDeviceBrowserStatsToJSON } from './GetDeviceBrowserStats.js';
+import { GetDeviceBrowserStatsFromJSON, GetDeviceBrowserStatsToJSON } from './GetDeviceBrowserStats.js';
 import type { GetStatsByDevice } from './GetStatsByDevice.js';
-import { GetStatsByDeviceFromJSON, GetStatsByDeviceFromJSONTyped, GetStatsByDeviceToJSON } from './GetStatsByDevice.js';
+import { GetStatsByDeviceFromJSON, GetStatsByDeviceToJSON } from './GetStatsByDevice.js';
 
 /**
  *

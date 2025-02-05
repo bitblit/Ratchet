@@ -7,7 +7,7 @@ import { LambdaClient } from '@aws-sdk/client-lambda';
 import { AwsBatchUsedImageFinder } from './used-image-finders/aws-batch-used-image-finder.js';
 import { BatchClient } from '@aws-sdk/client-batch';
 import { EcrUnusedImageCleanerOutput } from './ecr-unused-image-cleaner-output.js';
-import { expect, test, describe, vi, beforeEach } from 'vitest';
+import { describe, expect, test } from 'vitest';
 
 //import { mockClient } from 'aws-sdk-client-mock';
 //import { ECRClient } from "@aws-sdk/client-ecr";

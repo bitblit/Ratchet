@@ -93,7 +93,7 @@ describe('sqlite-database-access', () => {
     });
 
     // Create a table
-    const createRes: any = await ns.executeUpdateOrInsertByName('create');
+    const _createRes: any = await ns.executeUpdateOrInsertByName('create');
 
     const myOb: Record<string, any> = {
       val: ['t1', 't2'],
@@ -132,22 +132,22 @@ describe('sqlite-database-access', () => {
     });
 
     // Create a table
-    const createRes: any = await ns.executeUpdateOrInsertByName('create');
+    const _createRes: any = await ns.executeUpdateOrInsertByName('create');
 
     // Test single
-    const singleIns: ModifyResults = await ns.executeUpdateOrInsertByName('singleIns', { val: 'val1' });
+    const _singleIns: ModifyResults = await ns.executeUpdateOrInsertByName('singleIns', { val: 'val1' });
 
     const singleCount: RequestResults<any> = await ns.executeQueryByNameSingle('counter', {});
 
     expect(singleCount['cnt']).toEqual(1);
 
-    const multiIns: ModifyResults = await ns.executeUpdateOrInsertByName('multi', { multiVal: [["val's are 2"], ['val3']] });
+    const _multiIns: ModifyResults = await ns.executeUpdateOrInsertByName('multi', { multiVal: [["val's are 2"], ['val3']] });
 
     const multiCount: RequestResults<any> = await ns.executeQueryByNameSingle('counter', {});
 
     expect(multiCount['cnt']).toEqual(3);
 
-    const multiIns2: ModifyResults = await ns.executeUpdateOrInsertByName('multi', { multiVal: [["multi's apo's"]] });
+    const _multiIns2: ModifyResults = await ns.executeUpdateOrInsertByName('multi', { multiVal: [["multi's apo's"]] });
 
     const multiCount2: RequestResults<any> = await ns.executeQueryByNameSingle('counter', {});
 

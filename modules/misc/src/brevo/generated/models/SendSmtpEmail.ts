@@ -11,23 +11,19 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime.js';
+import { exists } from '../runtime.js';
 import type { SendSmtpEmailAttachmentInner } from './SendSmtpEmailAttachmentInner.js';
-import {
-  SendSmtpEmailAttachmentInnerFromJSON,
-  SendSmtpEmailAttachmentInnerFromJSONTyped,
-  SendSmtpEmailAttachmentInnerToJSON,
-} from './SendSmtpEmailAttachmentInner.js';
+import { SendSmtpEmailAttachmentInnerFromJSON, SendSmtpEmailAttachmentInnerToJSON } from './SendSmtpEmailAttachmentInner.js';
 import type { SendSmtpEmailBccInner } from './SendSmtpEmailBccInner.js';
-import { SendSmtpEmailBccInnerFromJSON, SendSmtpEmailBccInnerFromJSONTyped, SendSmtpEmailBccInnerToJSON } from './SendSmtpEmailBccInner.js';
+import { SendSmtpEmailBccInnerFromJSON, SendSmtpEmailBccInnerToJSON } from './SendSmtpEmailBccInner.js';
 import type { SendSmtpEmailCcInner } from './SendSmtpEmailCcInner.js';
-import { SendSmtpEmailCcInnerFromJSON, SendSmtpEmailCcInnerFromJSONTyped, SendSmtpEmailCcInnerToJSON } from './SendSmtpEmailCcInner.js';
+import { SendSmtpEmailCcInnerFromJSON, SendSmtpEmailCcInnerToJSON } from './SendSmtpEmailCcInner.js';
 import type { SendSmtpEmailReplyTo } from './SendSmtpEmailReplyTo.js';
-import { SendSmtpEmailReplyToFromJSON, SendSmtpEmailReplyToFromJSONTyped, SendSmtpEmailReplyToToJSON } from './SendSmtpEmailReplyTo.js';
+import { SendSmtpEmailReplyToFromJSON, SendSmtpEmailReplyToToJSON } from './SendSmtpEmailReplyTo.js';
 import type { SendSmtpEmailSender } from './SendSmtpEmailSender.js';
-import { SendSmtpEmailSenderFromJSON, SendSmtpEmailSenderFromJSONTyped, SendSmtpEmailSenderToJSON } from './SendSmtpEmailSender.js';
+import { SendSmtpEmailSenderFromJSON, SendSmtpEmailSenderToJSON } from './SendSmtpEmailSender.js';
 import type { SendSmtpEmailToInner } from './SendSmtpEmailToInner.js';
-import { SendSmtpEmailToInnerFromJSON, SendSmtpEmailToInnerFromJSONTyped, SendSmtpEmailToInnerToJSON } from './SendSmtpEmailToInner.js';
+import { SendSmtpEmailToInnerFromJSON, SendSmtpEmailToInnerToJSON } from './SendSmtpEmailToInner.js';
 
 /**
  *

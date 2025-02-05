@@ -13,7 +13,7 @@
 
 import * as runtime from '../runtime.js';
 import type { Goal, ObjectRef } from '../models/index.js';
-import { GoalFromJSON, GoalToJSON, ObjectRefFromJSON, ObjectRefToJSON } from '../models/index.js';
+import { GoalFromJSON, GoalToJSON, ObjectRefToJSON } from '../models/index.js';
 
 export interface OrgOrgIdGoalsGetRequest {
   orgId: string;

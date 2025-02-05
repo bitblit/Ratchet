@@ -1,6 +1,6 @@
 import { GlobalRatchet } from './global-ratchet.js';
 import { StringRatchet } from './string-ratchet.js';
-import { expect, test, describe } from 'vitest';
+import { describe, expect, test } from 'vitest';
 
 describe('#globalRatchet', function () {
   test('fetch and set global variables', async () => {

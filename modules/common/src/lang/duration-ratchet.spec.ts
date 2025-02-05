@@ -1,6 +1,6 @@
 import { DurationRatchet } from './duration-ratchet.js';
 import { DateTime } from 'luxon';
-import { expect, test, describe } from 'vitest';
+import { describe, expect, test } from 'vitest';
 
 describe('#formatMsDuration', function () {
   test('should format less than one second', function () {

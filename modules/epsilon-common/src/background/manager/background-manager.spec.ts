@@ -8,8 +8,7 @@ import { NoOpProcessor } from '../../built-in/background/no-op-processor.js';
 import { BackgroundAwsConfig } from '../../config/background/background-aws-config.js';
 import { SNSClient } from '@aws-sdk/client-sns';
 import { mockClient } from 'aws-sdk-client-mock';
-import { expect, test, describe, vi, beforeEach } from 'vitest';
-import { mock, MockProxy } from 'vitest-mock-extended';
+import { beforeEach, describe, expect, test } from 'vitest';
 
 let mockSqs;
 let mockSns;
@@ -20,7 +19,7 @@ describe('#createEntry', function () {
 
   let backgroundMgr: AwsSqsSnsBackgroundManager;
   const fakeAccountNumber: string = '123456789012';
-  let backgroundConfig: BackgroundConfig;
+  let _backgroundConfig: BackgroundConfig;
   let backgroundAwsConfig: BackgroundAwsConfig;
   //const fakeModelValidator: ModelValidator = new ModelValidator({ BackgroundBuiltInSampleInputValidatedProcessor: {} });
 
@@ -31,7 +30,7 @@ describe('#createEntry', function () {
     mockSqs.reset();
     mockSns.reset();
 
-    backgroundConfig = {
+    _backgroundConfig = {
       processors: [echoProcessor, noOpProcessor],
       httpSubmissionPath: '/background/',
       implyTypeFromPathSuffix: true,

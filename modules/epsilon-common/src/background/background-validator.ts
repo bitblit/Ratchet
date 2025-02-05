@@ -50,7 +50,7 @@ export class BackgroundValidator {
 
   public static validateAndMapProcessors(
     processorInput: BackgroundProcessor<any>[],
-    modelValidator: ModelValidator,
+    _modelValidator: ModelValidator,
   ): Map<string, BackgroundProcessor<any>> {
     const rval: Map<string, BackgroundProcessor<any>> = new Map<string, BackgroundProcessor<any>>();
     processorInput.forEach((p, idx) => {

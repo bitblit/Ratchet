@@ -1,5 +1,5 @@
 import { RestfulApiHttpError } from './restful-api-http-error.js';
-import { expect, test, describe } from 'vitest';
+import { describe, expect, test } from 'vitest';
 
 describe('#restfulApiHttpError', function () {
   test('should check if the error is a given class', async () => {

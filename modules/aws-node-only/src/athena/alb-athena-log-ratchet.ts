@@ -29,8 +29,8 @@ export class AlbAthenaLogRatchet {
     RequireRatchet.true(S3Ratchet.checkS3UrlForValidity(rootPath), 'root path not valid');
     RequireRatchet.notNullOrUndefined(s3, 's3');
     Logger.info('Updating partitions for %s from %s', this.athenaTableName, rootPath);
-    const bucketName: string = S3Ratchet.extractBucketFromURL(rootPath);
-    const rootKey: string = S3Ratchet.extractKeyFromURL(rootPath);
+    const _bucketName: string = S3Ratchet.extractBucketFromURL(rootPath);
+    const _rootKey: string = S3Ratchet.extractKeyFromURL(rootPath);
 
     let current: number = startTimeEpochMS;
     const clauses: string[] = [];

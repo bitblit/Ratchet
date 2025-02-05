@@ -11,11 +11,11 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime.js';
+import { exists } from '../runtime.js';
 import type { ComponentItems } from './ComponentItems.js';
-import { ComponentItemsFromJSON, ComponentItemsFromJSONTyped, ComponentItemsToJSON } from './ComponentItems.js';
+import { ComponentItemsFromJSON, ComponentItemsToJSON } from './ComponentItems.js';
 import type { VariablesItems } from './VariablesItems.js';
-import { VariablesItemsFromJSON, VariablesItemsFromJSONTyped, VariablesItemsToJSON } from './VariablesItems.js';
+import { VariablesItemsFromJSON, VariablesItemsToJSON } from './VariablesItems.js';
 
 /**
  *

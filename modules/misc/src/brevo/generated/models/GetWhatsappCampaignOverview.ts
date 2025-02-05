@@ -11,11 +11,11 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime.js';
+import { exists } from '../runtime.js';
 import type { WhatsappCampStats } from './WhatsappCampStats.js';
-import { WhatsappCampStatsFromJSON, WhatsappCampStatsFromJSONTyped, WhatsappCampStatsToJSON } from './WhatsappCampStats.js';
+import { WhatsappCampStatsFromJSON, WhatsappCampStatsToJSON } from './WhatsappCampStats.js';
 import type { WhatsappCampTemplate } from './WhatsappCampTemplate.js';
-import { WhatsappCampTemplateFromJSON, WhatsappCampTemplateFromJSONTyped, WhatsappCampTemplateToJSON } from './WhatsappCampTemplate.js';
+import { WhatsappCampTemplateFromJSON, WhatsappCampTemplateToJSON } from './WhatsappCampTemplate.js';
 
 /**
  *

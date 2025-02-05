@@ -11,9 +11,9 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime.js';
+import { exists } from '../runtime.js';
 import type { GetProcess } from './GetProcess.js';
-import { GetProcessFromJSON, GetProcessFromJSONTyped, GetProcessToJSON } from './GetProcess.js';
+import { GetProcessFromJSON, GetProcessToJSON } from './GetProcess.js';
 
 /**
  *

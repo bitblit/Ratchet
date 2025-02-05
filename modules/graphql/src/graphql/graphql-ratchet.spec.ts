@@ -1,4 +1,4 @@
-import { describe, test, expect } from 'vitest';
+import { describe, expect, test } from 'vitest';
 import { GraphqlRatchet } from './graphql-ratchet';
 import { StringRecordQueryProvider } from './provider/string-record-query-provider';
 import { DefaultGraphqlRatchetEndpointProvider } from './provider/default-graphql-ratchet-endpoint-provider';

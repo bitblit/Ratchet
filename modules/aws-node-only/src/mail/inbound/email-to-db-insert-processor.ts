@@ -8,7 +8,7 @@ import { CsvRatchet } from '@bitblit/ratchet-node-only/csv/csv-ratchet';
 import { MultiStream } from '@bitblit/ratchet-node-only/stream/multi-stream';
 
 export class EmailToDbInsertProcessor implements ParsedEmailProcessor<EmailToDbStatement[]> {
-  public canProcess(mail: ParsedMail): boolean {
+  public canProcess(_mail: ParsedMail): boolean {
     return true;
   }
 
@@ -68,8 +68,8 @@ export class EmailToDbInsertProcessor implements ParsedEmailProcessor<EmailToDbS
         // ('+insertQ+')';
 
         Logger.info('Recreating table');
-        const dropRes: any = rval.push({ statement: dropTable });
-        const createRes: any = rval.push({ statement: createTable });
+        const _dropRes: any = rval.push({ statement: dropTable });
+        const _createRes: any = rval.push({ statement: createTable });
         const pumpDate: string = DateTime.utc().toISO();
         let insertStmt: string = insertPrefix;
         let insertParams: any[] = [];

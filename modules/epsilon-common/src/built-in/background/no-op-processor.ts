@@ -7,7 +7,7 @@ export class NoOpProcessor implements BackgroundProcessor<any> {
     return 'EpsilonNoOp';
   }
 
-  public async handleEvent(data: any, mgr?: BackgroundManagerLike): Promise<void> {
+  public async handleEvent(_data: any, _mgr?: BackgroundManagerLike): Promise<void> {
     // Does nothing
     Logger.silly('Hit the no-op proc');
   }

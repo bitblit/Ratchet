@@ -14,7 +14,7 @@ import {
   StartQueryCommandInput,
 } from '@aws-sdk/client-cloudwatch-logs';
 import { mockClient } from 'aws-sdk-client-mock';
-import { expect, test, describe, vi, beforeEach } from 'vitest';
+import { beforeEach, describe, expect, test } from 'vitest';
 
 let mockCW;
 

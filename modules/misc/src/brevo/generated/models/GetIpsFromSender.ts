@@ -11,9 +11,8 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime.js';
 import type { GetIpFromSender } from './GetIpFromSender.js';
-import { GetIpFromSenderFromJSON, GetIpFromSenderFromJSONTyped, GetIpFromSenderToJSON } from './GetIpFromSender.js';
+import { GetIpFromSenderFromJSON, GetIpFromSenderToJSON } from './GetIpFromSender.js';
 
 /**
  *

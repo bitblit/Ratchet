@@ -1,7 +1,6 @@
 import { Readable } from 'stream';
 import { NodeStreamRatchet } from './node-stream-ratchet.js';
-import { expect, test, describe, vi, beforeEach } from 'vitest';
-import { mock, MockProxy } from 'vitest-mock-extended';
+import { describe, expect, test } from 'vitest';
 
 describe('#NodeStreamRatchet', function () {
   test('should wrap a string in a readable', async () => {

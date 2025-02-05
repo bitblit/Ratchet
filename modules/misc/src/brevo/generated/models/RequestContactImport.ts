@@ -11,13 +11,9 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime.js';
+import { exists } from '../runtime.js';
 import type { RequestContactImportNewList } from './RequestContactImportNewList.js';
-import {
-  RequestContactImportNewListFromJSON,
-  RequestContactImportNewListFromJSONTyped,
-  RequestContactImportNewListToJSON,
-} from './RequestContactImportNewList.js';
+import { RequestContactImportNewListFromJSON, RequestContactImportNewListToJSON } from './RequestContactImportNewList.js';
 
 /**
  *

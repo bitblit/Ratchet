@@ -1,5 +1,5 @@
 import { Histogram } from './histogram.js';
-import { expect, test, describe } from 'vitest';
+import { describe, expect, test } from 'vitest';
 
 describe('#histogram', function () {
   test('should count the values correctly', function () {

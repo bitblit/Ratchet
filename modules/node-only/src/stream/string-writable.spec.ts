@@ -1,6 +1,5 @@
 import { StringWritable } from './string-writable.js';
-import { expect, test, describe, vi, beforeEach } from 'vitest';
-import { mock, MockProxy } from 'vitest-mock-extended';
+import { describe, expect, test } from 'vitest';
 
 describe('#StringWritableStream', function () {
   test('should write cumulatively to a string', async () => {

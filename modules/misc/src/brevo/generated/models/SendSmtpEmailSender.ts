@@ -11,7 +11,8 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime.js';
+import { exists } from '../runtime.js';
+
 /**
  * Mandatory if 'templateId' is not passed. Pass name (optional) and email of sender from which emails will be sent. For example, {"name":"Mary from MyShop", "email":"no-reply@myshop.com"}
  * @export

@@ -180,7 +180,7 @@ export class S3LocationSyncRatchet {
       async (key) => {
         const sObj: any = srcObjs[key];
         const dstKey: string = key.replace(this.config.srcPrefix, this.config.dstPrefix);
-        const dObj: any = dstObjs.hasOwnProperty(dstKey) ? dstObjs[dstKey] : undefined;
+        const dObj: any = dstKey in dstObjs ? dstObjs[dstKey] : undefined;
         if (!dObj) {
           rval.needCopy.push(sObj);
           return;

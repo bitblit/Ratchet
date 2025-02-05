@@ -13,7 +13,7 @@
 
 import * as runtime from '../runtime.js';
 import type { LocalIdentity, User } from '../models/index.js';
-import { LocalIdentityFromJSON, LocalIdentityToJSON, UserFromJSON, UserToJSON } from '../models/index.js';
+import { LocalIdentityToJSON, UserFromJSON, UserToJSON } from '../models/index.js';
 
 export interface OrgOrgIdUsersGetRequest {
   orgId: string;

@@ -1,5 +1,5 @@
 import { BuiltInFilters } from './built-in-filters.js';
-import { expect, test, describe } from 'vitest';
+import { describe, expect, test } from 'vitest';
 import { ExtendedAPIGatewayEvent } from '../../config/http/extended-api-gateway-event.js';
 import { FilterChainContext } from '../../config/http/filter-chain-context.js';
 

@@ -12,26 +12,12 @@
  */
 
 import * as runtime from '../runtime.js';
-import type {
-  ErrorModel,
-  GetSmsEventReport,
-  GetTransacAggregatedSmsReport,
-  GetTransacSmsReport,
-  SendSms,
-  SendTransacSms,
-} from '../models/index.js';
+import type { GetSmsEventReport, GetTransacAggregatedSmsReport, GetTransacSmsReport, SendSms, SendTransacSms } from '../models/index.js';
 import {
-  ErrorModelFromJSON,
-  ErrorModelToJSON,
   GetSmsEventReportFromJSON,
-  GetSmsEventReportToJSON,
   GetTransacAggregatedSmsReportFromJSON,
-  GetTransacAggregatedSmsReportToJSON,
   GetTransacSmsReportFromJSON,
-  GetTransacSmsReportToJSON,
   SendSmsFromJSON,
-  SendSmsToJSON,
-  SendTransacSmsFromJSON,
   SendTransacSmsToJSON,
 } from '../models/index.js';
 

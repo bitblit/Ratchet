@@ -6,8 +6,6 @@
  */
 import { ErrorRatchet } from './error-ratchet.js';
 import { RequireRatchet } from './require-ratchet.js';
-import { Logger } from '../logger/logger.js';
-import { StringRatchet } from './string-ratchet';
 
 export class GlobalRatchet {
   // Prevent instantiation

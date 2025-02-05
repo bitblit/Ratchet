@@ -2,7 +2,7 @@ import { NumberRatchet, SinglesAndRanges } from './number-ratchet.js';
 import fs from 'fs';
 import path from 'path';
 import { EsmRatchet } from './esm-ratchet.js';
-import { expect, test, describe } from 'vitest';
+import { describe, expect, test } from 'vitest';
 
 describe('#toFixedDecimalNumber', function () {
   test('should convert "5.1234 to 5.12', function () {

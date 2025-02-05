@@ -11,11 +11,11 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime.js';
+import { exists } from '../runtime.js';
 import type { GoalOwnersInner } from './GoalOwnersInner.js';
-import { GoalOwnersInnerFromJSON, GoalOwnersInnerFromJSONTyped, GoalOwnersInnerToJSON } from './GoalOwnersInner.js';
+import { GoalOwnersInnerFromJSON, GoalOwnersInnerToJSON } from './GoalOwnersInner.js';
 import type { GoalParentGoal } from './GoalParentGoal.js';
-import { GoalParentGoalFromJSON, GoalParentGoalFromJSONTyped, GoalParentGoalToJSON } from './GoalParentGoal.js';
+import { GoalParentGoalFromJSON, GoalParentGoalToJSON } from './GoalParentGoal.js';
 
 /**
  *

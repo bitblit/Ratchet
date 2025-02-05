@@ -32,7 +32,7 @@ export class WebHandler implements EpsilonLambdaEventHandler<APIGatewayEvent> {
     return this.routerConfig;
   }
 
-  public extractLabel(evt: APIGatewayEvent, context: Context): string {
+  public extractLabel(evt: APIGatewayEvent, _context: Context): string {
     return 'WEB:' + StringRatchet.trimToEmpty(evt.httpMethod).toUpperCase() + ':' + evt.path;
   }
 

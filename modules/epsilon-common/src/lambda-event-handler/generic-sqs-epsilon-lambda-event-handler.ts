@@ -10,7 +10,7 @@ import { Logger } from '@bitblit/ratchet-common/logger/logger';
 export class GenericSqsEpsilonLambdaEventHandler implements EpsilonLambdaEventHandler<SQSEvent> {
   constructor(private _epsilon: EpsilonInstance) {}
 
-  public extractLabel(evt: SQSEvent, context: Context): string {
+  public extractLabel(evt: SQSEvent, _context: Context): string {
     return 'SQSEvt:' + evt.Records[0].eventSourceARN;
   }
 
@@ -18,7 +18,7 @@ export class GenericSqsEpsilonLambdaEventHandler implements EpsilonLambdaEventHa
     return LambdaEventDetector.isValidSqsEvent(evt);
   }
 
-  public async processEvent(evt: SQSEvent, context: Context): Promise<ProxyResult> {
+  public async processEvent(evt: SQSEvent, _context: Context): Promise<ProxyResult> {
     let rval: any = null;
     if (this._epsilon.config && this._epsilon.config.sqs && evt && evt.Records.length > 0) {
       const finder: string = evt.Records[0].eventSourceARN;

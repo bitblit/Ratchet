@@ -2,8 +2,7 @@
     Functions for working with csv data
 */
 
-import fs from 'fs';
-import { ReadStream } from 'fs';
+import fs, { ReadStream } from 'fs';
 import { Options as ParseOptions, parse } from 'csv-parse';
 import { Options, stringify } from 'csv-stringify';
 import { Subject, Subscription } from 'rxjs';
@@ -96,9 +95,7 @@ export class CsvRatchet {
 
     Logger.info('Created csv compare with files %s and %s keyed on %s', file1, file2, keyField);
     //const file1Raw: string = fs.readFileSync(file1).toString();
-    let file1Parsed: any[] = await this.streamParse(fs.createReadStream(file1), (f) => {
-      f;
-    });
+    let file1Parsed: any[] = await this.streamParse(fs.createReadStream(file1), CsvRatchet.defaultParseFunction);
     file1Parsed = file1Parsed.map((m) => {
       const next: any = {};
       Object.keys(m).forEach((k) => {
@@ -109,9 +106,7 @@ export class CsvRatchet {
     const file1Mapped: Map<string, any> = MapRatchet.mapByUniqueProperty<any, string>(file1Parsed, keyField);
     //const file2Raw: string = fs.readFileSync(file2).toString();
 
-    let file2Parsed: any[] = await this.streamParse(fs.createReadStream(file2), (f) => {
-      f;
-    });
+    let file2Parsed: any[] = await this.streamParse(fs.createReadStream(file2), CsvRatchet.defaultParseFunction);
     /*
     let file2Parsed: any[] = parsesync(file2Raw, {
       columns: true,

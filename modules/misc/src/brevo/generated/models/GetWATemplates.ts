@@ -11,13 +11,8 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime.js';
 import type { GetWATemplatesTemplatesInner } from './GetWATemplatesTemplatesInner.js';
-import {
-  GetWATemplatesTemplatesInnerFromJSON,
-  GetWATemplatesTemplatesInnerFromJSONTyped,
-  GetWATemplatesTemplatesInnerToJSON,
-} from './GetWATemplatesTemplatesInner.js';
+import { GetWATemplatesTemplatesInnerFromJSON, GetWATemplatesTemplatesInnerToJSON } from './GetWATemplatesTemplatesInner.js';
 
 /**
  *

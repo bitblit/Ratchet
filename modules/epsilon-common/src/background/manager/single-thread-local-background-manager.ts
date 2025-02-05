@@ -18,10 +18,7 @@ export class SingleThreadLocalBackgroundManager extends AbstractBackgroundManage
     return 'SingleThreadLocalBackgroundManager';
   }
 
-  constructor() {
-    super();
-  }
-
+  // Super constructor automatically called
   public immediateProcessQueue?(): Subject<InternalBackgroundEntry<any>> {
     return this._localBus;
   }

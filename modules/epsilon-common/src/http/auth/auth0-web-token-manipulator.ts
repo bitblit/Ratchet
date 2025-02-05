@@ -14,7 +14,7 @@ export class Auth0WebTokenManipulator implements WebTokenManipulator<JwtTokenBas
     private issuer: string,
   ) {}
 
-  public async extractTokenFromAuthorizationHeader<T>(authHeader: string): Promise<JwtTokenBase> {
+  public async extractTokenFromAuthorizationHeader(authHeader: string): Promise<JwtTokenBase> {
     let tokenString: string = StringRatchet.trimToEmpty(authHeader);
     if (tokenString.toLowerCase().startsWith('bearer ')) {
       tokenString = tokenString.substring(7);
@@ -23,7 +23,7 @@ export class Auth0WebTokenManipulator implements WebTokenManipulator<JwtTokenBas
     return validated;
   }
 
-  public async parseAndValidateAuth0Token<T>(auth0Token: string, allowExpired: boolean = false): Promise<JwtTokenBase> {
+  public async parseAndValidateAuth0Token(auth0Token: string, allowExpired: boolean = false): Promise<JwtTokenBase> {
     Logger.debug('Validating Auth0 token : %s', StringRatchet.obscure(auth0Token, 4));
 
     const fullToken: any = jwt.decode(auth0Token, { complete: true });

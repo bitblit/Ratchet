@@ -2,7 +2,7 @@ import { PromiseRatchet } from './promise-ratchet.js';
 import { Logger } from '../logger/logger.js';
 import { TimeoutToken } from './timeout-token.js';
 import { LoggerLevelName } from '../logger/logger-level-name.js';
-import { expect, test, describe } from 'vitest';
+import { describe, expect, test } from 'vitest';
 
 const fnFalse = (_ignored) => {
   return false;

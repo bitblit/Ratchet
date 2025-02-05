@@ -13,8 +13,8 @@ import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet';
  */
 export class DaemonHandler {
   public static readonly ALLOW_EVERYTHING_AUTHORIZER: DaemonAuthorizerFunction = async (
-    evt: ExtendedAPIGatewayEvent,
-    proc: DaemonProcessState,
+    _evt: ExtendedAPIGatewayEvent,
+    _proc: DaemonProcessState,
   ) => {
     return true;
   };
@@ -31,7 +31,7 @@ export class DaemonHandler {
   ) {
     this.config = inConfig || {};
     this.config.authorizer = this.config.authorizer || DaemonHandler.ALLOW_EVERYTHING_AUTHORIZER;
-    this.config.groupSelector = this.config.groupSelector || ((evt: ExtendedAPIGatewayEvent) => Promise.resolve(daemon.defaultGroup));
+    this.config.groupSelector = this.config.groupSelector || ((_evt: ExtendedAPIGatewayEvent) => Promise.resolve(daemon.defaultGroup));
     this.config.fetchDaemonStatusByPublicTokenPathParameter =
       StringRatchet.trimToNull(this.config.fetchDaemonStatusByPublicTokenPathParameter) || 'publicToken';
     this.config.fetchDaemonStatusPathParameter = StringRatchet.trimToNull(this.config.fetchDaemonStatusPathParameter) || 'key';
@@ -70,10 +70,11 @@ export class DaemonHandler {
     const group: string = await this.config.groupSelector(evt);
     const keys: DaemonProcessState[] = await this.daemon.list(group);
     const allowed: DaemonProcessState[] = [];
-    for (let i = 0; i < keys.length; i++) {
-      const canRead: boolean = await this.config.authorizer(evt, keys[i]);
+    for (const kVal of keys) {
+    //for (let i = 0; i < keys.length; i++) {
+      const canRead: boolean = await this.config.authorizer(evt, kVal);
       if (canRead) {
-        allowed.push(keys[i]);
+        allowed.push(kVal);
       }
     }
     // Token here for future expansion into pagination, not implemented yet

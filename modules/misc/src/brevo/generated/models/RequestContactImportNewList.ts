@@ -11,7 +11,8 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime.js';
+import { exists } from '../runtime.js';
+
 /**
  * To create a new list and import the contacts into it, pass the listName and an optional folderId.
  * @export

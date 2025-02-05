@@ -1,7 +1,6 @@
 import { EChartsOption } from 'echarts';
 import { EChartRatchet } from '../common/echart-ratchet.js';
-import { expect, test, describe, vi, beforeEach } from 'vitest';
-import { mock, MockProxy } from 'vitest-mock-extended';
+import { describe, expect, test } from 'vitest';
 
 const options: EChartsOption = {
   backgroundColor: '#2c343c',
@@ -58,7 +57,7 @@ const options: EChartsOption = {
       },
       animationType: 'scale',
       animationEasing: 'elasticOut',
-      animationDelay: function (idx) {
+      animationDelay: function (_idx) {
         return Math.random() * 200;
       },
     },

@@ -7,7 +7,7 @@ import { StringRatchet } from '../lang/string-ratchet.js';
 import { LogMessageBuilder } from './log-message-builder.js';
 import { LogMessageFormatType } from './log-message-format-type.js';
 import { LoggerOutputFunction } from './logger-output-function.js';
-import { expect, test, describe } from 'vitest';
+import { describe, expect, test } from 'vitest';
 
 describe('#setLevel', function () {
   test('should change the level to debug then info then debug', function () {

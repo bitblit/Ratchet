@@ -64,7 +64,7 @@ export class S3SimpleDao<T extends SimpleDaoItem> {
     const fullPath: string = this.buildFullPath(item.id, path);
     Logger.debug('Storing : %s', fullPath);
 
-    const stored: PutObjectOutput = await this.cache.writeObjectToCacheFile(fullPath, item);
+    const _stored: PutObjectOutput = await this.cache.writeObjectToCacheFile(fullPath, item);
     const read: T = await this.fetch(item.id, path);
     return read;
   }

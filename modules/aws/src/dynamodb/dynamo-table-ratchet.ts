@@ -154,9 +154,9 @@ export class DynamoTableRatchet {
       throw ErrorRatchet.fErr('Cannot copy %s - doesnt exist', srcTableName);
     }
 
-    const ads: AttributeDefinition[] = srcTableDef.Table.AttributeDefinitions;
-    const ks: KeySchemaElement[] = srcTableDef.Table.KeySchema;
-    const gi: GlobalSecondaryIndexDescription[] = srcTableDef.Table.GlobalSecondaryIndexes;
+    const _ads: AttributeDefinition[] = srcTableDef.Table.AttributeDefinitions;
+    const _ks: KeySchemaElement[] = srcTableDef.Table.KeySchema;
+    const _gi: GlobalSecondaryIndexDescription[] = srcTableDef.Table.GlobalSecondaryIndexes;
 
     const createInput: CreateTableCommandInput = Object.assign({}, overrides || {}, {
       AttributeDefinitions: srcTableDef.Table.AttributeDefinitions,

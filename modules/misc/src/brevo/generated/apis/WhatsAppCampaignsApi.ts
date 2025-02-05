@@ -12,17 +12,8 @@
  */
 
 import * as runtime from '../runtime.js';
-import type { ErrorModel, GetWATemplates, GetWhatsappCampaignOverview, GetWhatsappCampaigns } from '../models/index.js';
-import {
-  ErrorModelFromJSON,
-  ErrorModelToJSON,
-  GetWATemplatesFromJSON,
-  GetWATemplatesToJSON,
-  GetWhatsappCampaignOverviewFromJSON,
-  GetWhatsappCampaignOverviewToJSON,
-  GetWhatsappCampaignsFromJSON,
-  GetWhatsappCampaignsToJSON,
-} from '../models/index.js';
+import type { GetWATemplates, GetWhatsappCampaignOverview, GetWhatsappCampaigns } from '../models/index.js';
+import { GetWATemplatesFromJSON, GetWhatsappCampaignOverviewFromJSON, GetWhatsappCampaignsFromJSON } from '../models/index.js';
 
 export interface DeleteWhatsAppCampaignRequest {
   campaignId: number;

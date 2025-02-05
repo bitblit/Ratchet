@@ -5,8 +5,7 @@ import { SampleServerComponents } from '../../sample/sample-server-components.js
 import { RunHandlerAsFilter } from './run-handler-as-filter.js';
 import { ExtendedAPIGatewayEvent } from '../../config/http/extended-api-gateway-event.js';
 import { RouterUtil } from '../../http/route/router-util.js';
-import { expect, test, describe, vi, beforeEach } from 'vitest';
-import { mock, MockProxy } from 'vitest-mock-extended';
+import { describe, expect, test } from 'vitest';
 import { RouteAndParse } from '../../http/route/route-and-parse';
 
 describe('#routerUtilApplyOpenApiDoc', function () {

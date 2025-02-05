@@ -17,7 +17,7 @@ export class CronEpsilonLambdaEventHandler implements EpsilonLambdaEventHandler<
 
   constructor(private _epsilon: EpsilonInstance) {}
 
-  public extractLabel(evt: ScheduledEvent, context: Context): string {
+  public extractLabel(evt: ScheduledEvent, _context: Context): string {
     return 'CronEvt:' + evt.source;
   }
 
@@ -25,7 +25,7 @@ export class CronEpsilonLambdaEventHandler implements EpsilonLambdaEventHandler<
     return LambdaEventDetector.isValidCronEvent(evt);
   }
 
-  public async processEvent(evt: ScheduledEvent, context: Context): Promise<ProxyResult> {
+  public async processEvent(evt: ScheduledEvent, _context: Context): Promise<ProxyResult> {
     let rval: ProxyResult = null;
     Logger.debug('Epsilon: CRON: %j', evt);
     if (!this._epsilon.config.cron) {
@@ -36,7 +36,7 @@ export class CronEpsilonLambdaEventHandler implements EpsilonLambdaEventHandler<
         isBase64Encoded: false,
       };
     } else {
-      const output: boolean = await CronEpsilonLambdaEventHandler.processCronEvent(
+      const _output: boolean = await CronEpsilonLambdaEventHandler.processCronEvent(
         evt,
         this._epsilon.config.cron,
         this._epsilon.backgroundManager,
@@ -65,8 +65,9 @@ export class CronEpsilonLambdaEventHandler implements EpsilonLambdaEventHandler<
           const cronTimestampEpochMS = CronEpsilonLambdaEventHandler.getCronTimeToUse(evt);
 
           const toEnqueue: BackgroundEntry<any>[] = [];
-          for (let i = 0; i < cronConfig.entries.length; i++) {
-            const smCronEntry: CronBackgroundEntry = cronConfig.entries[i];
+          for (const smCronEntry of cronConfig.entries) {
+          //for (let i = 0; i < cronConfig.entries.length; i++) {
+            //const smCronEntry: CronBackgroundEntry = cronConfig.entries[i];
             if (CronUtil.eventMatchesEntry(evt, smCronEntry, cronConfig, cronTimestampEpochMS)) {
               Logger.info('CRON Firing : %s', CronUtil.cronEntryName(smCronEntry));
 
@@ -112,7 +113,7 @@ export class CronEpsilonLambdaEventHandler implements EpsilonLambdaEventHandler<
         throw new Error('Invalid date');
       }
     } catch (err) {
-      Logger.warn('Could not parse event time : %s, using system time instead', evt.time);
+      Logger.warn('Could not parse event time : %s, using system time instead', evt.time, err);
       return rval;
     }
 

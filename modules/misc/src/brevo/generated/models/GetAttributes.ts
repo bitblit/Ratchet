@@ -11,13 +11,8 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime.js';
 import type { GetAttributesAttributesInner } from './GetAttributesAttributesInner.js';
-import {
-  GetAttributesAttributesInnerFromJSON,
-  GetAttributesAttributesInnerFromJSONTyped,
-  GetAttributesAttributesInnerToJSON,
-} from './GetAttributesAttributesInner.js';
+import { GetAttributesAttributesInnerFromJSON, GetAttributesAttributesInnerToJSON } from './GetAttributesAttributesInner.js';
 
 /**
  *

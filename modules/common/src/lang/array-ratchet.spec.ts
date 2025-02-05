@@ -1,5 +1,5 @@
 import { ArrayRatchet, MatchReport } from './array-ratchet.js';
-import { expect, test, describe } from 'vitest';
+import { describe, expect, test } from 'vitest';
 
 const sortedArr: any[] = [
   {

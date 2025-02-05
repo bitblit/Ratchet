@@ -11,7 +11,8 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime.js';
+import { exists } from '../runtime.js';
+
 /**
  * Listing of all the segments available in your account
  * @export

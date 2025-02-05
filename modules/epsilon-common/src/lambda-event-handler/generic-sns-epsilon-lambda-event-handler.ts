@@ -10,7 +10,7 @@ import { NoHandlersFoundError } from '../config/no-handlers-found-error.js';
 export class GenericSnsEpsilonLambdaEventHandler implements EpsilonLambdaEventHandler<SNSEvent> {
   constructor(private _epsilon: EpsilonInstance) {}
 
-  public extractLabel(evt: SNSEvent, context: Context): string {
+  public extractLabel(evt: SNSEvent, _context: Context): string {
     return 'SNSEvt:' + evt.Records[0].EventSource;
   }
 
@@ -18,7 +18,7 @@ export class GenericSnsEpsilonLambdaEventHandler implements EpsilonLambdaEventHa
     return LambdaEventDetector.isValidSnsEvent(evt);
   }
 
-  public async processEvent(evt: SNSEvent, context: Context): Promise<ProxyResult> {
+  public async processEvent(evt: SNSEvent, _context: Context): Promise<ProxyResult> {
     let rval: any = null;
     if (this._epsilon.config && this._epsilon.config.sns && evt && evt.Records.length > 0) {
       const finder: string = evt.Records[0].Sns.TopicArn;

@@ -11,11 +11,10 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime.js';
 import type { GetCampaignRecipients } from './GetCampaignRecipients.js';
-import { GetCampaignRecipientsFromJSON, GetCampaignRecipientsFromJSONTyped, GetCampaignRecipientsToJSON } from './GetCampaignRecipients.js';
+import { GetCampaignRecipientsFromJSON, GetCampaignRecipientsToJSON } from './GetCampaignRecipients.js';
 import type { GetSmsCampaignStats } from './GetSmsCampaignStats.js';
-import { GetSmsCampaignStatsFromJSON, GetSmsCampaignStatsFromJSONTyped, GetSmsCampaignStatsToJSON } from './GetSmsCampaignStats.js';
+import { GetSmsCampaignStatsFromJSON, GetSmsCampaignStatsToJSON } from './GetSmsCampaignStats.js';
 
 /**
  *

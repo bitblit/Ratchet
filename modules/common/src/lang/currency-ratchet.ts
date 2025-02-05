@@ -6,7 +6,7 @@ export class CurrencyRatchet {
   private constructor() {}
 
   public static centToDollarFormat(cents: number, fractionDigits: number = 2): string {
-    return CurrencyRatchet.dollarFormat(cents / 100);
+    return CurrencyRatchet.dollarFormat(cents / 100, fractionDigits);
   }
 
   public static dollarFormat(dollars: number, fractionDigits: number = 2): string {

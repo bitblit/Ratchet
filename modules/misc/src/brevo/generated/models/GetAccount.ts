@@ -11,23 +11,18 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime.js';
+import { exists } from '../runtime.js';
 import type { GetAccountAllOfMarketingAutomation } from './GetAccountAllOfMarketingAutomation.js';
 import {
   GetAccountAllOfMarketingAutomationFromJSON,
-  GetAccountAllOfMarketingAutomationFromJSONTyped,
   GetAccountAllOfMarketingAutomationToJSON,
 } from './GetAccountAllOfMarketingAutomation.js';
 import type { GetAccountAllOfPlan } from './GetAccountAllOfPlan.js';
-import { GetAccountAllOfPlanFromJSON, GetAccountAllOfPlanFromJSONTyped, GetAccountAllOfPlanToJSON } from './GetAccountAllOfPlan.js';
+import { GetAccountAllOfPlanFromJSON, GetAccountAllOfPlanToJSON } from './GetAccountAllOfPlan.js';
 import type { GetAccountAllOfRelay } from './GetAccountAllOfRelay.js';
-import { GetAccountAllOfRelayFromJSON, GetAccountAllOfRelayFromJSONTyped, GetAccountAllOfRelayToJSON } from './GetAccountAllOfRelay.js';
+import { GetAccountAllOfRelayFromJSON, GetAccountAllOfRelayToJSON } from './GetAccountAllOfRelay.js';
 import type { GetExtendedClientAllOfAddress } from './GetExtendedClientAllOfAddress.js';
-import {
-  GetExtendedClientAllOfAddressFromJSON,
-  GetExtendedClientAllOfAddressFromJSONTyped,
-  GetExtendedClientAllOfAddressToJSON,
-} from './GetExtendedClientAllOfAddress.js';
+import { GetExtendedClientAllOfAddressFromJSON, GetExtendedClientAllOfAddressToJSON } from './GetExtendedClientAllOfAddress.js';
 
 /**
  *

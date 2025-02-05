@@ -11,9 +11,9 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime.js';
+import { exists } from '../runtime.js';
 import type { GetFolder } from './GetFolder.js';
-import { GetFolderFromJSON, GetFolderFromJSONTyped, GetFolderToJSON } from './GetFolder.js';
+import { GetFolderFromJSON, GetFolderToJSON } from './GetFolder.js';
 
 /**
  *

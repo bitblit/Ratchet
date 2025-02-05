@@ -11,13 +11,9 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime.js';
+import { exists } from '../runtime.js';
 import type { GetEmailCampaignsCampaignsInner } from './GetEmailCampaignsCampaignsInner.js';
-import {
-  GetEmailCampaignsCampaignsInnerFromJSON,
-  GetEmailCampaignsCampaignsInnerFromJSONTyped,
-  GetEmailCampaignsCampaignsInnerToJSON,
-} from './GetEmailCampaignsCampaignsInner.js';
+import { GetEmailCampaignsCampaignsInnerFromJSON, GetEmailCampaignsCampaignsInnerToJSON } from './GetEmailCampaignsCampaignsInner.js';
 
 /**
  *

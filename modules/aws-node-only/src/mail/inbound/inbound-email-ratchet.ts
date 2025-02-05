@@ -29,7 +29,7 @@ export class InboundEmailRatchet {
   }
 
   public async processEmailFromBuffer(buf: Buffer): Promise<boolean> {
-    const rval: boolean = false;
+    let rval: boolean = false;
     RequireRatchet.notNullOrUndefined(buf, 'buf');
     Logger.info('Processing inbound email - size %d bytes', buf.length);
 
@@ -41,16 +41,15 @@ export class InboundEmailRatchet {
       message?.attachments?.length,
     );
 
-    let procd: boolean = false;
-    for (let i = 0; i < this.processors.length && !procd; i++) {
+    for (let i = 0; i < this.processors.length && !rval; i++) {
       if (this.processors[i].canProcess(message)) {
         Logger.info('Processing message with processor %d', i);
         const result: any = await this.processors[i].processEmail(message);
         Logger.info('Result was : %j', result);
-        procd = true;
+        rval = true;
       }
     }
 
-    return procd;
+    return rval;
   }
 }

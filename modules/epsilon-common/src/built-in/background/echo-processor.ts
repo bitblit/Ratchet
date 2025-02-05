@@ -10,7 +10,7 @@ export class EchoProcessor implements BackgroundProcessor<any> {
     return EchoProcessor.TYPE_NAME;
   }
 
-  public async handleEvent(data: any, mgr?: BackgroundManagerLike): Promise<void> {
+  public async handleEvent(data: any, _mgr?: BackgroundManagerLike): Promise<void> {
     Logger.info('Echo processing : %j', data);
     if (data && StringRatchet.trimToNull(data['error'])) {
       ErrorRatchet.throwFormattedErr('Forced error : %s', data['error']);

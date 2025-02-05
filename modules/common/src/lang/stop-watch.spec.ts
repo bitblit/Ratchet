@@ -1,7 +1,6 @@
 import { StopWatch } from './stop-watch.js';
 import { PromiseRatchet } from './promise-ratchet.js';
-import { expect, test, describe } from 'vitest';
-import { Logger } from '../logger/logger.js';
+import { describe, expect, test } from 'vitest';
 
 describe('#elapsedMS', function () {
   test('should calculate elapsed MS correctly', async () => {

@@ -1,5 +1,5 @@
 import { Base64Ratchet } from './base64-ratchet.js';
-import { expect, test, describe } from 'vitest';
+import { describe, expect, test } from 'vitest';
 
 describe('#base64', function () {
   test('should parse a Uint8Array from base64', function () {

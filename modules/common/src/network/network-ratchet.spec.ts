@@ -1,6 +1,6 @@
 import { NetworkRatchet } from './network-ratchet.js';
 import { ParsedUrl } from '../lang/parsed-url.js';
-import { expect, test, describe } from 'vitest';
+import { describe, expect, test } from 'vitest';
 
 describe('#parseUrl', function () {
   test('should parse the url and return correct values', function () {

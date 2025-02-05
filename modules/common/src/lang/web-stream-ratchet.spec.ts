@@ -1,5 +1,5 @@
 import { WebStreamRatchet } from './web-stream-ratchet.js';
-import { expect, test, describe } from 'vitest';
+import { describe, expect, test } from 'vitest';
 
 describe('#WebStreamRatchet', function () {
   test('should roundtrip from string to stream and back', async () => {

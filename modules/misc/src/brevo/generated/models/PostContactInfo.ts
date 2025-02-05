@@ -11,13 +11,8 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime.js';
 import type { PostContactInfoContacts } from './PostContactInfoContacts.js';
-import {
-  PostContactInfoContactsFromJSON,
-  PostContactInfoContactsFromJSONTyped,
-  PostContactInfoContactsToJSON,
-} from './PostContactInfoContacts.js';
+import { PostContactInfoContactsFromJSON, PostContactInfoContactsToJSON } from './PostContactInfoContacts.js';
 
 /**
  *

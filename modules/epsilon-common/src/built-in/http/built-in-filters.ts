@@ -9,7 +9,6 @@ import { ResponseUtil } from '../../http/response-util.js';
 import { FilterChainContext } from '../../config/http/filter-chain-context.js';
 import { MisconfiguredError } from '../../http/error/misconfigured-error.js';
 import { APIGatewayProxyResult } from 'aws-lambda';
-import { UnauthorizedError } from '../../http/error/unauthorized-error';
 import { RequireRatchet } from '@bitblit/ratchet-common/lang/require-ratchet';
 import { EpsilonCorsApproach } from '../../config/http/epsilon-cors-approach.js';
 
@@ -158,7 +157,7 @@ export class BuiltInFilters {
       try {
         fCtx.event.parsedBody = EventUtil.jsonBodyToObject(fCtx.event);
       } catch (err) {
-        throw new RestfulApiHttpError('Supplied body was not parsable as valid JSON').withHttpStatusCode(400);
+        throw new RestfulApiHttpError('Supplied body was not parsable as valid JSON').withHttpStatusCode(400).withWrappedError(err);
       }
     }
     return true;
@@ -198,12 +197,12 @@ export class BuiltInFilters {
     return true;
   }
 
-  public static async validateInboundQueryParams(fCtx: FilterChainContext): Promise<boolean> {
+  public static async validateInboundQueryParams(_fCtx: FilterChainContext): Promise<boolean> {
     // TODO: Implement ME!
     return true;
   }
 
-  public static async validateInboundPathParams(fCtx: FilterChainContext): Promise<boolean> {
+  public static async validateInboundPathParams(_fCtx: FilterChainContext): Promise<boolean> {
     // TODO: Implement ME!
     return true;
   }

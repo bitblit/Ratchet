@@ -1,5 +1,5 @@
 import { GoogleRecaptchaRatchet } from './google-recaptcha-ratchet.js';
-import { expect, test, describe, vi } from 'vitest';
+import { describe, expect, test, vi } from 'vitest';
 
 const fakeFetch = vi.fn((_input, _init) =>
   Promise.resolve({

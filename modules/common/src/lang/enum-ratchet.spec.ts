@@ -1,6 +1,6 @@
 import { EnumRatchet } from './enum-ratchet.js';
 import { LoggerLevelName } from '../logger/logger-level-name.js';
-import { expect, test, describe } from 'vitest';
+import { describe, expect, test } from 'vitest';
 
 describe('#enumRatchet', function () {
   test('should list keys', async () => {

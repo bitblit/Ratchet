@@ -14,7 +14,7 @@ export class TestErrorServer {
   async runServer(): Promise<boolean> {
     Logger.info('Starting Test Error net server on port %d', this.port);
 
-    return new Promise<boolean>((res, rej) => {
+    return new Promise<boolean>((_res, _rej) => {
       const server = new net.Server({});
       // The server listens to a socket for a client to make a connection request.
       // Think of a socket as an end point.
@@ -130,7 +130,7 @@ export class TestErrorServer {
 
    */
 
-  public static async runFromCliArgs(args: string[]): Promise<void> {
+  public static async runFromCliArgs(_args: string[]): Promise<void> {
     Logger.info('test-error-server requested (cli is %s) - starting', process?.argv);
     const testServer: TestErrorServer = new TestErrorServer();
     await testServer.runServer();

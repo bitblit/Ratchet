@@ -66,7 +66,7 @@ describe('#cronUtil', function () {
       entries: [], // only works since this isn't checked
     };
 
-    const entry1: AbstractCronEntry = {};
+    const _entry1: AbstractCronEntry = {};
 
     const cron1: AbstractCronEntry = {
       contextMatchFilter: new RegExp('prod'),
@@ -111,7 +111,7 @@ describe('#cronUtil', function () {
       entries: [], // only works since this isn't checked
     };
 
-    const entry1: AbstractCronEntry = {};
+    const _entry1: AbstractCronEntry = {};
 
     const cron1: AbstractCronEntry = {
       hourFilter: [3],
@@ -146,7 +146,7 @@ describe('#cronUtil', function () {
       entries: [], // only works since this isn't checked
     };
 
-    const entry1: AbstractCronEntry = {};
+    const _entry1: AbstractCronEntry = {};
 
     //Timestamp in milliseconds: 1652931000000
     //Date and time (GMT): Thursday, May 19, 2022 3:30:00 AM
@@ -174,7 +174,7 @@ describe('#cronUtil', function () {
       entries: [], // only works since this isn't checked
     };
 
-    const entry1: AbstractCronEntry = {};
+    const _entry1: AbstractCronEntry = {};
 
     //Timestamp in milliseconds: 1652931000000
     //Date and time (GMT): Thursday, May 19, 2022 3:30:00 AM

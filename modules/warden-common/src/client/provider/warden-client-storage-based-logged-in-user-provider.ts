@@ -2,7 +2,6 @@ import { WardenLoggedInUserProvider } from './warden-logged-in-user-provider.js'
 import { WardenLoggedInUserWrapper } from './warden-logged-in-user-wrapper.js';
 
 import { RequireRatchet } from '@bitblit/ratchet-common/lang/require-ratchet';
-import { ErrorRatchet } from '@bitblit/ratchet-common/lang/error-ratchet';
 import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet';
 import { Logger } from '@bitblit/ratchet-common/logger/logger';
 

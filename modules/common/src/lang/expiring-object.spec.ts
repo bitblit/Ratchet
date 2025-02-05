@@ -1,7 +1,7 @@
 import { ExpiringObject } from './expiring-object.js';
 import { PromiseRatchet } from './promise-ratchet.js';
 import { LoggerLevelName } from '../logger/logger-level-name.js';
-import { expect, test, describe } from 'vitest';
+import { describe, expect, test } from 'vitest';
 
 describe('#expiringObject', function () {
   test('should default the object', async () => {

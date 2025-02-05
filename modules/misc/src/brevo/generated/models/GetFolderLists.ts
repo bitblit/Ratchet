@@ -11,9 +11,8 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime.js';
 import type { GetList } from './GetList.js';
-import { GetListFromJSON, GetListFromJSONTyped, GetListToJSON } from './GetList.js';
+import { GetListFromJSON, GetListToJSON } from './GetList.js';
 
 /**
  *

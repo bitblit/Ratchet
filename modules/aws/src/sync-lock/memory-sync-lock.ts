@@ -8,8 +8,10 @@ export class MemorySyncLock implements SyncLockProvider {
   private _locks: Map<string, number> = new Map<string, number>();
 
   // Empty constructor prevents instantiation
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  constructor() {}
+  // eslint-disable-next-line @typescript-eslint/no-useless-constructor
+  constructor() {
+    // Placeholder
+  }
 
   public async acquireLock(lockKey: string, expirationSeconds: number = 30): Promise<boolean> {
     let rval: boolean = false;

@@ -11,11 +11,10 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime.js';
+import { exists } from '../runtime.js';
 import type { CustomFieldMultiSelectDropDownContentSelectedOptions } from './CustomFieldMultiSelectDropDownContentSelectedOptions.js';
 import {
   CustomFieldMultiSelectDropDownContentSelectedOptionsFromJSON,
-  CustomFieldMultiSelectDropDownContentSelectedOptionsFromJSONTyped,
   CustomFieldMultiSelectDropDownContentSelectedOptionsToJSON,
 } from './CustomFieldMultiSelectDropDownContentSelectedOptions.js';
 

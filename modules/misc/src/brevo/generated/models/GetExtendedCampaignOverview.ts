@@ -11,11 +11,10 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime.js';
+import { exists } from '../runtime.js';
 import type { GetExtendedCampaignOverviewAllOfSender } from './GetExtendedCampaignOverviewAllOfSender.js';
 import {
   GetExtendedCampaignOverviewAllOfSenderFromJSON,
-  GetExtendedCampaignOverviewAllOfSenderFromJSONTyped,
   GetExtendedCampaignOverviewAllOfSenderToJSON,
 } from './GetExtendedCampaignOverviewAllOfSender.js';
 

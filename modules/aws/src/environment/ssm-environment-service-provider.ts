@@ -5,7 +5,6 @@ import { PromiseRatchet } from '@bitblit/ratchet-common/lang/promise-ratchet';
 import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet';
 import { GetParameterCommand, GetParameterCommandOutput, ParameterNotFound, SSMClient } from '@aws-sdk/client-ssm';
 import { EnvironmentServiceProvider } from './environment-service-provider.js';
-import { ExpiredTokenException } from '@aws-sdk/client-sts';
 
 /**
  * Service for reading environmental variables

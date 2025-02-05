@@ -1,7 +1,6 @@
 import handlebars from 'handlebars';
 import { HandlebarsRatchet } from './handlebars-ratchet.js';
-import { expect, test, describe, vi, beforeEach } from 'vitest';
-import { mock, MockProxy } from 'vitest-mock-extended';
+import { describe, expect, test } from 'vitest';
 
 describe('#handlebarsService', () => {
   test('should test equal', async () => {

@@ -11,9 +11,8 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime.js';
 import type { GetContactDetails } from './GetContactDetails.js';
-import { GetContactDetailsFromJSON, GetContactDetailsFromJSONTyped, GetContactDetailsToJSON } from './GetContactDetails.js';
+import { GetContactDetailsFromJSON, GetContactDetailsToJSON } from './GetContactDetails.js';
 
 /**
  *

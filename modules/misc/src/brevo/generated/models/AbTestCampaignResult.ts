@@ -11,19 +11,11 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime.js';
+import { exists } from '../runtime.js';
 import type { AbTestCampaignResultClickedLinks } from './AbTestCampaignResultClickedLinks.js';
-import {
-  AbTestCampaignResultClickedLinksFromJSON,
-  AbTestCampaignResultClickedLinksFromJSONTyped,
-  AbTestCampaignResultClickedLinksToJSON,
-} from './AbTestCampaignResultClickedLinks.js';
+import { AbTestCampaignResultClickedLinksFromJSON, AbTestCampaignResultClickedLinksToJSON } from './AbTestCampaignResultClickedLinks.js';
 import type { AbTestCampaignResultStatistics } from './AbTestCampaignResultStatistics.js';
-import {
-  AbTestCampaignResultStatisticsFromJSON,
-  AbTestCampaignResultStatisticsFromJSONTyped,
-  AbTestCampaignResultStatisticsToJSON,
-} from './AbTestCampaignResultStatistics.js';
+import { AbTestCampaignResultStatisticsFromJSON, AbTestCampaignResultStatisticsToJSON } from './AbTestCampaignResultStatistics.js';
 
 /**
  *

@@ -11,7 +11,8 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime.js';
+import { exists } from '../runtime.js';
+
 /**
  * Email (required), along with name (optional), on which transactional mail recipients will be able to reply back. For example, {"email":"ann6533@example.com", "name":"Ann"}.
  * @export

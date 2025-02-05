@@ -3,8 +3,7 @@ import { RouteAndParse } from '../web-handler.js';
 import { APIGatewayEvent } from 'aws-lambda';
 import { EpsilonGlobalHandler } from '../../epsilon-global-handler.js';
 import { SampleServerComponents } from '../../sample/sample-server-components.js';
-import { expect, test, describe, vi, beforeEach } from 'vitest';
-import { mock, MockProxy } from 'vitest-mock-extended';
+import { describe, expect, test } from 'vitest';
 
 describe('#routerUtilApplyOpenApiDoc', function () {
   test('should create a router config from a yaml file', async () => {

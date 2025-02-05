@@ -13,13 +13,11 @@
 
 import * as runtime from '../runtime.js';
 import type {
+  CreatedProcessId,
   CreateModel,
   CreateSmsCampaign,
-  CreatedProcessId,
-  ErrorModel,
   GetSmsCampaign,
   GetSmsCampaigns,
-  PostSendSmsTestFailed,
   RequestSmsRecipientExport,
   SendReport,
   SendTestSms,
@@ -27,29 +25,15 @@ import type {
   UpdateSmsCampaign,
 } from '../models/index.js';
 import {
-  CreateModelFromJSON,
-  CreateModelToJSON,
-  CreateSmsCampaignFromJSON,
-  CreateSmsCampaignToJSON,
   CreatedProcessIdFromJSON,
-  CreatedProcessIdToJSON,
-  ErrorModelFromJSON,
-  ErrorModelToJSON,
+  CreateModelFromJSON,
+  CreateSmsCampaignToJSON,
   GetSmsCampaignFromJSON,
-  GetSmsCampaignToJSON,
   GetSmsCampaignsFromJSON,
-  GetSmsCampaignsToJSON,
-  PostSendSmsTestFailedFromJSON,
-  PostSendSmsTestFailedToJSON,
-  RequestSmsRecipientExportFromJSON,
   RequestSmsRecipientExportToJSON,
-  SendReportFromJSON,
   SendReportToJSON,
-  SendTestSmsFromJSON,
   SendTestSmsToJSON,
-  UpdateCampaignStatusFromJSON,
   UpdateCampaignStatusToJSON,
-  UpdateSmsCampaignFromJSON,
   UpdateSmsCampaignToJSON,
 } from '../models/index.js';
 

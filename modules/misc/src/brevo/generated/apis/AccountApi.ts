@@ -13,7 +13,7 @@
 
 import * as runtime from '../runtime.js';
 import type { GetAccount } from '../models/index.js';
-import { GetAccountFromJSON, GetAccountToJSON } from '../models/index.js';
+import { GetAccountFromJSON } from '../models/index.js';
 
 /**
  * AccountApi - interface

@@ -70,9 +70,10 @@ export class AthenaRatchet {
     const rval: NamedQuery[] = [];
     const ids: string[] = await this.fetchQueryIds();
     Logger.debug('Finding %d items', ids.length);
-    for (let i = 0; i < ids.length; i++) {
+    for (const id of ids) {
+    //for (let i = 0; i < ids.length; i++) {
       const params = {
-        NamedQueryId: ids[i],
+        NamedQueryId: id,
       };
       const val: GetNamedQueryCommandOutput = await this.athena.send(new GetNamedQueryCommand(params));
       rval.push(val.NamedQuery);

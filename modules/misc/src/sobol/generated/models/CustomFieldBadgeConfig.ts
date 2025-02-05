@@ -15,7 +15,6 @@ import { exists, mapValues } from '../runtime.js';
 import type { CustomFieldBadgeConfigOptionsValue } from './CustomFieldBadgeConfigOptionsValue.js';
 import {
   CustomFieldBadgeConfigOptionsValueFromJSON,
-  CustomFieldBadgeConfigOptionsValueFromJSONTyped,
   CustomFieldBadgeConfigOptionsValueToJSON,
 } from './CustomFieldBadgeConfigOptionsValue.js';
 

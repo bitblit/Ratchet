@@ -11,13 +11,9 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime.js';
+import { exists } from '../runtime.js';
 import type { UserLocalIdentitiesInner } from './UserLocalIdentitiesInner.js';
-import {
-  UserLocalIdentitiesInnerFromJSON,
-  UserLocalIdentitiesInnerFromJSONTyped,
-  UserLocalIdentitiesInnerToJSON,
-} from './UserLocalIdentitiesInner.js';
+import { UserLocalIdentitiesInnerFromJSON, UserLocalIdentitiesInnerToJSON } from './UserLocalIdentitiesInner.js';
 
 /**
  *

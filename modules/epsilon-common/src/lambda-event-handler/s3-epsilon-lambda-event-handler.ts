@@ -9,7 +9,7 @@ import { LambdaEventDetector } from '@bitblit/ratchet-aws/lambda/lambda-event-de
 export class S3EpsilonLambdaEventHandler implements EpsilonLambdaEventHandler<S3Event> {
   constructor(private _epsilon: EpsilonInstance) {}
 
-  public extractLabel(evt: S3Event, context: Context): string {
+  public extractLabel(evt: S3Event, _context: Context): string {
     return 'S3Evt:' + evt.Records[0].eventSource;
   }
 
@@ -17,7 +17,7 @@ export class S3EpsilonLambdaEventHandler implements EpsilonLambdaEventHandler<S3
     return LambdaEventDetector.isValidS3Event(evt);
   }
 
-  public async processEvent(evt: S3Event, context: Context): Promise<ProxyResult> {
+  public async processEvent(evt: S3Event, _context: Context): Promise<ProxyResult> {
     let rval: any = null;
     if (this._epsilon.config && this._epsilon.config.s3 && evt && evt.Records.length > 0) {
       const finder: string = evt.Records[0].s3.bucket.name + '/' + evt.Records[0].s3.object.key;

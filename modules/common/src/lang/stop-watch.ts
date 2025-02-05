@@ -129,7 +129,7 @@ export class StopWatch {
         rval += (cleanName || 'Default') + ' ';
         const remainMS: number = this.expectedRemainingMS(pctComplete, cleanName);
         const elapsedMS: number = this.elapsedMS(cleanName);
-        const expectedTotalMS: number = elapsedMS + remainMS;
+        //const expectedTotalMS: number = elapsedMS + remainMS;
         if (remainMS === 0) {
           rval += 'completed in ' + DurationRatchet.formatMsDuration(elapsedMS, !shortForm);
         } else if (remainMS > 0) {

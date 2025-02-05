@@ -11,9 +11,9 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime.js';
+import { exists } from '../runtime.js';
 import type { SendReportEmail } from './SendReportEmail.js';
-import { SendReportEmailFromJSON, SendReportEmailFromJSONTyped, SendReportEmailToJSON } from './SendReportEmail.js';
+import { SendReportEmailFromJSON, SendReportEmailToJSON } from './SendReportEmail.js';
 
 /**
  *

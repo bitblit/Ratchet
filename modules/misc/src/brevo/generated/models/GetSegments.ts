@@ -11,9 +11,9 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime.js';
+import { exists } from '../runtime.js';
 import type { GetSegmentsSegments } from './GetSegmentsSegments.js';
-import { GetSegmentsSegmentsFromJSON, GetSegmentsSegmentsFromJSONTyped, GetSegmentsSegmentsToJSON } from './GetSegmentsSegments.js';
+import { GetSegmentsSegmentsFromJSON, GetSegmentsSegmentsToJSON } from './GetSegmentsSegments.js';
 
 /**
  *

@@ -1,6 +1,5 @@
 import { GitRatchet } from './git-ratchet.js';
-import { expect, test, describe, vi, beforeEach } from 'vitest';
-import { mock, MockProxy } from 'vitest-mock-extended';
+import { describe, expect, test } from 'vitest';
 import { Logger } from '@bitblit/ratchet-common/logger/logger';
 
 describe('#gitRatchet', function () {

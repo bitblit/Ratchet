@@ -12,20 +12,13 @@
  */
 
 import * as runtime from '../runtime.js';
-import type { CreateModel, CreateUpdateFolder, ErrorModel, GetFolder, GetFolderLists, GetFolders } from '../models/index.js';
+import type { CreateModel, CreateUpdateFolder, GetFolder, GetFolderLists, GetFolders } from '../models/index.js';
 import {
   CreateModelFromJSON,
-  CreateModelToJSON,
-  CreateUpdateFolderFromJSON,
   CreateUpdateFolderToJSON,
-  ErrorModelFromJSON,
-  ErrorModelToJSON,
   GetFolderFromJSON,
-  GetFolderToJSON,
   GetFolderListsFromJSON,
-  GetFolderListsToJSON,
   GetFoldersFromJSON,
-  GetFoldersToJSON,
 } from '../models/index.js';
 
 export interface CreateFolderRequest {

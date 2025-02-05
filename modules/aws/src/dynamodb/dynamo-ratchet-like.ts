@@ -1,6 +1,5 @@
 import { DynamoCountResult } from '../model/dynamo-count-result.js';
-import { DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
-import { DeleteCommandOutput, PutCommandOutput, QueryCommandInput, ScanCommandInput } from '@aws-sdk/lib-dynamodb';
+import { DeleteCommandOutput, DynamoDBDocumentClient, PutCommandOutput, QueryCommandInput, ScanCommandInput } from '@aws-sdk/lib-dynamodb';
 
 export interface DynamoRatchetLike {
   getDDB(): DynamoDBDocumentClient;

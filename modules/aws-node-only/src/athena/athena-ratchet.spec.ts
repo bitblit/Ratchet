@@ -9,8 +9,7 @@ import {
 } from '@aws-sdk/client-athena';
 import { S3Client } from '@aws-sdk/client-s3';
 import { mockClient } from 'aws-sdk-client-mock';
-import { expect, test, describe, vi, beforeEach } from 'vitest';
-import { mock, MockProxy } from 'vitest-mock-extended';
+import { beforeEach, describe, expect, test } from 'vitest';
 
 let mockAthena;
 let mockS3;

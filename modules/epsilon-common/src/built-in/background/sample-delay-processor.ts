@@ -8,7 +8,7 @@ export class SampleDelayProcessor implements BackgroundProcessor<any> {
     return 'EpsilonSampleDelay';
   }
 
-  public async handleEvent(data: any, mgr?: BackgroundManagerLike): Promise<void> {
+  public async handleEvent(_data: any, _mgr?: BackgroundManagerLike): Promise<void> {
     const delayMS: number = Math.floor(Math.random() * 5000);
     Logger.info('Running sample processor for %d', delayMS);
     await PromiseRatchet.wait(delayMS);

@@ -1,5 +1,5 @@
 import { Uint8ArrayRatchet } from './uint-8-array-ratchet.js';
-import { expect, test, describe } from 'vitest';
+import { describe, expect, test } from 'vitest';
 
 describe('#Uint8Array', function () {
   test('should combine uint8 arrays', function () {

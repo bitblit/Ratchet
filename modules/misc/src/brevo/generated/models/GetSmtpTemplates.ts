@@ -11,13 +11,9 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime.js';
+import { exists } from '../runtime.js';
 import type { GetSmtpTemplateOverview } from './GetSmtpTemplateOverview.js';
-import {
-  GetSmtpTemplateOverviewFromJSON,
-  GetSmtpTemplateOverviewFromJSONTyped,
-  GetSmtpTemplateOverviewToJSON,
-} from './GetSmtpTemplateOverview.js';
+import { GetSmtpTemplateOverviewFromJSON, GetSmtpTemplateOverviewToJSON } from './GetSmtpTemplateOverview.js';
 
 /**
  *

@@ -79,19 +79,19 @@ export class RemoteFileTracker<KeyType> {
   public async pushStringToRemote(src: string, inPushOpts?: RemoteFileTrackerPushOptions): Promise<RemoteStatusData<KeyType>> {
     RequireRatchet.notNullOrUndefined(src, 'src');
     const asString: ReadableStream = WebStreamRatchet.stringToWebReadableStream(src);
-    return this.pushStreamToRemote(asString);
+    return this.pushStreamToRemote(asString, inPushOpts);
   }
 
   public async pushUint8ArrayToRemote(src: Uint8Array, inPushOpts?: RemoteFileTrackerPushOptions): Promise<RemoteStatusData<KeyType>> {
     RequireRatchet.notNullOrUndefined(src, 'src');
     const asString: ReadableStream = WebStreamRatchet.uint8ArrayToWebReadableStream(src);
-    return this.pushStreamToRemote(asString);
+    return this.pushStreamToRemote(asString, inPushOpts);
   }
 
   public async pushObjectJsonToRemote(src: any, inPushOpts?: RemoteFileTrackerPushOptions): Promise<RemoteStatusData<KeyType>> {
     RequireRatchet.notNullOrUndefined(src, 'src');
     const asString: string = JSON.stringify(src);
-    return this.pushStringToRemote(asString);
+    return this.pushStringToRemote(asString, inPushOpts);
   }
 
   // If skipUpdateLocal is NOT set, the next call will succeed because

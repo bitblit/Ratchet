@@ -11,9 +11,9 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime.js';
+import { exists } from '../runtime.js';
 import type { CreateSenderIpsInner } from './CreateSenderIpsInner.js';
-import { CreateSenderIpsInnerFromJSON, CreateSenderIpsInnerFromJSONTyped, CreateSenderIpsInnerToJSON } from './CreateSenderIpsInner.js';
+import { CreateSenderIpsInnerFromJSON, CreateSenderIpsInnerToJSON } from './CreateSenderIpsInner.js';
 
 /**
  *

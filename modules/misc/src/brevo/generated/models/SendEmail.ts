@@ -11,13 +11,9 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime.js';
+import { exists } from '../runtime.js';
 import type { SendEmailAttachmentInner } from './SendEmailAttachmentInner.js';
-import {
-  SendEmailAttachmentInnerFromJSON,
-  SendEmailAttachmentInnerFromJSONTyped,
-  SendEmailAttachmentInnerToJSON,
-} from './SendEmailAttachmentInner.js';
+import { SendEmailAttachmentInnerFromJSON, SendEmailAttachmentInnerToJSON } from './SendEmailAttachmentInner.js';
 
 /**
  *

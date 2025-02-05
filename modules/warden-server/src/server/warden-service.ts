@@ -1,20 +1,18 @@
 import {
+  AuthenticationResponseJSON,
+  AuthenticatorTransportFuture,
   generateAuthenticationOptions,
   GenerateAuthenticationOptionsOpts,
   generateRegistrationOptions,
+  PublicKeyCredentialCreationOptionsJSON,
+  PublicKeyCredentialRequestOptionsJSON,
+  RegistrationResponseJSON,
   VerifiedAuthenticationResponse,
   VerifiedRegistrationResponse,
   verifyAuthenticationResponse,
   VerifyAuthenticationResponseOpts,
   verifyRegistrationResponse,
   VerifyRegistrationResponseOpts,
-} from '@simplewebauthn/server';
-import {
-  AuthenticationResponseJSON,
-  AuthenticatorTransportFuture,
-  PublicKeyCredentialCreationOptionsJSON,
-  PublicKeyCredentialRequestOptionsJSON,
-  RegistrationResponseJSON,
 } from '@simplewebauthn/server';
 import { WardenServiceOptions } from './warden-service-options.js';
 import { WardenContact } from '@bitblit/ratchet-warden-common/common/model/warden-contact';

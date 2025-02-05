@@ -11,13 +11,9 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime.js';
+import { exists } from '../runtime.js';
 import type { GetChildrenListChildrenInner } from './GetChildrenListChildrenInner.js';
-import {
-  GetChildrenListChildrenInnerFromJSON,
-  GetChildrenListChildrenInnerFromJSONTyped,
-  GetChildrenListChildrenInnerToJSON,
-} from './GetChildrenListChildrenInner.js';
+import { GetChildrenListChildrenInnerFromJSON, GetChildrenListChildrenInnerToJSON } from './GetChildrenListChildrenInner.js';
 
 /**
  *

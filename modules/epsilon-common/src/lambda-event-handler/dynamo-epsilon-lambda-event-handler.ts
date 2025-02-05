@@ -10,7 +10,7 @@ import { NoHandlersFoundError } from '../config/no-handlers-found-error.js';
 export class DynamoEpsilonLambdaEventHandler implements EpsilonLambdaEventHandler<DynamoDBStreamEvent> {
   constructor(private _epsilon: EpsilonInstance) {}
 
-  public extractLabel(evt: DynamoDBStreamEvent, context: Context): string {
+  public extractLabel(evt: DynamoDBStreamEvent, _context: Context): string {
     return 'DDBEvt:' + evt.Records[0].eventName + ':' + evt.Records[0].eventSource;
   }
 
@@ -18,7 +18,7 @@ export class DynamoEpsilonLambdaEventHandler implements EpsilonLambdaEventHandle
     return LambdaEventDetector.isValidDynamoDBEvent(evt);
   }
 
-  public async processEvent(evt: DynamoDBStreamEvent, context: Context): Promise<ProxyResult> {
+  public async processEvent(evt: DynamoDBStreamEvent, _context: Context): Promise<ProxyResult> {
     let rval: any = null;
     if (this._epsilon.config && this._epsilon.config.dynamoDb && evt && evt.Records && evt.Records.length > 0) {
       const finder: string = evt.Records[0].eventSourceARN;

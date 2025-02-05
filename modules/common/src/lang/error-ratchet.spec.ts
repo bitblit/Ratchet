@@ -1,5 +1,5 @@
 import { ErrorRatchet } from './error-ratchet.js';
-import { expect, test, describe } from 'vitest';
+import { describe, expect, test } from 'vitest';
 
 describe('#errorRatchet', function () {
   test('should cast to error', async () => {

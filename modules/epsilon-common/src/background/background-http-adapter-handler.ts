@@ -45,7 +45,7 @@ export class BackgroundHttpAdapterHandler {
     return this.backgroundConfig.implyTypeFromPathSuffix;
   }
 
-  public async handleBackgroundStatusRequest(evt: ExtendedAPIGatewayEvent, context: Context): Promise<BackgroundTransactionLog> {
+  public async handleBackgroundStatusRequest(evt: ExtendedAPIGatewayEvent, _context: Context): Promise<BackgroundTransactionLog> {
     Logger.info('handleBackgroundStatusRequest called');
     if (!this.backgroundConfig.transactionLogger) {
       throw new BadRequestError('Process logging not enabled');
@@ -77,7 +77,7 @@ export class BackgroundHttpAdapterHandler {
     }
   }
 
-  public async handleBackgroundMetaRequest(evt: ExtendedAPIGatewayEvent, context: Context): Promise<BackgroundMetaResponseInternal> {
+  public async handleBackgroundMetaRequest(_evt: ExtendedAPIGatewayEvent, _context: Context): Promise<BackgroundMetaResponseInternal> {
     Logger.info('handleBackgroundMetaRequest called');
     const currentCount: number = await this.backgroundManager.fetchApproximateNumberOfQueueEntries();
     const valid: string[] = this.backgroundConfig.processors.map((b) => b.typeName).filter((a) => !!a);
@@ -90,7 +90,7 @@ export class BackgroundHttpAdapterHandler {
     return rval;
   }
 
-  public async handleBackgroundSubmission(evt: ExtendedAPIGatewayEvent, context: Context): Promise<BackgroundQueueResponseInternal> {
+  public async handleBackgroundSubmission(evt: ExtendedAPIGatewayEvent, _context: Context): Promise<BackgroundQueueResponseInternal> {
     Logger.info('handleBackgroundSubmission : %j (mgr:%s)', evt.parsedBody, this.backgroundManager.backgroundManagerName);
 
     let rval: BackgroundQueueResponseInternal = null;

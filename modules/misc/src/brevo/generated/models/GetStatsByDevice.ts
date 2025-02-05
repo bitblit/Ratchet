@@ -13,7 +13,7 @@
 
 import { exists, mapValues } from '../runtime.js';
 import type { GetDeviceBrowserStats } from './GetDeviceBrowserStats.js';
-import { GetDeviceBrowserStatsFromJSON, GetDeviceBrowserStatsFromJSONTyped, GetDeviceBrowserStatsToJSON } from './GetDeviceBrowserStats.js';
+import { GetDeviceBrowserStatsFromJSON, GetDeviceBrowserStatsToJSON } from './GetDeviceBrowserStats.js';
 
 /**
  *

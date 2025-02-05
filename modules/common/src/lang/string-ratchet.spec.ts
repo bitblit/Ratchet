@@ -1,5 +1,5 @@
 import { StringRatchet } from './string-ratchet.js';
-import { expect, test, describe } from 'vitest';
+import { describe, expect, test } from 'vitest';
 
 describe('#formatBytes', function () {
   test('should format 0 bytes correctly', function () {

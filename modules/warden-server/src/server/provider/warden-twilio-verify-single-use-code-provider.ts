@@ -23,7 +23,7 @@ export class WardenTwilioVerifySingleUseCodeProvider implements WardenSingleUseC
     return type === WardenContactType.TextCapablePhoneNumber;
   }
 
-  public async createAndSendNewCode(contact: WardenContact, relyingPartyNameIgnored: string): Promise<boolean> {
+  public async createAndSendNewCode(contact: WardenContact, _relyingPartyNameIgnored: string): Promise<boolean> {
     // Twilio verify does not let you set the message
     const ratchet: TwilioVerifyRatchet = await this.twilioVerifyRatchet();
     const rval: any = await ratchet.sendVerificationTokenUsingTwilioVerify(contact.value);

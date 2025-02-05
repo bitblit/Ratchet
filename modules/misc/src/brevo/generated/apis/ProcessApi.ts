@@ -12,15 +12,8 @@
  */
 
 import * as runtime from '../runtime.js';
-import type { ErrorModel, GetProcess, GetProcesses } from '../models/index.js';
-import {
-  ErrorModelFromJSON,
-  ErrorModelToJSON,
-  GetProcessFromJSON,
-  GetProcessToJSON,
-  GetProcessesFromJSON,
-  GetProcessesToJSON,
-} from '../models/index.js';
+import type { GetProcess, GetProcesses } from '../models/index.js';
+import { GetProcessesFromJSON, GetProcessFromJSON } from '../models/index.js';
 
 export interface GetProcessRequest {
   processId: number;

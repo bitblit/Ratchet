@@ -37,8 +37,9 @@ export class EcrUnusedImageCleaner {
 
   public async findAllUsedImages(finders: UsedImageFinder[]): Promise<string[]> {
     const rval: Set<string> = new Set<string>();
-    for (let i = 0; i < finders.length; i++) {
-      const next: string[] = await finders[i].findUsedImageUris();
+    for (const fnd of finders) {
+    //for (let i = 0; i < finders.length; i++) {
+      const next: string[] = await fnd.findUsedImageUris();
       next.forEach((s) => rval.add(s));
     }
     return Array.from(rval);

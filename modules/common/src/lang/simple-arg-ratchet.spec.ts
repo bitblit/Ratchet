@@ -1,6 +1,4 @@
-import { KeyValue } from './key-value.js';
-import { MapRatchet } from './map-ratchet.js';
-import { expect, test, describe } from 'vitest';
+import { describe, expect, test } from 'vitest';
 import { SimpleArgRatchet } from './simple-arg-ratchet.js';
 
 describe('#simpleArgRatchet', function () {

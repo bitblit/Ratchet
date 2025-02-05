@@ -8,19 +8,19 @@ import { BackgroundManagerLike } from '../background/manager/background-manager-
 import { SingleThreadLocalBackgroundManager } from '../background/manager/single-thread-local-background-manager.js';
 import { SQSClient } from '@aws-sdk/client-sqs';
 import { SNSClient } from '@aws-sdk/client-sns';
-import { expect, test, describe, vi, beforeEach } from 'vitest';
-import { mock, MockProxy } from 'vitest-mock-extended';
+import { beforeEach, describe, expect, test, vi } from 'vitest';
+import { mock } from 'vitest-mock-extended';
 import { DateTime } from 'luxon';
 
 // jest.mock('@bitblit/background');
 
 describe('#cronEpsilonLambdaEventHandler', function () {
-  let mockSqs;
-  let mockSns;
+  let _mockSqs;
+  let _mockSns;
 
   beforeEach(() => {
-    mockSqs = mock<SQSClient>();
-    mockSns = mock<SNSClient>();
+    _mockSqs = mock<SQSClient>();
+    _mockSns = mock<SNSClient>();
   });
 
   // CAW 2021-03-10 : Disabling for now since jest mock not working when run in batch from command line...unclear why

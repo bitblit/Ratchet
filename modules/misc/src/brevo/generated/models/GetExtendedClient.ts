@@ -11,13 +11,8 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime.js';
 import type { GetExtendedClientAllOfAddress } from './GetExtendedClientAllOfAddress.js';
-import {
-  GetExtendedClientAllOfAddressFromJSON,
-  GetExtendedClientAllOfAddressFromJSONTyped,
-  GetExtendedClientAllOfAddressToJSON,
-} from './GetExtendedClientAllOfAddress.js';
+import { GetExtendedClientAllOfAddressFromJSON, GetExtendedClientAllOfAddressToJSON } from './GetExtendedClientAllOfAddress.js';
 
 /**
  *

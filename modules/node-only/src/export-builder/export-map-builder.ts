@@ -38,7 +38,8 @@ export class ExportMapBuilder {
 
     Logger.info('Using sourceRoot %s and targets %j', cfg.sourceRoot, cfg.targets);
     const exports: Record<string, any> = {};
-    for (let i = 0; i < cfg.includes.length; i++) {
+    // TODO: This cant be right can it?  need to actually use this
+    for (const _f of cfg.includes) {
       ExportMapBuilder.processSingleFile(cfg.sourceRoot, cfg, exports);
     }
 
@@ -141,7 +142,7 @@ export class ExportMapBuilder {
       Logger.infoP('Usage: ratchet-export-builder'); // {packageJsonFile}');
       return null;
     } else {
-      const idx: number = CliRatchet.indexOfCommandArgument('export-builder');
+      const _idx: number = CliRatchet.indexOfCommandArgument('export-builder');
       //const jsonFile: string = process.argv[idx + 1];
 
       const cfg: ExportMapBuilderConfig = {

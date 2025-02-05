@@ -3,7 +3,7 @@ import { TransactionRatchet } from './transaction-ratchet.js';
 import { TransactionResult } from './transaction-result.js';
 import { TransactionFinalState } from './transaction-final-state.js';
 import { LoggerLevelName } from '../logger/logger-level-name.js';
-import { expect, test, describe } from 'vitest';
+import { describe, expect, test } from 'vitest';
 
 interface TestTransactionContext {
   runningTotal: number;

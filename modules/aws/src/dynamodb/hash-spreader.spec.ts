@@ -1,5 +1,5 @@
 import { HashSpreader } from './hash-spreader.js';
-import { expect, test, describe, vi, beforeEach } from 'vitest';
+import { describe, expect, test } from 'vitest';
 
 describe('#hashSpreader', function () {
   test('should enumerate spread', async () => {

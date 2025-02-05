@@ -11,11 +11,9 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime.js';
 import type { GetExtendedContactDetailsAllOfStatisticsLinks } from './GetExtendedContactDetailsAllOfStatisticsLinks.js';
 import {
   GetExtendedContactDetailsAllOfStatisticsLinksFromJSON,
-  GetExtendedContactDetailsAllOfStatisticsLinksFromJSONTyped,
   GetExtendedContactDetailsAllOfStatisticsLinksToJSON,
 } from './GetExtendedContactDetailsAllOfStatisticsLinks.js';
 

@@ -1,5 +1,5 @@
 import { LocalServer } from './local-server.js';
-import { expect, test, describe } from 'vitest';
+import { describe, expect, test } from 'vitest';
 
 describe('#localServer', function () {
   test('should not URL decode query string parameters', async () => {

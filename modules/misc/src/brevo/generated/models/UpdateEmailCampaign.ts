@@ -11,19 +11,11 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime.js';
+import { exists } from '../runtime.js';
 import type { UpdateEmailCampaignRecipients } from './UpdateEmailCampaignRecipients.js';
-import {
-  UpdateEmailCampaignRecipientsFromJSON,
-  UpdateEmailCampaignRecipientsFromJSONTyped,
-  UpdateEmailCampaignRecipientsToJSON,
-} from './UpdateEmailCampaignRecipients.js';
+import { UpdateEmailCampaignRecipientsFromJSON, UpdateEmailCampaignRecipientsToJSON } from './UpdateEmailCampaignRecipients.js';
 import type { UpdateEmailCampaignSender } from './UpdateEmailCampaignSender.js';
-import {
-  UpdateEmailCampaignSenderFromJSON,
-  UpdateEmailCampaignSenderFromJSONTyped,
-  UpdateEmailCampaignSenderToJSON,
-} from './UpdateEmailCampaignSender.js';
+import { UpdateEmailCampaignSenderFromJSON, UpdateEmailCampaignSenderToJSON } from './UpdateEmailCampaignSender.js';
 
 /**
  *

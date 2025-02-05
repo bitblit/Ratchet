@@ -1,7 +1,6 @@
 import { EChartRatchet } from '../common/echart-ratchet.js';
 import { EChartsOption } from 'echarts';
-import { expect, test, describe, vi, beforeEach } from 'vitest';
-import { mock, MockProxy } from 'vitest-mock-extended';
+import { describe, expect, test } from 'vitest';
 
 const options: EChartsOption = {
   title: {

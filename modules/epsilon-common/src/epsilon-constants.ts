@@ -18,9 +18,9 @@ export class EpsilonConstants {
   public static readonly INTER_API_SNS_EVENT = 'EPSILON_INTER_API_EVENT';
 
   private static load<T>(filePath: string, className: string): T {
-    // eslint-disable-next-line @typescript-eslint/no-var-frequires
     Logger.info('Searching for %s : %s : %s', filePath, className, EsmRatchet.fetchDirName(import.meta.url));
     let rval: T = null;
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     const val = require(filePath);
     if (val) {
       Logger.debug('Found %s - pulling object : %j : %s', filePath, Object.keys(val), className);

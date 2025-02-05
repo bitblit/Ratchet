@@ -11,13 +11,9 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime.js';
+import { exists } from '../runtime.js';
 import type { AddressTypeInternalEnum } from './AddressTypeInternalEnum.js';
-import {
-  AddressTypeInternalEnumFromJSON,
-  AddressTypeInternalEnumFromJSONTyped,
-  AddressTypeInternalEnumToJSON,
-} from './AddressTypeInternalEnum.js';
+import { AddressTypeInternalEnumFromJSON, AddressTypeInternalEnumToJSON } from './AddressTypeInternalEnum.js';
 
 /**
  *

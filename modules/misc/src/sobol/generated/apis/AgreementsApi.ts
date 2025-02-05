@@ -13,7 +13,7 @@
 
 import * as runtime from '../runtime.js';
 import type { Agreement, ObjectRef } from '../models/index.js';
-import { AgreementFromJSON, AgreementToJSON, ObjectRefFromJSON, ObjectRefToJSON } from '../models/index.js';
+import { AgreementFromJSON, AgreementToJSON, ObjectRefToJSON } from '../models/index.js';
 
 export interface OrgOrgIdAgreementsGetRequest {
   orgId: string;

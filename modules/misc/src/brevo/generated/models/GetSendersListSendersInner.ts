@@ -11,11 +11,10 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime.js';
+import { exists } from '../runtime.js';
 import type { GetSendersListSendersInnerIpsInner } from './GetSendersListSendersInnerIpsInner.js';
 import {
   GetSendersListSendersInnerIpsInnerFromJSON,
-  GetSendersListSendersInnerIpsInnerFromJSONTyped,
   GetSendersListSendersInnerIpsInnerToJSON,
 } from './GetSendersListSendersInnerIpsInner.js';
 

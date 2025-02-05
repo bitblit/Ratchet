@@ -46,7 +46,9 @@ export class SqliteDatabaseAccess implements DatabaseAccess {
     return rval;
   }
 
-  async onRequestFailureOnly(_type: DatabaseRequestType): Promise<void> {}
+  async onRequestFailureOnly(_type: DatabaseRequestType): Promise<void> {
+    return Promise.resolve(undefined);
+  }
 
   async onRequestSuccessOnly(_type: DatabaseRequestType): Promise<void> {
     return Promise.resolve(undefined);

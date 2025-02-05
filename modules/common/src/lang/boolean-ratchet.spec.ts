@@ -1,6 +1,6 @@
 import { BooleanRatchet } from './boolean-ratchet.js';
 import { NumberRatchet } from './number-ratchet.js';
-import { expect, test, describe } from 'vitest';
+import { describe, expect, test } from 'vitest';
 
 describe('#parseBool', function () {
   test('should check all true', function () {

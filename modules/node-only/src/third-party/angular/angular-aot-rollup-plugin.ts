@@ -1,5 +1,4 @@
 import { execSync } from 'child_process';
-import path from 'path';
 
 // Custom Rollup plugin to run Angular AOT
 export default function angularAotPlugin() {
@@ -10,7 +9,7 @@ export default function angularAotPlugin() {
       try {
         execSync('ngc -p tsconfig.json', { stdio: 'inherit' });
       } catch (error) {
-        this.error('AOT Compilation failed.');
+        this.error('AOT Compilation failed.', error);
       }
     },
   };

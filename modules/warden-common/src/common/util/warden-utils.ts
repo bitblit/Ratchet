@@ -13,8 +13,10 @@ import { WardenLoggedInUserWrapper } from '../../client/provider/warden-logged-i
 
 export class WardenUtils {
   // Prevent instantiation
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  constructor() {}
+  // eslint-disable-next-line @typescript-eslint/no-useless-constructor
+  constructor() {
+    // Empty
+  }
 
   public static extractContactsOfType(req: WardenEntry | WardenEntrySummary, type: WardenContactType): string[] {
     let rval: string[] = null;

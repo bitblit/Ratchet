@@ -7,7 +7,7 @@ import { SendMagicLink } from '@bitblit/ratchet-warden-common/common/command/sen
 import { WardenSendMagicLinkCommandValidator } from './warden-send-magic-link-command-validator.js';
 
 export class WardenDefaultSendMagicLinkCommandValidator implements WardenSendMagicLinkCommandValidator {
-  public async allowMagicLinkCommand(cmd: SendMagicLink, origin: string, loggedInUser: WardenEntry): Promise<void> {
+  public async allowMagicLinkCommand(cmd: SendMagicLink, _origin: string, _loggedInUser: WardenEntry): Promise<void> {
     if (!cmd) {
       throw new Error('Cannot process null magic link');
     }

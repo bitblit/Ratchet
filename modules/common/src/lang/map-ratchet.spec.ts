@@ -1,6 +1,6 @@
 import { KeyValue } from './key-value.js';
 import { MapRatchet } from './map-ratchet.js';
-import { expect, test, describe } from 'vitest';
+import { describe, expect, test } from 'vitest';
 
 describe('#toKeyValueList', function () {
   test('should expand a maps nested keys', function () {

@@ -68,7 +68,7 @@ export class MysqlStyleDatabaseAccess implements DatabaseAccess {
     return tmp;
   }
 
-  public async onRequestSuccessOrFailure(type: DatabaseRequestType): Promise<void> {
+  public async onRequestSuccessOrFailure(_type: DatabaseRequestType): Promise<void> {
     this._connection.config.namedPlaceholders = false;
   }
 

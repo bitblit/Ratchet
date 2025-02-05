@@ -11,15 +11,11 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime.js';
+import { exists } from '../runtime.js';
 import type { AgreementOwnersInner } from './AgreementOwnersInner.js';
-import { AgreementOwnersInnerFromJSON, AgreementOwnersInnerFromJSONTyped, AgreementOwnersInnerToJSON } from './AgreementOwnersInner.js';
+import { AgreementOwnersInnerFromJSON, AgreementOwnersInnerToJSON } from './AgreementOwnersInner.js';
 import type { AgreementSignatoriesInner } from './AgreementSignatoriesInner.js';
-import {
-  AgreementSignatoriesInnerFromJSON,
-  AgreementSignatoriesInnerFromJSONTyped,
-  AgreementSignatoriesInnerToJSON,
-} from './AgreementSignatoriesInner.js';
+import { AgreementSignatoriesInnerFromJSON, AgreementSignatoriesInnerToJSON } from './AgreementSignatoriesInner.js';
 
 /**
  *

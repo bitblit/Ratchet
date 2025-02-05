@@ -12,21 +12,8 @@
  */
 
 import * as runtime from '../runtime.js';
-import type { CreateModel, CreateWebhook, ErrorModel, GetWebhook, GetWebhooks, UpdateWebhook } from '../models/index.js';
-import {
-  CreateModelFromJSON,
-  CreateModelToJSON,
-  CreateWebhookFromJSON,
-  CreateWebhookToJSON,
-  ErrorModelFromJSON,
-  ErrorModelToJSON,
-  GetWebhookFromJSON,
-  GetWebhookToJSON,
-  GetWebhooksFromJSON,
-  GetWebhooksToJSON,
-  UpdateWebhookFromJSON,
-  UpdateWebhookToJSON,
-} from '../models/index.js';
+import type { CreateModel, CreateWebhook, GetWebhook, GetWebhooks, UpdateWebhook } from '../models/index.js';
+import { CreateModelFromJSON, CreateWebhookToJSON, GetWebhookFromJSON, GetWebhooksFromJSON, UpdateWebhookToJSON } from '../models/index.js';
 
 export interface CreateWebhookRequest {
   createWebhook: CreateWebhook;

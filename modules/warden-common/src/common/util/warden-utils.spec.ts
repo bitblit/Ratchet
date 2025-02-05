@@ -1,8 +1,7 @@
 import { WardenContactType } from '../model/warden-contact-type.js';
 import { WardenContact } from '../model/warden-contact.js';
 import { WardenUtils } from './warden-utils.js';
-import { expect, test, describe, vi, beforeEach } from 'vitest';
-import { mock, MockProxy } from 'vitest-mock-extended';
+import { describe, expect, test } from 'vitest';
 
 describe('#WardenUtils', () => {
   //beforeEach(() => {});

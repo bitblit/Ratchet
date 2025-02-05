@@ -1,7 +1,7 @@
 import { Ratchet2d } from './ratchet-2d.js';
 import { Point2d } from './point-2d.js';
 import { Plane2d } from './plane-2d.js';
-import { expect, test, describe } from 'vitest';
+import { describe, expect, test } from 'vitest';
 
 describe('#ratchet2d', function () {
   test('should check for valid planes', () => {

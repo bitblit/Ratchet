@@ -13,7 +13,7 @@ export class GoogleWebTokenManipulator implements WebTokenManipulator<JwtTokenBa
 
   constructor(private clientId: string) {}
 
-  public async extractTokenFromAuthorizationHeader<T extends JwtTokenBase>(authHeader: string): Promise<JwtTokenBase> {
+  public async extractTokenFromAuthorizationHeader(authHeader: string): Promise<JwtTokenBase> {
     let tokenString: string = StringRatchet.trimToEmpty(authHeader);
     if (tokenString.toLowerCase().startsWith('bearer ')) {
       tokenString = tokenString.substring(7);
@@ -22,7 +22,7 @@ export class GoogleWebTokenManipulator implements WebTokenManipulator<JwtTokenBa
     return validated;
   }
 
-  public async parseAndValidateGoogleToken<T extends JwtTokenBase>(
+  public async parseAndValidateGoogleToken(
     googleToken: string,
     allowExpired: boolean = false,
   ): Promise<JwtTokenBase> {

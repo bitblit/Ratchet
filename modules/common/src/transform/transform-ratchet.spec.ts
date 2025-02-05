@@ -1,6 +1,6 @@
 import { TransformRatchet } from './transform-ratchet.js';
 import { BuiltInTransforms } from './built-in-transforms.js';
-import { expect, test, describe } from 'vitest';
+import { describe, expect, test } from 'vitest';
 
 describe('#formatBytes', function () {
   const srcData = {

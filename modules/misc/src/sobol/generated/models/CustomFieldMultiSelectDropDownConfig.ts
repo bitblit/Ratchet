@@ -15,7 +15,6 @@ import { exists, mapValues } from '../runtime.js';
 import type { CustomFieldSingleSelectDropDownConfigOptionsValue } from './CustomFieldSingleSelectDropDownConfigOptionsValue.js';
 import {
   CustomFieldSingleSelectDropDownConfigOptionsValueFromJSON,
-  CustomFieldSingleSelectDropDownConfigOptionsValueFromJSONTyped,
   CustomFieldSingleSelectDropDownConfigOptionsValueToJSON,
 } from './CustomFieldSingleSelectDropDownConfigOptionsValue.js';
 

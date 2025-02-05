@@ -11,9 +11,8 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime.js';
 import type { GetListsListsInner } from './GetListsListsInner.js';
-import { GetListsListsInnerFromJSON, GetListsListsInnerFromJSONTyped, GetListsListsInnerToJSON } from './GetListsListsInner.js';
+import { GetListsListsInnerFromJSON, GetListsListsInnerToJSON } from './GetListsListsInner.js';
 
 /**
  *

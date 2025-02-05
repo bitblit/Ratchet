@@ -13,31 +13,27 @@
 
 import type { CustomFieldBadgeContent } from './CustomFieldBadgeContent.js';
 import {
-  instanceOfCustomFieldBadgeContent,
-  CustomFieldBadgeContentFromJSON,
   CustomFieldBadgeContentFromJSONTyped,
   CustomFieldBadgeContentToJSON,
+  instanceOfCustomFieldBadgeContent,
 } from './CustomFieldBadgeContent.js';
 import type { CustomFieldMultiSelectDropDownContent } from './CustomFieldMultiSelectDropDownContent.js';
 import {
-  instanceOfCustomFieldMultiSelectDropDownContent,
-  CustomFieldMultiSelectDropDownContentFromJSON,
   CustomFieldMultiSelectDropDownContentFromJSONTyped,
   CustomFieldMultiSelectDropDownContentToJSON,
+  instanceOfCustomFieldMultiSelectDropDownContent,
 } from './CustomFieldMultiSelectDropDownContent.js';
 import type { CustomFieldSingleSelectDropDownContent } from './CustomFieldSingleSelectDropDownContent.js';
 import {
-  instanceOfCustomFieldSingleSelectDropDownContent,
-  CustomFieldSingleSelectDropDownContentFromJSON,
   CustomFieldSingleSelectDropDownContentFromJSONTyped,
   CustomFieldSingleSelectDropDownContentToJSON,
+  instanceOfCustomFieldSingleSelectDropDownContent,
 } from './CustomFieldSingleSelectDropDownContent.js';
 import type { CustomFieldTextContent } from './CustomFieldTextContent.js';
 import {
-  instanceOfCustomFieldTextContent,
-  CustomFieldTextContentFromJSON,
   CustomFieldTextContentFromJSONTyped,
   CustomFieldTextContentToJSON,
+  instanceOfCustomFieldTextContent,
 } from './CustomFieldTextContent.js';
 
 /**

@@ -12,17 +12,8 @@
  */
 
 import * as runtime from '../runtime.js';
-import type { CreateAttribute, ErrorModel, GetAttributes, UpdateAttribute } from '../models/index.js';
-import {
-  CreateAttributeFromJSON,
-  CreateAttributeToJSON,
-  ErrorModelFromJSON,
-  ErrorModelToJSON,
-  GetAttributesFromJSON,
-  GetAttributesToJSON,
-  UpdateAttributeFromJSON,
-  UpdateAttributeToJSON,
-} from '../models/index.js';
+import type { CreateAttribute, GetAttributes, UpdateAttribute } from '../models/index.js';
+import { CreateAttributeToJSON, GetAttributesFromJSON, UpdateAttributeToJSON } from '../models/index.js';
 
 export interface CreateAttributeRequest {
   attributeCategory: CreateAttributeAttributeCategoryEnum;

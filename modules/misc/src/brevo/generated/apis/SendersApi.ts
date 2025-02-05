@@ -12,29 +12,13 @@
  */
 
 import * as runtime from '../runtime.js';
-import type {
-  CreateSender,
-  CreateSenderModel,
-  ErrorModel,
-  GetIps,
-  GetIpsFromSender,
-  GetSendersList,
-  UpdateSender,
-} from '../models/index.js';
+import type { CreateSender, CreateSenderModel, GetIps, GetIpsFromSender, GetSendersList, UpdateSender } from '../models/index.js';
 import {
-  CreateSenderFromJSON,
-  CreateSenderToJSON,
   CreateSenderModelFromJSON,
-  CreateSenderModelToJSON,
-  ErrorModelFromJSON,
-  ErrorModelToJSON,
+  CreateSenderToJSON,
   GetIpsFromJSON,
-  GetIpsToJSON,
   GetIpsFromSenderFromJSON,
-  GetIpsFromSenderToJSON,
   GetSendersListFromJSON,
-  GetSendersListToJSON,
-  UpdateSenderFromJSON,
   UpdateSenderToJSON,
 } from '../models/index.js';
 

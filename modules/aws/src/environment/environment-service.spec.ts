@@ -1,7 +1,7 @@
 import { EnvironmentService } from './environment-service.js';
 import { Logger } from '@bitblit/ratchet-common/logger/logger';
 import { FixedEnvironmentServiceProvider } from './fixed-environment-service-provider.js';
-import { expect, test, describe, vi, beforeEach } from 'vitest';
+import { describe, expect, test } from 'vitest';
 
 const fixed: FixedEnvironmentServiceProvider<any> = FixedEnvironmentServiceProvider.fromRecord<any>({ a: 'b', c: 5 });
 
@@ -9,7 +9,7 @@ describe('#environmentService', function () {
   test('should throw exception on missing environment values', async () => {
     try {
       const es = new EnvironmentService<any>(fixed);
-      const vals: any = await es.getConfig('i_do_not_exist');
+      const _vals: any = await es.getConfig('i_do_not_exist');
       this.bail('Should not have returned a value');
     } catch (err) {
       expect(err).toBeTruthy();

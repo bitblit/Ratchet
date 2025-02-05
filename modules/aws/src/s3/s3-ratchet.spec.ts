@@ -1,7 +1,7 @@
 import { S3Client } from '@aws-sdk/client-s3';
 import { S3Ratchet } from './s3-ratchet.js';
 import { mockClient } from 'aws-sdk-client-mock';
-import { expect, test, describe, vi, beforeEach } from 'vitest';
+import { beforeEach, describe, expect, test } from 'vitest';
 
 let mockS3;
 

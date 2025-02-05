@@ -6,7 +6,7 @@ import { DaemonProcessCreateOptions } from './daemon-process-create-options.js';
 import { Subject } from 'rxjs';
 import { PassThrough } from 'stream';
 import { S3Client } from '@aws-sdk/client-s3';
-import { expect, test, describe, vi, beforeEach } from 'vitest';
+import { beforeEach, describe, expect, test } from 'vitest';
 import { mock, MockProxy } from 'vitest-mock-extended';
 
 import { Logger } from '@bitblit/ratchet-common/logger/logger';
@@ -75,7 +75,7 @@ describe('#DaemonUtil', function () {
       targetFileName: 's3-cache-ratchet.spec.ts',
     };
 
-    const t2: DaemonProcessState = await DaemonUtil.start(cache, key, 's3-cache-ratchet.spec.ts', newDaemonOptions);
+    const _t2: DaemonProcessState = await DaemonUtil.start(cache, key, 's3-cache-ratchet.spec.ts', newDaemonOptions);
 
     const t1: DaemonProcessState = await DaemonUtil.stat(cache, key);
     Logger.info('Got : %j', t1);
@@ -102,7 +102,7 @@ describe('#DaemonUtil', function () {
       meta: {},
       targetFileName: 'test.csv',
     };
-    const t2: DaemonProcessState = await DaemonUtil.start(cache, key, key, newDaemonOptions);
+    const _t2: DaemonProcessState = await DaemonUtil.start(cache, key, key, newDaemonOptions);
 
     const dProm: Promise<DaemonProcessState> = DaemonUtil.streamDataAndFinish(cache, key, out);
 

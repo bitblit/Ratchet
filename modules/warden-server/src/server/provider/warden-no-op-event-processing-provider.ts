@@ -6,7 +6,7 @@ import { WardenEventProcessingProvider } from './warden-event-processing-provide
 
 export class WardenNoOpEventProcessingProvider implements WardenEventProcessingProvider {
   // eslint-disable-next-line @typescript-eslint/no-empty-function
-  public async userCreated(entry: WardenEntry): Promise<void> {}
+  public async userCreated(_entry: WardenEntry): Promise<void> {}
   // eslint-disable-next-line @typescript-eslint/no-empty-function
-  public async userRemoved(entry: WardenEntry): Promise<void> {}
+  public async userRemoved(_entry: WardenEntry): Promise<void> {}
 }

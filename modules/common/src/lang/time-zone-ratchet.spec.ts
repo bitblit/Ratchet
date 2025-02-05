@@ -1,5 +1,5 @@
 import { TimeZoneRatchet } from './time-zone-ratchet.js';
-import { expect, test, describe } from 'vitest';
+import { describe, expect, test } from 'vitest';
 
 const tz: TimeZoneRatchet = TimeZoneRatchet.PACIFIC;
 

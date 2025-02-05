@@ -11,13 +11,9 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime.js';
+import { exists } from '../runtime.js';
 import type { GetSmsEventReportEventsInner } from './GetSmsEventReportEventsInner.js';
-import {
-  GetSmsEventReportEventsInnerFromJSON,
-  GetSmsEventReportEventsInnerFromJSONTyped,
-  GetSmsEventReportEventsInnerToJSON,
-} from './GetSmsEventReportEventsInner.js';
+import { GetSmsEventReportEventsInnerFromJSON, GetSmsEventReportEventsInnerToJSON } from './GetSmsEventReportEventsInner.js';
 
 /**
  *

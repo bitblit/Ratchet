@@ -3,8 +3,7 @@ import { CsvRatchet } from './csv-ratchet.js';
 import { Logger } from '@bitblit/ratchet-common/logger/logger';
 import { PromiseRatchet } from '@bitblit/ratchet-common/lang/promise-ratchet';
 import { StringWritable } from '../stream/string-writable.js';
-import { expect, test, describe, vi, beforeEach } from 'vitest';
-import { mock, MockProxy } from 'vitest-mock-extended';
+import { describe, expect, test } from 'vitest';
 
 describe('#streamObjectsToCsv', function () {
   test('should parse a string', async () => {

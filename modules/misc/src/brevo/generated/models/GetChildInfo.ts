@@ -11,25 +11,13 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime.js';
+import { exists } from '../runtime.js';
 import type { GetChildInfoAllOfApiKeys } from './GetChildInfoAllOfApiKeys.js';
-import {
-  GetChildInfoAllOfApiKeysFromJSON,
-  GetChildInfoAllOfApiKeysFromJSONTyped,
-  GetChildInfoAllOfApiKeysToJSON,
-} from './GetChildInfoAllOfApiKeys.js';
+import { GetChildInfoAllOfApiKeysFromJSON, GetChildInfoAllOfApiKeysToJSON } from './GetChildInfoAllOfApiKeys.js';
 import type { GetChildInfoAllOfCredits } from './GetChildInfoAllOfCredits.js';
-import {
-  GetChildInfoAllOfCreditsFromJSON,
-  GetChildInfoAllOfCreditsFromJSONTyped,
-  GetChildInfoAllOfCreditsToJSON,
-} from './GetChildInfoAllOfCredits.js';
+import { GetChildInfoAllOfCreditsFromJSON, GetChildInfoAllOfCreditsToJSON } from './GetChildInfoAllOfCredits.js';
 import type { GetChildInfoAllOfStatistics } from './GetChildInfoAllOfStatistics.js';
-import {
-  GetChildInfoAllOfStatisticsFromJSON,
-  GetChildInfoAllOfStatisticsFromJSONTyped,
-  GetChildInfoAllOfStatisticsToJSON,
-} from './GetChildInfoAllOfStatistics.js';
+import { GetChildInfoAllOfStatisticsFromJSON, GetChildInfoAllOfStatisticsToJSON } from './GetChildInfoAllOfStatistics.js';
 
 /**
  *

@@ -1,6 +1,6 @@
 import { LastSuccessProvider } from './last-success-provider.js';
 import { CompositeLastSuccessProvider } from './composite-last-success-provider.js';
-import { expect, test, describe } from 'vitest';
+import { describe, expect, test } from 'vitest';
 
 describe('#lastSuccess', function () {
   const last5: LastSuccessProvider = {

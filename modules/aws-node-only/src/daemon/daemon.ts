@@ -74,8 +74,9 @@ export class Daemon implements DaemonLike {
       const original: DaemonProcessState[] = await this.list(group);
       const now: number = new Date().getTime();
       const removed: DaemonProcessState[] = [];
-      for (let i = 0; i < original.length; i++) {
-        const test: DaemonProcessState = original[i];
+      for (const test of original) {
+      //for (let i = 0; i < original.length; i++) {
+        //const test: DaemonProcessState = original[i];
         const ageSeconds: number = (now - test.startedEpochMS) / 1000;
         if (ageSeconds > olderThanSeconds) {
           const _remove: any = await this.cache.removeCacheFile(this.keyToPath(test.id));

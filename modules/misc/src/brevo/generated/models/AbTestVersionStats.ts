@@ -11,7 +11,6 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime.js';
 /**
  * Percentage of a particular event for both versions
  * @export

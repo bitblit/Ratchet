@@ -11,13 +11,9 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime.js';
+import { exists } from '../runtime.js';
 import type { CreateAttributeEnumerationInner } from './CreateAttributeEnumerationInner.js';
-import {
-  CreateAttributeEnumerationInnerFromJSON,
-  CreateAttributeEnumerationInnerFromJSONTyped,
-  CreateAttributeEnumerationInnerToJSON,
-} from './CreateAttributeEnumerationInner.js';
+import { CreateAttributeEnumerationInnerFromJSON, CreateAttributeEnumerationInnerToJSON } from './CreateAttributeEnumerationInner.js';
 
 /**
  *

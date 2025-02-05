@@ -7,7 +7,7 @@ import { InterApiEntry } from '../inter-api/inter-api-entry.js';
 export class InterApiEpsilonLambdaEventHandler implements EpsilonLambdaEventHandler<SNSEvent> {
   constructor(private _epsilon: EpsilonInstance) {}
 
-  public extractLabel(evt: SNSEvent, context: Context): string {
+  public extractLabel(evt: SNSEvent, _context: Context): string {
     const ent: InterApiEntry<any> = InterApiUtil.extractEntryFromEvent(evt);
     return 'InterApi:' + ent.source + ':' + ent.type;
   }
@@ -16,7 +16,7 @@ export class InterApiEpsilonLambdaEventHandler implements EpsilonLambdaEventHand
     return this._epsilon.config.interApiConfig && InterApiUtil.isInterApiSnsEvent(evt);
   }
 
-  public async processEvent(evt: SNSEvent, context: Context): Promise<ProxyResult> {
+  public async processEvent(evt: SNSEvent, _context: Context): Promise<ProxyResult> {
     const tmp: string[] = await InterApiUtil.processInterApiEvent(
       evt,
       this._epsilon.config.interApiConfig,

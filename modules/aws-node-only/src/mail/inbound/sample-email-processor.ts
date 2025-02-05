@@ -2,7 +2,7 @@ import { ParsedEmailProcessor } from './parsed-email-processor.js';
 import { ParsedMail } from 'mailparser';
 
 export class SampleEmailProcessor implements ParsedEmailProcessor<string> {
-  public canProcess(mail: ParsedMail): boolean {
+  public canProcess(_mail: ParsedMail): boolean {
     return true;
   }
 

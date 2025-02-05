@@ -1,6 +1,6 @@
 import { SortRatchet } from './sort-ratchet.js';
 import { Logger } from '../logger/logger.js';
-import { expect, test, describe } from 'vitest';
+import { describe, expect, test } from 'vitest';
 
 describe('#sortRatchet', function () {
   test('sort nulls and undefined to the top', async () => {

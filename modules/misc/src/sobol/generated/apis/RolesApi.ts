@@ -13,7 +13,7 @@
 
 import * as runtime from '../runtime.js';
 import type { ObjectRef, Role } from '../models/index.js';
-import { ObjectRefFromJSON, ObjectRefToJSON, RoleFromJSON, RoleToJSON } from '../models/index.js';
+import { ObjectRefToJSON, RoleFromJSON, RoleToJSON } from '../models/index.js';
 
 export interface OrgOrgIdRoleAssignmentsObjectIdDeleteRequest {
   orgId: string;

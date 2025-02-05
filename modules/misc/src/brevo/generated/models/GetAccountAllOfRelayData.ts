@@ -11,7 +11,6 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime.js';
 /**
  * Data regarding the transactional email account
  * @export

@@ -62,7 +62,7 @@ export class RuntimeParameterRatchet {
       paramValue: JSON.stringify(paramValue),
       ttlSeconds: ttlSeconds,
     };
-    const wrote: boolean = await this.provider.writeParameter(toStore);
+    const _wrote: boolean = await this.provider.writeParameter(toStore);
     return this.provider.readParameter(groupId, paramKey);
   }
   private static toCacheStoreKey(groupId: string, paramKey: string): string {

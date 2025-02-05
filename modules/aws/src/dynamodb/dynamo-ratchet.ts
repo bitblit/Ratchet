@@ -17,8 +17,8 @@ import {
   GetCommandInput,
   GetCommandOutput,
   PutCommand,
-  PutCommandOutput,
   PutCommandInput,
+  PutCommandOutput,
   QueryCommand,
   QueryCommandInput,
   QueryCommandOutput,
@@ -26,8 +26,8 @@ import {
   ScanCommandInput,
   ScanCommandOutput,
   UpdateCommand,
-  UpdateCommandOutput,
   UpdateCommandInput,
+  UpdateCommandOutput,
 } from '@aws-sdk/lib-dynamodb';
 
 import { DynamoCountResult } from '../model/dynamo-count-result.js';
@@ -183,8 +183,9 @@ export class DynamoRatchet implements DynamoRatchetLike {
         (o) => this.queryPromise(o),
         qry,
       );
-      for (let i = 0; i < qryResults.Items.length; i++) {
-        await proc(qryResults.Items[i] as T);
+      for (const qri of qryResults.Items) {
+      //for (let i = 0; i < qryResults.Items.length; i++) {
+        await proc(qri as T);
         cnt++;
       }
 
@@ -196,8 +197,9 @@ export class DynamoRatchet implements DynamoRatchetLike {
         Logger.silly('Found more rows - requery with key %j', qryResults.LastEvaluatedKey);
         qry['ExclusiveStartKey'] = qryResults.LastEvaluatedKey;
         qryResults = await this.throughputSafeScanOrQuery<QueryCommandInput, QueryCommandOutput>((o) => this.queryPromise(o), qry);
-        for (let i = 0; i < qryResults.Items.length; i++) {
-          await proc(qryResults.Items[i] as T);
+        for (const qri of qryResults.Items) {
+        //for (let i = 0; i < qryResults.Items.length; i++) {
+          await proc(qri as T);
           cnt++;
         }
         Logger.silly('Have processed %d items', cnt);
@@ -293,8 +295,9 @@ export class DynamoRatchet implements DynamoRatchetLike {
         (o) => this.scanPromise(o),
         scan,
       );
-      for (let i = 0; i < qryResults.Items.length; i++) {
-        await proc(qryResults.Items[i] as T);
+      for (const qri of qryResults.Items) {
+      //for (let i = 0; i < qryResults.Items.length; i++) {
+        await proc(qri as T);
         cnt++;
       }
 
@@ -302,8 +305,9 @@ export class DynamoRatchet implements DynamoRatchetLike {
         Logger.silly('Found more rows - requery with key %j', qryResults.LastEvaluatedKey);
         scan['ExclusiveStartKey'] = qryResults.LastEvaluatedKey;
         qryResults = await this.throughputSafeScanOrQuery<ScanCommandInput, ScanCommandOutput>((o) => this.scanPromise(o), scan);
-        for (let i = 0; i < qryResults.Items.length; i++) {
-          await proc(qryResults.Items[i] as T);
+        for (const qri of qryResults.Items) {
+        //for (let i = 0; i < qryResults.Items.length; i++) {
+          await proc(qri as T);
           cnt++;
         }
         Logger.silly('Rval is now %d items', cnt);

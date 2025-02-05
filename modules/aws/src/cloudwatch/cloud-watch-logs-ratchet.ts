@@ -81,14 +81,15 @@ export class CloudWatchLogsRatchet {
     Logger.info('Found %d streams to delete', removedStreams.length);
     let waitPer = 10;
 
-    for (let i = 0; i < removedStreams.length; i++) {
+    for (const rStream of removedStreams) {
+    //for (let i = 0; i < removedStreams.length; i++) {
       const delParams = {
         logGroupName: logGroupName,
-        logStreamName: removedStreams[i].logStreamName,
+        logStreamName: rStream.logStreamName,
       };
 
-      const type: string = removedStreams[i].storedBytes === 0 ? 'empty' : 'old';
-      Logger.info('Removing %s stream %s', type, removedStreams[i].logStreamName);
+      const type: string = rStream.storedBytes === 0 ? 'empty' : 'old';
+      Logger.info('Removing %s stream %s', type, rStream.logStreamName);
       let removed = false;
       let retry = 0;
       while (!removed && retry < CloudWatchLogsRatchet.MAX_DELETE_RETRIES) {
@@ -112,7 +113,7 @@ export class CloudWatchLogsRatchet {
       }
       if (!removed) {
         // Ran out of retries
-        failedRemovedStreams.push(removedStreams[i]);
+        failedRemovedStreams.push(rStream);
       }
     }
 
@@ -178,16 +179,16 @@ export class CloudWatchLogsRatchet {
     RequireRatchet.notNullOrUndefined(groups);
     const rval: boolean[] = [];
 
-    for (let i = 0; i < groups.length; i++) {
+    for (const dGroup of groups) {
       try {
-        Logger.info('Deleting %j', groups[i]);
+        Logger.info('Deleting %j', dGroup);
         const req: DeleteLogGroupCommandInput = {
-          logGroupName: groups[i].logGroupName,
+          logGroupName: dGroup.logGroupName,
         };
         await this.cwLogs.send(new DeleteLogGroupCommand(req));
         rval.push(true);
       } catch (err) {
-        Logger.error('Failure to delete %j : %s', groups[i], err);
+        Logger.error('Failure to delete %j : %s', dGroup, err);
         rval.push(false);
       }
     }

@@ -11,19 +11,11 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime.js';
+import { exists } from '../runtime.js';
 import type { GetChildInfoAllOfApiKeysV2 } from './GetChildInfoAllOfApiKeysV2.js';
-import {
-  GetChildInfoAllOfApiKeysV2FromJSON,
-  GetChildInfoAllOfApiKeysV2FromJSONTyped,
-  GetChildInfoAllOfApiKeysV2ToJSON,
-} from './GetChildInfoAllOfApiKeysV2.js';
+import { GetChildInfoAllOfApiKeysV2FromJSON, GetChildInfoAllOfApiKeysV2ToJSON } from './GetChildInfoAllOfApiKeysV2.js';
 import type { GetChildInfoAllOfApiKeysV3 } from './GetChildInfoAllOfApiKeysV3.js';
-import {
-  GetChildInfoAllOfApiKeysV3FromJSON,
-  GetChildInfoAllOfApiKeysV3FromJSONTyped,
-  GetChildInfoAllOfApiKeysV3ToJSON,
-} from './GetChildInfoAllOfApiKeysV3.js';
+import { GetChildInfoAllOfApiKeysV3FromJSON, GetChildInfoAllOfApiKeysV3ToJSON } from './GetChildInfoAllOfApiKeysV3.js';
 
 /**
  * API Keys associated to child account

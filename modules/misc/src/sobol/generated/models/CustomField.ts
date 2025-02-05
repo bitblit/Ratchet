@@ -11,9 +11,9 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime.js';
+import { exists } from '../runtime.js';
 import type { CustomFieldConfig } from './CustomFieldConfig.js';
-import { CustomFieldConfigFromJSON, CustomFieldConfigFromJSONTyped, CustomFieldConfigToJSON } from './CustomFieldConfig.js';
+import { CustomFieldConfigFromJSON, CustomFieldConfigToJSON } from './CustomFieldConfig.js';
 
 /**
  *

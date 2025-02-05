@@ -148,7 +148,7 @@ export class TransactionalNamedParameterDatabaseService extends NamedParameterDa
     return rval;
   }
 
-  public static async oneStepBuildAndExecuteInTransaction<S, T, R>(
+  public static async oneStepBuildAndExecuteInTransaction<S, R>(
     src: NamedParameterDatabaseService,
     queryBuilder: QueryBuilder,
     timeoutMS: number = src.getQueryDefaults().timeoutMS,

@@ -21,14 +21,15 @@ export class LambdaUsedImageFinder implements UsedImageFinder {
     const rval: Set<string> = new Set<string>();
     const fns: FunctionConfiguration[] = await this.fetchFunctions();
     Logger.info('Found %d functions', fns.length);
-    for (let i = 0; i < fns.length; i++) {
-      if (fns[i].PackageType === 'Image') {
-        const out: GetFunctionCommandOutput = await this.lambda.send(new GetFunctionCommand({ FunctionName: fns[i].FunctionName }));
+    for (const fn of fns) {
+    //for (let i = 0; i < fns.length; i++) {
+      if (fn.PackageType === 'Image') {
+        const out: GetFunctionCommandOutput = await this.lambda.send(new GetFunctionCommand({ FunctionName: fn.FunctionName }));
         if (out.Code.RepositoryType === 'ECR' && out.Code.ImageUri) {
           rval.add(out.Code.ImageUri);
         }
       } else {
-        Logger.info('Skipping zip packaged function: %s', fns[i].FunctionName);
+        Logger.info('Skipping zip packaged function: %s', fn.FunctionName);
       }
     }
     return Array.from(rval);

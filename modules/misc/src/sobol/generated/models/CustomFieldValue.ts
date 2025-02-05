@@ -11,13 +11,9 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime.js';
+import { exists } from '../runtime.js';
 import type { CustomFieldValueContent } from './CustomFieldValueContent.js';
-import {
-  CustomFieldValueContentFromJSON,
-  CustomFieldValueContentFromJSONTyped,
-  CustomFieldValueContentToJSON,
-} from './CustomFieldValueContent.js';
+import { CustomFieldValueContentFromJSON, CustomFieldValueContentToJSON } from './CustomFieldValueContent.js';
 
 /**
  *

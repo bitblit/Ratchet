@@ -11,13 +11,9 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime.js';
+import { exists } from '../runtime.js';
 import type { GetEmailEventReportEventsInner } from './GetEmailEventReportEventsInner.js';
-import {
-  GetEmailEventReportEventsInnerFromJSON,
-  GetEmailEventReportEventsInnerFromJSONTyped,
-  GetEmailEventReportEventsInnerToJSON,
-} from './GetEmailEventReportEventsInner.js';
+import { GetEmailEventReportEventsInnerFromJSON, GetEmailEventReportEventsInnerToJSON } from './GetEmailEventReportEventsInner.js';
 
 /**
  *
