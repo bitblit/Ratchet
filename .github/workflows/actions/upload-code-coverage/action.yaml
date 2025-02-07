@@ -24,6 +24,19 @@ runs:
       with:
         files: ./modules/acute-common/artifacts/coverage/coverage-final.json
 
+    - name: Upload acute-common to Codecov
+      uses: codecov/codecov-action@v3
+      env:
+        CODECOV_TOKEN: ${{ inputs.CODECOV_TOKEN }}
+      with:
+        files: ./modules/acute-common/artifacts/coverage/coverage-final.json
+
+    - name: Upload acute-warden to Codecov
+      uses: codecov/codecov-action@v3
+      env:
+        CODECOV_TOKEN: ${{ inputs.CODECOV_TOKEN }}
+      with:
+        files: ./modules/acute-warden/artifacts/coverage/coverage-final.json
 
     - name: Upload aws to Codecov
       uses: codecov/codecov-action@v3

@@ -7,7 +7,9 @@ import { S3Client } from '@aws-sdk/client-s3';
 import { S3RemoteFileTrackingProviderOptions } from './s3-remote-file-tracking-provider-options.js';
 import { AwsCredentialsRatchet } from '../../iam/aws-credentials-ratchet.js';
 import { RemoteFileTracker } from '@bitblit/ratchet-common/network/remote-file-tracker/remote-file-tracker';
-import { RemoteStatusDataAndContent } from '@bitblit/ratchet-common/lib/network/remote-file-tracker/remote-status-data-and-content';
+import {
+  RemoteStatusDataAndContent
+} from "@bitblit/ratchet-common/lib/network/remote-file-tracker/remote-status-data-and-content";
 
 let mockS3Ratchet: MockProxy<S3CacheRatchetLike>;
 
