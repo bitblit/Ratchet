@@ -60,8 +60,8 @@
     "@bitblit/ratchet-common": "0.0.0-snapshot"
   },
   "optionalDependencies": {
-    "@aws-sdk/client-athena": "3.738.0",
-    "@aws-sdk/client-sts": "3.738.0",
+    "@aws-sdk/client-athena": "3.743.0",
+    "@aws-sdk/client-sts": "3.743.0",
     "@aws-sdk/types": "3.734.0",
     "@smithy/abort-controller": "4.0.1",
     "@smithy/smithy-client": "4.1.3",
@@ -73,8 +73,8 @@
     "walk": "2.3.15"
   },
   "peerDependencies": {
-    "@aws-sdk/client-athena": "^3.738.0",
-    "@aws-sdk/client-sts": "^3.738.0",
+    "@aws-sdk/client-athena": "^3.743.0",
+    "@aws-sdk/client-sts": "^3.743.0",
     "@aws-sdk/types": "^3.734.0",
     "@bitblit/ratchet-aws": "0.0.0-snapshot",
     "@bitblit/ratchet-common": "0.0.0-snapshot",
