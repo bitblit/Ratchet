@@ -18,6 +18,28 @@ package without knowing why it is alpha you'll get exactly what you deserve.
 
 ## In Flight
 
+## [5.1.x]
+### Added
+- Acute-common module : Baseline functions and utilities for Angular
+- Acute-warden module : Utilities for using Warden with Angular
+- S3 remote file tracker (aws)
+- ArrayRatchet shuffleInPlace
+- ErrorRatchet generic error handler
+- GlobalRatchet split to handle global env vars vs global variables (needed for module-safe singletons)
+- Logger changed to module-safe singleton
+- ContextUtil (epsilon-common) changed to module-safe singleton
+- Logger RingBuffer only mode for client-side logging
+- Background task browse/launcher for the Epsilon local-container-server and local-server
+- Added 'AnonymousIfNoTokenAvailable' mode for GraphQL
+- Added a very simple local file server to node-only (a lot like 'serve' but supports HTTPS)
+- 
+### Changed
+- Upgraded a bunch of dependant libraries
+- Globally switched to for-of structure
+- General linting
+- Refactored epsilon-deployment Cloudfront Cors and HTTPS handling
+- Improved boolean param handling for sqlite
+
 ## [5.0.x]
 ### Added
 - Echarts module
