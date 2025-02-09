@@ -54,6 +54,7 @@ export class AcuteLoginComponent implements AfterViewChecked {
   @Input() public helperText: string;
 
   @Input() public postLoginUrl: string;
+  @Input() public integerOnly: boolean;
 
   public verificationCode: string;
   public waitingContact: WardenContact;
@@ -170,5 +171,13 @@ export class AcuteLoginComponent implements AfterViewChecked {
       !WardenUtils.stringIsPhoneNumber(this.newContactValue) &&
       !WardenUtils.stringIsEmailAddress(this.newContactValue)
     );
+  }
+
+  public async otpChanged(): Promise<void> {
+    if (this.waitingContact?.value && this.verificationCode?.length===6) {
+      Logger.debug('Code length is 6, submitting');
+      await this.submitVerificationCode(this.waitingContact.value, this.verificationCode)
+    }
+
   }
 }
