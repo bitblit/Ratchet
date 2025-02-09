@@ -77,8 +77,8 @@
     "luxon": "3.5.0"
   },
   "peerDependencies": {
-    "cross-fetch": "^4.0.0",
-    "luxon": "^3.4.4"
+    "cross-fetch": "^4.1.0",
+    "luxon": "^3.5.0"
   },
   "resolutions": {
     "@babel/traverse": "^7.23.2",

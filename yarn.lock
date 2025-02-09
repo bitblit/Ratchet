@@ -2519,7 +2519,7 @@ __metadata:
     "@bitblit/ratchet-warden-common": 0.0.0-snapshot
     primeflex: 3.3.1
     primeicons: 7.0.0
-    primeng: 19.0.5
+    primeng: 19.0.6
     rxjs: 7.8.1
     zone.js: 0.15.0
   languageName: unknown
@@ -3103,8 +3103,8 @@ __metadata:
     vitest-mock-extended: 2.0.2
     wsrun: 5.2.4
   peerDependencies:
-    cross-fetch: ^4.0.0
-    luxon: ^3.4.4
+    cross-fetch: ^4.1.0
+    luxon: ^3.5.0
   languageName: unknown
   linkType: soft
 
