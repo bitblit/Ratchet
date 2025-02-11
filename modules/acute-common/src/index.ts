@@ -3,7 +3,9 @@ export * from './build/ngx-acute-common-info';
 export * from './components/log-display/log-display.component';
 
 export * from './components/dialogs/alert/alert.component';
-export * from './components/dialogs/block-ui/block-ui.component';
+
+export * from './components/process-monitor/process-monitor.component';
+
 
 export * from './model/google-analytics-config';
 
@@ -22,3 +24,7 @@ export * from './services/google-analytics.service';
 export * from './services/graphql-query.service';
 export * from './services/local-storage.service';
 export * from './services/window-ref.service';
+
+export * from './services/process-monitor/process-monitor-service';
+export * from './services/process-monitor/process-holder';
+export * from './services/process-monitor/process-monitor-state';

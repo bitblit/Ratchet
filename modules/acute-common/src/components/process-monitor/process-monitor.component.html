@@ -1,0 +1,32 @@
+
+
+
+<p-dialog [header]="normalHeader" [closable]="false"
+          [modal]="false" [visible]="processMonitorService.showDisplay" position="bottom" [style]="{ width: '90rem' }">
+
+  <div style="display: flex; flex-direction: row; width: 100%" *ngFor="let pm of processMonitorService.processes">
+    <div style="display: flex; flex-direction: column; width: 50%; gap: 2px">
+      <div style="font-weight: bolder">{{(pm | async).label}}</div>
+      <div style="font-style: italic; margin-left: 15px">{{(pm | async).detail}}</div>
+    </div>
+    <div *ngIf="(pm | async).percentComplete" style="min-width: 50vw">
+      <p-progress-bar [value]="(pm | async).percentComplete" />
+    </div>
+  </div>
+
+</p-dialog>
+
+<p-dialog [header]="modalHeader" [modal]="true"
+          [closable]="false"
+          [visible]="processMonitorService.showModelDisplay" position="center" [style]="{ width: '90rem' }">
+  <div style="display: flex; flex-direction: row; width: 100%" *ngFor="let pm of processMonitorService.modalProcesses">
+    <div style="display: flex; flex-direction: column; width: 50%; gap: 2px">
+      <div style="font-weight: bolder">{{(pm | async).label}}</div>
+      <div style="font-style: italic; margin-left: 15px" *ngIf="(pm | async).detail">{{(pm | async).detail}}</div>
+    </div>
+    <div *ngIf="(pm | async).percentComplete" style="min-width: 50vw">
+      <p-progress-bar [value]="(pm | async).percentComplete" />
+    </div>
+  </div>
+
+</p-dialog>
