@@ -1,20 +1,17 @@
-import { Injectable } from '@angular/core';
-import { DialogService } from 'primeng/dynamicdialog';
-import { MessageService } from 'primeng/api';
-import { Logger } from '@bitblit/ratchet-common/logger/logger';
-import { GraphqlRatchet } from '@bitblit/ratchet-graphql/graphql/graphql-ratchet';
-import { BlockUiComponent } from '../components/dialogs/block-ui/block-ui.component';
-import { AuthorizationStyle } from '@bitblit/ratchet-graphql/graphql/authorization-style';
-import { ErrorHandlingApproach } from '@bitblit/ratchet-common/lang/error-handling-approach';
-import { ErrorRatchet } from '@bitblit/ratchet-common/lang/error-ratchet';
-import { LoggerLevelName } from '@bitblit/ratchet-common/logger/logger-level-name';
+import { Injectable } from "@angular/core";
+import { Logger } from "@bitblit/ratchet-common/logger/logger";
+import { GraphqlRatchet } from "@bitblit/ratchet-graphql/graphql/graphql-ratchet";
+import { AuthorizationStyle } from "@bitblit/ratchet-graphql/graphql/authorization-style";
+import { ErrorHandlingApproach } from "@bitblit/ratchet-common/lang/error-handling-approach";
+import { ErrorRatchet } from "@bitblit/ratchet-common/lang/error-ratchet";
+import { LoggerLevelName } from "@bitblit/ratchet-common/logger/logger-level-name";
+import { ProcessMonitorService } from "./process-monitor/process-monitor-service";
 
 @Injectable({ providedIn: 'root' })
 export class GraphqlQueryService {
   constructor(
     private graphqlRatchet: GraphqlRatchet,
-    private dialogService: DialogService,
-    private messageService: MessageService,
+    private processMonitorService: ProcessMonitorService
   ) {}
 
   public async executeQuery<T>(
@@ -24,17 +21,15 @@ export class GraphqlQueryService {
     errorHandling: ErrorHandlingApproach = ErrorHandlingApproach.LogAndPassThru,
   ): Promise<T | null> {
     let rval: T | null = null;
-    this.messageService.add({ severity: 'info', summary: 'Running query', detail: queryName, life: 3000 });
-
-    Logger.info('eq: %j -: %s --: %s ---: %j', queryName, variables);
+    Logger.debug('eq: %j -: %s --: %s ---: %j', queryName, variables);
 
     try {
-      rval = await this.graphqlRatchet.executeQuery<T>(queryName, variables, authStyle);
+      rval = await
+        this.processMonitorService.monitorProcessSimple(this.graphqlRatchet.executeQuery<T>(queryName, variables, authStyle), 'Running query', false);
     } catch (err) {
       ErrorRatchet.handleErrorByApproach(err, errorHandling, LoggerLevelName.error, 'GraphQL Error : %s');
-    } finally {
-      this.messageService.clear();
     }
+
     return rval;
   }
 
@@ -46,20 +41,15 @@ export class GraphqlQueryService {
     errorHandling: ErrorHandlingApproach = ErrorHandlingApproach.LogAndPassThru,
   ): Promise<T | null> {
     let rval: T | null = null;
-    this.messageService.add({ severity: 'info', summary: 'Running query', detail: queryName, life: 3000 });
-
-    Logger.info('eqb: %j -: %s --: %s ---: %j', blockMessage, queryName, variables);
+    Logger.debug('eqb: %j -: %s --: %s ---: %j', blockMessage, queryName, variables);
 
     try {
-      rval = await BlockUiComponent.runPromiseWithUiBlock<T>(
-        this.dialogService,
+      rval = await
+        this.processMonitorService.monitorProcessSimple(
         this.graphqlRatchet.executeQuery<T>(queryName, variables, authStyle),
-        blockMessage,
-      );
+        blockMessage,true);
     } catch (err) {
       ErrorRatchet.handleErrorByApproach(err, errorHandling, LoggerLevelName.error, 'GraphQL Error : %s');
-    } finally {
-      this.messageService.clear();
     }
 
     return rval;
@@ -72,18 +62,14 @@ export class GraphqlQueryService {
     errorHandling: ErrorHandlingApproach = ErrorHandlingApproach.LogAndPassThru,
   ): Promise<T | null> {
     let rval: T | null = null;
-    this.messageService.add({ severity: 'info', summary: 'Running query', detail: queryName, life: 3000 });
-
-    Logger.info('eq: %j -: %s --: %s ---: %j', queryName, variables);
-
+    Logger.debug('em: %j -: %s --: %s ---: %j', queryName, variables);
     try {
-      rval = await this.graphqlRatchet.executeMutate<T>(queryName, variables, authStyle);
+      rval = await
+      this.processMonitorService.monitorProcessSimple(
+        this.graphqlRatchet.executeMutate<T>(queryName, variables, authStyle), 'Running change', false);
     } catch (err) {
       ErrorRatchet.handleErrorByApproach(err, errorHandling, LoggerLevelName.error, 'GraphQL Error : %s');
-    } finally {
-      this.messageService.clear();
     }
-
     return rval;
   }
 
@@ -95,18 +81,14 @@ export class GraphqlQueryService {
     errorHandling: ErrorHandlingApproach = ErrorHandlingApproach.LogAndPassThru,
   ): Promise<T | null> {
     let rval: T | null = null;
-    this.messageService.add({ severity: 'info', summary: 'Running query', detail: queryName, life: 3000 });
 
+    Logger.debug('emb: %j -: %s --: %s ---: %j', queryName, variables);
     try {
-      rval = await BlockUiComponent.runPromiseWithUiBlock<T>(
-        this.dialogService,
+      rval = await this.processMonitorService.monitorProcessSimple(
         this.graphqlRatchet.executeMutate<T>(queryName, variables, authStyle),
-        blockMessage,
-      );
+        blockMessage, true);
     } catch (err) {
       ErrorRatchet.handleErrorByApproach(err, errorHandling, LoggerLevelName.error, 'GraphQL Error : %s');
-    } finally {
-      this.messageService.clear();
     }
 
     return rval;
