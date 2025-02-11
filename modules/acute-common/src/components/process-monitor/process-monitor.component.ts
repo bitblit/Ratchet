@@ -16,7 +16,7 @@ import { ProcessMonitorService } from "../../services/process-monitor/process-mo
 
 
 @Component({
-  selector: 'ngx-acute-process-monitor',
+  selector: 'ngx-acute-common-process-monitor',
   templateUrl: './process-monitor.component.html',
   imports: [
     CardModule,
