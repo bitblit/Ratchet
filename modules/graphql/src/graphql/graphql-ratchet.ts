@@ -38,7 +38,7 @@ export class GraphqlRatchet {
     return this?.jwtTokenProvider?.fetchJwtToken();
   }
 
-  private async fetchQueryText(qry: string): Promise<string> {
+  public async fetchQueryText(qry: string): Promise<string> {
     const text: string = await this.queryProvider.fetchQueryText(qry);
     if (!text) {
       Logger.warn('Could not find requested query : %s', qry);
