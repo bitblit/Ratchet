@@ -20,6 +20,7 @@ import { AbstractBackgroundManager } from './background/manager/abstract-backgro
 import { BackgroundEntry } from './background/background-entry.js';
 import { ErrorRatchet } from '@bitblit/ratchet-common/lang/error-ratchet';
 import { ResponseUtil } from "./http/response-util.js";
+import { NumberRatchet } from "@bitblit/ratchet-common/lang/number-ratchet";
 
 /**
  * A simplistic server for testing your lambdas locally
@@ -273,6 +274,12 @@ export class LocalServer {
     return rval;
   }
 
+  public static isProxyResult(val: any): boolean {
+    // Other items are optional, but it must have a statusCode and a body
+    // Other are headers, isBase64Encoded, cookies
+    return val && NumberRatchet.safeNumber(val.statusCode)!==null && StringRatchet.trimToNull(val.body)!==null;
+  }
+
   public static async writeProxyResultToServerResponse(
     proxyResult: ProxyResult,
     response: ServerResponse,
@@ -289,7 +296,7 @@ export class LocalServer {
       }
     }
 
-    response.statusCode = proxyResult.statusCode;
+    response.statusCode = proxyResult.statusCode ?? 500
     if (proxyResult.headers) {
       Object.keys(proxyResult.headers).forEach((hk) => {
         response.setHeader(hk, String(proxyResult.headers[hk]));

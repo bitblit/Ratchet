@@ -76,7 +76,15 @@ export class LocalContainerServer {
         const bgEntry: BackgroundEntry<any> = LocalServer.parseEpsilonBackgroundTriggerAsTask(evt);
         const snsEvent: SNSEvent = LocalServer.createBackgroundSNSEvent(bgEntry);
         const postResp: Response = await fetch(this.containerUrl, { method: 'POST', body: JSON.stringify(snsEvent) });
-        const postProxy: ProxyResult = await postResp.json();
+        let postProxy: ProxyResult = await postResp.json();
+        if (!LocalServer.isProxyResult(postProxy)) {
+          Logger.error('Upstream returned something not a proxy result - forcing');
+          postProxy = {
+            statusCode: 500,
+            body: JSON.stringify({'failure':'Upstream did not return a proxyResult', contents: postProxy})
+          };
+        }
+
         const written: boolean = await LocalServer.writeProxyResultToServerResponse(postProxy, response, logEventLevel);
         return written;
       } catch (err) {
@@ -95,6 +103,7 @@ export class LocalContainerServer {
       }
     }
   }
+
 
   public static async runFromCliArgs(_args: string[]): Promise<void> {
     try {
