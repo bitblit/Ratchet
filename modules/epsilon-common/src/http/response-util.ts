@@ -9,6 +9,11 @@ export class ResponseUtil {
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   private constructor() {}
 
+  // Because of some variance in how browsers encode spaces
+  public static decodeUriComponentAndReplacePlus(val: string): string {
+    return decodeURIComponent(val.replace(/\+/g, ' '));
+  }
+
   public static errorResponse<T>(err: RestfulApiHttpError<T>): ProxyResult {
     const body: any = {
       errors: err.errors,

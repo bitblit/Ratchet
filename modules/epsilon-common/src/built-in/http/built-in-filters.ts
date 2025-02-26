@@ -94,7 +94,7 @@ export class BuiltInFilters {
    * Performs decodeURIComponent on a value after replacing all "+" values with spaces.
    */
   private static decodeUriComponentAndReplacePlus(val: string): string {
-    return decodeURIComponent(val.replace(/\+/g, ' '));
+    return ResponseUtil.decodeUriComponentAndReplacePlus(val);
   }
 
   public static async fixStillEncodedQueryParams(fCtx: FilterChainContext): Promise<boolean> {

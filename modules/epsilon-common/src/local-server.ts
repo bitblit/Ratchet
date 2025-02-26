@@ -19,6 +19,7 @@ import { InternalBackgroundEntry } from './background/internal-background-entry.
 import { AbstractBackgroundManager } from './background/manager/abstract-background-manager.js';
 import { BackgroundEntry } from './background/background-entry.js';
 import { ErrorRatchet } from '@bitblit/ratchet-common/lang/error-ratchet';
+import { ResponseUtil } from "./http/response-util.js";
 
 /**
  * A simplistic server for testing your lambdas locally
@@ -113,8 +114,9 @@ export class LocalServer {
     const taskName: string = StringRatchet.trimToNull(evt.queryStringParameters['task']);
     let dataJson: string = StringRatchet.trimToNull(evt.queryStringParameters['dataJson']);
     let metaJson: string = StringRatchet.trimToNull(evt.queryStringParameters['metaJson']);
-    dataJson = dataJson ? decodeURI(dataJson) : dataJson;
-    metaJson = metaJson ? decodeURI(metaJson) : metaJson;
+    // Use this to match what AWS gateways do
+    dataJson = dataJson ? ResponseUtil.decodeUriComponentAndReplacePlus(dataJson) : dataJson;
+    metaJson = metaJson ? ResponseUtil.decodeUriComponentAndReplacePlus(metaJson) : metaJson;
     let error: string = '';
 
     error += taskName ? '' : 'No task provided';
