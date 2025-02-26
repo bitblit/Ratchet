@@ -127,14 +127,14 @@ export class LocalServer {
         data = JSON.parse(dataJson);
       }
     } catch (err) {
-      error += 'Data is not valid JSON : ' + err;
+      error += 'Data is not valid JSON : ' + err+ ' WAS: '+dataJson;
     }
     try {
       if (metaJson) {
         _meta = JSON.parse(metaJson);
       }
     } catch (err) {
-      error += 'Meta is not valid JSON : ' + err;
+      error += 'Meta is not valid JSON : ' + err + ' WAS: '+metaJson;
     }
 
     if (error.length > 0) {
