@@ -9,7 +9,7 @@ import { Logger } from '@bitblit/ratchet-common/logger/logger';
 import { ErrorRatchet } from '@bitblit/ratchet-common/lang/error-ratchet';
 import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet';
 import { GraphQLClient } from 'graphql-request';
-import { AuthorizationStyle } from './authorization-style';
+import { AuthorizationStyle } from './authorization-style.js';
 
 /**
  * This is a very simplistic client for non-cache use cases, etc.  For more
