@@ -1,15 +1,58 @@
-import { Ratchet2d } from './ratchet-2d.js';
-import { Point2d } from './point-2d.js';
-import { Plane2d } from './plane-2d.js';
-import { describe, expect, test } from 'vitest';
+import { Ratchet2d } from "./ratchet-2d.js";
+import { Point2d } from "./point-2d.js";
+import { Plane2d } from "./plane-2d.js";
+import { describe, expect, test } from "vitest";
+import { TransformationMatrix } from "./transformation-matrix.js";
+import { MatrixFactory } from "./matrix-factory.js";
+import { Plane2dType } from "./plane-2d-type.js";
 
 describe('#ratchet2d', function () {
+  test('should scale', () => {
+    const pts: Point2d[] = [{x:0,y:0},{x:1, y:1}];
+    const ptEven: Point2d[] = Ratchet2d.applyTransform(pts, MatrixFactory.scaleUniform(2));
+    expect(ptEven.length).toEqual(2);
+    expect(ptEven[0].x).toEqual(0);
+    expect(ptEven[1].x).toEqual(2);
+    expect(ptEven[1].y).toEqual(2);
+
+    const ptX: Point2d[] = Ratchet2d.applyTransform(pts, MatrixFactory.scale(2,1));
+    expect(ptX.length).toEqual(2);
+    expect(ptX[0].x).toEqual(0);
+    expect(ptX[1].x).toEqual(2);
+    expect(ptX[1].y).toEqual(1);
+  });
+
+  test('should mirror', () => {
+    const pts: Point2d[] = [{x:0,y:0},{x:1, y:1}];
+    const ptY: Point2d[] = Ratchet2d.applyTransform(pts, MatrixFactory.mirrorAboutYAxis());
+    expect(ptY.length).toEqual(2);
+    expect(ptY[0].x).toEqual(0);
+    expect(ptY[1].x).toEqual(-1);
+    expect(ptY[1].y).toEqual(1);
+
+    const ptX: Point2d[] = Ratchet2d.applyTransform(pts, MatrixFactory.mirrorAboutXAxis());
+    expect(ptX.length).toEqual(2);
+    expect(ptX[0].x).toEqual(0);
+    expect(ptX[1].x).toEqual(1);
+    expect(ptX[1].y).toEqual(-1);
+  });
+
+  test('should combine', () => {
+    const pts: Point2d[] = [{x:0,y:0},{x:1, y:1}];
+    const tx: TransformationMatrix = MatrixFactory.multiply([MatrixFactory.scaleUniform(2), MatrixFactory.mirrorAboutYAxis()]);
+    const ptC: Point2d[] = Ratchet2d.applyTransform(pts, tx);
+    expect(ptC.length).toEqual(2);
+    expect(ptC[0].x).toEqual(0);
+    expect(ptC[1].x).toEqual(-2);
+    expect(ptC[1].y).toEqual(2);
+  });
+
   test('should check for valid planes', () => {
     expect(Ratchet2d.validPlane(null)).toEqual(false);
-    expect(Ratchet2d.validPlane({ width: null, height: null })).toEqual(false);
-    expect(Ratchet2d.validPlane({ width: 0, height: null })).toEqual(false);
-    expect(Ratchet2d.validPlane({ width: 0, height: 2 })).toEqual(false);
-    expect(Ratchet2d.validPlane({ width: 1, height: 7 })).toEqual(true);
+    expect(Ratchet2d.validPlane({ width: null, height: null, type: Plane2dType.BottomLeft })).toEqual(false);
+    expect(Ratchet2d.validPlane({ width: 0, height: null, type: Plane2dType.BottomLeft })).toEqual(false);
+    expect(Ratchet2d.validPlane({ width: 0, height: 2, type: Plane2dType.BottomLeft })).toEqual(false);
+    expect(Ratchet2d.validPlane({ width: 1, height: 7, type: Plane2dType.BottomLeft })).toEqual(true);
   });
 
   test('should check for valid lines', () => {
@@ -23,8 +66,8 @@ describe('#ratchet2d', function () {
   });
 
   test('should transform points from one plane to another (scale)', () => {
-    const plane1: Plane2d = { height: 10, width: 10 };
-    const plane2: Plane2d = { height: 100, width: 50 };
+    const plane1: Plane2d = { height: 10, width: 10, type: Plane2dType.BottomLeft };
+    const plane2: Plane2d = { height: 100, width: 50, type: Plane2dType.BottomLeft };
 
     const p1: Point2d = { x: 5, y: 5 };
     const out1: Point2d = Ratchet2d.transformPointToNewPlane(p1, plane1, plane2);
@@ -38,8 +81,8 @@ describe('#ratchet2d', function () {
   });
 
   test('should transform points from one plane to another (mirror)', () => {
-    const plane1: Plane2d = { height: 10, width: 10 };
-    const plane2: Plane2d = { height: 10, width: 10, rightToLeft: true, topToBottom: true };
+    const plane1: Plane2d = { height: 10, width: 10, type: Plane2dType.BottomLeft };
+    const plane2: Plane2d = { height: 10, width: 10, type: Plane2dType.TopRight };
 
     const p1: Point2d = { x: 2, y: 8 };
     const out1: Point2d = Ratchet2d.transformPointToNewPlane(p1, plane1, plane2);
@@ -56,6 +99,7 @@ describe('#ratchet2d', function () {
     const plane: Plane2d = {
       width: 100,
       height: 100,
+      type: Plane2dType.BottomLeft
     };
 
     expect(Ratchet2d.planeContainsPoint({ x: -1, y: 10 }, plane)).toEqual(false);
@@ -148,12 +192,12 @@ describe('#ratchet2d', function () {
     ];
     //const plane: Plane2d = { height: 4, width: 8 };
 
-    const r1: Point2d[] = Ratchet2d.rotateRightAboutOrigin90Degrees(points); //, plane);
+    const r1: Point2d[] = Ratchet2d.rotateRightAboutCartesianOrigin90Degrees(points); //, plane);
     expect(r1.length).toEqual(6);
 
     // Full rotation should be the same
-    const _r3: Point2d[] = Ratchet2d.rotateRightAboutOrigin90Degrees(points, 3);
-    const r2: Point2d[] = Ratchet2d.rotateRightAboutOrigin90Degrees(points, 4);
+    const _r3: Point2d[] = Ratchet2d.rotateRightAboutCartesianOrigin90Degrees(points, 3);
+    const r2: Point2d[] = Ratchet2d.rotateRightAboutCartesianOrigin90Degrees(points, 4);
     expect(r2.length).toEqual(6);
     expect(r2[0].x).toEqual(points[0].x);
     expect(r2[0].y).toEqual(points[0].y);

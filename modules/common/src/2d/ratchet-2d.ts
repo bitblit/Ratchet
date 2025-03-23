@@ -1,9 +1,13 @@
-import { Point2d } from './point-2d.js';
-import { Plane2d } from './plane-2d.js';
-import { Line2d } from './line-2d.js';
-import { PolyLine2d } from './poly-line-2d.js';
-import { BooleanRatchet } from '../lang/boolean-ratchet.js';
-import { ErrorRatchet } from '../lang/error-ratchet.js';
+import { Point2d } from "./point-2d.js";
+import { Plane2d } from "./plane-2d.js";
+import { Line2d } from "./line-2d.js";
+import { PolyLine2d } from "./poly-line-2d.js";
+import { BooleanRatchet } from "../lang/boolean-ratchet.js";
+import { ErrorRatchet } from "../lang/error-ratchet.js";
+import { TransformationMatrix } from "./transformation-matrix.js";
+import { RequireRatchet } from "../lang/require-ratchet.js";
+import { MatrixFactory } from "./matrix-factory.js";
+import { Plane2dType } from "./plane-2d-type.js";
 
 export class Ratchet2d {
   // Prevent instantiation
@@ -28,12 +32,13 @@ export class Ratchet2d {
     return rval;
   }
 
-  public static minimalContainingPlane(points: Point2d[]): Plane2d {
+  public static minimalContainingPlane(points: Point2d[], type: Plane2dType=Plane2dType.BottomLeft): Plane2d {
     let rval: Plane2d = null;
     if (Ratchet2d.validPoints(points)) {
       rval = {
         width: 0,
         height: 0,
+        type: type
       };
       points.forEach((p) => {
         rval.width = Math.max(rval.width, p.x + 1);
@@ -63,7 +68,7 @@ export class Ratchet2d {
   }
 
   public static validPlane(plane: Plane2d): boolean {
-    return !!plane && !!plane.height && !!plane.width; // Can use this since 0 isn't an accepted value;
+    return !!plane && !!plane.height && !!plane.width && !!plane.type; // Can use this since 0 isn't an accepted value;
   }
 
   public static validLine(line: Line2d): boolean {
@@ -161,7 +166,7 @@ export class Ratchet2d {
     return rval;
   }
 
-  public static rotateRightAboutOrigin90Degrees(points: Point2d[], times = 1): Point2d[] {
+  public static rotateRightAboutCartesianOrigin90Degrees(points: Point2d[], times = 1): Point2d[] {
     let rval: Point2d[] = null;
     let translate: Point2d = { x: 0, y: 0 };
     if (Ratchet2d.validPoints(points)) {
@@ -171,7 +176,7 @@ export class Ratchet2d {
       let plane: Plane2d = Ratchet2d.minimalContainingPlane(rval);
 
       rval = Ratchet2d.xToY(rval);
-      plane = { width: plane.height, height: plane.width };
+      plane = { width: plane.height, height: plane.width, type: Plane2dType.BottomLeft };
       translate = { x: translate.y * -1, y: translate.x * -1 };
       rval = Ratchet2d.mirrorPointsOnPlane(rval, plane, true, false);
       // Move it back
@@ -179,7 +184,7 @@ export class Ratchet2d {
     }
     const timesToRotate: number = times > 4 ? times % 4 : times; // Allow 4 since its used for testing, but not more than that
     if (timesToRotate > 1) {
-      rval = Ratchet2d.rotateRightAboutOrigin90Degrees(rval, timesToRotate - 1);
+      rval = Ratchet2d.rotateRightAboutCartesianOrigin90Degrees(rval, timesToRotate - 1);
     }
 
     return rval;
@@ -216,13 +221,7 @@ export class Ratchet2d {
   public static translate(points: Point2d[], xlate: Point2d): Point2d[] {
     let rval: Point2d[] = null;
     if (Ratchet2d.validPoints(points) && Ratchet2d.validPoint(xlate)) {
-      rval = points.map((p) => {
-        const next: Point2d = {
-          x: p.x + xlate.x,
-          y: p.y + xlate.y,
-        };
-        return next;
-      });
+      rval = Ratchet2d.applyTransform(points, MatrixFactory.translate(xlate.x, xlate.y));
     }
     return rval;
   }
@@ -246,15 +245,22 @@ export class Ratchet2d {
     return rval;
   }
 
+  public static matchingVerticalOrientation(pt1: Plane2dType, pt2: Plane2dType): boolean {
+    return ((pt1===Plane2dType.BottomRight || pt1===Plane2dType.BottomLeft) && (pt2===Plane2dType.BottomRight || pt2===Plane2dType.BottomLeft)) ||
+      ((pt1===Plane2dType.TopLeft || pt1===Plane2dType.TopRight) && (pt2===Plane2dType.TopLeft || pt2===Plane2dType.TopRight));
+  }
+
+  public static matchingHorizontalOrientation(pt1: Plane2dType, pt2: Plane2dType): boolean {
+    return ((pt1===Plane2dType.BottomRight || pt1===Plane2dType.TopRight) && (pt2===Plane2dType.BottomRight || pt2===Plane2dType.TopRight)) ||
+      ((pt1===Plane2dType.BottomLeft || pt1===Plane2dType.TopLeft) && (pt2===Plane2dType.BottomLeft || pt2===Plane2dType.TopLeft));
+  }
+
   public static transformPointsToNewPlane(points: Point2d[], src: Plane2d, dst: Plane2d): Point2d[] {
     let rval: Point2d[] = null;
     if (Ratchet2d.validPoints(points) && Ratchet2d.validPlane(src) && Ratchet2d.validPlane(dst)) {
       const scale: Point2d = Ratchet2d.scaleVector(src, dst);
-      rval = points.map((p) => {
-        const next: Point2d = { x: p.x * scale.x, y: p.y * scale.y };
-        return next;
-      });
-      rval = Ratchet2d.mirrorPointsOnPlane(rval, dst, dst.rightToLeft !== src.rightToLeft, dst.topToBottom !== src.topToBottom);
+      rval = Ratchet2d.applyTransform(points, MatrixFactory.scale(scale.x, scale.y));
+      rval = Ratchet2d.mirrorPointsOnPlane(rval, dst, !Ratchet2d.matchingHorizontalOrientation(src.type, dst.type), !Ratchet2d.matchingVerticalOrientation(src.type, dst.type));
     }
     return rval;
   }
@@ -305,4 +311,41 @@ export class Ratchet2d {
     const deltaY: number = other.y - src.y;
     return { x: src.x + deltaX * percent, y: src.y + deltaY * percent };
   }
+
+  public static validatePoint(pt: Point2d): void {
+    RequireRatchet.notNullOrUndefined(pt, 'pt');
+    RequireRatchet.notNullOrUndefined(pt.x, 'pt.x');
+    RequireRatchet.notNullOrUndefined(pt.y, 'pt.y');
+  }
+
+  public static validateMatrix(tx: TransformationMatrix, includeUV?: boolean): void {
+    RequireRatchet.notNullOrUndefined(tx, 'tx');
+    RequireRatchet.notNullOrUndefined(tx.a, 'tx.a');
+    RequireRatchet.notNullOrUndefined(tx.b, 'tx.b');
+    RequireRatchet.notNullOrUndefined(tx.c, 'tx.c');
+    RequireRatchet.notNullOrUndefined(tx.d, 'tx.d');
+    if (includeUV) {
+      RequireRatchet.notNullOrUndefined(tx.u, 'tx.u');
+      RequireRatchet.notNullOrUndefined(tx.v, 'tx.v');
+    }
+  }
+
+  public static applyTransform(pt: Point2d[], tx: TransformationMatrix): Point2d[] {
+    const rval: Point2d[] = pt?.length ? pt.map(p=>Ratchet2d.applyTransformSingle(p, tx)) : pt;
+    return rval;
+  }
+
+  public static applyTransformSingle(pt: Point2d, tx: TransformationMatrix): Point2d {
+    Ratchet2d.validatePoint(pt);
+    Ratchet2d.validateMatrix(tx);
+
+    // Not a generalized matrix multiplier, although that's probably better.  Use math.js for that :P
+    const rval : Point2d = {
+      x: (tx.a * pt.x) + (tx.b * pt.y) + (tx.u | 0),
+      y: (tx.c * pt.x) + (tx.d * pt.y) + (tx.v | 0)
+    }
+    return rval;
+
+  }
+
 }
