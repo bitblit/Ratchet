@@ -3,7 +3,8 @@ import { BuildInformation } from '@bitblit/ratchet-common/build/build-informatio
 export class RatchetInfo {
   // Prevent instantiation
   // eslint-disable-next-line @typescript-eslint/no-empty-function
-  private constructor() {}
+  private constructor() {
+  }
 
   public static buildInformation(): BuildInformation {
     const val: BuildInformation = {

@@ -4,6 +4,7 @@ import { RequireRatchet } from "@bitblit/ratchet-common/lang/require-ratchet";
 import fs from "fs";
 import { Direction } from "./direction.js";
 import { StringRatchet } from "@bitblit/ratchet-common/lang/string-ratchet";
+import { BinaryGenerator } from "./binary-generator";
 
 // 0,1,2,3...width-1
 // width,
@@ -95,11 +96,11 @@ export interface RectangularMazeDrawOptions {
 }
 
 // DELETE ME
-const x: RectangularMaze = new RectangularMaze(2,2);
-x.addPassage(0,1);
-x.addPassage(1,3);
-const bmap: string[][]=DrawingUtil.rectangularMazeToBitmap(x);
-console.log(DrawingUtil.formatBitmapToString(bmap));
+//x.addPassage(0,1);
+//x.addPassage(1,3);
+//const bmap: string[][]=DrawingUtil.rectangularMazeToBitmap(x);
+//console.log(DrawingUtil.formatBitmapToString(bmap));
 //const x: RectangularMaze = new RectangularMaze(10,10);
-const out: string = DrawingUtil.rectangularMazeToSvg(x, {backgroundColor: '#FFF', wallColor: '#000', disabledColor: '#333', cellSize: 10});
-fs.writeFileSync('test.svg', out);
+//const x: RectangularMaze = BinaryGenerator.generate(20,20);// new RectangularMaze(2,2);
+//const out: string = DrawingUtil.rectangularMazeToSvg(x, {backgroundColor: '#FFF', wallColor: '#000', disabledColor: '#333', cellSize: 10});
+//fs.writeFileSync('test.svg', out);

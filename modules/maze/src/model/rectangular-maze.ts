@@ -108,7 +108,12 @@ export class RectangularMaze {
   }
 
 
-  public addPassage(idx1: number, idx2: number) : void {
+  public addPassage(idxC1: number | Coordinate, idxC2: number | Coordinate) : void {
+    RequireRatchet.notNullOrUndefined(idxC1);
+    RequireRatchet.notNullOrUndefined(idxC2);
+    const idx1: number = (typeof idxC1 ==='number') ? idxC1 : this.coordinateToIndex(idxC1);
+    const idx2: number = (typeof idxC2 ==='number') ? idxC2 : this.coordinateToIndex(idxC2);
+
     RequireRatchet.true(this.validIdx(idx1));
     RequireRatchet.true(this.validIdx(idx2));
     RequireRatchet.true(!this.disabledIdx.has(idx1));
