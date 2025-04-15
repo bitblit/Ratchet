@@ -67,19 +67,24 @@ describe('#obscure', function () {
   });
 });
 
-describe('#guid', function () {
+describe('#randomGeneration', function () {
   test('should generate a guid"', function () {
     const result = StringRatchet.createType4Guid();
     expect(result).toBeTruthy();
   });
-});
 
-describe('#randomHexString', function () {
   test('should generate a random hex string"', function () {
     const result = StringRatchet.createRandomHexString(12);
     expect(result).toBeTruthy();
     expect(result.length).toEqual(12);
   });
+
+  test('should generate a random string from an alphabet"', function () {
+    const result = StringRatchet.createRandomStringFromAlphabet(StringRatchet.LOWER_CASE_LATIN, 12);
+    expect(result).toBeTruthy();
+    expect(result.length).toEqual(12);
+  });
+
 });
 
 describe('#leadingZeros', function () {
@@ -218,3 +223,4 @@ describe('substring finder', () => {
     expect(StringRatchet.longestNonOverlappingRepeatingSubstring('abc123456')).toEqual(null);
   });
 });
+

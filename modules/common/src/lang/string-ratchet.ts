@@ -129,6 +129,17 @@ export class StringRatchet {
     });
   }
 
+  public static createRandomStringFromAlphabet(alphabet: string, len:number = 10): string {
+    RequireRatchet.notNullUndefinedOrOnlyWhitespaceString(alphabet, 'Alphabet may not be empty');
+    let rval: string = '';
+
+    while (rval.length < len) {
+      rval += alphabet.charAt(Math.floor(Math.random() * alphabet.length));
+    }
+    return rval;
+
+  }
+
   public static createRandomHexString(len = 10): string {
     let r = '';
     for (let i = 0; i < len; i++) {
