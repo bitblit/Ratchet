@@ -69,10 +69,13 @@ export class StringRatchet {
     return val ? new TextDecoder().decode(val) : null;
   }
 
-  // Really only useful if you wanna swallow the exception when something is not valid JSON (or at least not
-  // parseable as JSON - the spec says 'true' or '2' are not technically valid JSON strings
   /**
    * Attempts to parse a string as JSON.
+   *
+   *  Really only useful if you wanna swallow the exception when something is
+   *  not valid JSON (or at least not parseable as JSON - the spec says 'true'
+   *  or '2' are not technically valid JSON strings)
+   *
    * @param val - The input string.
    * @returns The parsed JSON object, or null if parsing fails.
    */
@@ -89,7 +92,6 @@ export class StringRatchet {
     return rval;
   }
 
-  // For when you do not care about the response
   /**
    * Checks if a string can be parsed as JSON.
    * @param val - The input string.
@@ -230,9 +232,9 @@ export class StringRatchet {
     return rval;
   }
 
-  // Taken from https://stackoverflow.com/questions/15900485/correct-way-to-convert-size-in-bytes-to-kb-mb-gb-in-javascript
   /**
    * Formats a number of bytes into a human-readable string.
+   * Taken from https://stackoverflow.com/questions/15900485/correct-way-to-convert-size-in-bytes-to-kb-mb-gb-in-javascript
    * @param bytes - The number of bytes.
    * @param decimals - Number of decimal places.
    * @returns A formatted string representing the size.
@@ -246,10 +248,8 @@ export class StringRatchet {
     return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
   }
 
-  // Converts anything that isn't a string to a string
-
   /**
-   * Converts any input to a string representation.
+   * Converts any input to a string representation regardless of type.
    * @param input - The input value.
    * @returns The string representation of the input.
    */
@@ -274,6 +274,7 @@ export class StringRatchet {
   public static stringContainsOnlyWhitespace(input: string): boolean {
     return StringRatchet.stringContainsOnly(input, StringRatchet.WHITESPACE);
   }
+
   /**
    * Checks if the string contains only numeric characters.
    * @param input - The input string.
@@ -283,6 +284,7 @@ export class StringRatchet {
     const rval: boolean = /^[0-9]+$/.test(input);
     return rval;
   }
+
   /**
    * Checks if the string contains only alphanumeric characters.
    * @param input - The input string.
@@ -491,15 +493,13 @@ export class StringRatchet {
     return rval;
   }
 
-  // Performs simple template fills of the form
-  // This is ${value} output, where value=A, becomes This is A output
-  // Very similar to what handlebars will do, or for that matter what
-  // javascript will do natively with backticks, but typesafe and can
-  // be passed around.  Default template style is ${value} to match JS backticks
-  // Note that any
   /**
    * Performs a simple template fill on the provided string.
-   * Replaces placeholders in the form ${key} with corresponding values from the fillers object.
+   * Replaces placeholders in the form ${key} with corresponding values from the filler's object.
+   * e.g., "This is ${value} output", where value=An, becomes "This is An output"
+   * Very similar to what handlebars will do, or for that matter, what
+   * JavaScript will do natively with backticks, but typesafe and can
+   * be passed around.  Default template style is ${value} to match JS backticks
    * @param template - The template string containing placeholders.
    * @param fillers - An object with keys corresponding to placeholders in the template.
    * @param errorOnMissingFiller - If true, throws an error if any placeholder is not provided a value.
@@ -552,17 +552,14 @@ export class StringRatchet {
   }
 
   /**
-   * So this is a straightforward replace of util.format from NodeJS
-   * so that I don't need to bring in a polyfill.  It is lifted DIRECTLY
-   * from https://github.com/tmpfs/format-util .  License is MIT, see
+   * Formats a string using placeholders similar to "util.format" in Node.js.
+   * Supported placeholders: %o for objects (must be arrays), %s for strings,
+   * %d for numbers, %j for JSON.
+   *
+   * Here so that I don't need to bring in a polyfill.  It is lifted DIRECTLY
+   * from https://github.com/tmpfs/format-util License is MIT, see
    * ReferencedLicences for details.
    * All credit is due to that author for actually writing this thing.
-   * @param fmt String format to fill
-   * @param args any arguments to fill the format
-   */
-  /**
-   * Formats a string using placeholders similar to util.format in NodeJS.
-   * Supported placeholders: %o for objects (must be arrays), %s for strings, %d for numbers, %j for JSON.
    * @param fmt - The format string.
    * @param args - Values to replace placeholders.
    * @returns The formatted string.
@@ -609,12 +606,11 @@ export class StringRatchet {
     return '' + fmt;
   }
 
-  // JavaScript program to find longest repeating
-  // and non-overlapping substring using memoization
-  // Ripped from https://www.geeksforgeeks.org/longest-repeating-and-non-overlapping-substring/
-  // Some updates added to show types
   /**
    * Helper function to compute the length of the suffix that repeats without overlap.
+   * Detail: Finds the longest repeating and non-overlapping substring using memoization
+   * Ripped from https://www.geeksforgeeks.org/longest-repeating-and-non-overlapping-substring/
+   * With some updates added to show types
    * @param i - Starting index for first substring.
    * @param j - Starting index for second substring.
    * @param s - The input string.
