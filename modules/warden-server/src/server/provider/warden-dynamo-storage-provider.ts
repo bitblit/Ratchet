@@ -21,6 +21,8 @@ export class WardenDynamoStorageProvider implements WardenStorageProvider, Expir
   ) {
   }
 
+  // Sure, this is hackish... but DDB doesn't care, and it allows you to wrap up all the
+  // warden data in a single item
   private async fetchExpiringCodes(): Promise<ExpiringCodeHolder> {
     let rval: ExpiringCodeHolder = await this.ddb.simpleGet<ExpiringCodeHolder>(this.options.tableName, {
       userId: WardenDynamoStorageProvider.EXPIRING_CODE_PROVIDER_KEY
