@@ -55,6 +55,7 @@ export class AcuteLoginComponent implements AfterViewChecked {
 
   @Input() public postLoginUrl: string;
   @Input() public integerOnly: boolean;
+  @Input() public createUserIfMissing: boolean;
 
   public verificationCode: string;
   public waitingContact: WardenContact;
@@ -143,6 +144,7 @@ export class AcuteLoginComponent implements AfterViewChecked {
     const val: WardenLoggedInUserWrapper<any> = await this.userService.executeValidationTokenBasedLogin(
       { type: WardenUtils.stringToContactType(input), value: input },
       verificationCode,
+      this.createUserIfMissing
     );
     if (val) {
       await this.router.navigate([this.postLoginUrl]);
