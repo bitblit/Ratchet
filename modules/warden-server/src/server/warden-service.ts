@@ -103,7 +103,7 @@ export class WardenService {
       Logger.info('Processing command : UserID: %s  Origin: %s Command: %j', loggedInUserId, origin, cmd);
 
       if (cmd.sendExpiringValidationToken) {
-        rval = { sendExpiringValidationToken: await this.sendExpiringValidationToken(cmd.sendExpiringValidationToken) };
+        rval = { sendExpiringValidationToken: await this.sendExpiringValidationToken(cmd.sendExpiringValidationToken, origin) };
       } else if (cmd.generateWebAuthnAuthenticationChallengeForUserId) {
         const tmp: PublicKeyCredentialRequestOptionsJSON = await this.generateWebAuthnAuthenticationChallengeForUserId(
           cmd.generateWebAuthnAuthenticationChallengeForUserId,
@@ -114,6 +114,7 @@ export class WardenService {
         rval = {
           createAccount: await this.createAccount(
             cmd.createAccount.contact,
+            origin,
             cmd.createAccount.sendCode,
             cmd.createAccount.label,
             cmd.createAccount.tags,
@@ -329,7 +330,7 @@ export class WardenService {
   }
 
   // Creates a new account, returns the userId for that account upon success
-  public async createAccount(contact: WardenContact, sendCode?: boolean, label?: string, tags?: string[]): Promise<string> {
+  public async createAccount(contact: WardenContact, origin: string, sendCode?: boolean, label?: string, tags?: string[]): Promise<string> {
     let rval: string = null;
     if (WardenUtils.validContact(contact)) {
       const old: WardenEntry = await this.opts.storageProvider.findEntryByContact(contact);
@@ -356,7 +357,7 @@ export class WardenService {
 
       if (sendCode) {
         Logger.info('New user %j created and send requested - sending', next);
-        await this.sendExpiringValidationToken(contact);
+        await this.sendExpiringValidationToken(contact, origin);
       }
     } else {
       ErrorRatchet.throwFormattedErr('Cannot create - invalid contact (missing or invalid fields)');
@@ -572,11 +573,11 @@ export class WardenService {
   }
 
   // Send a single use token to this contact
-  public async sendExpiringValidationToken(request: WardenContact): Promise<boolean> {
+  public async sendExpiringValidationToken(request: WardenContact, origin: string): Promise<boolean> {
     let rval: boolean = false;
     if (request?.type && StringRatchet.trimToNull(request?.value)) {
       const prov: WardenSingleUseCodeProvider = this.singleUseCodeProvider(request, false);
-      rval = await prov.createAndSendNewCode(request, this.opts.relyingPartyName);
+      rval = await prov.createAndSendNewCode(request, this.opts.relyingPartyName, origin);
     } else {
       ErrorRatchet.throwFormattedErr('Cannot send - invalid request %j', request);
     }
@@ -608,7 +609,7 @@ export class WardenService {
     if (!user) {
       Logger.info('User not found, and createUserIfMissing=%s / %j', request.createUserIfMissing, request.contact);
       if (request.createUserIfMissing && request.contact) {
-        const newVal: string = await this.createAccount(request.contact);
+        const newVal: string = await this.createAccount(request.contact, origin);
         Logger.info('Finished create, new id is %s', newVal);
         user = await this.opts.storageProvider.findEntryById(newVal);
       }
