@@ -26,6 +26,8 @@ import { TabViewModule } from 'primeng/tabview';
 import { SplitButtonModule } from 'primeng/splitbutton';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { ToolbarModule } from 'primeng/toolbar';
+import { Base64Ratchet } from "@bitblit/ratchet-common/lang/base64-ratchet";
+import { No } from "@bitblit/ratchet-common/lang/no";
 
 @Component({
   selector: 'ngx-acute-warden-login',
@@ -96,9 +98,36 @@ export class AcuteLoginComponent implements AfterViewChecked {
     }
   }
 
+
+  public async attemptAutoLogin(contactValue: string, code: string): Promise<void> {
+    Logger.info('Attempting auto-login');
+    const contact: WardenContact = WardenUtils.stringToWardenContact(contactValue);
+    const wrapper: WardenLoggedInUserWrapper<any> = await this.userService.executeValidationTokenBasedLogin(
+      contact,
+      code,
+    );
+    if (wrapper) {
+      await this.router.navigate([this.postLoginUrl]);
+    } else {
+      Logger.info('Auto-login failed');
+    }
+  }
+
   ngAfterViewChecked(): void {
     //Logger.info('ngi: %j', this.route.queryParamMap);
     RequireRatchet.notNullUndefinedOrOnlyWhitespaceString(this.postLoginUrl, 'postLoginUrl may not be empty');
+
+    // Check if auto-login was requested
+    const mode: string = StringRatchet.trimToNull(this.route.snapshot.queryParamMap.get('mode'));
+    const code: string = StringRatchet.trimToNull(this.route.snapshot.queryParamMap.get('code'));
+    const contactClear: string = StringRatchet.trimToNull(this.route.snapshot.queryParamMap.get('contact'));
+    const contactB64: string = StringRatchet.trimToNull(this.route.snapshot.queryParamMap.get('contactEncoded'));
+    const contact: string = contactB64 ? Base64Ratchet.base64StringToString(contactB64) : contactClear;
+
+    if (mode==='auto' && code && contact) {
+      this.attemptAutoLogin(contact, code).then(No.op);
+    }
+
   }
 
   public async sendCodeToNewContact(value: string): Promise<void> {
