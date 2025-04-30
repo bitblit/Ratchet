@@ -126,6 +126,8 @@ export class AcuteLoginComponent implements AfterViewChecked {
 
     if (mode==='auto' && code && contact) {
       this.attemptAutoLogin(contact, code).then(No.op);
+    } else {
+      Logger.info('No auto-login detected');
     }
 
   }

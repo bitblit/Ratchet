@@ -49,10 +49,6 @@ export class WardenUserService<T> {
     this.loggedInTimerSubscription = timer(0, timerSeconds * 1000).subscribe((t) => this.checkForAutoLogoutOrRefresh(t));
   }
 
-  public get loginChangedSubject(): BehaviorSubject<WardenLoggedInUserWrapper<any>> {
-    return this.options.loggedInUserProvider.loginChangedSubject();
-  }
-
   public cleanShutDown(): void {
     if (this.loggedInTimerSubscription) {
       this.loggedInTimerSubscription.unsubscribe();

@@ -1,14 +1,11 @@
-import { WardenLoggedInUserProvider } from './warden-logged-in-user-provider.js';
-import { WardenLoggedInUserWrapper } from './warden-logged-in-user-wrapper.js';
+import { WardenLoggedInUserProvider } from "./warden-logged-in-user-provider.js";
+import { WardenLoggedInUserWrapper } from "./warden-logged-in-user-wrapper.js";
 
-import { RequireRatchet } from '@bitblit/ratchet-common/lang/require-ratchet';
-import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet';
-import { Logger } from '@bitblit/ratchet-common/logger/logger';
-import { BehaviorSubject } from "rxjs";
+import { RequireRatchet } from "@bitblit/ratchet-common/lang/require-ratchet";
+import { StringRatchet } from "@bitblit/ratchet-common/lang/string-ratchet";
+import { Logger } from "@bitblit/ratchet-common/logger/logger";
 
 export class WardenClientStorageBasedLoggedInUserProvider<T> implements WardenLoggedInUserProvider<T> {
-  private _loginChangedSubject:BehaviorSubject<WardenLoggedInUserWrapper<T>> = new BehaviorSubject<WardenLoggedInUserWrapper<T>>(null);
-
 
   constructor(
     private storageProv: Storage | (() => Storage),
@@ -16,10 +13,6 @@ export class WardenClientStorageBasedLoggedInUserProvider<T> implements WardenLo
   ) {
     RequireRatchet.notNullUndefinedOrOnlyWhitespaceString(this.storageKey, 'storageKey');
     RequireRatchet.notNullOrUndefined(this.storageProv, 'storageProv');
-  }
-
-  public loginChangedSubject(): BehaviorSubject<WardenLoggedInUserWrapper<any>> {
-    return this._loginChangedSubject;
   }
 
   public get storage(): Storage {
@@ -44,7 +37,6 @@ export class WardenClientStorageBasedLoggedInUserProvider<T> implements WardenLo
 
   public logOutUser(): void {
     this.setLoggedInUserWrapper(null);
-    this.loginChangedSubject().next(null);
   }
 
   public setLoggedInUserWrapper(wrapper: WardenLoggedInUserWrapper<T>) {
@@ -54,8 +46,7 @@ export class WardenClientStorageBasedLoggedInUserProvider<T> implements WardenLo
         storage.setItem(this.storageKey, JSON.stringify(wrapper));
       } else {
         storage.removeItem(this.storageKey);
-      }    
-      this.loginChangedSubject().next(wrapper);
+      }
     } else {
       Logger.warn('Tried to set logged in user before storage was ready, ignoring : %j', wrapper);
     }
