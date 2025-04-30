@@ -1,4 +1,4 @@
-import { AfterViewChecked, Component, Input, OnDestroy } from "@angular/core";
+import { AfterViewChecked, Component, input, Input, OnDestroy, OnInit } from "@angular/core";
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 
 import { Logger } from '@bitblit/ratchet-common/logger/logger';
@@ -52,7 +52,7 @@ import { Subscription, timer } from "rxjs";
     ToolbarModule,
   ],
 })
-export class AcuteLoginComponent implements AfterViewChecked, OnDestroy {
+export class AcuteLoginComponent implements OnDestroy, OnInit {
   @Input() public applicationName: string;
   @Input() public helperText: string;
 
@@ -84,6 +84,23 @@ export class AcuteLoginComponent implements AfterViewChecked, OnDestroy {
       }
     });
 
+  }
+
+  ngOnInit(): void {
+    Logger.info('Login init');
+    RequireRatchet.notNullUndefinedOrOnlyWhitespaceString(this.postLoginUrl, 'postLoginUrl may not be empty');
+    // Check if auto-login was requested
+    const mode: string = StringRatchet.trimToNull(this.route.snapshot.queryParamMap.get('mode'));
+    const code: string = StringRatchet.trimToNull(this.route.snapshot.queryParamMap.get('code'));
+    const contactClear: string = StringRatchet.trimToNull(this.route.snapshot.queryParamMap.get('contact'));
+    const contactB64: string = StringRatchet.trimToNull(this.route.snapshot.queryParamMap.get('contactEncoded'));
+    const contact: string = contactB64 ? Base64Ratchet.base64StringToString(contactB64) : contactClear;
+
+    if (mode==='auto' && code && contact) {
+      this.attemptAutoLogin(contact, code).then(No.op);
+    } else {
+      Logger.info('No auto-login detected');
+    }
   }
 
   ngOnDestroy(): void {
@@ -132,24 +149,6 @@ export class AcuteLoginComponent implements AfterViewChecked, OnDestroy {
     }
   }
 
-  ngAfterViewChecked(): void {
-    //Logger.info('ngi: %j', this.route.queryParamMap);
-    RequireRatchet.notNullUndefinedOrOnlyWhitespaceString(this.postLoginUrl, 'postLoginUrl may not be empty');
-
-    // Check if auto-login was requested
-    const mode: string = StringRatchet.trimToNull(this.route.snapshot.queryParamMap.get('mode'));
-    const code: string = StringRatchet.trimToNull(this.route.snapshot.queryParamMap.get('code'));
-    const contactClear: string = StringRatchet.trimToNull(this.route.snapshot.queryParamMap.get('contact'));
-    const contactB64: string = StringRatchet.trimToNull(this.route.snapshot.queryParamMap.get('contactEncoded'));
-    const contact: string = contactB64 ? Base64Ratchet.base64StringToString(contactB64) : contactClear;
-
-    if (mode==='auto' && code && contact) {
-      this.attemptAutoLogin(contact, code).then(No.op);
-    } else {
-      Logger.info('No auto-login detected');
-    }
-
-  }
 
   public async sendCodeToNewContact(value: string): Promise<void> {
     Logger.info('Trying to send code to %s %s %s', value, WardenUtils.stringIsEmailAddress(value), WardenUtils.stringIsPhoneNumber(value));
