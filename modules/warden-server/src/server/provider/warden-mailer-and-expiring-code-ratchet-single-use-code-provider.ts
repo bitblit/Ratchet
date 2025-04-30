@@ -50,6 +50,7 @@ export class WardenMailerAndExpiringCodeRatchetSingleUseCodeProvider implements 
       tags: ['Login'],
     });
     const msg: any = await this.formatMessage(contact, WardenCustomerMessageType.ExpiringCode, {
+      requestor: contact.value,
       code: token.code,
       relyingPartyName: relyingPartyName,
       origin: origin
