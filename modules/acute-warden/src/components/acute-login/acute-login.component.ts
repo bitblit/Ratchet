@@ -1,4 +1,4 @@
-import { AfterViewChecked, Component, Input } from '@angular/core';
+import { AfterViewChecked, Component, Input, OnDestroy } from "@angular/core";
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 
 import { Logger } from '@bitblit/ratchet-common/logger/logger';
@@ -28,6 +28,7 @@ import { InputGroupModule } from 'primeng/inputgroup';
 import { ToolbarModule } from 'primeng/toolbar';
 import { Base64Ratchet } from "@bitblit/ratchet-common/lang/base64-ratchet";
 import { No } from "@bitblit/ratchet-common/lang/no";
+import { Subscription, timer } from "rxjs";
 
 @Component({
   selector: 'ngx-acute-warden-login',
@@ -51,7 +52,7 @@ import { No } from "@bitblit/ratchet-common/lang/no";
     ToolbarModule,
   ],
 })
-export class AcuteLoginComponent implements AfterViewChecked {
+export class AcuteLoginComponent implements AfterViewChecked, OnDestroy {
   @Input() public applicationName: string;
   @Input() public helperText: string;
 
@@ -65,6 +66,9 @@ export class AcuteLoginComponent implements AfterViewChecked {
 
   public newContactValue: string;
 
+  private checkForBackgroundLogInTimerSubscription: Subscription;
+
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -73,7 +77,22 @@ export class AcuteLoginComponent implements AfterViewChecked {
     private dlgService: DialogService,
   ) {
     Logger.info('Found %s recent logins', this.recentLogins.length);
+    this.checkForBackgroundLogInTimerSubscription = timer(0, 2_500).subscribe(async (_t) => {
+      if (this.userService.isLoggedIn()) {
+        Logger.info('Detected background login - redirecting');
+        await this.router.navigate([this.postLoginUrl]);
+      }
+    });
+
   }
+
+  ngOnDestroy(): void {
+    if (this.checkForBackgroundLogInTimerSubscription) {
+      this.checkForBackgroundLogInTimerSubscription.unsubscribe();
+    }
+  }
+
+
 
   public userById(index: number, ld: WardenRecentLoginDescriptor) {
     return ld.user.userId;
