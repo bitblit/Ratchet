@@ -51,7 +51,7 @@ export class WardenMailerAndExpiringCodeRatchetSingleUseCodeProvider implements 
     });
     const msg: any = await this.formatMessage(contact, WardenCustomerMessageType.ExpiringCode, {
       requestor: contact.value,
-      requestorB64: Base64Ratchet.base64StringToString(contact.value),
+      requestorB64: Base64Ratchet.encodeStringToBase64String(contact.value),
       code: token.code,
       relyingPartyName: relyingPartyName,
       origin: origin

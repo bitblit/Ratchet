@@ -1,5 +1,6 @@
 import { WardenLoggedInUserProvider } from './warden-logged-in-user-provider.js';
 import { WardenLoggedInUserWrapper } from './warden-logged-in-user-wrapper.js';
+import { BehaviorSubject } from "rxjs";
 
 export class WardenClientTransientMemoryLoggedInUserProvider<T> implements WardenLoggedInUserProvider<T> {
   private wrapper: WardenLoggedInUserWrapper<T>;
@@ -14,5 +15,9 @@ export class WardenClientTransientMemoryLoggedInUserProvider<T> implements Warde
 
   public setLoggedInUserWrapper(wrapper: WardenLoggedInUserWrapper<T>) {
     this.wrapper = wrapper;
+  }
+
+  public loginChangedSubject(): BehaviorSubject<WardenLoggedInUserWrapper<any>> {
+    return new BehaviorSubject<WardenLoggedInUserWrapper<any>>(this.wrapper);
   }
 }

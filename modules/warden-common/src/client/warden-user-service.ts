@@ -1,7 +1,7 @@
 import { Logger } from '@bitblit/ratchet-common/logger/logger';
 import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet';
 import { JwtDecodeOnlyRatchet } from '@bitblit/ratchet-common/jwt/jwt-decode-only-ratchet';
-import { Subscription, timer } from 'rxjs';
+import { BehaviorSubject, Subscription, timer } from "rxjs";
 import { WardenUserServiceOptions } from './provider/warden-user-service-options.js';
 import { WardenLoggedInUserWrapper } from './provider/warden-logged-in-user-wrapper.js';
 import { WardenContact } from '../common/model/warden-contact.js';
@@ -47,6 +47,10 @@ export class WardenUserService<T> {
 
     const timerSeconds: number = this.options.loginCheckTimerPingSeconds || 2.5;
     this.loggedInTimerSubscription = timer(0, timerSeconds * 1000).subscribe((t) => this.checkForAutoLogoutOrRefresh(t));
+  }
+
+  public get loginChangedSubject(): BehaviorSubject<WardenLoggedInUserWrapper<any>> {
+    return this.options.loggedInUserProvider.loginChangedSubject();
   }
 
   public cleanShutDown(): void {
