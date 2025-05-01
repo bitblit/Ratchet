@@ -10,8 +10,13 @@ import { WardenUtils } from '@bitblit/ratchet-warden-common/common/util/warden-u
 import { ExpiringCodeProvider } from '@bitblit/ratchet-aws/expiring-code/expiring-code-provider';
 import { ExpiringCode } from '@bitblit/ratchet-aws/expiring-code/expiring-code';
 import { WardenStorageProvider } from "./warden-storage-provider.js";
+import { WardenUserDecorationProvider } from "./warden-user-decoration-provider.js";
+import { WardenUserDecoration } from "@bitblit/ratchet-warden-common/common/model/warden-user-decoration";
+import { WardenTeamRole } from "@bitblit/ratchet-warden-common/common/model/warden-team-role";
 
-export class WardenDynamoStorageProvider implements WardenStorageProvider, ExpiringCodeProvider {
+
+// Create a ddb table with a hashkey of userId type string
+export class WardenDynamoStorageProvider<T> implements WardenStorageProvider, ExpiringCodeProvider, WardenUserDecorationProvider<T> {
 
   private static readonly EXPIRING_CODE_PROVIDER_KEY: string = '__EXPIRING_CODE_DATA';
 
@@ -19,6 +24,62 @@ export class WardenDynamoStorageProvider implements WardenStorageProvider, Expir
     private ddb: DynamoRatchet,
     private options: WardenDynamoStorageProviderOptions
   ) {
+  }
+
+  public createDecoration(decoration: T): WardenUserDecoration<T> {
+    return {
+      userTeamRoles: this.options.defaultTeamRoles,
+      userTokenExpirationSeconds: this.options.defaultTokenExpirationSeconds,
+      userTokenData: decoration,
+    };
+  }
+
+  public async updateRoles(userId: string, roles: WardenTeamRole[]): Promise<WardenUserDecoration<T>> {
+    const rval: WardenDynamoStorageDataWrapper = await this.fetchInternalByUserId(userId);
+    if (rval) {
+      rval.decoration ??= this.createDecoration(null);
+      rval.decoration.userTeamRoles = roles;
+      await this.updateInternal(rval);
+    } else {
+      throw ErrorRatchet.fErr('Cannot update roles - no entry found for %s', userId);
+    }
+
+    return this.fetchDecorationById(userId);
+  }
+
+  public async updateTokenExpirationSeconds(userId: string, newValue: number): Promise<WardenUserDecoration<T>> {
+    const rval: WardenDynamoStorageDataWrapper = await this.fetchInternalByUserId(userId);
+    if (rval) {
+      rval.decoration ??= this.createDecoration(null);
+      rval.decoration.userTokenExpirationSeconds = newValue;
+      await this.updateInternal(rval);
+    } else {
+      throw ErrorRatchet.fErr('Cannot update roles - no entry found for %s', userId);
+    }
+
+    return this.fetchDecorationById(userId);
+  }
+
+  public async updateDecoration(userId: string, decoration:T): Promise<WardenUserDecoration<T>> {
+    const rval: WardenDynamoStorageDataWrapper = await this.fetchInternalByUserId(userId);
+    if (rval) {
+      rval.decoration ??= this.createDecoration(null);
+      rval.decoration.userTokenData = decoration;
+      await this.updateInternal(rval);
+    } else {
+      throw ErrorRatchet.fErr('Cannot update roles - no entry found for %s', userId);
+    }
+
+    return this.fetchDecorationById(userId);
+  }
+
+  public async fetchDecoration(wardenUser: WardenEntry): Promise<WardenUserDecoration<T>> {
+    return this.fetchDecorationById(wardenUser.userId);
+  }
+
+  public async fetchDecorationById(userId: string): Promise<WardenUserDecoration<T>> {
+    const rval: WardenDynamoStorageDataWrapper = await this.fetchInternalByUserId(userId);
+    return rval?.decoration;
   }
 
   // Sure, this is hackish... but DDB doesn't care, and it allows you to wrap up all the
@@ -33,10 +94,14 @@ export class WardenDynamoStorageProvider implements WardenStorageProvider, Expir
         userId: WardenDynamoStorageProvider.EXPIRING_CODE_PROVIDER_KEY,
         values: []
       };
-      await this.ddb.simplePut(this.options.tableName, rval);
+      await this.updateInternal(rval as unknown as WardenDynamoStorageDataWrapper);  // Hack to piggyback
     }
 
     return rval;
+  }
+
+  private async updateInternal(val: WardenDynamoStorageDataWrapper): Promise<PutCommandOutput> {
+    return this.ddb.simplePut(this.options.tableName, val);
   }
 
   public async checkCode(code: string, context: string, deleteOnMatch?: boolean): Promise<boolean> {
@@ -45,7 +110,7 @@ export class WardenDynamoStorageProvider implements WardenStorageProvider, Expir
     if (rval) {
       if (deleteOnMatch) {
         codes.values = codes.values.filter((c) => c.code !== code || c.context !== context);
-        await this.ddb.simplePut(this.options.tableName, codes);
+        await this.updateInternal(codes as unknown as WardenDynamoStorageDataWrapper);  // Hack to piggyback
       }
       return true;
     } else {
@@ -58,7 +123,7 @@ export class WardenDynamoStorageProvider implements WardenStorageProvider, Expir
     codes.values.push(code);
     const now: number = Date.now();
     codes.values=codes.values.filter(c=>c.expiresEpochMS>now); // Always remove expired ones on storage
-    const stored: PutCommandOutput = await this.ddb.simplePut(this.options.tableName, codes);
+    const stored: PutCommandOutput = await this.updateInternal(codes as unknown as WardenDynamoStorageDataWrapper);  // Hack to piggyback
 
     return stored ? true : false;
   }
@@ -132,6 +197,7 @@ export class WardenDynamoStorageProvider implements WardenStorageProvider, Expir
         userId: entry.userId,
         entry: entry,
         currentUserChallenges: [],
+        decoration: this.createDecoration(null),
         contactSearchString: (entry.contactMethods || []).map((cm) => WardenDynamoStorageProvider.contactToSearchString(cm)).join(' '),
       };
     }
@@ -139,7 +205,7 @@ export class WardenDynamoStorageProvider implements WardenStorageProvider, Expir
     const now: number = Date.now();
     rval.entry.updatedEpochMS = now;
     rval.entry.createdEpochMS = rval.entry.createdEpochMS || now;
-    const saved: PutCommandOutput = await this.ddb.simplePut(this.options.tableName, rval);
+    const saved: PutCommandOutput = await this.updateInternal(rval);
     Logger.silly('Saved %j', saved);
 
     const postSaveLookup: WardenDynamoStorageDataWrapper = await this.fetchInternalByUserId(entry.userId);
@@ -155,7 +221,7 @@ export class WardenDynamoStorageProvider implements WardenStorageProvider, Expir
     const cuc: string = relyingPartyId + ':' + challenge;
     rval.currentUserChallenges.push(cuc);
 
-    const saved: PutCommandOutput = await this.ddb.simplePut(this.options.tableName, rval);
+    const saved: PutCommandOutput = await this.updateInternal(rval);
     Logger.silly('Saved %j', saved);
     return saved.Attributes ? true : false;
   }
@@ -166,6 +232,7 @@ export class WardenDynamoStorageProvider implements WardenStorageProvider, Expir
 export interface WardenDynamoStorageDataWrapper {
   userId: string;
   entry: WardenEntry;
+  decoration: WardenUserDecoration<any>;
   currentUserChallenges: string[];
   contactSearchString: string;
 }
