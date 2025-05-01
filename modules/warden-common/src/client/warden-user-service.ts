@@ -1,7 +1,7 @@
 import { Logger } from '@bitblit/ratchet-common/logger/logger';
 import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet';
 import { JwtDecodeOnlyRatchet } from '@bitblit/ratchet-common/jwt/jwt-decode-only-ratchet';
-import { BehaviorSubject, Subscription, timer } from "rxjs";
+import { Subscription, timer } from "rxjs";
 import { WardenUserServiceOptions } from './provider/warden-user-service-options.js';
 import { WardenLoggedInUserWrapper } from './provider/warden-logged-in-user-wrapper.js';
 import { WardenContact } from '../common/model/warden-contact.js';
@@ -112,6 +112,12 @@ export class WardenUserService<T> {
   public logout(): void {
     this.options.loggedInUserProvider.logOutUser();
     this.options.eventProcessor.onLogout();
+  }
+
+  public fetchLoggedInUserId(): string {
+    const tmp: WardenLoggedInUserWrapper<T> = this.options.loggedInUserProvider.fetchLoggedInUserWrapper();
+    const rval: string = tmp?.userObject?.loginData?.userId;
+    return rval;
   }
 
   public fetchLoggedInUserWrapper(): WardenLoggedInUserWrapper<T> {

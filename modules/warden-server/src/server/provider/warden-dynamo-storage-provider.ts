@@ -22,7 +22,7 @@ export class WardenDynamoStorageProvider<T> implements WardenStorageProvider, Ex
 
   constructor(
     private ddb: DynamoRatchet,
-    private options: WardenDynamoStorageProviderOptions
+    private options: WardenDynamoStorageProviderOptions<T>
   ) {
   }
 
