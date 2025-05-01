@@ -141,6 +141,7 @@ export class AcuteLoginComponent implements OnDestroy, OnInit {
     const wrapper: WardenLoggedInUserWrapper<any> = await this.userService.executeValidationTokenBasedLogin(
       contact,
       code,
+      this.createUserIfMissing,
     );
     if (wrapper) {
       await this.router.navigate([this.postLoginUrl]);
