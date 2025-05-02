@@ -338,7 +338,7 @@ export class WardenService {
         ErrorRatchet.throwFormattedErr('Cannot create - account already exists for %j', contact);
       }
 
-      const guid: string = StringRatchet.createShortUid(8); //  StringRatchet.createType4Guid();
+      const guid: string = StringRatchet.createShortUid(),
       const now: number = Date.now();
       const newUser: WardenEntry = {
         userId: guid,
