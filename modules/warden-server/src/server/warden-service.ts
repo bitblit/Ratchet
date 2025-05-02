@@ -342,7 +342,7 @@ export class WardenService {
       const now: number = Date.now();
       const newUser: WardenEntry = {
         userId: guid,
-        userLabel: label || 'User ' + guid, // Usually full name, could be something else
+        userLabel: label || contact.value, // Defaults to email if nothing provided, usually full name
         contactMethods: [contact],
         tags: tags || [],
         webAuthnAuthenticators: [],
