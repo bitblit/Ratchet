@@ -87,7 +87,10 @@
           id="waitingContactValue"
           readonly="true"
         />
-        <p-inputOtp [(ngModel)]="verificationCode" id="verificationCode" [length]="6" size="large" [integerOnly]="integerOnly" (ngModelChange)="otpChanged()"/>
+        <p-inputOtp [(ngModel)]="verificationCode" id="verificationCode" [length]="6" size="large"
+                    [integerOnly]="integerOnly" (ngModelChange)="otpChanged()"
+                    [attr.inputmode]="otpInputMode" [attr.pattern]="otpInputPattern"
+        />
         <div style="display: flex; flex-direction: row; justify-content: space-between; gap: 5px">
           <p-button (click)="submitVerificationCode(waitingContact.value, verificationCode)" label="Submit code" > </p-button>
           <p-button (click)="verificationCode = null; showCodePage = false" label="Cancel"></p-button>

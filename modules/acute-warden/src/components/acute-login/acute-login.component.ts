@@ -68,7 +68,6 @@ export class AcuteLoginComponent implements OnDestroy, OnInit {
 
   private checkForBackgroundLogInTimerSubscription: Subscription;
 
-
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -109,7 +108,13 @@ export class AcuteLoginComponent implements OnDestroy, OnInit {
     }
   }
 
+  public get otpInputMode(): string {
+    return this.integerOnly ? 'numeric' : 'text';
+  }
 
+  public get otpInputPattern(): string {
+    return this.integerOnly ? '[0-9]*' : '[0-9A-Za-z]*';
+  }
 
   public userById(index: number, ld: WardenRecentLoginDescriptor) {
     return ld.user.userId;
