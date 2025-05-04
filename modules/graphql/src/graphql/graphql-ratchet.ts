@@ -117,6 +117,8 @@ export class GraphqlRatchet {
   public static extractSingleValueFromResponse<T>(data: any): T {
     if (!data) {
       throw ErrorRatchet.fErr('Could not find response in : %j', data);
+    } else if (data.errors) {
+      throw ErrorRatchet.fErr('Errors: %j', data.errors);
     }
     const keys: string[] = Object.keys(data);
     if (keys.length !== 1) {
