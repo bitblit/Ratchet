@@ -58,7 +58,9 @@ export class AcuteLoginComponent implements OnDestroy, OnInit {
 
   @Input() public postLoginUrl: string;
   @Input() public integerOnly: boolean;
-  @Input() public createUserIfMissing: boolean;
+  @Input() public createUserIfMissing: boolean = false;
+
+  @Input() public caseSensitiveContactValues: boolean = false;
 
   public verificationCode: string;
   public waitingContact: WardenContact;
@@ -156,7 +158,8 @@ export class AcuteLoginComponent implements OnDestroy, OnInit {
   }
 
 
-  public async sendCodeToNewContact(value: string): Promise<void> {
+  public async sendCodeToNewContact(inValue: string): Promise<void> {
+    const value: string = this.caseSensitiveContactValues ? inValue : inValue.toLowerCase();
     Logger.info('Trying to send code to %s %s %s', value, WardenUtils.stringIsEmailAddress(value), WardenUtils.stringIsPhoneNumber(value));
     if (StringRatchet.trimToNull(value)) {
       let ct: WardenContactType = null;
