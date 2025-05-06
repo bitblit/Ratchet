@@ -65,7 +65,7 @@
     "@aws-sdk/types": "3.775.0",
     "@smithy/abort-controller": "4.0.2",
     "@smithy/smithy-client": "4.2.2",
-    "@smithy/util-waiter": "4.0.2",
+    "@smithy/util-waiter": "4.0.3",
     "mailparser": "3.7.2",
     "mime-types": "2.1.35",
     "tmp": "0.2.3",
