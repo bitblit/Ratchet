@@ -59,7 +59,7 @@
     "handlebars": "4.7.8",
     "handlebars-layouts": "3.1.4",
     "js-yaml": "4.1.0",
-    "rxjs": "7.8.1",
+    "rxjs": "7.8.2",
     "swagger-model-validator": "3.0.21"
   },
   "peerDependencies": {
@@ -67,7 +67,7 @@
     "handlebars": "^4.7.8",
     "handlebars-layouts": "^3.1.4",
     "js-yaml": "^4.1.0",
-    "rxjs": "^7.8.1",
+    "rxjs": "^7.8.2",
     "swagger-model-validator": "^3.0.21"
   },
   "peerDependenciesMeta": {
@@ -88,8 +88,8 @@
     }
   },
   "devDependencies": {
-    "@openapitools/openapi-generator-cli": "2.16.3",
+    "@openapitools/openapi-generator-cli": "2.20.0",
     "openapi3-ts": "4.4.0",
-    "shx": "0.3.4"
+    "shx": "0.4.0"
   }
 }

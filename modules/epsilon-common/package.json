@@ -62,25 +62,25 @@
   },
   "license": "Apache-2.0",
   "dependencies": {
-    "@aws-sdk/client-s3": "3.743.0",
-    "@aws-sdk/client-sns": "3.743.0",
-    "@aws-sdk/client-sqs": "3.743.0",
-    "@aws-sdk/types": "3.734.0",
+    "@aws-sdk/client-s3": "3.803.0",
+    "@aws-sdk/client-sns": "3.803.0",
+    "@aws-sdk/client-sqs": "3.803.0",
+    "@aws-sdk/types": "3.775.0",
     "@bitblit/ratchet-aws": "0.0.0-snapshot",
     "@bitblit/ratchet-common": "0.0.0-snapshot",
     "@bitblit/ratchet-misc": "0.0.0-snapshot",
     "@bitblit/ratchet-node-only": "0.0.0-snapshot",
-    "@smithy/abort-controller": "4.0.1",
-    "@smithy/smithy-client": "4.1.3",
+    "@smithy/abort-controller": "4.0.2",
+    "@smithy/smithy-client": "4.2.2",
     "@smithy/util-waiter": "4.0.2",
     "clear": "0.1.0",
     "commander": "13.1.0",
     "cross-fetch": "4.1.0",
     "js-yaml": "4.1.0",
-    "jwks-rsa": "3.1.0",
-    "luxon": "3.5.0",
+    "jwks-rsa": "3.2.0",
+    "luxon": "3.6.1",
     "route-parser": "0.0.5",
-    "rxjs": "7.8.1",
+    "rxjs": "7.8.2",
     "strip-js": "1.2.0",
     "swagger-model-validator": "3.0.21"
   },
@@ -90,7 +90,7 @@
     "@bitblit/ratchet-common": "0.0.0-snapshot",
     "@bitblit/ratchet-misc": "0.0.0-snapshot",
     "@bitblit/ratchet-node-only": "0.0.0-snapshot",
-    "graphql": "^16.10.0"
+    "graphql": "^16.11.0"
   },
   "peerDependenciesMeta": {
     "@apollo/server": {
@@ -101,10 +101,10 @@
     }
   },
   "devDependencies": {
-    "@apollo/server": "4.11.3",
-    "@types/aws-lambda": "8.10.147",
+    "@apollo/server": "4.12.0",
+    "@types/aws-lambda": "8.10.149",
     "aws-sdk-client-mock": "4.1.0",
-    "graphql": "16.10.0",
+    "graphql": "16.11.0",
     "graphql-tag": "2.12.6"
   }
 }
