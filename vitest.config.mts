@@ -1,7 +1,7 @@
 import { defineConfig } from 'vitest/config';
-import { TestBed } from '@angular/core/testing';
-import { BrowserDynamicTestingModule, platformBrowserDynamicTesting } from "@angular/platform-browser-dynamic/testing";
-import angular from '@analogjs/vite-plugin-angular';
+//import { TestBed } from '@angular/core/testing';
+//import { BrowserDynamicTestingModule, platformBrowserDynamicTesting } from "@angular/platform-browser-dynamic/testing";
+//import angular from '@analogjs/vite-plugin-angular';
 
 
 // TODO: This does not work yet...
@@ -11,9 +11,7 @@ import angular from '@analogjs/vite-plugin-angular';
 export default defineConfig({
   //plugins: [angular()],
   test: {
-    pool: 'forks',
     passWithNoTests: true,
-    //setupFiles: ['../../vitest.setup.ts'],
     coverage: {
       reportsDirectory: 'artifacts/coverage',
       provider: 'istanbul', // or 'v8'
@@ -24,5 +22,14 @@ export default defineConfig({
         statements: 0,
       },
     },
-  },
+    workspace: ['modules/*',
+      {
+        extends: true,
+          test:{
+            pool: 'forks',
+            //setupFiles: ['../../vitest.setup.ts'],
+        }
+      }
+    ],
+  }
 });

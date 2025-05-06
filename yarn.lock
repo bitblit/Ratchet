@@ -2446,10 +2446,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@bcoe/v8-coverage@npm:^0.2.3":
-  version: 0.2.3
-  resolution: "@bcoe/v8-coverage@npm:0.2.3"
-  checksum: 850f9305536d0f2bd13e9e0881cb5f02e4f93fad1189f7b2d4bebf694e3206924eadee1068130d43c11b750efcc9405f88a8e42ef098b6d75239c0f047de1a27
+"@bcoe/v8-coverage@npm:^1.0.2":
+  version: 1.0.2
+  resolution: "@bcoe/v8-coverage@npm:1.0.2"
+  checksum: f4e6f55817645fc1b543aa0bbd6ffceb7b9ff3052e8c92c493a0a71831e6b8ae97d73e123b048cb98ef9d9e31afae018a60795f2e27a6f3e94a1ec7abedac85d
   languageName: node
   linkType: hard
 
@@ -2470,7 +2470,7 @@ __metadata:
     "@bitblit/ratchet-common": 0.0.0-snapshot
     "@bitblit/ratchet-graphql": 0.0.0-snapshot
     "@bitblit/ratchet-node-only": 0.0.0-snapshot
-    primeflex: 3.3.1
+    primeflex: 4.0.0
     primeicons: 7.0.0
     primeng: 19.1.2
     rxjs: 7.8.2
@@ -2513,7 +2513,7 @@ __metadata:
     "@bitblit/ratchet-common": 0.0.0-snapshot
     "@bitblit/ratchet-node-only": 0.0.0-snapshot
     "@bitblit/ratchet-warden-common": 0.0.0-snapshot
-    primeflex: 3.3.1
+    primeflex: 4.0.0
     primeicons: 7.0.0
     primeng: 19.1.2
     rxjs: 7.8.2
@@ -2533,7 +2533,7 @@ __metadata:
     "@bitblit/ratchet-warden-common": 0.0.0-snapshot
     primeflex: 3.3.1
     primeicons: 7.0.0
-    primeng: 19.0.6
+    primeng: 19.1.2
     rxjs: 7.8.2
     zone.js: 0.15.0
   languageName: unknown
@@ -2949,7 +2949,6 @@ __metadata:
   resolution: "@bitblit/ratchet-node-only@workspace:modules/node-only"
   dependencies:
     "@bitblit/ratchet-common": 0.0.0-snapshot
-    "@types/cheerio": 0.22.35
     cheerio: 1.0.0
     csv: 6.3.11
     jsonwebtoken: 9.0.2
@@ -3092,8 +3091,8 @@ __metadata:
     "@rollup/plugin-typescript": 12.1.2
     "@types/luxon": 3.6.2
     "@types/node": 18.19.96
-    "@vitest/coverage-istanbul": 2.1.9
-    "@vitest/coverage-v8": 2.1.9
+    "@vitest/coverage-istanbul": 3.1.3
+    "@vitest/coverage-v8": 3.1.3
     barrelsby: 2.8.1
     concurrently: 9.1.2
     cross-env: 7.0.3
@@ -5086,15 +5085,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/cheerio@npm:0.22.35":
-  version: 0.22.35
-  resolution: "@types/cheerio@npm:0.22.35"
-  dependencies:
-    "@types/node": "*"
-  checksum: 34ef8f0f754bd022e7d686c7295fdba997766a796257add2377be256f215f2e12fe74218125570e61344dbd3de0a952495181981af1eeb8eebeb5cf886c62f1f
-  languageName: node
-  linkType: hard
-
 "@types/connect@npm:*":
   version: 3.4.38
   resolution: "@types/connect@npm:3.4.38"
@@ -5480,12 +5470,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vitest/coverage-istanbul@npm:2.1.9":
-  version: 2.1.9
-  resolution: "@vitest/coverage-istanbul@npm:2.1.9"
+"@vitest/coverage-istanbul@npm:3.1.3":
+  version: 3.1.3
+  resolution: "@vitest/coverage-istanbul@npm:3.1.3"
   dependencies:
     "@istanbuljs/schema": ^0.1.3
-    debug: ^4.3.7
+    debug: ^4.4.0
     istanbul-lib-coverage: ^3.2.2
     istanbul-lib-instrument: ^6.0.3
     istanbul-lib-report: ^3.0.1
@@ -5493,36 +5483,36 @@ __metadata:
     istanbul-reports: ^3.1.7
     magicast: ^0.3.5
     test-exclude: ^7.0.1
-    tinyrainbow: ^1.2.0
+    tinyrainbow: ^2.0.0
   peerDependencies:
-    vitest: 2.1.9
-  checksum: b41a0b7f9eb9a6cd285e09b53df0aaf46d7a13e7268fac99157ff2f45dab4a5560313893361e502a01b8d983b56e5b79255583688b53a28afe46f5952c54255d
+    vitest: 3.1.3
+  checksum: 2528fad16f951016d8105cc3c7dea6b8e6240f8223f4fcc4c90760bb130658cd70553563d4f2043925c8152f665f585a72fa98e47dbce76e20d06274c9429a90
   languageName: node
   linkType: hard
 
-"@vitest/coverage-v8@npm:2.1.9":
-  version: 2.1.9
-  resolution: "@vitest/coverage-v8@npm:2.1.9"
+"@vitest/coverage-v8@npm:3.1.3":
+  version: 3.1.3
+  resolution: "@vitest/coverage-v8@npm:3.1.3"
   dependencies:
     "@ampproject/remapping": ^2.3.0
-    "@bcoe/v8-coverage": ^0.2.3
-    debug: ^4.3.7
+    "@bcoe/v8-coverage": ^1.0.2
+    debug: ^4.4.0
     istanbul-lib-coverage: ^3.2.2
     istanbul-lib-report: ^3.0.1
     istanbul-lib-source-maps: ^5.0.6
     istanbul-reports: ^3.1.7
-    magic-string: ^0.30.12
+    magic-string: ^0.30.17
     magicast: ^0.3.5
-    std-env: ^3.8.0
+    std-env: ^3.9.0
     test-exclude: ^7.0.1
-    tinyrainbow: ^1.2.0
+    tinyrainbow: ^2.0.0
   peerDependencies:
-    "@vitest/browser": 2.1.9
-    vitest: 2.1.9
+    "@vitest/browser": 3.1.3
+    vitest: 3.1.3
   peerDependenciesMeta:
     "@vitest/browser":
       optional: true
-  checksum: ab86a73992df5ca964c4323222c709642607f929fda4e6017394ca304bb96a8ed2dde178cc9c3c6d885694956752eadabb390323614e906958fd3659fc42aa99
+  checksum: 647d9d43335349db076b507eb374a364e96e4367f00ed610afff357b6d00d49ea22d30a00f046f088392c68bb3968a5f780ce8ee9a39f14e968b35fcc7fc7e69
   languageName: node
   linkType: hard
 
@@ -6890,7 +6880,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"debug@npm:^4.3.7, debug@npm:^4.4.0":
+"debug@npm:^4.4.0":
   version: 4.4.0
   resolution: "debug@npm:4.4.0"
   dependencies:
@@ -9649,7 +9639,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"magic-string@npm:^0.30.12, magic-string@npm:^0.30.17":
+"magic-string@npm:^0.30.17":
   version: 0.30.17
   resolution: "magic-string@npm:0.30.17"
   dependencies:
@@ -11028,10 +11018,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"primeflex@npm:3.3.1":
-  version: 3.3.1
-  resolution: "primeflex@npm:3.3.1"
-  checksum: 3811f48d9b453141a13bdbfb17f272d01a0bb02fc507d4b77dcd5471feccd4d9e80f10f67dfdfc8571672a568c1aadf03179dd6a4d8536b3f60f7fa060e5bfad
+"primeflex@npm:4.0.0":
+  version: 4.0.0
+  resolution: "primeflex@npm:4.0.0"
+  checksum: 02d356f26e9cfe6c03b5a51365dcb055525f1fd99dcb21bb017577e6dec45003af54d27db9a2e664fdff4bef4594c2f5cb4f6dcc182f8dc36d4c869e5ca0551a
   languageName: node
   linkType: hard
 
@@ -12151,13 +12141,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"std-env@npm:^3.8.0":
-  version: 3.8.0
-  resolution: "std-env@npm:3.8.0"
-  checksum: ad4554485c2d09138a1d0f03944245e169510e6f5200b7d30fcdd4536e27a2a9a2fd934caff7ef58ebbe21993fa0e2b9e5b1979f431743c925305863b7ff36d5
-  languageName: node
-  linkType: hard
-
 "std-env@npm:^3.9.0":
   version: 3.9.0
   resolution: "std-env@npm:3.9.0"
@@ -12533,13 +12516,6 @@ __metadata:
   version: 1.0.2
   resolution: "tinypool@npm:1.0.2"
   checksum: 752f23114d8fc95a9497fc812231d6d0a63728376aa11e6e8499c10423a91112e760e388887ea7854f1b16977c321f07c0eab061ec2f60f6761e58b184aac880
-  languageName: node
-  linkType: hard
-
-"tinyrainbow@npm:^1.2.0":
-  version: 1.2.0
-  resolution: "tinyrainbow@npm:1.2.0"
-  checksum: d1e2cb5400032c0092be00e4a3da5450bea8b4fad58bfb5d3c58ca37ff5c5e252f7fcfb9af247914854af79c46014add9d1042fe044358c305a129ed55c8be35
   languageName: node
   linkType: hard
 

@@ -96,8 +96,5 @@
     "warc": {
       "optional": true
     }
-  },
-  "devDependencies": {
-    "@types/cheerio": "0.22.35"
   }
 }

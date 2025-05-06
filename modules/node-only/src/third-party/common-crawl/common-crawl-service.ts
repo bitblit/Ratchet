@@ -17,6 +17,7 @@ import { NodeStreamRatchet } from '../../stream/node-stream-ratchet';
 import { Logger } from '@bitblit/ratchet-common/logger/logger';
 import { PromiseRatchet } from '@bitblit/ratchet-common/lang/promise-ratchet';
 import { StopWatch } from '@bitblit/ratchet-common/lang/stop-watch';
+import { CheerioAPI } from "cheerio";
 
 /**
  * A very early take to simplify accessing and using the common crawl
@@ -39,9 +40,9 @@ export class CommonCrawlService {
       rval[lang] = [];
       const data: WarcEntry = await this.pullPageEntry(entry);
       const asString: string = data.content.toString();
-      const parsed: cheerio.Root = cheerio.load(asString);
+      const parsed: CheerioAPI = cheerio.load(asString);
       ['p', 'div', 'span'].forEach((tag) => {
-        parsed(tag).each((idx: number, el: cheerio.Element) => {
+        parsed(tag).each((idx: number, el) => {
           const txt: string = StringRatchet.trimToNull(parsed(el).text());
           if (txt && txt.includes('.')) {
             rval[lang].push(txt);
