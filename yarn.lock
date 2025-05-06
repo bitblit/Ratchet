@@ -2489,7 +2489,7 @@ __metadata:
     "@bitblit/ratchet-graphql": 0.0.0-snapshot
     primeflex: 3.3.1
     primeicons: 7.0.0
-    primeng: 19.0.6
+    primeng: 19.1.2
     rxjs: 7.8.2
     zone.js: 0.15.0
   languageName: unknown
@@ -2531,7 +2531,7 @@ __metadata:
     "@bitblit/ngx-acute-common": 0.0.0-snapshot
     "@bitblit/ratchet-common": 0.0.0-snapshot
     "@bitblit/ratchet-warden-common": 0.0.0-snapshot
-    primeflex: 3.3.1
+    primeflex: 4.0.0
     primeicons: 7.0.0
     primeng: 19.1.2
     rxjs: 7.8.2
