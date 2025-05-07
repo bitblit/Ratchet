@@ -1,20 +1,21 @@
-import { WardenStorageProvider } from './provider/warden-storage-provider.js';
+import { WardenStorageProvider } from "./provider/warden-storage-provider.js";
 
-import { WardenService } from './warden-service.js';
-import { WardenServiceOptions } from './warden-service-options.js';
-import { WardenContactType } from '@bitblit/ratchet-warden-common/common/model/warden-contact-type';
-import { WardenEntry } from '@bitblit/ratchet-warden-common/common/model/warden-entry';
-import { WardenLoginRequest } from '@bitblit/ratchet-warden-common/common/model/warden-login-request';
-import { WardenCommand } from '@bitblit/ratchet-warden-common/common/command/warden-command';
-import { WardenCommandResponse } from '@bitblit/ratchet-warden-common/common/command/warden-command-response';
-import { WardenLoginResults } from '@bitblit/ratchet-warden-common/common/model/warden-login-results';
+import { WardenService } from "./warden-service.js";
+import { WardenServiceOptions } from "./warden-service-options.js";
+import { WardenContactType } from "@bitblit/ratchet-warden-common/common/model/warden-contact-type";
+import { WardenEntry } from "@bitblit/ratchet-warden-common/common/model/warden-entry";
+import { WardenLoginRequest } from "@bitblit/ratchet-warden-common/common/model/warden-login-request";
+import { WardenCommand } from "@bitblit/ratchet-warden-common/common/command/warden-command";
+import { WardenCommandResponse } from "@bitblit/ratchet-warden-common/common/command/warden-command-response";
+import { WardenLoginResults } from "@bitblit/ratchet-warden-common/common/model/warden-login-results";
 
-import { JwtRatchet } from '@bitblit/ratchet-node-only/jwt/jwt-ratchet';
+import { JwtRatchet } from "@bitblit/ratchet-node-only/jwt/jwt-ratchet";
 
-import { WardenUserDecorationProvider } from './provider/warden-user-decoration-provider.js';
-import { WardenSingleUseCodeProvider } from './provider/warden-single-use-code-provider.js';
-import { beforeEach, describe, expect, test } from 'vitest';
-import { mock, MockProxy } from 'vitest-mock-extended';
+import { WardenUserDecorationProvider } from "./provider/warden-user-decoration-provider.js";
+import { WardenSingleUseCodeProvider } from "./provider/warden-single-use-code-provider.js";
+import { beforeEach, describe, expect, test } from "vitest";
+import { mock, MockProxy } from "vitest-mock-extended";
+import { WardenLoginRequestType } from "@bitblit/ratchet-warden-common/common/model/warden-login-request-type";
 
 //let mockJwtRatchet: MockProxy<JwtRatchetLike>;
 let mockWardenStorageProvider: MockProxy<WardenStorageProvider>;
@@ -46,6 +47,7 @@ describe('#WardenService', () => {
     const svc: WardenService = new WardenService(opts);
 
     const loginReq: WardenLoginRequest = {
+      type: WardenLoginRequestType.ExpiringToken,
       //userId: string;
       contact: { type: WardenContactType.EmailAddress, value: 'test@test.com' },
       //webAuthn?: AuthenticationResponseJSON;
@@ -63,6 +65,7 @@ describe('#WardenService', () => {
       contactMethods: [{ type: WardenContactType.EmailAddress, value: 'test@test.com' }],
       tags: ['test'],
       webAuthnAuthenticators: [],
+      thirdPartyAuthenticators: [],
       createdEpochMS: 1234,
       updatedEpochMS: 1235,
     });
@@ -91,7 +94,7 @@ describe('#WardenService', () => {
     mockWardenStorageProvider.saveEntry.mockResolvedValue({ userId: 'test' } as WardenEntry);
     mockWardenSingleUseCodeProvider.handlesContactType.mockReturnValue(true);
 
-    const res: string = await svc.createAccount({ type: WardenContactType.EmailAddress, value: 'test@test.com' }, false, 'Test', []);
-    expect(res).toEqual('test');
+    const res: WardenEntry = await svc.createAccount({ type: WardenContactType.EmailAddress, value: 'test@test.com' }, false, 'Test', []);
+    expect(res.userId).toEqual('test');
   });
 });
