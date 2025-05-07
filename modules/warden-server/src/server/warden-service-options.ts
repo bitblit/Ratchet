@@ -4,7 +4,7 @@ import { WardenUserDecorationProvider } from './provider/warden-user-decoration-
 import { WardenEventProcessingProvider } from './provider/warden-event-processing-provider.js';
 import { WardenSingleUseCodeProvider } from './provider/warden-single-use-code-provider.js';
 import { WardenSendMagicLinkCommandValidator } from './provider/warden-send-magic-link-command-validator.js';
-import { WardenThirdPartyAuthenticationProvider } from "./provider/warden-third-party-authentication-provider";
+import { WardenThirdPartyAuthenticationProvider } from "./provider/warden-third-party-authentication-provider.js";
 
 export interface WardenServiceOptions {
   // Human-readable title for your website

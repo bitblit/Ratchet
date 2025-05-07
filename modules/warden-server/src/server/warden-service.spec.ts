@@ -94,7 +94,7 @@ describe('#WardenService', () => {
     mockWardenStorageProvider.saveEntry.mockResolvedValue({ userId: 'test' } as WardenEntry);
     mockWardenSingleUseCodeProvider.handlesContactType.mockReturnValue(true);
 
-    const res: WardenEntry = await svc.createAccount({ type: WardenContactType.EmailAddress, value: 'test@test.com' }, false, 'Test', []);
+    const res: WardenEntry = await svc.createAccount({ type: WardenContactType.EmailAddress, value: 'test@test.com' }, 'testorigin.com',false, 'Test', []);
     expect(res.userId).toEqual('test');
   });
 });

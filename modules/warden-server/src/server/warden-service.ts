@@ -52,7 +52,7 @@ import { WardenLoginRequestType } from "@bitblit/ratchet-warden-common/common/mo
 import {
   WardenThirdPartyAuthentication
 } from "@bitblit/ratchet-warden-common/common/model/warden-third-party-authentication";
-import { WardenThirdPartyAuthenticationProvider } from "./provider/warden-third-party-authentication-provider";
+import { WardenThirdPartyAuthenticationProvider } from "./provider/warden-third-party-authentication-provider.js";
 import { WardenEntryBuilder } from "./warden-entry-builder.js";
 
 export class WardenService {
