@@ -286,6 +286,25 @@ export class WardenUserService<T> {
     return rval;
   }
 
+  public async executeThirdPartyTokenBasedLogin(
+    thirdParty: string,
+    token: string,
+    createUserIfMissing?: boolean,
+  ): Promise<WardenLoggedInUserWrapper<T>> {
+    Logger.info('Warden: executeThirdPartyTokenBasedLogin : %j : %s : %s', thirdParty, token, createUserIfMissing);
+    const resp: WardenLoginResults = await this.options.wardenClient.performLoginCmd({
+      type: WardenLoginRequestType.ThirdParty,
+      thirdPartyToken: {
+        thirdParty: thirdParty,
+        token: token,
+      },
+      createUserIfMissing: createUserIfMissing,
+    });
+    const rval: WardenLoggedInUserWrapper<T> = await this.processWardenLoginResults(resp);
+    this.updateRecentLoginsFromLoggedInUserWrapper(rval);
+    return rval;
+  }
+
   public async saveCurrentDeviceAsWebAuthnForCurrentUser(): Promise<WardenEntrySummary> {
     const input: StartRegistrationOpts = await this.options.wardenClient.generateWebAuthnRegistrationChallengeForLoggedInUser();
 
