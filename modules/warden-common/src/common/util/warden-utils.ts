@@ -10,8 +10,7 @@ import { WardenTeamRole } from "../model/warden-team-role.js";
 import { WardenWebAuthnEntry } from "../model/warden-web-authn-entry.js";
 import { WardenWebAuthnEntrySummary } from "../model/warden-web-authn-entry-summary.js";
 import { WardenLoggedInUserWrapper } from "../../client/provider/warden-logged-in-user-wrapper.js";
-import { WardenLoginRequestType } from "../model/warden-login-request-type";
-import { RequireRatchet } from "@bitblit/ratchet-common/lang/require-ratchet";
+import { WardenLoginRequestType } from "../model/warden-login-request-type.ts";
 
 export class WardenUtils {
   // Prevent instantiation

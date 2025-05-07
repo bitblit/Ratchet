@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "allowImportingTsExtensions": true,
     "declaration": true,
     "importHelpers": true,
     "module": "ESNext",
@@ -18,6 +19,7 @@
     "preserveConstEnums": true,
     "removeComments": true,
     "resolveJsonModule": true,
+    "rewriteRelativeImportExtensions": true,
     "useUnknownInCatchVariables": false,
     "noImplicitAny": false,
     "noUnusedLocals": false,
