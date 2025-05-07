@@ -33,6 +33,10 @@ export class LocalStorageService<T> {
     return !!storageFinder();
   }
 
+  private get storageName(): string {
+    return this.appName+'AcuteLocalStorage';
+  }
+
   public clear(): void {
     this.update({} as T);
   }
@@ -42,7 +46,7 @@ export class LocalStorageService<T> {
       const toSave: T = value || ({} as T);
       const saveString: string = JSON.stringify(toSave);
       Logger.info('Updating storage to %s', saveString);
-      localStorage.setItem(this.appName, saveString);
+      localStorage.setItem(this.storageName, saveString);
       return toSave;
     } else {
       Logger.info('Skipping update - storage not ready : %j', value);
@@ -52,7 +56,7 @@ export class LocalStorageService<T> {
 
   fetch(): T {
     if (this.storageReady) {
-      const loadString: string = localStorage.getItem(this.appName) || '{}';
+      const loadString: string = localStorage.getItem(this.storageName) || '{}';
       const rval: T = JSON.parse(loadString) as T;
       return rval;
     } else {
@@ -60,4 +64,5 @@ export class LocalStorageService<T> {
       return {} as T;
     }
   }
+  
 }
