@@ -131,7 +131,11 @@ export class AcuteLoginComponent implements OnDestroy, OnInit {
   }
 
   public get recentLogins(): WardenRecentLoginDescriptor[] {
-    const rval: WardenRecentLoginDescriptor[] = this.userService?.serviceOptions?.recentLoginProvider?.fetchAllLogins() || [];
+    let rval: WardenRecentLoginDescriptor[] = this.userService?.serviceOptions?.recentLoginProvider?.fetchAllLogins() || [];
+
+    // Filter out third party logins for now
+    rval = rval.filter((ld: WardenRecentLoginDescriptor) => {return ld?.user?.contactMethods?.length>0 || ld?.user?.webAuthnAuthenticatorSummaries?.length>0})
+
     return rval;
   }
 
