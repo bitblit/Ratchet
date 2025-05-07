@@ -14,4 +14,5 @@ import {
 export interface WardenThirdPartyAuthenticationProvider {
   handlesThirdParty(thirdParty: string): boolean;
   validateTokenAndReturnThirdPartyUserId(input: WardenLoginThirdPartyToken, origin: string): Promise<WardenThirdPartyAuthentication>;
+  extractUserLabelFromAuthentication?(auth: WardenThirdPartyAuthentication): Promise<string>;
 }

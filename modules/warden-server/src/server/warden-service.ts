@@ -631,7 +631,11 @@ export class WardenService {
           rval = await this.opts.storageProvider.findEntryByThirdPartyId(auth.thirdParty, auth.thirdPartyId);
           if (!rval && request.createUserIfMissing) {
             Logger.info('Found no existing user for %j, creating', auth);
-            rval = await this.createAccountByThirdParty(auth, origin);
+            let label: string = auth.thirdParty + ' ' + auth.thirdPartyId;
+            if (provider.extractUserLabelFromAuthentication) {
+              label = await provider.extractUserLabelFromAuthentication(auth);
+            }
+            rval = await this.createAccountByThirdParty(auth, origin, label);
             Logger.info('Finished create, new id is %s', rval.userId);
           }
         } else {

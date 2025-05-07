@@ -229,8 +229,8 @@ export class WardenDynamoStorageProvider<T> implements WardenStorageProvider, Ex
         entry: entry,
         currentUserChallenges: [],
         decoration: this.createDecoration(null),
-        contactSearchString: (entry.contactMethods || []).map((cm) => WardenDynamoStorageProvider.contactToSearchString(cm)).join(' '),
-        thirdPartySearchString: (entry.thirdPartyAuthenticators || []).map((item) => WardenDynamoStorageProvider.thirdPartyToSearchString(item.thirdParty, item.thirdPartyId)).join(' '),
+        contactSearchString: 'ContactSearch:  '+(entry.contactMethods || []).map((cm) => WardenDynamoStorageProvider.contactToSearchString(cm)).join(' '),
+        thirdPartySearchString: '3rdPartySearch:  '+(entry.thirdPartyAuthenticators || []).map((item) => WardenDynamoStorageProvider.thirdPartyToSearchString(item.thirdParty, item.thirdPartyId)).join(' '),
       };
     }
     rval.entry = entry;
