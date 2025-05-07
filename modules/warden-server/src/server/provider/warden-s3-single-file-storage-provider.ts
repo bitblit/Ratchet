@@ -69,6 +69,17 @@ export class WardenS3SingleFileStorageProvider implements WardenStorageProvider 
     return rval;
   }
 
+  public async findEntryByThirdPartyId(thirdParty: string, thirdPartyId: string): Promise<WardenEntry> {
+    let rval: WardenEntry = null;
+    if (StringRatchet.trimToNull(thirdParty) && StringRatchet.trimToNull(thirdPartyId)) {
+      const data: WardenS3SingleFileStorageProviderDataFile = await this.fetchDataFile();
+      rval = (data.entries || []).find((d) => !!(d.thirdPartyAuthenticators || []).find((x) => x.thirdParty===thirdParty && x.thirdPartyId===thirdPartyId));
+    }
+    return rval;
+  }
+
+
+
   public async findEntryById(userId: string): Promise<WardenEntry> {
     let rval: WardenEntry = null;
     if (StringRatchet.trimToNull(userId)) {

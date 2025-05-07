@@ -12,34 +12,48 @@ import {
   verifyAuthenticationResponse,
   VerifyAuthenticationResponseOpts,
   verifyRegistrationResponse,
-  VerifyRegistrationResponseOpts,
-} from '@simplewebauthn/server';
-import { WardenServiceOptions } from './warden-service-options.js';
-import { WardenContact } from '@bitblit/ratchet-warden-common/common/model/warden-contact';
-import { WardenCustomTemplateDescriptor } from '@bitblit/ratchet-warden-common/common/command/warden-custom-template-descriptor';
-import { WardenEntry } from '@bitblit/ratchet-warden-common/common/model/warden-entry';
-import { WardenUtils } from '@bitblit/ratchet-warden-common/common/util/warden-utils';
-import { WardenLoginRequest } from '@bitblit/ratchet-warden-common/common/model/warden-login-request';
-import { WardenCommand } from '@bitblit/ratchet-warden-common/common/command/warden-command';
-import { WardenCommandResponse } from '@bitblit/ratchet-warden-common/common/command/warden-command-response';
-import { WardenLoginResults } from '@bitblit/ratchet-warden-common/common/model/warden-login-results';
-import { WardenStoreRegistrationResponse } from '@bitblit/ratchet-warden-common/common/model/warden-store-registration-response';
-import { WardenUserDecoration } from '@bitblit/ratchet-warden-common/common/model/warden-user-decoration';
-import { WardenJwtToken } from '@bitblit/ratchet-warden-common/common/model/warden-jwt-token';
-import { WardenStoreRegistrationResponseType } from '@bitblit/ratchet-warden-common/common/model/warden-store-registration-response-type';
-import { WardenWebAuthnEntry } from '@bitblit/ratchet-warden-common/common/model/warden-web-authn-entry';
+  VerifyRegistrationResponseOpts
+} from "@simplewebauthn/server";
+import { WardenServiceOptions } from "./warden-service-options.js";
+import { WardenContact } from "@bitblit/ratchet-warden-common/common/model/warden-contact";
+import {
+  WardenCustomTemplateDescriptor
+} from "@bitblit/ratchet-warden-common/common/command/warden-custom-template-descriptor";
+import { WardenEntry } from "@bitblit/ratchet-warden-common/common/model/warden-entry";
+import { WardenUtils } from "@bitblit/ratchet-warden-common/common/util/warden-utils";
+import { WardenLoginRequest } from "@bitblit/ratchet-warden-common/common/model/warden-login-request";
+import { WardenCommand } from "@bitblit/ratchet-warden-common/common/command/warden-command";
+import { WardenCommandResponse } from "@bitblit/ratchet-warden-common/common/command/warden-command-response";
+import { WardenLoginResults } from "@bitblit/ratchet-warden-common/common/model/warden-login-results";
+import {
+  WardenStoreRegistrationResponse
+} from "@bitblit/ratchet-warden-common/common/model/warden-store-registration-response";
+import { WardenUserDecoration } from "@bitblit/ratchet-warden-common/common/model/warden-user-decoration";
+import { WardenJwtToken } from "@bitblit/ratchet-warden-common/common/model/warden-jwt-token";
+import {
+  WardenStoreRegistrationResponseType
+} from "@bitblit/ratchet-warden-common/common/model/warden-store-registration-response-type";
+import { WardenWebAuthnEntry } from "@bitblit/ratchet-warden-common/common/model/warden-web-authn-entry";
 
-import { RequireRatchet } from '@bitblit/ratchet-common/lang/require-ratchet';
-import { Logger } from '@bitblit/ratchet-common/logger/logger';
-import { ErrorRatchet } from '@bitblit/ratchet-common/lang/error-ratchet';
-import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet';
-import { Base64Ratchet } from '@bitblit/ratchet-common/lang/base64-ratchet';
-import { ExpiredJwtHandling } from '@bitblit/ratchet-common/jwt/expired-jwt-handling';
+import { RequireRatchet } from "@bitblit/ratchet-common/lang/require-ratchet";
+import { Logger } from "@bitblit/ratchet-common/logger/logger";
+import { ErrorRatchet } from "@bitblit/ratchet-common/lang/error-ratchet";
+import { StringRatchet } from "@bitblit/ratchet-common/lang/string-ratchet";
+import { Base64Ratchet } from "@bitblit/ratchet-common/lang/base64-ratchet";
+import { ExpiredJwtHandling } from "@bitblit/ratchet-common/jwt/expired-jwt-handling";
 
-import { WardenDefaultUserDecorationProvider } from './provider/warden-default-user-decoration-provider.js';
-import { WardenNoOpEventProcessingProvider } from './provider/warden-no-op-event-processing-provider.js';
-import { WardenSingleUseCodeProvider } from './provider/warden-single-use-code-provider.js';
-import { WardenDefaultSendMagicLinkCommandValidator } from './provider/warden-default-send-magic-link-command-validator.js';
+import { WardenDefaultUserDecorationProvider } from "./provider/warden-default-user-decoration-provider.js";
+import { WardenNoOpEventProcessingProvider } from "./provider/warden-no-op-event-processing-provider.js";
+import { WardenSingleUseCodeProvider } from "./provider/warden-single-use-code-provider.js";
+import {
+  WardenDefaultSendMagicLinkCommandValidator
+} from "./provider/warden-default-send-magic-link-command-validator.js";
+import { WardenLoginRequestType } from "@bitblit/ratchet-warden-common/common/model/warden-login-request-type";
+import {
+  WardenThirdPartyAuthentication
+} from "@bitblit/ratchet-warden-common/common/model/warden-third-party-authentication";
+import { WardenThirdPartyAuthenticationProvider } from "./provider/warden-third-party-authentication-provider";
+import { WardenEntryBuilder } from "./warden-entry-builder.js";
 
 export class WardenService {
   private opts: WardenServiceOptions;
@@ -111,14 +125,15 @@ export class WardenService {
         );
         rval = { generateWebAuthnAuthenticationChallengeForUserId: { dataAsJson: JSON.stringify(tmp) } };
       } else if (cmd.createAccount) {
-        rval = {
-          createAccount: await this.createAccount(
+        const newEntry: WardenEntry = await this.createAccount(
             cmd.createAccount.contact,
             origin,
             cmd.createAccount.sendCode,
             cmd.createAccount.label,
             cmd.createAccount.tags,
-          ),
+          );
+        rval = {
+          createAccount: newEntry.userId
         };
       } else if (cmd.sendMagicLink) {
         if (cmd?.sendMagicLink?.contactLookup && cmd?.sendMagicLink?.contact) {
@@ -225,12 +240,8 @@ export class WardenService {
         // return WardenEntrySummary
       } else if (cmd.performLogin) {
         const loginData: WardenLoginRequest = cmd.performLogin;
-        const loginOk: boolean = await this.processLogin(loginData, origin);
-        Logger.info('Performing login - login auth check was : %s', loginOk);
-        if (loginOk) {
-          const user: WardenEntry = StringRatchet.trimToNull(loginData.userId)
-            ? await this.opts.storageProvider.findEntryById(loginData.userId)
-            : await this.opts.storageProvider.findEntryByContact(loginData.contact);
+        const user:WardenEntry = await this.processLogin(loginData, origin);
+        if (user) {
           const decoration: WardenUserDecoration<any> = await this.opts.userDecorationProvider.fetchDecoration(user);
           const wardenToken: WardenJwtToken<any> = {
             loginData: WardenUtils.stripWardenEntryToSummary(user),
@@ -329,40 +340,54 @@ export class WardenService {
     return rval;
   }
 
+  public async createAccountByThirdParty(thirdParty: WardenThirdPartyAuthentication, origin: string, inLabel?: string): Promise<WardenEntry> {
+    let rval: WardenEntry = null;
+    RequireRatchet.notNullOrUndefined(thirdParty, 'thirdParty');
+    RequireRatchet.notNullUndefinedOrOnlyWhitespaceString(thirdParty.thirdParty, 'thirdParty');
+    RequireRatchet.notNullUndefinedOrOnlyWhitespaceString(thirdParty.thirdPartyId, 'thirdPartyId');
+
+    const old: WardenEntry = await this.opts.storageProvider.findEntryByThirdPartyId(thirdParty.thirdParty, thirdParty.thirdPartyId);
+    if (old) {
+      ErrorRatchet.throwFormattedErr('Cannot create - account already exists for %j', thirdParty);
+    }
+
+    const label: string = inLabel || thirdParty.thirdParty + ' ' + thirdParty.thirdPartyId;
+    const newUser: WardenEntry = new WardenEntryBuilder(label).withThirdPartyAuthentication([thirdParty]).entry;
+    rval = await this.opts.storageProvider.saveEntry(newUser);
+
+    return rval;
+  }
+
   // Creates a new account, returns the userId for that account upon success
-  public async createAccount(contact: WardenContact, origin: string, sendCode?: boolean, label?: string, tags?: string[]): Promise<string> {
-    let rval: string = null;
+  public async createAccount(contact: WardenContact, origin: string, sendCode?: boolean, label?: string, tags?: string[]): Promise<WardenEntry> {
+    let rval: WardenEntry = null;
     if (WardenUtils.validContact(contact)) {
       const old: WardenEntry = await this.opts.storageProvider.findEntryByContact(contact);
       if (old) {
         ErrorRatchet.throwFormattedErr('Cannot create - account already exists for %j', contact);
       }
 
-      const guid: string = StringRatchet.createShortUid();
-      const now: number = Date.now();
-      const newUser: WardenEntry = {
-        userId: guid,
-        userLabel: label || contact.value, // Defaults to email if nothing provided, usually full name
-        contactMethods: [contact],
-        tags: tags || [],
-        webAuthnAuthenticators: [],
-        createdEpochMS: now,
-        updatedEpochMS: now,
-      };
-      const next: WardenEntry = await this.opts.storageProvider.saveEntry(newUser);
-      rval = next.userId;
-      if (this?.opts?.eventProcessor) {
-        await this.opts.eventProcessor.userCreated(next);
-      }
+      // Defaults to email if nothing provided, usually full name
+      const newUser: WardenEntry = new WardenEntryBuilder(label || contact.value).withContacts([contact]).withTags(tags).entry;
+      rval = await this.opts.storageProvider.saveEntry(newUser);
 
       if (sendCode) {
-        Logger.info('New user %j created and send requested - sending', next);
+        Logger.info('New user %j created and send requested - sending', rval);
         await this.sendExpiringValidationToken(contact, origin);
       }
     } else {
       ErrorRatchet.throwFormattedErr('Cannot create - invalid contact (missing or invalid fields)');
     }
     return rval;
+  }
+
+
+  public async saveNewUser(newUser: WardenEntry): Promise<WardenEntry> {
+    const next: WardenEntry = await this.opts.storageProvider.saveEntry(newUser);
+    if (this?.opts?.eventProcessor) {
+      await this.opts.eventProcessor.userCreated(next);
+    }
+    return next;
   }
 
   // For an existing user, add another contact method
@@ -586,50 +611,64 @@ export class WardenService {
 
   // Perform a login using one of several methods
   // Delegates to functions that handle the specific methods
-  public async processLogin(request: WardenLoginRequest, origin: string): Promise<boolean> {
+  // Should return a valid WardenEntry if successful, or null if not
+  // If createUserIfMissing=true, will create a new user if one does not exist
+  public async processLogin(request: WardenLoginRequest, origin: string): Promise<WardenEntry | null> {
     Logger.info('Processing login : %s : %j', origin, request);
-    let rval: boolean = false;
-    RequireRatchet.notNullOrUndefined(request, 'request');
-    RequireRatchet.true(
-      !!StringRatchet.trimToNull(request?.userId) || WardenUtils.validContact(request?.contact),
-      'Invalid contact and no userId',
-    );
-    RequireRatchet.true(
-      !!request?.webAuthn || !!StringRatchet.trimToNull(request?.expiringToken),
-      'You must provide one of webAuthn or expiringToken',
-    );
-    RequireRatchet.true(
-      !request?.webAuthn || !StringRatchet.trimToNull(request?.expiringToken),
-      'WebAuthn and ExpiringToken may not BOTH be set',
-    );
-
-    let user: WardenEntry = StringRatchet.trimToNull(request?.userId)
-      ? await this.opts.storageProvider.findEntryById(request?.userId)
-      : await this.opts.storageProvider.findEntryByContact(request.contact);
-    if (!user) {
-      Logger.info('User not found, and createUserIfMissing=%s / %j', request.createUserIfMissing, request.contact);
-      if (request.createUserIfMissing && request.contact) {
-        const newVal: string = await this.createAccount(request.contact, origin);
-        Logger.info('Finished create, new id is %s', newVal);
-        user = await this.opts.storageProvider.findEntryById(newVal);
-      }
-      // If STILL no user...
-      if (!user) {
-        ErrorRatchet.throwFormattedErr('No user found for %j / %s', request?.contact, request?.userId);
-      }
+    let rval: WardenEntry = null;
+    const requestErrors: string[] = WardenUtils.loginRequestErrors(request);
+    if (requestErrors.length > 0) {
+      throw ErrorRatchet.fErr('Invalid login request : %j', requestErrors);
     }
-
-    if (request.webAuthn) {
-      rval = await this.loginWithWebAuthnRequest(user, origin, request.webAuthn);
-    } else if (StringRatchet.trimToNull(request.expiringToken)) {
-      const prov: WardenSingleUseCodeProvider = this.singleUseCodeProvider(request.contact, false);
-      const lookup: boolean = await prov.checkCode(request.contact.value, request.expiringToken);
-      if (lookup) {
-        rval = true;
+    if (request.type===WardenLoginRequestType.ThirdParty) {
+      // ThirdParty is a bit different since token lookup typically gives us the info we'll use
+      // to lookup the user
+      const provider: WardenThirdPartyAuthenticationProvider = (this.options.thirdPartyAuthenticationProviders ?? [])
+        .find(s=>s.handlesThirdParty(request.thirdPartyToken.thirdParty));
+      if (provider) {
+        const auth: WardenThirdPartyAuthentication = await provider.validateTokenAndReturnThirdPartyUserId(request.thirdPartyToken, origin);
+        if (auth) {
+          rval = await this.opts.storageProvider.findEntryByThirdPartyId(auth.thirdParty, auth.thirdPartyId);
+          if (!rval && request.createUserIfMissing) {
+            Logger.info('Found no existing user for %j, creating', auth);
+            rval = await this.createAccountByThirdParty(auth, origin);
+            Logger.info('Finished create, new id is %s', rval.userId);
+          }
+        } else {
+          Logger.warn('Authentication failed for %j', request.thirdPartyToken, request.createUserIfMissing);
+        }
       } else {
-        ErrorRatchet.throwFormattedErr('Cannot login - token is invalid for this user');
+        Logger.warn('Could not find any provider to handle third party token %j', request.thirdPartyToken);
       }
+    } else {
+      let user: WardenEntry = StringRatchet.trimToNull(request?.userId)
+        ? await this.opts.storageProvider.findEntryById(request?.userId)
+        : await this.opts.storageProvider.findEntryByContact(request.contact);
+      if (!user) {
+        Logger.info('User not found, and createUserIfMissing=%s / %j', request.createUserIfMissing, request.contact);
+        if (request.createUserIfMissing && request.contact) {
+          user = await this.createAccount(request.contact, origin);
+          Logger.info('Finished create, new id is %s', user.userId);
+        }
+        // If STILL no user...
+        if (!user) {
+          ErrorRatchet.throwFormattedErr('No user found for %j / %s', request?.contact, request?.userId);
+        }
+      }
+
+      let loginSuccess: boolean = false;
+      if (request.webAuthn) {
+        loginSuccess = await this.loginWithWebAuthnRequest(user, origin, request.webAuthn);
+      } else if (StringRatchet.trimToNull(request.expiringToken)) {
+        const prov: WardenSingleUseCodeProvider = this.singleUseCodeProvider(request.contact, false);
+        loginSuccess = await prov.checkCode(request.contact.value, request.expiringToken);
+        if (!loginSuccess) {
+          ErrorRatchet.throwFormattedErr('Cannot login - token is invalid for this user');
+        }
+      }
+      rval = loginSuccess ? user : null;
     }
+
     return rval;
   }
 

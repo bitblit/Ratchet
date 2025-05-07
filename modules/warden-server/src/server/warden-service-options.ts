@@ -4,6 +4,7 @@ import { WardenUserDecorationProvider } from './provider/warden-user-decoration-
 import { WardenEventProcessingProvider } from './provider/warden-event-processing-provider.js';
 import { WardenSingleUseCodeProvider } from './provider/warden-single-use-code-provider.js';
 import { WardenSendMagicLinkCommandValidator } from './provider/warden-send-magic-link-command-validator.js';
+import { WardenThirdPartyAuthenticationProvider } from "./provider/warden-third-party-authentication-provider";
 
 export interface WardenServiceOptions {
   // Human-readable title for your website
@@ -15,4 +16,5 @@ export interface WardenServiceOptions {
   userDecorationProvider?: WardenUserDecorationProvider<any>;
   eventProcessor?: WardenEventProcessingProvider;
   sendMagicLinkCommandValidator?: WardenSendMagicLinkCommandValidator;
+  thirdPartyAuthenticationProviders?: WardenThirdPartyAuthenticationProvider[];
 }

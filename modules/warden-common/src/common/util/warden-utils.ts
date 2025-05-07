@@ -1,15 +1,17 @@
-import { WardenContact } from '../model/warden-contact.js';
-import { WardenContactType } from '../model/warden-contact-type.js';
+import { WardenContact } from "../model/warden-contact.js";
+import { WardenContactType } from "../model/warden-contact-type.js";
 
-import { Logger } from '@bitblit/ratchet-common/logger/logger';
-import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet';
-import { WardenEntrySummary } from '../model/warden-entry-summary.js';
-import { WardenEntry } from '../model/warden-entry.js';
-import { WardenLoginRequest } from '../model/warden-login-request.js';
-import { WardenTeamRole } from '../model/warden-team-role.js';
-import { WardenWebAuthnEntry } from '../model/warden-web-authn-entry.js';
-import { WardenWebAuthnEntrySummary } from '../model/warden-web-authn-entry-summary.js';
-import { WardenLoggedInUserWrapper } from '../../client/provider/warden-logged-in-user-wrapper.js';
+import { Logger } from "@bitblit/ratchet-common/logger/logger";
+import { StringRatchet } from "@bitblit/ratchet-common/lang/string-ratchet";
+import { WardenEntrySummary } from "../model/warden-entry-summary.js";
+import { WardenEntry } from "../model/warden-entry.js";
+import { WardenLoginRequest } from "../model/warden-login-request.js";
+import { WardenTeamRole } from "../model/warden-team-role.js";
+import { WardenWebAuthnEntry } from "../model/warden-web-authn-entry.js";
+import { WardenWebAuthnEntrySummary } from "../model/warden-web-authn-entry-summary.js";
+import { WardenLoggedInUserWrapper } from "../../client/provider/warden-logged-in-user-wrapper.js";
+import { WardenLoginRequestType } from "../model/warden-login-request-type";
+import { RequireRatchet } from "@bitblit/ratchet-common/lang/require-ratchet";
 
 export class WardenUtils {
   // Prevent instantiation
@@ -26,16 +28,58 @@ export class WardenUtils {
     return rval;
   }
 
-  public static validLoginRequest(req: WardenLoginRequest): boolean {
-    let rval: boolean = false;
+  public static loginRequestErrors(req: WardenLoginRequest): string[] {
+    const rval: string[] = [];
+
     if (req) {
-      if (StringRatchet.trimToNull(req.userId) || WardenUtils.validContact(req.contact)) {
-        if (StringRatchet.trimToNull(req.expiringToken) || StringRatchet.trimToNull(req.jwtTokenToRefresh) || req.webAuthn) {
-          rval = true;
+      if (req.type) {
+        switch(req.type) {
+          case WardenLoginRequestType.ExpiringToken:
+            if (!req.userId && !WardenUtils.validContact(req.contact)) {
+              rval.push('User ID or contact is required');
+            }
+            if (!req.expiringToken) {
+              rval.push('Expiring token is required');
+            }
+            break;
+          case WardenLoginRequestType.ThirdParty:
+            if (req.thirdPartyToken) {
+              if (!req.thirdPartyToken.thirdParty) {
+                rval.push('Third party is required');
+              }
+              if (!req.thirdPartyToken.token) {
+                rval.push('Third party token is required');
+              }
+            } else {
+              rval.push('Third party auth is required');
+            }
+            break;
+          case WardenLoginRequestType.WebAuthn:
+            if (!req.userId && !WardenUtils.validContact(req.contact)) {
+              rval.push('User ID or contact is required');
+            }
+            if (!req.webAuthn) {
+              rval.push('Web authn is required');
+            }
+            break;
+          case WardenLoginRequestType.JwtTokenToRefresh:
+            if (!req.jwtTokenToRefresh) {
+            }
+          break;
+          default: rval.push('Unknown request type');
         }
+      } else {
+        rval.push('Request type is null');
       }
+    } else {
+      rval.push('Request is null');
     }
     return rval;
+  }
+
+
+  public static validLoginRequest(req: WardenLoginRequest): boolean {
+    return WardenUtils.loginRequestErrors(req).length === 0;
   }
 
   public static stringToWardenContact(input: string): WardenContact {

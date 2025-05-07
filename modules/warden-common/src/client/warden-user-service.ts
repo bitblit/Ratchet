@@ -1,13 +1,13 @@
-import { Logger } from '@bitblit/ratchet-common/logger/logger';
-import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet';
-import { JwtDecodeOnlyRatchet } from '@bitblit/ratchet-common/jwt/jwt-decode-only-ratchet';
+import { Logger } from "@bitblit/ratchet-common/logger/logger";
+import { StringRatchet } from "@bitblit/ratchet-common/lang/string-ratchet";
+import { JwtDecodeOnlyRatchet } from "@bitblit/ratchet-common/jwt/jwt-decode-only-ratchet";
 import { Subscription, timer } from "rxjs";
-import { WardenUserServiceOptions } from './provider/warden-user-service-options.js';
-import { WardenLoggedInUserWrapper } from './provider/warden-logged-in-user-wrapper.js';
-import { WardenContact } from '../common/model/warden-contact.js';
-import { WardenJwtToken } from '../common/model/warden-jwt-token.js';
-import { WardenLoginResults } from '../common/model/warden-login-results.js';
-import { WardenLoginRequest } from '../common/model/warden-login-request.js';
+import { WardenUserServiceOptions } from "./provider/warden-user-service-options.js";
+import { WardenLoggedInUserWrapper } from "./provider/warden-logged-in-user-wrapper.js";
+import { WardenContact } from "../common/model/warden-contact.js";
+import { WardenJwtToken } from "../common/model/warden-jwt-token.js";
+import { WardenLoginResults } from "../common/model/warden-login-results.js";
+import { WardenLoginRequest } from "../common/model/warden-login-request.js";
 
 import {
   AuthenticationResponseJSON,
@@ -16,10 +16,11 @@ import {
   startAuthentication,
   StartAuthenticationOpts,
   startRegistration,
-  StartRegistrationOpts,
-} from '@simplewebauthn/browser';
-import { WardenEntrySummary } from '../common/model/warden-entry-summary.js';
-import { WardenUtils } from '../common/util/warden-utils.js';
+  StartRegistrationOpts
+} from "@simplewebauthn/browser";
+import { WardenEntrySummary } from "../common/model/warden-entry-summary.js";
+import { WardenUtils } from "../common/util/warden-utils.js";
+import { WardenLoginRequestType } from "../common/model/warden-login-request-type";
 
 /**
  * A service that handles logging in, saving the current user, watching
@@ -182,7 +183,7 @@ export class WardenUserService<T> {
     } else {
       Logger.info('updateLoggedInUserFromTokenString : %s', token);
 
-      const parsed: WardenJwtToken<T> = await JwtDecodeOnlyRatchet.decodeTokenNoVerify<WardenJwtToken<T>>(token);
+      const parsed: WardenJwtToken<T> = JwtDecodeOnlyRatchet.decodeTokenNoVerify<WardenJwtToken<T>>(token);
       if (parsed) {
         rval = {
           userObject: parsed,
@@ -275,6 +276,7 @@ export class WardenUserService<T> {
   ): Promise<WardenLoggedInUserWrapper<T>> {
     Logger.info('Warden: executeValidationTokenBasedLogin : %j : %s : %s', contact, token, createUserIfMissing);
     const resp: WardenLoginResults = await this.options.wardenClient.performLoginCmd({
+      type: WardenLoginRequestType.ExpiringToken,
       contact: contact,
       expiringToken: token,
       createUserIfMissing: createUserIfMissing,
@@ -341,6 +343,7 @@ export class WardenUserService<T> {
       Logger.info('Got creds: %j', creds);
 
       const loginCmd: WardenLoginRequest = {
+        type: WardenLoginRequestType.WebAuthn,
         userId: userId,
         webAuthn: creds,
       };
@@ -350,6 +353,27 @@ export class WardenUserService<T> {
       }
     } catch (err) {
       Logger.error('WebauthN Failed : %s', err);
+    }
+    return rval;
+  }
+
+
+  public async executeThirdPartyLoginToWardenLoginResults(thirdParty: string, token: string): Promise<WardenLoginResults> {
+    let rval: WardenLoginResults = null;
+    try {
+      const loginCmd: WardenLoginRequest = {
+        type: WardenLoginRequestType.ThirdParty,
+        thirdPartyToken: {
+          thirdParty: thirdParty,
+          token: token,
+        }
+      };
+      rval = await this.options.wardenClient.performLoginCmd(loginCmd);
+      if (rval?.jwtToken) {
+        //rval = true;
+      }
+    } catch (err) {
+      Logger.error('Third party Failed : %s', err);
     }
     return rval;
   }

@@ -133,6 +133,11 @@ export class WardenDynamoStorageProvider<T> implements WardenStorageProvider, Ex
     return toFind;
   }
 
+  private static thirdPartyToSearchString(thirdParty: string, thirdPartyId: string): string {
+    const toFind: string = `${thirdParty}:${thirdPartyId}`;
+    return toFind;
+  }
+
   private async fetchInternalByUserId(userId: string): Promise<WardenDynamoStorageDataWrapper> {
     return this.ddb.simpleGet<WardenDynamoStorageDataWrapper>(this.options.tableName, {userId: userId});
   }
@@ -141,6 +146,32 @@ export class WardenDynamoStorageProvider<T> implements WardenStorageProvider, Ex
     const rval: WardenDynamoStorageDataWrapper = await this.fetchInternalByUserId(userId);
     const cuc: string = rval ? rval.currentUserChallenges.find((c) => c.startsWith(relyingPartyId)) : null;
     return cuc ? cuc.substring(relyingPartyId.length+1) : null;
+  }
+
+
+
+  public async findEntryByThirdPartyId(thirdParty: string, thirdPartyId: string): Promise<WardenEntry> {
+    const toFind: string = WardenDynamoStorageProvider.thirdPartyToSearchString(thirdParty, thirdPartyId);
+    const scan: ScanCommandInput = {
+      TableName: this.options.tableName,
+      FilterExpression: 'contains(#thirdPartySearchString,:thirdPartySearchString)',
+      ExpressionAttributeNames: {
+        '#thirdPartySearchString': 'thirdPartySearchString',
+      },
+      ExpressionAttributeValues: {
+        ':thirdPartySearchString': toFind
+      }
+    };
+
+    const results: WardenDynamoStorageDataWrapper[] = await this.ddb.fullyExecuteScan<WardenDynamoStorageDataWrapper>(scan);
+    if (results && results.length > 0) {
+      const rval: WardenDynamoStorageDataWrapper = results[0];
+      return rval.entry;
+    } else {
+      Logger.info('No results found for %s', toFind);
+      return null;
+    }
+
   }
 
   public async findEntryByContact(contact: WardenContact): Promise<WardenEntry> {
@@ -199,6 +230,7 @@ export class WardenDynamoStorageProvider<T> implements WardenStorageProvider, Ex
         currentUserChallenges: [],
         decoration: this.createDecoration(null),
         contactSearchString: (entry.contactMethods || []).map((cm) => WardenDynamoStorageProvider.contactToSearchString(cm)).join(' '),
+        thirdPartySearchString: (entry.thirdPartyAuthenticators || []).map((item) => WardenDynamoStorageProvider.thirdPartyToSearchString(item.thirdParty, item.thirdPartyId)).join(' '),
       };
     }
     rval.entry = entry;
@@ -235,6 +267,7 @@ export interface WardenDynamoStorageDataWrapper {
   decoration: WardenUserDecoration<any>;
   currentUserChallenges: string[];
   contactSearchString: string;
+  thirdPartySearchString: string;
 }
 
 export interface ExpiringCodeHolder {

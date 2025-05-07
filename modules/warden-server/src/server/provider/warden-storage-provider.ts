@@ -10,6 +10,7 @@ import { WardenEntry } from '@bitblit/ratchet-warden-common/common/model/warden-
 export interface WardenStorageProvider {
   findEntryById(userId: string): Promise<WardenEntry>;
   findEntryByContact(contact: WardenContact): Promise<WardenEntry>;
+  findEntryByThirdPartyId(thirdParty: string, thirdPartyId: string): Promise<WardenEntry>;
   saveEntry(entry: WardenEntry): Promise<WardenEntry>;
   removeEntry(userId: string): Promise<boolean>;
 
