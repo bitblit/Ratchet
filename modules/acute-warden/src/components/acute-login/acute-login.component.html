@@ -87,13 +87,16 @@
           id="waitingContactValue"
           readonly="true"
         />
-        <p-inputOtp [(ngModel)]="verificationCode" id="verificationCode" [length]="6" size="large"
+        <!-- <p-inputOtp [(ngModel)]="verificationCode" id="verificationCode" [length]="6" size="large"
                     [integerOnly]="integerOnly" (ngModelChange)="otpChanged()">
           <ng-template #input let-token let-events="events">
             <input class="custom-otp-input" (input)="events.input($event)" (keydown)="events.keydown($event)" type="text" [attr.value]="token" [maxLength]="1" />
           </ng-template>
-        </p-inputOtp>
-
+        </p-inputOtp> -->
+        <p-inputOtp [(ngModel)]="verificationCode" id="verificationCode" [length]="6" size="large"
+                    [integerOnly]="integerOnly" (ngModelChange)="otpChanged()"
+                    [attr.inputmode]="otpInputMode" [attr.pattern]="otpInputPattern"
+        />
         <div style="display: flex; flex-direction: row; justify-content: space-between; gap: 5px">
           <p-button (click)="submitVerificationCode(waitingContact.value, verificationCode)" label="Submit code" > </p-button>
           <p-button (click)="verificationCode = null; showCodePage = false" label="Cancel"></p-button>
