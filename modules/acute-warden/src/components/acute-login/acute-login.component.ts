@@ -51,6 +51,26 @@ import { Subscription, timer } from "rxjs";
     InputGroupModule,
     ToolbarModule,
   ],
+  styles: [
+    `
+        .custom-otp-input {
+                width: 40px;
+                font-size: 36px;
+                border: 0 none;
+                appearance: none;
+                text-align: center;
+                transition: all 0.2s;
+                background: transparent;
+                border-bottom: 2px solid grey;
+                border-radius: 0px;
+            }
+
+        .custom-otp-input:focus {
+                outline: 0 none;
+                border-bottom-color: var(--p-primary-color);
+        }
+        `
+  ],
 })
 export class AcuteLoginComponent implements OnDestroy, OnInit {
   @Input() public applicationName: string;

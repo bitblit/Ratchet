@@ -64,5 +64,5 @@ export class LocalStorageService<T> {
       return {} as T;
     }
   }
-  
+
 }
