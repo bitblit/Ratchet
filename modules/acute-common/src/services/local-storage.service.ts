@@ -21,16 +21,30 @@ export function storageFinder(): Storage | null {
   return null;
 }
 
+export function sessionStorageFinder(): Storage | null {
+  if (typeof window !== 'undefined') {
+    if (typeof window.sessionStorage !== 'undefined') {
+      return window.sessionStorage;
+    }
+  }
+  return null;
+}
+
+
 @Injectable({ providedIn: 'root' })
-export class LocalStorageService<T> {
+export class LocalStorageService<LocalType, SessionType> {
 
   constructor(@Inject(ACUTE_APPLICATION_NAME) private appName: string) {
     RequireRatchet.notNullUndefinedOrOnlyWhitespaceString(appName);
-    Logger.debug('Starting local storage with application name %s', this.appName);
+    Logger.debug('Starting local storage service with application name %s', this.appName);
   }
 
   public get storageReady(): boolean {
     return !!storageFinder();
+  }
+
+  public get sessionStorageReady(): boolean {
+    return !!sessionStorageFinder();
   }
 
   private get storageName(): string {
@@ -38,29 +52,49 @@ export class LocalStorageService<T> {
   }
 
   public clear(): void {
-    this.update({} as T);
+    this.update({} as LocalType);
   }
 
-  public update(value: T): T {
-    if (this.storageReady) {
+  public clearSession(): void {
+    this.updateSession({} as SessionType);
+  }
+
+  public update(value: LocalType): LocalType {
+    return this.updateInternal(value, 'local', storageFinder(), this.storageReady);
+  }
+
+  public fetch(): LocalType {
+    return this.fetchInternal('local', storageFinder(), this.storageReady);
+  }
+
+  public updateSession(value: SessionType): SessionType {
+    return this.updateInternal(value, 'session', sessionStorageFinder(), this.sessionStorageReady);
+  }
+
+  public fetchSession(): SessionType {
+    return this.fetchInternal('session', sessionStorageFinder(), this.sessionStorageReady);
+  }
+
+  private updateInternal<T>(value: T, storageLabel: string, storage: Storage, ready: boolean): T {
+    if (ready) {
       const toSave: T = value || ({} as T);
       const saveString: string = JSON.stringify(toSave);
-      Logger.info('Updating storage to %s', saveString);
-      localStorage.setItem(this.storageName, saveString);
+      Logger.info('Updating %s to %s',storageLabel,saveString);
+      storage.setItem(this.storageName, saveString);
       return toSave;
     } else {
-      Logger.info('Skipping update - storage not ready : %j', value);
+      Logger.info('Skipping update - %s storage not ready : %j', storageLabel, value);
       return {} as T;
     }
   }
 
-  fetch(): T {
-    if (this.storageReady) {
-      const loadString: string = localStorage.getItem(this.storageName) || '{}';
+  public fetchInternal<T>(storageLabel: string, storage: Storage, ready: boolean): T {
+    if (ready) {
+      const loadString: string = storage.getItem(this.storageName) || '{}';
       const rval: T = JSON.parse(loadString) as T;
       return rval;
     } else {
-      Logger.info('Skipping fetch - storage not ready');
+      Logger.info('Skipping %s fetch - storage not ready', storageLabel);
       return {} as T;
     }
   }
