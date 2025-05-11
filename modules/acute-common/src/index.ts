@@ -24,6 +24,7 @@ export * from './pipes/timing.pipe';
 export * from './services/google-analytics.service';
 export * from './services/graphql-query.service';
 export * from './services/local-storage.service';
+export * from './services/css-theme.service.ts';
 export * from './services/window-ref.service';
 
 export * from './services/process-monitor/process-monitor-service';
