@@ -3,7 +3,35 @@ import { Logger } from '@bitblit/ratchet-common/logger/logger';
 import { StringRatchet } from "@bitblit/ratchet-common/lang/string-ratchet";
 
 /**
- * For changing theme
+ * For changing themes.
+ *
+ * Steps:
+ *
+ * In root css setup all the variables youll use like:
+ * // Default variable set
+ * :root {
+ *   --twBackgroundColor: #121212;
+ *   --twTextColor: #E0E0E0;
+ *   --twStatusLineBackgroundColor: #1E1E1E;
+ *   --twOffsetBackgroundColor: #1E1E1E;
+ *   --twStatusLineTextColor: #E0E0E0;
+ *   --twInputTextColor: #90caf9;
+ *   --twMainFont: Georgia, serif;
+ *
+ *   --twPlayingWidth: 80vw;
+ *   --twMainTextSize: 1em;
+ *   --twSubTextSize: .8em;
+ *   --twStatusLineTextSize: 1.2em;
+ *   --twMainHeaderSize: 4em;
+ *   --twSubHeaderSize: 2em;
+ * }
+ *
+ * Use the variables in your css
+ *
+ * Then use this to modify them
+ *
+ *
+ *
  */
 
 @Injectable({providedIn: 'root'})
@@ -22,6 +50,10 @@ export class CssThemeService<ThemeObject> {
     Object.keys(rec).forEach(k => {
       this.setCssVariable('--'+k, rec[k]);
     })
+  }
+
+  public setNumericVariable(name: string, value: number, suffix: string, scope: HTMLElement = document.documentElement, prefix: string='--'): void {
+      this.setCssVariable(name, value+suffix, scope, prefix);
   }
 
   public setNumericVariableBetweenBounds(name: string, value: number, minInclusive: number, maxExclusive: number, suffix: string, scope: HTMLElement = document.documentElement, prefix: string='--'): boolean {
