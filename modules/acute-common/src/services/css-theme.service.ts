@@ -46,9 +46,9 @@ export class CssThemeService<ThemeObject> {
   }
 
 
-  public applyTheme(rec: ThemeObject): void {
+  public applyTheme(rec: ThemeObject, prefix: string='--'): void {
     Object.keys(rec).forEach(k => {
-      this.setCssVariable('--'+k, rec[k]);
+      this.setCssVariable(prefix+k, rec[k]);
     })
   }
 
