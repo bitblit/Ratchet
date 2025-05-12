@@ -57,7 +57,7 @@ export class CssThemeService<ThemeObject> {
   }
 
   public setNumericVariableBetweenBounds(name: string, value: number, minInclusive: number, maxExclusive: number, suffix: string, scope: HTMLElement = document.documentElement, prefix: string='--'): boolean {
-    if (value<=minInclusive && value>=maxExclusive) {
+    if (value>=minInclusive && value<maxExclusive) {
       this.setCssVariable(name, value+suffix, scope, prefix);
       return true;
     } else {
