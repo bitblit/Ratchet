@@ -38,6 +38,7 @@ import { StringRatchet } from "@bitblit/ratchet-common/lang/string-ratchet";
 export class CssThemeService<ThemeObject> {
 
   public setCssVariable(name: string, value: string, scope: HTMLElement = document.documentElement, prefix: string='--'): void {
+    Logger.debug('Setting %s to %s', prefix+name, value);
     scope.style.setProperty(prefix+name, value);
   }
 
@@ -46,9 +47,9 @@ export class CssThemeService<ThemeObject> {
   }
 
 
-  public applyTheme(rec: ThemeObject, prefix: string='--'): void {
+  public applyTheme(rec: ThemeObject, scope: HTMLElement = document.documentElement, prefix: string='--'): void {
     Object.keys(rec).forEach(k => {
-      this.setCssVariable(prefix+k, rec[k]);
+      this.setCssVariable(k, rec[k],scope, prefix);
     })
   }
 
