@@ -7,6 +7,7 @@ export * from './components/dialogs/alert/alert.component';
 export * from './components/process-monitor/process-monitor.component';
 
 export * from './constants';
+export * from './acute-common-type-guards';
 
 export * from './model/google-analytics-config';
 
@@ -27,7 +28,9 @@ export * from './services/local-storage.service';
 export * from './services/css-theme.service.ts';
 export * from './services/window-ref.service';
 
-export * from './services/process-monitor/process-monitor-service';
+export * from './services/process-monitor/grouped-process-list';
+export * from './services/process-monitor/grouped-processes';
 export * from './services/process-monitor/process-holder';
+export * from './services/process-monitor/process-monitor-service';
 export * from './services/process-monitor/process-monitor-state';
 

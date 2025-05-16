@@ -1,10 +1,12 @@
-import {Injectable} from '@angular/core';
+import { Injectable, signal, WritableSignal } from "@angular/core";
 import {RequireRatchet} from "@bitblit/ratchet-common/lang/require-ratchet";
 import {ProcessMonitorState} from './process-monitor-state';
-import {BehaviorSubject} from "rxjs";
 import {StringRatchet} from "@bitblit/ratchet-common/lang/string-ratchet";
 import {No} from "@bitblit/ratchet-common/lang/no";
 import {ProcessHolder} from "./process-holder";
+import { AcuteCommonTypeGuards } from "../../acute-common-type-guards.ts";
+import { GroupedProcessList } from "./grouped-process-list.ts";
+import { GroupedProcesses } from "./grouped-processes.ts";
 
 // Service for providing visual feedback on an ongoing long-running process
 @Injectable({providedIn: 'root'})
@@ -18,120 +20,97 @@ export class ProcessMonitorService {
     return this.processMap.size>0;
   }
 
-  public get showModelDisplay(): boolean {
+  public get showModalDisplay(): boolean {
     return this.modalProcessMap.size>0;
   }
 
-  // Fire and forget
+  public processes: WritableSignal<GroupedProcessList> = signal({groups:[]});
+  public modalProcesses: WritableSignal<GroupedProcessList> = signal({groups:[]});
+
+  // Fire and forget - just so you don't get warnings about the promise not being handled
   public fafMonitorProcessDefaultLabel<T>(promise: Promise<T>, modal?: boolean): void {
     this.monitorProcessSimple(promise, 'Processing...', modal).then(No.op);
   }
 
-  public fafMonitorProcessSimple<T>(promise: Promise<T>, label: string | BehaviorSubject<string>, modal?: boolean): void {
-    const descriptor: BehaviorSubject<ProcessMonitorState> =
-      label instanceof BehaviorSubject ?
-        ProcessMonitorService.labelSubjectToProcessInput(label as BehaviorSubject<string>):
-        new BehaviorSubject<ProcessMonitorState>(ProcessMonitorService.labelToProcessInput(label as string)) ;
-    this.monitorProcess(promise, descriptor, modal).then(No.op);
+  // Fire and forget - just so you don't get warnings about the promise not being handled
+  public fafMonitorProcessSimple<T>(promise: Promise<T>, label: string, modal?: boolean): void {
+    this.monitorProcessSimple(promise, label, modal).then(No.op);
   }
 
-  public fafMonitorProcess<T>(promise: Promise<T>, descriptor: ProcessMonitorState | BehaviorSubject<ProcessMonitorState>, modal?: boolean): void {
+  public fafMonitorProcess<T>(promise: Promise<T>, descriptor: ProcessMonitorState | WritableSignal<ProcessMonitorState>, modal?: boolean): void {
     const map: Map<string, ProcessHolder<any>> = modal? this.modalProcessMap : this.processMap;
-    this.innerMonitorProcess(promise, descriptor, map).then(No.op);
+    const sig: WritableSignal<GroupedProcessList> = modal? this.modalProcesses : this.processes;
+    this.innerMonitorProcess(promise, descriptor, map, sig).then(No.op);
   }
-
-
 
   public async monitorProcessDefaultLabel<T>(promise: Promise<T>, modal?: boolean): Promise<T> {
     return this.monitorProcessSimple(promise, 'Processing...', modal);
   }
 
-  public async monitorProcessSimple<T>(promise: Promise<T>, label: string | BehaviorSubject<string>, modal?: boolean): Promise<T> {
-    const descriptor: BehaviorSubject<ProcessMonitorState> =
-      label instanceof BehaviorSubject ?
-        ProcessMonitorService.labelSubjectToProcessInput(label as BehaviorSubject<string>):
-        new BehaviorSubject<ProcessMonitorState>(ProcessMonitorService.labelToProcessInput(label as string)) ;
+  public async monitorProcessSimple<T>(promise: Promise<T>, label: string, modal?: boolean): Promise<T> {
+    const descriptor: WritableSignal<ProcessMonitorState> =
+      signal(ProcessMonitorService.labelToProcessInput(label));
     return this.monitorProcess(promise, descriptor, modal);
   }
 
-  public async monitorProcess<T>(promise: Promise<T>, descriptor: ProcessMonitorState | BehaviorSubject<ProcessMonitorState>, modal?: boolean): Promise<T> {
+  public async monitorProcess<T>(promise: Promise<T>, descriptor: ProcessMonitorState | WritableSignal<ProcessMonitorState>, modal?: boolean): Promise<T> {
     const map: Map<string, ProcessHolder<any>> = modal? this.modalProcessMap : this.processMap;
-    return this.innerMonitorProcess(promise, descriptor, map);
+    const sig: WritableSignal<GroupedProcessList> = modal? this.modalProcesses : this.processes;
+    return this.innerMonitorProcess(promise, descriptor, map, sig);
   }
 
-
-
-  private async innerMonitorProcess<T>(promise: Promise<T>, descriptor: ProcessMonitorState | BehaviorSubject<ProcessMonitorState>, map: Map<string,ProcessHolder<any>>): Promise<T> {
+  private async innerMonitorProcess<T>(promise: Promise<T>, descriptor: ProcessMonitorState | WritableSignal<ProcessMonitorState>, map: Map<string,ProcessHolder<any>>, sigOut: WritableSignal<GroupedProcessList>): Promise<T> {
     RequireRatchet.notNullOrUndefined(promise, 'promise');
     RequireRatchet.notNullOrUndefined(descriptor, 'descriptor');
 
-    let bh: BehaviorSubject<ProcessMonitorState>;
-    if (descriptor instanceof BehaviorSubject) {
-      const init: ProcessMonitorState = Object.assign({}, this.defaultInput(), descriptor.value);
-      bh = descriptor;
-      bh.next(init); // fill in any missing values
-    } else {
-      const init: ProcessMonitorState = Object.assign({}, this.defaultInput(), descriptor);
-      bh = new BehaviorSubject<ProcessMonitorState>(init);
-    }
+    const bh: WritableSignal<ProcessMonitorState> =
+      AcuteCommonTypeGuards.isProcessMonitorState(descriptor) ? signal(descriptor) : descriptor;
 
     const holder: ProcessHolder<T> = {
       guid: StringRatchet.createRandomHexString(10),
       proc: promise,
       input: bh
     };
+
     map.set(holder.guid, holder);
 
     const finished: Promise<T> = holder.proc.finally(()=>{
       map.delete(holder.guid);
     });
 
+    const newList: GroupedProcessList = this.mapToGroupedProcessList(map);
+    sigOut.set(newList);
+
     return finished;
   }
 
-  private mapToGroupedProcessList(map: Map<string, ProcessHolder<any>>): BehaviorSubject<ProcessMonitorState>[] {
+  private mapToGroupedProcessList(map: Map<string, ProcessHolder<any>>): GroupedProcessList {
     if (map.size>0) {
       //debugger;
     }
-    let tmp: BehaviorSubject<ProcessMonitorState>[] = Array.from(map.values()).map(v=>v.input)
-      .filter(x=>!!x?.value)
-    tmp = tmp.sort((a,b)=>a.value.group.localeCompare(b.value.group));
 
-    const rval: BehaviorSubject<ProcessMonitorState>[] = [];
+    const rval: GroupedProcessList = {
+      groups: []
+    };
 
-    while (tmp.length>1) {
-      let lastIdx: number = 1;
-      while (lastIdx<tmp.length && tmp[lastIdx].value.group === tmp[0].value.group) {
-        lastIdx++;
-      }
-      if (lastIdx>1) {
-        rval.push(new BehaviorSubject<ProcessMonitorState>({
-          label: tmp[0].value.group,
-          detail: lastIdx+' running...',
-          group: tmp[0].value.group,
-          percentComplete: null
-        }));
-      } else {
-        rval.push(tmp[0]);
-      }
-      tmp.splice(0, lastIdx);
-    }
-
-    if (tmp.length) {
-      rval.push(tmp[0]);
+    if (map) {
+      map.keys().forEach((key)=>{
+        const v: ProcessHolder<any> = map.get(key);
+        const group: string = StringRatchet.trimToEmpty(v.input().group);
+        let out: GroupedProcesses = rval.groups.find(s=>s.group===group);
+        if (!out) {
+          out = {
+            group: group,
+            processes: []
+          };
+          rval.groups.push(out);
+        };
+        out.processes.push(v);
+      });
     }
 
     return rval;
   }
-
-  public get processes(): BehaviorSubject<ProcessMonitorState>[] {
-    return this.mapToGroupedProcessList(this.processMap);
-  }
-
-  public get modalProcesses(): BehaviorSubject<ProcessMonitorState>[] {
-    return this.mapToGroupedProcessList(this.modalProcessMap);
-  }
-
 
   public static labelToProcessInput(label: string): ProcessMonitorState {
     return {
@@ -140,13 +119,6 @@ export class ProcessMonitorService {
       group: ProcessMonitorService.DEFAULT_GROUP,
       percentComplete: null
     };
-  }
-
-  public static labelSubjectToProcessInput(label: BehaviorSubject<string>): BehaviorSubject<ProcessMonitorState> {
-    const val: ProcessMonitorState = ProcessMonitorService.labelToProcessInput(label.value);
-    const rval: BehaviorSubject<ProcessMonitorState> = new BehaviorSubject<ProcessMonitorState>(val);
-    label.subscribe((val)=>rval.next(ProcessMonitorService.labelToProcessInput(val)));
-    return rval;
   }
 
   private defaultInput(): ProcessMonitorState {
