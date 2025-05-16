@@ -9,7 +9,7 @@ import { SidebarModule } from "primeng/sidebar";
 import { InputGroupAddonModule } from "primeng/inputgroupaddon";
 import { InputGroupModule } from "primeng/inputgroup";
 import { InputSwitchModule } from "primeng/inputswitch";
-import { AsyncPipe, NgForOf, NgIf } from "@angular/common";
+import { NgForOf, NgIf } from "@angular/common";
 import { ProgressBar } from "primeng/progressbar";
 import { Dialog } from "primeng/dialog";
 import { ProcessMonitorService } from "../../services/process-monitor/process-monitor-service";
@@ -31,7 +31,6 @@ import { ProcessMonitorService } from "../../services/process-monitor/process-mo
     InputSwitchModule,
     FormsModule,
     NgForOf,
-    AsyncPipe,
     ProgressBar,
     NgIf,
     Dialog

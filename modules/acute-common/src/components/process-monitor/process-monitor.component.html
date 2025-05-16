@@ -6,7 +6,7 @@
     <ng-container *ngFor="let pm of gp.processes">
       <div style="display: flex; flex-direction: column; width: 50%; gap: 2px">
         <div style="font-weight: bolder">{{pm.input().label}}</div>
-        <div style="font-style: italic; margin-left: 15px">{{(pm.input().detail}}</div>
+        <div style="font-style: italic; margin-left: 15px">{{pm.input().detail}}</div>
       </div>
       <div *ngIf="pm.input().percentComplete" style="min-width: 50vw">
         <p-progress-bar [value]="pm.input().percentComplete" />
