@@ -6,6 +6,7 @@ import {No} from "@bitblit/ratchet-common/lang/no";
 import {ProcessHolder} from "./process-holder";
 import { MonitoredProcesses } from "./monitored-processes.ts";
 import { Logger } from "@bitblit/ratchet-common/logger/logger";
+import { AcuteCommonTypeGuards } from "../../acute-common-type-guards.ts";
 
 // Service for providing visual feedback on an ongoing long-running process
 @Injectable({providedIn: 'root'})
@@ -67,7 +68,7 @@ export class ProcessMonitorService {
     this.monitorProcessSimple(promise, label, modal).then(No.op);
   }
 
-  public fafMonitorProcess<T>(promise: Promise<T>, descriptor: ProcessMonitorState, modal?: boolean): void {
+  public fafMonitorProcess<T>(promise: Promise<T>, descriptor: ProcessMonitorState | WritableSignal<ProcessMonitorState>, modal?: boolean): void {
     this.monitorProcess(promise, descriptor, modal).then(No.op);
   }
 
@@ -79,21 +80,22 @@ export class ProcessMonitorService {
     return this.monitorProcess(promise, ProcessMonitorService.labelToProcessInput(label), modal);
   }
 
-  public monitorProcess<T>(promise: Promise<T>, descriptor: ProcessMonitorState, modal?: boolean): Promise<T> {
+  public monitorProcess<T>(promise: Promise<T>, descriptor: ProcessMonitorState | WritableSignal<ProcessMonitorState>, modal?: boolean): Promise<T> {
     const val:ProcessHolder<T> = this.innerMonitorProcess(promise, descriptor, modal);
     return val.proc;
   }
 
-  public monitorProcessWithUpdate<T>(promise: Promise<T>, descriptor: ProcessMonitorState, modal?: boolean): ProcessHolder<T> {
+  public monitorProcessWithUpdate<T>(promise: Promise<T>, descriptor: ProcessMonitorState | WritableSignal<ProcessMonitorState>, modal?: boolean): ProcessHolder<T> {
     return this.innerMonitorProcess(promise, descriptor, modal);
   }
 
 
-  private innerMonitorProcess<T>(promise: Promise<T>, descriptor: ProcessMonitorState, modal: boolean = false): ProcessHolder<T> {
+  private innerMonitorProcess<T>(promise: Promise<T>, descriptor: ProcessMonitorState | WritableSignal<ProcessMonitorState>, modal: boolean = false): ProcessHolder<T> {
     RequireRatchet.notNullOrUndefined(promise, 'promise');
     RequireRatchet.notNullOrUndefined(descriptor, 'descriptor');
 
     const guid: string = StringRatchet.createRandomHexString(10);
+    const descSig: WritableSignal<ProcessMonitorState> = AcuteCommonTypeGuards.isProcessMonitorState(descriptor) ? signal(descriptor) : descriptor;
 
     const wrapped: Promise<T> = promise.finally(()=>{
       Logger.info('Process %s finished - removing', holder.guid);
@@ -104,7 +106,7 @@ export class ProcessMonitorService {
     const holder: ProcessHolder<T> = {
       guid: guid,
       proc: wrapped,
-      input: signal(descriptor),
+      input: descSig,
       group: ProcessMonitorService.DEFAULT_GROUP,
       modal: modal
     };
