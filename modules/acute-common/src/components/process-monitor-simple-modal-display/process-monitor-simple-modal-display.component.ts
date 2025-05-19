@@ -16,8 +16,8 @@ import { ProcessMonitorService } from "../../services/process-monitor/process-mo
 
 
 @Component({
-  selector: 'ngx-acute-common-process-monitor',
-  templateUrl: './process-monitor.component.html',
+  selector: 'ngx-acute-common-process-monitor-simple-modal-display',
+  templateUrl: './process-monitor-simple-modal-display.component.html',
   imports: [
     CardModule,
     MultiSelectModule,
@@ -37,9 +37,8 @@ import { ProcessMonitorService } from "../../services/process-monitor/process-mo
   ],
   standalone: true
 })
-export class ProcessMonitorComponent {
-  @Input() public modalHeader: string=null;
-  @Input() public normalHeader: string=null;
+export class ProcessMonitorSimpleModalDisplayComponent {
+  @Input() public header: string=null;
 
   constructor(
     public processMonitorService: ProcessMonitorService
