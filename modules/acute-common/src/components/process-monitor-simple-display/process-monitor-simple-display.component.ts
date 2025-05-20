@@ -38,7 +38,6 @@ import { ProcessMonitorService } from "../../services/process-monitor/process-mo
   standalone: true
 })
 export class ProcessMonitorSimpleDisplayComponent {
-  @Input() public modalHeader: string=null;
   @Input() public normalHeader: string=null;
 
   constructor(

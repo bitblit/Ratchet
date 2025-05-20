@@ -1,4 +1,5 @@
 export * from './build/ngx-acute-warden-info';
+export * from './constants';
 
 export * from './components/acute-create-user/acute-create-user.component';
 export * from './components/acute-login/acute-login.component';
