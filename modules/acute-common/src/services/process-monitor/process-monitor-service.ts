@@ -89,6 +89,54 @@ export class ProcessMonitorService {
     return this.innerMonitorProcess(promise, descriptor, modal);
   }
 
+  public updatePercentCompleteByGuid(guid: string, pct:number): void {
+    const old: MonitoredProcesses = this.processes();
+    const tgt: ProcessHolder<any> = old.processes.find(s=>s.guid===guid);
+    if (tgt) {
+      ProcessMonitorService.updateSignalPercent(tgt.input, pct);
+    } else {
+      Logger.warn('Could not find process with guid %s to update', guid);
+    }
+  }
+
+  public updateLabelByGuid(guid: string, newLabel: string): void {
+    const old: MonitoredProcesses = this.processes();
+    const tgt: ProcessHolder<any> = old.processes.find(s=>s.guid===guid);
+    if (tgt) {
+      ProcessMonitorService.updateSignalLabel(tgt.input, newLabel);
+    } else {
+      Logger.warn('Could not find process with guid %s to update', guid);
+    }
+  }
+
+  public updateDetailByGuid(guid: string, newDetail: string): void {
+    const old: MonitoredProcesses = this.processes();
+    const tgt: ProcessHolder<any> = old.processes.find(s=>s.guid===guid);
+    if (tgt) {
+      ProcessMonitorService.updateSignalDetail(tgt.input, newDetail);
+    } else {
+      Logger.warn('Could not find process with guid %s to update', guid);
+    }
+  }
+
+
+  public static updateSignalPercent(inp: WritableSignal<ProcessMonitorState>, pct: number): void {
+    const old: ProcessMonitorState = inp();
+    old.percentComplete = pct;
+    inp.set(old);
+  }
+
+  public static updateSignalLabel(inp: WritableSignal<ProcessMonitorState>, newLabel: string): void {
+    const old: ProcessMonitorState = inp();
+    old.label = newLabel;
+    inp.set(old);
+  }
+
+  public static updateSignalDetail(inp: WritableSignal<ProcessMonitorState>, newDetail: string): void {
+    const old: ProcessMonitorState = inp();
+    old.detail = newDetail;
+    inp.set(old);
+  }
 
   private innerMonitorProcess<T>(promise: Promise<T>, descriptor: ProcessMonitorState | WritableSignal<ProcessMonitorState>, modal: boolean = false): ProcessHolder<T> {
     RequireRatchet.notNullOrUndefined(promise, 'promise');
