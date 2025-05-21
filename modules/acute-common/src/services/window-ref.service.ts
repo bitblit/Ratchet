@@ -22,4 +22,13 @@ export class WindowRefService {
   public nativeWindow(): Window {
     return getWindow();
   }
+
+  public nativeWindowReload(): void {
+    getWindow().location.reload();
+  }
+
+  public nativeWindowNavigateTo(url: string): void {
+    getWindow().location.href = url;
+  }
+  
 }
