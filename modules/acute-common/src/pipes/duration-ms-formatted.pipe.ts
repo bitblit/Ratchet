@@ -4,7 +4,7 @@ import { StringRatchet } from "@bitblit/ratchet-common/lang/string-ratchet";
 
 @Pipe({ name: "ngxDurationMsFormat", standalone: true })
 export class DurationMsFormattedPipe implements PipeTransform {
-  transform(ms: number, style: string, includeMS: boolean): string {
+  transform(ms: number, style: string='standard', includeMS: boolean=false): string {
     const toFormat: number = ms ? ms : 0;
     let rval: string;
     switch (StringRatchet.trimToEmpty(style)) {
