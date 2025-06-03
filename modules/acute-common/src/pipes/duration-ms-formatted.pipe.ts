@@ -1,11 +1,12 @@
 import { Pipe, PipeTransform } from "@angular/core";
 import { DurationRatchet } from "@bitblit/ratchet-common/lang/duration-ratchet";
 import { StringRatchet } from "@bitblit/ratchet-common/lang/string-ratchet";
+import { NumberRatchet } from "@bitblit/ratchet-common/lang/number-ratchet";
 
 @Pipe({ name: "ngxDurationMsFormat", standalone: true })
 export class DurationMsFormattedPipe implements PipeTransform {
-  transform(ms: number, style: string='standard', includeMS: boolean=false): string {
-    const toFormat: number = ms ? ms : 0;
+  transform(ms: number | string, style: string='standard', includeMS: boolean=false): string {
+    const toFormat: number = NumberRatchet.safeNumber(ms, 0);
     let rval: string;
     switch (StringRatchet.trimToEmpty(style)) {
       case "thin":
