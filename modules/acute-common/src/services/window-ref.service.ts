@@ -30,5 +30,5 @@ export class WindowRefService {
   public nativeWindowNavigateTo(url: string): void {
     getWindow().location.href = url;
   }
-  
+
 }

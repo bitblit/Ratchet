@@ -22,6 +22,7 @@ export * from './pipes/plural.pipe';
 export * from './pipes/round.pipe';
 export * from './pipes/time-ago-formatted.pipe';
 export * from './pipes/timing.pipe';
+export * from './pipes/duration-ms-formatted.pipe';
 
 export * from './services/google-analytics.service';
 export * from './services/graphql-query.service';
