@@ -13,6 +13,7 @@ import { ErrorRatchet } from './error-ratchet.js';
 // https://gist.githubusercontent.com/enepomnyaschih/72c423f727d395eeaa09697058238727/raw/74d3cbf82481545bc26c104de2419f4ee30c7dd7/base64.js
 // Since native javascript handling is so poor
 export class Base64Ratchet {
+
   public static safeObjectToBase64JSON(input: any): any {
     return input ? Base64Ratchet.generateBase64VersionOfString(JSON.stringify(input)) : null;
   }

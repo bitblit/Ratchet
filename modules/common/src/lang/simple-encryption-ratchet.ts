@@ -1,5 +1,6 @@
 import { RequireRatchet } from "./require-ratchet.ts";
 import { NumberRatchet } from "./number-ratchet.ts";
+import { Base64Ratchet } from "./base64-ratchet.ts";
 
 /**
  * A VERY simple wrapper for doing basic AES-GCM encryption on arbitrary text -
@@ -9,7 +10,7 @@ import { NumberRatchet } from "./number-ratchet.ts";
 export class SimpleEncryptionRatchet{
   private sharedKey: Promise<CryptoKey>;
 
-  constructor(sharedRawKey: string | Promise<string>, private ivLength: number = 12) { // Recommended for AES-GCM
+  constructor(sharedRawKey: string | Promise<string>, private urlSafe:boolean = false, private ivLength: number = 12) { // Recommended for AES-GCM
     RequireRatchet.notNullOrUndefined(sharedRawKey);
     RequireRatchet.true(ivLength>=12, 'ivLength must be at least 12');
     this.sharedKey = this.createSharedKey(sharedRawKey);
@@ -45,11 +46,16 @@ export class SimpleEncryptionRatchet{
     const dataMsg: string = this.bufToBase64(ciphertext);
 
     // Format it up in a way that can be unrolled later
-    return ivMsg.length+'K'+ivMsg+dataMsg;
+    let rval: string = ivMsg.length+'K'+ivMsg+dataMsg;
+    if (this.urlSafe) {
+      rval = Base64Ratchet.encodeStringToBase64UrlString(rval);
+    }
+    return rval;
   }
 
   // Decrypt a string with the shared key
-  public async decrypt(encryptedValue: string): Promise<string> {
+  public async decrypt(encryptedValueIn: string): Promise<string> {
+    const encryptedValue: string = this.urlSafe ? Base64Ratchet.decodeBase64UrlStringToString(encryptedValueIn) : encryptedValueIn;
     const split: number = encryptedValue?.indexOf('K')
     if (!split || split<1) {
       throw new Error('Invalid split : '+split);
