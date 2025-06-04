@@ -1,5 +1,5 @@
-import { RequireRatchet } from "@bitblit/ratchet-common/lang/require-ratchet";
-import { NumberRatchet } from '@bitblit/ratchet-common/lang/number-ratchet';
+import { RequireRatchet } from "./require-ratchet.ts";
+import { NumberRatchet } from "./number-ratchet.ts";
 
 /**
  * A VERY simple wrapper for doing basic AES-GCM encryption on arbitrary text -
