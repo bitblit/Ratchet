@@ -56,10 +56,10 @@
   "optionalDependencies": {
     "@aws-sdk/client-athena": "3.840.0",
     "@aws-sdk/client-batch": "3.840.0",
-    "@aws-sdk/client-cloudwatch": "3.841.0",
+    "@aws-sdk/client-cloudwatch": "3.840.0",
     "@aws-sdk/client-cloudwatch-logs": "3.840.0",
     "@aws-sdk/client-dynamodb": "3.840.0",
-    "@aws-sdk/client-ec2": "3.841.0",
+    "@aws-sdk/client-ec2": "3.840.0",
     "@aws-sdk/client-ec2-instance-connect": "3.840.0",
     "@aws-sdk/client-ecr": "3.840.0",
     "@aws-sdk/client-lambda": "3.840.0",

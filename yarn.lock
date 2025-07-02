@@ -629,9 +629,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@aws-sdk/client-cloudwatch@npm:3.841.0":
-  version: 3.841.0
-  resolution: "@aws-sdk/client-cloudwatch@npm:3.841.0"
+"@aws-sdk/client-cloudwatch@npm:3.840.0":
+  version: 3.840.0
+  resolution: "@aws-sdk/client-cloudwatch@npm:3.840.0"
   dependencies:
     "@aws-crypto/sha256-browser": 5.2.0
     "@aws-crypto/sha256-js": 5.2.0
@@ -674,7 +674,7 @@ __metadata:
     "@smithy/util-utf8": ^4.0.0
     "@smithy/util-waiter": ^4.0.6
     tslib: ^2.6.2
-  checksum: 2b0ae439cab4a0904865a7a1e2c6cffae650d178476f0d8f03ce733af256927c4cd5d33da7d64e84be5ccd391c96eb717e0302b9331c8e921c3d96315fe5cbda
+  checksum: 65bed1af7c66a8edf1c53824c97e288f7dc0dc1537b4fcee1fe607d370405732cb54bfe8d38e7deda38eca9abd28a02a20422309050d372f32e3bc0f487763d5
   languageName: node
   linkType: hard
 
@@ -823,9 +823,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@aws-sdk/client-ec2@npm:3.841.0":
-  version: 3.841.0
-  resolution: "@aws-sdk/client-ec2@npm:3.841.0"
+"@aws-sdk/client-ec2@npm:3.840.0":
+  version: 3.840.0
+  resolution: "@aws-sdk/client-ec2@npm:3.840.0"
   dependencies:
     "@aws-crypto/sha256-browser": 5.2.0
     "@aws-crypto/sha256-js": 5.2.0
@@ -870,7 +870,7 @@ __metadata:
     "@types/uuid": ^9.0.1
     tslib: ^2.6.2
     uuid: ^9.0.1
-  checksum: 447d0f404d1657c2754c2ead54b9d8c2a34ca13865ca79bdaa14fa252a16d44f53a50432018e8aab19607617e53ee9f53f6e0dbe393c70efea51c930a6a45c55
+  checksum: 7589b9d19e94585e38ddbb3bd05bfbf6facbc7831c03c9aa2ae1c7a9372f940bab8181f22955412f13ccb40ae81091a2dae800455293b8ee8677ef7db221eca1
   languageName: node
   linkType: hard
 
@@ -2638,10 +2638,10 @@ __metadata:
   dependencies:
     "@aws-sdk/client-athena": 3.840.0
     "@aws-sdk/client-batch": 3.840.0
-    "@aws-sdk/client-cloudwatch": 3.841.0
+    "@aws-sdk/client-cloudwatch": 3.840.0
     "@aws-sdk/client-cloudwatch-logs": 3.840.0
     "@aws-sdk/client-dynamodb": 3.840.0
-    "@aws-sdk/client-ec2": 3.841.0
+    "@aws-sdk/client-ec2": 3.840.0
     "@aws-sdk/client-ec2-instance-connect": 3.840.0
     "@aws-sdk/client-ecr": 3.840.0
     "@aws-sdk/client-lambda": 3.840.0
