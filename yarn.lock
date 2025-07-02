@@ -2483,22 +2483,22 @@ __metadata:
     rxjs: 7.8.2
     zone.js: 0.15.1
   peerDependencies:
-    "@angular/animations": ^19.2.9
-    "@angular/cdk": ^19.2.14
-    "@angular/common": ^19.2.9
-    "@angular/compiler": ^19.2.9
-    "@angular/core": ^19.2.9
-    "@angular/forms": ^19.2.9
-    "@angular/platform-browser": ^19.2.9
-    "@angular/platform-browser-dynamic": ^19.2.9
-    "@angular/router": ^19.2.9
+    "@angular/animations": ^19.2.14
+    "@angular/cdk": ^19.2.19
+    "@angular/common": ^19.2.14
+    "@angular/compiler": ^19.2.14
+    "@angular/core": ^19.2.14
+    "@angular/forms": ^19.2.14
+    "@angular/platform-browser": ^19.2.14
+    "@angular/platform-browser-dynamic": ^19.2.14
+    "@angular/router": ^19.2.14
     "@bitblit/ratchet-common": 0.0.0-snapshot
     "@bitblit/ratchet-graphql": 0.0.0-snapshot
     primeflex: 4.0.0
     primeicons: 7.0.0
-    primeng: 19.1.2
+    primeng: 19.1.3
     rxjs: 7.8.2
-    zone.js: 0.15.0
+    zone.js: 0.15.1
   languageName: unknown
   linkType: soft
 
@@ -2526,23 +2526,23 @@ __metadata:
     rxjs: 7.8.2
     zone.js: 0.15.1
   peerDependencies:
-    "@angular/animations": ^19.2.9
-    "@angular/cdk": ^19.2.9
-    "@angular/common": ^19.2.9
-    "@angular/compiler": ^19.2.9
-    "@angular/core": ^19.2.9
-    "@angular/forms": ^19.2.9
-    "@angular/platform-browser": ^19.2.9
-    "@angular/platform-browser-dynamic": ^19.2.9
-    "@angular/router": ^19.2.9
+    "@angular/animations": ^19.2.14
+    "@angular/cdk": ^19.2.19
+    "@angular/common": ^19.2.14
+    "@angular/compiler": ^19.2.14
+    "@angular/core": ^19.2.14
+    "@angular/forms": ^19.2.14
+    "@angular/platform-browser": ^19.2.14
+    "@angular/platform-browser-dynamic": ^19.2.14
+    "@angular/router": ^19.2.14
     "@bitblit/ngx-acute-common": 0.0.0-snapshot
     "@bitblit/ratchet-common": 0.0.0-snapshot
     "@bitblit/ratchet-warden-common": 0.0.0-snapshot
     primeflex: 4.0.0
     primeicons: 7.0.0
-    primeng: 19.1.2
+    primeng: 19.1.3
     rxjs: 7.8.2
-    zone.js: 0.15.0
+    zone.js: 0.15.1
   languageName: unknown
   linkType: soft
 
@@ -2564,15 +2564,15 @@ __metadata:
     unzipper: 0.12.3
     walk: 2.3.15
   peerDependencies:
-    "@aws-sdk/client-athena": ^3.803.0
-    "@aws-sdk/client-sts": ^3.803.0
-    "@aws-sdk/types": ^3.775.0
+    "@aws-sdk/client-athena": ^3.840.0
+    "@aws-sdk/client-sts": ^3.840.0
+    "@aws-sdk/types": ^3.840.0
     "@bitblit/ratchet-aws": 0.0.0-snapshot
     "@bitblit/ratchet-common": 0.0.0-snapshot
-    "@smithy/abort-controller": ^4.0.2
-    "@smithy/smithy-client": ^4.2.2
-    "@smithy/util-waiter": ^4.0.2
-    mailparser: ^3.7.2
+    "@smithy/abort-controller": ^4.0.4
+    "@smithy/smithy-client": ^4.4.5
+    "@smithy/util-waiter": ^4.0.6
+    mailparser: ^3.7.4
     mime-types: ^2.1.35
     tmp: ^0.2.3
     unzipper: ^0.12.3
@@ -2664,30 +2664,30 @@ __metadata:
     "@types/aws-lambda": 8.10.150
     aws-sdk-client-mock: 4.1.0
   peerDependencies:
-    "@aws-sdk/client-athena": ^3.803.0
-    "@aws-sdk/client-batch": ^3.803.0
-    "@aws-sdk/client-cloudwatch": ^3.803.0
-    "@aws-sdk/client-cloudwatch-logs": ^3.803.0
-    "@aws-sdk/client-dynamodb": ^3.803.0
-    "@aws-sdk/client-ec2": ^3.803.0
-    "@aws-sdk/client-ec2-instance-connect": ^3.803.0
-    "@aws-sdk/client-ecr": ^3.803.0
-    "@aws-sdk/client-lambda": ^3.803.0
-    "@aws-sdk/client-route-53": ^3.803.0
-    "@aws-sdk/client-s3": ^3.803.0
-    "@aws-sdk/client-ses": ^3.803.0
-    "@aws-sdk/client-sns": ^3.803.0
-    "@aws-sdk/client-ssm": ^3.803.0
-    "@aws-sdk/client-sts": ^3.803.0
-    "@aws-sdk/credential-providers": ^3.803.0
-    "@aws-sdk/lib-dynamodb": ^3.803.0
-    "@aws-sdk/lib-storage": ^3.803.0
-    "@aws-sdk/s3-request-presigner": ^3.803.0
+    "@aws-sdk/client-athena": ^3.840.0
+    "@aws-sdk/client-batch": ^3.840.0
+    "@aws-sdk/client-cloudwatch": ^3.840.0
+    "@aws-sdk/client-cloudwatch-logs": ^3.840.0
+    "@aws-sdk/client-dynamodb": ^3.840.0
+    "@aws-sdk/client-ec2": ^3.840.0
+    "@aws-sdk/client-ec2-instance-connect": ^3.840.0
+    "@aws-sdk/client-ecr": ^3.840.0
+    "@aws-sdk/client-lambda": ^3.840.0
+    "@aws-sdk/client-route-53": ^3.840.0
+    "@aws-sdk/client-s3": ^3.840.0
+    "@aws-sdk/client-ses": ^3.840.0
+    "@aws-sdk/client-sns": ^3.840.0
+    "@aws-sdk/client-ssm": ^3.840.0
+    "@aws-sdk/client-sts": ^3.840.0
+    "@aws-sdk/credential-providers": ^3.840.0
+    "@aws-sdk/lib-dynamodb": ^3.840.0
+    "@aws-sdk/lib-storage": ^3.840.0
+    "@aws-sdk/s3-request-presigner": ^3.840.0
     "@aws-sdk/types": ^3.775.0
     "@bitblit/ratchet-common": 0.0.0-snapshot
-    "@smithy/abort-controller": ^4.0.2
-    "@smithy/smithy-client": ^4.2.2
-    "@smithy/util-waiter": ^4.0.2
+    "@smithy/abort-controller": ^4.0.4
+    "@smithy/smithy-client": ^4.4.5
+    "@smithy/util-waiter": ^4.0.6
   dependenciesMeta:
     "@aws-sdk/client-athena":
       optional: true
@@ -2816,7 +2816,7 @@ __metadata:
     echarts: 5.6.0
   peerDependencies:
     "@bitblit/ratchet-common": 0.0.0-snapshot
-    canvas: ^3.1.0
+    canvas: ^3.1.2
     echarts: ^5.6.0
   languageName: unknown
   linkType: soft
@@ -2852,7 +2852,7 @@ __metadata:
     strip-js: 1.2.0
     swagger-model-validator: 3.0.21
   peerDependencies:
-    "@apollo/server": ^4.11.3
+    "@apollo/server": ^4.12.2
     "@bitblit/ratchet-aws": 0.0.0-snapshot
     "@bitblit/ratchet-common": 0.0.0-snapshot
     "@bitblit/ratchet-misc": 0.0.0-snapshot
@@ -2879,7 +2879,7 @@ __metadata:
     constructs: 10.4.2
   peerDependencies:
     "@bitblit/ratchet-common": 0.0.0-snapshot
-    aws-cdk-lib: ^2.179.0
+    aws-cdk-lib: ^2.203.0
     constructs: ^10.4.2
   languageName: unknown
   linkType: soft
@@ -2894,7 +2894,7 @@ __metadata:
   peerDependencies:
     "@bitblit/ratchet-common": 0.0.0-snapshot
     graphql: ^16.11.0
-    graphql-request: ^7.1.2
+    graphql-request: ^7.2.0
   languageName: unknown
   linkType: soft
 
@@ -3072,8 +3072,8 @@ __metadata:
     "@simplewebauthn/server": 13.1.1
     jsonwebtoken: 9.0.2
   peerDependencies:
-    "@aws-sdk/client-s3": ^3.803.0
-    "@aws-sdk/client-ses": ^3.803.0
+    "@aws-sdk/client-s3": ^3.840.0
+    "@aws-sdk/client-ses": ^3.840.0
     "@bitblit/ratchet-aws": 0.0.0-snapshot
     "@bitblit/ratchet-common": 0.0.0-snapshot
     "@bitblit/ratchet-warden-common": 0.0.0-snapshot

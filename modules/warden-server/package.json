@@ -57,8 +57,8 @@
     "jsonwebtoken": "9.0.2"
   },
   "peerDependencies": {
-    "@aws-sdk/client-s3": "^3.803.0",
-    "@aws-sdk/client-ses": "^3.803.0",
+    "@aws-sdk/client-s3": "^3.840.0",
+    "@aws-sdk/client-ses": "^3.840.0",
     "@bitblit/ratchet-aws": "0.0.0-snapshot",
     "@bitblit/ratchet-common": "0.0.0-snapshot",
     "@bitblit/ratchet-warden-common": "0.0.0-snapshot",

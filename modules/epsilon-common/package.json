@@ -85,7 +85,7 @@
     "swagger-model-validator": "3.0.21"
   },
   "peerDependencies": {
-    "@apollo/server": "^4.11.3",
+    "@apollo/server": "^4.12.2",
     "@bitblit/ratchet-aws": "0.0.0-snapshot",
     "@bitblit/ratchet-common": "0.0.0-snapshot",
     "@bitblit/ratchet-misc": "0.0.0-snapshot",
