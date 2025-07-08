@@ -308,7 +308,7 @@ export class LocalServer {
     options: LocalServerOptions
   ): Promise<boolean> {
 
-    const logEventLevel: LoggerLevelName = EventUtil.eventIsAGraphQLIntrospection(sourceEvent) ? options.eventLoggingLevel : options.graphQLIntrospectionEventLogLevel;
+    const logEventLevel: LoggerLevelName = EventUtil.eventIsAGraphQLIntrospection(sourceEvent) ? options.graphQLIntrospectionEventLogLevel : options.eventLoggingLevel;
 
     switch (options.eventLoggingStyle) {
       case 'Full' : Logger.logByLevel(logEventLevel, 'Result: %j', proxyResult); break;
