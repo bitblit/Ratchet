@@ -4,7 +4,7 @@ import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet';
 import { LoggerLevelName } from '@bitblit/ratchet-common/logger/logger-level-name';
 import { Base64Ratchet } from '@bitblit/ratchet-common/lang/base64-ratchet';
 import { JwtTokenBase } from '@bitblit/ratchet-common/jwt/jwt-token-base';
-import http, { IncomingMessage, Server, ServerResponse } from 'http';
+import http, { IncomingMessage, RequestListener, Server, ServerResponse } from 'http';
 import https from 'https';
 import { DateTime } from 'luxon';
 import { EventUtil } from './http/event-util.js';
@@ -21,6 +21,7 @@ import { BackgroundEntry } from './background/background-entry.js';
 import { ErrorRatchet } from '@bitblit/ratchet-common/lang/error-ratchet';
 import { ResponseUtil } from "./http/response-util.js";
 import { NumberRatchet } from "@bitblit/ratchet-common/lang/number-ratchet";
+import { LocalServerEventLoggingStyle } from "./config/local-server/local-server-event-logging-style.ts";
 
 /**
  * A simplistic server for testing your lambdas locally
@@ -31,31 +32,25 @@ export class LocalServer {
 
   constructor(
     private globalHandler: EpsilonGlobalHandler,
-    private port: number = 8888,
-    private https: boolean = false,
+    inOpts?: LocalServerOptions
   ) {
     this.options = {
-      methodHandling: LocalServerHttpMethodHandling.Lowercase,
+      port: inOpts?.port ?? 8888,
+      https: inOpts?.https ?? false,
+      methodHandling: inOpts?.methodHandling ?? LocalServerHttpMethodHandling.Lowercase,
+      eventLoggingLevel: inOpts?.eventLoggingLevel ?? LoggerLevelName.debug,
+      eventLoggingStyle: inOpts?.eventLoggingStyle ?? LocalServerEventLoggingStyle.Summary,
+      graphQLIntrospectionEventLogLevel: inOpts?.graphQLIntrospectionEventLogLevel ?? LoggerLevelName.silly
     };
   }
 
   async runServer(): Promise<boolean> {
     return new Promise<boolean>((res, rej) => {
       try {
-        Logger.info('Starting Epsilon server on port %d', this.port);
+        Logger.info('Starting Epsilon server on port %d', this.options.port);
 
-        if (this.https) {
-          const options = {
-            key: LocalServerCert.CLIENT_KEY_PEM,
-            cert: LocalServerCert.CLIENT_CERT_PEM,
-          };
-          Logger.info(
-            'Starting https server - THIS SERVER IS NOT SECURE!  The KEYS are in the code!  Testing Server Only - Use at your own risk!',
-          );
-          this.server = https.createServer(options, this.requestHandler.bind(this)).listen(this.port);
-        } else {
-          this.server = http.createServer(this.requestHandler.bind(this)).listen(this.port);
-        }
+        this.server = LocalServer.createNodeServer(this.options, this.requestHandler.bind(this));
+
         Logger.info('Epsilon server is listening');
 
         // Also listen for SIGINT
@@ -71,6 +66,23 @@ export class LocalServer {
     });
   }
 
+  public static createNodeServer(opts: LocalServerOptions, requestHandler: RequestListener): Server {
+    let rval: Server = null;
+    if (opts.https) {
+      const options = {
+        key: LocalServerCert.CLIENT_KEY_PEM,
+        cert: LocalServerCert.CLIENT_CERT_PEM,
+      };
+      Logger.info(
+        'Starting https server - THIS SERVER IS NOT SECURE!  The KEYS are in the code!  Testing Server Only - Use at your own risk!',
+      );
+      rval = https.createServer(options, requestHandler).listen(opts.port);
+    } else {
+      rval = http.createServer(requestHandler).listen(opts.port);
+    }
+    return rval;
+  }
+
   async requestHandler(request: IncomingMessage, response: ServerResponse): Promise<any> {
     const context: Context = {
       awsRequestId: 'LOCAL-' + StringRatchet.createType4Guid(),
@@ -79,7 +91,6 @@ export class LocalServer {
       },
     } as Context; //TBD
     const evt: APIGatewayEvent = await LocalServer.messageToApiGatewayEvent(request, context, this.options);
-    const logEventLevel: LoggerLevelName = EventUtil.eventIsAGraphQLIntrospection(evt) ? LoggerLevelName.silly : LoggerLevelName.info;
 
     if (evt.path.startsWith('/epsilon-poison-pill')) {
       this.server.close(() => {
@@ -104,7 +115,7 @@ export class LocalServer {
       return true;
     } else {
       const result: ProxyResult = await this.globalHandler.lambdaHandler(evt, context);
-      const written: boolean = await LocalServer.writeProxyResultToServerResponse(result, response, logEventLevel);
+      const written: boolean = await LocalServer.writeProxyResultToServerResponse(result, response, evt, this.options);
       return written;
     }
   }
@@ -280,20 +291,45 @@ export class LocalServer {
     return val && NumberRatchet.safeNumber(val.statusCode)!==null && StringRatchet.trimToNull(val.body)!==null;
   }
 
+  public static summarizeResponse(proxyResult: ProxyResult,sourceEvent: APIGatewayEvent): Record<string, any> {
+    const summary: Record <string,any> = {
+      srcPath: sourceEvent.path,
+      resultCode: proxyResult.statusCode,
+      resultIsBase64: proxyResult.isBase64Encoded,
+      resultBytes: (proxyResult.body ?? '').length
+    }
+    return summary;
+  }
+
   public static async writeProxyResultToServerResponse(
     proxyResult: ProxyResult,
     response: ServerResponse,
-    logLevel: LoggerLevelName,
+    sourceEvent: APIGatewayEvent, // Used to detect special logging cases
+    options: LocalServerOptions
   ): Promise<boolean> {
-    if (Logger.levelIsEnabled(logLevel)) {
-      if (proxyResult.isBase64Encoded) {
-        const dup: ProxyResult = structuredClone(proxyResult);
-        dup.body = Base64Ratchet.base64StringToString(dup.body);
-        dup.isBase64Encoded = false;
-        Logger.logByLevel(logLevel, 'Result (UB64): %j', dup);
-      } else {
-        Logger.logByLevel(logLevel, 'Result: %j', proxyResult);
-      }
+
+    const logEventLevel: LoggerLevelName = EventUtil.eventIsAGraphQLIntrospection(sourceEvent) ? options.eventLoggingLevel : options.graphQLIntrospectionEventLogLevel;
+
+    switch (options.eventLoggingStyle) {
+      case 'Full' : Logger.logByLevel(logEventLevel, 'Result: %j', proxyResult); break;
+      case 'FullWithBase64Decode':
+        if (proxyResult.isBase64Encoded) {
+          const dup: ProxyResult = structuredClone(proxyResult);
+          dup.body = Base64Ratchet.base64StringToString(dup.body);
+          dup.isBase64Encoded = false;
+          Logger.logByLevel(logEventLevel, 'Result (UB64): %j', dup);
+        } else {
+          Logger.logByLevel(logEventLevel, 'Result: %j', proxyResult);
+        }
+        break;
+      case 'Summary':
+        Logger.logByLevel(logEventLevel, 'Result (summary): %j', LocalServer.summarizeResponse(proxyResult, sourceEvent));
+        break;
+      case 'None':
+        // Do nothing
+        break;
+      default:
+         throw new Error('Should not happen - full enumeration');
     }
 
     response.statusCode = proxyResult.statusCode ?? 500
@@ -360,7 +396,7 @@ export class LocalServer {
 
     Logger.info('Use token: %s', token);
     const handler: EpsilonGlobalHandler = await SampleServerComponents.createSampleEpsilonGlobalHandler('SampleLocalServer-' + Date.now());
-    const testServer: LocalServer = new LocalServer(handler, 8888, true);
+    const testServer: LocalServer = new LocalServer(handler, {port: 8888, https: true});
     const res: boolean = await testServer.runServer();
     Logger.info('Res was : %s', res);
   }

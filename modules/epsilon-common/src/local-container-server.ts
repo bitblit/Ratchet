@@ -1,15 +1,16 @@
-import { APIGatewayEvent, Context, ProxyResult, SNSEvent } from 'aws-lambda';
-import http, { IncomingMessage, Server, ServerResponse } from 'http';
-import { EventUtil } from './http/event-util.js';
-import fetch from 'cross-fetch';
-import { LocalServer } from './local-server.js';
-import { Logger } from '@bitblit/ratchet-common/logger/logger';
-import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet';
-import { LoggerLevelName } from '@bitblit/ratchet-common/logger/logger-level-name';
-import { CliRatchet } from '@bitblit/ratchet-node-only/cli/cli-ratchet';
-import { LocalServerOptions } from './config/local-server/local-server-options.js';
-import { LocalServerHttpMethodHandling } from './config/local-server/local-server-http-method-handling.js';
-import { BackgroundEntry } from './background/background-entry.js';
+import { APIGatewayEvent, Context, ProxyResult, SNSEvent } from "aws-lambda";
+import { IncomingMessage, Server, ServerResponse } from "http";
+import { EventUtil } from "./http/event-util.js";
+import fetch from "cross-fetch";
+import { LocalServer } from "./local-server.js";
+import { Logger } from "@bitblit/ratchet-common/logger/logger";
+import { StringRatchet } from "@bitblit/ratchet-common/lang/string-ratchet";
+import { LoggerLevelName } from "@bitblit/ratchet-common/logger/logger-level-name";
+import { CliRatchet } from "@bitblit/ratchet-node-only/cli/cli-ratchet";
+import { LocalServerOptions } from "./config/local-server/local-server-options.js";
+import { LocalServerHttpMethodHandling } from "./config/local-server/local-server-http-method-handling.js";
+import { BackgroundEntry } from "./background/background-entry.js";
+import { LocalServerEventLoggingStyle } from "./config/local-server/local-server-event-logging-style.ts";
 
 /**
  * A simplistic server for testing your lambdas-in-container locally
@@ -20,19 +21,24 @@ export class LocalContainerServer {
   private options: LocalServerOptions;
 
   constructor(
-    private port: number = 8889,
     private containerUrl: string = 'http://localhost:9000/2015-03-31/functions/function/invocations',
+    inOpts?: LocalServerOptions
   ) {
     this.options = {
-      methodHandling: LocalServerHttpMethodHandling.Uppercase,
+      port: inOpts?.port ?? 8889,
+      https: inOpts?.https ?? false,
+      methodHandling: inOpts?.methodHandling ?? LocalServerHttpMethodHandling.Uppercase,
+      eventLoggingLevel: inOpts?.eventLoggingLevel ?? LoggerLevelName.debug,
+      eventLoggingStyle: inOpts?.eventLoggingStyle ?? LocalServerEventLoggingStyle.Summary,
+      graphQLIntrospectionEventLogLevel: inOpts?.graphQLIntrospectionEventLogLevel ?? LoggerLevelName.silly
     };
   }
 
   public async runServer(): Promise<boolean> {
     return new Promise<boolean>((res, rej) => {
       try {
-        Logger.info('Starting Epsilon container-wrapper server on port %d calling to %s', this.port, this.containerUrl);
-        this.server = http.createServer(this.requestHandler.bind(this)).listen(this.port);
+        Logger.info('Starting Epsilon container-wrapper server on port %d calling to %s', this.options.port, this.containerUrl);
+        this.server = LocalServer.createNodeServer(this.options, this.requestHandler.bind(this));
         Logger.info('Epsilon server is listening');
 
         // Also listen for SIGINT
@@ -85,7 +91,7 @@ export class LocalContainerServer {
           };
         }
 
-        const written: boolean = await LocalServer.writeProxyResultToServerResponse(postProxy, response, logEventLevel);
+        const written: boolean = await LocalServer.writeProxyResultToServerResponse(postProxy, response, evt, this.options);
         return written;
       } catch (err) {
         response.end(`<html><body>BG TRIGGER FAILED : Error : ${err}</body></html>`);
@@ -95,7 +101,7 @@ export class LocalContainerServer {
       try {
         const postResp: Response = await fetch(this.containerUrl, { method: 'POST', body: JSON.stringify(evt) });
         const postProxy: ProxyResult = await postResp.json();
-        const written: boolean = await LocalServer.writeProxyResultToServerResponse(postProxy, response, logEventLevel);
+        const written: boolean = await LocalServer.writeProxyResultToServerResponse(postProxy, response, evt, this.options);
         return written;
       } catch (err) {
         Logger.error('Failed: %s : Body was %s Response was : %j', err, respBodyText, result, err);
