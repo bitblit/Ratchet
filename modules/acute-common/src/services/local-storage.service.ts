@@ -63,12 +63,24 @@ export class LocalStorageService<LocalType, SessionType> {
     return this.updateInternal(value, 'local', storageFinder(), this.storageReady);
   }
 
+  public updatePartial(value: Partial<LocalType>): LocalType {
+    const oldValue: LocalType = this.fetch();
+    const newValue: LocalType = Object.assign({}, oldValue, value);
+    return this.update(newValue);
+  }
+
   public fetch(): LocalType {
     return this.fetchInternal('local', storageFinder(), this.storageReady);
   }
 
   public updateSession(value: SessionType): SessionType {
     return this.updateInternal(value, 'session', sessionStorageFinder(), this.sessionStorageReady);
+  }
+
+  public updateSessionPartial(value: Partial<SessionType>): SessionType {
+    const oldValue: SessionType = this.fetchSession();
+    const newValue: SessionType = Object.assign({}, oldValue, value);
+    return this.updateSession(newValue);
   }
 
   public fetchSession(): SessionType {
