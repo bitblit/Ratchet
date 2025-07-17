@@ -37,6 +37,24 @@ export class EnvironmentService<T> {
     return this.readPromiseCache.get(name);
   }
 
+  public async fetchConfigValueByPath<T>(cfgName: string, path: string[]): Promise<T> {
+    RequireRatchet.notNullUndefinedOrOnlyWhitespaceString(cfgName);
+    RequireRatchet.notNullUndefinedOrEmptyArray(path);
+
+    const env: any = await this.getConfig(cfgName);
+    if (!env) {
+      throw ErrorRatchet.fErr('No config found with name ', cfgName);
+    }
+    let rval: any = env;
+    for (const p of path) {
+      rval = rval ? rval[p] : null;
+    }
+    if (!rval) {
+      throw ErrorRatchet.fErr('No value found in %s for path %s', cfgName, path);
+    }
+    return rval;
+  }
+
   private async getConfigUncached(name: string): Promise<T> {
     let tryCount: number = 1;
     let rval: T = null;
@@ -66,4 +84,6 @@ export class EnvironmentService<T> {
     }
     return rval;
   }
+
+
 }
