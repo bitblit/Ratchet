@@ -15,13 +15,17 @@ export class GlobalRatchet {
   // Fetches the global scope objects (string-> object)
   public static fetchGlobalVarsRecord(returnNullOnNone?: boolean): Record<string, any> {
     let rval: Record<string, any> = null;
-    if (global) {
-      rval = global;
-    } else if (window) {
-      // In the browser
-      rval = window;
-    } else if (process) {
-      rval = process; // Final failover,  not really a great option
+    try {
+      if (global) {
+        rval = global;
+      } else if (window) {
+        // In the browser
+        rval = window;
+      } else if (process) {
+        rval = process; // Final failover, not really a great option
+      }
+    } catch (err) {
+      throw ErrorRatchet.fErr('Should not happen - error thrown trying to find global : %s', err);
     }
     if (!rval) {
       if (returnNullOnNone) {
