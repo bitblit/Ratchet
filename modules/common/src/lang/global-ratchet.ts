@@ -12,16 +12,28 @@ export class GlobalRatchet {
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   private constructor() {}
 
+  public static globalExists(): boolean {
+    return typeof global !== 'undefined';
+  }
+
+  public static windowExists(): boolean {
+    return typeof window !== 'undefined';
+  }
+
+  public static processExists(): boolean {
+    return typeof process !== 'undefined';
+  }
+
   // Fetches the global scope objects (string-> object)
   public static fetchGlobalVarsRecord(returnNullOnNone?: boolean): Record<string, any> {
     let rval: Record<string, any> = null;
     try {
-      if (global) {
+      if (GlobalRatchet.globalExists()) {
         rval = global;
-      } else if (window) {
+      } else if (GlobalRatchet.windowExists()) {
         // In the browser
         rval = window;
-      } else if (process) {
+      } else if (GlobalRatchet.processExists()) {
         rval = process; // Final failover, not really a great option
       }
     } catch (err) {
@@ -55,15 +67,15 @@ export class GlobalRatchet {
   // This is meant to handle faking env vars (basically string-> string) in the context of a browser, polyfills, etc
   public static fetchGlobalEnvVarRecord(returnNullOnNone?: boolean): Record<string, any> {
     let rval: Record<string, any> = null;
-    if (process?.env) {
+    if (GlobalRatchet.processExists() && process?.env) {
       // Running in node
       rval = process.env;
-    } else if (global?.process?.env) {
+    } else if (GlobalRatchet.globalExists() && global?.process?.env) {
       // Running poly-filled node
       rval = global.process.env;
-    } else if (global) {
+    } else if (GlobalRatchet.globalExists()) {
       rval = global;
-    } else if (window) {
+    } else if (GlobalRatchet.windowExists()) {
       // In the browser
       rval = window;
     }
