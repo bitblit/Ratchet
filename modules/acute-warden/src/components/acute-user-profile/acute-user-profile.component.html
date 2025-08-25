@@ -4,20 +4,24 @@
     Full Name: {{ user.userObject.loginData.userLabel }} <br />
     <h3>Contacts</h3>
     <ul>
-      <li *ngFor="let cm of user.userObject.loginData.contactMethods">
-        <p-button icon="pi pi-trash" pTooltip="Remove contact method {{ cm.value }}" (click)="removeContact(cm)"></p-button>
-        {{ cm.type }} : {{ cm.value }}
-      </li>
+      @for(cm of user.userObject.loginData.contactMethods; track cm) {
+        <li>
+          <p-button icon="pi pi-trash" pTooltip="Remove contact method {{ cm.value }}" (click)="removeContact(cm)"></p-button>
+          {{ cm.type }} : {{ cm.value }}
+        </li>
+      }
     </ul>
-    <ng-container *ngIf="user?.userObject?.loginData?.webAuthnAuthenticatorSummaries?.length">
+    @if (user?.userObject?.loginData?.webAuthnAuthenticatorSummaries?.length) {
       <h3>Web Authenticators</h3>
       <ul>
-        <li *ngFor="let waa of user.userObject.loginData.webAuthnAuthenticatorSummaries">
-          <p-button icon="pi pi-trash" pTooltip="Remove web auth {{ webAuthLabel(waa) }}" (click)="removeWebAuthn(waa)"></p-button>
-          {{ webAuthLabel(waa) }}
-        </li>
+        @for(waa of user.userObject.loginData.webAuthnAuthenticatorSummaries; track waa) {
+          <li>
+            <p-button icon="pi pi-trash" pTooltip="Remove web auth {{ webAuthLabel(waa) }}" (click)="removeWebAuthn(waa)"></p-button>
+            {{ webAuthLabel(waa) }}
+          </li>
+        }
       </ul>
-    </ng-container>
+    }
 
     <div style="display: flex; flex-direction: row">
       <p-button icon="pi pi-user" pTooltip="Add a new contact method" (click)="addContact()" icon="pi pi-user-plus"></p-button>

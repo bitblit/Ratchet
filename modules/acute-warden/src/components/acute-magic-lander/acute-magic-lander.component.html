@@ -2,7 +2,9 @@
   <p-card header="Magic Lander">
     <div style="display: flex; flex-direction: column">
       <p>{{ currentStatus }}</p>
-      <a [routerLink]="[directLoginUrl]" *ngIf="showLoginButton" pButton>Back to login page</a>
+      @if (showLoginButton) {
+        <a [routerLink]="[directLoginUrl]" pButton>Back to login page</a>
+      }
     </div>
   </p-card>
 </div>

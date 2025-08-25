@@ -1,107 +1,126 @@
 <div style="display: flex; flex-direction: column; margin: 10px; padding: 2px; align-content: center; justify-content: center">
   <div style="display: flex; flex-direction: column; align-content: center; justify-content: center; margin: 1em; gap: 2px">
-    <div class="text-3xl font-bold text-center text-primary" *ngIf="applicationName">{{ applicationName }}</div>
-    <div class="text-base font-italic text-center text-secondary" *ngIf="helperText">{{ helperText }}</div>
+    @if(applicationName) {
+      <div class="text-3xl font-bold text-center text-primary">{{ applicationName }}</div>
+    }
+    @if(helperText) {
+      <div class="text-base font-italic text-center text-secondary">{{ helperText }}</div>
+    }
   </div>
 
-  <div *ngIf="!showCodePage">
-    <!--<button pButton icon="pi pi-ban" label="Clear Saved Logins" (click)="clearSavedLogins()" style="margin-top: 10px"></button>-->
+  @if(!showCodePage) {
+    <div>
+      <!--<button pButton icon="pi pi-ban" label="Clear Saved Logins" (click)="clearSavedLogins()" style="margin-top: 10px"></button>-->
 
-    <div style="display: flex; flex-direction: column">
-      <div style="display: flex; flex-direction: row; justify-content: space-between; gap: 5px">
-        <input
-          class="p-inputtext rounded-input"
-          [(ngModel)]="newContactValue"
-          id="newContactValue"
-          pInputText
-          style="width: 100%"
-          placeholder="Your Email or Text-Capable Phone"
-          type="text"
-        />
-        <p-button
-          icon="pi pi-envelope"
-          (click)="sendCodeToNewContact(newContactValue)"
-          pTooltip="Send code"
-          [disabled]="contactValueInvalidAndDirty()"
-        >
-        </p-button>
-      </div>
-      <span *ngIf="contactValueInvalidAndDirty()" style="color: red">Valid email or phone number required</span>
-    </div>
-
-    <div style="display: flex; flex-direction: row; justify-content: space-around; margin: 2em" *ngIf="hasRecentLogins">
-      <div>-----</div>
-      <div class="text-lg font-italic">Or select a previously used method</div>
-      <div>-----</div>
-    </div>
-
-    <div *ngFor="let lg of recentLogins; trackBy: userById">
-      <div style="display: flex; flex-direction: row; justify-content: space-between">
-        <h3 class="p-toolbar-start">{{ lg.user.userLabel }}</h3>
-        <div class="p-toolbar-center" style="display: flex; flex-direction: row; gap: 1em">
+      <div style="display: flex; flex-direction: column">
+        <div style="display: flex; flex-direction: row; justify-content: space-between; gap: 5px">
+          <input
+            class="p-inputtext rounded-input"
+            [(ngModel)]="newContactValue"
+            id="newContactValue"
+            pInputText
+            style="width: 100%"
+            placeholder="Your Email or Text-Capable Phone"
+            type="text"
+          />
           <p-button
-            *ngIf="lg?.user?.webAuthnAuthenticatorSummaries?.length"
-            icon="pi pi-lock-open"
-            (click)="processWebAuthnLogin(lg.user.userId)"
-            pTooltip="Authenticate by device (WebAuthn)"
+            icon="pi pi-envelope"
+            (click)="sendCodeToNewContact(newContactValue)"
+            pTooltip="Send code"
+            [disabled]="contactValueInvalidAndDirty()"
           >
           </p-button>
-          <div *ngFor="let e of lg.user.contactMethods; trackBy: contactByName" style="display: flex; flex-direction: row; gap: 5px">
+        </div>
+        @if(contactValueInvalidAndDirty()) {
+          <span style="color: red">Valid email or phone number required</span>
+        }
+      </div>
+
+      @if(hasRecentLogins){
+        <div style="display: flex; flex-direction: row; justify-content: space-around; margin: 2em">
+          <div>-----</div>
+          <div class="text-lg font-italic">Or select a previously used method</div>
+          <div>-----</div>
+        </div>
+      }
+
+      @for(lg of recentLogins; track $index) { <!-- lg.userById -->
+      <div>
+        <div style="display: flex; flex-direction: row; justify-content: space-between">
+          <h3 class="p-toolbar-start">{{ lg.user.userLabel }}</h3>
+          <div class="p-toolbar-center" style="display: flex; flex-direction: row; gap: 1em">
+            @if(lg?.user?.webAuthnAuthenticatorSummaries?.length) {
+              <p-button
+                icon="pi pi-lock-open"
+                (click)="processWebAuthnLogin(lg.user.userId)"
+                pTooltip="Authenticate by device (WebAuthn)"
+              >
+              </p-button>
+            }
+            @for(e of lg.user.contactMethods; track $index) { <!-- e.contactByName -->
+            <div style="display: flex; flex-direction: row; gap: 5px">
+              @if(e.type === 'EmailAddress'){
+              <p-button
+                icon="pi pi-envelope"
+                (click)="sendCodeToContact(e)"
+                pTooltip="{{ e.value }}"
+              ></p-button>
+              }
+              @if(e.type === 'TextCapablePhoneNumber'){
+                <p-button
+                icon="pi pi-mobile"
+                (click)="sendCodeToContact(e)"
+                pTooltip="{{ e.value }}"
+              ></p-button>
+              }
+            </div>
+            }
+          </div>
+
+          <div class="p-toolbar-end">
             <p-button
-              *ngIf="e.type === 'EmailAddress'"
-              icon="pi pi-envelope"
-              (click)="sendCodeToContact(e)"
-              pTooltip="{{ e.value }}"
-            ></p-button>
-            <p-button
-              *ngIf="e.type === 'TextCapablePhoneNumber'"
-              icon="pi pi-mobile"
-              (click)="sendCodeToContact(e)"
-              pTooltip="{{ e.value }}"
+              icon="pi pi-delete-left"
+              severity="danger"
+              (click)="removeSingleLogin(lg.user.userId)"
+              pTooltip="Forget {{ lg.user.userLabel }}"
             ></p-button>
           </div>
         </div>
-
-        <div class="p-toolbar-end">
-          <p-button
-            icon="pi pi-delete-left"
-            severity="danger"
-            (click)="removeSingleLogin(lg.user.userId)"
-            pTooltip="Forget {{ lg.user.userLabel }}"
-          ></p-button>
-        </div>
       </div>
+      }
     </div>
-  </div>
+  }
 
-  <div *ngIf="showCodePage">
-    <p-fieldset legend="One-Time Code">
-      <div style="display: flex; flex-direction: column; min-width: 100%; justify-content: center; align-items: center; gap: 10px">
-        <div>
-          Enter the code sent to <span style="font-weight: bolder">{{ waitingContact.value }}</span>
+  @if(showCodePage) {
+    <div>
+      <p-fieldset legend="One-Time Code">
+        <div style="display: flex; flex-direction: column; min-width: 100%; justify-content: center; align-items: center; gap: 10px">
+          <div>
+            Enter the code sent to <span style="font-weight: bolder">{{ waitingContact.value }}</span>
+          </div>
+          <input
+            type="hidden"
+            class="p-inputtext rounded-input"
+            [(ngModel)]="waitingContact.value"
+            id="waitingContactValue"
+            readonly="true"
+          />
+          <!-- <p-inputOtp [(ngModel)]="verificationCode" id="verificationCode" [length]="6" size="large"
+                      [integerOnly]="integerOnly" (ngModelChange)="otpChanged()">
+            <ng-template #input let-token let-events="events">
+              <input class="custom-otp-input" (input)="events.input($event)" (keydown)="events.keydown($event)" type="text" [attr.value]="token" [maxLength]="1" />
+            </ng-template>
+          </p-inputOtp> -->
+          <p-inputOtp [(ngModel)]="verificationCode" id="verificationCode" [length]="6" size="large"
+                      [integerOnly]="integerOnly" (ngModelChange)="otpChanged()"
+                      [attr.inputmode]="otpInputMode" [attr.pattern]="otpInputPattern"
+          />
+          <div style="display: flex; flex-direction: row; justify-content: space-between; gap: 5px">
+            <p-button (click)="submitVerificationCode(waitingContact.value, verificationCode)" label="Submit code" > </p-button>
+            <p-button (click)="verificationCode = null; showCodePage = false" label="Cancel"></p-button>
+          </div>
         </div>
-        <input
-          type="hidden"
-          class="p-inputtext rounded-input"
-          [(ngModel)]="waitingContact.value"
-          id="waitingContactValue"
-          readonly="true"
-        />
-        <!-- <p-inputOtp [(ngModel)]="verificationCode" id="verificationCode" [length]="6" size="large"
-                    [integerOnly]="integerOnly" (ngModelChange)="otpChanged()">
-          <ng-template #input let-token let-events="events">
-            <input class="custom-otp-input" (input)="events.input($event)" (keydown)="events.keydown($event)" type="text" [attr.value]="token" [maxLength]="1" />
-          </ng-template>
-        </p-inputOtp> -->
-        <p-inputOtp [(ngModel)]="verificationCode" id="verificationCode" [length]="6" size="large"
-                    [integerOnly]="integerOnly" (ngModelChange)="otpChanged()"
-                    [attr.inputmode]="otpInputMode" [attr.pattern]="otpInputPattern"
-        />
-        <div style="display: flex; flex-direction: row; justify-content: space-between; gap: 5px">
-          <p-button (click)="submitVerificationCode(waitingContact.value, verificationCode)" label="Submit code" > </p-button>
-          <p-button (click)="verificationCode = null; showCodePage = false" label="Cancel"></p-button>
-        </div>
-      </div>
-    </p-fieldset>
-  </div>
+      </p-fieldset>
+    </div>
+  }
 </div>

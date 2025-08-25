@@ -1,5 +1,6 @@
 <div class="container">
-  <div class="row" *ngIf="redirectState !== 'REDIR'">
+  @if (redirectState !== 'REDIR') {
+  <div class="row">
     <div class="col-sm-2">
       <h3>Page Not Found</h3>
     </div>
@@ -8,8 +9,10 @@
       <p>We can't find the page you are trying to reach - please <a routerLink="/secure/dashboard"> go back</a> and try again.</p>
     </div>
   </div>
+  }
 
-  <div class="row" *ngIf="redirectState === 'REDIR'">
+  @if (redirectState === 'REDIR') {
+  <div class="row">
     <div class="col-sm-2">
       <h3>Redirecting</h3>
     </div>
@@ -17,4 +20,5 @@
       <p>Sending you to the new version of that page...</p>
     </div>
   </div>
+  }
 </div>

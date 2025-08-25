@@ -8,32 +8,30 @@ import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet';
 import { AbstractControl, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { WardenContactType } from '@bitblit/ratchet-warden-common/common/model/warden-contact-type';
 import { EnumRatchet } from '@bitblit/ratchet-common/lang/enum-ratchet';
-import { MessagesModule } from 'primeng/messages';
 import { CommonModule } from '@angular/common';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
-import { DropdownModule } from 'primeng/dropdown';
 import { AlertComponent } from '@bitblit/ngx-acute-common';
 import { DialogService } from 'primeng/dynamicdialog';
 import { Ripple } from 'primeng/ripple';
 import { InputTextModule } from 'primeng/inputtext';
+import { Select } from "primeng/select";
 
 @Component({
   selector: 'ngx-acute-warden-create-user',
   templateUrl: './acute-create-user.component.html',
   standalone: true,
   imports: [
-    MessagesModule,
     RouterModule,
     FormsModule,
     ReactiveFormsModule,
     CommonModule,
     CardModule,
     ButtonModule,
-    DropdownModule,
     Ripple,
     InputTextModule,
-  ],
+    Select
+  ]
 })
 export class AcuteCreateUserComponent implements OnInit {
   public form: FormGroup;

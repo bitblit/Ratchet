@@ -1,4 +1,4 @@
-import { AfterViewChecked, Component, input, Input, OnDestroy, OnInit } from "@angular/core";
+import {  Component,  Input, OnDestroy, OnInit } from "@angular/core";
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 
 import { Logger } from '@bitblit/ratchet-common/logger/logger';
@@ -22,7 +22,6 @@ import { InputTextModule } from 'primeng/inputtext';
 import { RequireRatchet } from '@bitblit/ratchet-common/lang/require-ratchet';
 import { InputOtpModule } from 'primeng/inputotp';
 import { AccordionModule } from 'primeng/accordion';
-import { TabViewModule } from 'primeng/tabview';
 import { SplitButtonModule } from 'primeng/splitbutton';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { ToolbarModule } from 'primeng/toolbar';
@@ -46,7 +45,6 @@ import { Subscription, timer } from "rxjs";
     InputTextModule,
     InputOtpModule,
     AccordionModule,
-    TabViewModule,
     SplitButtonModule,
     InputGroupModule,
     ToolbarModule,

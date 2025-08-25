@@ -5,11 +5,8 @@ import { CardModule } from "primeng/card";
 import { MultiSelectModule } from "primeng/multiselect";
 import { TableModule } from "primeng/table";
 import { PanelModule } from "primeng/panel";
-import { SidebarModule } from "primeng/sidebar";
 import { InputGroupAddonModule } from "primeng/inputgroupaddon";
 import { InputGroupModule } from "primeng/inputgroup";
-import { InputSwitchModule } from "primeng/inputswitch";
-import { NgForOf, NgIf } from "@angular/common";
 import { ProgressBar } from "primeng/progressbar";
 import { Dialog } from "primeng/dialog";
 import { ProcessMonitorService } from "../../services/process-monitor/process-monitor-service";
@@ -25,14 +22,10 @@ import { ProcessMonitorService } from "../../services/process-monitor/process-mo
     TableModule,
     ReactiveFormsModule,
     PanelModule,
-    SidebarModule,
     InputGroupAddonModule,
     InputGroupModule,
-    InputSwitchModule,
     FormsModule,
-    NgForOf,
     ProgressBar,
-    NgIf,
     Dialog
   ],
   standalone: true

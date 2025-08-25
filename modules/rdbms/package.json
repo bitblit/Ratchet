@@ -52,7 +52,7 @@
   "optionalDependencies": {
     "better-sqlite3": "11.9.1",
     "get-port": "7.1.0",
-    "mysql2": "3.14.1",
+    "mysql2": "3.14.3",
     "sqlstring": "2.3.3",
     "tunnel-ssh": "5.2.0"
   },

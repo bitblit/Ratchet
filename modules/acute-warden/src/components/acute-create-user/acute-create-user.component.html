@@ -4,29 +4,39 @@
       <div style="display: flex; flex-direction: column">
         <div class="p-inputgroup">
           <label class="p-inputgroup-addon">Contact Type</label>
-          <p-dropdown
+          <p-select
             [options]="userContactTypes"
             formControlName="userContactType"
             id="userContactType"
             [style]="{ 'min-width': '50%' }"
-          ></p-dropdown>
+          ></p-select>
         </div>
         <div class="p-inputgroup">
           <span class="p-inputgroup-addon">Contact</span>
           <input pInputText formControlName="userContactValue" placeholder="e.g., test@test.com" id="userContactValue" />
-          <ng-container *ngIf="f('userContactValue').dirty">
-            <span style="color: red" *ngIf="f('userContactValue').errors?.['required']">Contact is Required</span>
-            <span style="color: red" *ngIf="f('userContactValue').errors?.['email']">Please enter a valid email address</span>
-          </ng-container>
+          @if (f('userContactValue').dirty) {
+            @if (f('userContactValue').errors?.['required']) {
+              <span style="color: red">Contact is Required</span>
+            }
+            @if(f('userContactValue').errors?.['email']) {
+              <span style="color: red">Please enter a valid email address</span>
+            }
+          }
         </div>
         <div class="p-inputgroup">
           <span class="p-inputgroup-addon">Full name</span>
           <input pInputText formControlName="userFullName" id="userFullName" placeholder="e.g., Tom Smith" />
-          <ng-container *ngIf="f('userFullName').dirty">
-            <span style="color: red" *ngIf="f('userFullName').errors?.['required']">Full name is Required</span>
-            <span style="color: red" *ngIf="f('userFullName').errors?.['minlength']">Please enter a longer name</span>
-            <span style="color: red" *ngIf="f('userFullName').errors?.['maxlength']">Please enter a shorter name</span>
-          </ng-container>
+          @if(f('userFullName').dirty){
+            @if(f('userFullName').errors?.['required']) {
+              <span style="color: red" >Full name is Required</span>
+            }
+            @if(f('userFullName').errors?.['minlength']) {
+              <span style="color: red" >Please enter a longer name</span>
+            }
+            @if(f('userFullName').errors?.['maxlength']) {
+              <span style="color: red" >Please enter a shorter name</span>
+            }
+          }
         </div>
       </div>
       <div>

@@ -2,14 +2,20 @@
 <p-dialog [header]="header" [modal]="true"
           [closable]="false"
           [visible]="processMonitorService.hasModalProcesses()()" position="center" [style]="{ width: '90rem' }">
-  <div style="display: flex; flex-direction: row; width: 100%" *ngFor="let pm of processMonitorService.modalProcesses()().processes">
+  @for(pm of processMonitorService.modalProcesses()().processes; track pm) {
+    <div style="display: flex; flex-direction: row; width: 100%">
 
-    <div style="display: flex; flex-direction: column; width: 50%; gap: 2px">
-      <div style="font-weight: bolder">{{pm.input().label}}</div>
-      <div style="font-style: italic; margin-left: 15px" *ngIf="pm.input().detail">{{pm.input().detail}}</div>
+      <div style="display: flex; flex-direction: column; width: 50%; gap: 2px">
+        <div style="font-weight: bolder">{{pm.input().label}}</div>
+        @if (pm.input().detail) {
+          <div style="font-style: italic; margin-left: 15px">{{pm.input().detail}}</div>
+        }
+      </div>
+      @if(pm.input().percentComplete) {
+        <div style="min-width: 50vw">
+          <p-progress-bar [value]="pm.input().percentComplete" />
+        </div>
+      }
     </div>
-    <div *ngIf="pm.input().percentComplete" style="min-width: 50vw">
-      <p-progress-bar [value]="pm.input().percentComplete" />
-    </div>
-  </div>
+  }
 </p-dialog>

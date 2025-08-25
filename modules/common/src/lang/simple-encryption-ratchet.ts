@@ -17,7 +17,7 @@ export class SimpleEncryptionRatchet{
   }
 
   // Converts string to ArrayBuffer
-  private strToBuf(str: string): Uint8Array {
+  private strToBuf(str: string): Uint8Array<ArrayBuffer> {
     return new TextEncoder().encode(str);
   }
 
@@ -27,22 +27,22 @@ export class SimpleEncryptionRatchet{
   }
 
   // Converts base64 to ArrayBuffer
-  private base64ToBuf(base64: string): Uint8Array {
+  private base64ToBuf(base64: string): Uint8Array<ArrayBuffer> {
     return new Uint8Array(atob(base64).split('').map(c => c.charCodeAt(0)));
   }
 
 
   // Encrypt a string with a shared key
   public async encrypt(data: string): Promise<string> {
-    const iv = crypto.getRandomValues(new Uint8Array(this.ivLength));
-    const encoded = this.strToBuf(data);
+    const iv:Uint8Array<ArrayBuffer> = crypto.getRandomValues(new Uint8Array(this.ivLength));
+    const encoded:Uint8Array<ArrayBuffer> = this.strToBuf(data);
     const key: CryptoKey = await this.sharedKey;
     const ciphertext = await crypto.subtle.encrypt(
       { name: "AES-GCM", iv },
       key,
       encoded
     );
-    const ivMsg: string = this.bufToBase64(iv);
+    const ivMsg: string = this.bufToBase64(iv.buffer);
     const dataMsg: string = this.bufToBase64(ciphertext);
 
     // Format it up in a way that can be unrolled later
