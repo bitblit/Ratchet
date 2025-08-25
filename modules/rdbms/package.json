@@ -58,7 +58,7 @@
   },
   "peerDependencies": {
     "@bitblit/ratchet-common": "0.0.0-snapshot",
-    "better-sqlite3": "^11.9.1",
+    "better-sqlite3": "^12.2.0",
     "get-port": "^7.1.0",
     "mysql2": "^3.14.3",
     "sqlstring": "^2.3.3",
