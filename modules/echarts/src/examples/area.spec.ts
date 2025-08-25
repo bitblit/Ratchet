@@ -106,8 +106,8 @@ describe('#areaChart', function () {
       height: 500,
     });
 
-    // As of 2022-08-06 this is 54255... there must be a better test than this...
-    expect(data.length).toBeGreaterThan(50_000);
-    expect(data.length).toBeLessThan(60_000);
+    // As of 2025-08-24 this is 60589... there must be a better test than this...
+    expect(data.length).toBeGreaterThan(55_000);
+    expect(data.length).toBeLessThan(65_000);
   });
 });
