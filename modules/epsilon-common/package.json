@@ -74,7 +74,7 @@
     "@smithy/smithy-client": "4.4.10",
     "@smithy/util-waiter": "4.0.7",
     "clear": "0.1.0",
-    "commander": "13.1.0",
+    "commander": "14.0.0",
     "cross-fetch": "4.1.0",
     "js-yaml": "4.1.0",
     "jwks-rsa": "3.2.0",
