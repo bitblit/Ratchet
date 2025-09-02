@@ -13,6 +13,7 @@ import { WardenLoggedInUserWrapper } from "../../client/provider/warden-logged-i
 import { WardenLoginRequestType } from "../model/warden-login-request-type.ts";
 import { WardenJwtToken } from "../model/warden-jwt-token.ts";
 import { WardenUserDecoration } from "../model/warden-user-decoration.ts";
+import { BooleanRatchet } from "@bitblit/ratchet-common/lang/boolean-ratchet";
 
 export class WardenUtils {
   // Prevent instantiation
@@ -192,22 +193,53 @@ export class WardenUtils {
     return rval;
   }
 
-
   public static userHasGlobalRole(user: WardenUserDecoration<any>, roleId: string): boolean {
+    return WardenUtils.userHasGlobalRoles(user, [roleId], true);
+  }
+
+  public static userHasRoleOnTeam(user: WardenUserDecoration<any>,teamId: string, roleId: string): boolean {
+    return WardenUtils.userHasRolesOnTeam(user, teamId, [roleId], true);
+  }
+
+  public static userHasAtLeastOneGlobalRole(user: WardenUserDecoration<any>, roleIds: string[]): boolean {
+    return WardenUtils.userHasGlobalRoles(user, roleIds, false);
+  }
+
+  public static userHasAtLeastOneRoleOnTeam(user: WardenUserDecoration<any>, teamId: string, roleIds: string[]): boolean {
+    return WardenUtils.userHasRolesOnTeam(user, teamId, roleIds, false);
+  }
+
+
+  public static userHasAllGlobalRoles(user: WardenUserDecoration<any>, roleIds: string[]): boolean {
+    return WardenUtils.userHasGlobalRoles(user, roleIds, true);
+  }
+
+  public static userHasAllRolesOnTeam(user: WardenUserDecoration<any>, teamId: string, roleIds: string[]): boolean {
+    return WardenUtils.userHasRolesOnTeam(user, teamId, roleIds, true);
+  }
+
+
+  public static userHasGlobalRoles(user: WardenUserDecoration<any>, inRoleIds: string[], combineWithAnd: boolean): boolean {
     let rval: boolean = false;
-    if (StringRatchet.trimToNull(roleId)) {
-      rval = user?.globalRoleIds?.includes(roleId.toLowerCase());
+    const roleIds: string[] = inRoleIds ? inRoleIds.map(r=>StringRatchet.trimToNull(r)?.toLowerCase()) : null
+    if (user && roleIds && roleIds.length > 0) {
+      const hasMap: boolean[] = user ? roleIds.map(r=>!!user.globalRoleIds.find(gr=>StringRatchet.trimToEmpty(gr).toLowerCase()===r)) : [false];
+      rval = combineWithAnd ? BooleanRatchet.allTrue(hasMap) : BooleanRatchet.anyTrue(hasMap);
     }
     return rval;
   }
 
-  public static userHasRoleOnTeam(user: WardenUserDecoration<any>, inTeamId: string, inRoleId: string): boolean {
+  public static userHasRolesOnTeam(user: WardenUserDecoration<any>, inTeamId: string, inRoleIds: string[], combineWithAnd: boolean): boolean {
     let rval: boolean = false;
     const teamId: string = StringRatchet.trimToNull(inTeamId)?.toLowerCase();
-    const roleId: string = StringRatchet.trimToNull(inRoleId)?.toLowerCase();
-    if (teamId && roleId) {
-      rval = !!(user?.teamRoleMappings?.find(s=>StringRatchet.trimToEmpty(s.teamId).toLowerCase()===teamId && StringRatchet.trimToEmpty(s.roleId).toLowerCase()===roleId));
+    const roleIds: string[] = inRoleIds ? inRoleIds.map(r=>StringRatchet.trimToNull(r)?.toLowerCase()) : null
+    if (user && teamId && roleIds && roleIds.length > 0) {
+      const hasMap: boolean[] = user ? roleIds.map(r=>!!(user?.teamRoleMappings?.find(s=>StringRatchet.trimToEmpty(s.teamId).toLowerCase()===teamId && StringRatchet.trimToEmpty(s.roleId).toLowerCase()===r))) : [false];
+      rval = combineWithAnd ? BooleanRatchet.allTrue(hasMap) : BooleanRatchet.anyTrue(hasMap);
     }
+
     return rval;
   }
+
+
 }
