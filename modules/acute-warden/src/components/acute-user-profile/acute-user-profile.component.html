@@ -1,20 +1,20 @@
-<p-card header="User profile : {{ user.userObject.loginData.userLabel }}">
+<p-card header="User profile : {{ user.userObject.wardenData.userLabel }}">
   <div>
-    ID: {{ user.userObject.loginData.userId }} <br />
-    Full Name: {{ user.userObject.loginData.userLabel }} <br />
+    ID: {{ user.userObject.wardenData.userId }} <br />
+    Full Name: {{ user.userObject.wardenData.userLabel }} <br />
     <h3>Contacts</h3>
     <ul>
-      @for(cm of user.userObject.loginData.contactMethods; track cm) {
+      @for(cm of user.userObject.wardenData.contactMethods; track cm) {
         <li>
           <p-button icon="pi pi-trash" pTooltip="Remove contact method {{ cm.value }}" (click)="removeContact(cm)"></p-button>
           {{ cm.type }} : {{ cm.value }}
         </li>
       }
     </ul>
-    @if (user?.userObject?.loginData?.webAuthnAuthenticatorSummaries?.length) {
+    @if (user?.userObject?.wardenData?.webAuthnAuthenticatorSummaries?.length) {
       <h3>Web Authenticators</h3>
       <ul>
-        @for(waa of user.userObject.loginData.webAuthnAuthenticatorSummaries; track waa) {
+        @for(waa of user.userObject.wardenData.webAuthnAuthenticatorSummaries; track waa) {
           <li>
             <p-button icon="pi pi-trash" pTooltip="Remove web auth {{ webAuthLabel(waa) }}" (click)="removeWebAuthn(waa)"></p-button>
             {{ webAuthLabel(waa) }}
@@ -29,7 +29,9 @@
     </div>
 
     <br />
-    Roles: {{ user.userObject.roles }} <br />
+    Global Roles: {{ user.userObject.globalRoleIds }} <br />
+    <br />
+    Roles: {{ user.userObject.teamRoleMappings }} <br />
     <hr />
     Time (MS) left in token : {{ timeLeftMS }} <button (click)="refreshToken()">Refresh</button>
   </div>

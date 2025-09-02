@@ -34,7 +34,7 @@ export class WardenAdapterService implements WardenUserServiceEventProcessingPro
   }
 
   public onSuccessfulLogin(newUser: WardenLoggedInUserWrapper<any>): void {
-    Logger.info('Logged in as %s', newUser?.userObject?.loginData?.userLabel);
+    Logger.info('Logged in as %s', newUser?.userObject?.wardenData?.userLabel);
   }
 
   public async sendMagicLink(contact: WardenContact, magicLanderUrl: string, postLoginUrl?: string): Promise<void> {
