@@ -6,7 +6,7 @@ import { StringRatchet } from "@bitblit/ratchet-common/lang/string-ratchet";
 import { WardenEntrySummary } from "../model/warden-entry-summary.js";
 import { WardenEntry } from "../model/warden-entry.js";
 import { WardenLoginRequest } from "../model/warden-login-request.js";
-import { WardenTeamRole } from "../model/warden-team-role.js";
+import { WardenTeamRoleMapping } from "../model/warden-team-role-mapping.ts";
 import { WardenWebAuthnEntry } from "../model/warden-web-authn-entry.js";
 import { WardenWebAuthnEntrySummary } from "../model/warden-web-authn-entry-summary.js";
 import { WardenLoggedInUserWrapper } from "../../client/provider/warden-logged-in-user-wrapper.js";
@@ -63,6 +63,7 @@ export class WardenUtils {
             break;
           case WardenLoginRequestType.JwtTokenToRefresh:
             if (!req.jwtTokenToRefresh) {
+              rval.push('JwtToken is required');
             }
           break;
           default: rval.push('Unknown request type');
@@ -95,32 +96,32 @@ export class WardenUtils {
     return rval;
   }
 
-  public static teamRolesToRoles(teamRoles: WardenTeamRole[]): string[] {
+  public static teamRolesToRoles(teamRoles: WardenTeamRoleMapping[]): string[] {
     const rval: string[] = teamRoles?.length ? teamRoles.map((t) => WardenUtils.teamRoleToRoleString(t)) : [];
     return rval;
   }
 
-  public static roleStringsToTeamRoles(roles: string[]): WardenTeamRole[] {
-    const rval: WardenTeamRole[] = roles?.length ? roles.map((t) => WardenUtils.roleStringToTeamRole(t)) : [];
+  public static roleStringsToTeamRoles(roles: string[]): WardenTeamRoleMapping[] {
+    const rval: WardenTeamRoleMapping[] = roles?.length ? roles.map((t) => WardenUtils.roleStringToTeamRole(t)) : [];
     return rval;
   }
 
-  public static roleStringToTeamRole(role: string): WardenTeamRole {
-    let rval: WardenTeamRole = null;
+  public static roleStringToTeamRole(role: string): WardenTeamRoleMapping {
+    let rval: WardenTeamRoleMapping = null;
     if (role && role.indexOf('_/_') >= 0) {
       const sp: string[] = role.split('_/_');
       rval = {
-        team: sp[0],
-        role: sp[1],
+        teamId: sp[0],
+        roleId: sp[1],
       };
     }
     return rval;
   }
 
-  public static teamRoleToRoleString(tr: WardenTeamRole): string {
+  public static teamRoleToRoleString(tr: WardenTeamRoleMapping): string {
     let rval: string = null;
-    if (tr?.role && tr?.team) {
-      rval = tr.team + '_/_' + tr.role;
+    if (tr?.roleId && tr?.teamId) {
+      rval = tr.teamId + '_/_' + tr.roleId;
     }
     return rval;
   }

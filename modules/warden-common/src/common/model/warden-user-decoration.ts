@@ -1,7 +1,10 @@
-import { WardenTeamRole } from './warden-team-role.js';
+import { WardenTeamRoleMapping } from './warden-team-role-mapping.ts';
 
 export interface WardenUserDecoration<T> {
   userTokenData: T;
+  proxyUserTokenData: T;
   userTokenExpirationSeconds: number;
-  userTeamRoles: WardenTeamRole[];
+
+  globalRoleIds: string[];
+  teamRoleMappings: WardenTeamRoleMapping[];
 }

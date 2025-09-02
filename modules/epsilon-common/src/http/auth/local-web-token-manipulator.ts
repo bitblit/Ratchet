@@ -97,7 +97,6 @@ export class LocalWebTokenManipulator<T extends JwtTokenBase> implements WebToke
 
       user: userObject,
       proxy: proxyUser,
-      roles: roles,
     };
 
     const token: string = await this._ratchet.createTokenString(tokenData, expirationSeconds);

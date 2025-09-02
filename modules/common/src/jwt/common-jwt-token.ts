@@ -14,6 +14,4 @@ import { JwtTokenBase } from './jwt-token-base.js';
 export interface CommonJwtToken<T> extends JwtTokenBase {
   user: T; // Data for the authenticated user
   proxy: T; // Data for the proxy user (if any)
-
-  roles: string[]; // Roles that the current customer has
 }

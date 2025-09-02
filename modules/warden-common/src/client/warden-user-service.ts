@@ -21,6 +21,7 @@ import {
 import { WardenEntrySummary } from "../common/model/warden-entry-summary.js";
 import { WardenUtils } from "../common/util/warden-utils.js";
 import { WardenLoginRequestType } from "../common/model/warden-login-request-type";
+import { WardenTeamRoleMapping } from "../common/model/warden-team-role-mapping.ts";
 
 /**
  * A service that handles logging in, saving the current user, watching
@@ -117,7 +118,7 @@ export class WardenUserService<T> {
 
   public fetchLoggedInUserId(): string {
     const tmp: WardenLoggedInUserWrapper<T> = this.options.loggedInUserProvider.fetchLoggedInUserWrapper();
-    const rval: string = tmp?.userObject?.loginData?.userId;
+    const rval: string = tmp?.userObject?.wardenData?.userId;
     return rval;
   }
 
@@ -135,12 +136,22 @@ export class WardenUserService<T> {
     return tmp;
   }
 
-  public loggedInUserHasRole(role: string): boolean {
+  public loggedInUserHasGlobalRole(roleId: string): boolean {
     let rval: boolean = false;
-    if (StringRatchet.trimToNull(role)) {
-      const t: WardenLoggedInUserWrapper<T> = this.fetchLoggedInUserWrapper();
-      const testRole: string = role.toLowerCase();
-      rval = t?.userObject?.roles && !!t.userObject.roles.find((r) => r.toLowerCase() === testRole);
+    if (StringRatchet.trimToNull(roleId)) {
+      const token: WardenJwtToken<T> = this.fetchLoggedInUserJwtObject();
+      rval = token?.globalRoleIds?.includes(roleId.toLowerCase());
+    }
+    return rval;
+  }
+
+  public loggedInUserHasRoleOnTeam(inTeamId: string, inRoleId: string): boolean {
+    let rval: boolean = false;
+    const teamId: string = StringRatchet.trimToNull(inTeamId)?.toLowerCase();
+    const roleId: string = StringRatchet.trimToNull(inRoleId)?.toLowerCase();
+    if (teamId && roleId) {
+      const token: WardenJwtToken<T> = this.fetchLoggedInUserJwtObject();
+      rval = !!(token?.teamRoleMappings?.find(s=>s.teamId===teamId && s.roleId===roleId));
     }
     return rval;
   }
@@ -162,7 +173,22 @@ export class WardenUserService<T> {
 
   public fetchLoggedInUserObject(): T {
     const t: WardenJwtToken<T> = this.fetchLoggedInUserJwtObject();
-    return t ? t.user : null;
+    return t?.user;
+  }
+
+  public fetchLoggedInProxyObject(): T {
+    const t: WardenJwtToken<T> = this.fetchLoggedInUserJwtObject();
+    return t?.proxy;
+  }
+
+  public fetchLoggedInGlobalRoleIds(): string[] {
+    const t: WardenJwtToken<T> = this.fetchLoggedInUserJwtObject();
+    return t?.globalRoleIds;
+  }
+
+  public fetchLoggedInTeamRoleMappingsGlobalRoleIds(): WardenTeamRoleMapping[] {
+    const t: WardenJwtToken<T> = this.fetchLoggedInUserJwtObject();
+    return t?.teamRoleMappings;
   }
 
   public fetchLoggedInUserExpirationEpochSeconds(): number {
@@ -191,7 +217,7 @@ export class WardenUserService<T> {
           expirationEpochSeconds: parsed.exp,
         };
         this.options.loggedInUserProvider.setLoggedInUserWrapper(rval);
-        this.updateRecentLoginsFromWardenEntrySummary(parsed.loginData); // In case we have a recent logins tracker
+        this.updateRecentLoginsFromWardenEntrySummary(parsed.wardenData); // In case we have a recent logins tracker
         this.options.eventProcessor.onSuccessfulLogin(rval);
       } else {
         Logger.warn('Failed to parse token %s - ignoring login and triggering failure');
@@ -249,7 +275,7 @@ export class WardenUserService<T> {
   }
 
   private updateRecentLoginsFromLoggedInUserWrapper(res: WardenLoggedInUserWrapper<T>): void {
-    this.updateRecentLoginsFromWardenEntrySummary(res?.userObject?.loginData);
+    this.updateRecentLoginsFromWardenEntrySummary(res?.userObject?.wardenData);
   }
 
   public async executeWebAuthnBasedLogin(userId: string): Promise<WardenLoggedInUserWrapper<T>> {

@@ -17,11 +17,11 @@ import {
   ListObjectsV2CommandInput,
   ListObjectsV2CommandOutput,
   NoSuchKey,
-  NotFound,
+  NotFound, PutObjectCommand,
   PutObjectCommandInput,
   PutObjectCommandOutput,
-  S3Client,
-} from '@aws-sdk/client-s3';
+  S3Client
+} from "@aws-sdk/client-s3";
 import { RequireRatchet } from '@bitblit/ratchet-common/lang/require-ratchet';
 import { Logger } from '@bitblit/ratchet-common/logger/logger';
 import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet';
@@ -169,7 +169,7 @@ export class S3CacheRatchet implements S3CacheRatchetLike {
   public async writeObjectToCacheFile(
     key: string,
     dataObject: any,
-    template?: PutObjectCommandInput,
+    template?: Partial<PutObjectCommandInput>,
     bucket?: string,
   ): Promise<CompleteMultipartUploadCommandOutput> {
     const json = JSON.stringify(dataObject);
@@ -180,7 +180,7 @@ export class S3CacheRatchet implements S3CacheRatchetLike {
   public async writeStringToCacheFile(
     key: string,
     dataString: string,
-    template?: PutObjectCommandInput,
+    template?: Partial<PutObjectCommandInput>,
     bucket?: string,
   ): Promise<CompleteMultipartUploadCommandOutput> {
     const stream: ReadableStream = WebStreamRatchet.stringToWebReadableStream(dataString);
@@ -190,7 +190,7 @@ export class S3CacheRatchet implements S3CacheRatchetLike {
   public async writeStreamToCacheFile(
     key: string,
     data: ReadableStream | Readable, //StreamingBlobPayloadInputTypes
-    template?: PutObjectCommandInput,
+    template?: Partial<PutObjectCommandInput>,
     bucket?: string,
     progressFn: (progress: Progress) => void = (progress) => {
       Logger.debug('Uploading : %s', progress);
@@ -373,6 +373,15 @@ export class S3CacheRatchet implements S3CacheRatchetLike {
       Key: key,
     };
     const link: string = await getSignedUrl(this.s3, new GetObjectCommand(getCommand), { expiresIn: expirationSeconds });
+    return link;
+  }
+
+  public async preSignedUploadUrlForCacheFile(key: string, expirationSeconds = 3600, bucket: string = null): Promise<string> {
+    const putCommand: PutObjectCommandInput = {
+      Bucket: this.bucketVal(bucket),
+      Key: key,
+    };
+    const link: string = await getSignedUrl(this.s3, new PutObjectCommand(putCommand), { expiresIn: expirationSeconds });
     return link;
   }
 

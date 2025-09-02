@@ -244,10 +244,11 @@ export class WardenService {
         if (user) {
           const decoration: WardenUserDecoration<any> = await this.opts.userDecorationProvider.fetchDecoration(user);
           const wardenToken: WardenJwtToken<any> = {
-            loginData: WardenUtils.stripWardenEntryToSummary(user),
+            wardenData: WardenUtils.stripWardenEntryToSummary(user),
             user: decoration.userTokenData,
-            roles: WardenUtils.teamRolesToRoles(decoration.userTeamRoles),
-            proxy: null,
+            proxy: decoration.proxyUserTokenData,
+            globalRoleIds: decoration.globalRoleIds,
+            teamRoleMappings: decoration.teamRoleMappings
           };
           const jwtToken: string = await this.opts.jwtRatchet.createTokenString(wardenToken, decoration.userTokenExpirationSeconds);
           const output: WardenLoginResults = {
@@ -261,13 +262,14 @@ export class WardenService {
         }
       } else if (cmd.refreshJwtToken) {
         const parsed: WardenJwtToken<any> = await this.opts.jwtRatchet.decodeToken(cmd.refreshJwtToken, ExpiredJwtHandling.THROW_EXCEPTION);
-        const user: WardenEntry = await this.opts.storageProvider.findEntryById(parsed.loginData.userId);
+        const user: WardenEntry = await this.opts.storageProvider.findEntryById(parsed.wardenData.userId);
         const decoration: WardenUserDecoration<any> = await this.opts.userDecorationProvider.fetchDecoration(user);
         const wardenToken: WardenJwtToken<any> = {
-          loginData: WardenUtils.stripWardenEntryToSummary(user),
+          wardenData: WardenUtils.stripWardenEntryToSummary(user),
           user: decoration.userTokenData,
-          roles: WardenUtils.teamRolesToRoles(decoration.userTeamRoles),
-          proxy: null,
+          proxy: decoration.proxyUserTokenData,
+          globalRoleIds: decoration.globalRoleIds,
+          teamRoleMappings: decoration.teamRoleMappings
         };
 
         const newToken: string = await this.opts.jwtRatchet.createTokenString(wardenToken, decoration.userTokenExpirationSeconds);

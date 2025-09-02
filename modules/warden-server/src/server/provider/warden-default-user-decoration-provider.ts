@@ -13,8 +13,10 @@ export class WardenDefaultUserDecorationProvider implements WardenUserDecoration
     // Default to 1 hour
     const rval: WardenUserDecoration<WardenEntrySummary> = {
       userTokenData: WardenUtils.stripWardenEntryToSummary(wardenUser),
+      proxyUserTokenData: null,
       userTokenExpirationSeconds: 3600,
-      userTeamRoles: [{ team: 'WARDEN', role: 'USER' }],
+      globalRoleIds: [],
+      teamRoleMappings: [],
     };
     return rval;
   }

@@ -10,55 +10,6 @@ import { CommonJwtToken } from '@bitblit/ratchet-common/jwt/common-jwt-token';
 import { JwtTokenBase } from '@bitblit/ratchet-common/jwt/jwt-token-base';
 
 export class BuiltInAuthFilters {
-  public static async requireAllRolesInCommonJwt(fCtx: FilterChainContext, requiredRoleAllOf: string[]): Promise<boolean> {
-    if (!requiredRoleAllOf || requiredRoleAllOf.length === 0) {
-      throw new MisconfiguredError('You must require at least 1 role');
-    }
-    if (!fCtx.event?.authorization?.auth) {
-      throw new UnauthorizedError('May not proceed, not authenticated');
-    } else {
-      const asJwt: CommonJwtToken<any> = fCtx.event.authorization.auth;
-      if (!asJwt.roles || asJwt.roles.length === 0) {
-        throw new UnauthorizedError('Required role not found');
-      } else {
-        requiredRoleAllOf.forEach((r) => {
-          if (!asJwt.roles.includes(r)) {
-            // As soon as 1 is missing we are done
-            throw new UnauthorizedError('Required role not found');
-          }
-        });
-      }
-    }
-
-    return true;
-  }
-
-  public static async requireAnyRoleInCommonJwt(fCtx: FilterChainContext, requiredRoleOneOf: string[]): Promise<boolean> {
-    if (!requiredRoleOneOf || requiredRoleOneOf.length === 0) {
-      throw new MisconfiguredError('You must require at least 1 role');
-    }
-    if (!fCtx.event?.authorization?.auth) {
-      throw new UnauthorizedError('May not proceed, not authenticated');
-    } else {
-      const asJwt: CommonJwtToken<any> = fCtx.event.authorization.auth;
-      if (!asJwt.roles || asJwt.roles.length === 0) {
-        throw new UnauthorizedError('Required role not found');
-      } else {
-        let found: boolean = false;
-        requiredRoleOneOf.forEach((r) => {
-          if (!found && asJwt.roles.includes(r)) {
-            // Not found just to shortcut
-            found = true;
-          }
-        });
-        if (!found) {
-          throw new UnauthorizedError('Required role not found');
-        }
-      }
-    }
-
-    return true;
-  }
 
   public static async parseAuthorizationHeader(
     fCtx: FilterChainContext,

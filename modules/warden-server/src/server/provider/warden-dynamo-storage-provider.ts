@@ -12,7 +12,7 @@ import { ExpiringCode } from '@bitblit/ratchet-aws/expiring-code/expiring-code';
 import { WardenStorageProvider } from "./warden-storage-provider.js";
 import { WardenUserDecorationProvider } from "./warden-user-decoration-provider.js";
 import { WardenUserDecoration } from "@bitblit/ratchet-warden-common/common/model/warden-user-decoration";
-import { WardenTeamRole } from "@bitblit/ratchet-warden-common/common/model/warden-team-role";
+import { WardenTeamRoleMapping } from "@bitblit/ratchet-warden-common/common/model/warden-team-role-mapping";
 
 
 // Create a ddb table with a hashkey of userId type string
@@ -28,17 +28,19 @@ export class WardenDynamoStorageProvider<T> implements WardenStorageProvider, Ex
 
   public createDecoration(decoration: T): WardenUserDecoration<T> {
     return {
-      userTeamRoles: this.options.defaultTeamRoles,
+      globalRoleIds: [],
+      teamRoleMappings: this.options.defaultTeamRoleMappings,
       userTokenExpirationSeconds: this.options.defaultTokenExpirationSeconds,
       userTokenData: decoration,
+      proxyUserTokenData: null
     };
   }
 
-  public async updateRoles(userId: string, roles: WardenTeamRole[]): Promise<WardenUserDecoration<T>> {
+  public async updateRoles(userId: string, roles: WardenTeamRoleMapping[]): Promise<WardenUserDecoration<T>> {
     const rval: WardenDynamoStorageDataWrapper = await this.fetchInternalByUserId(userId);
     if (rval) {
       rval.decoration ??= this.createDecoration(null);
-      rval.decoration.userTeamRoles = roles;
+      rval.decoration.teamRoleMappings = roles;
       await this.updateInternal(rval);
     } else {
       throw ErrorRatchet.fErr('Cannot update roles - no entry found for %s', userId);

@@ -1,8 +1,8 @@
-import { WardenTeamRole } from "@bitblit/ratchet-warden-common/common/model/warden-team-role";
+import { WardenTeamRoleMapping } from "@bitblit/ratchet-warden-common/common/model/warden-team-role-mapping";
 
 export class WardenDynamoStorageProviderOptions<T> {
   tableName: string;
-  defaultTeamRoles: WardenTeamRole[];
+  defaultTeamRoleMappings: WardenTeamRoleMapping[];
   defaultTokenExpirationSeconds: number;
   defaultDecoration?: T
 }

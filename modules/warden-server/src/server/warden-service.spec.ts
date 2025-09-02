@@ -71,8 +71,10 @@ describe('#WardenService', () => {
     });
     mockUserDecorationProvider.fetchDecoration.mockResolvedValue({
       userTokenData: { a: 'b', c: 1 },
+      proxyUserTokenData: null,
       userTokenExpirationSeconds: 3600,
-      userTeamRoles: [{ team: 'WARDEN', role: 'USER' }],
+      teamRoleMappings: [{ teamId: 'WARDEN', roleId: 'USER' }],
+      globalRoleIds: [],
     });
     mockWardenSingleUseCodeProvider.handlesContactType.mockReturnValue(true);
     mockWardenSingleUseCodeProvider.checkCode.mockResolvedValue(true);
