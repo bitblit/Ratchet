@@ -151,7 +151,7 @@ export class WardenUserService<T> {
     const roleId: string = StringRatchet.trimToNull(inRoleId)?.toLowerCase();
     if (teamId && roleId) {
       const token: WardenJwtToken<T> = this.fetchLoggedInUserJwtObject();
-      rval = !!(token?.teamRoleMappings?.find(s=>s.teamId===teamId && s.roleId===roleId));
+      rval = !!(token?.teamRoleMappings?.find(s=>StringRatchet.trimToEmpty(s.teamId).toLowerCase()===teamId && StringRatchet.trimToEmpty(s.roleId).toLowerCase()===roleId));
     }
     return rval;
   }
