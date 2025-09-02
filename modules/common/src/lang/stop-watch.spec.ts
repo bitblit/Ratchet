@@ -5,7 +5,8 @@ import { describe, expect, test } from 'vitest';
 describe('#elapsedMS', function () {
   test('should calculate elapsed MS correctly', async () => {
     const sw: StopWatch = new StopWatch();
-    await PromiseRatchet.wait(500);
+    sw.moveCreateTime(-501);
+    //await PromiseRatchet.wait(500);
     const elapsed: number = sw.elapsedMS();
     expect(elapsed).toBeGreaterThan(500);
     expect(elapsed).toBeLessThan(600);
@@ -44,8 +45,9 @@ describe('#elapsedMS', function () {
         expect(elapsedTenths).toEqual(i);
         expect(expectedTenths).toEqual(10 - i);
       }
+      sw.moveCreateTime(-100);
       //Logger.info('%d elapsed %d expected -- %s', elapsedTenths, expectedTenths);
-      await PromiseRatchet.wait(100);
+      //await PromiseRatchet.wait(100);
     }
   });
 });

@@ -12,12 +12,21 @@ export class StopWatch {
   get createTime(): number {
     return this._createTime;
   }
+
   private starts: Map<string, number> = new Map<string, number>();
   private ends: Map<string, number> = new Map<string, number>();
 
   private _createTime: number = Date.now();
   private _label: string = StringRatchet.createRandomHexString(4);
   private _labelIncludedInOutput = false;
+
+  // This is mainly used for testing - allows me to programmitically
+  // move the create-time into the past for testing things.  Might have
+  // some other uses, not really sure
+  public moveCreateTime(offset: number): number {
+    this._createTime+=offset;
+    return this._createTime;
+  }
 
   public withLabel(val: string): StopWatch {
     this._label = StringRatchet.trimToNull(val);
