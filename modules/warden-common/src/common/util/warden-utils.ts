@@ -11,6 +11,8 @@ import { WardenWebAuthnEntry } from "../model/warden-web-authn-entry.js";
 import { WardenWebAuthnEntrySummary } from "../model/warden-web-authn-entry-summary.js";
 import { WardenLoggedInUserWrapper } from "../../client/provider/warden-logged-in-user-wrapper.js";
 import { WardenLoginRequestType } from "../model/warden-login-request-type.ts";
+import { WardenJwtToken } from "../model/warden-jwt-token.ts";
+import { WardenUserDecoration } from "../model/warden-user-decoration.ts";
 
 export class WardenUtils {
   // Prevent instantiation
@@ -187,6 +189,25 @@ export class WardenUtils {
 
   public static wrapperIsExpired(value: WardenLoggedInUserWrapper<any>): boolean {
     const rval: boolean = value?.userObject?.exp && value.expirationEpochSeconds < Date.now() / 1000;
+    return rval;
+  }
+
+
+  public static userHasGlobalRole(user: WardenUserDecoration<any>, roleId: string): boolean {
+    let rval: boolean = false;
+    if (StringRatchet.trimToNull(roleId)) {
+      rval = user?.globalRoleIds?.includes(roleId.toLowerCase());
+    }
+    return rval;
+  }
+
+  public static userHasRoleOnTeam(user: WardenUserDecoration<any>, inTeamId: string, inRoleId: string): boolean {
+    let rval: boolean = false;
+    const teamId: string = StringRatchet.trimToNull(inTeamId)?.toLowerCase();
+    const roleId: string = StringRatchet.trimToNull(inRoleId)?.toLowerCase();
+    if (teamId && roleId) {
+      rval = !!(user?.teamRoleMappings?.find(s=>StringRatchet.trimToEmpty(s.teamId).toLowerCase()===teamId && StringRatchet.trimToEmpty(s.roleId).toLowerCase()===roleId));
+    }
     return rval;
   }
 }

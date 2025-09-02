@@ -22,6 +22,7 @@ import { WardenEntrySummary } from "../common/model/warden-entry-summary.js";
 import { WardenUtils } from "../common/util/warden-utils.js";
 import { WardenLoginRequestType } from "../common/model/warden-login-request-type";
 import { WardenTeamRoleMapping } from "../common/model/warden-team-role-mapping.ts";
+import { WardenUserDecoration } from "../common/model/warden-user-decoration.ts";
 
 /**
  * A service that handles logging in, saving the current user, watching
@@ -136,23 +137,37 @@ export class WardenUserService<T> {
     return tmp;
   }
 
-  public loggedInUserHasGlobalRole(roleId: string): boolean {
-    let rval: boolean = false;
-    if (StringRatchet.trimToNull(roleId)) {
-      const token: WardenJwtToken<T> = this.fetchLoggedInUserJwtObject();
-      rval = token?.globalRoleIds?.includes(roleId.toLowerCase());
+  public static wardenUserDecorationFromToken<T>(jwt: WardenJwtToken<T>): WardenUserDecoration<T> {
+    let rval: WardenUserDecoration<any> = null;
+    if (jwt) {
+      rval = {
+        userTokenData: jwt.user,
+        proxyUserTokenData: jwt.proxy,
+        userTokenExpirationSeconds: null,
+
+        globalRoleIds: jwt.globalRoleIds,
+        teamRoleMappings: jwt.teamRoleMappings
+      }
     }
     return rval;
   }
 
-  public loggedInUserHasRoleOnTeam(inTeamId: string, inRoleId: string): boolean {
+
+  public loggedInUserHasGlobalRole(roleId: string): boolean {
     let rval: boolean = false;
-    const teamId: string = StringRatchet.trimToNull(inTeamId)?.toLowerCase();
-    const roleId: string = StringRatchet.trimToNull(inRoleId)?.toLowerCase();
-    if (teamId && roleId) {
-      const token: WardenJwtToken<T> = this.fetchLoggedInUserJwtObject();
-      rval = !!(token?.teamRoleMappings?.find(s=>StringRatchet.trimToEmpty(s.teamId).toLowerCase()===teamId && StringRatchet.trimToEmpty(s.roleId).toLowerCase()===roleId));
-    }
+
+    const token: WardenJwtToken<T> = this.fetchLoggedInUserJwtObject();
+    rval = token ? WardenUtils.userHasGlobalRole(WardenUserService.wardenUserDecorationFromToken(token), roleId) : false;
+
+    return rval;
+  }
+
+  public loggedInUserHasRoleOnTeam(teamId: string, roleId: string): boolean {
+    let rval: boolean = false;
+
+    const token: WardenJwtToken<T> = this.fetchLoggedInUserJwtObject();
+    rval = token ? WardenUtils.userHasRoleOnTeam(WardenUserService.wardenUserDecorationFromToken(token), teamId, roleId) : false;
+
     return rval;
   }
 

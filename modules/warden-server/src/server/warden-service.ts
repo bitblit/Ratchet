@@ -54,9 +54,11 @@ import {
 } from "@bitblit/ratchet-warden-common/common/model/warden-third-party-authentication";
 import { WardenThirdPartyAuthenticationProvider } from "./provider/warden-third-party-authentication-provider.js";
 import { WardenEntryBuilder } from "./warden-entry-builder.js";
+import { WardenAuthorizer } from "./warden-authorizer.ts";
 
 export class WardenService {
   private opts: WardenServiceOptions;
+  private cacheAuthorizer: WardenAuthorizer;
 
   constructor(private inOptions: WardenServiceOptions) {
     RequireRatchet.notNullOrUndefined(inOptions, 'options');
@@ -74,6 +76,11 @@ export class WardenService {
       },
       inOptions,
     );
+    this.cacheAuthorizer = new WardenAuthorizer(inOptions);
+  }
+
+  public get authorizer(): WardenAuthorizer {
+    return this.cacheAuthorizer;
   }
 
   public get options(): WardenServiceOptions {
