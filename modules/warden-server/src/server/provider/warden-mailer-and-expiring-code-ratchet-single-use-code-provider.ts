@@ -107,7 +107,7 @@ export class WardenMailerAndExpiringCodeRatchetSingleUseCodeProvider implements 
   ): Promise<ReadyToSendEmail> {
     const rts: ReadyToSendEmail = {
       destinationAddresses: [destinationContact?.value || contact.value],
-      subject: customTemplate?.subjectLine || this.mailerOptions.magicLinkSubjectLine || 'Your login token',
+      subject: customTemplate?.subjectLine || this.mailerOptions.magicLinkSubjectLine || 'Login token for '+contact.value,
     };
 
     Logger.info('Formatting Message for magic link, rts: %j, messageType: %s, context: %j', rts, messageType, context);
