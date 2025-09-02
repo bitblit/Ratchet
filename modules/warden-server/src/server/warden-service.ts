@@ -285,19 +285,16 @@ export class WardenService {
         rval = {
           refreshJwtToken: newToken,
         };
-      }
     } else if (cmd.exportWebAuthnRegistrationEntryForLoggedInUser) {
       rval = {
         exportWebAuthnRegistrationEntryForLoggedInUser: await this.exportWebAuthnRegistrationEntry(cmd.exportWebAuthnRegistrationEntryForLoggedInUser, loggedInUserId)
       }
     } else if (cmd.importWebAuthnRegistrationEntryForLoggedInUser) {
-      rval = {
-        importWebAuthnRegistrationEntryForLoggedInUser: await this.importWebAuthnRegistrationEntry(cmd.importWebAuthnRegistrationEntryForLoggedInUser, loggedInUserId)
+        rval = {
+          importWebAuthnRegistrationEntryForLoggedInUser: await this.importWebAuthnRegistrationEntry(cmd.importWebAuthnRegistrationEntryForLoggedInUser, loggedInUserId)
+        }
       }
-    }
-
-
-    else {
+    } else {
       rval = { error: 'No command sent' };
     }
     return rval;
