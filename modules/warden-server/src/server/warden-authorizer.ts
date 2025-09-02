@@ -3,6 +3,7 @@ import { WardenContact } from "@bitblit/ratchet-warden-common/common/model/warde
 import { WardenEntry } from "@bitblit/ratchet-warden-common/common/model/warden-entry";
 import { WardenUtils } from "@bitblit/ratchet-warden-common/common/util/warden-utils";
 import { WardenUserDecoration } from "@bitblit/ratchet-warden-common/common/model/warden-user-decoration";
+import { StringRatchet } from "@bitblit/ratchet-common/lang/string-ratchet";
 
 export class WardenAuthorizer {
 
@@ -59,6 +60,25 @@ export class WardenAuthorizer {
   public async userHasRolesOnTeam(userId: string, teamId: string, roleIds: string[], combineWithAnd: boolean): Promise<boolean> {
     const user: WardenUserDecoration<any> = await this.findDecoratorBy(userId);
     return WardenUtils.userHasRolesOnTeam(user, teamId, roleIds, combineWithAnd);
+  }
+
+
+
+
+  // Just a synonym since that is how some people think
+  public async userIsTeamMember(userId: string, teamId: string): Promise<boolean> {
+    const user: WardenUserDecoration<any> = await this.findDecoratorBy(userId);
+    return WardenUtils.userIsTeamMember(user,teamId);
+  }
+
+  public async userHasAnyRoleOnTeam(userId: string, teamId: string): Promise<boolean> {
+    const user: WardenUserDecoration<any> = await this.findDecoratorBy(userId);
+    return WardenUtils.userHasAnyRoleOnTeam(user,teamId);
+  }
+
+  public async usersTeamMemberships(userId: string): Promise<string[]> {
+    const user: WardenUserDecoration<any> = await this.findDecoratorBy(userId);
+    return WardenUtils.usersTeamMemberships(user);
   }
 
 }

@@ -11,7 +11,6 @@ import { WardenWebAuthnEntry } from "../model/warden-web-authn-entry.js";
 import { WardenWebAuthnEntrySummary } from "../model/warden-web-authn-entry-summary.js";
 import { WardenLoggedInUserWrapper } from "../../client/provider/warden-logged-in-user-wrapper.js";
 import { WardenLoginRequestType } from "../model/warden-login-request-type.ts";
-import { WardenJwtToken } from "../model/warden-jwt-token.ts";
 import { WardenUserDecoration } from "../model/warden-user-decoration.ts";
 import { BooleanRatchet } from "@bitblit/ratchet-common/lang/boolean-ratchet";
 
@@ -241,7 +240,7 @@ export class WardenUtils {
     return rval;
   }
 
-  // Just a synonym since thats how some people think
+  // Just a synonym since that is how some people think
   public static userIsTeamMember(user: WardenUserDecoration<any>, inTeamId: string): boolean {
     return WardenUtils.userHasAnyRoleOnTeam(user, inTeamId);
   }
@@ -256,5 +255,13 @@ export class WardenUtils {
     return rval;
   }
 
+  public static usersTeamMemberships(user: WardenUserDecoration<any>): string[] {
+    let rval: string[] = [];
+    if (user) {
+      const s = new Set<string>(user.teamRoleMappings.map(s=>StringRatchet.trimToNull(s.teamId).toLowerCase()));
+      rval = Array.from(s);
+    }
+    return rval;
+  }
 
 }
