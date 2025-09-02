@@ -43,7 +43,7 @@ export class WardenAuthorizer {
 
   public async userHasAtLeastOneRoleOnTeam(userId: string, teamId: string, roleIds: string[]): Promise<boolean> {
     const user: WardenUserDecoration<any> = await this.findDecoratorBy(userId);
-    const rval = user ? WardenUtils.userHasRolesOnTeam(user, roleIds, teamId, false) : false;
+    const rval = user ? await this.userHasRolesOnTeam(user, teamId, roleIds, false) : false;
     return rval;
   }
 
@@ -55,7 +55,7 @@ export class WardenAuthorizer {
 
   public async userHasAllRolesOnTeam(userId: string, teamId: string, roleIds: string[]): Promise<boolean> {
     const user: WardenUserDecoration<any> = await this.findDecoratorBy(userId);
-    const rval = user ? WardenUtils.userHasRolesOnTeam(user, roleIds, teamId, true) : false;
+    const rval = user ? await this.userHasRolesOnTeam(user, teamId, roleIds, true) : false;
     return rval;
   }
 
