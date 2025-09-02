@@ -3,6 +3,7 @@ import { WardenContact } from "@bitblit/ratchet-warden-common/common/model/warde
 import { WardenEntry } from "@bitblit/ratchet-warden-common/common/model/warden-entry";
 import { WardenUtils } from "@bitblit/ratchet-warden-common/common/util/warden-utils";
 import { WardenUserDecoration } from "@bitblit/ratchet-warden-common/common/model/warden-user-decoration";
+import { BooleanRatchet } from "@bitblit/ratchet-common/lang/boolean-ratchet";
 
 export class WardenAuthorizer {
 
@@ -26,19 +27,51 @@ export class WardenAuthorizer {
   }
 
   public async userHasGlobalRole(userId: string, roleId: string): Promise<boolean> {
-    let rval: boolean = false;
-    const user: WardenUserDecoration<any> = await this.findDecoratorBy(userId);
-    rval = user ? WardenUtils.userHasGlobalRole(user, roleId) : false;
+    const rval: boolean = await this.userHasGlobalRoles(userId, [roleId], true);
     return rval;
   }
 
-  public async userHasRoleOnTeam(userId: string, roleId: string, teamId: string): Promise<boolean> {
-    let rval: boolean = false;
+  public async userHasRoleOnTeam(userId: string,teamId: string, roleId: string): Promise<boolean> {
+    const rval: boolean = await this.userHasRolesOnTeam(userId, teamId, [roleId], true);
+    return rval;
+  }
+
+  public async userHasAtLeastOneGlobalRole(userId: string, roleIds: string[]): Promise<boolean> {
+    const rval: boolean = await this.userHasGlobalRoles(userId, roleIds, false);
+    return rval;
+  }
+
+  public async userHasAtLeastOneRoleOnTeam(userId: string, teamId: string, roleIds: string[]): Promise<boolean> {
     const user: WardenUserDecoration<any> = await this.findDecoratorBy(userId);
-    rval = user ? WardenUtils.userHasRoleOnTeam(user, roleId, teamId) : false;
+    const rval = user ? WardenUtils.userHasRolesOnTeam(user, roleIds, teamId, false) : false;
     return rval;
   }
 
 
+  public async userHasAllGlobalRoles(userId: string, roleIds: string[]): Promise<boolean> {
+    const rval: boolean = await this.userHasGlobalRoles(userId, roleIds, true);
+    return rval;
+  }
+
+  public async userHasAllRolesOnTeam(userId: string, teamId: string, roleIds: string[]): Promise<boolean> {
+    const user: WardenUserDecoration<any> = await this.findDecoratorBy(userId);
+    const rval = user ? WardenUtils.userHasRolesOnTeam(user, roleIds, teamId, true) : false;
+    return rval;
+  }
+
+
+  public async userHasGlobalRoles(userId: string, roleIds: string[], combineWithAnd: boolean): Promise<boolean> {
+    const user: WardenUserDecoration<any> = await this.findDecoratorBy(userId);
+    const hasMap: boolean[] = user ? roleIds.map(r=>WardenUtils.userHasGlobalRole(user, r)) : [false];
+    const rval: boolean = combineWithAnd ? BooleanRatchet.allTrue(hasMap) : BooleanRatchet.anyTrue(hasMap);
+    return rval;
+  }
+
+  public async userHasRolesOnTeam(userId: string, teamId: string, roleIds: string[], combineWithAnd: boolean): Promise<boolean> {
+    const user: WardenUserDecoration<any> = await this.findDecoratorBy(userId);
+    const hasMap: boolean[] = user ? roleIds.map(r=>WardenUtils.userHasRoleOnTeam(user, r, teamId)) : [false];
+    const rval: boolean = combineWithAnd ? BooleanRatchet.allTrue(hasMap) : BooleanRatchet.anyTrue(hasMap);
+    return rval;
+  }
 
 }
