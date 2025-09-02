@@ -108,6 +108,22 @@ export class WardenClient {
     return parsed;
   }
 
+  public async exportWebAuthnRegistrationEntryForLoggedInUser(origin: string): Promise<string> {
+    const cmd: WardenCommand = {
+      exportWebAuthnRegistrationEntryForLoggedInUser: origin,
+    };
+    const rval: WardenCommandResponse = await this.exchangeCommand(cmd);
+    return rval.exportWebAuthnRegistrationEntryForLoggedInUser;
+  }
+  public async importWebAuthnRegistrationEntryForLoggedInUser(token: string): Promise<boolean> {
+    const cmd: WardenCommand = {
+      importWebAuthnRegistrationEntryForLoggedInUser: token,
+    };
+    const rval: WardenCommandResponse = await this.exchangeCommand(cmd);
+    return rval.importWebAuthnRegistrationEntryForLoggedInUser;
+  }
+
+
   public async generateWebAuthnRegistrationChallengeForLoggedInUser(): Promise<StartRegistrationOpts> {
     const cmd: WardenCommand = {
       generateWebAuthnRegistrationChallengeForLoggedInUser: true,

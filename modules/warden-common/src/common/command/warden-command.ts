@@ -21,4 +21,9 @@ export interface WardenCommand {
 
   performLogin?: WardenLoginRequest;
   refreshJwtToken?: string;
+
+  exportWebAuthnRegistrationEntryForLoggedInUser?: string; // Pass the target origin
+  importWebAuthnRegistrationEntryForLoggedInUser?: string;
+
+
 }

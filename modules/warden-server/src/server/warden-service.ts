@@ -286,8 +286,58 @@ export class WardenService {
           refreshJwtToken: newToken,
         };
       }
-    } else {
+    } else if (cmd.exportWebAuthnRegistrationEntryForLoggedInUser) {
+      rval = {
+        exportWebAuthnRegistrationEntryForLoggedInUser: await this.exportWebAuthnRegistrationEntry(cmd.exportWebAuthnRegistrationEntryForLoggedInUser, loggedInUserId)
+      }
+    } else if (cmd.importWebAuthnRegistrationEntryForLoggedInUser) {
+      rval = {
+        importWebAuthnRegistrationEntryForLoggedInUser: await this.importWebAuthnRegistrationEntry(cmd.importWebAuthnRegistrationEntryForLoggedInUser, loggedInUserId)
+      }
+    }
+
+
+    else {
       rval = { error: 'No command sent' };
+    }
+    return rval;
+  }
+
+  public async exportWebAuthnRegistrationEntry(origin: string, userId: string): Promise<string> {
+    const ent: WardenEntry = await this.opts.storageProvider.findEntryById(userId);
+    let rval: string = null;
+    if (ent) {
+      const webAuth: WardenWebAuthnEntry = ent.webAuthnAuthenticators.find(w=>w.origin===origin);
+      if (webAuth) {
+        const s1: string = JSON.stringify(webAuth);
+        rval = Base64Ratchet.encodeStringToBase64String(s1);
+      } else {
+        Logger.warn('Could not export webauthn - no such origin');
+      }
+    } else {
+      Logger.warn('Could not export webauthn - no such user id')
+    }
+
+    return rval;
+  }
+
+  public async importWebAuthnRegistrationEntry(token: string, userId: string): Promise<boolean> {
+    const ent: WardenEntry = await this.opts.storageProvider.findEntryById(userId);
+    let rval: boolean = false;
+    if (ent) {
+      const s1: string = Base64Ratchet.base64StringToString(token);
+      const newEntry: WardenWebAuthnEntry = JSON.parse(s1);
+      const old: WardenWebAuthnEntry = ent.webAuthnAuthenticators.find(w=>w.origin===newEntry.origin);
+      if (old) {
+        Logger.warn('Removing existing entry %j', old);
+        ent.webAuthnAuthenticators = ent.webAuthnAuthenticators.filter(w=>w.origin !== newEntry.origin);
+      }
+      ent.webAuthnAuthenticators.push(newEntry);
+      await this.opts.storageProvider.saveEntry(ent);
+      Logger.info('Wrote ok');
+      rval = true;
+    } else {
+      Logger.warn('Could not export webauthn - no such user id')
     }
     return rval;
   }

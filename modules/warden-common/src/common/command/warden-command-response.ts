@@ -17,5 +17,8 @@ export interface WardenCommandResponse {
   removeWebAuthnRegistrationFromLoggedInUser?: WardenEntrySummary;
   removeContactFromLoggedInUser?: WardenEntrySummary;
 
+  exportWebAuthnRegistrationEntryForLoggedInUser?: string;
+  importWebAuthnRegistrationEntryForLoggedInUser?: boolean;
+
   error?: string;
 }

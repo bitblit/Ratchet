@@ -17,6 +17,7 @@
         @for(waa of user.userObject.wardenData.webAuthnAuthenticatorSummaries; track waa) {
           <li>
             <p-button icon="pi pi-trash" pTooltip="Remove web auth {{ webAuthLabel(waa) }}" (click)="removeWebAuthn(waa)"></p-button>
+            <p-button icon="pi pi-file-export" pTooltip="Export web auth {{ webAuthLabel(waa) }}" (click)="exportWebAuthn(waa.origin)"></p-button>
             {{ webAuthLabel(waa) }}
           </li>
         }
@@ -26,6 +27,7 @@
     <div style="display: flex; flex-direction: row">
       <p-button icon="pi pi-user" pTooltip="Add a new contact method" (click)="addContact()" icon="pi pi-user-plus"></p-button>
       <p-button icon="pi pi-lock" pTooltip="Add this device as an authenticator" (click)="addWebAuthnDevice()"></p-button>
+      <p-button icon="pi pi-file-import" pTooltip="Import web authn" (click)="importWebAuthn()"></p-button>
     </div>
 
     <br />

@@ -23,6 +23,8 @@ import { WardenUtils } from "../common/util/warden-utils.js";
 import { WardenLoginRequestType } from "../common/model/warden-login-request-type";
 import { WardenTeamRoleMapping } from "../common/model/warden-team-role-mapping.ts";
 import { WardenUserDecoration } from "../common/model/warden-user-decoration.ts";
+import { WardenCommand } from "../common/command/warden-command.ts";
+import { WardenCommandResponse } from "../common/command/warden-command-response.ts";
 
 /**
  * A service that handles logging in, saving the current user, watching
@@ -362,6 +364,14 @@ export class WardenUserService<T> {
     );
     this.updateRecentLoginsFromWardenEntrySummary(output);
     return output;
+  }
+
+
+  public async exportWebAuthnRegistrationEntryForLoggedInUser(origin: string): Promise<string> {
+    return this.options.wardenClient.exportWebAuthnRegistrationEntryForLoggedInUser(origin);
+  }
+  public async importWebAuthnRegistrationEntryForLoggedInUser(token: string): Promise<boolean> {
+    return this.options.wardenClient.importWebAuthnRegistrationEntryForLoggedInUser(token);
   }
 
   private defaultDeviceLabelGenerator(): string {

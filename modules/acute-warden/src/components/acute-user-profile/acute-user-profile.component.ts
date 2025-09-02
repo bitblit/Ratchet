@@ -85,6 +85,23 @@ export class AcuteUserProfileComponent {
     await this.userService.refreshToken();
   }
 
+  public async exportWebAuthn(origin: string): Promise<string> {
+    Logger.info('exportWebAuthn: %s', origin);
+    const newValue: string = await this.userService.exportWebAuthnRegistrationEntryForLoggedInUser(origin);
+    alert(newValue);
+    return newValue;
+  }
+
+  public async importWebAuthn(): Promise<boolean> {
+    let rval: boolean = false;
+    const value = prompt('Input the web authn token to import');
+    if (StringRatchet.trimToNull(value)) {
+      Logger.info('importWebAuthn: %s', origin);
+      rval = await this.userService.importWebAuthnRegistrationEntryForLoggedInUser(value);
+    }
+    return rval;
+  }
+
   public webAuthLabel(webId: WardenWebAuthnEntrySummary): string {
     let rval: string = 'Error - missing';
     if (webId) {
