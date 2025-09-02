@@ -241,5 +241,20 @@ export class WardenUtils {
     return rval;
   }
 
+  // Just a synonym since thats how some people think
+  public static userIsTeamMember(user: WardenUserDecoration<any>, inTeamId: string): boolean {
+    return WardenUtils.userHasAnyRoleOnTeam(user, inTeamId);
+  }
+
+  public static userHasAnyRoleOnTeam(user: WardenUserDecoration<any>, inTeamId: string): boolean {
+    let rval: boolean = false;
+    const teamId: string = StringRatchet.trimToNull(inTeamId)?.toLowerCase();
+    if (user && teamId) {
+      rval = !!user.teamRoleMappings.find(s=>StringRatchet.trimToNull(s.teamId).toLowerCase()===teamId);
+    }
+
+    return rval;
+  }
+
 
 }
