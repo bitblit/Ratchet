@@ -307,7 +307,10 @@ export class WardenService {
     if (ent) {
       const webAuth: WardenWebAuthnEntry = ent.webAuthnAuthenticators.find(w => w.origin === origin);
       if (webAuth) {
-        const expectedChallenge: string = await this.opts.storageProvider.fetchCurrentUserChallenge(userId, origin);
+        const oUrl: URL = new URL(origin);
+        const rpId: string = oUrl.hostname;
+        Logger.debug('Finding challenge for origin %s  / RPID %s', origin, rpId);
+        const expectedChallenge: string = await this.opts.storageProvider.fetchCurrentUserChallenge(userId, rpId);
         const token: WardenWebAuthnExportToken = {
           entry: webAuth,
           challenge: expectedChallenge
