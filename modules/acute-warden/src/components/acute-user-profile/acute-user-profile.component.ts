@@ -89,6 +89,7 @@ export class AcuteUserProfileComponent {
     Logger.info('exportWebAuthn: %s', origin);
     const newValue: string = await this.userService.exportWebAuthnRegistrationEntryForLoggedInUser(origin);
     alert(newValue);
+    Logger.info('Export token is %s', newValue);
     return newValue;
   }
 
@@ -99,6 +100,7 @@ export class AcuteUserProfileComponent {
       Logger.info('importWebAuthn: %s', origin);
       rval = await this.userService.importWebAuthnRegistrationEntryForLoggedInUser(value);
     }
+    Logger.info('Import returned is %s', rval);
     return rval;
   }
 

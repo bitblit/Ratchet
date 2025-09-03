@@ -55,26 +55,27 @@ import {
 import { WardenThirdPartyAuthenticationProvider } from "./provider/warden-third-party-authentication-provider.js";
 import { WardenEntryBuilder } from "./warden-entry-builder.js";
 import { WardenAuthorizer } from "./warden-authorizer.ts";
+import { WardenWebAuthnExportToken } from "./warden-web-authn-export-token.ts";
 
 export class WardenService {
   private opts: WardenServiceOptions;
   private cacheAuthorizer: WardenAuthorizer;
 
   constructor(private inOptions: WardenServiceOptions) {
-    RequireRatchet.notNullOrUndefined(inOptions, 'options');
-    RequireRatchet.notNullOrUndefined(inOptions.relyingPartyName, 'options.relyingPartyName');
-    RequireRatchet.notNullUndefinedOrEmptyArray(inOptions.allowedOrigins, 'options.allowedOrigins');
-    RequireRatchet.notNullOrUndefined(inOptions.storageProvider, 'options.storageProvider');
-    RequireRatchet.notNullOrUndefined(inOptions.jwtRatchet, 'options.jwtRatchet');
-    RequireRatchet.notNullUndefinedOrEmptyArray(inOptions.singleUseCodeProviders, 'options.singleUseCodeProviders');
+    RequireRatchet.notNullOrUndefined(inOptions, "options");
+    RequireRatchet.notNullOrUndefined(inOptions.relyingPartyName, "options.relyingPartyName");
+    RequireRatchet.notNullUndefinedOrEmptyArray(inOptions.allowedOrigins, "options.allowedOrigins");
+    RequireRatchet.notNullOrUndefined(inOptions.storageProvider, "options.storageProvider");
+    RequireRatchet.notNullOrUndefined(inOptions.jwtRatchet, "options.jwtRatchet");
+    RequireRatchet.notNullUndefinedOrEmptyArray(inOptions.singleUseCodeProviders, "options.singleUseCodeProviders");
 
     this.opts = Object.assign(
       {
         userTokenDataProvider: new WardenDefaultUserDecorationProvider(),
         eventProcessor: new WardenNoOpEventProcessingProvider(),
-        sendMagicLinkCommandValidator: new WardenDefaultSendMagicLinkCommandValidator(),
+        sendMagicLinkCommandValidator: new WardenDefaultSendMagicLinkCommandValidator()
       },
-      inOptions,
+      inOptions
     );
     this.cacheAuthorizer = new WardenAuthorizer(inOptions);
   }
@@ -104,14 +105,14 @@ export class WardenService {
       const cmd: WardenCommand = JSON.parse(cmdString);
       const resp: WardenCommandResponse = await this.processCommandToResponse(cmd, origin, loggedInUserId);
       if (resp === null) {
-        Logger.warn('Response was null for %s %s %s', cmdString, origin, loggedInUserId);
+        Logger.warn("Response was null for %s %s %s", cmdString, origin, loggedInUserId);
       } else {
         rval = JSON.stringify(resp);
       }
     } catch (err) {
       // Just cast it directly
       const errString: string = ErrorRatchet.safeStringifyErr(err);
-      Logger.error('Failed %s : %j', errString, cmdString, err);
+      Logger.error("Failed %s : %j", errString, cmdString, err);
       rval = JSON.stringify({ error: errString } as WardenCommandResponse);
     }
     return rval;
@@ -121,33 +122,33 @@ export class WardenService {
   public async processCommandToResponse(cmd: WardenCommand, origin: string, loggedInUserId: string): Promise<WardenCommandResponse> {
     let rval: WardenCommandResponse = null;
     if (cmd) {
-      Logger.info('Processing command : UserID: %s  Origin: %s Command: %j', loggedInUserId, origin, cmd);
+      Logger.info("Processing command : UserID: %s  Origin: %s Command: %j", loggedInUserId, origin, cmd);
 
       if (cmd.sendExpiringValidationToken) {
         rval = { sendExpiringValidationToken: await this.sendExpiringValidationToken(cmd.sendExpiringValidationToken, origin) };
       } else if (cmd.generateWebAuthnAuthenticationChallengeForUserId) {
         const tmp: PublicKeyCredentialRequestOptionsJSON = await this.generateWebAuthnAuthenticationChallengeForUserId(
           cmd.generateWebAuthnAuthenticationChallengeForUserId,
-          origin,
+          origin
         );
         rval = { generateWebAuthnAuthenticationChallengeForUserId: { dataAsJson: JSON.stringify(tmp) } };
       } else if (cmd.createAccount) {
         const newEntry: WardenEntry = await this.createAccount(
-            cmd.createAccount.contact,
-            origin,
-            cmd.createAccount.sendCode,
-            cmd.createAccount.label,
-            cmd.createAccount.tags,
-          );
+          cmd.createAccount.contact,
+          origin,
+          cmd.createAccount.sendCode,
+          cmd.createAccount.label,
+          cmd.createAccount.tags
+        );
         rval = {
           createAccount: newEntry.userId
         };
       } else if (cmd.sendMagicLink) {
         if (cmd?.sendMagicLink?.contactLookup && cmd?.sendMagicLink?.contact) {
-          throw ErrorRatchet.fErr('You may not specify both contact and contactLookup');
+          throw ErrorRatchet.fErr("You may not specify both contact and contactLookup");
         }
         if (!cmd?.sendMagicLink?.contactLookup && !cmd?.sendMagicLink?.contact) {
-          throw ErrorRatchet.fErr('You must not specify either contact and contactLookup');
+          throw ErrorRatchet.fErr("You must not specify either contact and contactLookup");
         }
         if (cmd.sendMagicLink.contactLookup) {
           const entry: WardenEntry = await this.findEntryById(cmd.sendMagicLink.contactLookup.userId);
@@ -155,7 +156,7 @@ export class WardenService {
             if (cmd.sendMagicLink.contactLookup.contactType) {
               // Use the one specified, otherwise just first one
               cmd.sendMagicLink.contact = (entry.contactMethods || []).find(
-                (cm) => cm.type === cmd.sendMagicLink.contactLookup.contactType,
+                (cm) => cm.type === cmd.sendMagicLink.contactLookup.contactType
               );
             } else {
               cmd.sendMagicLink.contact = (entry.contactMethods || []).length > 0 ? entry.contactMethods[0] : null;
@@ -165,7 +166,7 @@ export class WardenService {
         }
 
         if (!cmd.sendMagicLink.contact) {
-          throw ErrorRatchet.fErr('Could not find contract entry either directly or by lookup');
+          throw ErrorRatchet.fErr("Could not find contract entry either directly or by lookup");
         }
         // Now run all allowance checks on the link
         const loggedInUser: WardenEntry = StringRatchet.trimToNull(loggedInUserId)
@@ -184,28 +185,28 @@ export class WardenService {
             cmd.sendMagicLink.landingUrl,
             cmd.sendMagicLink.meta,
             ttlSeconds,
-            cmd.sendMagicLink.customTemplate,
-          ),
+            cmd.sendMagicLink.customTemplate
+          )
         };
       } else if (cmd.generateWebAuthnRegistrationChallengeForLoggedInUser) {
         if (!StringRatchet.trimToNull(loggedInUserId)) {
-          ErrorRatchet.throwFormattedErr('This requires a logged in user');
+          ErrorRatchet.throwFormattedErr("This requires a logged in user");
         }
         const tmp: PublicKeyCredentialCreationOptionsJSON = await this.generateWebAuthnRegistrationChallengeForLoggedInUser(
           loggedInUserId,
-          origin,
+          origin
         );
         rval = { generateWebAuthnRegistrationChallengeForLoggedInUser: { dataAsJson: JSON.stringify(tmp) } };
       } else if (cmd.addContactToLoggedInUser) {
         if (!WardenUtils.validContact(cmd.addContactToLoggedInUser)) {
-          ErrorRatchet.throwFormattedErr('Cannot add, invalid contact %j', cmd.addContactToLoggedInUser);
+          ErrorRatchet.throwFormattedErr("Cannot add, invalid contact %j", cmd.addContactToLoggedInUser);
         } else {
           const out: boolean = await this.addContactMethodToUser(loggedInUserId, cmd.addContactToLoggedInUser);
           rval = { addContactToLoggedInUser: out };
         }
       } else if (cmd.addWebAuthnRegistrationToLoggedInUser) {
         if (!StringRatchet.trimToNull(loggedInUserId)) {
-          ErrorRatchet.throwFormattedErr('This requires a logged in user');
+          ErrorRatchet.throwFormattedErr("This requires a logged in user");
         }
         const data: RegistrationResponseJSON = JSON.parse(cmd.addWebAuthnRegistrationToLoggedInUser.webAuthn.dataAsJson);
         const out: WardenStoreRegistrationResponse = await this.storeAuthnRegistration(
@@ -213,41 +214,41 @@ export class WardenService {
           origin,
           cmd.addWebAuthnRegistrationToLoggedInUser.applicationName,
           cmd.addWebAuthnRegistrationToLoggedInUser.deviceLabel,
-          data,
+          data
         );
         if (out.updatedEntry) {
           rval = { addWebAuthnRegistrationToLoggedInUser: WardenUtils.stripWardenEntryToSummary(out.updatedEntry) };
         } else if (out.error) {
           rval = { error: out.error };
         } else {
-          rval = { error: 'Cannot happen - neither user nor error set' };
+          rval = { error: "Cannot happen - neither user nor error set" };
         }
       } else if (cmd.removeWebAuthnRegistration) {
         const modified: WardenEntry = await this.removeSingleWebAuthnRegistration(
           cmd.removeWebAuthnRegistration.userId,
-          cmd.removeWebAuthnRegistration.credentialId,
+          cmd.removeWebAuthnRegistration.credentialId
         );
         rval = {
-          removeWebAuthnRegistration: WardenUtils.stripWardenEntryToSummary(modified),
+          removeWebAuthnRegistration: WardenUtils.stripWardenEntryToSummary(modified)
         };
       } else if (cmd.removeWebAuthnRegistrationFromLoggedInUser) {
         const modified: WardenEntry = await this.removeSingleWebAuthnRegistration(
           loggedInUserId,
-          cmd.removeWebAuthnRegistrationFromLoggedInUser,
+          cmd.removeWebAuthnRegistrationFromLoggedInUser
         );
         rval = {
-          removeWebAuthnRegistrationFromLoggedInUser: WardenUtils.stripWardenEntryToSummary(modified),
+          removeWebAuthnRegistrationFromLoggedInUser: WardenUtils.stripWardenEntryToSummary(modified)
         };
       } else if (cmd.removeContactFromLoggedInUser) {
         const output: WardenEntry = await this.removeContactMethodFromUser(loggedInUserId, cmd.removeContactFromLoggedInUser);
         // wardencontact
         rval = {
-          removeContactFromLoggedInUser: WardenUtils.stripWardenEntryToSummary(output),
+          removeContactFromLoggedInUser: WardenUtils.stripWardenEntryToSummary(output)
         };
         // return WardenEntrySummary
       } else if (cmd.performLogin) {
         const loginData: WardenLoginRequest = cmd.performLogin;
-        const user:WardenEntry = await this.processLogin(loginData, origin);
+        const user: WardenEntry = await this.processLogin(loginData, origin);
         if (user) {
           const decoration: WardenUserDecoration<any> = await this.opts.userDecorationProvider.fetchDecoration(user);
           const wardenToken: WardenJwtToken<any> = {
@@ -261,11 +262,11 @@ export class WardenService {
           const output: WardenLoginResults = {
             request: loginData,
             userId: user.userId,
-            jwtToken: jwtToken,
+            jwtToken: jwtToken
           };
           rval = { performLogin: output };
         } else {
-          rval = { error: 'Login failed' };
+          rval = { error: "Login failed" };
         }
       } else if (cmd.refreshJwtToken) {
         const parsed: WardenJwtToken<any> = await this.opts.jwtRatchet.decodeToken(cmd.refreshJwtToken, ExpiredJwtHandling.THROW_EXCEPTION);
@@ -283,19 +284,19 @@ export class WardenService {
         // CAW : We do not use refresh token because we want any user changes to show up in the new token
         //const newToken: string = await this.opts.jwtRatchet.refreshJWTString(cmd.refreshJwtToken, false, expirationSeconds);
         rval = {
-          refreshJwtToken: newToken,
+          refreshJwtToken: newToken
         };
-    } else if (cmd.exportWebAuthnRegistrationEntryForLoggedInUser) {
-      rval = {
-        exportWebAuthnRegistrationEntryForLoggedInUser: await this.exportWebAuthnRegistrationEntry(cmd.exportWebAuthnRegistrationEntryForLoggedInUser, loggedInUserId)
-      }
-    } else if (cmd.importWebAuthnRegistrationEntryForLoggedInUser) {
+      } else if (cmd.exportWebAuthnRegistrationEntryForLoggedInUser) {
+        rval = {
+          exportWebAuthnRegistrationEntryForLoggedInUser: await this.exportWebAuthnRegistrationEntry(cmd.exportWebAuthnRegistrationEntryForLoggedInUser, loggedInUserId)
+        };
+      } else if (cmd.importWebAuthnRegistrationEntryForLoggedInUser) {
         rval = {
           importWebAuthnRegistrationEntryForLoggedInUser: await this.importWebAuthnRegistrationEntry(cmd.importWebAuthnRegistrationEntryForLoggedInUser, loggedInUserId)
-        }
+        };
       }
     } else {
-      rval = { error: 'No command sent' };
+      rval = { error: "No command sent" };
     }
     return rval;
   }
@@ -304,15 +305,21 @@ export class WardenService {
     const ent: WardenEntry = await this.opts.storageProvider.findEntryById(userId);
     let rval: string = null;
     if (ent) {
-      const webAuth: WardenWebAuthnEntry = ent.webAuthnAuthenticators.find(w=>w.origin===origin);
+      const webAuth: WardenWebAuthnEntry = ent.webAuthnAuthenticators.find(w => w.origin === origin);
       if (webAuth) {
-        const s1: string = JSON.stringify(webAuth);
+        const expectedChallenge: string = await this.opts.storageProvider.fetchCurrentUserChallenge(userId, origin);
+        const token: WardenWebAuthnExportToken = {
+          entry: webAuth,
+          challenge: expectedChallenge
+        };
+
+        const s1: string = JSON.stringify(token);
         rval = Base64Ratchet.encodeStringToBase64String(s1);
       } else {
-        Logger.warn('Could not export webauthn - no such origin');
+        Logger.warn("Could not export webauthn - no such origin");
       }
     } else {
-      Logger.warn('Could not export webauthn - no such user id')
+      Logger.warn("Could not export webauthn - no such user id");
     }
 
     return rval;
@@ -323,18 +330,21 @@ export class WardenService {
     let rval: boolean = false;
     if (ent) {
       const s1: string = Base64Ratchet.base64StringToString(token);
-      const newEntry: WardenWebAuthnEntry = JSON.parse(s1);
-      const old: WardenWebAuthnEntry = ent.webAuthnAuthenticators.find(w=>w.origin===newEntry.origin);
+      const newEntry: WardenWebAuthnExportToken = JSON.parse(s1);
+      const old: WardenWebAuthnEntry = ent.webAuthnAuthenticators.find(w => w.origin === newEntry.entry.origin);
       if (old) {
-        Logger.warn('Removing existing entry %j', old);
-        ent.webAuthnAuthenticators = ent.webAuthnAuthenticators.filter(w=>w.origin !== newEntry.origin);
+        Logger.warn("Removing existing entry %j", old);
+        ent.webAuthnAuthenticators = ent.webAuthnAuthenticators.filter(w => w.origin !== newEntry.entry.origin);
       }
-      ent.webAuthnAuthenticators.push(newEntry);
+      ent.webAuthnAuthenticators.push(newEntry.entry);
       await this.opts.storageProvider.saveEntry(ent);
-      Logger.info('Wrote ok');
+      if (newEntry.challenge) {
+        await this.opts.storageProvider.updateUserChallenge(userId, newEntry.entry.origin, newEntry.challenge);
+      }
+      Logger.info("Wrote ok");
       rval = true;
     } else {
-      Logger.warn('Could not export webauthn - no such user id')
+      Logger.warn("Could not export webauthn - no such user id");
     }
     return rval;
   }
@@ -354,13 +364,13 @@ export class WardenService {
   public singleUseCodeProvider(
     contact: WardenContact,
     requireMagicLinkSupport: boolean,
-    returnNullIfNoProviders?: boolean,
+    returnNullIfNoProviders?: boolean
   ): WardenSingleUseCodeProvider {
     const rval: WardenSingleUseCodeProvider = this.opts.singleUseCodeProviders.find(
-      (s) => s.handlesContactType(contact.type) && (!requireMagicLinkSupport || s.createCodeAndSendMagicLink),
+      (s) => s.handlesContactType(contact.type) && (!requireMagicLinkSupport || s.createCodeAndSendMagicLink)
     );
     if (!rval && !returnNullIfNoProviders) {
-      throw ErrorRatchet.fErr('Cannot find a single use code provider for contact type : %s', contact.type);
+      throw ErrorRatchet.fErr("Cannot find a single use code provider for contact type : %s", contact.type);
     }
     return rval;
   }
@@ -372,12 +382,12 @@ export class WardenService {
     landingUrl: string,
     metaIn?: Record<string, string>,
     ttlSeconds?: number,
-    customTemplate?: WardenCustomTemplateDescriptor,
+    customTemplate?: WardenCustomTemplateDescriptor
   ): Promise<boolean> {
     let rval: boolean = false;
-    RequireRatchet.notNullOrUndefined(contact, 'contact');
-    RequireRatchet.notNullUndefinedOrOnlyWhitespaceString(landingUrl, 'landingUrl');
-    RequireRatchet.true(this.urlIsOnAllowedOrigin(landingUrl), 'landingUrl is not on an allowed origin for redirect');
+    RequireRatchet.notNullOrUndefined(contact, "contact");
+    RequireRatchet.notNullUndefinedOrOnlyWhitespaceString(landingUrl, "landingUrl");
+    RequireRatchet.true(this.urlIsOnAllowedOrigin(landingUrl), "landingUrl is not on an allowed origin for redirect");
 
     if (contact?.type && StringRatchet.trimToNull(contact?.value)) {
       const prov: WardenSingleUseCodeProvider = this.singleUseCodeProvider(contact, true);
@@ -388,26 +398,26 @@ export class WardenService {
         metaIn,
         ttlSeconds,
         overrideDestinationContact,
-        customTemplate,
+        customTemplate
       );
     } else {
-      ErrorRatchet.throwFormattedErr('Cannot send - invalid contact %j', contact);
+      ErrorRatchet.throwFormattedErr("Cannot send - invalid contact %j", contact);
     }
     return rval;
   }
 
   public async createAccountByThirdParty(thirdParty: WardenThirdPartyAuthentication, origin: string, inLabel?: string): Promise<WardenEntry> {
     let rval: WardenEntry = null;
-    RequireRatchet.notNullOrUndefined(thirdParty, 'thirdParty');
-    RequireRatchet.notNullUndefinedOrOnlyWhitespaceString(thirdParty.thirdParty, 'thirdParty');
-    RequireRatchet.notNullUndefinedOrOnlyWhitespaceString(thirdParty.thirdPartyId, 'thirdPartyId');
+    RequireRatchet.notNullOrUndefined(thirdParty, "thirdParty");
+    RequireRatchet.notNullUndefinedOrOnlyWhitespaceString(thirdParty.thirdParty, "thirdParty");
+    RequireRatchet.notNullUndefinedOrOnlyWhitespaceString(thirdParty.thirdPartyId, "thirdPartyId");
 
     const old: WardenEntry = await this.opts.storageProvider.findEntryByThirdPartyId(thirdParty.thirdParty, thirdParty.thirdPartyId);
     if (old) {
-      ErrorRatchet.throwFormattedErr('Cannot create - account already exists for %j', thirdParty);
+      ErrorRatchet.throwFormattedErr("Cannot create - account already exists for %j", thirdParty);
     }
 
-    const label: string = inLabel || thirdParty.thirdParty + ' ' + thirdParty.thirdPartyId;
+    const label: string = inLabel || thirdParty.thirdParty + " " + thirdParty.thirdPartyId;
     const newUser: WardenEntry = new WardenEntryBuilder(label).withThirdPartyAuthentication([thirdParty]).entry;
     rval = await this.opts.storageProvider.saveEntry(newUser);
 
@@ -420,7 +430,7 @@ export class WardenService {
     if (WardenUtils.validContact(contact)) {
       const old: WardenEntry = await this.opts.storageProvider.findEntryByContact(contact);
       if (old) {
-        ErrorRatchet.throwFormattedErr('Cannot create - account already exists for %j', contact);
+        ErrorRatchet.throwFormattedErr("Cannot create - account already exists for %j", contact);
       }
 
       // Defaults to email if nothing provided, usually full name
@@ -428,11 +438,11 @@ export class WardenService {
       rval = await this.opts.storageProvider.saveEntry(newUser);
 
       if (sendCode) {
-        Logger.info('New user %j created and send requested - sending', rval);
+        Logger.info("New user %j created and send requested - sending", rval);
         await this.sendExpiringValidationToken(contact, origin);
       }
     } else {
-      ErrorRatchet.throwFormattedErr('Cannot create - invalid contact (missing or invalid fields)');
+      ErrorRatchet.throwFormattedErr("Cannot create - invalid contact (missing or invalid fields)");
     }
     return rval;
   }
@@ -454,17 +464,17 @@ export class WardenService {
     if (StringRatchet.trimToNull(userId) && WardenUtils.validContact(contact)) {
       const otherUser: WardenEntry = await this.opts.storageProvider.findEntryByContact(contact);
       if (otherUser && otherUser.userId !== userId) {
-        ErrorRatchet.throwFormattedErr('Cannot add contact to this user, another user already has that contact');
+        ErrorRatchet.throwFormattedErr("Cannot add contact to this user, another user already has that contact");
       }
       const curUser: WardenEntry = await this.opts.storageProvider.findEntryById(userId);
       if (!curUser) {
-        ErrorRatchet.throwFormattedErr('Cannot add contact to this user, user does not exist');
+        ErrorRatchet.throwFormattedErr("Cannot add contact to this user, user does not exist");
       }
       curUser.contactMethods.push(contact);
       await this.opts.storageProvider.saveEntry(curUser);
       rval = true;
     } else {
-      ErrorRatchet.throwFormattedErr('Cannot add - invalid config : %s %j', userId, contact);
+      ErrorRatchet.throwFormattedErr("Cannot add - invalid config : %s %j", userId, contact);
     }
     return rval;
   }
@@ -475,16 +485,16 @@ export class WardenService {
     if (StringRatchet.trimToNull(userId) && WardenUtils.validContact(contact)) {
       const curUser: WardenEntry = await this.opts.storageProvider.findEntryById(userId);
       if (!curUser) {
-        ErrorRatchet.throwFormattedErr('Cannot remove contact from this user, user does not exist');
+        ErrorRatchet.throwFormattedErr("Cannot remove contact from this user, user does not exist");
       }
       curUser.contactMethods = (curUser.contactMethods || []).filter((s) => s.type !== contact.type || s.value !== contact.value);
       if (curUser.contactMethods.length === 0) {
-        ErrorRatchet.throwFormattedErr('Cannot remove the last contact method from a user');
+        ErrorRatchet.throwFormattedErr("Cannot remove the last contact method from a user");
       }
       await this.opts.storageProvider.saveEntry(curUser);
       rval = await this.opts.storageProvider.findEntryById(userId);
     } else {
-      ErrorRatchet.throwFormattedErr('Cannot add - invalid config : %s %j', userId, contact);
+      ErrorRatchet.throwFormattedErr("Cannot add - invalid config : %s %j", userId, contact);
     }
     return rval;
   }
@@ -493,20 +503,20 @@ export class WardenService {
   // Server creates a challenge that the device will sign
   public async generateWebAuthnRegistrationChallengeForLoggedInUser(
     userId: string,
-    origin: string,
+    origin: string
   ): Promise<PublicKeyCredentialCreationOptionsJSON> {
     if (!origin || !this.opts.allowedOrigins.includes(origin)) {
-      throw new Error('Invalid origin : ' + origin);
+      throw new Error("Invalid origin : " + origin);
     }
     const asUrl: URL = new URL(origin);
     const rpID: string = asUrl.hostname;
 
     const entry: WardenEntry = await this.opts.storageProvider.findEntryById(userId);
     if (!entry) {
-      throw ErrorRatchet.fErr('Cannot generateWebAuthnRegistrationChallengeForLoggedInUser - no user %s / %s', userId, origin);
+      throw ErrorRatchet.fErr("Cannot generateWebAuthnRegistrationChallengeForLoggedInUser - no user %s / %s", userId, origin);
     }
     if (!entry?.webAuthnAuthenticators?.length) {
-      Logger.info('Entry has no webAuthnAuthenticators');
+      Logger.info("Entry has no webAuthnAuthenticators");
       entry.webAuthnAuthenticators = []; // Just in case
     }
     const options = await generateRegistrationOptions({
@@ -516,14 +526,14 @@ export class WardenService {
       userName: entry.userLabel,
       // Don't prompt users for additional information about the authenticator
       // (Recommended for smoother UX)
-      attestationType: 'none',
+      attestationType: "none",
       // Prevent users from re-registering existing authenticators
       excludeCredentials: entry.webAuthnAuthenticators.map((authenticator) => ({
         id: authenticator.credentialPublicKeyBase64,
         //type: 'public-key',
         // Optional
-        transports: authenticator.transports as unknown as AuthenticatorTransportFuture[],
-      })),
+        transports: authenticator.transports as unknown as AuthenticatorTransportFuture[]
+      }))
     });
 
     await this.opts.storageProvider.updateUserChallenge(entry.userId, rpID, options.challenge);
@@ -537,20 +547,20 @@ export class WardenService {
     origin: string,
     applicationName: string,
     deviceLabel: string,
-    data: RegistrationResponseJSON,
+    data: RegistrationResponseJSON
   ): Promise<WardenStoreRegistrationResponse> {
-    Logger.info('Store authn data : %j', data);
+    Logger.info("Store authn data : %j", data);
     let rval: WardenStoreRegistrationResponse = null;
     try {
       if (!origin || !this.opts.allowedOrigins.includes(origin)) {
-        throw new Error('Invalid origin : ' + origin);
+        throw new Error("Invalid origin : " + origin);
       }
       const asUrl: URL = new URL(origin);
       const rpID: string = asUrl.hostname;
 
       const user: WardenEntry = await this.opts.storageProvider.findEntryById(userId);
       if (!user) {
-        throw ErrorRatchet.fErr('Cannot storeAuthnRegistration - no user %s / %s', userId, origin);
+        throw ErrorRatchet.fErr("Cannot storeAuthnRegistration - no user %s / %s", userId, origin);
       }
 
       // (Pseudocode) Get `options.challenge` that was saved above
@@ -560,49 +570,49 @@ export class WardenService {
         response: data,
         expectedChallenge: expectedChallenge,
         expectedOrigin: origin,
-        expectedRPID: rpID,
+        expectedRPID: rpID
       };
 
-      Logger.info('Calling verifyRegistrationResponse: %j', vrOpts);
+      Logger.info("Calling verifyRegistrationResponse: %j", vrOpts);
 
       const verification: VerifiedRegistrationResponse = await verifyRegistrationResponse(vrOpts);
-      Logger.info('verifyRegistrationResponse Result : %j', verification);
+      Logger.info("verifyRegistrationResponse Result : %j", verification);
 
       rval = {
         updatedEntry: null,
         registrationResponseId: data.id,
-        result: verification.verified ? WardenStoreRegistrationResponseType.Verified : WardenStoreRegistrationResponseType.Failed,
+        result: verification.verified ? WardenStoreRegistrationResponseType.Verified : WardenStoreRegistrationResponseType.Failed
       };
 
       if (rval.result === WardenStoreRegistrationResponseType.Verified) {
-        Logger.info('Storing registration');
+        Logger.info("Storing registration");
         const newAuth: WardenWebAuthnEntry = {
           origin: origin,
-          applicationName: applicationName || 'Unknown Application',
-          deviceLabel: deviceLabel || 'Unknown Device',
+          applicationName: applicationName || "Unknown Application",
+          deviceLabel: deviceLabel || "Unknown Device",
           counter: verification.registrationInfo.credential.counter,
           credentialBackedUp: verification.registrationInfo.credentialBackedUp,
           credentialDeviceType: verification.registrationInfo.credentialDeviceType,
           credentialIdBase64: verification.registrationInfo.credential.id,
-          credentialPublicKeyBase64: Base64Ratchet.uint8ArrayToBase64UrlString(verification.registrationInfo.credential.publicKey),
+          credentialPublicKeyBase64: Base64Ratchet.uint8ArrayToBase64UrlString(verification.registrationInfo.credential.publicKey)
           //transports: TBD
         };
 
         // (Pseudocode) Save the authenticator info so that we can
         // get it by user ID later
         user.webAuthnAuthenticators = (user.webAuthnAuthenticators || []).filter(
-          (wa) => wa.credentialIdBase64 !== newAuth.credentialIdBase64,
+          (wa) => wa.credentialIdBase64 !== newAuth.credentialIdBase64
         );
         user.webAuthnAuthenticators.push(newAuth);
         const storedUser: WardenEntry = await this.opts.storageProvider.saveEntry(user);
         rval.updatedEntry = storedUser;
-        Logger.info('Stored auth : %j', storedUser);
+        Logger.info("Stored auth : %j", storedUser);
       }
     } catch (err) {
       rval = {
         registrationResponseId: data.id,
         result: WardenStoreRegistrationResponseType.Error,
-        error: ErrorRatchet.safeStringifyErr(err),
+        error: ErrorRatchet.safeStringifyErr(err)
       };
     }
 
@@ -611,7 +621,7 @@ export class WardenService {
 
   public async generateWebAuthnAuthenticationChallengeForUserId(
     userId: string,
-    origin: string,
+    origin: string
   ): Promise<PublicKeyCredentialRequestOptionsJSON> {
     const user: WardenEntry = await this.opts.storageProvider.findEntryById(userId);
     const rval: PublicKeyCredentialRequestOptionsJSON = await this.generateWebAuthnAuthenticationChallenge(user, origin);
@@ -623,7 +633,7 @@ export class WardenService {
     // (Pseudocode) Retrieve any of the user's previously-registered authenticators
     const userAuthenticators: WardenWebAuthnEntry[] = user.webAuthnAuthenticators;
     if (!origin || !this.opts.allowedOrigins.includes(origin)) {
-      throw new Error('Invalid origin : ' + origin);
+      throw new Error("Invalid origin : " + origin);
     }
     const asUrl: URL = new URL(origin);
     const rpID: string = asUrl.hostname;
@@ -633,7 +643,7 @@ export class WardenService {
         id: authenticator.credentialIdBase64, // Type is Base64URLString
         //type: 'public-key',
         // Optional
-        transports: authenticator.transports,
+        transports: authenticator.transports
       };
       return next;
     });
@@ -642,7 +652,7 @@ export class WardenService {
       // Require users to use a previously-registered authenticator
       rpID: rpID,
       allowCredentials: out,
-      userVerification: 'preferred',
+      userVerification: "preferred"
     };
 
     const options: PublicKeyCredentialRequestOptionsJSON = await generateAuthenticationOptions(opts);
@@ -660,7 +670,7 @@ export class WardenService {
       const prov: WardenSingleUseCodeProvider = this.singleUseCodeProvider(request, false);
       rval = await prov.createAndSendNewCode(request, this.opts.relyingPartyName, origin);
     } else {
-      ErrorRatchet.throwFormattedErr('Cannot send - invalid request %j', request);
+      ErrorRatchet.throwFormattedErr("Cannot send - invalid request %j", request);
     }
     return rval;
   }
@@ -670,49 +680,49 @@ export class WardenService {
   // Should return a valid WardenEntry if successful, or null if not
   // If createUserIfMissing=true, will create a new user if one does not exist
   public async processLogin(request: WardenLoginRequest, origin: string): Promise<WardenEntry | null> {
-    Logger.info('Processing login : %s : %j', origin, request);
+    Logger.info("Processing login : %s : %j", origin, request);
     let rval: WardenEntry = null;
     const requestErrors: string[] = WardenUtils.loginRequestErrors(request);
     if (requestErrors.length > 0) {
-      throw ErrorRatchet.fErr('Invalid login request : %j', requestErrors);
+      throw ErrorRatchet.fErr("Invalid login request : %j", requestErrors);
     }
-    if (request.type===WardenLoginRequestType.ThirdParty) {
+    if (request.type === WardenLoginRequestType.ThirdParty) {
       // ThirdParty is a bit different since token lookup typically gives us the info we'll use
       // to lookup the user
       const provider: WardenThirdPartyAuthenticationProvider = (this.options.thirdPartyAuthenticationProviders ?? [])
-        .find(s=>s.handlesThirdParty(request.thirdPartyToken.thirdParty));
+        .find(s => s.handlesThirdParty(request.thirdPartyToken.thirdParty));
       if (provider) {
         const auth: WardenThirdPartyAuthentication = await provider.validateTokenAndReturnThirdPartyUserId(request.thirdPartyToken, origin);
         if (auth) {
           rval = await this.opts.storageProvider.findEntryByThirdPartyId(auth.thirdParty, auth.thirdPartyId);
           if (!rval && request.createUserIfMissing) {
-            Logger.info('Found no existing user for %j, creating', auth);
-            let label: string = auth.thirdParty + ' ' + auth.thirdPartyId;
+            Logger.info("Found no existing user for %j, creating", auth);
+            let label: string = auth.thirdParty + " " + auth.thirdPartyId;
             if (provider.extractUserLabelFromAuthentication) {
               label = await provider.extractUserLabelFromAuthentication(auth);
             }
             rval = await this.createAccountByThirdParty(auth, origin, label);
-            Logger.info('Finished create, new id is %s', rval.userId);
+            Logger.info("Finished create, new id is %s", rval.userId);
           }
         } else {
-          Logger.warn('Authentication failed for %j', request.thirdPartyToken, request.createUserIfMissing);
+          Logger.warn("Authentication failed for %j", request.thirdPartyToken, request.createUserIfMissing);
         }
       } else {
-        Logger.warn('Could not find any provider to handle third party token %j', request.thirdPartyToken);
+        Logger.warn("Could not find any provider to handle third party token %j", request.thirdPartyToken);
       }
     } else {
       let user: WardenEntry = StringRatchet.trimToNull(request?.userId)
         ? await this.opts.storageProvider.findEntryById(request?.userId)
         : await this.opts.storageProvider.findEntryByContact(request.contact);
       if (!user) {
-        Logger.info('User not found, and createUserIfMissing=%s / %j', request.createUserIfMissing, request.contact);
+        Logger.info("User not found, and createUserIfMissing=%s / %j", request.createUserIfMissing, request.contact);
         if (request.createUserIfMissing && request.contact) {
           user = await this.createAccount(request.contact, origin);
-          Logger.info('Finished create, new id is %s', user.userId);
+          Logger.info("Finished create, new id is %s", user.userId);
         }
         // If STILL no user...
         if (!user) {
-          ErrorRatchet.throwFormattedErr('No user found for %j / %s', request?.contact, request?.userId);
+          ErrorRatchet.throwFormattedErr("No user found for %j / %s", request?.contact, request?.userId);
         }
       }
 
@@ -723,7 +733,7 @@ export class WardenService {
         const prov: WardenSingleUseCodeProvider = this.singleUseCodeProvider(request.contact, false);
         loginSuccess = await prov.checkCode(request.contact.value, request.expiringToken);
         if (!loginSuccess) {
-          ErrorRatchet.throwFormattedErr('Cannot login - token is invalid for this user');
+          ErrorRatchet.throwFormattedErr("Cannot login - token is invalid for this user");
         }
       }
       rval = loginSuccess ? user : null;
@@ -746,7 +756,7 @@ export class WardenService {
 
     if (!auth) {
       const allIds: string[] = (user.webAuthnAuthenticators || []).map((s) => s.credentialIdBase64);
-      throw ErrorRatchet.fErr('Could not find authenticator %s (%s) for user %s (avail were : %j)', data.id, data.id, user.userId, allIds);
+      throw ErrorRatchet.fErr("Could not find authenticator %s (%s) for user %s (avail were : %j)", data.id, data.id, user.userId, allIds);
     }
 
     const vrOpts: VerifyAuthenticationResponseOpts = {
@@ -757,8 +767,8 @@ export class WardenService {
       credential: {
         counter: auth.counter,
         id: auth.credentialIdBase64,
-        publicKey: Base64Ratchet.base64UrlStringToBytes(auth.credentialPublicKeyBase64),
-      },
+        publicKey: Base64Ratchet.base64UrlStringToBytes(auth.credentialPublicKeyBase64)
+      }
     };
 
     const verification: VerifiedAuthenticationResponse = await verifyAuthenticationResponse(vrOpts);
@@ -776,7 +786,7 @@ export class WardenService {
       ent.webAuthnAuthenticators = (ent.webAuthnAuthenticators || []).filter((s) => s.credentialIdBase64 !== key);
       ent = await this.opts.storageProvider.saveEntry(ent);
     } else {
-      Logger.info('Not removing - no such user as %s', userId);
+      Logger.info("Not removing - no such user as %s", userId);
     }
     return ent;
   }
@@ -793,7 +803,7 @@ export class WardenService {
         }
         rval = true;
       } else {
-        Logger.warn('Cannot remove non-existent user : %s', userId);
+        Logger.warn("Cannot remove non-existent user : %s", userId);
       }
     }
 
