@@ -139,27 +139,11 @@ export class WardenUserService<T> {
     return tmp;
   }
 
-  public static wardenUserDecorationFromToken<T>(jwt: WardenJwtToken<T>): WardenUserDecoration<T> {
-    let rval: WardenUserDecoration<any> = null;
-    if (jwt) {
-      rval = {
-        userTokenData: jwt.user,
-        proxyUserTokenData: jwt.proxy,
-        userTokenExpirationSeconds: null,
-
-        globalRoleIds: jwt.globalRoleIds,
-        teamRoleMappings: jwt.teamRoleMappings
-      }
-    }
-    return rval;
-  }
-
-
   public loggedInUserHasGlobalRole(roleId: string): boolean {
     let rval: boolean = false;
 
     const token: WardenJwtToken<T> = this.fetchLoggedInUserJwtObject();
-    rval = token ? WardenUtils.userHasGlobalRole(WardenUserService.wardenUserDecorationFromToken(token), roleId) : false;
+    rval = token ? WardenUtils.userHasGlobalRole(WardenUtils.wardenUserDecorationFromToken(token), roleId) : false;
 
     return rval;
   }
@@ -168,7 +152,7 @@ export class WardenUserService<T> {
     let rval: boolean = false;
 
     const token: WardenJwtToken<T> = this.fetchLoggedInUserJwtObject();
-    rval = token ? WardenUtils.userHasRoleOnTeam(WardenUserService.wardenUserDecorationFromToken(token), teamId, roleId) : false;
+    rval = token ? WardenUtils.userHasRoleOnTeam(WardenUtils.wardenUserDecorationFromToken(token), teamId, roleId) : false;
 
     return rval;
   }

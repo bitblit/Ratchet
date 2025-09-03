@@ -3,6 +3,7 @@ import { WardenContact } from "@bitblit/ratchet-warden-common/common/model/warde
 import { WardenEntry } from "@bitblit/ratchet-warden-common/common/model/warden-entry";
 import { WardenUtils } from "@bitblit/ratchet-warden-common/common/util/warden-utils";
 import { WardenUserDecoration } from "@bitblit/ratchet-warden-common/common/model/warden-user-decoration";
+import { WardenJwtToken } from "@bitblit/ratchet-warden-common/common/model/warden-jwt-token";
 
 export class WardenAuthorizer {
 
@@ -107,6 +108,10 @@ export class WardenAuthorizer {
 
   public userHasRolesOnTeam(user: WardenUserDecoration<any>, teamId: string, roleIds: string[], combineWithAnd: boolean): boolean {
     return WardenUtils.userHasRolesOnTeam(user, teamId, roleIds, combineWithAnd);
+  }
+
+  public wardenUserDecorationFromToken(jwt: WardenJwtToken<any>): WardenUserDecoration<any> {
+    return WardenUtils.wardenUserDecorationFromToken(jwt);
   }
 
   // Just a synonym since that is how some people think

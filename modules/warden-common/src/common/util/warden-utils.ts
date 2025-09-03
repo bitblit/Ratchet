@@ -13,6 +13,7 @@ import { WardenLoggedInUserWrapper } from "../../client/provider/warden-logged-i
 import { WardenLoginRequestType } from "../model/warden-login-request-type.ts";
 import { WardenUserDecoration } from "../model/warden-user-decoration.ts";
 import { BooleanRatchet } from "@bitblit/ratchet-common/lang/boolean-ratchet";
+import { WardenJwtToken } from "../model/warden-jwt-token.ts";
 
 export class WardenUtils {
   // Prevent instantiation
@@ -263,5 +264,21 @@ export class WardenUtils {
     }
     return rval;
   }
+
+  public static wardenUserDecorationFromToken<T>(jwt: WardenJwtToken<T>): WardenUserDecoration<T> {
+    let rval: WardenUserDecoration<any> = null;
+    if (jwt) {
+      rval = {
+        userTokenData: jwt.user,
+        proxyUserTokenData: jwt.proxy,
+        userTokenExpirationSeconds: null,
+
+        globalRoleIds: jwt.globalRoleIds,
+        teamRoleMappings: jwt.teamRoleMappings
+      }
+    }
+    return rval;
+  }
+
 
 }
