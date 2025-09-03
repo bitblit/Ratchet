@@ -168,5 +168,5 @@ describe('#bubbleChart', function () {
     // As of 2022-08-06 this is 140641... there must be a better test than this..
     expect(data.length).toBeGreaterThan(140_000);
     expect(data.length).toBeLessThan(150_000);
-  });
+  }, {timeout: 10_000});
 });

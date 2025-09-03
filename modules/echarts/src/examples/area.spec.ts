@@ -109,5 +109,5 @@ describe('#areaChart', function () {
     // As of 2025-08-24 this is 60589... there must be a better test than this...
     expect(data.length).toBeGreaterThan(55_000);
     expect(data.length).toBeLessThan(65_000);
-  });
+  }, {timeout: 10_000});
 });

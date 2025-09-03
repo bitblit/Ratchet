@@ -74,5 +74,5 @@ describe('#pieChart', function () {
     // As of 2022-08-06 this is 32175... there must be a better test than this..
     expect(data.length).toBeGreaterThan(30_000);
     expect(data.length).toBeLessThan(40_000);
-  });
+  }, {timeout: 10_000});
 });

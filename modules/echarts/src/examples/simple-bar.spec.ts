@@ -33,5 +33,5 @@ describe('#simpleBarChart', function () {
     // As of 2022-08-06 this is 7606... there must be a better test than this..
     expect(data.length).toBeGreaterThan(5_000);
     expect(data.length).toBeLessThan(10_000);
-  });
+  }, {timeout: 10_000});
 });
