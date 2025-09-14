@@ -35,7 +35,9 @@ export class SsmEnvironmentServiceProvider<T> implements EnvironmentServiceProvi
       toParse = StringRatchet.trimToNull(value?.Parameter?.Value);
     } catch (err) {
       if (err instanceof ParameterNotFound) {
-        const errMsg: string = Logger.warn('AWS could not find parameter %s in region %s - are you using the right AWS key?', name, this.region);
+        const errMsg: string = Logger.warn('AWS could not find parameter %s in region %s - are you using the right AWS key?', name, this.region
+
+        );
         throw new Error(errMsg);
       } else if (err.name === 'CredentialsProviderError') {
         Logger.warn('Token is expired - if on SSO cli try "aws sso login"');
