@@ -54,8 +54,9 @@ export class PostgresStyleDatabaseAccess implements DatabaseAccess {
   }
 
   public async query<R>(query, fields): Promise<RequestResults<R>> {
-    const formatted: string =  SqlString.format(query, fields);
-
+    const qap: QueryAndParams = NamedParameterAdapter.applyNamedValuesToQuery({query: query, params: fields});
+    //const formatted: string =  SqlString.format(query, fields);
+    const formatted: string =  SqlString.format(qap.query, {});
     const res:Result = await this._connection.query(formatted);
 
     const rval: RequestResults<R> = {

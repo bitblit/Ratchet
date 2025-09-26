@@ -11,6 +11,7 @@ import { ModifyResults } from "../model/modify-results";
 describe('postgres-style-database-access', () => {
   const testQueries: SimpleQueryTextProvider = new SimpleQueryTextProvider({
     create: 'create table testable (id SERIAL PRIMARY KEY, val varchar(255))',
+    fetchWithParam: 'select * from testable where val = :val',
     singleIns: 'insert into testable (val) values (:val) RETURNING id',
     singleDelete: 'delete from testable where val=:val',
     csvIns: 'insert into testable (val) values (:valCsv)',
@@ -58,6 +59,11 @@ describe('postgres-style-database-access', () => {
       Logger.info('insert returned : %j', insert);
       selectCounter = await ns.executeQueryByNameSingle('counter');
       Logger.info('selectCounter returned : %j', selectCounter);
+
+      const fetch: any = await ns.executeQueryByNameSingle('fetchWithParam', {val: testVal});
+      Logger.info('fetch returned : %j', fetch);
+
+
       const del: ModifyResults = await ns.executeUpdateOrInsertByName('singleDelete', {val: testVal});
       Logger.info('del returned : %j', del);
       selectCounter = await ns.executeQueryByNameSingle('counter');
