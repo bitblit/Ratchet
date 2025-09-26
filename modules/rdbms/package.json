@@ -53,6 +53,7 @@
     "better-sqlite3": "12.2.0",
     "get-port": "7.1.0",
     "mysql2": "3.14.3",
+    "pg": "8.16.3",
     "sqlstring": "2.3.3",
     "tunnel-ssh": "5.2.0"
   },
@@ -61,6 +62,7 @@
     "better-sqlite3": "^12.2.0",
     "get-port": "^7.1.0",
     "mysql2": "^3.14.3",
+    "pg": "^8.16.3",
     "sqlstring": "^2.3.3",
     "tunnel-ssh": "^5.2.0"
   },

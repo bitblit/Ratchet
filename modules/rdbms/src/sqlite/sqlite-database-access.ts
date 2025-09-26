@@ -5,11 +5,11 @@ import { DatabaseAccess } from '../model/database-access.js';
 import { DatabaseRequestType } from '../model/database-request-type.js';
 import { ModifyResults } from '../model/modify-results.js';
 import { RequestResults } from '../model/request-results.js';
-import { QueryUtil } from '../query-builder/query-util.js';
 import { SqliteConnectionConfigFlag } from './model/sqlite-connection-config-flag.js';
 import { Database, RunResult, Statement } from 'better-sqlite3';
 import { NumberRatchet } from '@bitblit/ratchet-common/lang/number-ratchet';
-import { QueryAndParams } from './model/query-and-params';
+import { NamedParameterAdapter } from "../util/named-parameter-adapter/named-parameter-adapter.ts";
+import { QueryAndParams } from "../util/named-parameter-adapter/query-and-params.ts";
 
 export class SqliteDatabaseAccess implements DatabaseAccess {
   constructor(
@@ -85,38 +85,11 @@ export class SqliteDatabaseAccess implements DatabaseAccess {
   }
 
   preprocessQuery(qap: QueryAndParams): QueryAndParams {
-    const rval: QueryAndParams = Object.assign(qap);
-
-    // First, rename all the fields to add the prefix
-    let tmp: Record<string, any> = QueryUtil.addPrefixToFieldNames(rval.params, ':');
-    // Then, replace any null params
-    rval.query = QueryUtil.replaceNullReplacementsInQuery(rval.query, tmp);
-    // Then, remove any unused params from the fields
-    rval.params = QueryUtil.removeUnusedFields(rval.query, rval.params, ':');
-    tmp = QueryUtil.removeUnusedFields(rval.query, tmp); // And the prefixed version
-    // CAW 2024-09-13 - This seems convoluted, can probably clean it a bit
-
-    // If any of the fields are an array or boolean, do a direct replacement since sqlite don't like that
-    Object.keys(tmp).forEach((k) => {
-      const val: any = tmp[k];
-      if (Array.isArray(val)) {
-        const escaped: string = this.escape(val);
-        rval.query = rval.query.replaceAll(k, escaped);
-        //eslint-disable-next-line @typescript-eslint/no-dynamic-delete
-        delete rval.params[k.substring(1)]; // this prolly wont work
-      } else if (typeof val === 'boolean') {
-        const strVal: string = val ? 'true' : 'false';
-        rval.query = rval.query.replaceAll(k, strVal);
-        //eslint-disable-next-line @typescript-eslint/no-dynamic-delete
-        delete rval.params[k.substring(1)]; // this prolly wont work
-      }
-    });
-
-    // Finally, apply flags
-    if ((this.flags || []).includes(SqliteConnectionConfigFlag.AlwaysCollateNoCase)) {
-      rval.query += ' COLLATE NOCASE';
-    }
-
+    const rval: QueryAndParams = NamedParameterAdapter.applyNamedValuesToQuery(
+      qap,
+      (this.flags || []).includes(SqliteConnectionConfigFlag.AlwaysCollateNoCase) ? ' COLLATE NOCASE' : '',
+      this.escape
+    );
     return rval;
   }
 

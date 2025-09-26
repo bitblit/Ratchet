@@ -102,7 +102,7 @@ export class QueryBuilder {
   }
 
   public withParams(params: unknown): QueryBuilder {
-    this.namedParams = Object.assign(this.namedParams, params);
+    this.namedParams = Object.assign(this.namedParams, params ?? {});
     return this;
   }
 

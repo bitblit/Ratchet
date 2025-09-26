@@ -140,7 +140,7 @@ export class NamedParameterDatabaseService {
 
   public async executeQueryByName<Row>(
     queryPath: string,
-    params: object,
+    params?: object,
     timeoutMS: number = this.cfg.queryDefaults.timeoutMS,
   ): Promise<Row[]> {
     const builder = this.queryBuilder(queryPath).withParams(params);
@@ -150,7 +150,7 @@ export class NamedParameterDatabaseService {
 
   public async executeQueryByNameSingle<Row>(
     queryPath: string,
-    params: object,
+    params?: object,
     timeoutMS: number = this.cfg.queryDefaults.timeoutMS,
   ): Promise<Row | null> {
     const builder = this.queryBuilder(queryPath).withParams(params);
