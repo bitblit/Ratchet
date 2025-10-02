@@ -4,7 +4,6 @@
  * Since lots of other ratchets use global for safe singletons, we dont
  * depend on anything in here (Especially logger)
  */
-import { ErrorRatchet } from './error-ratchet.js';
 import { RequireRatchet } from './require-ratchet.js';
 
 export class GlobalRatchet {
@@ -37,13 +36,13 @@ export class GlobalRatchet {
         rval = process; // Final failover, not really a great option
       }
     } catch (err) {
-      throw ErrorRatchet.fErr('Should not happen - error thrown trying to find global : %s', err);
+      throw new Error('Should not happen - error thrown trying to find global : '+ err);
     }
     if (!rval) {
       if (returnNullOnNone) {
         rval = null;
       } else {
-        throw ErrorRatchet.fErr('Could not find global, process, or window in scope');
+        throw new Error('Could not find global, process, or window in scope');
       }
     }
     return rval;
@@ -83,7 +82,7 @@ export class GlobalRatchet {
       if (returnNullOnNone) {
         rval = null;
       } else {
-        throw ErrorRatchet.fErr('Could not find process.env OR global OR window in scope');
+        throw new Error('Could not find process.env OR global OR window in scope');
       }
     }
     return rval;
