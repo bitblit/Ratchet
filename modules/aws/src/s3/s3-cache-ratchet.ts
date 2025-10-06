@@ -345,14 +345,15 @@ export class S3CacheRatchet implements S3CacheRatchetLike {
     dstKey: string,
     srcBucket: string = null,
     dstBucket: string = null,
+    template?: Partial<CopyObjectCommandInput>
   ): Promise<CopyObjectCommandOutput> {
-    const params: CopyObjectCommandInput = {
-      CopySource: '/' + this.bucketVal(srcBucket) + '/' + srcKey,
-      Bucket: this.bucketVal(dstBucket),
-      Key: dstKey,
-      MetadataDirective: 'COPY',
-    };
+    const params: CopyObjectCommandInput = Object.assign({}, template ?? {}) as CopyObjectCommandInput;
+    params.CopySource= '/' + this.bucketVal(srcBucket) + '/' + srcKey;
+    params.Bucket= this.bucketVal(dstBucket);
+    params.Key= dstKey;
+    params.MetadataDirective= 'COPY';
     const rval: CopyObjectCommandOutput = await this.s3.send(new CopyObjectCommand(params));
+    
     return rval;
   }
 
