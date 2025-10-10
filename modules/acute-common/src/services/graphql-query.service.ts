@@ -8,6 +8,7 @@ import { LoggerLevelName } from "@bitblit/ratchet-common/logger/logger-level-nam
 import { ProcessMonitorService } from "./process-monitor/process-monitor-service";
 import { GraphqlQueryExecutionOptions } from "./graphql-query-execution-options.ts";
 import { GraphqlQueryExecutionDisplayStyle } from "./graphql-query-execution-display-style.ts";
+import { StringRatchet } from "@bitblit/ratchet-common/lang/string-ratchet";
 
 @Injectable({ providedIn: 'root' })
 export class GraphqlQueryService {
@@ -17,12 +18,17 @@ export class GraphqlQueryService {
   ) {}
 
   public fullOptions(input?: Partial<GraphqlQueryExecutionOptions>): GraphqlQueryExecutionOptions {
-    return Object.assign({
+    const rval: GraphqlQueryExecutionOptions = Object.assign({
       blockMessage: null,
       authStyle: AuthorizationStyle.TokenRequired,
       errorHandling: ErrorHandlingApproach.LogAndPassThru,
       displayStyle: GraphqlQueryExecutionDisplayStyle.Monitored
     },input??{});
+
+    if (StringRatchet.trimToNull(rval.blockMessage) && rval.displayStyle!==GraphqlQueryExecutionDisplayStyle.Modal) {
+      throw ErrorRatchet.fErr('Block message specified but display style is not modal');
+    }
+    return rval;
   }
 
   public async executeQuery<T>(
