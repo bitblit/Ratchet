@@ -6,6 +6,8 @@ import { ErrorHandlingApproach } from "@bitblit/ratchet-common/lang/error-handli
 import { ErrorRatchet } from "@bitblit/ratchet-common/lang/error-ratchet";
 import { LoggerLevelName } from "@bitblit/ratchet-common/logger/logger-level-name";
 import { ProcessMonitorService } from "./process-monitor/process-monitor-service";
+import { GraphqlQueryExecutionOptions } from "./graphql-query-execution-options.ts";
+import { GraphqlQueryExecutionDisplayStyle } from "./graphql-query-execution-display-style.ts";
 
 @Injectable({ providedIn: 'root' })
 export class GraphqlQueryService {
@@ -14,42 +16,36 @@ export class GraphqlQueryService {
     private processMonitorService: ProcessMonitorService
   ) {}
 
+  public fullOptions(input?: Partial<GraphqlQueryExecutionOptions>): GraphqlQueryExecutionOptions {
+    return Object.assign({
+      blockMessage: null,
+      authStyle: AuthorizationStyle.TokenRequired,
+      errorHandling: ErrorHandlingApproach.LogAndPassThru,
+      displayStyle: GraphqlQueryExecutionDisplayStyle.Monitored
+    },input??{});
+  }
+
   public async executeQuery<T>(
     queryName: string,
     variables: any,
-    authStyle: AuthorizationStyle = AuthorizationStyle.TokenRequired,
-    errorHandling: ErrorHandlingApproach = ErrorHandlingApproach.LogAndPassThru,
+    inOptions?: Partial<GraphqlQueryExecutionOptions>
   ): Promise<T | null> {
     let rval: T | null = null;
     Logger.debug('eq: %j -: %s --: %s ---: %j', queryName, variables);
+    const opts: GraphqlQueryExecutionOptions = this.fullOptions(inOptions);
 
     try {
-      rval = await
-        this.processMonitorService.monitorProcessSimple(this.graphqlRatchet.executeQuery<T>(queryName, variables, authStyle), 'Running query', false);
+      switch (opts.displayStyle) {
+        case GraphqlQueryExecutionDisplayStyle.Silent: rval = await this.graphqlRatchet.executeQuery<T>(queryName, variables, opts.authStyle);break;
+        case GraphqlQueryExecutionDisplayStyle.Monitored: rval = await this.processMonitorService.monitorProcessSimple(this.graphqlRatchet.executeQuery<T>(queryName, variables, opts.authStyle), 'Running query', false);break;
+        case GraphqlQueryExecutionDisplayStyle.Modal: rval = await this.processMonitorService.monitorProcessSimple(
+            this.graphqlRatchet.executeQuery<T>(queryName, variables, opts.authStyle),
+            opts.blockMessage ?? 'Running query...',true); break;
+        default:
+          throw ErrorRatchet.fErr('Cannot happen - no such display style as %s', opts.displayStyle);
+      }
     } catch (err) {
-      ErrorRatchet.handleErrorByApproach(err, errorHandling, LoggerLevelName.error, 'GraphQL Error : %s');
-    }
-
-    return rval;
-  }
-
-  public async executeQueryWithBlock<T>(
-    blockMessage: string,
-    queryName: string,
-    variables: any,
-    authStyle: AuthorizationStyle = AuthorizationStyle.TokenRequired,
-    errorHandling: ErrorHandlingApproach = ErrorHandlingApproach.LogAndPassThru,
-  ): Promise<T | null> {
-    let rval: T | null = null;
-    Logger.debug('eqb: %j -: %s --: %s ---: %j', blockMessage, queryName, variables);
-
-    try {
-      rval = await
-        this.processMonitorService.monitorProcessSimple(
-        this.graphqlRatchet.executeQuery<T>(queryName, variables, authStyle),
-        blockMessage,true);
-    } catch (err) {
-      ErrorRatchet.handleErrorByApproach(err, errorHandling, LoggerLevelName.error, 'GraphQL Error : %s');
+      ErrorRatchet.handleErrorByApproach(err, opts.errorHandling, LoggerLevelName.error, 'GraphQL Error : %s');
     }
 
     return rval;
@@ -58,39 +54,26 @@ export class GraphqlQueryService {
   public async executeMutate<T>(
     queryName: string,
     variables: any,
-    authStyle: AuthorizationStyle = AuthorizationStyle.TokenRequired,
-    errorHandling: ErrorHandlingApproach = ErrorHandlingApproach.LogAndPassThru,
+    inOptions?: Partial<GraphqlQueryExecutionOptions>
   ): Promise<T | null> {
     let rval: T | null = null;
+    const opts: GraphqlQueryExecutionOptions = this.fullOptions(inOptions);
     Logger.debug('em: %j -: %s --: %s ---: %j', queryName, variables);
     try {
-      rval = await
-      this.processMonitorService.monitorProcessSimple(
-        this.graphqlRatchet.executeMutate<T>(queryName, variables, authStyle), 'Running change', false);
+
+      switch (opts.displayStyle) {
+        case GraphqlQueryExecutionDisplayStyle.Silent: rval = await this.graphqlRatchet.executeMutate<T>(queryName, variables, opts.authStyle);break;
+        case GraphqlQueryExecutionDisplayStyle.Monitored: rval = await this.processMonitorService.monitorProcessSimple(this.graphqlRatchet.executeMutate<T>(queryName, variables, opts.authStyle), 'Running query', false);break;
+        case GraphqlQueryExecutionDisplayStyle.Modal: rval = await this.processMonitorService.monitorProcessSimple(
+          this.graphqlRatchet.executeMutate<T>(queryName, variables, opts.authStyle),
+          opts.blockMessage ?? 'Running change...',true); break;
+        default:
+          throw ErrorRatchet.fErr('Cannot happen - no such display style as %s', opts.displayStyle);
+      }
     } catch (err) {
-      ErrorRatchet.handleErrorByApproach(err, errorHandling, LoggerLevelName.error, 'GraphQL Error : %s');
+      ErrorRatchet.handleErrorByApproach(err, opts.errorHandling, LoggerLevelName.error, 'GraphQL Error : %s');
     }
     return rval;
   }
 
-  public async executeMutateWithBlock<T>(
-    blockMessage: string,
-    queryName: string,
-    variables: any,
-    authStyle: AuthorizationStyle = AuthorizationStyle.TokenRequired,
-    errorHandling: ErrorHandlingApproach = ErrorHandlingApproach.LogAndPassThru,
-  ): Promise<T | null> {
-    let rval: T | null = null;
-
-    Logger.debug('emb: %j -: %s --: %s ---: %j', queryName, variables);
-    try {
-      rval = await this.processMonitorService.monitorProcessSimple(
-        this.graphqlRatchet.executeMutate<T>(queryName, variables, authStyle),
-        blockMessage, true);
-    } catch (err) {
-      ErrorRatchet.handleErrorByApproach(err, errorHandling, LoggerLevelName.error, 'GraphQL Error : %s');
-    }
-
-    return rval;
-  }
 }

@@ -26,6 +26,8 @@ export * from './pipes/duration-ms-formatted.pipe';
 
 export * from './services/google-analytics.service';
 export * from './services/graphql-query.service';
+export * from './services/graphql-query-execution-display-style';
+export * from './services/graphql-query-execution-options';
 export * from './services/local-storage.service';
 export * from './services/css-theme.service.ts';
 export * from './services/window-ref.service';
