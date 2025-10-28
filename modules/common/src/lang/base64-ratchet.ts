@@ -53,9 +53,9 @@ export class Base64Ratchet {
     return Base64Ratchet.uint8ArrayToBase64String(input);
   }
 
-  public static base64StringToUint8Array(b64encoded: string): Uint8Array {
+  public static base64StringToUint8Array(b64encoded: string): Uint8Array<ArrayBuffer> {
     try {
-      const uint8: Uint8Array = Base64Ratchet.base64StringToBytes(b64encoded);
+      const uint8: Uint8Array<ArrayBuffer> = Base64Ratchet.base64StringToBytes(b64encoded);
       return uint8;
     } catch (err) {
       Logger.error('Failed to decode base64: %s', b64encoded);
@@ -195,7 +195,7 @@ export class Base64Ratchet {
     return result;
   }
 
-  public static base64StringToBytes(str: string): Uint8Array {
+  public static base64StringToBytes(str: string): Uint8Array<ArrayBuffer> {
     if (str.length % 4 !== 0) {
       throw ErrorRatchet.fErr('Unable to parse base64 string, length: %s', str.length);
     }
@@ -205,7 +205,7 @@ export class Base64Ratchet {
     }
     const missingOctets: number = str.endsWith('==') ? 2 : str.endsWith('=') ? 1 : 0;
     const n: number = str.length;
-    const result: Uint8Array = new Uint8Array(3 * (n / 4));
+    const result: Uint8Array<ArrayBuffer> = new Uint8Array<ArrayBuffer>(new ArrayBuffer(3 * (n / 4)));
     let buffer;
     for (let i = 0, j = 0; i < n; i += 4, j += 3) {
       buffer =
@@ -220,7 +220,7 @@ export class Base64Ratchet {
     return result.subarray(0, result.length - missingOctets);
   }
 
-  public static base64UrlStringToBytes(str: string): Uint8Array {
+  public static base64UrlStringToBytes(str: string): Uint8Array<ArrayBuffer> {
     let dec: string = str.split('-').join('+').split('_').join('/');
     while (dec.length % 4 !== 0) {
       dec += '=';

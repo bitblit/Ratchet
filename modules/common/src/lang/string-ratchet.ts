@@ -56,7 +56,7 @@ export class StringRatchet {
    * @param val - The input string.
    * @returns Uint8Array representing the input string, or null if input is falsy.
    */
-  public static stringToUint8Array(val: string): Uint8Array {
+  public static stringToUint8Array(val: string): Uint8Array<ArrayBuffer> {
     return val ? new TextEncoder().encode(val) : null;
   }
 
