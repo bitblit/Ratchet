@@ -1,6 +1,6 @@
 import { AuthorizationStyle } from "@bitblit/ratchet-graphql/graphql/authorization-style";
 import { ErrorHandlingApproach } from "@bitblit/ratchet-common/lang/error-handling-approach";
-import { GraphqlQueryExecutionDisplayStyle } from "./graphql-query-execution-display-style.ts";
+import { GraphqlQueryExecutionDisplayStyle } from "./graphql-query-execution-display-style";
 
 export interface GraphqlQueryExecutionOptions {
   blockMessage?: string;

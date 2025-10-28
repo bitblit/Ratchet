@@ -29,7 +29,7 @@ export * from './services/graphql-query.service';
 export * from './services/graphql-query-execution-display-style';
 export * from './services/graphql-query-execution-options';
 export * from './services/local-storage.service';
-export * from './services/css-theme.service.ts';
+export * from './services/css-theme.service';
 export * from './services/window-ref.service';
 
 export * from './services/process-monitor/monitored-processes.ts';
