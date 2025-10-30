@@ -84,6 +84,9 @@
     "mysql2": {
       "optional": true
     },
+    "pg": {
+      "optional": true
+    },
     "sqlstring": {
       "optional": true
     },

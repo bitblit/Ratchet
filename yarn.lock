@@ -3103,6 +3103,8 @@ __metadata:
       optional: true
     mysql2:
       optional: true
+    pg:
+      optional: true
     sqlstring:
       optional: true
     tunnel-ssh:
