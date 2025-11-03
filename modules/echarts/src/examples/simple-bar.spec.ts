@@ -24,7 +24,7 @@ const options: EChartsOption = {
 };
 
 describe('#simpleBarChart', function () {
-  test('should generate the chart', async () => {
+  test('should generate the chart', {timeout: 10_000},async () => {
     const data: Buffer = await EChartRatchet.renderChart(options, {
       width: 1000,
       height: 500,
@@ -33,5 +33,5 @@ describe('#simpleBarChart', function () {
     // As of 2022-08-06 this is 7606... there must be a better test than this..
     expect(data.length).toBeGreaterThan(5_000);
     expect(data.length).toBeLessThan(10_000);
-  }, {timeout: 10_000});
+  });
 });

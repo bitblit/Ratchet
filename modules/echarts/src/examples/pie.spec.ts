@@ -65,7 +65,7 @@ const options: EChartsOption = {
 };
 
 describe('#pieChart', function () {
-  test('should generate the chart', async () => {
+  test('should generate the chart', {timeout: 10_000},async () => {
     const data: Buffer = await EChartRatchet.renderChartToPngFile('test.png', options, {
       width: 1000,
       height: 500,
@@ -74,5 +74,5 @@ describe('#pieChart', function () {
     // As of 2022-08-06 this is 32175... there must be a better test than this..
     expect(data.length).toBeGreaterThan(30_000);
     expect(data.length).toBeLessThan(40_000);
-  }, {timeout: 10_000});
+  });
 });

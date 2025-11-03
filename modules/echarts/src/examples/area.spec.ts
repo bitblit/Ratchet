@@ -100,7 +100,7 @@ const options: EChartsOption = {
 };
 
 describe('#areaChart', function () {
-  test('should generate the chart', async () => {
+  test('should generate the chart', {timeout: 10_000},async () => {
     const data: Buffer = await EChartRatchet.renderChart(options, {
       width: 1000,
       height: 500,
@@ -109,5 +109,5 @@ describe('#areaChart', function () {
     // As of 2025-08-24 this is 60589... there must be a better test than this...
     expect(data.length).toBeGreaterThan(55_000);
     expect(data.length).toBeLessThan(65_000);
-  }, {timeout: 10_000});
+  });
 });

@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "WebFetch(domain:vitest.dev)",
+      "Bash(cat node_modules/vite/package.json)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

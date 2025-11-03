@@ -159,7 +159,7 @@ const options: EChartsOption = {
 };
 
 describe('#bubbleChart', function () {
-  test('should generate the chart', async () => {
+  test('should generate the chart', {timeout: 10_000},async () => {
     const data: Buffer = await EChartRatchet.renderChart(options, {
       width: 1000,
       height: 500,
@@ -168,5 +168,5 @@ describe('#bubbleChart', function () {
     // As of 2022-08-06 this is 140641... there must be a better test than this..
     expect(data.length).toBeGreaterThan(140_000);
     expect(data.length).toBeLessThan(150_000);
-  }, {timeout: 10_000});
+  });
 });

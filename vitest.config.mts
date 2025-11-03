@@ -22,12 +22,17 @@ export default defineConfig({
         statements: 0,
       },
     },
-    workspace: ['modules/*',
+    // Vitest 4.0: 'workspace' renamed to 'projects'
+    projects: ['modules/*',
       {
         extends: true,
-          test:{
-            pool: 'forks',
-            //setupFiles: ['../../vitest.setup.ts'],
+        test: {
+          pool: 'forks',
+          poolOptions: {
+            forks: {
+              //setupFiles: ['../../vitest.setup.ts'],
+            }
+          }
         }
       }
     ],
