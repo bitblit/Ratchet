@@ -33,9 +33,8 @@
     "test-coverage": "wsrun mod:test-coverage",
     "apply-github-info": "./apply-github-info.sh",
     "set-codependencies": "echo $GITHUB_RUN_NUMBER && ./set-codependencies.sh 5.1.$GITHUB_RUN_NUMBER",
-    "set-codependencies-alpha": "echo $GITHUB_RUN_NUMBER && ./set-codependencies.sh 5.1.\"$GITHUB_RUN_NUMBER\"-alpha",
+    "set-codependencies-by-github-tag": "echo $GITHUB_RUN_NUMBER && ./set-codependencies-by-github-tag.sh 5.1.$GITHUB_RUN_NUMBER",
     "publish": "wsrun mod:publish",
-    "publish-alpha": "wsrun mod:publish",
     "mod:raw-tsc": "cd $INIT_CWD && tsc",
     "mod:generate-barrels": "cd $INIT_CWD && barrelsby -e \".*\\.spec\\.ts\" --delete -d src -l below -q && cd $INIT_CWD && fix-esm-import-path src && rm -f src/brevo/index.ts",
     "mod:build": "cd $INIT_CWD && yarn mod:clean && cd $INIT_CWD && tsc",
@@ -53,7 +52,6 @@
     "mod:watch": "cd $INIT_CWD && tsc-watch",
     "mod:force-build": "cd $INIT_CWD && tsc --build --force",
     "mod:publish": "cd $INIT_CWD && cat package.json && yarn npm publish --access public",
-    "__mod:publish-alpha": "cd $INIT_CWD && yarn npm publish --new-version 4.0.\"$GITHUB_RUN_NUMBER\"-alpha --no-git-tag-version --non-interactive "
   },
   "repository": {
     "type": "git",

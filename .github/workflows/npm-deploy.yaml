@@ -4,6 +4,7 @@ on:
   push:
     tags:
       - "release-*"
+      - "alpha-*"
 env:
   NODE_OPTIONS: --max_old_space_size=8192
 
@@ -44,7 +45,7 @@ jobs:
         shell: bash
 
       - name: Set Codependency versions
-        run: yarn set-codependencies
+        run: yarn set-codependencies-by-github-tag
         shell: bash
 
       - name: Deploy to NPMJS
