@@ -1,4 +1,4 @@
-name: Build and Deploy Production Library
+name: Build and Deploy Library To NPMJS
 
 on:
   push:
@@ -9,7 +9,7 @@ env:
   NODE_OPTIONS: --max_old_space_size=8192
 
 jobs:
-  build-and-deploy-production-library:
+  build-and-deploy-library-to-npmjs:
     runs-on: ubuntu-latest
 
     concurrency:
