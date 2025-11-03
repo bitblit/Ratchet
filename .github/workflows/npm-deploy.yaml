@@ -5,6 +5,11 @@ on:
     tags:
       - "release-*"
       - "alpha-*"
+
+permissions:
+  id-token: write  # Required for OIDC
+  contents: read
+
 env:
   NODE_OPTIONS: --max_old_space_size=8192
 
