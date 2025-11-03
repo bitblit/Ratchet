@@ -21,8 +21,8 @@ jobs:
 
       - name: Configure environment
         uses: ./.github/workflows/actions/build-env-setup
-        with:
-          NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        #with:
+        #  NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Clean
         run: yarn clean
@@ -48,6 +48,8 @@ jobs:
         run: yarn set-codependencies-by-github-tag
         shell: bash
 
+      # Note to self - if you have created a new module and this step is failing, you probably need to go into
+      # npmjs.com and setup Github actions as a trusted publisher
       - name: Deploy to NPMJS
         run: yarn publish
         shell: bash
