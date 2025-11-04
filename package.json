@@ -115,7 +115,7 @@
     "barrelsby": "2.8.1",
     "concurrently": "9.2.1",
     "cross-env": "10.1.0",
-    "eslint": "9.38.0",
+    "eslint": "9.39.1",
     "eslint-config-prettier": "10.1.8",
     "fix-esm-import-path": "1.10.3",
     "husky": "9.1.7",

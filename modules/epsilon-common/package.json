@@ -65,7 +65,7 @@
     "@aws-sdk/client-s3": "3.922.0",
     "@aws-sdk/client-sns": "3.922.0",
     "@aws-sdk/client-sqs": "3.922.0",
-    "@aws-sdk/types": "3.914.0",
+    "@aws-sdk/types": "3.922.0",
     "@bitblit/ratchet-aws": "0.0.0-snapshot",
     "@bitblit/ratchet-common": "0.0.0-snapshot",
     "@bitblit/ratchet-misc": "0.0.0-snapshot",
@@ -90,7 +90,7 @@
     "@bitblit/ratchet-common": "0.0.0-snapshot",
     "@bitblit/ratchet-misc": "0.0.0-snapshot",
     "@bitblit/ratchet-node-only": "0.0.0-snapshot",
-    "graphql": "^16.11.0"
+    "graphql": "^16.12.0"
   },
   "peerDependenciesMeta": {
     "@apollo/server": {
@@ -104,7 +104,7 @@
     "@apollo/server": "4.12.2",
     "@types/aws-lambda": "8.10.156",
     "aws-sdk-client-mock": "4.1.0",
-    "graphql": "16.11.0",
+    "graphql": "16.12.0",
     "graphql-tag": "2.12.6"
   }
 }
