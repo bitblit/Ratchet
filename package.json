@@ -51,7 +51,7 @@
     "mod:test-coverage": "cd $INIT_CWD && vitest run  --coverage",
     "mod:watch": "cd $INIT_CWD && tsc-watch",
     "mod:force-build": "cd $INIT_CWD && tsc --build --force",
-    "mod:publish": "cd $INIT_CWD && cat package.json && yarn npm publish --access public"
+    "mod:publish": "cd $INIT_CWD && cat package.json && yarn npm publish --provenance --access public"
   },
   "repository": {
     "type": "git",
