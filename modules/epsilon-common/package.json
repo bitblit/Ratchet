@@ -27,7 +27,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bitblit/Ratchet.git"
+    "url": "https://github.com/bitblit/Ratchet"
   },
   "husky": {
     "hooks": {
@@ -48,10 +48,6 @@
     "run-batch-sample-server": "yarn mod:build && node bin/cli.js run-sample-local-batch-server",
     "run-background-process-from-command-line-dry-run": "yarn mod:build && node bin/cli.js run-background-process"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/bitblit/Ratchet"
-  },
   "keywords": [
     "epsilon",
     "lambda",
@@ -66,9 +62,9 @@
   },
   "license": "Apache-2.0",
   "dependencies": {
-    "@aws-sdk/client-s3": "3.918.0",
-    "@aws-sdk/client-sns": "3.918.0",
-    "@aws-sdk/client-sqs": "3.918.0",
+    "@aws-sdk/client-s3": "3.922.0",
+    "@aws-sdk/client-sns": "3.922.0",
+    "@aws-sdk/client-sqs": "3.922.0",
     "@aws-sdk/types": "3.914.0",
     "@bitblit/ratchet-aws": "0.0.0-snapshot",
     "@bitblit/ratchet-common": "0.0.0-snapshot",

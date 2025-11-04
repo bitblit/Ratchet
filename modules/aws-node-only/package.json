@@ -43,10 +43,6 @@
     "arrowParens": "always"
   },
   "config": {},
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/bitblit/Ratchet.git"
-  },
   "keywords": [
     "wrench",
     "utility"
@@ -64,8 +60,8 @@
     "@bitblit/ratchet-common": "0.0.0-snapshot"
   },
   "optionalDependencies": {
-    "@aws-sdk/client-athena": "3.918.0",
-    "@aws-sdk/client-sts": "3.918.0",
+    "@aws-sdk/client-athena": "3.922.0",
+    "@aws-sdk/client-sts": "3.922.0",
     "@aws-sdk/types": "3.914.0",
     "@smithy/abort-controller": "4.2.3",
     "@smithy/smithy-client": "4.9.1",
@@ -77,8 +73,8 @@
     "walk": "2.3.15"
   },
   "peerDependencies": {
-    "@aws-sdk/client-athena": "^3.918.0",
-    "@aws-sdk/client-sts": "^3.918.0",
+    "@aws-sdk/client-athena": "^3.922.0",
+    "@aws-sdk/client-sts": "^3.922.0",
     "@aws-sdk/types": "^3.914.0",
     "@bitblit/ratchet-aws": "0.0.0-snapshot",
     "@bitblit/ratchet-common": "0.0.0-snapshot",

@@ -23,7 +23,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bitblit/Ratchet.git"
+    "url": "https://github.com/bitblit/Ratchet"
   },
   "husky": {
     "hooks": {
@@ -36,10 +36,6 @@
     "arrowParens": "always"
   },
   "config": {},
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/bitblit/Ratchet"
-  },
   "keywords": [
     "epsilon",
     "lambda",

@@ -20,7 +20,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bitblit/Ratchet.git"
+    "url": "https://github.com/bitblit/Ratchet"
   },
   "husky": {
     "hooks": {
@@ -33,10 +33,6 @@
     "arrowParens": "always"
   },
   "config": {},
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/bitblit/Ratchet"
-  },
   "keywords": [
     "warden",
     "simplewebauthn"
@@ -50,8 +46,8 @@
   },
   "license": "Apache-2.0",
   "dependencies": {
-    "@aws-sdk/client-s3": "3.918.0",
-    "@aws-sdk/client-ses": "3.918.0",
+    "@aws-sdk/client-s3": "3.922.0",
+    "@aws-sdk/client-ses": "3.922.0",
     "@bitblit/ratchet-aws": "0.0.0-snapshot",
     "@bitblit/ratchet-common": "0.0.0-snapshot",
     "@bitblit/ratchet-node-only": "0.0.0-snapshot",
@@ -61,8 +57,8 @@
     "jsonwebtoken": "9.0.2"
   },
   "peerDependencies": {
-    "@aws-sdk/client-s3": "^3.918.0",
-    "@aws-sdk/client-ses": "^3.918.0",
+    "@aws-sdk/client-s3": "^3.922.0",
+    "@aws-sdk/client-ses": "^3.922.0",
     "@bitblit/ratchet-aws": "0.0.0-snapshot",
     "@bitblit/ratchet-common": "0.0.0-snapshot",
     "@bitblit/ratchet-warden-common": "0.0.0-snapshot",
