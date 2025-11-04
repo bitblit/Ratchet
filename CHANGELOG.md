@@ -18,10 +18,11 @@ package without knowing why it is alpha you'll get exactly what you deserve.
 
 ## In Flight
 
-## [5.1.x]
+## [6.0.x]
 ### Added
 - Acute-common module : Baseline functions and utilities for Angular
 - Acute-warden module : Utilities for using Warden with Angular
+- Maze : Silly library to help auto-generate mazes for my friends
 - S3 remote file tracker (aws)
 - ArrayRatchet shuffleInPlace
 - ErrorRatchet generic error handler
@@ -32,13 +33,31 @@ package without knowing why it is alpha you'll get exactly what you deserve.
 - Background task browse/launcher for the Epsilon local-container-server and local-server
 - Added 'AnonymousIfNoTokenAvailable' mode for GraphQL
 - Added a very simple local file server to node-only (a lot like 'serve' but supports HTTPS)
+- Added support in rdbms for PostgresQL
+- Added support in rdbms for RDS Data API
+- Added basic batch background support for AWS
+- Extracted *-like interfaces in AWS library to make them easier to test
+- Added basic "Used image finder" to simplify cleanup of ECR registries
+- Added aws-credentials-ratchet to simplify programmatically using profiles
+- Added mailer wrapper for Brevo
+- Added wrapper for Sobol
+- Added helper handler to create package.json export maps
+- Added helper functions for working with "common crawl"
 - 
+
+
+
 ### Changed
 - Upgraded a bunch of dependant libraries
 - Globally switched to for-of structure
 - General linting
 - Refactored epsilon-deployment Cloudfront Cors and HTTPS handling
 - Improved boolean param handling for sqlite
+- Made global ratchet more safe when "process" doesn't exist
+- Broke JWT ratchet up to cleaner separate functionality which requires the secret from functions that do not
+- Better typesafe handling of ArrayBufferLike
+- Changed LocalServer in epsilon to be more configurable with respect to logging
+- Upgraded echarts version
 
 ## [5.0.x]
 ### Added
