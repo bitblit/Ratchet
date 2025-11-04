@@ -1,11 +1,7 @@
-import resolve from '@rollup/plugin-node-resolve';
-import commonjs from '@rollup/plugin-commonjs';
-import typescript from 'rollup-plugin-typescript2';
-import angular from 'rollup-plugin-angular';
-import  terser  from '@rollup/plugin-terser';
-import json from '@rollup/plugin-json';
-import pkg from './package.json' assert { type: 'json' };
-import angularAotPlugin from '@bitblit/ratchet-node-only/third-party/angular/angular-aot-rollup-plugin';
+import typescript from "rollup-plugin-typescript2";
+import json from "@rollup/plugin-json";
+import pkg from "./package.json" with { type: "json" };
+import angularAotPlugin from "@bitblit/ratchet-node-only/third-party/angular/angular-aot-rollup-plugin";
 
 export default {
   input: 'src/index.ts', // Entry point for your library
