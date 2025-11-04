@@ -23,6 +23,10 @@
     "Bilal Shahid <bshahid@adomni.com>",
     "Benn Linger <benn@bennlinger.com>"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bitblit/Ratchet.git"
+  },
   "husky": {
     "hooks": {
       "pre-commit": "pretty-quick --staged"

@@ -21,6 +21,10 @@
     "Lucas Myers <veganbeef@protonmail.com>",
     "Zach Herridge"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bitblit/Ratchet.git"
+  },
   "husky": {
     "hooks": {
       "pre-commit": "pretty-quick --staged"
