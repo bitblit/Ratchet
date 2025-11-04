@@ -32,7 +32,7 @@ export * from './services/local-storage.service';
 export * from './services/css-theme.service';
 export * from './services/window-ref.service';
 
-export * from './services/process-monitor/monitored-processes.ts';
+export * from './services/process-monitor/monitored-processes';
 export * from './services/process-monitor/process-holder';
 export * from './services/process-monitor/process-monitor-display-mode';
 export * from './services/process-monitor/process-monitor-service';

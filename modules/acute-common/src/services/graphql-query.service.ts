@@ -6,8 +6,8 @@ import { ErrorHandlingApproach } from "@bitblit/ratchet-common/lang/error-handli
 import { ErrorRatchet } from "@bitblit/ratchet-common/lang/error-ratchet";
 import { LoggerLevelName } from "@bitblit/ratchet-common/logger/logger-level-name";
 import { ProcessMonitorService } from "./process-monitor/process-monitor-service";
-import { GraphqlQueryExecutionOptions } from "./graphql-query-execution-options.ts";
-import { GraphqlQueryExecutionDisplayStyle } from "./graphql-query-execution-display-style.ts";
+import { GraphqlQueryExecutionOptions } from "./graphql-query-execution-options";
+import { GraphqlQueryExecutionDisplayStyle } from "./graphql-query-execution-display-style";
 import { StringRatchet } from "@bitblit/ratchet-common/lang/string-ratchet";
 
 @Injectable({ providedIn: 'root' })

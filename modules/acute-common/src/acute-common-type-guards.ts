@@ -1,6 +1,6 @@
 // Simple switch to see what kind of event I am looking at
 
-import { ProcessMonitorState } from "./services/process-monitor/process-monitor-state.ts";
+import { ProcessMonitorState } from "./services/process-monitor/process-monitor-state";
 
 export class AcuteCommonTypeGuards {
   public static isProcessMonitorState(item: any): item is ProcessMonitorState {

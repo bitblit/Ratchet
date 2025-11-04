@@ -1,4 +1,4 @@
-import { ProcessHolder } from "./process-holder.ts";
+import { ProcessHolder } from "./process-holder";
 
 export interface MonitoredProcesses {
   processes: ProcessHolder<any>[];

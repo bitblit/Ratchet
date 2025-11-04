@@ -4,9 +4,9 @@ import {ProcessMonitorState} from './process-monitor-state';
 import {StringRatchet} from "@bitblit/ratchet-common/lang/string-ratchet";
 import {No} from "@bitblit/ratchet-common/lang/no";
 import {ProcessHolder} from "./process-holder";
-import { MonitoredProcesses } from "./monitored-processes.ts";
+import { MonitoredProcesses } from "./monitored-processes";
 import { Logger } from "@bitblit/ratchet-common/logger/logger";
-import { AcuteCommonTypeGuards } from "../../acute-common-type-guards.ts";
+import { AcuteCommonTypeGuards } from "../../acute-common-type-guards";
 
 // Service for providing visual feedback on an ongoing long-running process
 @Injectable({providedIn: 'root'})

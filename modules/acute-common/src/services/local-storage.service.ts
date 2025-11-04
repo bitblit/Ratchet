@@ -1,6 +1,6 @@
 import { Inject, Injectable } from "@angular/core";
 import { Logger } from '@bitblit/ratchet-common/logger/logger';
-import { ACUTE_APPLICATION_NAME } from "../constants.ts";
+import { ACUTE_APPLICATION_NAME } from "../constants";
 import { RequireRatchet } from "@bitblit/ratchet-common/lang/require-ratchet";
 
 /**
