@@ -18,10 +18,6 @@ runs:
         node-version: "20"
         registry-url: 'https://registry.npmjs.org'
 
-    - name: Output old yarn version
-      shell: bash
-      run: yarn -v
-
     - name: Output old npm version
       shell: bash
       run: npm -version
@@ -31,15 +27,11 @@ runs:
       shell: bash
       run: npm install -g npm@latest
 
-    - name: Update yarn
-      shell: bash
-      run: yarn set version 4.9.0
-
     - name: Output new npm version
       shell: bash
       run: npm -version
 
-    - name: Output new yarn version
+    - name: Output yarn version
       shell: bash
       run: yarn -v
 

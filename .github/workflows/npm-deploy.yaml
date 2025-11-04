@@ -59,6 +59,6 @@ jobs:
       - name: Deploy to NPMJS
         run: yarn publish
         shell: bash
-        env:
-          NPM_CONFIG_PROVENANCE: true
+        #env:
+          #NPM_CONFIG_PROVENANCE: true
           #NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
