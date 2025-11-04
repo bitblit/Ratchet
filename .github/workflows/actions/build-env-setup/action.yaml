@@ -1,9 +1,5 @@
 name: 'Node Setup'
 description: 'Initial setup for node'
-#inputs:
-#  NPM_AUTH_TOKEN:
-#    description: 'NPM_AUTH_TOKEN'
-#    required: true
 
 runs:
   using: "composite"
@@ -34,15 +30,6 @@ runs:
     - name: Output yarn version
       shell: bash
       run: yarn -v
-
-    #- name: Setup NPM token
-    #  shell: bash
-    #  run: >
-    #    echo "npmAuthToken: \"${{ inputs.NPM_AUTH_TOKEN }}\"" >> ~/.yarnrc.yml
-
-    #- name: Check NPM token
-    #  shell: bash
-    #  run: cat  ~/.yarnrc.yml
 
     - name: Setup Java
       uses: actions/setup-java@v4
