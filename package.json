@@ -51,7 +51,7 @@
     "mod:test-coverage": "cd $INIT_CWD && vitest run  --coverage",
     "mod:watch": "cd $INIT_CWD && tsc-watch",
     "mod:force-build": "cd $INIT_CWD && tsc --build --force",
-    "mod:publish": "cd $INIT_CWD && cat package.json && yarn npm publish --access public --provenance --verbose"
+    "mod:publish": "cd $INIT_CWD && yarn npm publish --access public --provenance --tag $GITHUB_REF_NAME"
   },
   "repository": {
     "type": "git",
@@ -109,7 +109,7 @@
     "@rollup/plugin-terser": "0.4.4",
     "@rollup/plugin-typescript": "12.3.0",
     "@types/luxon": "3.7.1",
-    "@types/node": "18.19.130",
+    "@types/node": "24.10.0",
     "@vitest/coverage-istanbul": "4.0.6",
     "@vitest/coverage-v8": "4.0.6",
     "barrelsby": "2.8.1",
@@ -141,5 +141,5 @@
     "vitest-mock-extended": "3.1.0",
     "wsrun": "5.2.4"
   },
-  "packageManager": "yarn@4.9.0"
+  "packageManager": "yarn@4.10.3"
 }
