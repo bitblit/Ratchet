@@ -1,9 +1,9 @@
 name: 'Node Setup'
 description: 'Initial setup for node'
-inputs:
-  NPM_AUTH_TOKEN:
-    description: 'NPM_AUTH_TOKEN'
-    required: true
+#inputs:
+#  NPM_AUTH_TOKEN:
+#    description: 'NPM_AUTH_TOKEN'
+#    required: true
 
 runs:
   using: "composite"
@@ -17,6 +17,10 @@ runs:
         cache: "yarn"
         node-version: "20"
         registry-url: 'https://registry.npmjs.org'
+
+    - name: Output old yarn version
+      shell: bash
+      run: yarn -v
 
     - name: Output old npm version
       shell: bash
