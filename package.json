@@ -141,5 +141,5 @@
     "vitest-mock-extended": "3.1.0",
     "wsrun": "5.2.4"
   },
-  "packageManager": "yarn@3.6.1"
+  "packageManager": "yarn@4.9.0"
 }
