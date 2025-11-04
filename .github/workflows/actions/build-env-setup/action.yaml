@@ -18,6 +18,16 @@ runs:
         node-version: "20"
         registry-url: 'https://registry.npmjs.org'
 
+    - name: Output old npm version
+      run: npm -version
+
+    # Ensure npm 11.5.1 or later is installed
+    - name: Update npm
+      run: npm install -g npm@latest
+
+    - name: Output new npm version
+      run: npm -version
+
     #- name: Setup NPM token
     #  shell: bash
     #  run: >
