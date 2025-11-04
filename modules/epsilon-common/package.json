@@ -70,9 +70,9 @@
     "@bitblit/ratchet-common": "0.0.0-snapshot",
     "@bitblit/ratchet-misc": "0.0.0-snapshot",
     "@bitblit/ratchet-node-only": "0.0.0-snapshot",
-    "@smithy/abort-controller": "4.2.3",
-    "@smithy/smithy-client": "4.9.1",
-    "@smithy/util-waiter": "4.2.3",
+    "@smithy/abort-controller": "4.2.4",
+    "@smithy/smithy-client": "4.9.2",
+    "@smithy/util-waiter": "4.2.4",
     "clear": "0.1.0",
     "commander": "14.0.2",
     "cross-fetch": "4.1.0",
@@ -102,7 +102,7 @@
   },
   "devDependencies": {
     "@apollo/server": "4.12.2",
-    "@types/aws-lambda": "8.10.156",
+    "@types/aws-lambda": "8.10.157",
     "aws-sdk-client-mock": "4.1.0",
     "graphql": "16.12.0",
     "graphql-tag": "2.12.6"
