@@ -31,9 +31,17 @@ runs:
       shell: bash
       run: npm install -g npm@latest
 
+    - name: Update yarn
+      shell: bash
+      run: yarn set version 4.9.0
+
     - name: Output new npm version
       shell: bash
       run: npm -version
+
+    - name: Output new yarn version
+      shell: bash
+      run: yarn -v
 
     #- name: Setup NPM token
     #  shell: bash
