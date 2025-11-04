@@ -19,6 +19,7 @@ runs:
         registry-url: 'https://registry.npmjs.org'
 
     - name: Output old npm version
+      shell: bash
       run: npm -version
 
     # Ensure npm 11.5.1 or later is installed
