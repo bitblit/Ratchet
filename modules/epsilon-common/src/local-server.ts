@@ -233,6 +233,8 @@ export class LocalServer {
           userArn: null,
           userAgent: 'Custom User Agent String',
           user: null,
+          vpcId: 'vpc1234',
+          vpceId: 'vpce1234'
         },
         path: request.url, // /prod/path/to/resource
         domainName: request.headers['host'],
