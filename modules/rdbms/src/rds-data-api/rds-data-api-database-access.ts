@@ -4,13 +4,18 @@ import { RequestResults } from "../model/request-results.js";
 import {
   BeginTransactionCommand,
   BeginTransactionCommandOutput,
-  CommitTransactionCommand, CommitTransactionCommandOutput, ExecuteStatementCommand, ExecuteStatementCommandOutput,
+  CommitTransactionCommand, CommitTransactionCommandOutput,
+  DatabaseResumingException, ExecuteStatementCommand, ExecuteStatementCommandOutput,
   Field,
   RDSDataClient, RollbackTransactionCommand, RollbackTransactionCommandOutput, SqlParameter
 } from "@aws-sdk/client-rds-data";
 import { Logger } from "@bitblit/ratchet-common/logger/logger";
 import { RdsDataApiConnectionConfig } from "./model/rds-data-api-connection-config.ts";
 import SqlString from 'sqlstring';
+import type { Command } from "@smithy/types";
+import { SmithyResolvedConfiguration } from "@smithy/smithy-client/dist-types/client";
+import { PromiseRatchet } from "@bitblit/ratchet-common/lang/promise-ratchet";
+import { ErrorRatchet } from "@bitblit/ratchet-common/lang/error-ratchet";
 
 export class RdsDataApiDatabaseAccess implements DatabaseAccess {
 
@@ -21,8 +26,39 @@ export class RdsDataApiDatabaseAccess implements DatabaseAccess {
     private cfg: RdsDataApiConnectionConfig,
   ) {}
 
+  private get maxWaitForResumingDatabase(): number {
+    return this?.cfg?.maximumWaitForDbResumeInMillis ?? 0; // Default to no waiting
+  }
+
+  private get dbResumePingTimeMillis(): number {
+    return this?.cfg?.dbResumePingTimeMillis ?? 1_000; // Default to 1 second
+  }
+
+  public async sendWithDatabaseWait(cmd: any): Promise<any> {
+    const startTime: number = Date.now();
+    let rval: any;
+    do {
+      try {
+        rval = await this.client.send(cmd);
+      } catch (err) {
+        if (err instanceof DatabaseResumingException) {
+          Logger.debug('Database was resuming - waiting %d ms before retry : %s', this.dbResumePingTimeMillis, err);
+          await PromiseRatchet.wait(this.dbResumePingTimeMillis);
+        } else {
+          throw err;
+        }
+      }
+    } while (!rval && Date.now()-startTime < this.maxWaitForResumingDatabase)
+    if (!rval) {
+      Logger.error('Timed out waiting for db to start');
+      throw ErrorRatchet.fErr('Timed out waiting for db to start');
+    }
+    return rval;
+  }
+
+
   public async beginTransaction(): Promise<void> {
-    const tmp: BeginTransactionCommandOutput = await this.client.send(new BeginTransactionCommand({resourceArn: 'ss', secretArn: 'yy'}));
+    const tmp: BeginTransactionCommandOutput = await this.sendWithDatabaseWait(new BeginTransactionCommand({ resourceArn: this.cfg.resourceArn, secretArn: this.cfg.secretArn}))
     this._currentTransactionId = tmp.transactionId;
     Logger.info('Started transaction %s', this._currentTransactionId);
   }
@@ -38,7 +74,7 @@ export class RdsDataApiDatabaseAccess implements DatabaseAccess {
 
   public async commitTransaction(): Promise<void> {
     if (this._currentTransactionId) {
-      const out: CommitTransactionCommandOutput = await this.client.send(new CommitTransactionCommand({resourceArn: this.cfg.resourceArn, secretArn: this.cfg.secretArn, transactionId: this._currentTransactionId}));
+      const out: CommitTransactionCommandOutput = await this.sendWithDatabaseWait(new CommitTransactionCommand({resourceArn: this.cfg.resourceArn, secretArn: this.cfg.secretArn, transactionId: this._currentTransactionId}))
       Logger.info('Commit transaction %s returned %j', this._currentTransactionId, out);
       this._currentTransactionId = null;
     } else {
@@ -53,7 +89,7 @@ export class RdsDataApiDatabaseAccess implements DatabaseAccess {
 
   public async modify(query: string, fields: Record<string, any>): Promise<RequestResults<ModifyResults>> {
     const params: SqlParameter[] = RdsDataApiDatabaseAccess.toSqlParameters(fields);
-    const tmp: ExecuteStatementCommandOutput = await this.client.send(new ExecuteStatementCommand({resourceArn: this.cfg.resourceArn, secretArn: this.cfg.secretArn, database: this.cfg.database, sql:query, parameters: params, includeResultMetadata: true}));
+    const tmp: ExecuteStatementCommandOutput = await this.sendWithDatabaseWait(new ExecuteStatementCommand({resourceArn: this.cfg.resourceArn, secretArn: this.cfg.secretArn, database: this.cfg.database, sql:query, parameters: params, includeResultMetadata: true}));
     const rval: RequestResults<ModifyResults> = {
       results: {
         changedRows: tmp.numberOfRecordsUpdated,

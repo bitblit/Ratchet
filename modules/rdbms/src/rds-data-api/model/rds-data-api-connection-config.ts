@@ -3,4 +3,6 @@ export interface RdsDataApiConnectionConfig {
   resourceArn: string;
   secretArn: string;
   database: string;
+  maximumWaitForDbResumeInMillis?: number;
+  dbResumePingTimeMillis?: number;
 }
