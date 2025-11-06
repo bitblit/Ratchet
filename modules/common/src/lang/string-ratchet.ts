@@ -668,4 +668,9 @@ export class StringRatchet {
 
     return ansLen > 0 ? ans : null;
   }
+
+  public static snakeCaseToCamelCase(str) {
+    return str.replace(/_([a-z])/g, (_, letter) => letter.toUpperCase());
+  }
+
 }

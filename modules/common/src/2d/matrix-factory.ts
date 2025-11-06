@@ -9,12 +9,12 @@ export class MatrixFactory {
     let rval: TransformationMatrix = MatrixFactory.identity();
     tx.forEach(t=>{
       rval = {
-        a: (rval.a * t.a) + (rval.b * t.c) + ((rval.u | 0) * 0),
-        b: (rval.a * t.b) + (rval.b * t.d) + ((rval.u | 0) * 0),
-        u: (rval.a * (t.u | 0)) + (rval.b * (t.v | 0)) + ((rval.u | 0) * 1),
-        c: (rval.c * t.a) + (rval.d * t.c) + ((rval.v | 0) * 0),
-        d: (rval.c * t.b) + (rval.d * t.d) + ((rval.v | 0)  * 0),
-        v: (rval.c * (t.u | 0)) + (rval.d * (t.v | 0)) + ((rval.v | 0)  * 1),
+        a: (rval.a * t.a) + (rval.b * t.c) + ((rval.u ?? 0) * 0),
+        b: (rval.a * t.b) + (rval.b * t.d) + ((rval.u ?? 0) * 0),
+        u: (rval.a * (t.u ?? 0)) + (rval.b * (t.v ?? 0)) + ((rval.u ?? 0) * 1),
+        c: (rval.c * t.a) + (rval.d * t.c) + ((rval.v ?? 0) * 0),
+        d: (rval.c * t.b) + (rval.d * t.d) + ((rval.v ?? 0)  * 0),
+        v: (rval.c * (t.u ?? 0)) + (rval.d * (t.v ?? 0)) + ((rval.v ?? 0)  * 1),
       };
     });
     return rval;

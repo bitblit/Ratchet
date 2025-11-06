@@ -15,12 +15,9 @@ export class Ratchet2d {
   private constructor() {}
 
   public static translateToOriginVector(points: Point2d[]): Point2d {
-    let rval: Point2d = null;
-    if (Ratchet2d.validPoints(points)) {
-      rval = {
-        x: null,
-        y: null,
-      };
+    let rval: Point2d;
+    if (points?.length && Ratchet2d.validPoints(points)) {
+      rval = structuredClone(points[0]);
       points.forEach((p) => {
         rval.x = rval.x === null || p.x < rval.x ? p.x : rval.x;
         rval.y = rval.y === null || p.y < rval.y ? p.y : rval.y;
@@ -28,6 +25,8 @@ export class Ratchet2d {
 
       rval.x *= -1;
       rval.y *= -1;
+    } else {
+      throw ErrorRatchet.fErr('Cannot translate, points are not valid or empty : %j', points);
     }
     return rval;
   }

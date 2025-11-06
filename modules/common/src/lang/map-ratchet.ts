@@ -5,6 +5,7 @@
 import { KeyValue } from './key-value.js';
 import { Logger } from '../logger/logger.js';
 import { ErrorRatchet } from './error-ratchet.js';
+import { StringRatchet } from "./string-ratchet.ts";
 
 export class MapRatchet {
   // Takes any map with keys that are nested and expands them
@@ -202,5 +203,18 @@ export class MapRatchet {
       }
     }
     return rval;
+  }
+
+  public static snakeCaseKeysToCamelCase(obj:any):any {
+    if (Array.isArray(obj)) {
+      return obj.map(v => StringRatchet.snakeCaseToCamelCase(v));
+    } else if (obj !== null && obj.constructor === Object) {
+      return Object.entries(obj).reduce((acc, [key, value]) => {
+        const camelKey = key.replace(/_([a-z])/g, (_, letter) => letter.toUpperCase());
+        acc[camelKey] = StringRatchet.snakeCaseToCamelCase(value);
+        return acc;
+      }, {});
+    }
+    return obj;
   }
 }

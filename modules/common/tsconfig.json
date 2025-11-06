@@ -4,7 +4,11 @@
     "lib": [],
     "outDir": "lib",
     "rootDir": "src",
-    "stripInternal": true
+    "stripInternal": true,
+
+    "noImplicitAny": false,
+    "noImplicitThis": false,
+    "strictNullChecks": false
   },
   "extends": "../../tsconfig.json",
   "include": ["src/**/*.ts"]
