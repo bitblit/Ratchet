@@ -9,6 +9,7 @@
   },
   "type": "module",
   "files": [
+    "src/**",
     "lib/**",
     "bin/**"
   ],

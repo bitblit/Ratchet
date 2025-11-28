@@ -4,6 +4,7 @@
   "description": "My silly tools for mazes",
   "type": "module",
   "files": [
+    "src/**",
     "lib/**",
     "bin/**"
   ],

@@ -4,6 +4,7 @@
   "description": "Common tools for general use",
   "type": "module",
   "files": [
+    "src/**",
     "lib/**",
     "bin/**"
   ],

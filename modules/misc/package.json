@@ -5,6 +5,7 @@
   "sideEffects": false,
   "type": "module",
   "files": [
+    "src/**",
     "lib/**",
     "bin/**"
   ],

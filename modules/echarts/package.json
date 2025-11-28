@@ -4,6 +4,7 @@
   "description": "Library for using echarts on Node",
   "type": "module",
   "files": [
+    "src/**",
     "lib/**",
     "bin/**"
   ],
