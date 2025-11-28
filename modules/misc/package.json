@@ -59,7 +59,7 @@
   "optionalDependencies": {
     "handlebars": "4.7.8",
     "handlebars-layouts": "3.1.4",
-    "js-yaml": "4.1.0",
+    "js-yaml": "4.1.1",
     "rxjs": "7.8.2",
     "swagger-model-validator": "3.0.21"
   },
