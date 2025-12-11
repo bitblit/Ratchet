@@ -17,6 +17,15 @@ export class LoggerRingBuffer {
     this._bufferSize = size;
   }
 
+  public findMessagesMatchingInBuffer(regex: RegExp): LogMessage[] {
+    const rval: LogMessage[] = this._buffer.filter(s=>s.messageSource.match(regex));
+    return rval;
+  }
+
+  public hasMessageMatchingInBuffer(regex: RegExp): boolean {
+    return this.findMessagesMatchingInBuffer(regex).length>0;
+  }
+
   public get currentIndex(): number {
     return this._bufferIdx;
   }

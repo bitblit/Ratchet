@@ -28,11 +28,11 @@ export default defineConfig({
         extends: true,
         test: {
           pool: 'forks',
-          poolOptions: {
-            forks: {
+          //poolOptions: {
+          //  forks: {
               //setupFiles: ['../../vitest.setup.ts'],
-            }
-          }
+          //  }
+          //}
         }
       }
     ],
