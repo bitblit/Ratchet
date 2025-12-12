@@ -33,7 +33,7 @@ export class LoggerInstance {
 
 
   public findMessagesMatchingInBuffer(regex: RegExp): LogMessage[] {
-    if (this._ringBuffer) {
+    if (!this._ringBuffer) {
       throw new Error('Called findMessagesMatchingInBuffer with no ring buffer configured')
     }
     return this._ringBuffer.findMessagesMatchingInBuffer(regex);
