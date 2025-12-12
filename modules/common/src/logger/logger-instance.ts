@@ -108,6 +108,9 @@ export class LoggerInstance {
       case LogMessageFormatType.None:
         this._formatter = new NoneLogMessageFormatter();
         break;
+      case LogMessageFormatType.RingBufferOnly:
+        this._formatter = new NoneLogMessageFormatter();
+        break;
       case LogMessageFormatType.StructuredJson:
         this._formatter = new StructuredJsonLogMessageFormatter();
         break;
