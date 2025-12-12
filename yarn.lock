@@ -2569,14 +2569,14 @@ __metadata:
     rxjs: "npm:7.8.2"
     zone.js: "npm:0.15.1"
   peerDependencies:
-    "@angular/animations": ^20.3.14
+    "@angular/animations": ^20.3.15
     "@angular/cdk": ^20.2.14
-    "@angular/common": ^20.3.14
-    "@angular/compiler": ^20.3.14
-    "@angular/core": ^20.3.14
-    "@angular/forms": ^20.3.14
-    "@angular/platform-browser": ^20.3.14
-    "@angular/platform-browser-dynamic": ^20.3.14
+    "@angular/common": ^20.3.15
+    "@angular/compiler": ^20.3.15
+    "@angular/core": ^20.3.15
+    "@angular/forms": ^20.3.15
+    "@angular/platform-browser": ^20.3.15
+    "@angular/platform-browser-dynamic": ^20.3.15
     "@angular/router": ^20.3.14
     "@bitblit/ratchet-common": 0.0.0-snapshot
     "@bitblit/ratchet-graphql": 0.0.0-snapshot
@@ -2612,15 +2612,15 @@ __metadata:
     rxjs: "npm:7.8.2"
     zone.js: "npm:0.15.1"
   peerDependencies:
-    "@angular/animations": ^20.3.14
+    "@angular/animations": ^20.3.15
     "@angular/cdk": ^20.2.14
-    "@angular/common": ^20.3.14
-    "@angular/compiler": ^20.3.14
-    "@angular/core": ^20.3.14
-    "@angular/forms": ^20.3.14
-    "@angular/platform-browser": ^20.3.14
-    "@angular/platform-browser-dynamic": ^20.3.14
-    "@angular/router": ^20.3.14
+    "@angular/common": ^20.3.15
+    "@angular/compiler": ^20.3.15
+    "@angular/core": ^20.3.15
+    "@angular/forms": ^20.3.15
+    "@angular/platform-browser": ^20.3.15
+    "@angular/platform-browser-dynamic": ^20.3.15
+    "@angular/router": ^20.3.15
     "@bitblit/ngx-acute-common": 0.0.0-snapshot
     "@bitblit/ratchet-common": 0.0.0-snapshot
     "@bitblit/ratchet-warden-common": 0.0.0-snapshot
@@ -2644,7 +2644,7 @@ __metadata:
     "@smithy/abort-controller": "npm:4.2.4"
     "@smithy/smithy-client": "npm:4.9.2"
     "@smithy/util-waiter": "npm:4.2.4"
-    mailparser: "npm:3.7.5"
+    mailparser: "npm:3.9.1"
     mime-types: "npm:3.0.1"
     tmp: "npm:0.2.5"
     unzipper: "npm:0.12.3"
@@ -2658,7 +2658,7 @@ __metadata:
     "@smithy/abort-controller": ^4.2.3
     "@smithy/smithy-client": ^4.9.1
     "@smithy/util-waiter": ^4.2.3
-    mailparser: ^3.7.5
+    mailparser: ^3.9.1
     mime-types: ^3.0.1
     tmp: ^0.2.5
     unzipper: ^0.12.3
@@ -5991,6 +5991,17 @@ __metadata:
   dependencies:
     tslib: "npm:^2.6.3"
   checksum: 10/22513e7075d2e6e067399f6b3065a1f280d77aab2cc8699fe5bf9496a76ea7ede2cf4d46fad6f033d0ad686f974c52f85335c3dcddd656d1c8700636713f94a9
+  languageName: node
+  linkType: hard
+
+"@zone-eu/mailsplit@npm:5.4.8":
+  version: 5.4.8
+  resolution: "@zone-eu/mailsplit@npm:5.4.8"
+  dependencies:
+    libbase64: "npm:1.3.0"
+    libmime: "npm:5.3.7"
+    libqp: "npm:2.1.1"
+  checksum: 10/31f78be7aef62df7ca62edf9de2ef426ac979d5a516ae8def9c76eea911bda92d8cd8d36a0e8c203cc975d9e5d25faf4b8056f1883a1d615d550684bb6fd38ae
   languageName: node
   linkType: hard
 
@@ -10203,32 +10214,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mailparser@npm:3.7.5":
-  version: 3.7.5
-  resolution: "mailparser@npm:3.7.5"
+"mailparser@npm:3.9.1":
+  version: 3.9.1
+  resolution: "mailparser@npm:3.9.1"
   dependencies:
+    "@zone-eu/mailsplit": "npm:5.4.8"
     encoding-japanese: "npm:2.2.0"
     he: "npm:1.2.0"
     html-to-text: "npm:9.0.5"
     iconv-lite: "npm:0.7.0"
     libmime: "npm:5.3.7"
     linkify-it: "npm:5.0.0"
-    mailsplit: "npm:5.4.6"
-    nodemailer: "npm:7.0.9"
+    nodemailer: "npm:7.0.11"
     punycode.js: "npm:2.3.1"
-    tlds: "npm:1.260.0"
-  checksum: 10/6c8ac6d76d82a76e1338bfaecd36cfb04ef49e94dccad7263ea62efbea8abf3d5102c2a5c786706c1d4fd2fa1e951f1df3f7161b93341a55793908769b271c2d
-  languageName: node
-  linkType: hard
-
-"mailsplit@npm:5.4.6":
-  version: 5.4.6
-  resolution: "mailsplit@npm:5.4.6"
-  dependencies:
-    libbase64: "npm:1.3.0"
-    libmime: "npm:5.3.7"
-    libqp: "npm:2.1.1"
-  checksum: 10/c7455aee74313455d6e2ee29327434be9dc55fe2a7688865fcacdac2b7ddbf416ffeaae72489391e6a9522479264867c8e8eb851010b19f20d209bb9c0a7be6b
+    tlds: "npm:1.261.0"
+  checksum: 10/6b090c6f22834294820d14027a2b319c59fcb83b5ffa0c8346abb2da961daf8ae276ff51412a4d9019c10dba14287f01b96aa2372ee5e9eecffe865bffa37589
   languageName: node
   linkType: hard
 
@@ -10863,10 +10863,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nodemailer@npm:7.0.9":
-  version: 7.0.9
-  resolution: "nodemailer@npm:7.0.9"
-  checksum: 10/88883c58afe356d2b4c24b1e976c04857e8a7a7145e1752dab69072900b0cc2e3daa0964a08c653e692fb64382453e1cfcee3d863828844c8d6f6239727b9023
+"nodemailer@npm:7.0.11":
+  version: 7.0.11
+  resolution: "nodemailer@npm:7.0.11"
+  checksum: 10/2ad4dd56a4caf84a83aa6f4378ded26d5ef8a644ca3be09c3b4fb2255d861369e620f29be6c3c97148ac4a50aa5fdff6240b9d60805362bd99ca15f2ea62e8a2
   languageName: node
   linkType: hard
 
@@ -13147,12 +13147,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tlds@npm:1.260.0":
-  version: 1.260.0
-  resolution: "tlds@npm:1.260.0"
+"tlds@npm:1.261.0":
+  version: 1.261.0
+  resolution: "tlds@npm:1.261.0"
   bin:
     tlds: bin.js
-  checksum: 10/769c6c5d88ee5e8de9bdb70a3d609e0f43e6af776b3959cc226454c1b3b2074c769731f280b3c3e43cc7f92d544f51c8525b676034de37755cf1b5d51109fd37
+  checksum: 10/2dfb8c7e0c0c1fe8fd9966ead43f71c36c974aa498b4e290fb383ceb3be3b20b9517041560b966993fb30abd451a83bf37119fa8d99809ce01bbf5b21dd6c6d3
   languageName: node
   linkType: hard
 
