@@ -190,9 +190,10 @@ export class LoggerInstance {
       if (rval) {
         const fn: (...any) => void = this._handlerFunctionMap.get(msg.lvl) || LoggerUtil.defaultHandlerFunction;
         fn(rval);
-        if (this._ringBuffer) {
-          this._ringBuffer.addToRingBuffer(msg);
-        }
+      }
+      // If it was logged out, or it wasn't but the formatter says to still put it in the ringbuffer...
+      if (this._ringBuffer && (rval || this.options.formatType===LogMessageFormatType.RingBufferOnly)) {
+        this._ringBuffer.addToRingBuffer(msg);
       }
     } else {
       // Do nothing, not enabled

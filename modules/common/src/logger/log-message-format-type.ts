@@ -5,6 +5,7 @@ export const LogMessageFormatType = {
   SingleLineNoLevel: 'SingleLineNoLevel',
   StructuredJson: 'StructuredJson',
 
+  RingBufferOnly: 'RingBufferOnly', // Like none, but still puts it in the ring buffer even with no output
   None: 'None',
 } as const;
 
