@@ -52,7 +52,7 @@
   },
   "optionalDependencies": {
     "@aws-sdk/client-rds-data": "3.922.0",
-    "better-sqlite3": "12.4.1",
+    "better-sqlite3": "12.5.0",
     "get-port": "7.1.0",
     "mysql2": "3.15.3",
     "pg": "8.16.3",
@@ -62,7 +62,7 @@
   "peerDependencies": {
     "@aws-sdk/client-rds-data": "^3.922.0",
     "@bitblit/ratchet-common": "0.0.0-snapshot",
-    "better-sqlite3": "^12.4.1",
+    "better-sqlite3": "^12.5.0",
     "get-port": "^7.1.0",
     "mysql2": "^3.15.3",
     "pg": "^8.16.3",

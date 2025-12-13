@@ -54,7 +54,7 @@
     "@bitblit/ratchet-warden-common": "0.0.0-snapshot",
     "primeflex": "4.0.0",
     "primeicons": "7.0.0",
-    "primeng": "20.3.0",
+    "primeng": "20.4.0",
     "rxjs": "7.8.2",
     "zone.js": "0.15.1"
   },
@@ -73,7 +73,7 @@
     "@bitblit/ratchet-warden-common": "0.0.0-snapshot",
     "primeflex": "4.0.0",
     "primeicons": "7.0.0",
-    "primeng": "20.3.0",
+    "primeng": "20.4.0",
     "rxjs": "7.8.2",
     "zone.js": "0.15.1"
   },
