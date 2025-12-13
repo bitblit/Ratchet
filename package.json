@@ -32,7 +32,7 @@
     "test": "echo Starting full test && wsrun --fast-exit mod:test",
     "test-coverage": "wsrun mod:test-coverage",
     "apply-github-info": "./apply-github-info.sh",
-    "set-codependencies": "echo $GITHUB_RUN_NUMBER && ./set-codependencies.sh 5.2.$GITHUB_RUN_NUMBER",
+    "set-codependencies": "echo $GITHUB_RUN_NUMBER && ./set-codependencies.sh 6.0.$GITHUB_RUN_NUMBER",
     "set-codependencies-by-github-tag": "echo $GITHUB_RUN_NUMBER && ./set-codependencies-by-github-tag.sh 6.0.$GITHUB_RUN_NUMBER",
     "publish": "wsrun mod:publish",
     "mod:raw-tsc": "cd $INIT_CWD && tsc",
