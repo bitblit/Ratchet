@@ -1,20 +1,20 @@
-<p-card header="User profile : {{ user.userObject.wardenData.userLabel }}">
+<p-card header="User profile : {{ user.userObject.user.userLabel }}">
   <div>
-    ID: {{ user.userObject.wardenData.userId }} <br />
-    Full Name: {{ user.userObject.wardenData.userLabel }} <br />
+    ID: {{ user.userObject.user.userId }} <br />
+    Full Name: {{ user.userObject.user.userLabel }} <br />
     <h3>Contacts</h3>
     <ul>
-      @for(cm of user.userObject.wardenData.contactMethods; track cm) {
+      @for(cm of user.userObject.user.contactMethods; track cm) {
         <li>
           <p-button icon="pi pi-trash" pTooltip="Remove contact method {{ cm.value }}" (click)="removeContact(cm)"></p-button>
           {{ cm.type }} : {{ cm.value }}
         </li>
       }
     </ul>
-    @if (user?.userObject?.wardenData?.webAuthnAuthenticatorSummaries?.length) {
+    @if (user?.userObject?.user?.webAuthnAuthenticatorSummaries?.length) {
       <h3>Web Authenticators</h3>
       <ul>
-        @for(waa of user.userObject.wardenData.webAuthnAuthenticatorSummaries; track waa) {
+        @for(waa of user.userObject.user.webAuthnAuthenticatorSummaries; track waa) {
           <li>
             <p-button icon="pi pi-trash" pTooltip="Remove web auth {{ webAuthLabel(waa) }}" (click)="removeWebAuthn(waa)"></p-button>
             <p-button icon="pi pi-file-export" pTooltip="Export web auth {{ webAuthLabel(waa) }}" (click)="exportWebAuthn(waa.origin)"></p-button>
@@ -31,9 +31,9 @@
     </div>
 
     <br />
-    Global Roles: {{ user.userObject.globalRoleIds | json}} <br />
+    Global Roles: {{ user?.userObject?.user?.globalRoleIds | json}} <br />
     <br />
-    Roles: {{ user.userObject.teamRoleMappings | json}} <br />
+    Roles: {{ user?.userObject?.user?.teamRoleMappings | json}} <br />
     <hr />
     Time (MS) left in token : {{ timeLeftMS }} <button (click)="refreshToken()">Refresh</button>
   </div>
