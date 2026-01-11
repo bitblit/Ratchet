@@ -40,15 +40,15 @@
   "config": {},
   "license": "Apache-2.0",
   "dependencies": {
-    "@angular/animations": "20.3.15",
+    "@angular/animations": "20.3.16",
     "@angular/cdk": "20.2.14",
-    "@angular/common": "20.3.15",
-    "@angular/compiler": "20.3.15",
-    "@angular/core": "20.3.15",
-    "@angular/forms": "20.3.15",
-    "@angular/platform-browser": "20.3.15",
-    "@angular/platform-browser-dynamic": "20.3.15",
-    "@angular/router": "20.3.15",
+    "@angular/common": "20.3.16",
+    "@angular/compiler": "20.3.16",
+    "@angular/core": "20.3.16",
+    "@angular/forms": "20.3.16",
+    "@angular/platform-browser": "20.3.16",
+    "@angular/platform-browser-dynamic": "20.3.16",
+    "@angular/router": "20.3.16",
     "@bitblit/ngx-acute-common": "0.0.0-snapshot",
     "@bitblit/ratchet-common": "0.0.0-snapshot",
     "@bitblit/ratchet-warden-common": "0.0.0-snapshot",
@@ -59,15 +59,15 @@
     "zone.js": "0.15.1"
   },
   "peerDependencies": {
-    "@angular/animations": "^20.3.15",
+    "@angular/animations": "^20.3.16",
     "@angular/cdk": "^20.2.14",
-    "@angular/common": "^20.3.15",
-    "@angular/compiler": "^20.3.15",
-    "@angular/core": "^20.3.15",
-    "@angular/forms": "^20.3.15",
-    "@angular/platform-browser": "^20.3.15",
-    "@angular/platform-browser-dynamic": "^20.3.15",
-    "@angular/router": "^20.3.15",
+    "@angular/common": "^20.3.16",
+    "@angular/compiler": "^20.3.16",
+    "@angular/core": "^20.3.16",
+    "@angular/forms": "^20.3.16",
+    "@angular/platform-browser": "^20.3.16",
+    "@angular/platform-browser-dynamic": "^20.3.16",
+    "@angular/router": "^20.3.16",
     "@bitblit/ngx-acute-common": "0.0.0-snapshot",
     "@bitblit/ratchet-common": "0.0.0-snapshot",
     "@bitblit/ratchet-warden-common": "0.0.0-snapshot",
@@ -78,7 +78,7 @@
     "zone.js": "0.15.1"
   },
   "devDependencies": {
-    "@angular/compiler-cli": "20.3.15",
+    "@angular/compiler-cli": "20.3.16",
     "@bitblit/ratchet-node-only": "0.0.0-snapshot"
   }
 }
