@@ -46,13 +46,12 @@ export class WardenClient {
     return parsed;
   }
 
-  public async createAccount(contact: WardenContact, sendCode?: boolean, label?: string, tags?: string[]): Promise<string> {
+  public async createAccount(contact: WardenContact, sendCode?: boolean, label?: string): Promise<string> {
     const cmd: WardenCommand = {
       createAccount: {
         contact: contact,
         sendCode: sendCode,
-        label: label,
-        tags: tags,
+        label: label
       },
     };
     const rval: WardenCommandResponse = await this.exchangeCommand(cmd);

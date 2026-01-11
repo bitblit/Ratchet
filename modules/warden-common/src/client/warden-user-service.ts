@@ -61,8 +61,8 @@ export class WardenUserService<T> {
     return this.options;
   }
 
-  public async createAccount(contact: WardenContact, sendCode?: boolean, label?: string, tags?: string[]): Promise<string> {
-    const rval: string = await this.options.wardenClient.createAccount(contact, sendCode, label, tags);
+  public async createAccount(contact: WardenContact, sendCode?: boolean, label?: string): Promise<string> {
+    const rval: string = await this.options.wardenClient.createAccount(contact, sendCode, label);
 
     if (this.options.recentLoginProvider && StringRatchet.trimToNull(rval)) {
       this.options.recentLoginProvider.saveNewUser(rval, label, contact);
