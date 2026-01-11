@@ -212,7 +212,8 @@ export class WardenDynamoStorageProvider<T> implements WardenStorageProvider, Ex
     };
 
     const results: WardenDynamoStorageDataWrapper[] = await this.ddb.fullyExecuteScan<WardenDynamoStorageDataWrapper>(scan);
-    const rval: WardenEntrySummary[] = results.map(wd=>{
+    const rval: WardenEntrySummary[] = results.filter(dsw=>dsw.userId!==WardenDynamoStorageProvider.EXPIRING_CODE_PROVIDER_KEY)
+      .map(wd=>{
       return WardenUtils.stripWardenEntryToSummary(wd.entry);
     })
     return rval;
