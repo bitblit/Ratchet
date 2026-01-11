@@ -28,8 +28,6 @@ import { WardenLoginResults } from "@bitblit/ratchet-warden-common/common/model/
 import {
   WardenStoreRegistrationResponse
 } from "@bitblit/ratchet-warden-common/common/model/warden-store-registration-response";
-import { WardenUserDecoration } from "@bitblit/ratchet-warden-common/common/model/warden-user-decoration";
-import { WardenJwtToken } from "@bitblit/ratchet-warden-common/common/model/warden-jwt-token";
 import {
   WardenStoreRegistrationResponseType
 } from "@bitblit/ratchet-warden-common/common/model/warden-store-registration-response-type";
@@ -42,7 +40,6 @@ import { StringRatchet } from "@bitblit/ratchet-common/lang/string-ratchet";
 import { Base64Ratchet } from "@bitblit/ratchet-common/lang/base64-ratchet";
 import { ExpiredJwtHandling } from "@bitblit/ratchet-common/jwt/expired-jwt-handling";
 
-import { WardenDefaultUserDecorationProvider } from "./provider/warden-default-user-decoration-provider.js";
 import { WardenNoOpEventProcessingProvider } from "./provider/warden-no-op-event-processing-provider.js";
 import { WardenSingleUseCodeProvider } from "./provider/warden-single-use-code-provider.js";
 import {
@@ -56,6 +53,8 @@ import { WardenThirdPartyAuthenticationProvider } from "./provider/warden-third-
 import { WardenEntryBuilder } from "./warden-entry-builder.js";
 import { WardenAuthorizer } from "./warden-authorizer.ts";
 import { WardenWebAuthnExportToken } from "./warden-web-authn-export-token.ts";
+import { WardenEntrySummary } from "@bitblit/ratchet-warden-common/common/model/warden-entry-summary";
+import { CommonJwtToken } from "@bitblit/ratchet-common/jwt/common-jwt-token";
 
 export class WardenService {
   private opts: WardenServiceOptions;
@@ -71,7 +70,6 @@ export class WardenService {
 
     this.opts = Object.assign(
       {
-        userTokenDataProvider: new WardenDefaultUserDecorationProvider(),
         eventProcessor: new WardenNoOpEventProcessingProvider(),
         sendMagicLinkCommandValidator: new WardenDefaultSendMagicLinkCommandValidator()
       },
@@ -137,8 +135,7 @@ export class WardenService {
           cmd.createAccount.contact,
           origin,
           cmd.createAccount.sendCode,
-          cmd.createAccount.label,
-          cmd.createAccount.tags
+          cmd.createAccount.label
         );
         rval = {
           createAccount: newEntry.userId
@@ -250,15 +247,11 @@ export class WardenService {
         const loginData: WardenLoginRequest = cmd.performLogin;
         const user: WardenEntry = await this.processLogin(loginData, origin);
         if (user) {
-          const decoration: WardenUserDecoration<any> = await this.opts.userDecorationProvider.fetchDecoration(user);
-          const wardenToken: WardenJwtToken<any> = {
-            wardenData: WardenUtils.stripWardenEntryToSummary(user),
-            user: decoration.userTokenData,
-            proxy: decoration.proxyUserTokenData,
-            globalRoleIds: decoration.globalRoleIds,
-            teamRoleMappings: decoration.teamRoleMappings
+          const wardenToken: CommonJwtToken<WardenEntrySummary> = {
+            user: WardenUtils.stripWardenEntryToSummary(user),
+            proxy: null,
           };
-          const jwtToken: string = await this.opts.jwtRatchet.createTokenString(wardenToken, decoration.userTokenExpirationSeconds);
+          const jwtToken: string = await this.opts.jwtRatchet.createTokenString(wardenToken, user.userTokenExpirationSeconds);
           const output: WardenLoginResults = {
             request: loginData,
             userId: user.userId,
@@ -269,18 +262,14 @@ export class WardenService {
           rval = { error: "Login failed" };
         }
       } else if (cmd.refreshJwtToken) {
-        const parsed: WardenJwtToken<any> = await this.opts.jwtRatchet.decodeToken(cmd.refreshJwtToken, ExpiredJwtHandling.THROW_EXCEPTION);
-        const user: WardenEntry = await this.opts.storageProvider.findEntryById(parsed.wardenData.userId);
-        const decoration: WardenUserDecoration<any> = await this.opts.userDecorationProvider.fetchDecoration(user);
-        const wardenToken: WardenJwtToken<any> = {
-          wardenData: WardenUtils.stripWardenEntryToSummary(user),
-          user: decoration.userTokenData,
-          proxy: decoration.proxyUserTokenData,
-          globalRoleIds: decoration.globalRoleIds,
-          teamRoleMappings: decoration.teamRoleMappings
+        const parsed: CommonJwtToken<WardenEntrySummary> = await this.opts.jwtRatchet.decodeToken(cmd.refreshJwtToken, ExpiredJwtHandling.THROW_EXCEPTION);
+        const user: WardenEntry = await this.opts.storageProvider.findEntryById(parsed.user.userId);
+        const wardenToken: CommonJwtToken<WardenEntrySummary> = {
+          user: WardenUtils.stripWardenEntryToSummary(user),
+          proxy: null,
         };
 
-        const newToken: string = await this.opts.jwtRatchet.createTokenString(wardenToken, decoration.userTokenExpirationSeconds);
+        const newToken: string = await this.opts.jwtRatchet.createTokenString(wardenToken, user.userTokenExpirationSeconds);
         // CAW : We do not use refresh token because we want any user changes to show up in the new token
         //const newToken: string = await this.opts.jwtRatchet.refreshJWTString(cmd.refreshJwtToken, false, expirationSeconds);
         rval = {
@@ -428,7 +417,7 @@ export class WardenService {
   }
 
   // Creates a new account, returns the userId for that account upon success
-  public async createAccount(contact: WardenContact, origin: string, sendCode?: boolean, label?: string, tags?: string[]): Promise<WardenEntry> {
+  public async createAccount(contact: WardenContact, origin: string, sendCode?: boolean, label?: string): Promise<WardenEntry> {
     let rval: WardenEntry = null;
     if (WardenUtils.validContact(contact)) {
       const old: WardenEntry = await this.opts.storageProvider.findEntryByContact(contact);
@@ -437,7 +426,7 @@ export class WardenService {
       }
 
       // Defaults to email if nothing provided, usually full name
-      const newUser: WardenEntry = new WardenEntryBuilder(label || contact.value).withContacts([contact]).withTags(tags).entry;
+      const newUser: WardenEntry = new WardenEntryBuilder(label || contact.value).withContacts([contact]).entry;
       rval = await this.opts.storageProvider.saveEntry(newUser);
 
       if (sendCode) {

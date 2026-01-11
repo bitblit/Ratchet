@@ -1,14 +1,13 @@
-import { WardenWebAuthnEntry } from './warden-web-authn-entry.js';
-import { WardenContact } from './warden-contact.js';
+import { WardenWebAuthnEntry } from "./warden-web-authn-entry.js";
 import { WardenThirdPartyAuthentication } from "./warden-third-party-authentication.js";
+import { WardenEntryCommonData } from "./warden-entry-common-data.ts";
 
-export interface WardenEntry {
-  userId: string;
-  userLabel: string; // Usually full name, could be something else
-  contactMethods: WardenContact[];
-  tags: string[];
+export interface WardenEntry extends WardenEntryCommonData{
   webAuthnAuthenticators: WardenWebAuthnEntry[];
   thirdPartyAuthenticators: WardenThirdPartyAuthentication[];
+
+  userTokenExpirationSeconds: number;
+
   createdEpochMS: number;
   updatedEpochMS: number;
 }

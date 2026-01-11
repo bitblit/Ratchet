@@ -21,7 +21,7 @@ import { Logger } from '@bitblit/ratchet-common/logger/logger';
 export class WardenDelegatingCurrentUserProvidingUserServiceEventProcessingProvider<T>
   implements WardenUserServiceEventProcessingProvider<T>, WardenClientCurrentLoggedInJwtTokenProvider
 {
-  private _currentUserSubject: BehaviorSubject<WardenLoggedInUserWrapper<T>> = new BehaviorSubject<WardenLoggedInUserWrapper<T>>(null);
+  private _currentUserSubject: BehaviorSubject<WardenLoggedInUserWrapper> = new BehaviorSubject<WardenLoggedInUserWrapper>(null);
 
   constructor(
     private wrapped?: Partial<WardenUserServiceEventProcessingProvider<T>>,
@@ -29,7 +29,7 @@ export class WardenDelegatingCurrentUserProvidingUserServiceEventProcessingProvi
   ) {}
 
   public fetchCurrentLoggedInJwtToken(): string {
-    let val: WardenLoggedInUserWrapper<T> = this?._currentUserSubject?.getValue();
+    let val: WardenLoggedInUserWrapper = this?._currentUserSubject?.getValue();
     if (!this.serveExpiredCredentials && val && WardenUtils.wrapperIsExpired(val)) {
       Logger.info('Current wrapper in the subject is expired - autostripping');
       this.currentUserSubject.next(null);
@@ -38,7 +38,7 @@ export class WardenDelegatingCurrentUserProvidingUserServiceEventProcessingProvi
     return val?.jwtToken;
   }
 
-  public get currentUserSubject(): BehaviorSubject<WardenLoggedInUserWrapper<T>> {
+  public get currentUserSubject(): BehaviorSubject<WardenLoggedInUserWrapper> {
     return this._currentUserSubject;
   }
 
@@ -48,7 +48,7 @@ export class WardenDelegatingCurrentUserProvidingUserServiceEventProcessingProvi
     }
   }
 
-  public onAutomaticTokenRefresh(refreshUser: WardenLoggedInUserWrapper<T>): void {
+  public onAutomaticTokenRefresh(refreshUser: WardenLoggedInUserWrapper): void {
     if (this?.wrapped?.onAutomaticTokenRefresh) {
       this.wrapped.onAutomaticTokenRefresh(refreshUser);
     }
@@ -67,7 +67,7 @@ export class WardenDelegatingCurrentUserProvidingUserServiceEventProcessingProvi
     this.currentUserSubject.next(null);
   }
 
-  public onSuccessfulLogin(newUser: WardenLoggedInUserWrapper<T>): void {
+  public onSuccessfulLogin(newUser: WardenLoggedInUserWrapper): void {
     if (this?.wrapped?.onSuccessfulLogin) {
       this.wrapped.onSuccessfulLogin(newUser);
     }

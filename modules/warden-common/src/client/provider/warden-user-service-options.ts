@@ -5,7 +5,7 @@ import { WardenClientRecentLoginProvider } from './warden-client-recent-login-pr
 
 export interface WardenUserServiceOptions<T> {
   recentLoginProvider?: WardenClientRecentLoginProvider;
-  loggedInUserProvider: WardenLoggedInUserProvider<T>;
+  loggedInUserProvider: WardenLoggedInUserProvider;
   wardenClient: WardenClient;
   eventProcessor: WardenUserServiceEventProcessingProvider<T>;
   loginCheckTimerPingSeconds?: number;

@@ -4,6 +4,8 @@ import { WardenContact } from "@bitblit/ratchet-warden-common/common/model/warde
 import {
   WardenThirdPartyAuthentication
 } from "@bitblit/ratchet-warden-common/common/model/warden-third-party-authentication";
+import { WardenEntryMetadata } from "@bitblit/ratchet-warden-common/common/model/warden-entry-metadata";
+import { WardenTeamRoleMapping } from "@bitblit/ratchet-warden-common/common/model/warden-team-role-mapping";
 
 export class WardenEntryBuilder {
 
@@ -16,16 +18,31 @@ export class WardenEntryBuilder {
       userId: guid,
       userLabel: label || 'User '+guid,
       contactMethods: [],
-      tags: [],
       webAuthnAuthenticators: [],
       thirdPartyAuthenticators: [],
+
+      globalRoleIds: [],
+      teamRoleMappings: [],
+      meta: [],
+
+      userTokenExpirationSeconds: 3600,
       createdEpochMS: now,
       updatedEpochMS: now,
     };
   }
 
-  public withTags(tags: string[]): WardenEntryBuilder {
-    this._entry.tags = tags ?? [];
+  public withMeta(value: WardenEntryMetadata[]): WardenEntryBuilder {
+    this._entry.meta = value || [];
+    return this;
+  }
+
+  public withGlobalRoleIds(value: string[]): WardenEntryBuilder {
+    this._entry.globalRoleIds = value || [];
+    return this;
+  }
+
+  public withTeamRoleMappings(value: WardenTeamRoleMapping[]): WardenEntryBuilder {
+    this._entry.teamRoleMappings = value || [];
     return this;
   }
 

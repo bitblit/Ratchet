@@ -11,9 +11,9 @@ import { WardenWebAuthnEntry } from "../model/warden-web-authn-entry.js";
 import { WardenWebAuthnEntrySummary } from "../model/warden-web-authn-entry-summary.js";
 import { WardenLoggedInUserWrapper } from "../../client/provider/warden-logged-in-user-wrapper.js";
 import { WardenLoginRequestType } from "../model/warden-login-request-type.ts";
-import { WardenUserDecoration } from "../model/warden-user-decoration.ts";
 import { BooleanRatchet } from "@bitblit/ratchet-common/lang/boolean-ratchet";
-import { WardenJwtToken } from "../model/warden-jwt-token.ts";
+import { WardenEntryMetadataType } from "../model/warden-entry-metadata-type.ts";
+import { WardenEntryCommonData } from "../model/warden-entry-common-data.ts";
 
 export class WardenUtils {
   // Prevent instantiation
@@ -164,13 +164,16 @@ export class WardenUtils {
     return !!value.match(/^[\\+]?[(]?[0-9]{3}[)]?[-\\s\\.]?[0-9]{3}[-\\s\\.]?[0-9]{4,6}$/im);
   }
 
-  public static stripWardenEntryToSummary(we: WardenEntry): WardenEntrySummary {
+  public static stripWardenEntryToSummary(we: WardenEntry, metaTypes: WardenEntryMetadataType[] = [WardenEntryMetadataType.Shared]): WardenEntrySummary {
     const rval: WardenEntrySummary = we
       ? {
           userId: we.userId,
           userLabel: we.userLabel,
           contactMethods: we.contactMethods,
           webAuthnAuthenticatorSummaries: (we?.webAuthnAuthenticators || []).map((s) => WardenUtils.stripWardenWebAuthnEntryToSummary(s)),
+          meta: (we?.meta ||[]).filter(w=>metaTypes.includes(w.type)),
+          globalRoleIds: we.globalRoleIds,
+          teamRoleMappings: we.teamRoleMappings
         }
       : null;
     return rval;
@@ -188,38 +191,38 @@ export class WardenUtils {
     return rval;
   }
 
-  public static wrapperIsExpired(value: WardenLoggedInUserWrapper<any>): boolean {
-    const rval: boolean = value?.userObject?.exp && value.expirationEpochSeconds < Date.now() / 1000;
+  public static wrapperIsExpired(value: WardenLoggedInUserWrapper): boolean {
+    const rval: boolean = value.expirationEpochSeconds < Date.now() / 1000;
     return rval;
   }
 
-  public static userHasGlobalRole(user: WardenUserDecoration<any>, roleId: string): boolean {
+  public static userHasGlobalRole(user: WardenEntryCommonData, roleId: string): boolean {
     return WardenUtils.userHasGlobalRoles(user, [roleId], true);
   }
 
-  public static userHasRoleOnTeam(user: WardenUserDecoration<any>,teamId: string, roleId: string): boolean {
+  public static userHasRoleOnTeam(user: WardenEntryCommonData,teamId: string, roleId: string): boolean {
     return WardenUtils.userHasRolesOnTeam(user, teamId, [roleId], true);
   }
 
-  public static userHasAtLeastOneGlobalRole(user: WardenUserDecoration<any>, roleIds: string[]): boolean {
+  public static userHasAtLeastOneGlobalRole(user: WardenEntryCommonData, roleIds: string[]): boolean {
     return WardenUtils.userHasGlobalRoles(user, roleIds, false);
   }
 
-  public static userHasAtLeastOneRoleOnTeam(user: WardenUserDecoration<any>, teamId: string, roleIds: string[]): boolean {
+  public static userHasAtLeastOneRoleOnTeam(user: WardenEntryCommonData, teamId: string, roleIds: string[]): boolean {
     return WardenUtils.userHasRolesOnTeam(user, teamId, roleIds, false);
   }
 
 
-  public static userHasAllGlobalRoles(user: WardenUserDecoration<any>, roleIds: string[]): boolean {
+  public static userHasAllGlobalRoles(user: WardenEntryCommonData, roleIds: string[]): boolean {
     return WardenUtils.userHasGlobalRoles(user, roleIds, true);
   }
 
-  public static userHasAllRolesOnTeam(user: WardenUserDecoration<any>, teamId: string, roleIds: string[]): boolean {
+  public static userHasAllRolesOnTeam(user: WardenEntryCommonData, teamId: string, roleIds: string[]): boolean {
     return WardenUtils.userHasRolesOnTeam(user, teamId, roleIds, true);
   }
 
 
-  public static userHasGlobalRoles(user: WardenUserDecoration<any>, inRoleIds: string[], combineWithAnd: boolean): boolean {
+  public static userHasGlobalRoles(user: WardenEntryCommonData, inRoleIds: string[], combineWithAnd: boolean): boolean {
     let rval: boolean = false;
     const roleIds: string[] = inRoleIds ? inRoleIds.map(r=>StringRatchet.trimToNull(r)?.toLowerCase()) : null
     if (user && roleIds && roleIds.length > 0) {
@@ -229,7 +232,7 @@ export class WardenUtils {
     return rval;
   }
 
-  public static userHasRolesOnTeam(user: WardenUserDecoration<any>, inTeamId: string, inRoleIds: string[], combineWithAnd: boolean): boolean {
+  public static userHasRolesOnTeam(user: WardenEntryCommonData, inTeamId: string, inRoleIds: string[], combineWithAnd: boolean): boolean {
     let rval: boolean = false;
     const teamId: string = StringRatchet.trimToNull(inTeamId)?.toLowerCase();
     const roleIds: string[] = inRoleIds ? inRoleIds.map(r=>StringRatchet.trimToNull(r)?.toLowerCase()) : null
@@ -242,11 +245,11 @@ export class WardenUtils {
   }
 
   // Just a synonym since that is how some people think
-  public static userIsTeamMember(user: WardenUserDecoration<any>, inTeamId: string): boolean {
+  public static userIsTeamMember(user: WardenEntryCommonData, inTeamId: string): boolean {
     return WardenUtils.userHasAnyRoleOnTeam(user, inTeamId);
   }
 
-  public static userHasAnyRoleOnTeam(user: WardenUserDecoration<any>, inTeamId: string): boolean {
+  public static userHasAnyRoleOnTeam(user: WardenEntryCommonData, inTeamId: string): boolean {
     let rval: boolean = false;
     const teamId: string = StringRatchet.trimToNull(inTeamId)?.toLowerCase();
     if (user && teamId) {
@@ -256,7 +259,7 @@ export class WardenUtils {
     return rval;
   }
 
-  public static usersTeamMemberships(user: WardenUserDecoration<any>): string[] {
+  public static usersTeamMemberships(user: WardenEntryCommonData): string[] {
     let rval: string[] = [];
     if (user) {
       const s = new Set<string>(user.teamRoleMappings.map(s=>StringRatchet.trimToNull(s.teamId).toLowerCase()));
@@ -265,20 +268,6 @@ export class WardenUtils {
     return rval;
   }
 
-  public static wardenUserDecorationFromToken<T>(jwt: WardenJwtToken<T>): WardenUserDecoration<T> {
-    let rval: WardenUserDecoration<any> = null;
-    if (jwt) {
-      rval = {
-        userTokenData: jwt.user,
-        proxyUserTokenData: jwt.proxy,
-        userTokenExpirationSeconds: null,
-
-        globalRoleIds: jwt.globalRoleIds,
-        teamRoleMappings: jwt.teamRoleMappings
-      }
-    }
-    return rval;
-  }
 
 
 }

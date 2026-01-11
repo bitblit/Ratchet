@@ -5,7 +5,6 @@ import { Subscription, timer } from "rxjs";
 import { WardenUserServiceOptions } from "./provider/warden-user-service-options.js";
 import { WardenLoggedInUserWrapper } from "./provider/warden-logged-in-user-wrapper.js";
 import { WardenContact } from "../common/model/warden-contact.js";
-import { WardenJwtToken } from "../common/model/warden-jwt-token.js";
 import { WardenLoginResults } from "../common/model/warden-login-results.js";
 import { WardenLoginRequest } from "../common/model/warden-login-request.js";
 
@@ -22,9 +21,7 @@ import { WardenEntrySummary } from "../common/model/warden-entry-summary.js";
 import { WardenUtils } from "../common/util/warden-utils.js";
 import { WardenLoginRequestType } from "../common/model/warden-login-request-type";
 import { WardenTeamRoleMapping } from "../common/model/warden-team-role-mapping.ts";
-import { WardenUserDecoration } from "../common/model/warden-user-decoration.ts";
-import { WardenCommand } from "../common/command/warden-command.ts";
-import { WardenCommandResponse } from "../common/command/warden-command-response.ts";
+import { CommonJwtToken } from "@bitblit/ratchet-common/jwt/common-jwt-token";
 
 /**
  * A service that handles logging in, saving the current user, watching
@@ -40,7 +37,7 @@ export class WardenUserService<T> {
   constructor(private options: WardenUserServiceOptions<T>) {
     Logger.info('Initializing user service');
     // Immediately read from storage if there is something there
-    const stored: WardenLoggedInUserWrapper<T> = this.options.loggedInUserProvider.fetchLoggedInUserWrapper();
+    const stored: WardenLoggedInUserWrapper = this.options.loggedInUserProvider.fetchLoggedInUserWrapper();
     if (WardenUtils.wrapperIsExpired(stored)) {
       // Not treating this as a logout since it basically never logged in, just clearing it
       Logger.info('Stored token is expired, removing it');
@@ -97,14 +94,14 @@ export class WardenUserService<T> {
   public async checkForAutoLogoutOrRefresh(t: number): Promise<void> {
     Logger.debug('Checking for auto-logout or refresh : %s', t);
     // This code will cause an auto-logout if the token is already expired, but not if it is CLOSE to expiration
-    const current: WardenLoggedInUserWrapper<T> = this.fetchLoggedInUserWrapper();
+    const current: WardenLoggedInUserWrapper = this.fetchLoggedInUserWrapper();
     if (current) {
       const thresholdSeconds: number = this.options.autoLoginHandlingThresholdSeconds || 10; // Default to 10 seconds
       const secondsLeft: number = current.expirationEpochSeconds - Math.floor(Date.now() / 1000);
       if (secondsLeft < thresholdSeconds) {
         if (this.autoRefreshEnabled) {
           Logger.info('Under threshold, initiating auto-refresh');
-          const result: WardenLoggedInUserWrapper<T> = await this.refreshToken();
+          const result: WardenLoggedInUserWrapper = await this.refreshToken();
           this.options.eventProcessor.onAutomaticTokenRefresh(result);
         } else {
           Logger.info('Under threshold, initiating auto-logout');
@@ -120,13 +117,13 @@ export class WardenUserService<T> {
   }
 
   public fetchLoggedInUserId(): string {
-    const tmp: WardenLoggedInUserWrapper<T> = this.options.loggedInUserProvider.fetchLoggedInUserWrapper();
-    const rval: string = tmp?.userObject?.wardenData?.userId;
+    const tmp: WardenLoggedInUserWrapper = this.options.loggedInUserProvider.fetchLoggedInUserWrapper();
+    const rval: string = tmp?.userObject?.user?.userId;
     return rval;
   }
 
-  public fetchLoggedInUserWrapper(): WardenLoggedInUserWrapper<T> {
-    let tmp: WardenLoggedInUserWrapper<T> = this.options.loggedInUserProvider.fetchLoggedInUserWrapper();
+  public fetchLoggedInUserWrapper(): WardenLoggedInUserWrapper {
+    let tmp: WardenLoggedInUserWrapper = this.options.loggedInUserProvider.fetchLoggedInUserWrapper();
     if (tmp) {
       if (WardenUtils.wrapperIsExpired(tmp)) {
         // This is belt-and-suspenders for when the window was not open - during normal operation either
@@ -142,8 +139,8 @@ export class WardenUserService<T> {
   public loggedInUserHasGlobalRole(roleId: string): boolean {
     let rval: boolean = false;
 
-    const token: WardenJwtToken<T> = this.fetchLoggedInUserJwtObject();
-    rval = token ? WardenUtils.userHasGlobalRole(WardenUtils.wardenUserDecorationFromToken(token), roleId) : false;
+    const token: CommonJwtToken<WardenEntrySummary> = this.fetchLoggedInUserJwtObject();
+    rval = token ? WardenUtils.userHasGlobalRole(token.user, roleId) : false;
 
     return rval;
   }
@@ -151,66 +148,66 @@ export class WardenUserService<T> {
   public loggedInUserHasRoleOnTeam(teamId: string, roleId: string): boolean {
     let rval: boolean = false;
 
-    const token: WardenJwtToken<T> = this.fetchLoggedInUserJwtObject();
-    rval = token ? WardenUtils.userHasRoleOnTeam(WardenUtils.wardenUserDecorationFromToken(token), teamId, roleId) : false;
+    const token: CommonJwtToken<WardenEntrySummary> = this.fetchLoggedInUserJwtObject();
+    rval = token ? WardenUtils.userHasRoleOnTeam(token.user, teamId, roleId) : false;
 
     return rval;
   }
 
   public isLoggedIn(): boolean {
-    const t: WardenLoggedInUserWrapper<T> = this.fetchLoggedInUserWrapper();
+    const t: WardenLoggedInUserWrapper = this.fetchLoggedInUserWrapper();
     return !!t;
   }
 
-  public fetchLoggedInUserJwtObject(): WardenJwtToken<T> {
-    const t: WardenLoggedInUserWrapper<T> = this.fetchLoggedInUserWrapper();
+  public fetchLoggedInUserJwtObject(): CommonJwtToken<WardenEntrySummary> {
+    const t: WardenLoggedInUserWrapper = this.fetchLoggedInUserWrapper();
     return t ? t.userObject : null;
   }
 
   public fetchLoggedInUserJwtToken(): string {
-    const t: WardenLoggedInUserWrapper<T> = this.fetchLoggedInUserWrapper();
+    const t: WardenLoggedInUserWrapper = this.fetchLoggedInUserWrapper();
     return t ? t.jwtToken : null;
   }
 
-  public fetchLoggedInUserObject(): T {
-    const t: WardenJwtToken<T> = this.fetchLoggedInUserJwtObject();
+  public fetchLoggedInUserObject(): WardenEntrySummary {
+    const t: CommonJwtToken<WardenEntrySummary> = this.fetchLoggedInUserJwtObject();
     return t?.user;
   }
 
-  public fetchLoggedInProxyObject(): T {
-    const t: WardenJwtToken<T> = this.fetchLoggedInUserJwtObject();
+  public fetchLoggedInProxyObject(): WardenEntrySummary {
+    const t: CommonJwtToken<WardenEntrySummary> = this.fetchLoggedInUserJwtObject();
     return t?.proxy;
   }
 
   public fetchLoggedInGlobalRoleIds(): string[] {
-    const t: WardenJwtToken<T> = this.fetchLoggedInUserJwtObject();
-    return t?.globalRoleIds;
+    const t: CommonJwtToken<WardenEntrySummary> = this.fetchLoggedInUserJwtObject();
+    return t?.user?.globalRoleIds;
   }
 
   public fetchLoggedInTeamRoleMappingsGlobalRoleIds(): WardenTeamRoleMapping[] {
-    const t: WardenJwtToken<T> = this.fetchLoggedInUserJwtObject();
-    return t?.teamRoleMappings;
+    const t: CommonJwtToken<WardenEntrySummary> = this.fetchLoggedInUserJwtObject();
+    return t?.user?.teamRoleMappings;
   }
 
   public fetchLoggedInUserExpirationEpochSeconds(): number {
-    const t: WardenJwtToken<T> = this.fetchLoggedInUserJwtObject();
+    const t: CommonJwtToken<WardenEntrySummary> = this.fetchLoggedInUserJwtObject();
     return t ? t.exp : null;
   }
 
   public fetchLoggedInUserRemainingSeconds(): number {
-    const t: WardenJwtToken<T> = this.fetchLoggedInUserJwtObject();
+    const t: CommonJwtToken<WardenEntrySummary> = this.fetchLoggedInUserJwtObject();
     return t ? t.exp - Math.floor(Date.now() / 1000) : null;
   }
 
-  private async updateLoggedInUserFromTokenString(token: string): Promise<WardenLoggedInUserWrapper<T>> {
-    let rval: WardenLoggedInUserWrapper<T> = null;
+  private async updateLoggedInUserFromTokenString(token: string): Promise<WardenLoggedInUserWrapper> {
+    let rval: WardenLoggedInUserWrapper = null;
     if (!StringRatchet.trimToNull(token)) {
       Logger.info('Called updateLoggedInUserFromTokenString with empty string - logging out');
       this.logout();
     } else {
       Logger.info('updateLoggedInUserFromTokenString : %s', token);
 
-      const parsed: WardenJwtToken<T> = JwtDecodeOnlyRatchet.decodeTokenNoVerify<WardenJwtToken<T>>(token);
+      const parsed: CommonJwtToken<WardenEntrySummary> = JwtDecodeOnlyRatchet.decodeTokenNoVerify<CommonJwtToken<WardenEntrySummary>>(token);
       if (parsed) {
         rval = {
           userObject: parsed,
@@ -218,7 +215,7 @@ export class WardenUserService<T> {
           expirationEpochSeconds: parsed.exp,
         };
         this.options.loggedInUserProvider.setLoggedInUserWrapper(rval);
-        this.updateRecentLoginsFromWardenEntrySummary(parsed.wardenData); // In case we have a recent logins tracker
+        this.updateRecentLoginsFromWardenEntrySummary(parsed.user); // In case we have a recent logins tracker
         this.options.eventProcessor.onSuccessfulLogin(rval);
       } else {
         Logger.warn('Failed to parse token %s - ignoring login and triggering failure');
@@ -228,9 +225,9 @@ export class WardenUserService<T> {
     return rval;
   }
 
-  public async refreshToken(): Promise<WardenLoggedInUserWrapper<T>> {
-    let rval: WardenLoggedInUserWrapper<T> = null;
-    const currentWrapper: WardenLoggedInUserWrapper<T> = this.fetchLoggedInUserWrapper();
+  public async refreshToken(): Promise<WardenLoggedInUserWrapper> {
+    let rval: WardenLoggedInUserWrapper = null;
+    const currentWrapper: WardenLoggedInUserWrapper = this.fetchLoggedInUserWrapper();
     if (!currentWrapper) {
       Logger.info('Could not refresh - no token available');
     } else {
@@ -245,8 +242,8 @@ export class WardenUserService<T> {
     return this.options.wardenClient.sendExpiringValidationToken(contact);
   }
 
-  private async processWardenLoginResults(resp: WardenLoginResults): Promise<WardenLoggedInUserWrapper<T>> {
-    let rval: WardenLoggedInUserWrapper<T> = null;
+  private async processWardenLoginResults(resp: WardenLoginResults): Promise<WardenLoggedInUserWrapper> {
+    let rval: WardenLoggedInUserWrapper = null;
     if (resp) {
       Logger.info('Warden: response : %j ', resp);
       if (resp.jwtToken) {
@@ -275,13 +272,13 @@ export class WardenUserService<T> {
     }
   }
 
-  private updateRecentLoginsFromLoggedInUserWrapper(res: WardenLoggedInUserWrapper<T>): void {
-    this.updateRecentLoginsFromWardenEntrySummary(res?.userObject?.wardenData);
+  private updateRecentLoginsFromLoggedInUserWrapper(res: WardenLoggedInUserWrapper): void {
+    this.updateRecentLoginsFromWardenEntrySummary(res?.userObject?.user);
   }
 
-  public async executeWebAuthnBasedLogin(userId: string): Promise<WardenLoggedInUserWrapper<T>> {
+  public async executeWebAuthnBasedLogin(userId: string): Promise<WardenLoggedInUserWrapper> {
     const resp: WardenLoginResults = await this.executeWebAuthnLoginToWardenLoginResults(userId);
-    const rval: WardenLoggedInUserWrapper<T> = await this.processWardenLoginResults(resp);
+    const rval: WardenLoggedInUserWrapper = await this.processWardenLoginResults(resp);
     this.updateRecentLoginsFromLoggedInUserWrapper(rval);
     return rval;
   }
@@ -300,7 +297,7 @@ export class WardenUserService<T> {
     contact: WardenContact,
     token: string,
     createUserIfMissing?: boolean,
-  ): Promise<WardenLoggedInUserWrapper<T>> {
+  ): Promise<WardenLoggedInUserWrapper> {
     Logger.info('Warden: executeValidationTokenBasedLogin : %j : %s : %s', contact, token, createUserIfMissing);
     const resp: WardenLoginResults = await this.options.wardenClient.performLoginCmd({
       type: WardenLoginRequestType.ExpiringToken,
@@ -308,7 +305,7 @@ export class WardenUserService<T> {
       expiringToken: token,
       createUserIfMissing: createUserIfMissing,
     });
-    const rval: WardenLoggedInUserWrapper<T> = await this.processWardenLoginResults(resp);
+    const rval: WardenLoggedInUserWrapper = await this.processWardenLoginResults(resp);
     this.updateRecentLoginsFromLoggedInUserWrapper(rval);
     return rval;
   }
@@ -317,7 +314,7 @@ export class WardenUserService<T> {
     thirdParty: string,
     token: string,
     createUserIfMissing?: boolean,
-  ): Promise<WardenLoggedInUserWrapper<T>> {
+  ): Promise<WardenLoggedInUserWrapper> {
     Logger.info('Warden: executeThirdPartyTokenBasedLogin : %j : %s : %s', thirdParty, token, createUserIfMissing);
     const resp: WardenLoginResults = await this.options.wardenClient.performLoginCmd({
       type: WardenLoginRequestType.ThirdParty,
@@ -327,7 +324,7 @@ export class WardenUserService<T> {
       },
       createUserIfMissing: createUserIfMissing,
     });
-    const rval: WardenLoggedInUserWrapper<T> = await this.processWardenLoginResults(resp);
+    const rval: WardenLoggedInUserWrapper = await this.processWardenLoginResults(resp);
     this.updateRecentLoginsFromLoggedInUserWrapper(rval);
     return rval;
   }

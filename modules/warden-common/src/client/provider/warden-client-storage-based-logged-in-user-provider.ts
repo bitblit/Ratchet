@@ -5,7 +5,7 @@ import { RequireRatchet } from "@bitblit/ratchet-common/lang/require-ratchet";
 import { StringRatchet } from "@bitblit/ratchet-common/lang/string-ratchet";
 import { Logger } from "@bitblit/ratchet-common/logger/logger";
 
-export class WardenClientStorageBasedLoggedInUserProvider<T> implements WardenLoggedInUserProvider<T> {
+export class WardenClientStorageBasedLoggedInUserProvider implements WardenLoggedInUserProvider {
 
   constructor(
     private storageProv: Storage | (() => Storage),
@@ -23,11 +23,11 @@ export class WardenClientStorageBasedLoggedInUserProvider<T> implements WardenLo
     }
   }
 
-  public fetchLoggedInUserWrapper(): WardenLoggedInUserWrapper<T> {
+  public fetchLoggedInUserWrapper(): WardenLoggedInUserWrapper {
     const storage: Storage = this.storage;
     if (storage) {
       const asString: string = storage.getItem(this.storageKey);
-      const rval: WardenLoggedInUserWrapper<T> = StringRatchet.trimToNull(asString) ? JSON.parse(asString) : null;
+      const rval: WardenLoggedInUserWrapper = StringRatchet.trimToNull(asString) ? JSON.parse(asString) : null;
       return rval;
     } else {
       Logger.debug('Tried to fetch logged in user before storage ready - returning null');
@@ -39,7 +39,7 @@ export class WardenClientStorageBasedLoggedInUserProvider<T> implements WardenLo
     this.setLoggedInUserWrapper(null);
   }
 
-  public setLoggedInUserWrapper(wrapper: WardenLoggedInUserWrapper<T>) {
+  public setLoggedInUserWrapper(wrapper: WardenLoggedInUserWrapper) {
     const storage: Storage = this.storage;
     if (storage) {
       if (wrapper) {

@@ -10,13 +10,12 @@ import { WardenUtils } from '@bitblit/ratchet-warden-common/common/util/warden-u
 import { ExpiringCodeProvider } from '@bitblit/ratchet-aws/expiring-code/expiring-code-provider';
 import { ExpiringCode } from '@bitblit/ratchet-aws/expiring-code/expiring-code';
 import { WardenStorageProvider } from "./warden-storage-provider.js";
-import { WardenUserDecorationProvider } from "./warden-user-decoration-provider.js";
-import { WardenUserDecoration } from "@bitblit/ratchet-warden-common/common/model/warden-user-decoration";
 import { WardenTeamRoleMapping } from "@bitblit/ratchet-warden-common/common/model/warden-team-role-mapping";
+import { WardenEntryMetadata } from "@bitblit/ratchet-warden-common/common/model/warden-entry-metadata";
 
 
 // Create a ddb table with a hashkey of userId type string
-export class WardenDynamoStorageProvider<T> implements WardenStorageProvider, ExpiringCodeProvider, WardenUserDecorationProvider<T> {
+export class WardenDynamoStorageProvider<T> implements WardenStorageProvider, ExpiringCodeProvider {
 
   private static readonly EXPIRING_CODE_PROVIDER_KEY: string = '__EXPIRING_CODE_DATA';
 
@@ -26,63 +25,44 @@ export class WardenDynamoStorageProvider<T> implements WardenStorageProvider, Ex
   ) {
   }
 
-  public createDecoration(decoration: T): WardenUserDecoration<T> {
-    return {
-      globalRoleIds: [],
-      teamRoleMappings: this.options.defaultTeamRoleMappings,
-      userTokenExpirationSeconds: this.options.defaultTokenExpirationSeconds,
-      userTokenData: decoration,
-      proxyUserTokenData: null
-    };
-  }
-
-  public async updateRoles(userId: string, roles: WardenTeamRoleMapping[]): Promise<WardenUserDecoration<T>> {
+  public async updateRoles(userId: string, roles: WardenTeamRoleMapping[]): Promise<WardenEntry> {
     const rval: WardenDynamoStorageDataWrapper = await this.fetchInternalByUserId(userId);
     if (rval) {
-      rval.decoration ??= this.createDecoration(null);
-      rval.decoration.teamRoleMappings = roles;
+      rval.entry.teamRoleMappings = roles;
       await this.updateInternal(rval);
     } else {
       throw ErrorRatchet.fErr('Cannot update roles - no entry found for %s', userId);
     }
 
-    return this.fetchDecorationById(userId);
+    return this.findEntryById(userId);
   }
 
-  public async updateTokenExpirationSeconds(userId: string, newValue: number): Promise<WardenUserDecoration<T>> {
+
+  public async updateMetaData(userId: string, meta: WardenEntryMetadata): Promise<WardenEntry> {
     const rval: WardenDynamoStorageDataWrapper = await this.fetchInternalByUserId(userId);
     if (rval) {
-      rval.decoration ??= this.createDecoration(null);
-      rval.decoration.userTokenExpirationSeconds = newValue;
+      rval.entry.meta = (rval.entry.meta||[]).filter(s=>s.key!==meta.key);
+      rval.entry.meta.push(meta);
       await this.updateInternal(rval);
     } else {
       throw ErrorRatchet.fErr('Cannot update roles - no entry found for %s', userId);
     }
 
-    return this.fetchDecorationById(userId);
+    return this.findEntryById(userId);
   }
 
-  public async updateDecoration(userId: string, decoration:T): Promise<WardenUserDecoration<T>> {
+  public async removeMetaData(userId: string, metaKey: string): Promise<WardenEntry> {
     const rval: WardenDynamoStorageDataWrapper = await this.fetchInternalByUserId(userId);
     if (rval) {
-      rval.decoration ??= this.createDecoration(null);
-      rval.decoration.userTokenData = decoration;
+      rval.entry.meta = (rval.entry.meta||[]).filter(s=>s.key!==metaKey);
       await this.updateInternal(rval);
     } else {
       throw ErrorRatchet.fErr('Cannot update roles - no entry found for %s', userId);
     }
 
-    return this.fetchDecorationById(userId);
+    return this.findEntryById(userId);
   }
 
-  public async fetchDecoration(wardenUser: WardenEntry): Promise<WardenUserDecoration<T>> {
-    return this.fetchDecorationById(wardenUser.userId);
-  }
-
-  public async fetchDecorationById(userId: string): Promise<WardenUserDecoration<T>> {
-    const rval: WardenDynamoStorageDataWrapper = await this.fetchInternalByUserId(userId);
-    return rval?.decoration;
-  }
 
   // Sure, this is hackish... but DDB doesn't care, and it allows you to wrap up all the
   // warden data in a single item
@@ -231,7 +211,6 @@ export class WardenDynamoStorageProvider<T> implements WardenStorageProvider, Ex
         userId: entry.userId,
         entry: entry,
         currentUserChallenges: [],
-        decoration: this.createDecoration(null),
         contactSearchString: 'ContactSearch:  '+(entry.contactMethods || []).map((cm) => WardenDynamoStorageProvider.contactToSearchString(cm)).join(' '),
         thirdPartySearchString: '3rdPartySearch:  '+(entry.thirdPartyAuthenticators || []).map((item) => WardenDynamoStorageProvider.thirdPartyToSearchString(item.thirdParty, item.thirdPartyId)).join(' '),
       };
@@ -267,7 +246,6 @@ export class WardenDynamoStorageProvider<T> implements WardenStorageProvider, Ex
 export interface WardenDynamoStorageDataWrapper {
   userId: string;
   entry: WardenEntry;
-  decoration: WardenUserDecoration<any>;
   currentUserChallenges: string[];
   contactSearchString: string;
   thirdPartySearchString: string;

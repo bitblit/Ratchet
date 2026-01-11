@@ -33,6 +33,9 @@ export abstract class WardenClientAbstractRecentLoginProvider implements WardenC
         contactMethods: [contact],
         webAuthnAuthenticatorSummaries: [],
         userLabel: label,
+        meta: [],
+        globalRoleIds: [],
+        teamRoleMappings: []
       });
     } else {
       Logger.warn('Cannot save new user - invalid data : %s : %j', userId, contact);

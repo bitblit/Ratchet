@@ -1,10 +1,10 @@
 import { WardenLoggedInUserProvider } from "./warden-logged-in-user-provider.js";
 import { WardenLoggedInUserWrapper } from "./warden-logged-in-user-wrapper.js";
 
-export class WardenClientTransientMemoryLoggedInUserProvider<T> implements WardenLoggedInUserProvider<T> {
-  private wrapper: WardenLoggedInUserWrapper<T>;
+export class WardenClientTransientMemoryLoggedInUserProvider<T> implements WardenLoggedInUserProvider {
+  private wrapper: WardenLoggedInUserWrapper;
 
-  public fetchLoggedInUserWrapper(): WardenLoggedInUserWrapper<T> {
+  public fetchLoggedInUserWrapper(): WardenLoggedInUserWrapper {
     return this.wrapper;
   }
 
@@ -12,7 +12,7 @@ export class WardenClientTransientMemoryLoggedInUserProvider<T> implements Warde
     this.wrapper = null;
   }
 
-  public setLoggedInUserWrapper(wrapper: WardenLoggedInUserWrapper<T>) {
+  public setLoggedInUserWrapper(wrapper: WardenLoggedInUserWrapper) {
     this.wrapper = wrapper;
   }
 

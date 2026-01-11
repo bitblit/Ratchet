@@ -6,9 +6,9 @@ import { WardenLoggedInUserWrapper } from './warden-logged-in-user-wrapper.js';
 
 export interface WardenUserServiceEventProcessingProvider<T> {
   onLogout(): void;
-  onSuccessfulLogin(newUser: WardenLoggedInUserWrapper<T>): void;
+  onSuccessfulLogin(newUser: WardenLoggedInUserWrapper): void;
   onLoginFailure(reason: string): void;
 
-  onAutomaticTokenRefresh(refreshUser: WardenLoggedInUserWrapper<T>): void;
+  onAutomaticTokenRefresh(refreshUser: WardenLoggedInUserWrapper): void;
   onAutomaticLogout(): void;
 }
