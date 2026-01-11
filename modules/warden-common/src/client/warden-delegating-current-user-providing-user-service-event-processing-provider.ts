@@ -18,13 +18,13 @@ import { Logger } from '@bitblit/ratchet-common/logger/logger';
  * By default this will never serve expired credentials - if a call is made, and the credentials found are
  * expired, they will be cleared and null will be returned
  */
-export class WardenDelegatingCurrentUserProvidingUserServiceEventProcessingProvider<T>
-  implements WardenUserServiceEventProcessingProvider<T>, WardenClientCurrentLoggedInJwtTokenProvider
+export class WardenDelegatingCurrentUserProvidingUserServiceEventProcessingProvider
+  implements WardenUserServiceEventProcessingProvider, WardenClientCurrentLoggedInJwtTokenProvider
 {
   private _currentUserSubject: BehaviorSubject<WardenLoggedInUserWrapper> = new BehaviorSubject<WardenLoggedInUserWrapper>(null);
 
   constructor(
-    private wrapped?: Partial<WardenUserServiceEventProcessingProvider<T>>,
+    private wrapped?: Partial<WardenUserServiceEventProcessingProvider>,
     private serveExpiredCredentials: boolean = false,
   ) {}
 
