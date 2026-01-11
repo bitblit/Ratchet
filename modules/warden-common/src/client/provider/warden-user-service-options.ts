@@ -3,11 +3,11 @@ import { WardenClient } from '../warden-client.js';
 import { WardenUserServiceEventProcessingProvider } from './warden-user-service-event-processing-provider.js';
 import { WardenClientRecentLoginProvider } from './warden-client-recent-login-provider.js';
 
-export interface WardenUserServiceOptions<T> {
+export interface WardenUserServiceOptions {
   recentLoginProvider?: WardenClientRecentLoginProvider;
   loggedInUserProvider: WardenLoggedInUserProvider;
   wardenClient: WardenClient;
-  eventProcessor: WardenUserServiceEventProcessingProvider<T>;
+  eventProcessor: WardenUserServiceEventProcessingProvider;
   loginCheckTimerPingSeconds?: number;
   autoLoginHandlingThresholdSeconds?: number;
   allowAutoRefresh?: boolean;

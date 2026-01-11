@@ -192,7 +192,7 @@ export class WardenUtils {
   }
 
   public static wrapperIsExpired(value: WardenLoggedInUserWrapper): boolean {
-    const rval: boolean = value.expirationEpochSeconds < Date.now() / 1000;
+    const rval: boolean = value && value.expirationEpochSeconds < Date.now() / 1000;
     return rval;
   }
 

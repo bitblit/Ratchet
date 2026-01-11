@@ -28,13 +28,12 @@ import { CommonJwtToken } from "@bitblit/ratchet-common/jwt/common-jwt-token";
  * for expiration, auto-refreshing the token, wrapped around a
  * warden-client.
  *
- * T is the type of user object contained in the
  */
-export class WardenUserService<T> {
+export class WardenUserService {
   private loggedInTimerSubscription: Subscription;
   private _autoRefreshEnabled: boolean = false;
 
-  constructor(private options: WardenUserServiceOptions<T>) {
+  constructor(private options: WardenUserServiceOptions) {
     Logger.info('Initializing user service');
     // Immediately read from storage if there is something there
     const stored: WardenLoggedInUserWrapper = this.options.loggedInUserProvider.fetchLoggedInUserWrapper();
@@ -57,7 +56,7 @@ export class WardenUserService<T> {
     }
   }
 
-  public get serviceOptions(): WardenUserServiceOptions<T> {
+  public get serviceOptions(): WardenUserServiceOptions {
     return this.options;
   }
 

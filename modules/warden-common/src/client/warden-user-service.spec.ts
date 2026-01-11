@@ -11,18 +11,18 @@ import { mock } from 'vitest-mock-extended';
 describe('#wardenUserService', function () {
   // Currently disabled because this seems to hang forever on github actions (2023-03-20)
   test('should instantiate', async () => {
-    const wuso: WardenUserServiceOptions<any> = {
+    const wuso: WardenUserServiceOptions = {
       recentLoginProvider: mock<WardenClientRecentLoginProvider>(),
-      loggedInUserProvider: mock<WardenLoggedInUserProvider<any>>(),
+      loggedInUserProvider: mock<WardenLoggedInUserProvider>(),
       wardenClient: mock<WardenClient>(),
-      eventProcessor: mock<WardenUserServiceEventProcessingProvider<any>>(),
+      eventProcessor: mock<WardenUserServiceEventProcessingProvider>(),
       loginCheckTimerPingSeconds: 60,
       autoLoginHandlingThresholdSeconds: 60,
       allowAutoRefresh: true,
       applicationName: 'TEST-APP',
     };
 
-    const wus: WardenUserService<any> = new WardenUserService<any>(wuso);
+    const wus: WardenUserService = new WardenUserService(wuso);
     expect(wus).not.toBeNull();
     wus.cleanShutDown();
   });
