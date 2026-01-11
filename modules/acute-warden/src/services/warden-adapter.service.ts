@@ -20,7 +20,7 @@ export class WardenAdapterService implements WardenUserServiceEventProcessingPro
     this.router.navigate(['/public/login']).then(No.op);
   }
 
-  public onAutomaticTokenRefresh(_refreshUser: WardenLoggedInUserWrapper<any>): void {
+  public onAutomaticTokenRefresh(_refreshUser: WardenLoggedInUserWrapper): void {
     Logger.info('User token refreshed');
   }
 
@@ -33,8 +33,8 @@ export class WardenAdapterService implements WardenUserServiceEventProcessingPro
     this.router.navigate(['/public/login']).then(No.op);
   }
 
-  public onSuccessfulLogin(newUser: WardenLoggedInUserWrapper<any>): void {
-    Logger.info('Logged in as %s', newUser?.userObject?.wardenData?.userLabel);
+  public onSuccessfulLogin(newUser: WardenLoggedInUserWrapper): void {
+    Logger.info('Logged in as %s', newUser?.userObject?.user.userLabel);
   }
 
   public async sendMagicLink(contact: WardenContact, magicLanderUrl: string, postLoginUrl?: string): Promise<void> {

@@ -22,7 +22,7 @@ import { TooltipModule } from 'primeng/tooltip';
   imports: [ButtonModule, CardModule, CommonModule, TooltipModule],
 })
 export class AcuteUserProfileComponent {
-  public user: WardenLoggedInUserWrapper<any>;
+  public user: WardenLoggedInUserWrapper;
   public timeLeftMS: string;
 
   constructor(
@@ -43,7 +43,7 @@ export class AcuteUserProfileComponent {
 
   private updateData(): void {
     Logger.info('Called updateData');
-    const tok: WardenLoggedInUserWrapper<any> = this.userService.fetchLoggedInUserWrapper();
+    const tok: WardenLoggedInUserWrapper = this.userService.fetchLoggedInUserWrapper();
     this.user = tok;
     this.timeLeftMS = this?.user?.userObject?.exp ? DurationRatchet.formatMsDuration(this.user.userObject.exp * 1000 - Date.now()) : '0';
   }

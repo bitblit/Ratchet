@@ -79,7 +79,6 @@ export class AcuteCreateUserComponent implements OnInit {
           { type: type, value: this.form.controls['userContactValue'].value },
           true,
           this.form.controls['userFullName'].value,
-          [],
         );
         Logger.info('Got user id %s', userId);
         this.router.navigate(['/public/login']).then(No.op);

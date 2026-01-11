@@ -167,7 +167,7 @@ export class AcuteLoginComponent implements OnDestroy, OnInit {
   public async attemptAutoLogin(contactValue: string, code: string): Promise<void> {
     Logger.info('Attempting auto-login');
     const contact: WardenContact = WardenUtils.stringToWardenContact(contactValue);
-    const wrapper: WardenLoggedInUserWrapper<any> = await this.userService.executeValidationTokenBasedLogin(
+    const wrapper: WardenLoggedInUserWrapper = await this.userService.executeValidationTokenBasedLogin(
       contact,
       code,
       this.createUserIfMissing,
@@ -221,7 +221,7 @@ export class AcuteLoginComponent implements OnDestroy, OnInit {
 
   public async submitVerificationCode(input: string, verificationCode: string): Promise<void> {
     Logger.info('Submit: %s, %s', input, verificationCode);
-    const val: WardenLoggedInUserWrapper<any> = await this.userService.executeValidationTokenBasedLogin(
+    const val: WardenLoggedInUserWrapper = await this.userService.executeValidationTokenBasedLogin(
       { type: WardenUtils.stringToContactType(input), value: input },
       verificationCode,
       this.createUserIfMissing
@@ -235,7 +235,7 @@ export class AcuteLoginComponent implements OnDestroy, OnInit {
 
   public async processWebAuthnLogin(userId: string): Promise<void> {
     Logger.info('processWebAuthnLogin: %s', userId);
-    const val: WardenLoggedInUserWrapper<any> = await this.userService.executeWebAuthnBasedLogin(userId);
+    const val: WardenLoggedInUserWrapper = await this.userService.executeWebAuthnBasedLogin(userId);
     if (val) {
       await this.router.navigate([this.postLoginUrl]);
     } else {

@@ -50,7 +50,7 @@ export class AcuteMagicLanderComponent implements OnInit {
       this.currentStatus = 'Logging in...';
       Logger.info('Logging in with code');
       try {
-        const val: WardenLoggedInUserWrapper<any> = await this.userService.executeValidationTokenBasedLogin(
+        const val: WardenLoggedInUserWrapper = await this.userService.executeValidationTokenBasedLogin(
           targetContact,
           verificationCode,
         );
