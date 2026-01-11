@@ -29,7 +29,7 @@ export class AcuteMagicLanderComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    public userService: WardenUserService<any>,
+    public userService: WardenUserService,
   ) {}
 
   ngOnInit(): void {

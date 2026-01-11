@@ -9,7 +9,7 @@ import { RequireRatchet } from "@bitblit/ratchet-common/lang/require-ratchet";
 @Injectable()
 export class LoggedInGuard implements CanActivate {
   constructor(
-    private userService: WardenUserService<any>,
+    private userService: WardenUserService,
     private router: Router,
     @Inject(ACUTE_WARDEN_LOGIN_PATH) private loginPath: string,
     @Inject(ACUTE_WARDEN_DEFAULT_POST_LOGIN_PATH) private defaultPostLoginPath: string

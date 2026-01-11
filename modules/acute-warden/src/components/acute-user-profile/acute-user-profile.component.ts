@@ -27,8 +27,8 @@ export class AcuteUserProfileComponent {
 
   constructor(
     private router: Router,
-    public userService: WardenUserService<any>,
-    private userProvider: WardenDelegatingCurrentUserProvidingUserServiceEventProcessingProvider<any>,
+    public userService: WardenUserService,
+    private userProvider: WardenDelegatingCurrentUserProvidingUserServiceEventProcessingProvider,
   ) {
     Logger.info('Construct AcuteUserProfileComponent');
     this.updateData();

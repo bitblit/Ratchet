@@ -9,7 +9,7 @@ import { RequireRatchet } from '@bitblit/ratchet-common/lang/require-ratchet';
 import { WardenClient } from '@bitblit/ratchet-warden-common/client/warden-client';
 
 @Injectable({ providedIn: 'root' })
-export class WardenAdapterService implements WardenUserServiceEventProcessingProvider<any> {
+export class WardenAdapterService implements WardenUserServiceEventProcessingProvider {
   constructor(
     public router: Router,
     public wardenClient: WardenClient,

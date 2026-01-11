@@ -91,7 +91,7 @@ export class AcuteLoginComponent implements OnDestroy, OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    public userService: WardenUserService<any>,
+    public userService: WardenUserService,
     public wardenClient: WardenClient,
     private dlgService: DialogService,
   ) {
