@@ -15,13 +15,13 @@ import { WardenEntryMetadata } from "@bitblit/ratchet-warden-common/common/model
 
 
 // Create a ddb table with a hashkey of userId type string
-export class WardenDynamoStorageProvider<T> implements WardenStorageProvider, ExpiringCodeProvider {
+export class WardenDynamoStorageProvider implements WardenStorageProvider, ExpiringCodeProvider {
 
   private static readonly EXPIRING_CODE_PROVIDER_KEY: string = '__EXPIRING_CODE_DATA';
 
   constructor(
     private ddb: DynamoRatchet,
-    private options: WardenDynamoStorageProviderOptions<T>
+    private options: WardenDynamoStorageProviderOptions
   ) {
   }
 
