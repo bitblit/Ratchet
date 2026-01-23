@@ -11,4 +11,5 @@ export interface JwtTokenBase {
   nbf?: number; // Not Before
   iat?: number; // Issued at (time of creation)
   jti?: string; // Unique ID for the token
+  scope?: string; // Space separated string of scopes
 }
