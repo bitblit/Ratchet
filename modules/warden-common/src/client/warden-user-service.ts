@@ -198,6 +198,13 @@ export class WardenUserService {
     return t ? t.exp - Math.floor(Date.now() / 1000) : null;
   }
 
+  // May pull this out later - allows passing in a token explicitly
+  public async directlyApplyTokenString(token: string): Promise<WardenLoggedInUserWrapper> {
+    // Just delegates for now - keeping these separate since I need the private one
+    // even if i choose to get rid of the public one
+    return this.updateLoggedInUserFromTokenString(token);
+  }
+
   private async updateLoggedInUserFromTokenString(token: string): Promise<WardenLoggedInUserWrapper> {
     let rval: WardenLoggedInUserWrapper = null;
     if (!StringRatchet.trimToNull(token)) {
