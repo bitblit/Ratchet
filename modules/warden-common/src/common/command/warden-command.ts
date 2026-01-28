@@ -4,6 +4,7 @@ import { RemoveWebAuthnRegistration } from './remove-web-authn-registration.js';
 import { WardenLoginRequest } from '../model/warden-login-request.js';
 import { SendMagicLink } from './send-magic-link.js';
 import { AddWebAuthnRegistrationToLoggedInUser } from './add-web-authn-registration-to-logged-in-user.js';
+import { WardenProxyUserRequest } from "../model/warden-proxy-user-request.ts";
 
 export interface WardenCommand {
   createAccount?: CreateAccount;
@@ -20,6 +21,7 @@ export interface WardenCommand {
   removeWebAuthnRegistration?: RemoveWebAuthnRegistration;
 
   performLogin?: WardenLoginRequest;
+  proxyUser?: WardenProxyUserRequest;
   refreshJwtToken?: string;
 
   exportWebAuthnRegistrationEntryForLoggedInUser?: string; // Pass the target origin

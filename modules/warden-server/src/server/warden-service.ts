@@ -283,6 +283,51 @@ export class WardenService {
         rval = {
           importWebAuthnRegistrationEntryForLoggedInUser: await this.importWebAuthnRegistrationEntry(cmd.importWebAuthnRegistrationEntryForLoggedInUser, loggedInUserId)
         };
+      } else if (cmd.proxyUser) {
+        if (this.opts.proxyAuthorizer) {
+          const srcUser: WardenEntry = await this.opts.storageProvider.findEntryById(loggedInUserId);
+          let targetUser: WardenEntry = null;
+          if (cmd.proxyUser.targetUserId) {
+            targetUser = await this.opts.storageProvider.findEntryById(cmd.proxyUser.targetUserId);
+          } else if (cmd.proxyUser.targetContact) {
+            targetUser = await this.opts.storageProvider.findEntryByContact(cmd.proxyUser.targetContact);
+          } else {
+            Logger.error('Requested proxy but no target user set');
+          }
+          if (srcUser && targetUser) {
+            const mayProxy: boolean = await this.opts.proxyAuthorizer.mayProxyLogin(srcUser, targetUser);
+            if (mayProxy) {
+              const wardenToken: CommonJwtToken<WardenEntrySummary> = {
+                user: WardenUtils.stripWardenEntryToSummary(targetUser),
+                proxy: WardenUtils.stripWardenEntryToSummary(srcUser),
+              };
+              const jwtToken: string = await this.opts.jwtRatchet.createTokenString(wardenToken, targetUser.userTokenExpirationSeconds);
+              rval = {
+                proxyUser: {
+                  jwtToken: jwtToken,
+                }
+              }
+            } else {
+              rval = {
+                proxyUser: {
+                  error: 'Not allowed - type 03'
+                }
+              };
+            }
+          } else {
+            rval = {
+              proxyUser: {
+                error: 'Not allowed - type 02'
+              }
+            };
+          }
+        } else {
+          rval = {
+            proxyUser: {
+              error: 'Not allowed - type 01'
+            }
+          };
+        }
       }
     } else {
       rval = { error: "No command sent" };

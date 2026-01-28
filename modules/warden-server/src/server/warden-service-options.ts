@@ -4,6 +4,7 @@ import { WardenEventProcessingProvider } from './provider/warden-event-processin
 import { WardenSingleUseCodeProvider } from './provider/warden-single-use-code-provider.js';
 import { WardenSendMagicLinkCommandValidator } from './provider/warden-send-magic-link-command-validator.js';
 import { WardenThirdPartyAuthenticationProvider } from "./provider/warden-third-party-authentication-provider.js";
+import { WardenProxyAuthorizer } from "./provider/warden-proxy-authorizer.ts";
 
 export interface WardenServiceOptions {
   // Human-readable title for your website
@@ -12,6 +13,7 @@ export interface WardenServiceOptions {
   singleUseCodeProviders: WardenSingleUseCodeProvider[];
   storageProvider: WardenStorageProvider;
   jwtRatchet: JwtRatchetLike;
+  proxyAuthorizer: WardenProxyAuthorizer;
   eventProcessor?: WardenEventProcessingProvider;
   sendMagicLinkCommandValidator?: WardenSendMagicLinkCommandValidator;
   thirdPartyAuthenticationProviders?: WardenThirdPartyAuthenticationProvider[];

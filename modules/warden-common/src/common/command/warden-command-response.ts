@@ -1,6 +1,7 @@
-import { WebAuthnObjectWrapper } from './web-authn-object-wrapper.js';
-import { WardenLoginResults } from '../model/warden-login-results.js';
-import { WardenEntrySummary } from '../model/warden-entry-summary.js';
+import { WebAuthnObjectWrapper } from "./web-authn-object-wrapper.js";
+import { WardenLoginResults } from "../model/warden-login-results.js";
+import { WardenEntrySummary } from "../model/warden-entry-summary.js";
+import { WardenProxyUserResults } from "../model/warden-proxy-user-results.ts";
 
 export interface WardenCommandResponse {
   createAccount?: string;
@@ -12,6 +13,8 @@ export interface WardenCommandResponse {
   addWebAuthnRegistrationToLoggedInUser?: WardenEntrySummary;
   addContactToLoggedInUser?: boolean;
   performLogin?: WardenLoginResults;
+  proxyUser?: WardenProxyUserResults;
+
   refreshJwtToken?: string;
 
   removeWebAuthnRegistrationFromLoggedInUser?: WardenEntrySummary;

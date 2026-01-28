@@ -25,6 +25,7 @@ import {
 } from "../common/command/add-web-authn-registration-to-logged-in-user.js";
 import { SendMagicLink } from "../common/command/send-magic-link.js";
 import { WardenLoginRequestType } from "../common/model/warden-login-request-type";
+import { WardenProxyUserResults } from "src/common/model/warden-proxy-user-results.js";
 
 export class WardenClient {
   constructor(
@@ -44,6 +45,29 @@ export class WardenClient {
       ErrorRatchet.throwFormattedErr('%s', parsed.error);
     }
     return parsed;
+  }
+
+  public async proxyUserByContact(contact: WardenContact): Promise<WardenProxyUserResults> {
+    const cmd: WardenCommand = {
+      proxyUser: {
+        targetContact: contact,
+      }
+    }
+    const rval: WardenCommandResponse = await this.exchangeCommand(cmd);
+
+    return rval.proxyUser;
+  }
+
+  public async proxyUserById(userId:string): Promise<WardenProxyUserResults> {
+    const cmd: WardenCommand = {
+      proxyUser: {
+        targetUserId: userId,
+      }
+    }
+    const rval: WardenCommandResponse = await this.exchangeCommand(cmd);
+
+    return rval.proxyUser;
+
   }
 
   public async createAccount(contact: WardenContact, sendCode?: boolean, label?: string): Promise<string> {
