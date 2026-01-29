@@ -87,6 +87,8 @@
   },
   "peerDependencies": {
     "@apollo/server": "^5.2.0",
+    "@graphql-tools/utils": "^11.0.0",
+    "@graphql-tools/schema": "^10.0.31",
     "@bitblit/ratchet-aws": "0.0.0-snapshot",
     "@bitblit/ratchet-common": "0.0.0-snapshot",
     "@bitblit/ratchet-misc": "0.0.0-snapshot",
@@ -103,6 +105,8 @@
   },
   "devDependencies": {
     "@apollo/server": "5.2.0",
+    "@graphql-tools/utils": "11.0.0",
+    "@graphql-tools/schema": "10.0.31",
     "@types/aws-lambda": "8.10.159",
     "aws-sdk-client-mock": "4.1.0",
     "graphql": "16.12.0",
