@@ -62,7 +62,7 @@
     "@bitblit/ratchet-common": "0.0.0-snapshot"
   },
   "optionalDependencies": {
-    "cheerio": "1.1.2",
+    "cheerio": "1.2.0",
     "csv": "6.4.1",
     "jsonwebtoken": "9.0.3",
     "mime-types": "3.0.2",
@@ -71,7 +71,7 @@
   },
   "peerDependencies": {
     "@bitblit/ratchet-common": "0.0.0-snapshot",
-    "cheerio": "^1.1.2",
+    "cheerio": "^1.2.0",
     "csv": "^6.4.1",
     "jsonwebtoken": "^9.0.3",
     "mime-types": "3.0.2",
