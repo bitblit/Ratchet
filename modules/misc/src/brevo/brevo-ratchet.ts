@@ -30,6 +30,10 @@ export class BrevoRatchet {
     return rval;
   }
 
+  public async fetchKeys(): Promise<BrevoKeys> {
+    return this.keys;
+  }
+
   public async accountApi(): Promise<AccountApi> {
     const config: ConfigurationParameters = await this.buildConfig();
     const rval: AccountApi = new AccountApi(new Configuration(config));
