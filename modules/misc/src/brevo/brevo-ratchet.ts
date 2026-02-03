@@ -7,6 +7,7 @@ import { AccountApi } from './generated/apis/AccountApi.js';
 import { SMTPApi } from './generated/apis/SMTPApi.js';
 import { Configuration, ConfigurationParameters, FetchParams, Middleware, RequestContext } from './generated/runtime.js';
 import { GetAccount } from './generated/models/GetAccount.js';
+import { TransactionalSMSApi } from "./generated/apis/TransactionalSMSApi.ts";
 
 export class BrevoRatchet {
   constructor(
@@ -41,10 +42,17 @@ export class BrevoRatchet {
     return rval;
   }
 
+  public async transactionalSMSApi(): Promise<TransactionalSMSApi> {
+    const config: ConfigurationParameters = await this.buildConfig();
+    const rval: TransactionalSMSApi = new TransactionalSMSApi(new Configuration(config));
+    return rval;
+  }
+
   // This is mainly just here to test things
   public async fetchAccountData(): Promise<GetAccount> {
     const api: AccountApi = await this.accountApi();
     const rval: GetAccount = await api.getAccount();
     return rval;
   }
+
 }
