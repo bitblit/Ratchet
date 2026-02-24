@@ -17,6 +17,7 @@
           <input
             class="p-inputtext rounded-input"
             [(ngModel)]="newContactValue"
+            data-testid="login-contact-value"
             id="newContactValue"
             pInputText
             style="width: 100%"
@@ -24,6 +25,7 @@
             type="text"
           />
           <p-button
+            data-testid="login-contact-submit"
             icon="pi pi-envelope"
             (click)="sendCodeToNewContact(newContactValue)"
             pTooltip="Send code"
@@ -114,9 +116,11 @@
           <p-inputOtp [(ngModel)]="verificationCode" id="verificationCode" [length]="6" size="large"
                       [integerOnly]="integerOnly" (ngModelChange)="otpChanged()"
                       [attr.inputmode]="otpInputMode" [attr.pattern]="otpInputPattern"
+                      data-testid="login-otp-value"
           />
           <div style="display: flex; flex-direction: row; justify-content: space-between; gap: 5px">
-            <p-button (click)="submitVerificationCode(waitingContact.value, verificationCode)" label="Submit code" > </p-button>
+            <p-button (click)="submitVerificationCode(waitingContact.value, verificationCode)" label="Submit code"
+                      data-testid="login-otp-submit"> </p-button>
             <p-button (click)="verificationCode = null; showCodePage = false" label="Cancel"></p-button>
           </div>
         </div>
