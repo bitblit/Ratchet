@@ -55,6 +55,7 @@ import { WardenAuthorizer } from "./warden-authorizer.ts";
 import { WardenWebAuthnExportToken } from "./warden-web-authn-export-token.ts";
 import { WardenEntrySummary } from "@bitblit/ratchet-warden-common/common/model/warden-entry-summary";
 import { CommonJwtToken } from "@bitblit/ratchet-common/jwt/common-jwt-token";
+import { WardenFixedTokenEntry } from "./warden-fixed-token-entry.ts";
 
 export class WardenService {
   private opts: WardenServiceOptions;
@@ -76,6 +77,14 @@ export class WardenService {
       inOptions
     );
     this.cacheAuthorizer = new WardenAuthorizer(inOptions);
+
+    this.opts.fixedTokens ??= [];
+    this.opts.fixedTokens.forEach(s=>{
+      if (!StringRatchet.trimToNull(s?.token) || !StringRatchet.trimToNull(s?.contact?.value) || !s?.contact?.type) {
+        throw ErrorRatchet.fErr('Check configuration - Invalid fixed token found');
+      }
+    });
+
   }
 
   public get authorizer(): WardenAuthorizer {
@@ -700,12 +709,23 @@ export class WardenService {
     return options;
   }
 
+  public findMatchingFixedTokenEntry(request: WardenContact): WardenFixedTokenEntry {
+    const fixed: WardenFixedTokenEntry = (this?.opts?.fixedTokens || []).find(s=>s?.contact?.type===request.type && s?.contact?.value===request.value);
+    return fixed;
+  }
+
   // Send a single use token to this contact
   public async sendExpiringValidationToken(request: WardenContact, origin: string): Promise<boolean> {
     let rval: boolean = false;
     if (request?.type && StringRatchet.trimToNull(request?.value)) {
-      const prov: WardenSingleUseCodeProvider = this.singleUseCodeProvider(request, false);
-      rval = await prov.createAndSendNewCode(request, this.opts.relyingPartyName, origin);
+      const fixed: WardenFixedTokenEntry = this.findMatchingFixedTokenEntry(request);
+      if (fixed) {
+        Logger.warn('FIXED TOKEN REQUESTED FOR %j', request);
+        rval = true;
+      } else {
+        const prov: WardenSingleUseCodeProvider = this.singleUseCodeProvider(request, false);
+        rval = await prov.createAndSendNewCode(request, this.opts.relyingPartyName, origin);
+      }
     } else {
       ErrorRatchet.throwFormattedErr("Cannot send - invalid request %j", request);
     }
@@ -767,10 +787,20 @@ export class WardenService {
       if (request.webAuthn) {
         loginSuccess = await this.loginWithWebAuthnRequest(user, origin, request.webAuthn);
       } else if (StringRatchet.trimToNull(request.expiringToken)) {
-        const prov: WardenSingleUseCodeProvider = this.singleUseCodeProvider(request.contact, false);
-        loginSuccess = await prov.checkCode(request.contact.value, request.expiringToken);
-        if (!loginSuccess) {
-          ErrorRatchet.throwFormattedErr("Cannot login - token is invalid for this user");
+        const fixed: WardenFixedTokenEntry = this.findMatchingFixedTokenEntry(request.contact);
+        if (fixed) {
+          Logger.warn('FIXED TOKEN USED: %j : %s', request.contact, request.expiringToken);
+          if (request.expiringToken===fixed.token) {
+            loginSuccess = true;
+          }  else {
+            ErrorRatchet.throwFormattedErr("Cannot login - token is invalid for this user");
+          }
+        } else {
+          const prov: WardenSingleUseCodeProvider = this.singleUseCodeProvider(request.contact, false);
+          loginSuccess = await prov.checkCode(request.contact.value, request.expiringToken);
+          if (!loginSuccess) {
+            ErrorRatchet.throwFormattedErr("Cannot login - token is invalid for this user");
+          }
         }
       }
       rval = loginSuccess ? user : null;

@@ -37,18 +37,13 @@ export class StringRatchet {
 
   /**
    * Checks if the given input string contains only characters present in the provided alphabet.
+   * This is a synonym for stringContainsOnly
    * @param input - The string to check.
    * @param alphabet - The set of allowed characters.
    * @returns True if the string contains only characters from the alphabet, otherwise false.
    */
   public static stringIsInGivenAlphabet(input: string, alphabet: string): boolean {
-    let rval = false;
-    if (input && alphabet) {
-      for (let i = 0; i < input.length && !rval; i++) {
-        rval = alphabet.includes(input.charAt(i));
-      }
-    }
-    return rval;
+    return StringRatchet.stringContainsOnly(input, alphabet);
   }
 
   /**

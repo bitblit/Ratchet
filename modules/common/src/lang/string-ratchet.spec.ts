@@ -224,3 +224,10 @@ describe('substring finder', () => {
   });
 });
 
+describe('alphabet checker', () => {
+  test('should detect bad chars', () => {
+    expect(StringRatchet.stringContainsOnly())
+    expect(StringRatchet.longestNonOverlappingRepeatingSubstring('abc123abc')).toEqual('abc');
+    expect(StringRatchet.longestNonOverlappingRepeatingSubstring('abc123456')).toEqual(null);
+  });
+});
