@@ -54,7 +54,7 @@
     "@bitblit/ratchet-node-only": "0.0.0-snapshot",
     "@bitblit/ratchet-warden-common": "0.0.0-snapshot",
     "@simplewebauthn/browser": "13.2.2",
-    "@simplewebauthn/server": "13.2.2",
+    "@simplewebauthn/server": "13.2.3",
     "jsonwebtoken": "9.0.3"
   },
   "peerDependencies": {
@@ -64,7 +64,7 @@
     "@bitblit/ratchet-common": "0.0.0-snapshot",
     "@bitblit/ratchet-warden-common": "0.0.0-snapshot",
     "@simplewebauthn/browser": "^13.2.2",
-    "@simplewebauthn/server": "^13.2.2",
+    "@simplewebauthn/server": "^13.2.3",
     "jsonwebtoken": "^9.0.3"
   }
 }

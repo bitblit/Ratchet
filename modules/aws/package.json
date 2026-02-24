@@ -75,9 +75,9 @@
     "@aws-sdk/lib-storage": "3.996.0",
     "@aws-sdk/s3-request-presigner": "3.996.0",
     "@aws-sdk/types": "3.973.1",
-    "@smithy/abort-controller": "4.2.5",
-    "@smithy/smithy-client": "4.9.10",
-    "@smithy/util-waiter": "4.2.5"
+    "@smithy/abort-controller": "4.2.9",
+    "@smithy/smithy-client": "4.11.7",
+    "@smithy/util-waiter": "4.2.9"
   },
   "peerDependencies": {
     "@aws-sdk/client-athena": "^3.996.0",
@@ -101,9 +101,9 @@
     "@aws-sdk/s3-request-presigner": "^3.996.0",
     "@aws-sdk/types": "^3.973.1",
     "@bitblit/ratchet-common": "0.0.0-snapshot",
-    "@smithy/abort-controller": "^4.2.5",
-    "@smithy/smithy-client": "^4.9.10",
-    "@smithy/util-waiter": "^4.2.5"
+    "@smithy/abort-controller": "^4.2.9",
+    "@smithy/smithy-client": "^4.11.7",
+    "@smithy/util-waiter": "^4.2.9"
   },
   "peerDependenciesMeta": {
     "@aws-sdk/client-athena": {
