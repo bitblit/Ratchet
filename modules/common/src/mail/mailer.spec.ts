@@ -71,7 +71,7 @@ describe('#mailer', function () {
   test('should filter outbound', async () => {
     const config: MailerConfig<string, string> = {
       provider: testProvider,
-      allowedDestinationEmails: [/.*test\.com/, /.*.test2\.com/],
+      allowedDestinationEmails: [/.*@test\.com/, /.*@test2\.com/],
     };
     const svc: Mailer<string, string> = new Mailer<string, string>(config);
 

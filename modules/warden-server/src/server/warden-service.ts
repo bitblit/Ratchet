@@ -84,7 +84,7 @@ export class WardenService {
         throw ErrorRatchet.fErr('Check configuration - Invalid fixed token found');
       }
     });
-
+    Logger.info('Warden starting with %d fixed tokens', this.opts.fixedTokens.length);
   }
 
   public get authorizer(): WardenAuthorizer {
