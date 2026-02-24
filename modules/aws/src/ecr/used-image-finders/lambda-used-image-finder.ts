@@ -10,7 +10,7 @@ import {
   ListFunctionsCommand,
   ListFunctionsCommandInput,
 } from '@aws-sdk/client-lambda';
-import { ListFunctionsResponse } from '@aws-sdk/client-lambda/dist-types/models';
+import { ListFunctionsResponse } from '@aws-sdk/client-lambda';
 
 export class LambdaUsedImageFinder implements UsedImageFinder {
   constructor(private lambda: LambdaClient) {
