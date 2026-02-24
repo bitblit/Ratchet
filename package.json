@@ -109,9 +109,9 @@
     "undici": "^6.23.0"
   },
   "devDependencies": {
-    "@analogjs/vite-plugin-angular": "2.1.3",
-    "@angular/compiler": "20.3.16",
-    "@angular/compiler-cli": "20.3.16",
+    "@analogjs/vite-plugin-angular": "2.2.3",
+    "@angular/compiler": "21.1.5",
+    "@angular/compiler-cli": "21.1.5",
     "@eslint/js": "10.0.1",
     "@rollup/plugin-commonjs": "29.0.0",
     "@rollup/plugin-json": "6.1.0",
