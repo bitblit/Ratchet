@@ -101,6 +101,12 @@
     },
     "graphql": {
       "optional": true
+    },
+    "@graphql-tools/schema": {
+      "optional": true
+    },
+    "@graphql-tools/utils": {
+      "optional": true
     }
   },
   "devDependencies": {
