@@ -226,7 +226,7 @@ export class WardenUtils {
     let rval: boolean = false;
     const roleIds: string[] = inRoleIds ? inRoleIds.map(r=>StringRatchet.trimToNull(r)?.toLowerCase()) : null
     if (user && roleIds && roleIds.length > 0) {
-      const hasMap: boolean[] = user ? roleIds.map(r=>!!user.globalRoleIds.find(gr=>StringRatchet.trimToEmpty(gr).toLowerCase()===r)) : [false];
+      const hasMap: boolean[] = user ? roleIds.map(r=>!!(user?.globalRoleIds || []).find(gr=>StringRatchet.trimToEmpty(gr).toLowerCase()===r)) : [false];
       rval = combineWithAnd ? BooleanRatchet.allTrue(hasMap) : BooleanRatchet.anyTrue(hasMap);
     }
     return rval;
