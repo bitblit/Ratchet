@@ -114,4 +114,15 @@ describe('#handlebarsService', () => {
     const out3: string = handlebars.compile('{{rpn 1 "div"}}')({});
     expect(out3).toEqual('Cannot execute operation div - not enough args');
   });
+
+  test('should handle single level embed', async () => {
+    const out1: string = handlebars.compile('{{a}} {{b}}')({a:'HELLO', b:'WORLD'});
+    expect(out1).toEqual('HELLO WORLD');
+  });
+
+  test('should handle multi level embed', async () => {
+    const out1: string = handlebars.compile('{{x.a}} {{x.b}}')({x:{a:'HELLO', b:'WORLD'},y:{c:'test',d:'fail'}});
+    expect(out1).toEqual('HELLO WORLD');
+  });
+
 });
