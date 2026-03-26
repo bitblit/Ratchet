@@ -110,7 +110,7 @@
     }
   },
   "devDependencies": {
-    "@apollo/server": "5.4.0",
+    "@apollo/server": "5.5.0",
     "@graphql-tools/schema": "10.0.31",
     "@graphql-tools/utils": "11.0.0",
     "@types/aws-lambda": "8.10.160",
