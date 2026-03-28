@@ -57,7 +57,9 @@
   "license": "Apache-2.0",
   "scripts": {
     "run-file-server": "node bin/cli.js run-file-server --https true",
-    "build": "tsc"
+    "build": "tsc",
+    "test": "vitest run",
+    "test-coverage": "vitest run  --coverage"
   },
   "dependencies": {
     "@bitblit/ratchet-common": "workspace:0.0.0-snapshot"

@@ -63,7 +63,9 @@
   },
   "license": "Apache-2.0",
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "test": "vitest run",
+    "test-coverage": "vitest run  --coverage"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "3.996.0",

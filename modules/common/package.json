@@ -47,7 +47,9 @@
   },
   "license": "Apache-2.0",
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "test": "vitest run",
+    "test-coverage": "vitest run  --coverage"
   },
   "optionalDependencies": {
     "jwt-decode": "4.0.0",
