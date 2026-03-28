@@ -15,7 +15,7 @@
     "onlyBuiltDependencies": ["canvas", "better-sqlite3"]
   },
   "scripts": {
-    "clean": "pnpm -r --sort run mod:clean",
+    "clean": "pnpm -r --sort run clean",
     "build": "pnpm -r --sort run build",
     "build-rollups": "pnpm -r --sort run --report --serial --fast-exit --package @bitblit/ngx-acute-common -c mod:rollup-build",
     "lint": "pnpm -r --sort run --serial mod:lint",

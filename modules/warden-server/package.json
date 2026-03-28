@@ -50,7 +50,8 @@
     "build": "tsc",
     "test": "vitest run",
     "test-coverage": "vitest run  --coverage",
-    "custom-publish": "pnpm publish --access public --provenance --tag $GITHUB_REF_NAME --no-git-checks"
+    "custom-publish": "pnpm publish --access public --provenance --tag $GITHUB_REF_NAME --no-git-checks",
+    "clean": "shx rm -Rf lib"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "3.996.0",
