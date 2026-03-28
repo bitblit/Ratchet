@@ -85,7 +85,15 @@ export class LocalFileServer {
 
     const relative = decoded.replace(/^\/+/, '');
     const candidate = path.resolve(rootReal, relative);
-    const targetReal = fs.realpathSync(candidate);
+    let targetReal;
+    try {
+      targetReal = fs.realpathSync(candidate);
+    } catch (err) {
+      Logger.warn('Failed to find path %s', candidate, err);
+      response.statusCode = 403;
+      response.end('Forbidden');
+      return;
+    }
 
     if (targetReal !== rootReal && !targetReal.startsWith(rootReal + path.sep)) {
       response.statusCode = 403;
