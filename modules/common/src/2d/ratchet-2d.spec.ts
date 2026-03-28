@@ -1,21 +1,24 @@
-import { Ratchet2d } from "./ratchet-2d.js";
-import { Point2d } from "./point-2d.js";
-import { Plane2d } from "./plane-2d.js";
-import { describe, expect, test } from "vitest";
-import { TransformationMatrix } from "./transformation-matrix.js";
-import { MatrixFactory } from "./matrix-factory.js";
-import { Plane2dType } from "./plane-2d-type.js";
+import { Ratchet2d } from './ratchet-2d.js';
+import { Point2d } from './point-2d.js';
+import { Plane2d } from './plane-2d.js';
+import { describe, expect, test } from 'vitest';
+import { TransformationMatrix } from './transformation-matrix.js';
+import { MatrixFactory } from './matrix-factory.js';
+import { Plane2dType } from './plane-2d-type.js';
 
 describe('#ratchet2d', function () {
   test('should scale', () => {
-    const pts: Point2d[] = [{x:0,y:0},{x:1, y:1}];
+    const pts: Point2d[] = [
+      { x: 0, y: 0 },
+      { x: 1, y: 1 },
+    ];
     const ptEven: Point2d[] = Ratchet2d.applyTransform(pts, MatrixFactory.scaleUniform(2));
     expect(ptEven.length).toEqual(2);
     expect(ptEven[0].x).toEqual(0);
     expect(ptEven[1].x).toEqual(2);
     expect(ptEven[1].y).toEqual(2);
 
-    const ptX: Point2d[] = Ratchet2d.applyTransform(pts, MatrixFactory.scale(2,1));
+    const ptX: Point2d[] = Ratchet2d.applyTransform(pts, MatrixFactory.scale(2, 1));
     expect(ptX.length).toEqual(2);
     expect(ptX[0].x).toEqual(0);
     expect(ptX[1].x).toEqual(2);
@@ -23,7 +26,10 @@ describe('#ratchet2d', function () {
   });
 
   test('should mirror', () => {
-    const pts: Point2d[] = [{x:0,y:0},{x:1, y:1}];
+    const pts: Point2d[] = [
+      { x: 0, y: 0 },
+      { x: 1, y: 1 },
+    ];
     const ptY: Point2d[] = Ratchet2d.applyTransform(pts, MatrixFactory.mirrorAboutYAxis());
     expect(ptY.length).toEqual(2);
     expect(ptY[0].x).toEqual(0);
@@ -38,7 +44,10 @@ describe('#ratchet2d', function () {
   });
 
   test('should combine', () => {
-    const pts: Point2d[] = [{x:0,y:0},{x:1, y:1}];
+    const pts: Point2d[] = [
+      { x: 0, y: 0 },
+      { x: 1, y: 1 },
+    ];
     const tx: TransformationMatrix = MatrixFactory.multiply([MatrixFactory.scaleUniform(2), MatrixFactory.mirrorAboutYAxis()]);
     const ptC: Point2d[] = Ratchet2d.applyTransform(pts, tx);
     expect(ptC.length).toEqual(2);
@@ -99,7 +108,7 @@ describe('#ratchet2d', function () {
     const plane: Plane2d = {
       width: 100,
       height: 100,
-      type: Plane2dType.BottomLeft
+      type: Plane2dType.BottomLeft,
     };
 
     expect(Ratchet2d.planeContainsPoint({ x: -1, y: 10 }, plane)).toEqual(false);

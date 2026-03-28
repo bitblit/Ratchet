@@ -24,7 +24,7 @@ export class StopWatch {
   // move the create-time into the past for testing things.  Might have
   // some other uses, not really sure
   public moveCreateTime(offset: number): number {
-    this._createTime+=offset;
+    this._createTime += offset;
     return this._createTime;
   }
 

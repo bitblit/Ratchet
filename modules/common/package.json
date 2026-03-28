@@ -51,7 +51,10 @@
     "test": "vitest run",
     "test-coverage": "vitest run  --coverage",
     "custom-publish": "pnpm publish --access public --provenance --tag $GITHUB_REF_NAME --no-git-checks",
-    "clean": "shx rm -Rf lib"
+    "clean": "shx rm -Rf lib",
+    "pretty": "prettier src --write",
+    "lint": "eslint -c ../../eslint.config.mjs src/**/*.ts",
+    "lint-fix": "pnpm pretty && eslint --fix -c ../../eslint.config.mjs src/**/*.ts"
   },
   "optionalDependencies": {
     "jwt-decode": "4.0.0",

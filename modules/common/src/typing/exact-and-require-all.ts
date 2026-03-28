@@ -1,5 +1,5 @@
-import { RequireAll } from "./require-all.ts";
-import { Exact } from "./exact.ts";
+import { RequireAll } from './require-all.ts';
+import { Exact } from './exact.ts';
 
 /**
  * This is used in a "satisfy" clause to make sure that an object

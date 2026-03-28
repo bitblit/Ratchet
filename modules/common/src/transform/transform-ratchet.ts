@@ -19,7 +19,7 @@ export class TransformRatchet {
   }
 
   private static transformGeneric(toTransform: any, rules: TransformRule[] = [], isKey: boolean, context: any): any {
-    let rval: any = null;
+    let rval: any;
     const type: string = typeof toTransform;
     switch (type) {
       case 'undefined':

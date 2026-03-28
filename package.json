@@ -17,7 +17,6 @@
   "scripts": {
     "clean": "pnpm -r --sort run clean",
     "build": "pnpm -r --sort run build",
-    "build-rollups": "pnpm -r --sort run --report --serial --fast-exit --package @bitblit/ngx-acute-common -c mod:rollup-build",
     "lint": "pnpm -r --sort run --serial mod:lint",
     "lint-fix": "pnpm -r --sort run --serial mod:lint-fix",
     "test": "echo Starting full test && pnpm -r --sort run test",
@@ -26,23 +25,9 @@
     "set-codependencies": "echo $GITHUB_RUN_NUMBER && ./set-codependencies.sh 6.1.$GITHUB_RUN_NUMBER",
     "set-codependencies-by-github-tag": "echo $GITHUB_RUN_NUMBER && ./set-codependencies-by-github-tag.sh 6.1.$GITHUB_RUN_NUMBER",
     "full-publish": "pnpm -r --sort run custom-publish",
-    "mod:raw-tsc": "cd $INIT_CWD && tsc",
     "mod:generate-barrels": "cd $INIT_CWD && barrelsby -e \".*\\.spec\\.ts\" --delete -d src -l below -q && cd $INIT_CWD && fix-esm-import-path src && rm -f src/brevo/index.ts",
-    "mod:build": "tsc",
-    "mod:ng-build": "cd $INIT_CWD && pnpm mod:clean && cd $INIT_CWD && npx ngc",
-    "mod:rollup-build": "cd $INIT_CWD && pnpm mod:clean && cd $INIT_CWD && rollup -c ./rollup.config.mjs",
-    "_mod:build": "cd $INIT_CWD && pnpm mod:clean && pnpm mod:generate-barrels && cd $INIT_CWD && tsc",
-    "_rollup_mod:build": "cd $INIT_CWD && pnpm mod:clean && pnpm mod:generate-barrels && cd $INIT_CWD && rollup -c ../../rollup.global.config.mjs && echo Finished build",
-    "mod:clean": "shx rm -Rf lib",
     "mod:docs": "cd $INIT_CWD && typedoc",
-    "mod:pretty": "cd $INIT_CWD && prettier src --write",
-    "mod:lint": "cd $INIT_CWD && eslint -c ../../eslint.config.mjs src/**/*.ts",
-    "mod:lint-fix": "cd $INIT_CWD && pnpm mod:pretty && cd $INIT_CWD && eslint --fix -c ../../eslint.config.mjs src/**/*.ts",
-    "mod:test": "cd $INIT_CWD && vitest run",
-    "mod:test-coverage": "cd $INIT_CWD && vitest run  --coverage",
-    "mod:watch": "cd $INIT_CWD && tsc-watch",
-    "mod:force-build": "cd $INIT_CWD && tsc --build --force",
-    "mod:publish": "cd $INIT_CWD && pnpm npm publish --access public --provenance --tag $GITHUB_REF_NAME"
+    "mod:watch": "cd $INIT_CWD && tsc-watch"
   },
   "repository": {
     "type": "git",

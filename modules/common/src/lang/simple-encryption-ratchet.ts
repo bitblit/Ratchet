@@ -1,18 +1,23 @@
-import { RequireRatchet } from "./require-ratchet.ts";
-import { NumberRatchet } from "./number-ratchet.ts";
-import { Base64Ratchet } from "./base64-ratchet.ts";
+import { RequireRatchet } from './require-ratchet.ts';
+import { NumberRatchet } from './number-ratchet.ts';
+import { Base64Ratchet } from './base64-ratchet.ts';
 
 /**
  * A VERY simple wrapper for doing basic AES-GCM encryption on arbitrary text -
  * useful for slugs, etc., since the same code should work both in Node.js and
  * most modern browsers
  */
-export class SimpleEncryptionRatchet{
+export class SimpleEncryptionRatchet {
   private sharedKey: Promise<CryptoKey>;
 
-  constructor(sharedRawKey: string | Promise<string>, private urlSafe:boolean = false, private ivLength: number = 12) { // Recommended for AES-GCM
+  constructor(
+    sharedRawKey: string | Promise<string>,
+    private urlSafe: boolean = false,
+    private ivLength: number = 12,
+  ) {
+    // Recommended for AES-GCM
     RequireRatchet.notNullOrUndefined(sharedRawKey);
-    RequireRatchet.true(ivLength>=12, 'ivLength must be at least 12');
+    RequireRatchet.true(ivLength >= 12, 'ivLength must be at least 12');
     this.sharedKey = this.createSharedKey(sharedRawKey);
   }
 
@@ -28,25 +33,24 @@ export class SimpleEncryptionRatchet{
 
   // Converts base64 to ArrayBuffer
   private base64ToBuf(base64: string): Uint8Array<ArrayBuffer> {
-    return new Uint8Array(atob(base64).split('').map(c => c.charCodeAt(0)));
+    return new Uint8Array(
+      atob(base64)
+        .split('')
+        .map((c) => c.charCodeAt(0)),
+    );
   }
-
 
   // Encrypt a string with a shared key
   public async encrypt(data: string): Promise<string> {
-    const iv:Uint8Array<ArrayBuffer> = crypto.getRandomValues(new Uint8Array(this.ivLength));
-    const encoded:Uint8Array<ArrayBuffer> = this.strToBuf(data);
+    const iv: Uint8Array<ArrayBuffer> = crypto.getRandomValues(new Uint8Array(this.ivLength));
+    const encoded: Uint8Array<ArrayBuffer> = this.strToBuf(data);
     const key: CryptoKey = await this.sharedKey;
-    const ciphertext = await crypto.subtle.encrypt(
-      { name: "AES-GCM", iv },
-      key,
-      encoded
-    );
+    const ciphertext = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, encoded);
     const ivMsg: string = this.bufToBase64(iv.buffer);
     const dataMsg: string = this.bufToBase64(ciphertext);
 
     // Format it up in a way that can be unrolled later
-    let rval: string = ivMsg.length+'K'+ivMsg+dataMsg;
+    let rval: string = ivMsg.length + 'K' + ivMsg + dataMsg;
     if (this.urlSafe) {
       rval = Base64Ratchet.encodeStringToBase64UrlString(rval);
     }
@@ -56,20 +60,16 @@ export class SimpleEncryptionRatchet{
   // Decrypt a string with the shared key
   public async decrypt(encryptedValueIn: string): Promise<string> {
     const encryptedValue: string = this.urlSafe ? Base64Ratchet.decodeBase64UrlStringToString(encryptedValueIn) : encryptedValueIn;
-    const split: number = encryptedValue?.indexOf('K')
-    if (!split || split<1) {
-      throw new Error('Invalid split : '+split);
+    const split: number = encryptedValue?.indexOf('K');
+    if (!split || split < 1) {
+      throw new Error('Invalid split : ' + split);
     }
     const ivLen: number = NumberRatchet.safeNumber(encryptedValue.substring(0, split));
-    const iv: string = encryptedValue.substring(split+1, split+1+ivLen);
-    const data: string = encryptedValue.substring(split+1+ivLen);
+    const iv: string = encryptedValue.substring(split + 1, split + 1 + ivLen);
+    const data: string = encryptedValue.substring(split + 1 + ivLen);
 
     const key: CryptoKey = await this.sharedKey;
-    const decrypted = await crypto.subtle.decrypt(
-      { name: "AES-GCM", iv: this.base64ToBuf(iv) },
-      key,
-      this.base64ToBuf(data)
-    );
+    const decrypted = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: this.base64ToBuf(iv) }, key, this.base64ToBuf(data));
     return new TextDecoder().decode(decrypted);
   }
 
@@ -77,12 +77,6 @@ export class SimpleEncryptionRatchet{
   private async createSharedKey(rawKeyIn: string | Promise<string>): Promise<CryptoKey> {
     const rawKey: string = typeof rawKeyIn === 'string' ? rawKeyIn : await rawKeyIn;
     const keyMaterial = this.strToBuf(rawKey.padEnd(32, '0').slice(0, 32)); // 256-bit key
-    return crypto.subtle.importKey(
-      "raw",
-      keyMaterial,
-      "AES-GCM",
-      false,
-      ["encrypt", "decrypt"]
-    );
+    return crypto.subtle.importKey('raw', keyMaterial, 'AES-GCM', false, ['encrypt', 'decrypt']);
   }
 }

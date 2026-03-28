@@ -31,18 +31,16 @@ export class LoggerInstance {
     this.options = inOptions; // MUST use the setter here
   }
 
-
   public findMessagesMatchingInBuffer(regex: RegExp): LogMessage[] {
     if (!this._ringBuffer) {
-      throw new Error('Called findMessagesMatchingInBuffer with no ring buffer configured')
+      throw new Error('Called findMessagesMatchingInBuffer with no ring buffer configured');
     }
     return this._ringBuffer.findMessagesMatchingInBuffer(regex);
   }
 
   public hasMessageMatchingInBuffer(regex: RegExp): boolean {
-    return this.findMessagesMatchingInBuffer(regex).length>0;
+    return this.findMessagesMatchingInBuffer(regex).length > 0;
   }
-
 
   public levelIsEnabled(level: LoggerLevelName): boolean {
     return LoggerUtil.levelIsEnabled(level, this._level);
@@ -195,7 +193,7 @@ export class LoggerInstance {
         fn(rval);
       }
       // If it was logged out, or it wasn't but the formatter says to still put it in the ringbuffer...
-      if (this._ringBuffer && (rval || this.options.formatType===LogMessageFormatType.RingBufferOnly)) {
+      if (this._ringBuffer && (rval || this.options.formatType === LogMessageFormatType.RingBufferOnly)) {
         this._ringBuffer.addToRingBuffer(msg);
       }
     } else {

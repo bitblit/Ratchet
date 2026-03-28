@@ -152,7 +152,7 @@ export class Mailer<T, R> implements MailerLike<T, R> {
   public async sendEmail(inRts: ReadyToSendEmail): Promise<SendEmailResult<T, R>> {
     RequireRatchet.notNullOrUndefined(inRts, 'RTS must be defined');
     RequireRatchet.notNullOrUndefined(inRts.destinationAddresses, 'Destination addresses must be defined');
-    let rval: SendEmailResult<T, R> = null;
+    let rval: SendEmailResult<T, R>;
 
     const resolved: ResolvedReadyToSendEmail = await this.resolveReadyToSendEmail(inRts);
     try {

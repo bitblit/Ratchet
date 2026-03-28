@@ -18,12 +18,12 @@ export class LoggerRingBuffer {
   }
 
   public findMessagesMatchingInBuffer(regex: RegExp): LogMessage[] {
-    const rval: LogMessage[] = this._buffer.filter(s=>s.messageSource.match(regex));
+    const rval: LogMessage[] = this._buffer.filter((s) => s.messageSource.match(regex));
     return rval;
   }
 
   public hasMessageMatchingInBuffer(regex: RegExp): boolean {
-    return this.findMessagesMatchingInBuffer(regex).length>0;
+    return this.findMessagesMatchingInBuffer(regex).length > 0;
   }
 
   public get currentIndex(): number {
@@ -43,7 +43,7 @@ export class LoggerRingBuffer {
   }
 
   public getMessages(inStartFrom: number = null, clear = false, reverseSort = false): LogMessage[] {
-    let rval: LogMessage[] = null;
+    let rval: LogMessage[];
     if (this._bufferIdx < this._bufferSize) {
       const start: number = inStartFrom == null ? 0 : inStartFrom;
       rval = this._buffer.slice(start, this._bufferIdx); // Use slice to get a copy (should use below too)

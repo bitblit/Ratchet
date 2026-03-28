@@ -3,12 +3,11 @@
     "allowImportingTsExtensions": true,
     "declaration": true,
     "importHelpers": true,
-    "module": "ESNext",
+    "module": "es2022",
     "noEmitHelpers": true,
-    "target": "ESNext",
+    "target": "es2022",
     "strict": true,
     "sourceMap": true,
-    "baseUrl": ".",
     "downlevelIteration": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
@@ -31,7 +30,7 @@
     "paths": {
       "@bitblit/ratchet-*": ["modules/"]
     },
-    "lib": ["esnext", "dom"]
+    "lib": ["es2022", "dom"]
   },
   "include": ["modules/"],
   "exclude": ["node_modules/", "**/*.spec.ts"],

@@ -6,7 +6,7 @@ import { NumberRatchet } from './number-ratchet.js';
 
 export class BooleanRatchet {
   public static allTrue(vals: boolean[], emptyArraysReturn = false): boolean {
-    let rval: boolean = null;
+    let rval: boolean;
     if (vals) {
       if (vals.length > 0) {
         rval = vals.reduce((a, i) => a && i, true);
@@ -21,7 +21,7 @@ export class BooleanRatchet {
   }
 
   public static anyTrue(vals: boolean[], emptyArraysReturn = false): boolean {
-    let rval: boolean = null;
+    let rval: boolean;
     if (vals) {
       if (vals.length > 0) {
         rval = vals.reduce((a, i) => a || i, false);

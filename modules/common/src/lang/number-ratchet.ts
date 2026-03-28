@@ -67,7 +67,7 @@ export class NumberRatchet {
   }
 
   public static safeNumberOpt(input: any, optionPart?: Partial<SafeNumberOptions>): number {
-    let rval: number = undefined;
+    let rval: number;
     const opts: SafeNumberOptions = Object.assign({}, NumberRatchet.DEFAULT_SAFE_NUMBER_OPTIONS, optionPart || {});
     if (input === null) {
       rval = opts.returnValueForNull;

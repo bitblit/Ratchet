@@ -1,13 +1,15 @@
 {
   "compilerOptions": {
-    "lib": [],
     "outDir": "lib",
     "rootDir": "src",
     "stripInternal": true,
 
     "noImplicitAny": false,
     "noImplicitThis": false,
-    "strictNullChecks": false
+    "strictNullChecks": false,
+    "paths": {
+      "*": ["./src/*"]
+    }
   },
   "extends": "../../tsconfig.json",
   "include": ["src/**/*.ts"]

@@ -80,7 +80,7 @@ export class RestfulApiHttpError<T = void> extends Error {
   }
 
   public static wrapError<T = void>(err: Error): RestfulApiHttpError<T> {
-    let rval: RestfulApiHttpError<T> = null;
+    let rval: RestfulApiHttpError<T>;
     if (RestfulApiHttpError.objectIsRestfulApiHttpError(err)) {
       rval = err as RestfulApiHttpError<T>;
     } else {

@@ -187,7 +187,7 @@ export class StringRatchet {
    * @param len - Desired length of the random string.
    * @returns The generated random string.
    */
-  public static createRandomStringFromAlphabet(alphabet: string, len:number = 10): string {
+  public static createRandomStringFromAlphabet(alphabet: string, len: number = 10): string {
     RequireRatchet.notNullUndefinedOrOnlyWhitespaceString(alphabet, 'Alphabet may not be empty');
     let rval: string = '';
 
@@ -195,7 +195,6 @@ export class StringRatchet {
       rval += alphabet.charAt(Math.floor(Math.random() * alphabet.length));
     }
     return rval;
-
   }
 
   /**
@@ -527,7 +526,7 @@ export class StringRatchet {
    * @returns A JSON string representation of the input, or an error message if circular references are found.
    */
   public static circSafeJsonStringify(input: any): string {
-    let rval: string = null;
+    let rval: string;
     try {
       rval = JSON.stringify(input);
     } catch (err) {
@@ -667,5 +666,4 @@ export class StringRatchet {
   public static snakeCaseToCamelCase(str) {
     return str.replace(/_([a-z])/g, (_, letter) => letter.toUpperCase());
   }
-
 }

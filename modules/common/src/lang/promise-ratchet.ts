@@ -107,7 +107,7 @@ export class PromiseRatchet {
       return false;
     }
 
-    let curVal: any = null;
+    let curVal: any;
     try {
       curVal = testFunction(count);
     } catch (err) {

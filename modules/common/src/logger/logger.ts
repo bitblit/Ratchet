@@ -32,7 +32,6 @@ export class Logger {
     preProcessors: [],
   };
 
-
   public static findMessagesMatchingInBuffer(regex: RegExp): LogMessage[] {
     return Logger.getLogger().findMessagesMatchingInBuffer(regex);
   }
@@ -40,7 +39,6 @@ export class Logger {
   public static hasMessageMatchingInBuffer(regex: RegExp): boolean {
     return Logger.getLogger().hasMessageMatchingInBuffer(regex);
   }
-
 
   public static applyDefaultsToOptions(input?: Partial<LoggerOptions>): LoggerOptions {
     const rval: LoggerOptions = input || {};

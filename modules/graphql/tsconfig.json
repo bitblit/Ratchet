@@ -1,9 +1,11 @@
 {
   "compilerOptions": {
-    "lib": [],
     "outDir": "lib",
     "rootDir": "src",
-    "stripInternal": true
+    "stripInternal": true,
+    "paths": {
+      "*": ["./src/*"]
+    }
   },
   "extends": "../../tsconfig.json",
   "include": ["src/"]

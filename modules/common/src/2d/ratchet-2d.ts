@@ -1,13 +1,13 @@
-import { Point2d } from "./point-2d.js";
-import { Plane2d } from "./plane-2d.js";
-import { Line2d } from "./line-2d.js";
-import { PolyLine2d } from "./poly-line-2d.js";
-import { BooleanRatchet } from "../lang/boolean-ratchet.js";
-import { ErrorRatchet } from "../lang/error-ratchet.js";
-import { TransformationMatrix } from "./transformation-matrix.js";
-import { RequireRatchet } from "../lang/require-ratchet.js";
-import { MatrixFactory } from "./matrix-factory.js";
-import { Plane2dType } from "./plane-2d-type.js";
+import { Point2d } from './point-2d.js';
+import { Plane2d } from './plane-2d.js';
+import { Line2d } from './line-2d.js';
+import { PolyLine2d } from './poly-line-2d.js';
+import { BooleanRatchet } from '../lang/boolean-ratchet.js';
+import { ErrorRatchet } from '../lang/error-ratchet.js';
+import { TransformationMatrix } from './transformation-matrix.js';
+import { RequireRatchet } from '../lang/require-ratchet.js';
+import { MatrixFactory } from './matrix-factory.js';
+import { Plane2dType } from './plane-2d-type.js';
 
 export class Ratchet2d {
   // Prevent instantiation
@@ -31,13 +31,13 @@ export class Ratchet2d {
     return rval;
   }
 
-  public static minimalContainingPlane(points: Point2d[], type: Plane2dType=Plane2dType.BottomLeft): Plane2d {
+  public static minimalContainingPlane(points: Point2d[], type: Plane2dType = Plane2dType.BottomLeft): Plane2d {
     let rval: Plane2d = null;
     if (Ratchet2d.validPoints(points)) {
       rval = {
         width: 0,
         height: 0,
-        type: type
+        type: type,
       };
       points.forEach((p) => {
         rval.width = Math.max(rval.width, p.x + 1);
@@ -167,7 +167,7 @@ export class Ratchet2d {
 
   public static rotateRightAboutCartesianOrigin90Degrees(points: Point2d[], times = 1): Point2d[] {
     let rval: Point2d[] = null;
-    let translate: Point2d = { x: 0, y: 0 };
+    let translate: Point2d;
     if (Ratchet2d.validPoints(points)) {
       rval = Object.assign([], points);
       translate = Ratchet2d.translateToOriginVector(rval);
@@ -245,13 +245,19 @@ export class Ratchet2d {
   }
 
   public static matchingVerticalOrientation(pt1: Plane2dType, pt2: Plane2dType): boolean {
-    return ((pt1===Plane2dType.BottomRight || pt1===Plane2dType.BottomLeft) && (pt2===Plane2dType.BottomRight || pt2===Plane2dType.BottomLeft)) ||
-      ((pt1===Plane2dType.TopLeft || pt1===Plane2dType.TopRight) && (pt2===Plane2dType.TopLeft || pt2===Plane2dType.TopRight));
+    return (
+      ((pt1 === Plane2dType.BottomRight || pt1 === Plane2dType.BottomLeft) &&
+        (pt2 === Plane2dType.BottomRight || pt2 === Plane2dType.BottomLeft)) ||
+      ((pt1 === Plane2dType.TopLeft || pt1 === Plane2dType.TopRight) && (pt2 === Plane2dType.TopLeft || pt2 === Plane2dType.TopRight))
+    );
   }
 
   public static matchingHorizontalOrientation(pt1: Plane2dType, pt2: Plane2dType): boolean {
-    return ((pt1===Plane2dType.BottomRight || pt1===Plane2dType.TopRight) && (pt2===Plane2dType.BottomRight || pt2===Plane2dType.TopRight)) ||
-      ((pt1===Plane2dType.BottomLeft || pt1===Plane2dType.TopLeft) && (pt2===Plane2dType.BottomLeft || pt2===Plane2dType.TopLeft));
+    return (
+      ((pt1 === Plane2dType.BottomRight || pt1 === Plane2dType.TopRight) &&
+        (pt2 === Plane2dType.BottomRight || pt2 === Plane2dType.TopRight)) ||
+      ((pt1 === Plane2dType.BottomLeft || pt1 === Plane2dType.TopLeft) && (pt2 === Plane2dType.BottomLeft || pt2 === Plane2dType.TopLeft))
+    );
   }
 
   public static transformPointsToNewPlane(points: Point2d[], src: Plane2d, dst: Plane2d): Point2d[] {
@@ -259,7 +265,12 @@ export class Ratchet2d {
     if (Ratchet2d.validPoints(points) && Ratchet2d.validPlane(src) && Ratchet2d.validPlane(dst)) {
       const scale: Point2d = Ratchet2d.scaleVector(src, dst);
       rval = Ratchet2d.applyTransform(points, MatrixFactory.scale(scale.x, scale.y));
-      rval = Ratchet2d.mirrorPointsOnPlane(rval, dst, !Ratchet2d.matchingHorizontalOrientation(src.type, dst.type), !Ratchet2d.matchingVerticalOrientation(src.type, dst.type));
+      rval = Ratchet2d.mirrorPointsOnPlane(
+        rval,
+        dst,
+        !Ratchet2d.matchingHorizontalOrientation(src.type, dst.type),
+        !Ratchet2d.matchingVerticalOrientation(src.type, dst.type),
+      );
     }
     return rval;
   }
@@ -330,7 +341,7 @@ export class Ratchet2d {
   }
 
   public static applyTransform(pt: Point2d[], tx: TransformationMatrix): Point2d[] {
-    const rval: Point2d[] = pt?.length ? pt.map(p=>Ratchet2d.applyTransformSingle(p, tx)) : pt;
+    const rval: Point2d[] = pt?.length ? pt.map((p) => Ratchet2d.applyTransformSingle(p, tx)) : pt;
     return rval;
   }
 
@@ -339,12 +350,10 @@ export class Ratchet2d {
     Ratchet2d.validateMatrix(tx);
 
     // Not a generalized matrix multiplier, although that's probably better.  Use math.js for that :P
-    const rval : Point2d = {
-      x: (tx.a * pt.x) + (tx.b * pt.y) + (tx.u | 0),
-      y: (tx.c * pt.x) + (tx.d * pt.y) + (tx.v | 0)
-    }
+    const rval: Point2d = {
+      x: tx.a * pt.x + tx.b * pt.y + (tx.u | 0),
+      y: tx.c * pt.x + tx.d * pt.y + (tx.v | 0),
+    };
     return rval;
-
   }
-
 }

@@ -2,6 +2,9 @@
   "compilerOptions": {
     "rootDir": "src",
     "outDir": "lib",
+    "paths": {
+      "*": ["./src/*"]
+    },
     "ignoreDeprecations": "6.0"
   },
   "angularCompilerOptions": {

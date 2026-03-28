@@ -1,4 +1,4 @@
-import { TransformationMatrix } from "./transformation-matrix.js";
+import { TransformationMatrix } from './transformation-matrix.js';
 
 export class MatrixFactory {
   // Prevent instantiation
@@ -7,14 +7,14 @@ export class MatrixFactory {
 
   public static multiply(tx: TransformationMatrix[]): TransformationMatrix {
     let rval: TransformationMatrix = MatrixFactory.identity();
-    tx.forEach(t=>{
+    tx.forEach((t) => {
       rval = {
-        a: (rval.a * t.a) + (rval.b * t.c) + ((rval.u ?? 0) * 0),
-        b: (rval.a * t.b) + (rval.b * t.d) + ((rval.u ?? 0) * 0),
-        u: (rval.a * (t.u ?? 0)) + (rval.b * (t.v ?? 0)) + ((rval.u ?? 0) * 1),
-        c: (rval.c * t.a) + (rval.d * t.c) + ((rval.v ?? 0) * 0),
-        d: (rval.c * t.b) + (rval.d * t.d) + ((rval.v ?? 0)  * 0),
-        v: (rval.c * (t.u ?? 0)) + (rval.d * (t.v ?? 0)) + ((rval.v ?? 0)  * 1),
+        a: rval.a * t.a + rval.b * t.c + (rval.u ?? 0) * 0,
+        b: rval.a * t.b + rval.b * t.d + (rval.u ?? 0) * 0,
+        u: rval.a * (t.u ?? 0) + rval.b * (t.v ?? 0) + (rval.u ?? 0) * 1,
+        c: rval.c * t.a + rval.d * t.c + (rval.v ?? 0) * 0,
+        d: rval.c * t.b + rval.d * t.d + (rval.v ?? 0) * 0,
+        v: rval.c * (t.u ?? 0) + rval.d * (t.v ?? 0) + (rval.v ?? 0) * 1,
       };
     });
     return rval;
@@ -27,7 +27,6 @@ export class MatrixFactory {
     return rval;
   }
 
-
   public static scaleUniform(scale: number): TransformationMatrix {
     return MatrixFactory.scale(scale, scale);
   }
@@ -38,7 +37,7 @@ export class MatrixFactory {
       b: 0,
       c: 0,
       d: yScale,
-    }
+    };
   }
 
   public static rotate(angleTheta: number): TransformationMatrix {
@@ -46,7 +45,7 @@ export class MatrixFactory {
       a: Math.cos(angleTheta),
       b: -1 * Math.sin(angleTheta),
       c: Math.sin(angleTheta),
-      d: Math.cos(angleTheta)
+      d: Math.cos(angleTheta),
     };
   }
 
@@ -55,8 +54,8 @@ export class MatrixFactory {
       a: 1,
       b: xShear,
       c: yShear,
-      d: 1
-    }
+      d: 1,
+    };
   }
 
   public static mirrorAboutYAxis(): TransformationMatrix {
@@ -64,8 +63,8 @@ export class MatrixFactory {
       a: -1,
       b: 0,
       c: 0,
-      d: 1
-    }
+      d: 1,
+    };
   }
 
   public static mirrorAboutXAxis(): TransformationMatrix {
@@ -73,10 +72,9 @@ export class MatrixFactory {
       a: 1,
       b: 0,
       c: 0,
-      d: -1
-    }
+      d: -1,
+    };
   }
-
 
   public static identity(): TransformationMatrix {
     return {
@@ -85,10 +83,7 @@ export class MatrixFactory {
       c: 0,
       d: 1,
       u: 0,
-      v: 0
-    }
+      v: 0,
+    };
   }
-
-
-
 }

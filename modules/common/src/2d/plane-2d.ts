@@ -1,4 +1,4 @@
-import { Plane2dType } from "./plane-2d-type.js";
+import { Plane2dType } from './plane-2d-type.js';
 
 export interface Plane2d {
   height: number;

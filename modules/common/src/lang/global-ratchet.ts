@@ -36,7 +36,7 @@ export class GlobalRatchet {
         rval = process; // Final failover, not really a great option
       }
     } catch (err) {
-      throw new Error('Should not happen - error thrown trying to find global : '+ err);
+      throw new Error('Should not happen - error thrown trying to find global : ' + err, { cause: err });
     }
     if (!rval) {
       if (returnNullOnNone) {
