@@ -34,9 +34,6 @@
     }
   },
   "config": {},
-  "scripts": {
-    "t": "yarn mod:test"
-  },
   "keywords": [
     "wrench",
     "utility"
@@ -49,6 +46,9 @@
     "node": ">=14.18"
   },
   "license": "Apache-2.0",
+  "scripts": {
+    "build": "tsc"
+  },
   "optionalDependencies": {
     "jwt-decode": "4.0.0",
     "ts-enum-util": "4.1.0"

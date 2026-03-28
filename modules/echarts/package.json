@@ -34,13 +34,16 @@
   },
   "config": {},
   "license": "Apache-2.0",
+  "scripts": {
+    "build": "tsc"
+  },
   "dependencies": {
-    "@bitblit/ratchet-common": "0.0.0-snapshot",
+    "@bitblit/ratchet-common": "workspace:0.0.0-snapshot",
     "canvas": "3.2.1",
     "echarts": "6.0.0"
   },
   "peerDependencies": {
-    "@bitblit/ratchet-common": "0.0.0-snapshot",
+    "@bitblit/ratchet-common": "workspace:0.0.0-snapshot",
     "canvas": "^3.2.1 ",
     "echarts": "^6.0.0"
   }

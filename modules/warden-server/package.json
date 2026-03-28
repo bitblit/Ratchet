@@ -46,13 +46,17 @@
     "node": ">=14.18"
   },
   "license": "Apache-2.0",
+  "scripts": {
+    "build": "tsc"
+  },
   "dependencies": {
     "@aws-sdk/client-s3": "3.996.0",
     "@aws-sdk/client-ses": "3.996.0",
-    "@bitblit/ratchet-aws": "0.0.0-snapshot",
-    "@bitblit/ratchet-common": "0.0.0-snapshot",
-    "@bitblit/ratchet-node-only": "0.0.0-snapshot",
-    "@bitblit/ratchet-warden-common": "0.0.0-snapshot",
+    "@aws-sdk/lib-dynamodb": "3.996.0",
+    "@bitblit/ratchet-aws": "workspace:0.0.0-snapshot",
+    "@bitblit/ratchet-common": "workspace:0.0.0-snapshot",
+    "@bitblit/ratchet-node-only": "workspace:0.0.0-snapshot",
+    "@bitblit/ratchet-warden-common": "workspace:0.0.0-snapshot",
     "@simplewebauthn/browser": "13.2.2",
     "@simplewebauthn/server": "13.2.3",
     "jsonwebtoken": "9.0.3"
@@ -60,9 +64,10 @@
   "peerDependencies": {
     "@aws-sdk/client-s3": "^3.996.0",
     "@aws-sdk/client-ses": "^3.996.0",
-    "@bitblit/ratchet-aws": "0.0.0-snapshot",
-    "@bitblit/ratchet-common": "0.0.0-snapshot",
-    "@bitblit/ratchet-warden-common": "0.0.0-snapshot",
+    "@aws-sdk/lib-dynamodb": "^3.996.0",
+    "@bitblit/ratchet-aws": "workspace:0.0.0-snapshot",
+    "@bitblit/ratchet-common": "workspace:0.0.0-snapshot",
+    "@bitblit/ratchet-warden-common": "workspace:0.0.0-snapshot",
     "@simplewebauthn/browser": "^13.2.2",
     "@simplewebauthn/server": "^13.2.3",
     "jsonwebtoken": "^9.0.3"

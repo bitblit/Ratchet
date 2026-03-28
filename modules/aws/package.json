@@ -51,8 +51,11 @@
     "node": ">=14.18"
   },
   "license": "Apache-2.0",
+  "scripts": {
+    "build": "tsc"
+  },
   "dependencies": {
-    "@bitblit/ratchet-common": "0.0.0-snapshot"
+    "@bitblit/ratchet-common": "workspace:0.0.0-snapshot"
   },
   "optionalDependencies": {
     "@aws-sdk/client-athena": "3.996.0",
@@ -75,6 +78,8 @@
     "@aws-sdk/lib-storage": "3.996.0",
     "@aws-sdk/s3-request-presigner": "3.996.0",
     "@aws-sdk/types": "3.973.1",
+    "@aws-sdk/util-dynamodb": "3.996.0",
+    "@smithy/types": "4.13.1",
     "@smithy/abort-controller": "4.2.9",
     "@smithy/smithy-client": "4.11.7",
     "@smithy/util-waiter": "4.2.9"
@@ -100,7 +105,9 @@
     "@aws-sdk/lib-storage": "^3.996.0",
     "@aws-sdk/s3-request-presigner": "^3.996.0",
     "@aws-sdk/types": "^3.973.1",
-    "@bitblit/ratchet-common": "0.0.0-snapshot",
+    "@aws-sdk/util-dynamodb": "^3.996.0",
+    "@bitblit/ratchet-common": "workspace:0.0.0-snapshot",
+    "@smithy/types": "^4.13.1",
     "@smithy/abort-controller": "^4.2.9",
     "@smithy/smithy-client": "^4.11.7",
     "@smithy/util-waiter": "^4.2.9"
@@ -177,7 +184,7 @@
     }
   },
   "devDependencies": {
-    "@bitblit/ratchet-node-only": "0.0.0-snapshot",
+    "@bitblit/ratchet-node-only": "workspace:0.0.0-snapshot",
     "@types/aws-lambda": "8.10.160",
     "aws-sdk-client-mock": "4.1.0"
   }

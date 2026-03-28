@@ -28,9 +28,6 @@
     }
   },
   "config": {},
-  "scripts": {
-    "t": "yarn mod:test"
-  },
   "keywords": [
     "wrench",
     "utility"
@@ -43,7 +40,10 @@
     "node": ">=14.18"
   },
   "license": "Apache-2.0",
+  "scripts": {
+    "build": "tsc"
+  },
   "dependencies": {
-    "@bitblit/ratchet-common": "0.0.0-snapshot"
+    "@bitblit/ratchet-common": "workspace:0.0.0-snapshot"
   }
 }

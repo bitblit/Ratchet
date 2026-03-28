@@ -50,15 +50,18 @@
     "node": ">=14.18"
   },
   "license": "Apache-2.0",
+  "scripts": {
+    "build": "tsc"
+  },
   "dependencies": {
-    "@bitblit/ratchet-aws": "0.0.0-snapshot",
-    "@bitblit/ratchet-common": "0.0.0-snapshot",
-    "@bitblit/ratchet-epsilon-common": "0.0.0-snapshot",
+    "@bitblit/ratchet-aws": "workspace:0.0.0-snapshot",
+    "@bitblit/ratchet-common": "workspace:0.0.0-snapshot",
+    "@bitblit/ratchet-epsilon-common": "workspace:0.0.0-snapshot",
     "aws-cdk-lib": "2.240.0",
     "constructs": "10.5.1"
   },
   "peerDependencies": {
-    "@bitblit/ratchet-common": "0.0.0-snapshot",
+    "@bitblit/ratchet-common": "workspace:0.0.0-snapshot",
     "aws-cdk-lib": "^2.240.0",
     "constructs": "^10.5.1"
   }

@@ -56,23 +56,26 @@
   },
   "license": "Apache-2.0",
   "scripts": {
-    "run-file-server": "node bin/cli.js run-file-server --https true"
+    "run-file-server": "node bin/cli.js run-file-server --https true",
+    "build": "tsc"
   },
   "dependencies": {
-    "@bitblit/ratchet-common": "0.0.0-snapshot"
+    "@bitblit/ratchet-common": "workspace:0.0.0-snapshot"
   },
   "optionalDependencies": {
     "cheerio": "1.2.0",
-    "csv": "6.4.1",
+    "csv-parse": "6.2.1",
+    "csv-stringify": "6.7.0",
     "jsonwebtoken": "9.0.3",
     "mime-types": "3.0.2",
     "rxjs": "7.8.2",
     "warc": "1.0.1"
   },
   "peerDependencies": {
-    "@bitblit/ratchet-common": "0.0.0-snapshot",
+    "@bitblit/ratchet-common": "workspace:0.0.0-snapshot",
     "cheerio": "^1.2.0",
-    "csv": "^6.4.1",
+    "csv-parse": "^6.2.1",
+    "csv-stringify": "^6.7.0",
     "jsonwebtoken": "^9.0.3",
     "mime-types": "3.0.2",
     "rxjs": "^7.8.2",

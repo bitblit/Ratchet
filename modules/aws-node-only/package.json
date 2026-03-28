@@ -56,13 +56,22 @@
     "node": ">=14.18"
   },
   "license": "Apache-2.0",
+  "scripts": {
+    "build": "tsc"
+  },
   "dependencies": {
-    "@bitblit/ratchet-aws": "0.0.0-snapshot",
-    "@bitblit/ratchet-common": "0.0.0-snapshot"
+    "@bitblit/ratchet-aws": "workspace:0.0.0-snapshot",
+    "@bitblit/ratchet-node-only": "workspace:0.0.0-snapshot",
+    "@bitblit/ratchet-common": "workspace:0.0.0-snapshot"
   },
   "optionalDependencies": {
     "@aws-sdk/client-athena": "3.996.0",
     "@aws-sdk/client-sts": "3.996.0",
+    "@aws-sdk/client-s3": "3.996.0",
+    "@aws-sdk/client-ec2": "3.996.0",
+    "@aws-sdk/client-ec2-instance-connect": "3.996.0",
+    "@aws-sdk/lib-dynamodb": "3.996.0",
+    "@aws-sdk/lib-storage": "3.996.0",
     "@aws-sdk/types": "3.973.1",
     "@smithy/abort-controller": "4.2.9",
     "@smithy/smithy-client": "4.11.7",
@@ -76,9 +85,15 @@
   "peerDependencies": {
     "@aws-sdk/client-athena": "^3.996.0",
     "@aws-sdk/client-sts": "^3.996.0",
+    "@aws-sdk/client-s3": "^3.996.0",
+    "@aws-sdk/client-ec2": "^3.996.0",
+    "@aws-sdk/lib-dynamodb": "^3.996.0",
+    "@aws-sdk/lib-storage": "^3.996.0",
+    "@aws-sdk/client-ec2-instance-connect": "^3.996.0",
     "@aws-sdk/types": "^3.973.1",
-    "@bitblit/ratchet-aws": "0.0.0-snapshot",
-    "@bitblit/ratchet-common": "0.0.0-snapshot",
+    "@bitblit/ratchet-aws": "workspace:0.0.0-snapshot",
+    "@bitblit/ratchet-node-only": "workspace:0.0.0-snapshot",
+    "@bitblit/ratchet-common": "workspace:0.0.0-snapshot",
     "@smithy/abort-controller": "^4.2.9",
     "@smithy/smithy-client": "^4.11.7",
     "@smithy/util-waiter": "^4.2.9",

@@ -4,16 +4,20 @@ import { RequestResults } from "../model/request-results.js";
 import {
   BeginTransactionCommand,
   BeginTransactionCommandOutput,
-  CommitTransactionCommand, CommitTransactionCommandOutput,
-  DatabaseResumingException, ExecuteStatementCommand, ExecuteStatementCommandOutput,
+  CommitTransactionCommand,
+  CommitTransactionCommandOutput,
+  DatabaseResumingException,
+  ExecuteStatementCommand,
+  ExecuteStatementCommandOutput,
   Field,
-  RDSDataClient, RollbackTransactionCommand, RollbackTransactionCommandOutput, SqlParameter
+  RDSDataClient,
+  RollbackTransactionCommand,
+  RollbackTransactionCommandOutput,
+  SqlParameter
 } from "@aws-sdk/client-rds-data";
 import { Logger } from "@bitblit/ratchet-common/logger/logger";
 import { RdsDataApiConnectionConfig } from "./model/rds-data-api-connection-config.ts";
-import SqlString from 'sqlstring';
-import type { Command } from "@smithy/types";
-import { SmithyResolvedConfiguration } from "@smithy/smithy-client/dist-types/client";
+import SqlString from "sqlstring";
 import { PromiseRatchet } from "@bitblit/ratchet-common/lang/promise-ratchet";
 import { ErrorRatchet } from "@bitblit/ratchet-common/lang/error-ratchet";
 
