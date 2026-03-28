@@ -21,7 +21,7 @@
     "lint": "pnpm -r --sort run --serial mod:lint",
     "lint-fix": "pnpm -r --sort run --serial mod:lint-fix",
     "test": "echo Starting full test && pnpm -r --sort run test",
-    "test-coverage": "pnpm -r --sort run test",
+    "test-coverage": "pnpm -r --sort run test-coverage",
     "apply-github-info": "./apply-github-info.sh",
     "set-codependencies": "echo $GITHUB_RUN_NUMBER && ./set-codependencies.sh 6.1.$GITHUB_RUN_NUMBER",
     "set-codependencies-by-github-tag": "echo $GITHUB_RUN_NUMBER && ./set-codependencies-by-github-tag.sh 6.1.$GITHUB_RUN_NUMBER",
