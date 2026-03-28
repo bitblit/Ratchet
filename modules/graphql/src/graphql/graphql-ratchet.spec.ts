@@ -1,7 +1,8 @@
-import { describe, expect, test } from 'vitest';
-import { GraphqlRatchet } from './graphql-ratchet';
-import { StringRecordQueryProvider } from './provider/string-record-query-provider';
-import { DefaultGraphqlRatchetEndpointProvider } from './provider/default-graphql-ratchet-endpoint-provider';
+import { describe, expect, test } from "vitest";
+import { GraphqlRatchet } from "./graphql-ratchet";
+import { StringRecordQueryProvider } from "./provider/string-record-query-provider";
+import { DefaultGraphqlRatchetEndpointProvider } from "./provider/default-graphql-ratchet-endpoint-provider";
+import { AuthorizationStyle } from "./authorization-style";
 
 describe('#runTest', function () {
   test.skip('should pull defaults', async () => {
@@ -35,8 +36,8 @@ describe('#runTest', function () {
     );
 
     // Since this'll be self-signed
-    process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0';
-    const out: any = await gr.executeQuery<any>('q', {}, true);
+    // process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0';
+    const out: any = await gr.executeQuery<any>('q', {}, AuthorizationStyle.AnonymousIfNoTokenAvailable);
     expect(out).toBeTruthy();
   });
 });

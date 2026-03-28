@@ -70,21 +70,43 @@ export class LocalFileServer {
 
   async requestHandler(request: IncomingMessage, response: ServerResponse): Promise<any> {
     const reqPath: string = request.url.includes('?') ? request.url.substring(0, request.url.indexOf('?')) : request.url;
-    const filePath: string = path.join(this.fileRoot, reqPath);
-    if (fs.existsSync(filePath)) {
-      const stats: fs.Stats = fs.statSync(filePath);
+    //const filePath: string = path.join(this.fileRoot, reqPath);
+
+    const rootReal = fs.realpathSync(this.fileRoot);
+
+    const pathname = new URL(request.url ?? '/', this.urlRoot).pathname;
+    const decoded = decodeURIComponent(pathname);
+
+    if (decoded.includes('\0')) {
+      response.statusCode = 400;
+      response.end('Bad path');
+      return;
+    }
+
+    const relative = decoded.replace(/^\/+/, '');
+    const candidate = path.resolve(rootReal, relative);
+    const targetReal = fs.realpathSync(candidate);
+
+    if (targetReal !== rootReal && !targetReal.startsWith(rootReal + path.sep)) {
+      response.statusCode = 403;
+      response.end('Forbidden');
+      return;
+    }
+
+    if (fs.existsSync(targetReal)) {
+      const stats: fs.Stats = fs.statSync(targetReal);
       if (stats.isFile()) {
-        let mimetype: string = mime.contentType(filePath);
+        let mimetype: string = mime.contentType(targetReal);
         if (mimetype === 'video/mp2t') {
           // Not very likely for me!
           mimetype = 'text/x-typescript';
         }
-        const buf: Buffer = fs.readFileSync(filePath);
+        const buf: Buffer = fs.readFileSync(targetReal);
         response.setHeader('Content-Type', mimetype);
         response.statusCode = 200;
         response.end(buf);
       } else if (stats.isDirectory()) {
-        this.writeFolderListToResponse(reqPath, filePath, response);
+        this.writeFolderListToResponse(reqPath, targetReal, response);
       }
     } else {
       response.statusCode = 404;

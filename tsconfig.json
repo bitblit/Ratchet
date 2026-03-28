@@ -28,7 +28,7 @@
     "noImplicitReturns": true,
     "forceConsistentCasingInFileNames": true,
     "paths": {
-      "@bitblit/ratchet-*": ["modules/"]
+      "@bitblit/ratchet-*": ["./modules/"]
     },
     "lib": ["es2022", "dom"]
   },

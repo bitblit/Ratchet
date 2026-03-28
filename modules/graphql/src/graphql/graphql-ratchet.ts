@@ -1,15 +1,12 @@
-import { GraphqlRatchetEndpointProvider } from './provider/graphql-ratchet-endpoint-provider.js';
-import { GraphqlRatchetJwtTokenProvider } from './provider/graphql-ratchet-jwt-token-provider.js';
-import { GraphqlRatchetQueryProvider } from './provider/graphql-ratchet-query-provider.js';
-import { GraphqlRatchetErrorHandler } from './provider/graphql-ratchet-error-handler.js';
-import { DefaultGraphqlRatchetErrorHandler } from './provider/default-graphql-ratchet-error-handler.js';
+import { DefaultGraphqlRatchetErrorHandler } from "./provider/default-graphql-ratchet-error-handler.js";
 
-import { RequireRatchet } from '@bitblit/ratchet-common/lang/require-ratchet';
-import { Logger } from '@bitblit/ratchet-common/logger/logger';
-import { ErrorRatchet } from '@bitblit/ratchet-common/lang/error-ratchet';
-import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet';
-import { GraphQLClient } from 'graphql-request';
-import { AuthorizationStyle } from './authorization-style.js';
+import { RequireRatchet } from "@bitblit/ratchet-common/lang/require-ratchet";
+import { Logger } from "@bitblit/ratchet-common/logger/logger";
+import { ErrorRatchet } from "@bitblit/ratchet-common/lang/error-ratchet";
+import { StringRatchet } from "@bitblit/ratchet-common/lang/string-ratchet";
+import { GraphQLClient } from "graphql-request";
+import { AuthorizationStyle } from "./authorization-style.js";
+import { GraphqlRatchetOptions } from "./graphql-ratchet-options.ts";
 
 /**
  * This is a very simplistic client for non-cache use cases, etc.  For more
@@ -20,26 +17,26 @@ export class GraphqlRatchet {
   private noAuthClient: GraphQLClient;
 
   private cachedEndpoint: string;
+  private ops: GraphqlRatchetOptions;
 
   constructor(
-    private queryProvider: GraphqlRatchetQueryProvider,
-    private endpointProvider: GraphqlRatchetEndpointProvider,
-    private jwtTokenProvider?: GraphqlRatchetJwtTokenProvider,
-    private errorHandler: GraphqlRatchetErrorHandler = new DefaultGraphqlRatchetErrorHandler(),
+    opsIn: GraphqlRatchetOptions
   ) {
-    RequireRatchet.notNullOrUndefined(queryProvider, 'queryProvider');
-    RequireRatchet.notNullOrUndefined(endpointProvider, 'endpointProvider');
+    RequireRatchet.notNullOrUndefined(opsIn, 'opsIn');
+    RequireRatchet.notNullOrUndefined(opsIn.queryProvider, 'queryProvider');
+    RequireRatchet.notNullOrUndefined(opsIn.endpointProvider, 'endpointProvider');
     //RequireRatchet.notNullOrUndefined(jwtTokenProvider, 'jwtTokenProvider');
-    RequireRatchet.notNullOrUndefined(errorHandler, 'errorHandler');
-    this.cachedEndpoint = this.endpointProvider.fetchGraphqlEndpoint();
+    RequireRatchet.notNullOrUndefined(opsIn.errorHandler, 'errorHandler');
+    this.ops = Object.assign({errorHandler: new DefaultGraphqlRatchetErrorHandler()}, opsIn);
+    this.cachedEndpoint = this.ops.endpointProvider.fetchGraphqlEndpoint();
   }
 
   public currentAuthToken(): string {
-    return this?.jwtTokenProvider?.fetchJwtToken();
+    return this?.ops?.jwtTokenProvider?.fetchJwtToken();
   }
 
   public async fetchQueryText(qry: string): Promise<string> {
-    const text: string = await this.queryProvider.fetchQueryText(qry);
+    const text: string = await this.ops.queryProvider.fetchQueryText(qry);
     if (!text) {
       Logger.warn('Could not find requested query : %s', qry);
     }
@@ -48,14 +45,14 @@ export class GraphqlRatchet {
 
   private createAnonymousApi(): GraphQLClient {
     Logger.info('Creating anonymous GraphQLClient');
-    const rval: GraphQLClient = new GraphQLClient(this.cachedEndpoint, { errorPolicy: 'none' });
+    const rval: GraphQLClient = new GraphQLClient(this.cachedEndpoint, { errorPolicy: 'none'  });
     return rval;
   }
 
   private fetchApi(authStyle: AuthorizationStyle): GraphQLClient {
-    let rval: GraphQLClient = null;
+    let rval: GraphQLClient;
     const jwtToken: string =
-      authStyle === AuthorizationStyle.AlwaysAnonymous ? null : StringRatchet.trimToNull(this?.jwtTokenProvider?.fetchJwtToken());
+      authStyle === AuthorizationStyle.AlwaysAnonymous ? null : StringRatchet.trimToNull(this.ops.jwtTokenProvider?.fetchJwtToken());
     if (authStyle === AuthorizationStyle.TokenRequired && !jwtToken) {
       throw ErrorRatchet.fErr('No token provided, auth style is TokenRequired');
     }
@@ -98,7 +95,7 @@ export class GraphqlRatchet {
   }
 
   private checkIfEndpointChanged(): void {
-    const check: string = this.endpointProvider.fetchGraphqlEndpoint();
+    const check: string = this.ops.endpointProvider.fetchGraphqlEndpoint();
     if (check !== this.cachedEndpoint) {
       Logger.info('Endpoint changed from %s to %s - clearing apollo caches');
       this.clientCache = new Map<string, GraphQLClient>();
@@ -148,7 +145,7 @@ export class GraphqlRatchet {
       }
     } catch (err) {
       Logger.silly('Exception caught in executeQuery : %s %s %j %s', err, queryName, variables, authStyle, err);
-      this.errorHandler.handleError(err, queryName, variables, authStyle);
+      this.ops.errorHandler.handleError(err, queryName, variables, authStyle);
     }
     return rval;
   }
@@ -172,7 +169,7 @@ export class GraphqlRatchet {
         ErrorRatchet.throwFormattedErr('Cannot run - no api fetched');
       }
     } catch (err) {
-      this.errorHandler.handleError(err, queryName, variables, authStyle);
+      this.ops.errorHandler.handleError(err, queryName, variables, authStyle);
     }
 
     return rval;
