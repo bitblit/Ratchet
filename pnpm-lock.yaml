@@ -33,7 +33,7 @@ overrides:
   tar-fs: ^2.1.4
   tmp: ^0.2.5
   underscore: ^1.13.7
-  undici: ^6.23.0
+  undici: ^6.24.0
 
 importers:
 
@@ -209,8 +209,8 @@ importers:
         specifier: 7.0.0
         version: 7.0.0
       primeng:
-        specifier: 21.1.1
-        version: 21.1.1(26d490302bb4b51fa911a41021083efc)
+        specifier: 21.1.4
+        version: 21.1.4(26d490302bb4b51fa911a41021083efc)
       rxjs:
         specifier: 7.8.2
         version: 7.8.2
@@ -273,8 +273,8 @@ importers:
         specifier: 7.0.0
         version: 7.0.0
       primeng:
-        specifier: 21.1.1
-        version: 21.1.1(26d490302bb4b51fa911a41021083efc)
+        specifier: 21.1.4
+        version: 21.1.4(26d490302bb4b51fa911a41021083efc)
       rxjs:
         specifier: 7.8.2
         version: 7.8.2
@@ -4398,8 +4398,8 @@ packages:
   primeicons@7.0.0:
     resolution: {integrity: sha512-jK3Et9UzwzTsd6tzl2RmwrVY/b8raJ3QZLzoDACj+oTJ0oX7L9Hy+XnVwgo4QVKlKpnP/Ur13SXV/pVh4LzaDw==}
 
-  primeng@21.1.1:
-    resolution: {integrity: sha512-ArX5X+psJjL37/5mRzIbeedYOtxDwjLrbBoTTw9hV6+kQt4v8xKy9R1dKuiIFG9OeQTQwzIaJ74OREBAJJmvoA==}
+  primeng@21.1.4:
+    resolution: {integrity: sha512-7W9Q91TuEJTF8I1PZybOiZRu8wtBT/EfFFPvuTOfBRlLYNJkUdQszpDUhDyfK9g4VdbL5nzMxfDAYlp4/1TsQA==}
     peerDependencies:
       '@angular/cdk': ^21.0.0
       '@angular/common': ^21.0.0
@@ -5043,8 +5043,8 @@ packages:
   undici-types@7.16.0:
     resolution: {integrity: sha512-Zz+aZWSj8LE6zoxD+xrjh4VfkIG8Ya6LvYkZqtUQGJPZjYl53ypCaUwWqo7eI0x66KBGeRo+mlBEkMSeSZ38Nw==}
 
-  undici@6.23.0:
-    resolution: {integrity: sha512-VfQPToRA5FZs/qJxLIinmU59u0r7LXqoJkCzinq3ckNJp3vKEh7jTWN589YQ5+aoAC/TGRLyJLCPKcLQbM8r9g==}
+  undici@6.24.1:
+    resolution: {integrity: sha512-sC+b0tB1whOCzbtlx20fx3WgCXwkW627p4EA9uM+/tNNPkSS+eSEld6pAs9nDv7WbY1UUljBMYPtu9BCOrCWKA==}
     engines: {node: '>=18.17'}
 
   unique-filename@5.0.0:
@@ -8683,7 +8683,7 @@ snapshots:
       parse5: 7.3.0
       parse5-htmlparser2-tree-adapter: 7.1.0
       parse5-parser-stream: 7.1.2
-      undici: 6.23.0
+      undici: 6.24.1
       whatwg-mimetype: 4.0.0
 
   chokidar@5.0.0:
@@ -10366,7 +10366,7 @@ snapshots:
 
   primeicons@7.0.0: {}
 
-  primeng@21.1.1(26d490302bb4b51fa911a41021083efc):
+  primeng@21.1.4(26d490302bb4b51fa911a41021083efc):
     dependencies:
       '@angular/cdk': 21.2.4(@angular/common@21.2.6(@angular/core@21.2.6(@angular/compiler@21.2.6)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@21.2.6(@angular/compiler@21.2.6)(rxjs@7.8.2)(zone.js@0.15.1))(@angular/platform-browser@21.2.6(@angular/animations@21.2.6(@angular/core@21.2.6(@angular/compiler@21.2.6)(rxjs@7.8.2)(zone.js@0.15.1)))(@angular/common@21.2.6(@angular/core@21.2.6(@angular/compiler@21.2.6)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@21.2.6(@angular/compiler@21.2.6)(rxjs@7.8.2)(zone.js@0.15.1)))(rxjs@7.8.2)
       '@angular/common': 21.2.6(@angular/core@21.2.6(@angular/compiler@21.2.6)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2)
@@ -11082,7 +11082,7 @@ snapshots:
 
   undici-types@7.16.0: {}
 
-  undici@6.23.0: {}
+  undici@6.24.1: {}
 
   unique-filename@5.0.0:
     dependencies:
