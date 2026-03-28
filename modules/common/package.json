@@ -54,7 +54,8 @@
     "clean": "shx rm -Rf lib",
     "pretty": "prettier src --write",
     "lint": "eslint -c ../../eslint.config.mjs src/**/*.ts",
-    "lint-fix": "pnpm pretty && eslint --fix -c ../../eslint.config.mjs src/**/*.ts"
+    "lint-fix": "pnpm pretty && eslint --fix -c ../../eslint.config.mjs src/**/*.ts",
+    "generate-docs": "typedoc"
   },
   "optionalDependencies": {
     "jwt-decode": "4.0.0",

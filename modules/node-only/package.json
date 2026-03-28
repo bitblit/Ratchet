@@ -64,7 +64,8 @@
     "clean": "shx rm -Rf lib",
     "pretty": "prettier src --write",
     "lint": "eslint -c ../../eslint.config.mjs src/**/*.ts",
-    "lint-fix": "pnpm pretty && eslint --fix -c ../../eslint.config.mjs src/**/*.ts"
+    "lint-fix": "pnpm pretty && eslint --fix -c ../../eslint.config.mjs src/**/*.ts",
+    "generate-docs": "typedoc"
   },
   "dependencies": {
     "@bitblit/ratchet-common": "workspace:0.0.0-snapshot"

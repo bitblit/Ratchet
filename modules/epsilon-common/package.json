@@ -70,7 +70,8 @@
     "clean": "shx rm -Rf lib",
     "pretty": "prettier src --write",
     "lint": "eslint -c ../../eslint.config.mjs src/**/*.ts",
-    "lint-fix": "pnpm pretty && eslint --fix -c ../../eslint.config.mjs src/**/*.ts"
+    "lint-fix": "pnpm pretty && eslint --fix -c ../../eslint.config.mjs src/**/*.ts",
+    "generate-docs": "typedoc"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "3.996.0",
