@@ -622,8 +622,8 @@ importers:
         version: 0.4.0
     optionalDependencies:
       handlebars:
-        specifier: 4.7.8
-        version: 4.7.8
+        specifier: 4.7.9
+        version: 4.7.9
       handlebars-layouts:
         specifier: 3.1.4
         version: 3.1.4
@@ -3470,8 +3470,8 @@ packages:
     resolution: {integrity: sha512-2llBmvnj8ueOfxNHdRzJOcgalzZjYVd9+WAl93kPYmlX4WGx7FTHTzNxhK+i9YKY2OSjzfehgpLiIwP/OJr6tw==}
     engines: {node: '>= 0.10'}
 
-  handlebars@4.7.8:
-    resolution: {integrity: sha512-vafaFqs8MZkRrSX7sFVUdo3ap/eNiLnb4IakshzvP56X5Nr1iGKAIqdX6tMlm6HcNRIkr6AxO5jFEoJzzpT8aQ==}
+  handlebars@4.7.9:
+    resolution: {integrity: sha512-4E71E0rpOaQuJR2A3xDZ+GM1HyWYv1clR58tC8emQNeQe3RH7MAzSbat+V0wG78LQBo6m6bzSG/L4pBuCsgnUQ==}
     engines: {node: '>=0.4.7'}
     hasBin: true
 
@@ -9416,7 +9416,7 @@ snapshots:
   handlebars-layouts@3.1.4:
     optional: true
 
-  handlebars@4.7.8:
+  handlebars@4.7.9:
     dependencies:
       minimist: 1.2.8
       neo-async: 2.6.2
