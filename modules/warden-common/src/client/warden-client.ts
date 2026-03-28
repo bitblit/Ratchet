@@ -25,7 +25,7 @@ import {
 } from "../common/command/add-web-authn-registration-to-logged-in-user.js";
 import { SendMagicLink } from "../common/command/send-magic-link.js";
 import { WardenLoginRequestType } from "../common/model/warden-login-request-type";
-import { WardenProxyUserResults } from "src/common/model/warden-proxy-user-results.js";
+import { WardenProxyUserResults } from "../common/model/warden-proxy-user-results.js";
 
 export class WardenClient {
   constructor(
