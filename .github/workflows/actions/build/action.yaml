@@ -4,5 +4,5 @@ description: "Builds the library"
 runs:
   using: "composite"
   steps:
-    - run: yarn prepare-to-publish
+    - run: pnpm prepare-to-publish
       shell: bash

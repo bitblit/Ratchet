@@ -22,11 +22,11 @@ jobs:
       - uses: ./.github/workflows/actions/build-env-setup
 
       - name: Build
-        run: yarn build
+        run: pnpm build
         shell: bash
 
       - name: Test
-        run: yarn test-coverage
+        run: pnpm test-coverage
         shell: bash
 
       - uses: ./.github/workflows/actions/upload-code-coverage

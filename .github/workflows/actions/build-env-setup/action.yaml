@@ -6,11 +6,16 @@ runs:
   steps:
     - uses: ./.github/workflows/actions/commit-comment-flags
     - uses: ./.github/workflows/actions/job-setup
-    
+
+    - name: Setup pnpm
+      uses: pnpm/action-setup@v4
+      with:
+        run_install: false
+
     - name: Setup Node
       uses: actions/setup-node@v4
       with:
-        cache: "yarn"
+        cache: "pnpm"
         node-version: 20
         registry-url: https://registry.npmjs.org
 
@@ -27,16 +32,16 @@ runs:
       shell: bash
       run: npm -version
 
-    - name: Output yarn version
-      shell: bash
-      run: yarn -v
-
     - name: Setup Java
       uses: actions/setup-java@v4
       with:
         distribution: "temurin"
         java-version: "11"
 
-    - name: Yarn install
-      run: yarn install
+    - name: Enable Corepack
+      run: corepack enable
+      shell: bash
+
+    - name: Install dependencies
+      run: pnpm install --frozen-lockfile
       shell: bash

@@ -29,15 +29,15 @@ jobs:
         uses: ./.github/workflows/actions/build-env-setup
 
       - name: Clean
-        run: yarn clean
+        run: pnpm clean
         shell: bash
 
       - name: Build
-        run: yarn build
+        run: pnpm build
         shell: bash
 
       - name: Test
-        run: yarn test-coverage
+        run: pnpm test-coverage
         shell: bash
 
       - uses: ./.github/workflows/actions/upload-code-coverage
@@ -45,15 +45,15 @@ jobs:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
       - name: Apply Github Info
-        run: yarn apply-github-info
+        run: pnpm apply-github-info
         shell: bash
 
       - name: Set Codependency versions
-        run: yarn set-codependencies-by-github-tag
+        run: pnpm set-codependencies-by-github-tag
         shell: bash
 
       # Note to self - if you have created a new module and this step is failing, you probably need to go into
       # npmjs.com and setup Github actions as a trusted publisher
       - name: Deploy to NPMJS
-        run: yarn publish
+        run: pnpm publish
         shell: bash
