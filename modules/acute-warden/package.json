@@ -42,7 +42,8 @@
   "scripts": {
     "build": "npx ngc",
     "test": "vitest run",
-    "test-coverage": "vitest run  --coverage"
+    "test-coverage": "vitest run  --coverage",
+    "publish": "pnpm publish --access public --provenance --tag $GITHUB_REF_NAME"
   },
   "dependencies": {
     "@angular/animations": "21.1.5",
