@@ -74,10 +74,10 @@
     "generate-docs": "typedoc"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "3.996.0",
-    "@aws-sdk/client-sns": "3.996.0",
-    "@aws-sdk/client-sqs": "3.996.0",
-    "@aws-sdk/client-batch": "3.996.0",
+    "@aws-sdk/client-s3": "3.1019.0",
+    "@aws-sdk/client-sns": "3.1019.0",
+    "@aws-sdk/client-sqs": "3.1019.0",
+    "@aws-sdk/client-batch": "3.1019.0",
     "@aws-sdk/types": "3.973.1",
     "@bitblit/ratchet-aws": "workspace:0.0.0-snapshot",
     "@bitblit/ratchet-common": "workspace:0.0.0-snapshot",
