@@ -3,6 +3,7 @@
     "baseUrl": ".",
     "rootDir": "src",
     "outDir": "lib",
+    "ignoreDeprecations": "6.0"
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
