@@ -55,5 +55,5 @@ jobs:
       # Note to self - if you have created a new module and this step is failing, you probably need to go into
       # npmjs.com and setup Github actions as a trusted publisher
       - name: Deploy to NPMJS
-        run: pnpm publish
+        run: pnpm full-publish
         shell: bash

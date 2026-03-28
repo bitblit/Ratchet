@@ -25,7 +25,7 @@
     "apply-github-info": "./apply-github-info.sh",
     "set-codependencies": "echo $GITHUB_RUN_NUMBER && ./set-codependencies.sh 6.1.$GITHUB_RUN_NUMBER",
     "set-codependencies-by-github-tag": "echo $GITHUB_RUN_NUMBER && ./set-codependencies-by-github-tag.sh 6.1.$GITHUB_RUN_NUMBER",
-    "publish": "pnpm -r --sort run publish",
+    "full-publish": "pnpm -r --sort run publish",
     "mod:raw-tsc": "cd $INIT_CWD && tsc",
     "mod:generate-barrels": "cd $INIT_CWD && barrelsby -e \".*\\.spec\\.ts\" --delete -d src -l below -q && cd $INIT_CWD && fix-esm-import-path src && rm -f src/brevo/index.ts",
     "mod:build": "tsc",
