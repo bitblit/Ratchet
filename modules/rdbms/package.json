@@ -51,7 +51,7 @@
     "build": "tsc",
     "test": "vitest run",
     "test-coverage": "vitest run  --coverage",
-    "publish": "pnpm publish --access public --provenance --tag $GITHUB_REF_NAME"
+    "publish": "pnpm publish --access public --provenance --tag $GITHUB_REF_NAME --no-git-checks"
   },
   "dependencies": {
     "@bitblit/ratchet-common": "workspace:0.0.0-snapshot"
