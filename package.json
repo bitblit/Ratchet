@@ -55,8 +55,8 @@
     "luxon": "^3.7.2"
   },
   "resolutions": {
-    "axios": "1.15.1",
-    "basic-ftp": "5.2.1",
+    "axios": "1.15.2",
+    "basic-ftp": "5.2.2",
     "@babel/traverse": "^7.23.2",
     "@smithy/types": "^2.3.3",
     "body-parser": "^1.20.3",

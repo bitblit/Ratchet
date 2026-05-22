@@ -6,7 +6,7 @@ settings:
 
 overrides:
   axios: 1.15.1
-  basic-ftp: 5.2.1
+  basic-ftp: 5.2.2
   '@babel/traverse': ^7.23.2
   '@smithy/types': ^2.3.3
   body-parser: ^1.20.3
@@ -2372,8 +2372,8 @@ packages:
     engines: {node: '>=6.0.0'}
     hasBin: true
 
-  basic-ftp@5.2.1:
-    resolution: {integrity: sha512-0yaL8JdxTknKDILitVpfYfV2Ob6yb3udX/hK97M7I3jOeznBNxQPtVvTUtnhUkyHlxFWyr5Lvknmgzoc7jf+1Q==}
+  basic-ftp@5.2.2:
+    resolution: {integrity: sha512-1tDrzKsdCg70WGvbFss/ulVAxupNauGnOlgpyjKzeQxzyllBLS0CGLV7tjIXTK3ZQA9/FBEm9qyFFN1bciA6pw==}
     engines: {node: '>=10.0.0'}
 
   bcrypt-pbkdf@1.0.2:
@@ -7077,7 +7077,7 @@ snapshots:
 
   baseline-browser-mapping@2.10.0: {}
 
-  basic-ftp@5.2.1: {}
+  basic-ftp@5.2.2: {}
 
   bcrypt-pbkdf@1.0.2:
     dependencies:
@@ -7926,7 +7926,7 @@ snapshots:
 
   get-uri@8.0.0:
     dependencies:
-      basic-ftp: 5.2.1
+      basic-ftp: 5.2.2
       data-uri-to-buffer: 8.0.0
       debug: 4.4.3
     transitivePeerDependencies:
