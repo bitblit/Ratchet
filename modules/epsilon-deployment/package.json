@@ -65,12 +65,12 @@
     "@bitblit/ratchet-aws": "workspace:0.0.0-snapshot",
     "@bitblit/ratchet-common": "workspace:0.0.0-snapshot",
     "@bitblit/ratchet-epsilon-common": "workspace:0.0.0-snapshot",
-    "aws-cdk-lib": "2.240.0",
-    "constructs": "10.5.1"
+    "aws-cdk-lib": "2.257.0",
+    "constructs": "10.6.0"
   },
   "peerDependencies": {
     "@bitblit/ratchet-common": "workspace:0.0.0-snapshot",
-    "aws-cdk-lib": "^2.240.0",
-    "constructs": "^10.5.1"
+    "aws-cdk-lib": "^2.257.0",
+    "constructs": "^10.6.0"
   }
 }

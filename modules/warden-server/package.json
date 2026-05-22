@@ -58,9 +58,9 @@
     "generate-docs": "typedoc"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "3.1019.0",
-    "@aws-sdk/client-ses": "3.1019.0",
-    "@aws-sdk/lib-dynamodb": "3.1019.0",
+    "@aws-sdk/client-s3": "3.1052.0",
+    "@aws-sdk/client-ses": "3.1052.0",
+    "@aws-sdk/lib-dynamodb": "3.1052.0",
     "@bitblit/ratchet-aws": "workspace:0.0.0-snapshot",
     "@bitblit/ratchet-common": "workspace:0.0.0-snapshot",
     "@bitblit/ratchet-node-only": "workspace:0.0.0-snapshot",
@@ -70,9 +70,9 @@
     "jsonwebtoken": "9.0.3"
   },
   "peerDependencies": {
-    "@aws-sdk/client-s3": "^3.1019.0",
-    "@aws-sdk/client-ses": "^3.1019.0",
-    "@aws-sdk/lib-dynamodb": "^3.1019.0",
+    "@aws-sdk/client-s3": "^3.1052.0",
+    "@aws-sdk/client-ses": "^3.1052.0",
+    "@aws-sdk/lib-dynamodb": "^3.1052.0",
     "@bitblit/ratchet-aws": "workspace:0.0.0-snapshot",
     "@bitblit/ratchet-common": "workspace:0.0.0-snapshot",
     "@bitblit/ratchet-warden-common": "workspace:0.0.0-snapshot",

@@ -90,6 +90,7 @@
     "underscore": "^1.13.7",
     "undici": "^6.24.0",
     "uuid": "11.1.1",
+    "vite": "7.3.2",
     "yaml": "^2.8.3"
   },
   "devDependencies": {
