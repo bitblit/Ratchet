@@ -59,6 +59,7 @@
     "basic-ftp": "^5.3.1",
     "@babel/traverse": "^7.23.2",
     "@smithy/types": "^2.3.3",
+    "@protobufjs/utf8": "^1.1.1",
     "body-parser": "^1.20.3",
     "cheerio": "^1.0.0",
     "cookie": "^0.7.0",
