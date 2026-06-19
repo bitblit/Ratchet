@@ -23,3 +23,6 @@ esac
 
 echo "Applying version number to all package.json files: ${VERSION}"
 find . -regex "\./modules/[^/]*/package.json" -type f -exec sed -i -e "s/0.0.0-snapshot/${VERSION}/g" {} \;
+
+echo "Applying version number to pnpm lockfile: $1"
+sed -i 's/0.0.0-snapshot/$1/g' pnpm-lock.yaml
