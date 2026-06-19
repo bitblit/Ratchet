@@ -11,12 +11,6 @@
     "Joel Flint <joel@stimulimedia.net>",
     "Bilal Shahid <bshahid@adomni.com>"
   ],
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "canvas",
-      "better-sqlite3"
-    ]
-  },
   "scripts": {
     "clean": "pnpm -r --sort run clean",
     "build": "pnpm -r --sort run build",
@@ -137,5 +131,5 @@
     "vitest": "4.1.7",
     "vitest-mock-extended": "3.1.0"
   },
-  "packageManager": "pnpm@10.33.0"
+  "packageManager": "pnpm@11.8.0"
 }
