@@ -52,10 +52,6 @@ jobs:
         run: pnpm set-codependencies-by-github-tag
         shell: bash
 
-      - name: Update lockfile
-        run: pnpm install --frozen-lockfile
-        shell: bash
-
       # Note to self - if you have created a new module and this step is failing, you probably need to go into
       # npmjs.com and setup Github actions as a trusted publisher
       - name: Deploy to NPMJS
