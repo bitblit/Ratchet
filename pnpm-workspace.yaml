@@ -1,6 +1,10 @@
 packages:
   - "modules/*"
 
+peerDependencyRules:
+  allowedVersions:
+    typescript: 7.0.2
+
 allowBuilds:
   canvas: true
   better-sqlite3: true
