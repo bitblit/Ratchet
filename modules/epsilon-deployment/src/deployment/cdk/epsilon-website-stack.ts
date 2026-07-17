@@ -143,7 +143,8 @@ export class EpsilonWebsiteStack extends Stack {
       destinationBucket: websiteBucket,
       distribution: cloudfrontDistro,
       distributionPaths: ['/*'], //'/locales/*', '/index.html', '/manifest.webmanifest', '/service-worker.js'],
-      memoryLimit: props.bucketDeploymentMemoryLimitMb ?? 128
+      memoryLimit: props.bucketDeploymentMemoryLimitMb ?? 128,
+      waitForDistributionInvalidation: props?.waitForDistributionInvalidation ?? false,
     });
   }
 }

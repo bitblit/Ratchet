@@ -17,4 +17,5 @@ export interface EpsilonWebsiteStackProps extends StackProps {
   websiteBehaviorOverride?: Behavior[];
   retainWebsiteBucketOnDestroy?: boolean;
   bucketDeploymentMemoryLimitMb?: number;
+  waitForDistributionInvalidation?: boolean;
 }
