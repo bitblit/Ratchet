@@ -60,9 +60,9 @@
     "@bitblit/ratchet-graphql": "workspace:0.0.0-snapshot",
     "primeflex": "4.0.0",
     "primeicons": "8.0.0",
-    "primeng": "21.1.4",
+    "primeng": "22.0.0",
     "rxjs": "7.8.2",
-    "zone.js": "0.15.1"
+    "zone.js": "0.16.2"
   },
   "peerDependencies": {
     "@angular/animations": "^22.0.8",
@@ -78,9 +78,9 @@
     "@bitblit/ratchet-graphql": "workspace:0.0.0-snapshot",
     "primeflex": "4.0.0",
     "primeicons": "8.0.0",
-    "primeng": "21.1.4",
+    "primeng": "22.0.0",
     "rxjs": "7.8.2",
-    "zone.js": "0.15.1"
+    "zone.js": "0.16.2"
   },
   "devDependencies": {
     "@angular/compiler-cli": "22.0.8",
