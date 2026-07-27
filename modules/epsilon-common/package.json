@@ -78,14 +78,14 @@
     "@aws-sdk/client-sns": "3.1095.0",
     "@aws-sdk/client-sqs": "3.1095.0",
     "@aws-sdk/client-batch": "3.1095.0",
-    "@aws-sdk/types": "3.973.9",
+    "@aws-sdk/types": "3.974.2",
     "@bitblit/ratchet-aws": "workspace:0.0.0-snapshot",
     "@bitblit/ratchet-common": "workspace:0.0.0-snapshot",
     "@bitblit/ratchet-misc": "workspace:0.0.0-snapshot",
     "@bitblit/ratchet-node-only": "workspace:0.0.0-snapshot",
     "@bitblit/ratchet-aws-node-only": "workspace:0.0.0-snapshot",
-    "@smithy/abort-controller": "4.2.15",
-    "@smithy/smithy-client": "4.13.4",
+    "@smithy/abort-controller": "4.3.3",
+    "@smithy/smithy-client": "4.14.14",
     "@smithy/util-waiter": "4.4.4",
     "clear": "0.1.0",
     "commander": "14.0.3",
@@ -100,15 +100,15 @@
     "swagger-model-validator": "3.0.21"
   },
   "peerDependencies": {
-    "@apollo/server": "^5.5.0",
+    "@apollo/server": "^5.5.1",
     "@bitblit/ratchet-aws": "workspace:0.0.0-snapshot",
     "@bitblit/ratchet-common": "workspace:0.0.0-snapshot",
     "@bitblit/ratchet-misc": "workspace:0.0.0-snapshot",
     "@bitblit/ratchet-node-only": "workspace:0.0.0-snapshot",
     "@bitblit/ratchet-aws-node-only": "workspace:0.0.0-snapshot",
-    "@graphql-tools/schema": "^10.0.31",
-    "@graphql-tools/utils": "^11.0.0",
-    "graphql": "^16.12.0"
+    "@graphql-tools/schema": "^10.0.38",
+    "@graphql-tools/utils": "^11.2.2",
+    "graphql": "^17.0.2"
   },
   "peerDependenciesMeta": {
     "@apollo/server": {
@@ -125,12 +125,12 @@
     }
   },
   "devDependencies": {
-    "@apollo/server": "5.5.0",
-    "@graphql-tools/schema": "10.0.31",
-    "@graphql-tools/utils": "11.0.0",
-    "@types/aws-lambda": "8.10.160",
+    "@apollo/server": "5.5.1",
+    "@graphql-tools/schema": "10.0.38",
+    "@graphql-tools/utils": "11.2.2",
+    "@types/aws-lambda": "8.10.162",
     "aws-sdk-client-mock": "4.1.0",
-    "graphql": "16.12.0",
-    "graphql-tag": "2.12.6"
+    "graphql": "17.0.2",
+    "graphql-tag": "2.12.7"
   }
 }

@@ -85,11 +85,11 @@
     "@aws-sdk/lib-dynamodb": "3.1095.0",
     "@aws-sdk/lib-storage": "3.1095.0",
     "@aws-sdk/s3-request-presigner": "3.1095.0",
-    "@aws-sdk/types": "3.973.9",
+    "@aws-sdk/types": "3.974.2",
     "@aws-sdk/util-dynamodb": "3.996.2",
     "@smithy/types": "4.14.2",
-    "@smithy/abort-controller": "4.2.15",
-    "@smithy/smithy-client": "4.13.4",
+    "@smithy/abort-controller": "4.3.3",
+    "@smithy/smithy-client": "4.14.14",
     "@smithy/util-waiter": "4.4.4"
   },
   "peerDependencies": {
@@ -112,12 +112,12 @@
     "@aws-sdk/lib-dynamodb": "^3.1095.0",
     "@aws-sdk/lib-storage": "^3.1095.0",
     "@aws-sdk/s3-request-presigner": "^3.1095.0",
-    "@aws-sdk/types": "^3.973.9",
+    "@aws-sdk/types": "^3.974.2",
     "@aws-sdk/util-dynamodb": "^3.996.2",
     "@bitblit/ratchet-common": "workspace:0.0.0-snapshot",
     "@smithy/types": "^4.14.2",
-    "@smithy/abort-controller": "^4.2.15",
-    "@smithy/smithy-client": "^4.13.4",
+    "@smithy/abort-controller": "^4.3.3",
+    "@smithy/smithy-client": "^4.14.14",
     "@smithy/util-waiter": "^4.4.4"
   },
   "peerDependenciesMeta": {
@@ -193,7 +193,7 @@
   },
   "devDependencies": {
     "@bitblit/ratchet-node-only": "workspace:0.0.0-snapshot",
-    "@types/aws-lambda": "8.10.160",
+    "@types/aws-lambda": "8.10.162",
     "aws-sdk-client-mock": "4.1.0"
   }
 }
