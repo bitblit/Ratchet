@@ -84,7 +84,7 @@
     "@smithy/abort-controller": "4.3.3",
     "@smithy/smithy-client": "4.14.14",
     "@smithy/util-waiter": "4.4.4",
-    "mailparser": "3.9.8",
+    "mailparser": "3.9.14",
     "mime-types": "3.0.2",
     "rxjs": "7.8.2",
     "tmp": "0.2.7",
