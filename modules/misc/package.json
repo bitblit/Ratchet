@@ -98,7 +98,7 @@
     }
   },
   "devDependencies": {
-    "@openapitools/openapi-generator-cli": "2.34.0",
-    "openapi3-ts": "4.5.0"
+    "@openapitools/openapi-generator-cli": "2.40.1",
+    "openapi3-ts": "4.6.0"
   }
 }
