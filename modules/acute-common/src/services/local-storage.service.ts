@@ -2,6 +2,7 @@ import { Inject, Injectable } from "@angular/core";
 import { Logger } from '@bitblit/ratchet-common/logger/logger';
 import { ACUTE_APPLICATION_NAME } from "../constants";
 import { RequireRatchet } from "@bitblit/ratchet-common/lang/require-ratchet";
+import { StringRatchet } from "@bitblit/ratchet-common/lang/string-ratchet";
 
 /**
  * To use LocalStorageService, you should define a provider with your application
@@ -91,7 +92,7 @@ export class LocalStorageService<LocalType, SessionType> {
     if (ready) {
       const toSave: T = value || ({} as T);
       const saveString: string = JSON.stringify(toSave);
-      Logger.info('Updating %s to %s',storageLabel,saveString);
+      Logger.info('Updating %s to %s',storageLabel, StringRatchet.obscure(saveString));
       storage.setItem(this.storageName, saveString);
       return toSave;
     } else {
