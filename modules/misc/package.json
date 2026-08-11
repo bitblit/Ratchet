@@ -68,7 +68,7 @@
   "optionalDependencies": {
     "handlebars": "4.7.9",
     "handlebars-layouts": "3.1.4",
-    "js-yaml": "4.2.0",
+    "js-yaml": "4.3.0",
     "rxjs": "7.8.2",
     "swagger-model-validator": "3.0.21"
   },
@@ -98,7 +98,7 @@
     }
   },
   "devDependencies": {
-    "@openapitools/openapi-generator-cli": "2.34.0",
-    "openapi3-ts": "4.5.0"
+    "@openapitools/openapi-generator-cli": "2.40.1",
+    "openapi3-ts": "4.6.0"
   }
 }

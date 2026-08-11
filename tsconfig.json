@@ -8,7 +8,6 @@
     "target": "es2022",
     "strict": true,
     "sourceMap": true,
-    "downlevelIteration": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "esModuleInterop": true,
@@ -19,6 +18,7 @@
     "removeComments": true,
     "resolveJsonModule": true,
     "rewriteRelativeImportExtensions": true,
+    "types": ["node"],
     "useUnknownInCatchVariables": false,
     "noImplicitAny": false,
     "noUnusedLocals": false,
@@ -39,6 +39,5 @@
     "entryPoints": ["src"],
     "out": "artifacts/typedocs"
   },
-  "types": ["typePatches"],
   "CAW_NOTES": "Set noImplicitAny, noImplicitThis and noUnusedLocals back to true at some point"
 }

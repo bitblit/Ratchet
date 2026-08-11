@@ -113,7 +113,7 @@
               <input class="custom-otp-input" (input)="events.input($event)" (keydown)="events.keydown($event)" type="text" [attr.value]="token" [maxLength]="1" />
             </ng-template>
           </p-inputOtp> -->
-          <p-inputOtp [(ngModel)]="verificationCode" id="verificationCode" [length]="6" size="large"
+          <p-input-otp [(ngModel)]="verificationCode" id="verificationCode" [length]="6" size="large"
                       [integerOnly]="integerOnly" (ngModelChange)="otpChanged()"
                       [attr.inputmode]="otpInputMode" [attr.pattern]="otpInputPattern"
                       data-testid="login-otp-value"

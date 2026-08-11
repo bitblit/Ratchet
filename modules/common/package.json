@@ -57,6 +57,9 @@
     "lint-fix": "pnpm pretty && eslint --fix -c ../../eslint.config.mjs src/**/*.ts",
     "generate-docs": "typedoc"
   },
+  "dependencies": {
+    "tslib": "2.8.1"
+  },
   "optionalDependencies": {
     "jwt-decode": "4.0.0",
     "ts-enum-util": "4.1.0"
