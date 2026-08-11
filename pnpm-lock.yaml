@@ -530,7 +530,7 @@ importers:
         version: 4.1.0
       js-yaml:
         specifier: ^4.3.0
-        version: 4.3.0
+        version: 4.3.1
       jsonwebtoken:
         specifier: 9.0.3
         version: 9.0.3
@@ -629,7 +629,7 @@ importers:
         version: 3.1.4
       js-yaml:
         specifier: ^4.3.0
-        version: 4.3.0
+        version: 4.3.1
       rxjs:
         specifier: 7.8.2
         version: 7.8.2
@@ -1024,6 +1024,9 @@ packages:
   '@aws-sdk/core@3.977.1':
     resolution: {integrity: sha512-KVtQRtc00ES/y+Sc3vYXeP6pCIcNlBJCZOwvqSy8ZpVGmbM5+IG+AfhuTKQ2oXmIVqZJewaGMMpzPkywC6xg0w==}
     engines: {node: '>=20.0.0'}
+    deprecated: |-
+      Deprecated due to Document number parsing bug in JSON, see
+        https://github.com/aws/aws-sdk-js-v3/issues/8246. Newer version available.
 
   '@aws-sdk/credential-provider-cognito-identity@3.972.60':
     resolution: {integrity: sha512-16Fxa3veKIO6nHJr+vN76z3BkSU7725lzruc5S2SQSTUTbK4TXtmi8033WQljZj4k1+383UsMaNOHN6B76fK5A==}
@@ -3673,8 +3676,8 @@ packages:
   js-tokens@4.0.0:
     resolution: {integrity: sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==}
 
-  js-yaml@4.3.0:
-    resolution: {integrity: sha512-1td788aAnnZ5qs7V2QIRl1owjtYpbKt749Y3xauqQgwIIGF/xXWz1wMTEBx5O3LK3lXLVuqXPdPxj2BoFHaW9Q==}
+  js-yaml@4.3.1:
+    resolution: {integrity: sha512-CY6crGq313MX8GkwvB7tzgp99vjQxY1++5y10/BKN/GUfHqWaOGQMNZkBvqSzsZKWk/ijwHlWzzkLulsGHhjWQ==}
     hasBin: true
 
   jsesc@3.1.0:
@@ -8416,7 +8419,7 @@ snapshots:
 
   js-tokens@4.0.0: {}
 
-  js-yaml@4.3.0:
+  js-yaml@4.3.1:
     dependencies:
       argparse: 2.0.1
 
