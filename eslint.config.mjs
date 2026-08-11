@@ -10,9 +10,14 @@ export default tseslint.config(
   ...tseslint.configs.stylistic,
   eslintConfigPrettier,
   {
+    languageOptions: {
+      parserOptions: {
+        onUnsupportedTypeScriptVersion: 'ignore',
+      },
+    },
     rules: {
       // Ok, I'm a java-head, but I like the namespacing of static class wrappers
-      "@typescript-eslint/no-re": "off",
+      // is this bad ? "@typescript-eslint/no-re": "off",
       "@typescript-eslint/no-extraneous-class": "off",
       "@typescript-eslint/no-inferrable-types": "off",
       "@typescript-eslint/no-explicit-any": "off",
