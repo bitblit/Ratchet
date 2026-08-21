@@ -6,7 +6,7 @@ import { WardenSendMagicLinkCommandValidator } from './provider/warden-send-magi
 import { WardenThirdPartyAuthenticationProvider } from "./provider/warden-third-party-authentication-provider.js";
 import { WardenProxyAuthorizer } from "./provider/warden-proxy-authorizer.ts";
 import { WardenFixedTokenEntry } from "./warden-fixed-token-entry.ts";
-import { WardenExpiringTokenNoAccountBehavior } from "server/warden-expiring-token-no-account-behavior.ts";
+import { WardenExpiringTokenNoAccountBehavior } from "./warden-expiring-token-no-account-behavior.ts";
 
 export interface WardenServiceOptions {
   // Human-readable title for your website

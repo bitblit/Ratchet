@@ -56,7 +56,7 @@ import { WardenWebAuthnExportToken } from "./warden-web-authn-export-token.ts";
 import { WardenEntrySummary } from "@bitblit/ratchet-warden-common/common/model/warden-entry-summary";
 import { CommonJwtToken } from "@bitblit/ratchet-common/jwt/common-jwt-token";
 import { WardenFixedTokenEntry } from "./warden-fixed-token-entry.ts";
-import { WardenExpiringTokenNoAccountBehavior } from "server/warden-expiring-token-no-account-behavior.ts";
+import { WardenExpiringTokenNoAccountBehavior } from "./warden-expiring-token-no-account-behavior.ts";
 
 export class WardenService {
   private opts: WardenServiceOptions;
