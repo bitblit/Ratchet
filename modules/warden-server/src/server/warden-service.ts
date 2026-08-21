@@ -56,6 +56,7 @@ import { WardenWebAuthnExportToken } from "./warden-web-authn-export-token.ts";
 import { WardenEntrySummary } from "@bitblit/ratchet-warden-common/common/model/warden-entry-summary";
 import { CommonJwtToken } from "@bitblit/ratchet-common/jwt/common-jwt-token";
 import { WardenFixedTokenEntry } from "./warden-fixed-token-entry.ts";
+import { WardenExpiringTokenNoAccountBehavior } from "server/warden-expiring-token-no-account-behavior.ts";
 
 export class WardenService {
   private opts: WardenServiceOptions;
@@ -723,8 +724,25 @@ export class WardenService {
         Logger.warn('FIXED TOKEN REQUESTED FOR %j', request);
         rval = true;
       } else {
+        const behavior: WardenExpiringTokenNoAccountBehavior = this.opts.expiringTokenNoAccountBehavior || WardenExpiringTokenNoAccountBehavior.Send;
         const prov: WardenSingleUseCodeProvider = this.singleUseCodeProvider(request, false);
-        rval = await prov.createAndSendNewCode(request, this.opts.relyingPartyName, origin);
+        if (behavior!==WardenExpiringTokenNoAccountBehavior.Send) {
+          const acct:WardenEntry = await this.findEntryByContact(request);
+          if (!acct) {
+            if (behavior===WardenExpiringTokenNoAccountBehavior.SendAndLog) {
+              Logger.info('Sending code to non-registered account %j', request);
+              rval = await prov.createAndSendNewCode(request, this.opts.relyingPartyName, origin);
+            } else if (behavior===WardenExpiringTokenNoAccountBehavior.LogAndDoNotSend) {
+              Logger.warn('Requested code for non-valid account %j', request);
+              rval = true;
+            } else {
+              throw ErrorRatchet.fErr('Cant happen - invalid enum %s', behavior);
+            }
+          }
+        } else {
+          rval = await prov.createAndSendNewCode(request, this.opts.relyingPartyName, origin);
+        }
+
       }
     } else {
       ErrorRatchet.throwFormattedErr("Cannot send - invalid request %j", request);
