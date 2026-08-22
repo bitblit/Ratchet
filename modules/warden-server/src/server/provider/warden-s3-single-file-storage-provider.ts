@@ -31,13 +31,18 @@ export class WardenS3SingleFileStorageProvider implements WardenStorageProvider 
   }
 
   public async fetchDataFile(): Promise<WardenS3SingleFileStorageProviderDataFile> {
-    let data: WardenS3SingleFileStorageProviderDataFile =
-      await this.ratchet.fetchCacheFileAsObject<WardenS3SingleFileStorageProviderDataFile>(this.options.dataFileKey);
-    data = data || {
-      entries: [],
-      challenges: [],
-    };
-    return data;
+    try {
+      let data: WardenS3SingleFileStorageProviderDataFile =
+        await this.ratchet.fetchCacheFileAsObject<WardenS3SingleFileStorageProviderDataFile>(this.options.dataFileKey);
+      data = data || {
+        entries: [],
+        challenges: [],
+      };
+      return data;
+    } catch (err) {
+      Logger.error('WARDEN FILE FAILURE - Storage appears corrupt.  File is %s : Error is %s', this.options.dataFileKey, err, err);
+      throw err;
+    }
   }
 
   public async storeDataFile(file: WardenS3SingleFileStorageProviderDataFile): Promise<PutObjectOutput> {

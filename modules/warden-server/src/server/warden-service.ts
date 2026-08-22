@@ -103,7 +103,7 @@ export class WardenService {
 
   // Passthru for very common use case
   public findEntryById(userId: string): Promise<WardenEntry> {
-    return this.opts.storageProvider.findEntryById(userId);
+    return this.opts.storageProvider.storefindEntryById(userId);
   }
 
   // A helper function for bridging across GraphQL as an embedded JSON command
@@ -177,7 +177,7 @@ export class WardenService {
         }
         // Now run all allowance checks on the link
         const loggedInUser: WardenEntry = StringRatchet.trimToNull(loggedInUserId)
-          ? await this.opts.storageProvider.findEntryById(loggedInUserId)
+          ? await this.findEntryById(loggedInUserId)
           : null;
 
         await this.opts.sendMagicLinkCommandValidator.allowMagicLinkCommand(cmd.sendMagicLink, origin, loggedInUser);
@@ -273,7 +273,7 @@ export class WardenService {
         }
       } else if (cmd.refreshJwtToken) {
         const parsed: CommonJwtToken<WardenEntrySummary> = await this.opts.jwtRatchet.decodeToken(cmd.refreshJwtToken, ExpiredJwtHandling.THROW_EXCEPTION);
-        const user: WardenEntry = await this.opts.storageProvider.findEntryById(parsed.user.userId);
+        const user: WardenEntry = await this.findEntryById(parsed.user.userId);
         const wardenToken: CommonJwtToken<WardenEntrySummary> = {
           user: WardenUtils.stripWardenEntryToSummary(user),
           proxy: null,
@@ -295,12 +295,12 @@ export class WardenService {
         };
       } else if (cmd.proxyUser) {
         if (this.opts.proxyAuthorizer) {
-          const srcUser: WardenEntry = await this.opts.storageProvider.findEntryById(loggedInUserId);
+          const srcUser: WardenEntry = await this.findEntryById(loggedInUserId);
           let targetUser: WardenEntry = null;
           if (cmd.proxyUser.targetUserId) {
-            targetUser = await this.opts.storageProvider.findEntryById(cmd.proxyUser.targetUserId);
+            targetUser = await this.findEntryById(cmd.proxyUser.targetUserId);
           } else if (cmd.proxyUser.targetContact) {
-            targetUser = await this.opts.storageProvider.findEntryByContact(cmd.proxyUser.targetContact);
+            targetUser = await this.findEntryByContact(cmd.proxyUser.targetContact);
           } else {
             Logger.error('Requested proxy but no target user set');
           }
@@ -346,7 +346,7 @@ export class WardenService {
   }
 
   public async exportWebAuthnRegistrationEntry(origin: string, userId: string): Promise<string> {
-    const ent: WardenEntry = await this.opts.storageProvider.findEntryById(userId);
+    const ent: WardenEntry = await this.findEntryById(userId);
     let rval: string = null;
     if (ent) {
       const webAuth: WardenWebAuthnEntry = ent.webAuthnAuthenticators.find(w => w.origin === origin);
@@ -373,7 +373,7 @@ export class WardenService {
   }
 
   public async importWebAuthnRegistrationEntry(token: string, userId: string): Promise<boolean> {
-    const ent: WardenEntry = await this.opts.storageProvider.findEntryById(userId);
+    const ent: WardenEntry = await this.findEntryById(userId);
     let rval: boolean = false;
     if (ent) {
       const s1: string = Base64Ratchet.base64StringToString(token);
@@ -475,7 +475,7 @@ export class WardenService {
   public async createAccount(contact: WardenContact, origin: string, sendCode?: boolean, label?: string): Promise<WardenEntry> {
     let rval: WardenEntry = null;
     if (WardenUtils.validContact(contact)) {
-      const old: WardenEntry = await this.opts.storageProvider.findEntryByContact(contact);
+      const old: WardenEntry = await this.findEntryByContact(contact);
       if (old) {
         ErrorRatchet.throwFormattedErr("Cannot create - account already exists for %j", contact);
       }
@@ -509,11 +509,11 @@ export class WardenService {
   public async addContactMethodToUser(userId: string, contact: WardenContact): Promise<boolean> {
     let rval: boolean = false;
     if (StringRatchet.trimToNull(userId) && WardenUtils.validContact(contact)) {
-      const otherUser: WardenEntry = await this.opts.storageProvider.findEntryByContact(contact);
+      const otherUser: WardenEntry = await this.findEntryByContact(contact);
       if (otherUser && otherUser.userId !== userId) {
         ErrorRatchet.throwFormattedErr("Cannot add contact to this user, another user already has that contact");
       }
-      const curUser: WardenEntry = await this.opts.storageProvider.findEntryById(userId);
+      const curUser: WardenEntry = await this.findEntryById(userId);
       if (!curUser) {
         ErrorRatchet.throwFormattedErr("Cannot add contact to this user, user does not exist");
       }
@@ -530,7 +530,7 @@ export class WardenService {
   public async removeContactMethodFromUser(userId: string, contact: WardenContact): Promise<WardenEntry> {
     let rval: WardenEntry = null;
     if (StringRatchet.trimToNull(userId) && WardenUtils.validContact(contact)) {
-      const curUser: WardenEntry = await this.opts.storageProvider.findEntryById(userId);
+      const curUser: WardenEntry = await this.findEntryById(userId);
       if (!curUser) {
         ErrorRatchet.throwFormattedErr("Cannot remove contact from this user, user does not exist");
       }
@@ -539,7 +539,7 @@ export class WardenService {
         ErrorRatchet.throwFormattedErr("Cannot remove the last contact method from a user");
       }
       await this.opts.storageProvider.saveEntry(curUser);
-      rval = await this.opts.storageProvider.findEntryById(userId);
+      rval = await this.findEntryById(userId);
     } else {
       ErrorRatchet.throwFormattedErr("Cannot add - invalid config : %s %j", userId, contact);
     }
@@ -558,7 +558,7 @@ export class WardenService {
     const asUrl: URL = new URL(origin);
     const rpID: string = asUrl.hostname;
 
-    const entry: WardenEntry = await this.opts.storageProvider.findEntryById(userId);
+    const entry: WardenEntry = await this.findEntryById(userId);
     if (!entry) {
       throw ErrorRatchet.fErr("Cannot generateWebAuthnRegistrationChallengeForLoggedInUser - no user %s / %s", userId, origin);
     }
@@ -605,7 +605,7 @@ export class WardenService {
       const asUrl: URL = new URL(origin);
       const rpID: string = asUrl.hostname;
 
-      const user: WardenEntry = await this.opts.storageProvider.findEntryById(userId);
+      const user: WardenEntry = await this.findEntryById(userId);
       if (!user) {
         throw ErrorRatchet.fErr("Cannot storeAuthnRegistration - no user %s / %s", userId, origin);
       }
@@ -670,7 +670,7 @@ export class WardenService {
     userId: string,
     origin: string
   ): Promise<PublicKeyCredentialRequestOptionsJSON> {
-    const user: WardenEntry = await this.opts.storageProvider.findEntryById(userId);
+    const user: WardenEntry = await this.findEntryById(userId);
     const rval: PublicKeyCredentialRequestOptionsJSON = await this.generateWebAuthnAuthenticationChallenge(user, origin);
     return rval;
   }
@@ -788,8 +788,8 @@ export class WardenService {
       }
     } else {
       let user: WardenEntry = StringRatchet.trimToNull(request?.userId)
-        ? await this.opts.storageProvider.findEntryById(request?.userId)
-        : await this.opts.storageProvider.findEntryByContact(request.contact);
+        ? await this.findEntryById(request?.userId)
+        : await this.findEntryByContact(request.contact);
       if (!user) {
         Logger.info("User not found, and createUserIfMissing=%s / %j", request.createUserIfMissing, request.contact);
         if (request.createUserIfMissing && request.contact) {
@@ -867,7 +867,7 @@ export class WardenService {
 
   // Unregisters a device from a given user account
   public async removeSingleWebAuthnRegistration(userId: string, key: string): Promise<WardenEntry> {
-    let ent: WardenEntry = await this.opts.storageProvider.findEntryById(userId);
+    let ent: WardenEntry = await this.findEntryById(userId);
     if (ent) {
       ent.webAuthnAuthenticators = (ent.webAuthnAuthenticators || []).filter((s) => s.credentialIdBase64 !== key);
       ent = await this.opts.storageProvider.saveEntry(ent);
@@ -881,7 +881,7 @@ export class WardenService {
   public async removeUser(userId: string): Promise<boolean> {
     let rval: boolean = false;
     if (StringRatchet.trimToNull(userId)) {
-      const oldUser: WardenEntry = await this.opts.storageProvider.findEntryById(userId);
+      const oldUser: WardenEntry = await this.findEntryById(userId);
       if (oldUser) {
         await this.opts.storageProvider.removeEntry(userId);
         if (this?.opts?.eventProcessor) {
