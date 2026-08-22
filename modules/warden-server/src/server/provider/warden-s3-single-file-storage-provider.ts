@@ -9,6 +9,7 @@ import { PutObjectOutput, S3Client } from '@aws-sdk/client-s3';
 import { S3CacheRatchet } from '@bitblit/ratchet-aws/s3/s3-cache-ratchet';
 import { ErrorRatchet } from '@bitblit/ratchet-common/lang/error-ratchet';
 import { StringRatchet } from '@bitblit/ratchet-common/lang/string-ratchet';
+import { Logger } from "@bitblit/ratchet-common/logger/logger";
 
 /*
 The most quick and dirty implementation of the storage provider.  Not a good choice if you have
