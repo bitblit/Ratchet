@@ -738,6 +738,9 @@ export class WardenService {
             } else {
               throw ErrorRatchet.fErr('Cant happen - invalid enum %s', behavior);
             }
+          } else {
+            Logger.info('Account found - sending code');
+            rval = await prov.createAndSendNewCode(request, this.opts.relyingPartyName, origin);
           }
         } else {
           Logger.info('Sending code to registered account %j', request);
