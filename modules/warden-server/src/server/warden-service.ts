@@ -113,7 +113,7 @@ export class WardenService {
       const cmd: WardenCommand = JSON.parse(cmdString);
       const resp: WardenCommandResponse = await this.processCommandToResponse(cmd, origin, loggedInUserId);
       if (resp === null) {
-        Logger.warn("Response was null for %s %s %s", cmdString, origin, loggedInUserId);
+        Logger.warn("WardenService: Response was null for CMD: %s  Origin: %s LoggedInUserId: %s", cmdString, origin, loggedInUserId);
       } else {
         rval = JSON.stringify(resp);
       }
@@ -740,13 +740,14 @@ export class WardenService {
             }
           }
         } else {
+          Logger.info('Sending code to registered account %j', request);
           rval = await prov.createAndSendNewCode(request, this.opts.relyingPartyName, origin);
         }
-
       }
     } else {
       ErrorRatchet.throwFormattedErr("Cannot send - invalid request %j", request);
     }
+    Logger.info('sendExpiringValidationToken returning %s',rval);
     return rval;
   }
 
