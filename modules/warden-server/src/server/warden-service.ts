@@ -103,7 +103,7 @@ export class WardenService {
 
   // Passthru for very common use case
   public findEntryById(userId: string): Promise<WardenEntry> {
-    return this.opts.storageProvider.storefindEntryById(userId);
+    return this.opts.storageProvider.findEntryById(userId);
   }
 
   // A helper function for bridging across GraphQL as an embedded JSON command
