@@ -762,6 +762,10 @@ export class WardenService {
     Logger.info("Processing login : %s : %j", origin, request);
     let rval: WardenEntry = null;
     const requestErrors: string[] = WardenUtils.loginRequestErrors(request);
+    if (request.createUserIfMissing && !this.opts.allowCreateUserIfMissing) {
+      Logger.warn('User attempted to force account creation : %j', request, origin);
+      requestErrors.push('Account creation not allowed');
+    }
     if (requestErrors.length > 0) {
       throw ErrorRatchet.fErr("Invalid login request : %j", requestErrors);
     }

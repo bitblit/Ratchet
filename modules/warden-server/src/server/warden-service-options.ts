@@ -12,6 +12,7 @@ export interface WardenServiceOptions {
   // Human-readable title for your website
   relyingPartyName: string;
   allowedOrigins: string[];
+  allowCreateUserIfMissing: boolean; // Defaults to no - set to true to allow registration process
   singleUseCodeProviders: WardenSingleUseCodeProvider[];
   storageProvider: WardenStorageProvider;
   jwtRatchet: JwtRatchetLike;
