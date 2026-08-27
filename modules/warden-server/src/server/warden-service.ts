@@ -141,6 +141,12 @@ export class WardenService {
         );
         rval = { generateWebAuthnAuthenticationChallengeForUserId: { dataAsJson: JSON.stringify(tmp) } };
       } else if (cmd.createAccount) {
+        if (this.opts.accountCreationGate) {
+          const canCreate: boolean = await this.opts.accountCreationGate.mayCreateAccount(cmd.createAccount);
+          if (!canCreate) {
+            throw ErrorRatchet.fErr("This user is not allowed to create an account");
+          }
+        }
         const newEntry: WardenEntry = await this.createAccount(
           cmd.createAccount.contact,
           origin,

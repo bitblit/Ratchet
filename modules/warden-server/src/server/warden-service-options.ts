@@ -7,6 +7,7 @@ import { WardenThirdPartyAuthenticationProvider } from "./provider/warden-third-
 import { WardenProxyAuthorizer } from "./provider/warden-proxy-authorizer.ts";
 import { WardenFixedTokenEntry } from "./warden-fixed-token-entry.ts";
 import { WardenExpiringTokenNoAccountBehavior } from "./warden-expiring-token-no-account-behavior.ts";
+import { WardenAccountCreationGate } from "./provider/warden-account-creation-gate.ts";
 
 export interface WardenServiceOptions {
   // Human-readable title for your website
@@ -22,4 +23,5 @@ export interface WardenServiceOptions {
   thirdPartyAuthenticationProviders?: WardenThirdPartyAuthenticationProvider[];
   fixedTokens?: WardenFixedTokenEntry[]; // Used for test users and automation - should be limited
   expiringTokenNoAccountBehavior?: WardenExpiringTokenNoAccountBehavior;
+  accountCreationGate?: WardenAccountCreationGate;
 }
