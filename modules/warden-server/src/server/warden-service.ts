@@ -141,6 +141,12 @@ export class WardenService {
         );
         rval = { generateWebAuthnAuthenticationChallengeForUserId: { dataAsJson: JSON.stringify(tmp) } };
       } else if (cmd.createAccount) {
+        if (this.opts.accountCreationGate) {
+          const canCreate: boolean = await this.opts.accountCreationGate.mayCreateAccount(cmd.createAccount);
+          if (!canCreate) {
+            throw ErrorRatchet.fErr("This user is not allowed to create an account");
+          }
+        }
         const newEntry: WardenEntry = await this.createAccount(
           cmd.createAccount.contact,
           origin,
@@ -762,6 +768,10 @@ export class WardenService {
     Logger.info("Processing login : %s : %j", origin, request);
     let rval: WardenEntry = null;
     const requestErrors: string[] = WardenUtils.loginRequestErrors(request);
+    if (request.createUserIfMissing && !this.opts.allowCreateUserIfMissing) {
+      Logger.warn('User attempted to force account creation : %j', request, origin);
+      requestErrors.push('Account creation not allowed');
+    }
     if (requestErrors.length > 0) {
       throw ErrorRatchet.fErr("Invalid login request : %j", requestErrors);
     }
