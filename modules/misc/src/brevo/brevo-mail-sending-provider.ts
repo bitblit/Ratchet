@@ -1,13 +1,13 @@
 // Bridge from the BrevoRatchet to the implementation needed by mailer
 
 import { Logger } from '@bitblit/ratchet-common/logger/logger';
-import { ErrorRatchet } from '@bitblit/ratchet-common/lang/error-ratchet';
 import { BrevoRatchet } from './brevo-ratchet.js';
 import { SMTPApi } from './generated/apis/SMTPApi.js';
 import { CreateSmtpEmail } from './generated/models/CreateSmtpEmail.js';
 import { SendSmtpEmail } from './generated/models/SendSmtpEmail.js';
 import { MailSendingProvider } from '@bitblit/ratchet-common/mail/mail-sending-provider';
 import { ResolvedReadyToSendEmail } from '@bitblit/ratchet-common/mail/resolved-ready-to-send-email';
+import { SendSmtpEmailAttachmentInner } from "brevo/generated/models";
 
 export class BrevoMailSendingProvider implements MailSendingProvider<CreateSmtpEmail, string> {
   constructor(private brevo: BrevoRatchet) {}
@@ -15,10 +15,6 @@ export class BrevoMailSendingProvider implements MailSendingProvider<CreateSmtpE
   public async sendEmail(rts: ResolvedReadyToSendEmail): Promise<CreateSmtpEmail> {
     try {
       const api: SMTPApi = await this.brevo.smtpApi();
-
-      if (rts?.attachments?.length) {
-        throw ErrorRatchet.fErr('Cannot send email with attachments yet, not supported');
-      }
 
       const sendSmtpEmail: SendSmtpEmail = {
         subject: rts.subject,
@@ -34,6 +30,17 @@ export class BrevoMailSendingProvider implements MailSendingProvider<CreateSmtpE
             })
           : undefined,
       };
+
+      if (rts?.attachments?.length) {
+        sendSmtpEmail.attachment = rts.attachments.map(ra=>{
+          const next: SendSmtpEmailAttachmentInner = {
+            content: ra.base64Data,
+            name: ra.filename
+          };
+          return next;
+        });
+      }
+
 
       //sendSmtpEmail.replyTo = { email: 'replyto@domain.com', name: 'John Doe' };
       //sendSmtpEmail.headers = { 'Some-Custom-Name': 'unique-id-1234' };
