@@ -88,7 +88,7 @@
     "@aws-sdk/s3-request-presigner": "3.1147.0",
     "@aws-sdk/types": "3.974.6",
     "@aws-sdk/util-dynamodb": "3.996.9",
-    "@smithy/types": "4.14.2",
+    "@smithy/types": "4.19.0",
     "@smithy/abort-controller": "4.4.2",
     "@smithy/smithy-client": "4.15.2",
     "@smithy/util-waiter": "4.6.2"
@@ -117,7 +117,7 @@
     "@aws-sdk/types": "^3.974.6",
     "@aws-sdk/util-dynamodb": "^3.996.9",
     "@bitblit/ratchet-common": "workspace:0.0.0-snapshot",
-    "@smithy/types": "^4.14.2",
+    "@smithy/types": "^4.19.0",
     "@smithy/abort-controller": "^4.4.2",
     "@smithy/smithy-client": "^4.15.2",
     "@smithy/util-waiter": "^4.6.2"

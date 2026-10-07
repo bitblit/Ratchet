@@ -1,6 +1,6 @@
 import {
   AuthenticationResponseJSON,
-  AuthenticatorTransportFuture,
+  AuthenticatorTransport,
   generateAuthenticationOptions,
   GenerateAuthenticationOptionsOpts,
   generateRegistrationOptions,
@@ -585,7 +585,7 @@ export class WardenService {
         id: authenticator.credentialPublicKeyBase64,
         //type: 'public-key',
         // Optional
-        transports: authenticator.transports as unknown as AuthenticatorTransportFuture[]
+        transports: authenticator.transports as unknown as AuthenticatorTransport[]
       }))
     });
 
