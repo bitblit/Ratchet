@@ -90,5 +90,5 @@
     "vitest": "4.1.11",
     "vitest-mock-extended": "5.1.0"
   },
-  "packageManager": "pnpm@12.3.4"
+  "packageManager": "pnpm@12.10.1"
 }
