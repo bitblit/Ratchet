@@ -120,7 +120,7 @@ export class StopWatch {
   }
 
   public dumpExpectedByIdx(idx: number, total: number, name?: string, shortForm?: boolean): string {
-    RequireRatchet.true(idx > 0 && idx < total, 'IDX must be >=0 and less than total');
+    RequireRatchet.true(idx >= 0 && idx < total, 'IDX must be >=0 and less than total');
     return this.dumpExpected(idx / total, name, shortForm);
   }
 
@@ -157,7 +157,7 @@ export class StopWatch {
   }
 
   public expectedRemainingMSByIdx(idx: number, total: number, name?: string): number {
-    RequireRatchet.true(idx > 0 && idx < total, 'IDX must be >=0 and less than total');
+    RequireRatchet.true(idx >= 0 && idx < total, 'IDX must be >=0 and less than total');
     return this.expectedRemainingMS(idx / total, name);
   }
 
