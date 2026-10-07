@@ -1,10 +1,7 @@
 import { RectangularMaze } from "./rectangular-maze.js";
 import { RequireRatchet } from "@bitblit/ratchet-common/lang/require-ratchet";
-
-import fs from "fs";
 import { Direction } from "./direction.js";
 import { StringRatchet } from "@bitblit/ratchet-common/lang/string-ratchet";
-import { BinaryGenerator } from "./binary-generator";
 
 // 0,1,2,3...width-1
 // width,
