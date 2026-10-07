@@ -60,8 +60,8 @@
     "@rollup/plugin-typescript": "12.3.0",
     "@types/luxon": "3.7.6",
     "@types/node": "24.10.13",
-    "@vitest/coverage-istanbul": "4.1.10",
-    "@vitest/coverage-v8": "4.1.10",
+    "@vitest/coverage-istanbul": "5.0.3",
+    "@vitest/coverage-v8": "5.0.3",
     "concurrently": "10.0.5",
     "cross-env": "10.1.0",
     "eslint": "10.12.0",
@@ -86,8 +86,8 @@
     "@typescript/native": "npm:typescript@7.0.2",
     "typescript": "npm:@typescript/typescript6@6.0.2",
     "typescript-eslint": "8.71.1",
-    "vite": "7.3.6",
-    "vitest": "4.1.11",
+    "vite": "8.3.3",
+    "vitest": "5.0.3",
     "vitest-mock-extended": "5.1.1"
   },
   "packageManager": "pnpm@12.10.1"

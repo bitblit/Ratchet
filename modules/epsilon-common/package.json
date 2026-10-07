@@ -74,10 +74,10 @@
     "generate-docs": "typedoc"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "3.1146.0",
-    "@aws-sdk/client-sns": "3.1146.0",
-    "@aws-sdk/client-sqs": "3.1146.0",
-    "@aws-sdk/client-batch": "3.1146.0",
+    "@aws-sdk/client-s3": "3.1147.0",
+    "@aws-sdk/client-sns": "3.1147.0",
+    "@aws-sdk/client-sqs": "3.1147.0",
+    "@aws-sdk/client-batch": "3.1147.0",
     "@aws-sdk/types": "3.974.6",
     "@bitblit/ratchet-aws": "workspace:0.0.0-snapshot",
     "@bitblit/ratchet-common": "workspace:0.0.0-snapshot",
@@ -92,7 +92,7 @@
     "cross-fetch": "4.1.0",
     "js-yaml": "5.4.3",
     "jsonwebtoken": "9.0.3",
-    "jwks-rsa": "3.2.2",
+    "jwks-rsa": "4.1.0",
     "luxon": "3.7.2",
     "route-parser": "0.0.5",
     "rxjs": "7.8.2",

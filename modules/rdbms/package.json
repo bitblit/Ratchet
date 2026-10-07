@@ -62,7 +62,7 @@
     "@bitblit/ratchet-common": "workspace:0.0.0-snapshot"
   },
   "optionalDependencies": {
-    "@aws-sdk/client-rds-data": "3.1146.0",
+    "@aws-sdk/client-rds-data": "3.1147.0",
     "better-sqlite3": "13.0.3",
     "get-port": "7.2.0",
     "mysql2": "3.24.5",
@@ -72,7 +72,7 @@
     "ssh2": "1.17.0"
   },
   "peerDependencies": {
-    "@aws-sdk/client-rds-data": "^3.1146.0",
+    "@aws-sdk/client-rds-data": "^3.1147.0",
     "@bitblit/ratchet-common": "workspace:0.0.0-snapshot",
     "better-sqlite3": "^13.0.3",
     "get-port": "^7.2.0",
