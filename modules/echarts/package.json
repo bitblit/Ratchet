@@ -47,12 +47,12 @@
   },
   "dependencies": {
     "@bitblit/ratchet-common": "workspace:0.0.0-snapshot",
-    "canvas": "3.2.1",
+    "canvas": "3.2.3",
     "echarts": "6.1.0"
   },
   "peerDependencies": {
     "@bitblit/ratchet-common": "workspace:0.0.0-snapshot",
-    "canvas": "^3.2.1 ",
+    "canvas": "^3.2.3",
     "echarts": "^6.1.0"
   }
 }
