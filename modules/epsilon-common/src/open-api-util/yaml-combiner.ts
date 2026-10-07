@@ -4,7 +4,7 @@
 
 import fs from 'fs';
 import { RequireRatchet } from '@bitblit/ratchet-common/lang/require-ratchet';
-import yaml from 'js-yaml';
+import { dump, load } from 'js-yaml';
 import { Logger } from '@bitblit/ratchet-common/logger/logger';
 
 export class YamlCombiner {
@@ -18,7 +18,7 @@ export class YamlCombiner {
     for (const fName of files) {
       //for (let i = 0; i < files.length; i++) {
       const fileContents: string = fs.readFileSync(fName).toString();
-      const openApi: any = yaml.load(fileContents);
+      const openApi: any = load(fileContents);
       allElements = Object.assign(allElements, openApi);
     }
     const rootPath: string[] = Object.assign([], inRootPath);
@@ -29,7 +29,7 @@ export class YamlCombiner {
       allElements = next;
     }
 
-    const rval: string = yaml.dump(allElements);
+    const rval: string = dump(allElements);
     return rval;
   }
 }

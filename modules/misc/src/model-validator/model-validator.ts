@@ -1,5 +1,5 @@
 import Validator from 'swagger-model-validator';
-import yaml from 'js-yaml';
+import { load } from 'js-yaml';
 import { Logger } from '@bitblit/ratchet-common/logger/logger';
 import { ErrorRatchet } from '@bitblit/ratchet-common/lang/error-ratchet';
 import { MapRatchet } from '@bitblit/ratchet-common/lang/map-ratchet';
@@ -15,7 +15,7 @@ export class ModelValidator {
   }
 
   public static createFromYamlString(yamlString: string, rootPath: string[]): ModelValidator {
-    const src: any = yaml.load(yamlString);
+    const src: any = load(yamlString);
     const modelSrc: any = rootPath && rootPath.length > 0 ? MapRatchet.findValue(src, rootPath) : src;
     return ModelValidator.createFromParsedObject(modelSrc);
   }

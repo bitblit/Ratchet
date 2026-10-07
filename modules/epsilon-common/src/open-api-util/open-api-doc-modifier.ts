@@ -1,4 +1,4 @@
-import yaml from 'js-yaml';
+import { dump, load } from 'js-yaml';
 import { OpenApiDocModifications } from './open-api-doc-modifications.js';
 import { Logger } from '@bitblit/ratchet-common/logger/logger';
 
@@ -12,7 +12,7 @@ export class OpenApiDocModifier {
     let rval: string;
     if (!!yamlString && !!this.options) {
       try {
-        const openApi: any = yaml.load(yamlString);
+        const openApi: any = load(yamlString);
         const removeTags: string[] = this.options.removeTags ? this.options.removeTags.map((t) => t.toLowerCase()) : [];
 
         // Apply new server path
@@ -70,7 +70,7 @@ export class OpenApiDocModifier {
           openApi['components']['schemas'] = newComp;
         }
 
-        rval = yaml.dump(openApi);
+        rval = dump(openApi);
       } catch (err) {
         Logger.error('Error processing yaml: %s', err, err);
       }

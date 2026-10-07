@@ -1,6 +1,6 @@
 import { Logger } from '@bitblit/ratchet-common/logger/logger';
 import { ErrorRatchet } from '@bitblit/ratchet-common/lang/error-ratchet';
-import yaml from 'js-yaml';
+import { load } from 'js-yaml';
 import { ModelValidator } from '@bitblit/ratchet-misc/model-validator/model-validator';
 import { BackgroundHttpAdapterHandler } from '../background/background-http-adapter-handler.js';
 import { OpenApiDocument } from '../config/open-api/open-api-document.js';
@@ -64,7 +64,7 @@ export class EpsilonConfigParser {
     if (!yamlString) {
       throw new MisconfiguredError('Cannot configure, missing either yaml or cfg');
     }
-    const doc: OpenApiDocument = yaml.load(yamlString) as OpenApiDocument;
+    const doc: OpenApiDocument = load(yamlString) as OpenApiDocument;
     return doc;
   }
 
