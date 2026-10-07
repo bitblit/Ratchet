@@ -28,6 +28,14 @@ For example,
 
 TBD
 
+## Testing
+
+Run `pnpm test` or `pnpm test-coverage` from the repository root to test all modules.
+For one module, run `pnpm test` or `pnpm test-coverage` from its directory (for example, `modules/aws`).
+All module scripts explicitly load the shared root `vitest.config.mts`; no module-specific configuration files are needed.
+Coverage reports are written to each module's `artifacts/coverage` directory.
+When invoking Vitest directly from a module, pass `--config ../../vitest.config.mts`.
+
 ### Barrel Files And Modular Architecture
 Although I hate the import pollution, I have gradually been dragged to the belief that barrel files are an
 antipattern in Typescript given how much they mess up tree shaking, etc.  I finally removed them entirely.

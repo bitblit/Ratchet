@@ -49,8 +49,8 @@
   "license": "Apache-2.0",
   "scripts": {
     "build": "tsc",
-    "test": "vitest run",
-    "test-coverage": "vitest run  --coverage",
+    "test": "vitest run --config ../../vitest.config.mts",
+    "test-coverage": "vitest run --config ../../vitest.config.mts --coverage",
     "custom-publish": "pnpm publish --access public --provenance --tag $GITHUB_REF_NAME --no-git-checks",
     "clean": "shx rm -Rf lib",
     "pretty": "prettier src --write",

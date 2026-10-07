@@ -1,20 +1,14 @@
 import { defineConfig } from 'vitest/config';
-//import { TestBed } from '@angular/core/testing';
-//import { BrowserDynamicTestingModule, platformBrowserDynamicTesting } from "@angular/platform-browser-dynamic/testing";
-//import angular from '@analogjs/vite-plugin-angular';
 
-
-// TODO: This does not work yet...
-//TestBed.initTestEnvironment(BrowserDynamicTestingModule, platformBrowserDynamicTesting());
-
-
+// Use the working directory as the root so module scripts only run their own
+// tests and write coverage inside their own artifacts directory.
 export default defineConfig({
-  //plugins: [angular()],
   test: {
     passWithNoTests: true,
+    pool: 'forks',
     coverage: {
       reportsDirectory: 'artifacts/coverage',
-      provider: 'istanbul', // or 'v8'
+      provider: 'v8',
       thresholds: {
         lines: 0,
         functions: 0,
@@ -22,19 +16,5 @@ export default defineConfig({
         statements: 0,
       },
     },
-    // Vitest 4.0: 'workspace' renamed to 'projects'
-    projects: ['modules/*',
-      {
-        extends: true,
-        test: {
-          pool: 'forks',
-          //poolOptions: {
-          //  forks: {
-              //setupFiles: ['../../vitest.setup.ts'],
-          //  }
-          //}
-        }
-      }
-    ],
-  }
+  },
 });

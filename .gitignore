@@ -22,3 +22,5 @@ tsconfig.tsbuildinfo
 !.yarn/sdks
 !.yarn/versions
 .aider*
+.agents
+.codex
